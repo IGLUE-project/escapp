@@ -3,7 +3,7 @@
 module.exports = {
     "up": (queryInterface, Sequelize) => queryInterface.addColumn("puzzles", "validator", {
         "type": Sequelize.TEXT,
-        "defaultValue": "case-insensitive"
+        "defaultValue": "caseinsensitive"
     }),
     "down": (queryInterface) => queryInterface.removeColumn("puzzles", "validator")
 };

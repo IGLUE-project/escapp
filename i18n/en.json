@@ -432,7 +432,7 @@
                 "feedbackExplanation": "Do you want to show students the correct answers once the quiz is completed?",
                 "hintFile": "Battery of questions file",
                 "allowCustomHints": "Allow manual hints",
-                "allowCustomHintsExplanation": "If you check this option, when a team runs out of automatic hints, they will be told to ask the teacher for help instead. If not checked, students will not be able to request hints when they run out.", 
+                "allowCustomHintsExplanation": "If you check this option, when a team runs out of automatic hints, they will be told to ask the teacher for help instead. If not checked, students will not be able to request hints when they run out.",
                 "hintInterval": "Hint frequency",
                 "hintIntervalExplanation": "How much time (in minutes) do students need to wait before asking for a new hint?",
                 "hintLimit": "Hint limit",
@@ -524,7 +524,14 @@
                 "subpuzzles": "Subpuzzles",
                 "successMsg": "Message on success",
                 "title": "Puzzles",
-                "tracking": "Tracking"
+                "tracking": "Tracking",
+                "validator": {
+                   "msg": "Validation Method",
+                    "exact": "Exact match",
+                    "caseinsensitive": "Case-insensitive",
+                    "regex": "Regular expression",
+                    "range": "Range"
+                }
             },
             "turnos": {
                 "title": "Shifts",
@@ -544,8 +551,8 @@
                 "password": "Password",
                 "passwordPlaceholder": "Password to access the shift. By default it is the same you provided for the escape room",
                 "passwordEmpty": "none",
-                "capacity": "Capacity",             
-                "capacityPlaceholder": "Maximum people allowed in this shift. Leave it blank if you do not want to limit it"             
+                "capacity": "Capacity",
+                "capacityPlaceholder": "Maximum people allowed in this shift. Leave it blank if you do not want to limit it"
             }
         },
         "general": {

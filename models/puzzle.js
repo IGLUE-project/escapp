@@ -15,9 +15,7 @@ module.exports = function (sequelize, DataTypes) {
             },
             "validator": {
                 "type": DataTypes.TEXT,
-                "validate": {
-                    "isIn": ["exact", "case-insenstive", "range", "regex" ]
-                }
+                "validate": {"isIn": [["exact", "caseinsensitive", "range", "regex"]]}
             },
             "desc": {
                 "type": DataTypes.TEXT,

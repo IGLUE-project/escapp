@@ -14,13 +14,13 @@
     </div>
   <br/>
   <br/>
-  <form method='POST' id="form" action='/escapeRooms/<%= escapeRoom.id %>/puzzles'>
+  <form method='POST' id="form" onsubmit='return validateForm()' action='/escapeRooms/<%= escapeRoom.id %>/puzzles'>
   <div id="sortable">
 
     <% for(var reto in escapeRoom.puzzles) { %>
         <% var puzzle = escapeRoom.puzzles[reto] %>
         <%- include('../../partials/_puzzles_card', {reto, puzzle}) %>
-    	
+
     <%}%>
     </div>
     <br/>
@@ -36,11 +36,46 @@
 
 <div class="hidden-card">
     <%- include('../../partials/_puzzles_card', {reto: 'new', puzzle: {id: 'new', hints: []}}) %>
-</div>  
+</div>
 </div>
 <%- include('../../partials/_footer', {ignoreExtras: true}) %>
 <script src="/js/vendor/jquery.ui.sortable.min.js"></script>
 <script src="/js/vendor/jquery.ui.touch-punch.min.js"></script>
+<script>
+    const validateForm = () => {
+        const arr = Array.from(document.getElementsByClassName('puzzle-card'));
+        for (let i in arr){
+            const element = arr[i];
+            const id = element.getAttribute('id').toString().split('-')[1];
+            if (isNaN(id)) {
+                continue;
+            }
+            console.log(i);
+            const solution = document.getElementById(`puzzles[${i}][sol]`).value;
+            const isRange = document.getElementById(`puzzles[${i}][ran]`).checked;
+            const isRegex = document.getElementById(`puzzles[${i}][reg]`).checked;
+            console.log(isRange, isRegex, solution);
+            if(isRegex){
+                try {
+                    new RegExp(solution.val());
+                } catch (e) {
+                    return false;
+                }
+            }
+            if(isRange){
+                console.log('hola');
+                const splitArray  = solution.split("+")
+                const number = Number(splitArray[0]);
+                const range = Number(splitArray[1]);
+                console.log(solution, range);
+                if(isNaN(number) || isNaN(range)){
+                    return false;
+                }
+            }
+        };
+    }
+
+</script>
 <script>
   $( function() {
     // Puzzle sortable
@@ -67,7 +102,7 @@
             $('.puzzle-card > *:not(.showAlways)').show();
         },
         update: (a,b)=>{
-            
+
             $('.order').each((i,e)=> {
                 $(e).val(i);
             })
@@ -91,7 +126,7 @@
     });
     // $('.handle').disableSelection();
 
- 
+
 
     $(document).on('click', '.addHint', (e) => {
         const currentHintList = $(e.target.parentNode.parentNode).find('.hint-list');
@@ -108,7 +143,7 @@
                 <input type="hidden" name="puzzles[${order}][hints][${hintOrder}][order]" class="hint-order" value="${hintOrder}"/>
                 <input type="text" class="light" name="puzzles[${order}][hints][${hintOrder}][content]" maxlength="10000" placeholder="" required value=""/>
                 <button type="button" class="delete-hint" title="<%=i18n.escapeRoom.steps.puzzles.delete%>" >
-                  <span class="material-icons">clear</span> 
+                  <span class="material-icons">clear</span>
                 </button>
             </div>
         </li>
@@ -201,7 +236,7 @@
             }
         });
 
-        
+
     });
 
     $(document).on('click', '.delete-hint', (e) => {
@@ -229,14 +264,14 @@
             var idx = (document.activeElement && (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "SELECT")) ? inputs.index(document.activeElement) : -1;
             if (idx == inputs.length - 1) {
                 idx = -1;
-            } 
+            }
             inputs[idx + 1].focus(); //  handles submit buttons
             if (inputs[idx + 1].select) {
                 inputs[idx + 1].select();
             }
             return false;
         }
-        
+
     });
 
     $("form input:visible, form select")[0].focus();

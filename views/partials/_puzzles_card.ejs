@@ -23,6 +23,28 @@
         </div>
         <div>
             <h3>
+                <span class="material-icons">search</span>
+                <label for="puzzles[<%=reto%>][sol]"><%=i18n.escapeRoom.steps.puzzles.validator.msg%></label>
+            </h3>
+            <div>
+                <input type="radio" name="puzzles[<%=reto%>][validator]"  value="exact" <%= puzzle.validator === 'exact' ? 'checked' : null %> id="puzzles[<%=reto%>][exa]"/>
+                <label for="puzzles[<%=reto%>][exa]"><%=i18n.escapeRoom.steps.puzzles.validator.exact%></label>
+            </div>
+            <div>
+                <input type="radio" name="puzzles[<%=reto%>][validator]"  value="caseinsensitive" <%= puzzle.validator === 'caseinsensitive' ? 'checked' : null %> id="puzzles[<%=reto%>][cas]"/>
+                <label for="puzzles[<%=reto%>][cas]"><%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%></label>
+            </div>
+            <div>
+                <input type="radio" name="puzzles[<%=reto%>][validator]"  value="range" <%= puzzle.validator === 'range' ? 'checked' : null %> id="puzzles[<%=reto%>][ran]"/>
+                <label for="puzzles[<%=reto%>][ran]"><%=i18n.escapeRoom.steps.puzzles.validator.range%></label>
+            </div>
+            <div>
+                <input type="radio" name="puzzles[<%=reto%>][validator]"  value="regex" <%= puzzle.validator === 'regex' ? 'checked' : null %> id="puzzles[<%=reto%>][reg]"/>
+                <label for="puzzles[<%=reto%>][reg]"><%=i18n.escapeRoom.steps.puzzles.validator.regex%></label>
+            </div>
+        </div>
+        <div>
+            <h3>
                 <label for="puzzles[<%=reto%>][automatic]">
                     <span>
                         <span class="material-icons">track_changes</span>
@@ -57,9 +79,9 @@
                 let hint = puzzle.hints[h];
                 if (nCats === 1) {
                     categoryIndex = 0;
-                } else if (nCats > 1 && category !== hint.category) { 
+                } else if (nCats > 1 && category !== hint.category) {
                     category =  hint.category || "General";
-                    categoryIndex++;    
+                    categoryIndex++;
                 %>
                 <li class="hint-category" data-id="<%=categoryIndex%>">
                     <span class="material-icons handle-cat">call_split</span>
