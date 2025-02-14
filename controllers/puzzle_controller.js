@@ -71,7 +71,6 @@ exports.retosUpdate = async (req, res) => {
 
         escapeRoom.puzzles = await getERPuzzlesAndHints(escapeRoom.id);
 
-        console.log(retos);
         for (const reto of retos) {
             if (reto.id) {
                 const oldPuzzle = escapeRoom.puzzles.find((puzzle) => puzzle.id.toString() === reto.id.toString());
@@ -149,7 +148,6 @@ exports.retosUpdate = async (req, res) => {
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("puzzles") : progressBar || nextStep("puzzles")}`);
     } catch (error) {
         await transaction.rollback();
-        console.error(error);
         if (error instanceof Sequelize.ValidationError) {
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));
