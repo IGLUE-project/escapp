@@ -521,8 +521,12 @@
                     "caseinsensitive": "Sin distinguir mayúsculas",
                     "regex": "Expresión regular",
                     "range": "Rango"
+                },
+                "errors": {
+                    "invalidSolution": "La solución tiene que ser un número",
+                    "invalidRange": "El rango debe ser un número mayor que 0",
+                    "invalidRegex": "Expresión regular inválida"
                 }
-
             },
             "turnos": {
                 "title": "Turnos",

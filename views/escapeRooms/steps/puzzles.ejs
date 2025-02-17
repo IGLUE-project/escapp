@@ -50,30 +50,37 @@
             if (isNaN(id)) {
                 continue;
             }
-            console.log(i);
-            const solution = document.getElementById(`puzzles[${i}][sol]`).value;
-            const isRange = document.getElementById(`puzzles[${i}][ran]`).checked;
-            const isRegex = document.getElementById(`puzzles[${i}][reg]`).checked;
-            console.log(isRange, isRegex, solution);
+            const solutionElement = $(`#puzzles\\[${i}\\]\\[sol\\]`);
+            const solution = solutionElement.val();
+            const isRange = $(`#puzzles\\[${i}\\]\\[ran\\]`).prop('checked');
+            const isRegex = $(`#puzzles\\[${i}\\]\\[reg\\]`).prop('checked');
+            solutionElement.get(0).setCustomValidity("");
             if(isRegex){
                 try {
-                    new RegExp(solution.val());
+                    new RegExp(solution);
                 } catch (e) {
+                    solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRegex%>");
+                    solutionElement.get(0).reportValidity();
                     return false;
                 }
             }
             if(isRange){
-                console.log('hola');
-                const splitArray  = solution.split("+")
-                const number = Number(splitArray[0]);
-                const range = Number(splitArray[1]);
-                console.log(solution, range);
-                if(isNaN(number) || isNaN(range)){
+                const rangeElement = $(`#puzzles\\[${i}\\]\\[rang\\]\\-range`);
+                const range =  rangeElement.val();
+                if(isNaN(solution)){
+                    solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidSolution%>");
+                    solutionElement.get(0).reportValidity();
                     return false;
+                }else if(isNaN(range) || range === "" || range === 0){
+                    rangeElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRange%>");
+                    rangeElement.get(0).reportValidity();
+                    return false;
+                } else {
+                    rangeElement.get(0).setCustomValidity("");
+                    solutionElement.val(solutionElement.val() + "+" + range);
                 }
             }
-        };
-    }
+        }; }
 
 </script>
 <script>

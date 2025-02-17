@@ -531,7 +531,13 @@
                     "caseinsensitive": "Case-insensitive",
                     "regex": "Regular expression",
                     "range": "Range"
+                },
+                "errors": {
+                    "invalidSolution": "Range must be a number",
+                    "invalidRange": "Range must be different than 0",
+                    "invalidRegex": "Invalid regular expression"
                 }
+
             },
             "turnos": {
                 "title": "Shifts",

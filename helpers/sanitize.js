@@ -5,6 +5,7 @@ exports.sanitizePuzzles = (puzzles = []) => puzzles.
     sort((a, b) => parseInt(isNaN(a.order) ? 0 : a.order, 10) < parseInt(isNaN(b.order) ? 0 : b.order, 10) ? -1 : 1).
     map((puzzle, order) => {
         const {id, title, desc, sol, automatic, validator, correct, fail, hints, categories = ["General"]} = puzzle;
+        console.log(puzzle);
 
         return {
             "id": sanitizeId(id),
