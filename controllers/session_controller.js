@@ -255,10 +255,10 @@ exports.destroy = (req, res) => {
 // POST ACCEPT COOKIES
 exports.cookieAccept = (req, res) => {
     res.cookie("cookieAccepted", "true", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
-        maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+        "httpOnly": true,
+        "secure": process.env.NODE_ENV === "production",
+        "sameSite": "Strict",
+        "maxAge": 1000 * 60 * 60 * 24 * 365 // 1 year
     });
     res.sendStatus(200);
-}
+};

@@ -3833,6 +3833,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   .finish .ranking-table .ranking-members {
     display: none;
   }
+
   .showStudent .flex {
     flex-direction: column;
   }

@@ -1,0 +1,36 @@
+<html>
+    <body>
+        <div>
+            <input type="file" id="inputtag" />
+            <button class="btn">Upload</button>
+        </div>
+        <script>
+        const inputButton = document.getElementById("inputtag");
+        const buttonn = document.querySelector(".btn");
+        inputButton.addEventListener("change", async (e) => await updateFile(e));
+        buttonn.addEventListener("click", () => uploadFile());
+
+        let data = null;
+        async function updateFile(e) {
+            const file = e.target.files[0];
+
+            const formData = new FormData();
+            formData.append("image", file);
+            data= formData;
+        }
+        async function uploadFile() {
+            try {
+                const imageData = await fetch("http://localhost:4000/catalog/upload", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    body: data,
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        </script>
+    </body>
+</html>

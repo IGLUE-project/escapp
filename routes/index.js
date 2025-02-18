@@ -16,6 +16,7 @@ const resourceController = require("../controllers/resource_controller");
 const resourceAppController = require("../controllers/resource_app_controller");
 const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
+const catalogController = require("../controllers/catalog_controller");
 
 const multer = require("multer"),
     upload = multer({"dest": "./uploads/"});
@@ -189,6 +190,10 @@ router.get("/resources/:resourceId/edit", sessionController.loginRequired, sessi
 router.put("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.update);
 router.delete("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.destroy);
 
+//Routes for resource catalog
+router.post("/catalog/upload", catalogController.upload);
+router.get("/catalog/:resourceId", catalogController.download);
+router.get("/catalog", catalogController.show);
 
 router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.browse);
 module.exports = router;
