@@ -191,9 +191,14 @@ router.put("/resources/:resourceId", sessionController.loginRequired, sessionCon
 router.delete("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.destroy);
 
 //Routes for resource catalog
-router.post("/catalog/upload", catalogController.upload);
-router.get("/catalog/:resourceId", catalogController.download);
-router.get("/catalog", catalogController.show);
+router.post("/catalog/upload", sessionController.loginRequired,  catalogController.upload);
+router.post("/catalog/create", sessionController.loginRequired, catalogController.create);
+router.get("/catalog/:id/download",sessionController.loginRequired, catalogController.download);
+router.get("/catalog/:id/",sessionController.loginRequired, catalogController.get);
+router.delete("/catalog/:resourceId",sessionController.loginRequired, catalogController.delete);
+router.get("/catalog",sessionController.loginRequired, catalogController.show);
+router.get("/uploadView",sessionController.loginRequired, catalogController.sendUploadView);
+router.post("/catalog/:escapeRoomId/:resourceId", sessionController.loginRequired,catalogController.use);
 
 router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.browse);
 module.exports = router;

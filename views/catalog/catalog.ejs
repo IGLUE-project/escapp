@@ -1,0 +1,16 @@
+<div>
+    <button id="update">Actualizar</button>
+    <% console.log(resources); resources.map((resource) => { %>
+        <div>
+            <h1><%= resource.fileName %>  </h1>
+            <%= resource.id %>
+            <button onclick="downloadResource(<%= resource.id%>)">Download</button>
+        </div>
+    <% }) %>
+</div>
+<script>
+    function downloadResource(resourceId){
+       window.location.assign("catalog/"+resourceId+"/download");
+    }
+
+</script>
