@@ -7,6 +7,10 @@ exports.upload = async (req, res, next) => {
     try {
         const userId =  req.session.user.id.toString();
         let fileName = req.headers.filename;
+        if(fileName === "") {
+            res.status(400);
+            return;
+        }
         fileName = fileName.replace("C:\\fakepath\\", "");
         if (!fs.existsSync(path.join(__dirname, "../catalog/", userId))) {
             fs.mkdirSync(path.join(__dirname, "../catalog/", userId));
@@ -24,7 +28,6 @@ exports.upload = async (req, res, next) => {
                 "base64",
                 (err) => {
                     if(err) {
-                        console.log(err)
                         throw new Error('Error writing file', err);
                     }
                 }
@@ -63,7 +66,6 @@ exports.download = async (req, res, next) => {
     const userId = req.session.user.id;
     const {id} = req.params;
     try {
-        console.log(id)
         const resource = await models.catalogResource.findByPk(id);
         const fileName = resource.fileName;
         if(resource.userId !== userId) {
@@ -72,10 +74,8 @@ exports.download = async (req, res, next) => {
         }else if(resource.type === "url") { //Mirar que tipos no son descargables por ser externos
             res.status(400);
         } else {
-            console.log(__dirname, "../catalog/", userId.toString(), fileName)
             const file = path.join(__dirname, "../catalog/", userId.toString(), fileName);
             if (fs.existsSync(file)) {
-                console.log('si')
                 res.download(file, fileName);
             } else {
                 res.status(404);

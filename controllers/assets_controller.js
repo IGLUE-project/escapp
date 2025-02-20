@@ -34,24 +34,25 @@ exports.assetsUpdate = (req, res /* , next*/) => {
 
 // POST /escapeRooms/:escapeRoomId/uploadAssets
 exports.uploadAssets = async (req, res) => {
+    console.error('uploadAssets')
     const {escapeRoom} = req;
     let uploadResult = null;
     const {i18n} = res.locals;
-
+    const userId = req.session.user && req.session.user.id;
     try {
-        await attHelper.checksCloudinaryEnv();
+        //await attHelper.checksCloudinaryEnv();
         // Save the new asset into Cloudinary:
-        uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
+        uploadResult = attHelper.uploadResourceToFileSystem2(req.file.path, escapeRoom.id);
+        //uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
     } catch (err) {
         res.status(500);
         res.send(err);
     }
     try {
-        await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": uploadResult.public_id, "url": uploadResult.url, "filename": req.file.originalname, "mime": req.file.mimetype}).save();
+        await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": uploadResult.public_id, "url": uploadResult.url, "filename": req.file.originalname, "mime": req.file.mimetype, userId}).save();
 
         // Res.json({"id": saved.id, "url": uploadResult.url});
         const html = ckeditorResponse(req.query.CKEditorFuncNum, uploadResult.url);
-
         res.send(html);
     } catch (error) {
         if (error instanceof Sequelize.ValidationError) {
@@ -60,8 +61,8 @@ exports.uploadAssets = async (req, res) => {
             console.error(error);
             attHelper.deleteResource(uploadResult.public_id, models.asset);
         } else {
-            res.status(500);
             res.send(i18n.common.flash.errorFile);
+            res.status(500);
             console.error(error);
         }
     }

@@ -16,7 +16,6 @@ const resourceController = require("../controllers/resource_controller");
 const resourceAppController = require("../controllers/resource_app_controller");
 const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
-const catalogController = require("../controllers/catalog_controller");
 
 const multer = require("multer"),
     upload = multer({"dest": "./uploads/"});
@@ -190,15 +189,4 @@ router.get("/resources/:resourceId/edit", sessionController.loginRequired, sessi
 router.put("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.update);
 router.delete("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.destroy);
 
-//Routes for resource catalog
-router.post("/catalog/upload", sessionController.loginRequired,  catalogController.upload);
-router.post("/catalog/create", sessionController.loginRequired, catalogController.create);
-router.get("/catalog/:id/download",sessionController.loginRequired, catalogController.download);
-router.get("/catalog/:id/",sessionController.loginRequired, catalogController.get);
-router.delete("/catalog/:resourceId",sessionController.loginRequired, catalogController.delete);
-router.get("/catalog",sessionController.loginRequired, catalogController.show);
-router.get("/uploadView",sessionController.loginRequired, catalogController.sendUploadView);
-router.post("/catalog/:escapeRoomId/:resourceId", sessionController.loginRequired,catalogController.use);
-
-router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.browse);
 module.exports = router;

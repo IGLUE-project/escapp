@@ -52,9 +52,6 @@ require(path.join(__dirname, "resource"))(sequelize, Sequelize.DataTypes);
 // Import the definition of the RetosSuperados Table from retosSuperados.js
 require(path.join(__dirname, "retosSuperados"))(sequelize, Sequelize.DataTypes);
 
-// Import the definition of the CatalogResource Table from catalogResource.js
-require(path.join(__dirname, "catalogResource"))(sequelize, Sequelize.DataTypes);
-
 // Relation between models
 const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, app, resource, catalogResource } = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
 
@@ -235,6 +232,12 @@ escapeRoom.hasMany(asset, {
 
 asset.belongsTo(escapeRoom);
 
+user.hasMany(asset, {
+    "onDelete": "CASCADE",
+    "hooks": true
+});
+
+asset.belongsTo(user);
 
 resource.belongsTo(app);
 resource.belongsTo(puzzle);
@@ -254,24 +257,5 @@ puzzle.hasMany(resource, {
     "onDelete": "CASCADE",
     "hooks": true
 });
-
-// Relation N-to-M between catalogResource and EscapeRoom:
-//    A CatalogResource can be used in many EscapeRooms.
-//    An EscapeRoom can use many CatalogResources.
-escapeRoom.belongsToMany(catalogResource, {
-    "as": "catalogResource",
-    "through": "catalogResourceUsage",
-    "onDelete": "SET NULL",
-});
-
-catalogResource.belongsToMany(escapeRoom, {
-    "as": "associatedEscapeRoom",
-    "through": "catalogResourceUsage",
-    "onDelete": "RESTRICT",
-});
-
-
-catalogResource.belongsTo(user);
-user.hasMany(catalogResource, {"foreignKey": "userId"});
 
 module.exports = sequelize;
