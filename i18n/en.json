@@ -821,6 +821,7 @@
             "indications": "Pre-activity instructions",
             "teamInterface": "Team interface",
             "classInterface": "Class interface",
+            "resourceCatalog": "Resource catalog",
             "evaluation": "Evaluation",
             "clone": "clone",
             "delete": "delete",

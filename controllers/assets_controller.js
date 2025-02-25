@@ -6,6 +6,7 @@ const {nextStep, prevStep} = require("../helpers/progress");
 const {ckeditorResponse} = require("../helpers/utils");
 const queries = require("../queries");
 const path = require("path");
+const fs = require("fs");
 const logMucho = (log)=>{
     console.log('----------------------');
     console.log(log);
@@ -78,15 +79,20 @@ exports.uploadAssets = async (req, res) => {
 exports.deleteAssets = async (req, res) => {
     const {assetId} = req.params;
     const {i18n} = res.locals;
-
     try {
         const assets = await models.asset.findAll({"where": { "escapeRoomId": req.escapeRoom.id }});
         const asset = assets.find((a) => a.id.toString() === assetId.toString());
-
         if (asset) {
-            attHelper.deleteResource(asset.public_id, models.asset);
-            await asset.destroy();
-            res.json({"msg": i18n.api.ok});
+            if(!asset.url.includes('http')){
+                console.log('Deleting file')
+                console.log(path.join(__dirname, "../catalog/" + asset.escapeRoomId + "/" + asset.public_id))
+                fs.unlinkSync(path.join(__dirname, "../catalog/" + asset.escapeRoomId + "/" + asset.public_id));
+                res.json({"msg": i18n.api.ok});
+            } else {
+                attHelper.deleteResource(asset.public_id, models.asset);
+                await asset.destroy();
+                res.json({"msg": i18n.api.ok});
+            }
         } else {
             res.status(404);
             res.json({"msg": i18n.api.notFound});

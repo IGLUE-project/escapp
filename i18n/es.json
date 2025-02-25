@@ -809,6 +809,7 @@
             "indications": "Instrucciones previas",
             "teamInterface": "Interfaz de equipo",
             "classInterface": "Interfaz de clase",
+            "resourceCatalog": "Catálogo de recursos",
             "evaluation": "Evaluación",
             "clone": "clonar",
             "delete": "borrar",
