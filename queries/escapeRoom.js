@@ -145,7 +145,7 @@ exports.all = (user, page = 1, limit = 10) => {
             "title",
             "invitation",
             "duration",
-            "scope"
+            "scope",
         ],
         "distinct": true,
         "include": [
@@ -162,7 +162,8 @@ exports.all = (user, page = 1, limit = 10) => {
                     }
                 ]
             },
-            models.attachment
+            models.attachment,
+            models.asset
         ]
     };
 

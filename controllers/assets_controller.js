@@ -4,7 +4,13 @@ const {models} = sequelize;
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {ckeditorResponse} = require("../helpers/utils");
-
+const queries = require("../queries");
+const path = require("path");
+const logMucho = (log)=>{
+    console.log('----------------------');
+    console.log(log);
+    console.log('----------------------');
+}
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
     const {escapeRoom} = req;
@@ -105,3 +111,34 @@ exports.browse = async (req, res, next) => {
     }
 };
 
+// GET /uploads/:public_id
+exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused-vars
+    logMucho('hola')
+    const {public_id} = req.params;
+    let asset = null;
+    try {
+        logMucho(public_id);
+        asset = await models.asset.findOne({"where": { "public_id": public_id, "userId": req.session.user.id }});
+        logMucho(asset);
+        if(!asset) {
+            const myEscapeRooms = queries.escapeRoom.all(req.session.user.id, null, null);
+            const escapeRoomAssets = myEscapeRooms.filter((er) => er.assets.some((a) => a.public_id === public_id));
+            if(escapeRoomAssets.lenght !== 1){
+                console.log('Not found')
+                res.status(404);
+                res.json({"msg": "Not found"});
+                return;
+            }
+            asset = escapeRoomAssets[0]
+        }
+        const file = asset.escapeRoomId + "/" + asset.public_id;
+        const filePath = path.join(__dirname, "../catalog/" + file)
+        console.log(filePath)
+        res.sendFile(filePath);
+
+    }
+    catch (err) {
+        console.log(err)
+        next(err);
+    }
+}

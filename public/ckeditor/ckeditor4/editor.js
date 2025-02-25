@@ -35,7 +35,7 @@ var blockTemplate = (index, content, type, puzzles) => {
     </div>`}
 </div>
 `;}
-var textEditorTemplate = (id, text) => `<div class="editor-wrapper 
+var textEditorTemplate = (id, text) => `<div class="editor-wrapper
 ${window.endPoint === 'indications' ? 'indications' : '' }">
     <div id="${id}" name="${id}" class="editor" spellcheck="false">${text}</div>
 </div>`;
@@ -105,7 +105,7 @@ var insertContent = (index, type, payload, puzzles) => {
 
 var deleteDef = (id) => {
     var parent = $('#'+id);
-    var type = parent.data("content-type"); 
+    var type = parent.data("content-type");
 
     if (type === "text") {
         CKEDITOR.instances[ parent.find(".editor").attr("name")].destroy(); // TODO
@@ -132,7 +132,7 @@ $(()=>{
         $(".selected-theme").removeClass("selected-theme");
         $(ev.currentTarget).addClass("selected-theme");
     });
-    
+
     if ($("#dialog-themes").length){
         $("#dialog-themes").dialog({...config,
             buttons: {
@@ -150,7 +150,7 @@ $(()=>{
                     }
                     selectedTheme = null;
                     $( "#dialog-themes" ).dialog("close");
-                    
+
                 },
                 [window.cancel] : ()=> {
                     selectedTheme = null;
@@ -159,7 +159,7 @@ $(()=>{
             }
         });
     }
-    
+
     if ($("#dialog-config").length) {
         $("#dialog-config").dialog({...config,// "closeOnEscape": false,
             "buttons": {
@@ -172,7 +172,7 @@ $(()=>{
                             result.push(i < l ? i : "all");
                         }
                     });
-                    
+
                     $('#'+window.blockId).data("puzzles", result.join(","));
                     $(".puzzle-preview-select input").prop('checked', false);
                 },
@@ -187,7 +187,7 @@ $(()=>{
             $( "#dialog-config" ).dialog("close");
             window.blockId = null;
             $(".puzzle-preview-select input").prop('checked', false);
-        });    
+        });
     }
 
     $( ".theme-btn" ).on("click",() => {
@@ -208,7 +208,7 @@ $(()=>{
         $( "#dialog-config" ).dialog( "open" );
     });
 
-    
+
     $("body").on("click", '.delete-btn', function(){
         var parent = $(this).parent().parent();
         var id = parent.attr("id");
@@ -217,7 +217,7 @@ $(()=>{
 
     $( ".add-content").on("click", function(){
         var type = this.dataset.content;
-        var text = `<p>${window.placeholder}</p>`; 
+        var text = `<p>${window.placeholder}</p>`;
         insertContent(0, type, {text}, puzzleList);
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     });
@@ -249,7 +249,7 @@ $(()=>{
                 var id = $(e).find(".editor").attr("id");
                 obj.payload = {text: CKEDITOR.instances[id].getData()};
             }
-            
+
             results.push(obj);
         });
         $("<input />").attr("type", "hidden")
@@ -284,5 +284,5 @@ $(()=>{
 
     CKEDITOR.on("instanceReady", ()=>videoCallback(window));
     videoCallback(window);
-    
+
 });

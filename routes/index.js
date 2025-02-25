@@ -189,4 +189,5 @@ router.get("/resources/:resourceId/edit", sessionController.loginRequired, sessi
 router.put("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.update);
 router.delete("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.destroy);
 
+router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
 module.exports = router;
