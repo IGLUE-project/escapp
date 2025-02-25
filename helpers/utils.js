@@ -250,7 +250,8 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
     const answer = solution === undefined || solution === null ? "" : solution;
     // eslint-disable-next-line no-undefined
     const puzzleSol = puzzle.sol === undefined || puzzle.sol === null ? "" : puzzle.sol;
-
+    // eslint-disable-next-line no-undefined
+    const puzzleValidator = puzzle.validator === undefined || puzzle.validator === null ? "exact" : puzzle.validator;
     let status = 200;
     let code = NOK;
     let participation = PARTICIPANT;
@@ -262,7 +263,27 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
     const transaction = await sequelize.transaction();
 
     try {
-        correctAnswer = removeDiacritics(answer.toString().toLowerCase().trim()) === removeDiacritics(puzzleSol.toString().toLowerCase().trim());
+        switch (puzzleValidator) {
+        case "exact":
+            correctAnswer = removeDiacritics(answer.toString().trim()) === removeDiacritics(puzzleSol.toString().trim());
+            break;
+        case "regex":
+            correctAnswer = removeDiacritics(answer.toString()).match(puzzleSol);
+            break;
+        case "range": {
+            const splitArray = puzzleSol.toString().split("+");
+            const solutionNum = Number(splitArray[0]);
+            const range = Number(splitArray[1]);
+
+            correctAnswer = answer > solutionNum - range && answer < solutionNum + range;
+            break;
+        }
+        case "caseinsensitive":
+            correctAnswer = removeDiacritics(answer.toString().toLowerCase().trim()) === removeDiacritics(puzzleSol.toString().toLowerCase().trim());
+            break;
+        default:
+            throw new Error("Error during puzzle validatin");
+        }
         if (correctAnswer) {
             msg = puzzle.correct || i18n.escapeRoom.play.correct;
         } else {
