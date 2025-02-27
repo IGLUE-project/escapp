@@ -145,7 +145,7 @@ exports.all = (user, page = 1, limit = 10) => {
             "title",
             "invitation",
             "duration",
-            "scope",
+            "scope"
         ],
         "distinct": true,
         "include": [

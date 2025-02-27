@@ -78,7 +78,49 @@ var progressBarTemplate = ()=> `<div class="editor" >
 </progressbar>
 </div>
 `;
-var insertContent = (index, type, payload, puzzles) => {
+
+const catalogTemplate = async(id, payload) =>{
+    if(!payload){
+        let result = await fetch(`/escapeRooms/${window.escapeRoomId}/fetchAssets`);
+        let assets = await result.json();
+        let assetsHTML = assets.map((asset)=>{ return `<img onclick="selectAsset(this)"  style="margin:5px" src="${asset.url}" id="catalog${id}_${asset.url}"  alt="${asset.name}" height="100px"/>`}).join("");
+        const dialog = $("#catalog");
+        dialog.html(`<div id="catalog${id}" style="display:flex;flex-direction:row" >${assetsHTML}</div>`);
+        console.log('buenos dias')
+        dialog.dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            width: window.innerWidth > 1000 ? 900 : window.innerWidth*0.9,
+            position: { my: "center", at: "center", of: window },
+            appendTo: '.main'}).dialog("open");
+
+        return `<div class="editor" id=target_catalog${id}></div>`;
+    }else {
+        return `<img src="${payload}" height="100px"/>`;
+    }
+}
+
+const selectAsset = (element ) => {
+    const id = element.id;
+    const containerId  = id.split("_")[0];
+    const container = $('#'+containerId);
+    const assetPublicId = id.split("_")[1];
+    const dialog = $("#catalog");
+    container.children().each((_, element)=>{
+        if(element.id === id){
+            const detached = $(element).detach();
+            console.log(containerId)
+            const editor =$(`#target_${containerId}`);
+            editor.append(detached);
+            editor.attr("assetPublicId", assetPublicId);
+            dialog.dialog('close');
+        }
+    });
+}
+
+
+var insertContent = async (index, type, payload, puzzles) => {
     var content = "";
     var id = "ck-" + index + "-" + Date.now();
     switch(type){
@@ -89,10 +131,14 @@ var insertContent = (index, type, payload, puzzles) => {
             content = rankingTemplate();
             break;
         case "text":
-            content = textEditorTemplate(id, payload.text);
+            content = textEditorTemplate(
+                id, payload.text);
             break;
         case "progress":
             content = progressBarTemplate();
+            break;
+        case "catalog":
+            content = await catalogTemplate(id, payload?.id);
             break;
         default:
     }
@@ -248,6 +294,10 @@ $(()=>{
             if ( type === "text") {
                 var id = $(e).find(".editor").attr("id");
                 obj.payload = {text: CKEDITOR.instances[id].getData()};
+            }
+            if ( type === "catalog") {
+                var id = $(e).find(".editor").attr("id");
+                obj.payload = {id: $('#'+id).attr("assetPublicId")};
             }
 
             results.push(obj);

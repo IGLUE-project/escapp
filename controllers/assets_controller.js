@@ -7,11 +7,7 @@ const {ckeditorResponse} = require("../helpers/utils");
 const queries = require("../queries");
 const path = require("path");
 const fs = require("fs");
-const logMucho = (log)=>{
-    console.log('----------------------');
-    console.log(log);
-    console.log('----------------------');
-}
+
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
     const {escapeRoom} = req;
@@ -29,6 +25,23 @@ exports.assets = async (req, res, next) => {
     }
 };
 
+// GET /escapeRooms/:escapeRoomId/fetchAssets
+exports.fetchAssets = async (req, res, next) => {
+    const {escapeRoom} = req;
+
+    try {
+        const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
+            const {id, public_id, url, mime, filename} = a;
+
+            return {id, public_id, url, mime, "name": filename};
+        });
+
+        res.json(assets);
+    } catch (e) {
+        next(e);
+    }
+};
+
 // POST /escapeRooms/:escapeRoomId/assets
 exports.assetsUpdate = (req, res /* , next*/) => {
     const {escapeRoom, body} = req;
@@ -41,16 +54,17 @@ exports.assetsUpdate = (req, res /* , next*/) => {
 
 // POST /escapeRooms/:escapeRoomId/uploadAssets
 exports.uploadAssets = async (req, res) => {
-    console.error('uploadAssets')
+    console.error("uploadAssets");
     const {escapeRoom} = req;
     let uploadResult = null;
     const {i18n} = res.locals;
     const userId = req.session.user && req.session.user.id;
+
     try {
-        //await attHelper.checksCloudinaryEnv();
+        // Await attHelper.checksCloudinaryEnv();
         // Save the new asset into Cloudinary:
         uploadResult = attHelper.uploadResourceToFileSystem2(req.file.path, escapeRoom.id);
-        //uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
+        // UploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
     } catch (err) {
         res.status(500);
         res.send(err);
@@ -60,6 +74,7 @@ exports.uploadAssets = async (req, res) => {
 
         // Res.json({"id": saved.id, "url": uploadResult.url});
         const html = ckeditorResponse(req.query.CKEditorFuncNum, uploadResult.url);
+
         res.send(html);
     } catch (error) {
         if (error instanceof Sequelize.ValidationError) {
@@ -79,14 +94,19 @@ exports.uploadAssets = async (req, res) => {
 exports.deleteAssets = async (req, res) => {
     const {assetId} = req.params;
     const {i18n} = res.locals;
+
     try {
         const assets = await models.asset.findAll({"where": { "escapeRoomId": req.escapeRoom.id }});
         const asset = assets.find((a) => a.id.toString() === assetId.toString());
+
         if (asset) {
-            if(!asset.url.includes('http')){
-                console.log('Deleting file')
-                console.log(path.join(__dirname, "../catalog/" + asset.escapeRoomId + "/" + asset.public_id))
-                fs.unlinkSync(path.join(__dirname, "../catalog/" + asset.escapeRoomId + "/" + asset.public_id));
+            if (!asset.url.includes("http")) {
+                try {
+                    fs.unlinkSync(path.join(__dirname, `../catalog/${asset.escapeRoomId}/${asset.public_id}`));
+                } catch (err) {
+                    console.error("File does not exists, deleting from DB");
+                }
+                await asset.destroy();
                 res.json({"msg": i18n.api.ok});
             } else {
                 attHelper.deleteResource(asset.public_id, models.asset);
@@ -119,32 +139,35 @@ exports.browse = async (req, res, next) => {
 
 // GET /uploads/:public_id
 exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused-vars
-    logMucho('hola')
     const {public_id} = req.params;
     let asset = null;
+
     try {
-        logMucho(public_id);
-        asset = await models.asset.findOne({"where": { "public_id": public_id, "userId": req.session.user.id }});
-        logMucho(asset);
-        if(!asset) {
-            const myEscapeRooms = queries.escapeRoom.all(req.session.user.id, null, null);
-            const escapeRoomAssets = myEscapeRooms.filter((er) => er.assets.some((a) => a.public_id === public_id));
-            if(escapeRoomAssets.lenght !== 1){
-                console.log('Not found')
+        asset = await models.asset.findOne({"where": { public_id, "userId": req.session.user.id }});
+        if (!asset) {
+            const myEscapeRooms = await models.escapeRoom.findAll(queries.escapeRoom.all(req.session.user.id, null, null));
+            const escapeRoomAssets = [];
+
+            myEscapeRooms.forEach((er) => {
+                er.assets.forEach((a) => {
+                    if (a.public_id === public_id) {
+                        escapeRoomAssets.push(a);
+                    }
+                });
+            });
+            if (escapeRoomAssets.length !== 1) {
                 res.status(404);
                 res.json({"msg": "Not found"});
                 return;
             }
-            asset = escapeRoomAssets[0]
+            asset = escapeRoomAssets[0];
         }
-        const file = asset.escapeRoomId + "/" + asset.public_id;
-        const filePath = path.join(__dirname, "../catalog/" + file)
-        console.log(filePath)
-        res.sendFile(filePath);
+        const file = `${asset.escapeRoomId}/${asset.public_id}`;
+        const filePath = path.join(__dirname, `../catalog/${file}`);
 
-    }
-    catch (err) {
-        console.log(err)
+        res.sendFile(filePath);
+    } catch (err) {
+        console.log(err);
         next(err);
     }
-}
+};

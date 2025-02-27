@@ -24,6 +24,7 @@ exports.saveInterface = async (name, req, res, next) => {
     const isPrevious = Boolean(body.previous);
     const progressBar = body.progress;
     const {i18n} = res.locals;
+    console.log(body.instructions)
 
     escapeRoom[`${name}Instructions`] = body.instructions;
     escapeRoom[`${name}Appearance`] = body.appearance;
@@ -263,25 +264,26 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
     const transaction = await sequelize.transaction();
 
     try {
-        switch(puzzleValidator){
-            case "exact":
-                correctAnswer = removeDiacritics(answer.toString().trim()) === removeDiacritics(puzzleSol.toString().trim());
-                break;
-            case "regex":
-                correctAnswer = removeDiacritics(answer.toString()).match(puzzleSol);
-                break;
-            case "range": {
-                const splitArray  = puzzleSol.toString().split("+")
-                    const solutionNum = Number(splitArray[0]);
-                const range = Number(splitArray[1]);
-                correctAnswer = (answer > solutionNum - range ) && (answer < solutionNum + range );
-                break;
-            }
-            case "caseinsensitive":
-                correctAnswer = removeDiacritics(answer.toString().toLowerCase().trim()) === removeDiacritics(puzzleSol.toString().toLowerCase().trim());
-                break;
-            default:
-                throw new Error("Error during puzzle validatin")
+        switch (puzzleValidator) {
+        case "exact":
+            correctAnswer = removeDiacritics(answer.toString().trim()) === removeDiacritics(puzzleSol.toString().trim());
+            break;
+        case "regex":
+            correctAnswer = removeDiacritics(answer.toString()).match(puzzleSol);
+            break;
+        case "range": {
+            const splitArray = puzzleSol.toString().split("+");
+            const solutionNum = Number(splitArray[0]);
+            const range = Number(splitArray[1]);
+
+            correctAnswer = answer > solutionNum - range && answer < solutionNum + range;
+            break;
+        }
+        case "caseinsensitive":
+            correctAnswer = removeDiacritics(answer.toString().toLowerCase().trim()) === removeDiacritics(puzzleSol.toString().toLowerCase().trim());
+            break;
+        default:
+            throw new Error("Error during puzzle validatin");
         }
         if (correctAnswer) {
             msg = puzzle.correct || i18n.escapeRoom.play.correct;

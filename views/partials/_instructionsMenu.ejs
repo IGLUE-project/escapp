@@ -1,7 +1,7 @@
 <%if (endPoint !== "indications"){%>
     <div class="building-block-bar">
         <button class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.textAndMedia%>" data-content="text" >
-            <span class="building-block-icon material-icons" 
+            <span class="building-block-icon material-icons"
                     style="color: var(--brightblue);">
                     text_format
             </span>
@@ -19,10 +19,14 @@
             <img class="building-block-img" src="/images/ranking.png"/>
             <%=i18n.escapeRoom.steps.indications.front.ranking%>
         </button>
+        <button class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.ranking%>" data-content="catalog">
+            <img class="building-block-img" src="/images/ranking.png"/>
+            <%=i18n.showTeacher.actionList.resourceCatalog%>
+        </button>
         <%if (endPoint === "team"){%>
         <button class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
             <!-- <img class="building-block-img" src="/images/progress.png"/> -->
-            <span class="building-block-icon material-icons" 
+            <span class="building-block-icon material-icons"
                 style="color: var(--lightred);">
                 show_chart
             </span>

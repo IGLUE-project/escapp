@@ -9,7 +9,7 @@
     <script src="/js/vendor/video-resize.min.js"></script>
     <script src="/js/vendor/quill.htmlEditButton.min.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
-    
+
     </head>
     <!-- Theme included stylesheets -->
      <%- include ("../../partials/_header.ejs") %>
@@ -20,7 +20,7 @@
            <%=i18n.escapeRoom.steps[endPoint].explanation%>
         </p>
         <form method='POST' id="instructionsForm" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  >
-          <input type="hidden" id="appearance" name="appearance" 
+          <input type="hidden" id="appearance" name="appearance"
           value="<%=escapeRoom[endPoint + "Appearance"] || "litera" %>" />
             <div class="editor-wrapper  <%=endPoint === 'indications' ? 'indications':''%>">
               <div id="editor" class="" spellcheck="false" style="visibility: hidden;">
@@ -36,7 +36,7 @@
               <button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
           </div>
           <%- include('../../partials/_progress', {progress}) %>
-    
+
         </form>
         <br/>
         <br/>
@@ -55,7 +55,7 @@
       }
     </script>
     <%- include('../../partials/_gallery', {endPoint}) %>
-      
+
     <script>
     window.endPoint = "<%=endPoint%>"
     window.placeholder = "<%=i18n.escapeRoom.steps[endPoint].placeholder%>"
@@ -64,9 +64,9 @@
     window.accept = "<%=i18n.common.accept%>";
     window.editYourText = "<%=i18n.gallery.editYourText%>";
     </script>
-    
+
     <%- include('../../partials/_footer', {ignoreExtras: true}) %>
-    
+
     <script src="/js/instructions.js"></script>
     <style>
       @font-face {

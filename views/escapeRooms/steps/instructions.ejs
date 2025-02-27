@@ -14,6 +14,7 @@
 <!-- Theme included stylesheets -->
  <%- include ("../../partials/_header.ejs") %>
 <div role="main" class="main steps step-instructions">
+    <dialog id="catalog"></dialog>
 	<%- include ("../../partials/_breadcrumbStep") %>
   <h1><%=i18n.escapeRoom.steps[endPoint].title%></h1>
     <p class="intro-paragraph">
@@ -54,7 +55,7 @@
 
 <%escapeRoom.puzzles = escapeRoom.puzzles||[];%>
 <% var puzzleArr = Array(escapeRoom.puzzles.length).fill(0).map((_i,e)=>e);
-puzzleArr.push("all")%> 
+puzzleArr.push("all")%>
 <script>
 window.puzzleList =<%- JSON.stringify(puzzleArr)%>;
 window.endPoint = "<%=endPoint%>"
@@ -68,7 +69,7 @@ window.i18n = <%-JSON.stringify(i18n.escapeRoom.steps.indications.front)%>
 window.getTheme = theme => "/stylesheets/vendor/bootswatch/"+theme+".bootstrap.min.css";
 window.theme = endPoint === "indications" ? "/stylesheets/style.css" : window.getTheme("<%=theme || 'litera' %>");
 window.themeName = "<%=theme || 'litera' %>";
-<%var content =  (!escapeRoom[endPoint + "Instructions"] || (endPoint === "indications" && escapeRoom[endPoint + "Instructions"] === "[]")) ? 
+<%var content =  (!escapeRoom[endPoint + "Instructions"] || (endPoint === "indications" && escapeRoom[endPoint + "Instructions"] === "[]")) ?
 [{"type":"text","payload":{"text": i18n.escapeRoom.steps[endPoint].placeholder }, "puzzles":puzzleArr}] : JSON.parse( escapeRoom[endPoint + "Instructions"]);%>
 window.content = <%- JSON.stringify( content )%>
 </script>
