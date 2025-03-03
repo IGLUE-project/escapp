@@ -44,7 +44,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
 	config.uiColor = '#ffffff';
     config.mathJaxClass = 'math-tex';
-    config.mathJaxLib = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML';    
+    config.mathJaxLib = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML';
 	config.toolbar = 'Basic';
 	config.toolbar_Basic =
 	[
@@ -81,8 +81,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// };
 	config.toolbarCanCollapse = false;
     config.filebrowserUploadMethod = 'form';
-	config.filebrowserImageBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/browse';
-	config.filebrowserBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/browse';
+	config.filebrowserImageBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/assets';
+	config.filebrowserBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/assets';
     config.filebrowserUploadUrl = '/escapeRooms/'+window.escapeRoomId+'/uploadAssets';
     config.filebrowserImageUploadUrl = '/escapeRooms/'+window.escapeRoomId+'/uploadAssets';
     config.filebrowserWindowWidth = '640';

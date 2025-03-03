@@ -2376,6 +2376,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.step-instructions ranking .ranking-table .ranking-row .ranking-pos {
   transform: scale(1.5);
 }
+#mainSection .main.step-instructions #catalog div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 #mainSection .main.step-instructions #dialog-config {
   display: none;
 }

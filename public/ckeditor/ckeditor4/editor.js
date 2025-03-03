@@ -87,17 +87,25 @@ const catalogTemplate = async(id, payload) =>{
         const dialog = $("#catalog");
         dialog.html(`<div id="catalog${id}" style="display:flex;flex-direction:row" >${assetsHTML}</div>`);
         console.log('buenos dias')
+        console.log(window.i18n)
         dialog.dialog({
             autoOpen: false,
+            title: window.i18n.resourceCatalog,
             resizable: false,
             modal: true,
+            close: function() {
+                const catalog = $(`#target_catalog${id}`);
+                if(!catalog.attr("assetPublicId")){
+                    catalog.parent().remove();
+                }
+            },
             width: window.innerWidth > 1000 ? 900 : window.innerWidth*0.9,
             position: { my: "center", at: "center", of: window },
             appendTo: '.main'}).dialog("open");
 
         return `<div class="editor" id=target_catalog${id}></div>`;
     }else {
-        return `<img src="${payload}" height="100px"/>`;
+        return `<div class="editor" assetPublicId=${payload} id=target_catalog${id}><img src="${payload}" height="100px"/></div>`;
     }
 }
 
@@ -110,7 +118,6 @@ const selectAsset = (element ) => {
     container.children().each((_, element)=>{
         if(element.id === id){
             const detached = $(element).detach();
-            console.log(containerId)
             const editor =$(`#target_${containerId}`);
             editor.append(detached);
             editor.attr("assetPublicId", assetPublicId);
@@ -262,6 +269,7 @@ $(()=>{
     });
 
     $( ".add-content").on("click", function(){
+        console.log('vamonos atomos')
         var type = this.dataset.content;
         var text = `<p>${window.placeholder}</p>`;
         insertContent(0, type, {text}, puzzleList);

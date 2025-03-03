@@ -485,8 +485,8 @@
                     "Members":"Members",
                     "Progress": "Progress",
                     "Time": "Time",
-                    "Student": "Student"
-
+                    "Student": "Student",
+                    "resources": "Resource catalog"
                 }
             },
             "list": {
@@ -747,7 +747,8 @@
         "delete": "delete",
         "outside": "Other resources out of the scope of escapp",
         "fullscreen": "Share in fullscreen",
-        "intro": "The collection of puzzles below allows you to connect digital puzzle applications with the puzzle outline that you defined for your escapp escape room. You can customize their settings and share them with your students as a part of your escape room."
+        "intro": "The collection of puzzles below allows you to connect digital puzzle applications with the puzzle outline that you defined for your escapp escape room. You can customize their settings and share them with your students as a part of your escape room.",
+        "resourceCatalog": "Resource catalog"
     },
     "participant": {
         "attendanceSaved": "Attendance successfully saved",
@@ -821,7 +822,6 @@
             "indications": "Pre-activity instructions",
             "teamInterface": "Team interface",
             "classInterface": "Class interface",
-            "resourceCatalog": "Resource catalog",
             "evaluation": "Evaluation",
             "clone": "clone",
             "delete": "delete",

@@ -11,6 +11,7 @@ const fs = require("fs");
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
     const {escapeRoom} = req;
+    const {onlyShow} = req.query || false;
 
     try {
         const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
@@ -19,7 +20,7 @@ exports.assets = async (req, res, next) => {
             return {id, public_id, url, mime, "name": filename};
         });
 
-        res.render("escapeRooms/steps/assets", {escapeRoom, assets, "progress": "assets"});
+        res.render("escapeRooms/steps/assets", {escapeRoom, assets, "progress": "assets", onlyShow});
     } catch (e) {
         next(e);
     }

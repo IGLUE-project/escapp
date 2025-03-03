@@ -476,7 +476,8 @@
                     "Members":"Miembros",
                     "Progress": "Progreso",
                     "Time": "Tiempo",
-                    "Student": "Alumno"
+                    "Student": "Alumno",
+                    "resourceCatalog": "Catálogo de recursos"
                 }
             },
             "list": {
@@ -735,7 +736,8 @@
         "delete": "borrar",
         "outside": "Otros recursos ajenos a escapp",
         "fullscreen": "Compartir en pantalla completa",
-        "intro": "La siguiente colección de recursos se integra con los retos de tu escape room de escapp. Puedes personalizar distintos aspectos de los mismos y obtener un enlace para compartirlos con tus alumnos como parte de la escape room."
+        "intro": "La siguiente colección de recursos se integra con los retos de tu escape room de escapp. Puedes personalizar distintos aspectos de los mismos y obtener un enlace para compartirlos con tus alumnos como parte de la escape room.",
+        "resourceCatalog": "Catálogo de recursos"
 
     },
     "participant": {
@@ -809,7 +811,6 @@
             "indications": "Instrucciones previas",
             "teamInterface": "Interfaz de equipo",
             "classInterface": "Interfaz de clase",
-            "resourceCatalog": "Catálogo de recursos",
             "evaluation": "Evaluación",
             "clone": "clonar",
             "delete": "borrar",

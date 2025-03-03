@@ -14,8 +14,11 @@
     </form>
     <br/>
 
-    <button disabled class="rounded editButton" id="selectFile" onclick="returnFileUrl()">Select File</button>
-
+    <% if(onlyShow){ %>
+        <button class="rounded editButton"  onclick="history.back()" > Volver</button>
+   <% } else { %>
+        <button disabled class="rounded editButton" id="selectFile" onclick="returnFileUrl()">Select File</button>
+   <% }  %>
     <br/>
     <br/>
     <br/>

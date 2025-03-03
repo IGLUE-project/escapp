@@ -24,7 +24,8 @@ exports.saveInterface = async (name, req, res, next) => {
     const isPrevious = Boolean(body.previous);
     const progressBar = body.progress;
     const {i18n} = res.locals;
-    console.log(body.instructions)
+
+    console.log(body.instructions);
 
     escapeRoom[`${name}Instructions`] = body.instructions;
     escapeRoom[`${name}Appearance`] = body.appearance;
