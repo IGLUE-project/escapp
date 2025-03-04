@@ -94,12 +94,28 @@ var progressBarTemplate = ()=> `<progressbar>
 </progressbar>
 `;
 
+const catalogItem = (item) => {
+    const imageRegex = new RegExp(/image\/.*/);
+    const videoRegex = new RegExp(/video\/.*/);
+    const audioRegex = new RegExp(/audio\/.*/);
+    item.mime = item.mime || "";
+    if(item.mime.search(imageRegex) !== -1) {
+        return `<img src="${item.url}" onclick="selectAsset(this)" mime="${item.mime}"  src="${item.url}"/>`;
+    }else if (item.mime.search(videoRegex) !== -1) {
+            return `<video src="${item.url}" onclick="selectAsset(this)"  mime="${item.mime}" src="${item.url}" autoplay/>`;
+    } else if (item.mime.search(audioRegex) !== -1) {
+            return `<audio src="${item.url}" onclick="selectAsset(this)" mime="${item.mime}" src="${item.url}" />`;
+    }else {
+        return `<div>${item.name}</div>`;
+    }
+}
+
 const catalogTemplate = async(payload) =>{
     console.log(payload);
     if(!payload){
         return `<div></div>`;
     }else {
-        return `<img src="${payload}" height="100px"/>`;
+        return catalogItem(payload, 0);
     }
 }
 
@@ -501,7 +517,7 @@ var insertContent =async (type, payload, puzzles, index, prevIndex) => {
       content = progressBarTemplate();
       break;
     case "catalog":
-        content = await catalogTemplate(payload?.id);
+        content = await catalogTemplate(payload);
       break;
     default:
   }

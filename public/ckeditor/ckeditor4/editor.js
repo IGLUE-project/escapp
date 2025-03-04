@@ -79,22 +79,40 @@ var progressBarTemplate = ()=> `<div class="editor" >
 </div>
 `;
 
+const catalogItem = (item) => {
+    const imageRegex = new RegExp(/image\/.*/);
+    const videoRegex = new RegExp(/video\/.*/);
+    const audioRegex = new RegExp(/audio\/.*/);
+    item.mime = item.mime || "";
+    if(item.mime.search(imageRegex) !== -1) {
+        return `<img src="${item.url}" mime="${item.mime}" src="${item.url}" height="100px"/>`;
+    }else if (item.mime.search(videoRegex) !== -1) {
+            return `<div class="ckeditor-html5-video" style="text-align: center;" mime="${item.mime}" src="${item.url}" ><video  mime="${item.mime}" src="${item.url}" /></div>`;
+    } else if (item.mime.search(audioRegex) !== -1) {
+            return `<audio src="${item.url}"  mime="${item.mime}" src="${item.url}" height="100px"/>`;
+    }else {
+        return `<div>${item.name}</div>`;
+    }
+}
+
 const catalogTemplate = async(id, payload) =>{
-    if(!payload){
+    if(!payload.url){
         let result = await fetch(`/escapeRooms/${window.escapeRoomId}/fetchAssets`);
         let assets = await result.json();
-        let assetsHTML = assets.map((asset)=>{ return `<img onclick="selectAsset(this)"  style="margin:5px" src="${asset.url}" id="catalog${id}_${asset.url}"  alt="${asset.name}" height="100px"/>`}).join("");
+        let assetsHTML = assets.map((asset)=>{
+            return `<div onclick="selectAsset(this)" id="catalog${id}_${asset.url}" style="width:100px;height:100px;border:solid;margin:5px;overflow:hidden" >
+                ${catalogItem(asset)}
+            </div>`}
+        ).join("");
         const dialog = $("#catalog");
         dialog.html(`<div id="catalog${id}" style="display:flex;flex-direction:row" >${assetsHTML}</div>`);
-        console.log('buenos dias')
-        console.log(window.i18n)
         dialog.dialog({
             autoOpen: false,
             title: window.i18n.resourceCatalog,
             resizable: false,
             modal: true,
             close: function() {
-                const catalog = $(`#target_catalog${id}`);
+                const catalog = $(`#${id}`);
                 if(!catalog.attr("assetPublicId")){
                     catalog.parent().remove();
                 }
@@ -102,25 +120,33 @@ const catalogTemplate = async(id, payload) =>{
             width: window.innerWidth > 1000 ? 900 : window.innerWidth*0.9,
             position: { my: "center", at: "center", of: window },
             appendTo: '.main'}).dialog("open");
-
-        return `<div class="editor" id=target_catalog${id}></div>`;
+        return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
+                    <div class="editor" spellcheck="false" name=${id} id=${id}></div>
+                </div>`;
     }else {
-        return `<div class="editor" assetPublicId=${payload} id=target_catalog${id}><img src="${payload}" height="100px"/></div>`;
+        return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
+                            <div class="editor" spellcheck="false" mime=${payload.mime} assetPublicId=${payload.url} id=${id}>
+                                ${catalogItem({url:payload.url, mime:payload.mime, name:""}, "")}
+                            </div>
+                        </div>`;
     }
 }
 
-const selectAsset = (element ) => {
+const selectAsset = (element) => {
     const id = element.id;
     const containerId  = id.split("_")[0];
     const container = $('#'+containerId);
     const assetPublicId = id.split("_")[1];
     const dialog = $("#catalog");
+    console.log(containerId, assetPublicId, id)
     container.children().each((_, element)=>{
         if(element.id === id){
-            const detached = $(element).detach();
-            const editor =$(`#target_${containerId}`);
-            editor.append(detached);
+            const detached = $(element).find(">:first-child").detach();
+            const editor =$(`#${containerId.replace("catalog", "")}`);
             editor.attr("assetPublicId", assetPublicId);
+            editor.attr("mime", detached.attr("mime"));
+            editor.append(detached);
+            CKEDITOR.replace(`${containerId.replace("catalog", "")}`);
             dialog.dialog('close');
         }
     });
@@ -145,13 +171,13 @@ var insertContent = async (index, type, payload, puzzles) => {
             content = progressBarTemplate();
             break;
         case "catalog":
-            content = await catalogTemplate(id, payload?.id);
+            content = await catalogTemplate(id, payload);
             break;
         default:
     }
     var htmlContent = $(blockTemplate(index, content, type, puzzles));
     $('#custom-content').append(htmlContent);
-    if (type === "text") {
+    if (type === "text"|| (type === "catalog" && payload.url)) {
         CKEDITOR.replace(id);
     }
 };
@@ -305,7 +331,7 @@ $(()=>{
             }
             if ( type === "catalog") {
                 var id = $(e).find(".editor").attr("id");
-                obj.payload = {id: $('#'+id).attr("assetPublicId")};
+                obj.payload = {url: $('#'+id).attr("assetPublicId"), mime: $('#'+id).attr("mime")};
             }
 
             results.push(obj);
