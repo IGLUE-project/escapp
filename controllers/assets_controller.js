@@ -11,7 +11,7 @@ const fs = require("fs");
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
     const {escapeRoom} = req;
-    const {onlyShow} = req.query || false;
+    const {mode} = req.query || 'default';
 
     try {
         const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
@@ -20,7 +20,7 @@ exports.assets = async (req, res, next) => {
             return {id, public_id, url, mime, "name": filename};
         });
 
-        res.render("escapeRooms/steps/assets", {escapeRoom, assets, "progress": "assets", onlyShow});
+        res.render("escapeRooms/steps/assets", {escapeRoom, assets, "progress": "assets", mode});
     } catch (e) {
         next(e);
     }
@@ -55,14 +55,13 @@ exports.assetsUpdate = (req, res /* , next*/) => {
 
 // POST /escapeRooms/:escapeRoomId/uploadAssets
 exports.uploadAssets = async (req, res) => {
-    console.error("uploadAssets");
     const {escapeRoom} = req;
     let uploadResult = null;
     const {i18n} = res.locals;
     const userId = req.session.user && req.session.user.id;
 
     try {
-        // Await attHelper.checksCloudinaryEnv();
+        // await attHelper.checksCloudinaryEnv();
         // Save the new asset into Cloudinary:
         uploadResult = attHelper.uploadResourceToFileSystem2(req.file.path, escapeRoom.id);
         // UploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
@@ -84,8 +83,8 @@ exports.uploadAssets = async (req, res) => {
             console.error(error);
             attHelper.deleteResource(uploadResult.public_id, models.asset);
         } else {
-            res.send(i18n.common.flash.errorFile);
             res.status(500);
+            res.send(i18n.common.flash.errorFile);
             console.error(error);
         }
     }
@@ -161,7 +160,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 res.json({"msg": "Not found"});
                 return;
             }
-            asset = escapeRoomAssets[0];
+            [asset] = escapeRoomAssets;
         }
         const file = `${asset.escapeRoomId}/${asset.public_id}`;
         const filePath = path.join(__dirname, `../catalog/${file}`);

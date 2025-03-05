@@ -53,7 +53,7 @@ require(path.join(__dirname, "resource"))(sequelize, Sequelize.DataTypes);
 require(path.join(__dirname, "retosSuperados"))(sequelize, Sequelize.DataTypes);
 
 // Relation between models
-const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, app, resource, catalogResource } = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
+const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, app, resource} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
 
 // Relation 1-to-N between Escape Room and Turno:
 

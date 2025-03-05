@@ -26,20 +26,12 @@ exports.uploadResourceToFileSystem2 = function (src, escapeRoomId) {
     const public_id = crypto.createHmac("sha256", salt).update(src).digest("hex");
     const url = path.join("/uploads/", public_id);
 
-    try {
-        if (!fs.existsSync(internalUrl)) {
-            fs.mkdirSync(internalUrl, {"recursive": true});
-        }
-    } catch (error) {
-        throw error;
+    if (!fs.existsSync(internalUrl)) {
+        fs.mkdirSync(internalUrl, {"recursive": true});
     }
     const destination = path.join(__dirname, "../catalog", escapeRoomId.toString(), public_id);
 
-    try {
-        fs.copyFileSync(src, destination, fs.constants.COPYFILE_EXCL);
-    } catch (error) {
-        throw error;
-    }
+    fs.copyFileSync(src, destination, fs.constants.COPYFILE_EXCL);
     return {
         public_id,
         url

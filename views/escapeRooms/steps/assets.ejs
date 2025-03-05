@@ -14,8 +14,10 @@
     </form>
     <br/>
 
-    <% if(onlyShow){ %>
+    <% if(mode === "catalogView"){ %>
         <button class="rounded editButton"  onclick="history.back()" > Volver</button>
+   <% } else if(mode === "iframe"){ %>
+        <button class="rounded editButton"  onclick="sendMessage()" > Select File</button>
    <% } else { %>
         <button disabled class="rounded editButton" id="selectFile" onclick="returnFileUrl()">Select File</button>
    <% }  %>
@@ -42,10 +44,15 @@
     }
     // Simulate user action of selecting a file to be returned to CKEditor.
     function returnFileUrl() {
-
         var funcNum = getUrlParam( 'CKEditorFuncNum' );
         var fileUrl = fileSelected.url
         window.opener.CKEDITOR.tools.callFunction( funcNum, fileUrl );
+        window.close();
+    }
+    function sendMessage() {
+        const url = fileSelected.url;
+        const mime = fileSelected.mime;
+        window.opener.postMessage({url, mime}, '*')
         window.close();
     }
         /* Click on file from gallery */
