@@ -85,7 +85,7 @@ const audioRegex = new RegExp(/audio\/.*/);
 const applicationRegex = new RegExp(/application\/.*/);
 
 //Render item depending on mime
-const catalogItem = (item, canvasId) => {
+const catalogItem = (item, config) => {
     item.mime = item.mime || "";
     if(item.mime.search(imageRegex) !== -1) {
         return `<img src="${item.url}" mime="${item.mime}" src="${item.url}" height="100px"/>`;
@@ -94,8 +94,9 @@ const catalogItem = (item, canvasId) => {
     } else if (item.mime.search(audioRegex) !== -1) {
             return `<audio src="${item.url}"  mime="${item.mime}" src="${item.url}" height="100px"/>`;
     } else if (item.mime.search(applicationRegex) !== -1) {
-            console.log(canvasId)
-            const id = "canvas-" + canvasId;
+            const editorId = config.editorId;
+            console.log(editorId)
+            const id = "canvas-" + editorId;
             return `<canvas mime="${item.mime}" src="${item.url}" id="${id}" height="100px"/>`;
     }else {
         return `<div>${item.name}</div>`;
@@ -104,8 +105,9 @@ const catalogItem = (item, canvasId) => {
 
 
 //Take element from dialog and put it in the editor
-const selectAsset = (url, mime, id) => {
-    const item = catalogItem({url, mime});
+const selectAsset = (url, mime, config) => {
+    const id = config.editorId
+    const item = catalogItem({url, mime}, config);
     const editor = $(`#${id}`)
     editor.append(item);
     editor.attr("assetPublicId", url);
@@ -121,7 +123,8 @@ const catalogTemplate = async(id, payload) =>{
     if(!payload.url){ // Adding new item from catalog, load dialog, fetch assets, put placeholder
         window.addEventListener('message', (e)=>{
             console.log(e)
-            selectAsset(e.data.url, e.data.mime, id);
+            const {config, mime, url} = e.data;
+            selectAsset(url, mime, {...config, editorId:id});
         });
         window.open(`/escapeRooms/${window.escapeRoomId}/assets?mode=iframe`, "selector", 'popup,'+'width='+screen.width*0.7+',height='+screen.height*0.5);
         //Editor placeholder
@@ -131,7 +134,7 @@ const catalogTemplate = async(id, payload) =>{
     }else { // Render existing item
         return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
                     <div class="editor" spellcheck="false" mime=${payload.mime} assetPublicId=${payload.url} id=${id}>
-                        ${catalogItem({url:payload.url, mime:payload.mime, name:""}, id)}
+                        ${catalogItem({url:payload.url, mime:payload.mime, name:""}, {editorId:id})}
                     </div>
                 </div>`;
     }

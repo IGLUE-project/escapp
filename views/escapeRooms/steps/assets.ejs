@@ -1,4 +1,4 @@
-
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="/stylesheets/vendor/dropzone.css">
 <!-- Theme included stylesheets -->
 <%- include ("../../partials/_header.ejs") %>
@@ -26,6 +26,10 @@
     <br/>
 </div>
 
+<dialog id="configDialog">
+    <div style="background-color:red">jfdaksf</div>
+</dialog>
+
 <%- include('../../partials/_footer', {ignoreExtras: true}) %>
 <script src="/js/vendor/dropzone.js"></script>
 <script>
@@ -52,8 +56,17 @@
     function sendMessage() {
         const url = fileSelected.url;
         const mime = fileSelected.mime;
-        window.opener.postMessage({url, mime}, '*')
-        window.close();
+        const dialogConfig = $("#configDialog");
+        console.log(dialogConfig);
+        const config = {};
+        dialogConfig.dialog({autoOpen: false,
+            close: function() {
+                window.opener.postMessage({url, mime, config}, '*')
+                window.close();
+            }
+
+        });
+        dialogConfig.dialog("open");
     }
         /* Click on file from gallery */
     $(document).on('click','.dz-preview *', function(){

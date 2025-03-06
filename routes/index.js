@@ -97,8 +97,8 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequ
 router.post("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrAuthorRequired, upload.single("hints"), hintController.pistasUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.assets);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/fetchAssets", sessionController.loginRequired, assetsController.fetchAssets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrAuthorRequired, upload.single("upload"), assetsController.assetsUpdate);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/uploadAssets", sessionController.loginRequired, sessionController.adminOrAuthorRequired, upload.single("upload"), assetsController.uploadAssets);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.assetsUpdate);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/uploadAssets", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.uploadAssets);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/deleteAssets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.deleteAssets);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.evaluation);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.evaluationUpdate);
