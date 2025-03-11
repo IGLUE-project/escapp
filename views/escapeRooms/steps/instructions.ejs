@@ -22,6 +22,7 @@
       <%=i18n.escapeRoom.steps[endPoint].explanation%>
     </p>
     <%- include('../../partials/_instructionsMenu', {theme, endPoint, escapeRoom}) %>
+	<%- include ("../../partials/_resource_catalog") %>
     <br/>
     <form method='POST' id="instructionsForm" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  >
       <input type="hidden" id="appearance" name="appearance" value="<%=theme%>" />
@@ -73,6 +74,7 @@ window.themeName = "<%=theme || 'litera' %>";
 <%var content =  (!escapeRoom[endPoint + "Instructions"] || (endPoint === "indications" && escapeRoom[endPoint + "Instructions"] === "[]")) ?
 [{"type":"text","payload":{"text": i18n.escapeRoom.steps[endPoint].placeholder }, "puzzles":puzzleArr}] : JSON.parse( escapeRoom[endPoint + "Instructions"]);%>
 window.content = <%- JSON.stringify( content )%>
+window.reusablePuzzles = <%- JSON.stringify( availableReusablePuzzles )%>
 </script>
 <%if (endPoint !== "indications"){%>
   <div id="dialog-themes" title="<%=i18n.escapeRoom.steps.indications.front.theme%>" style="display: none;">

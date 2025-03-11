@@ -6,7 +6,7 @@ const cloudinary = require("cloudinary");
 const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {saveInterface, getERPuzzles, paginate, validationError} = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError} = require("../helpers/utils");
 const es = require("../i18n/es");
 const en = require("../i18n/en");
 
@@ -317,8 +317,9 @@ exports.teamInterface = async (req, res, next) => {
     try {
         const {escapeRoom} = req;
 
+        availableReusablePuzzles = await getReusablePuzzles();
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
-        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "team", "endPoint": "team"});
+        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "team", "endPoint": "team", availableReusablePuzzles});
     } catch (e) {
         req.flash("error", res.locals.i18n.common.flash.errorEditingER);
         next(e);

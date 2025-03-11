@@ -95,7 +95,6 @@ const catalogItem = (item, config) => {
             return `<audio src="${item.url}"  mime="${item.mime}" src="${item.url}" height="100px"/>`;
     } else if (item.mime.search(applicationRegex) !== -1) {
             const editorId = config.editorId;
-            console.log(editorId)
             const id = "canvas-" + editorId;
             return `<canvas mime="${item.mime}" src="${item.url}" id="${id}" height="100px"/>`;
     }else {
@@ -106,6 +105,7 @@ const catalogItem = (item, config) => {
 
 //Take element from dialog and put it in the editor
 const selectAsset = (url, mime, config) => {
+    console.log(config)
     const id = config.editorId
     const item = catalogItem({url, mime}, config);
     const editor = $(`#${id}`)
@@ -115,6 +115,8 @@ const selectAsset = (url, mime, config) => {
     if(mime === "application/pdf"){
         renderPDF(url, $(item).attr("id"), id);
     }else{
+        console.log(id);
+        console.log('replace')
         CKEDITOR.replace(`${id}`);
     }
 }
@@ -122,10 +124,10 @@ const selectAsset = (url, mime, config) => {
 const catalogTemplate = async(id, payload) =>{
     if(!payload.url){ // Adding new item from catalog, load dialog, fetch assets, put placeholder
         window.addEventListener('message', (e)=>{
-            console.log(e)
+            console.log(e.data);
             const {config, mime, url} = e.data;
             selectAsset(url, mime, {...config, editorId:id});
-        });
+        }, {once:true});
         window.open(`/escapeRooms/${window.escapeRoomId}/assets?mode=iframe`, "selector", 'popup,'+'width='+screen.width*0.7+',height='+screen.height*0.5);
         //Editor placeholder
         return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
@@ -134,7 +136,7 @@ const catalogTemplate = async(id, payload) =>{
     }else { // Render existing item
         return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
                     <div class="editor" spellcheck="false" mime=${payload.mime} assetPublicId=${payload.url} id=${id}>
-                        ${catalogItem({url:payload.url, mime:payload.mime, name:""}, {editorId:id})}
+                        ${catalogItem({url:payload.url, mime:payload.mime,id, name:""}, {editorId:id})}
                     </div>
                 </div>`;
     }
@@ -146,7 +148,6 @@ const renderPDF = (url, canvasId) => {
             pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf2/pdf.worker.min.mjs';
             // Asynchronous download of PDF
                     const loadingTask = pdfjsLib.getDocument(url);
-    console.log(canvasId)
             loadingTask.promise.then(function(pdf) {
                 // Fetch the first page
                 let pageNumber = 1;
@@ -178,6 +179,7 @@ const renderPDF = (url, canvasId) => {
 }
 
 var insertContent = async (index, type, payload, puzzles) => {
+    console.log(type, payload)
     var content = "";
     var id = "ck-" + index + "-" + Date.now();
     switch(type){
@@ -203,7 +205,6 @@ var insertContent = async (index, type, payload, puzzles) => {
     $('#custom-content').append(htmlContent);
     //If type catalog but no url we have to wait until element selected
     if (type === "text"|| (type === "catalog" && payload.url && payload.mime !== "application/pdf")) {
-        console.log('replace')
         CKEDITOR.replace(id);
     } else if(type === "catalog" && payload.url && payload.mime === "application/pdf"){
         renderPDF(payload.url, "canvas-"+id, id);
@@ -360,7 +361,7 @@ $(()=>{
                 var id = $(e).find(".editor").attr("id");
                 obj.payload = {url: $('#'+id).attr("assetPublicId"), mime: $('#'+id).attr("mime")};
             }
-
+            console.log(id,obj )
             results.push(obj);
         });
         $("<input />").attr("type", "hidden")

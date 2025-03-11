@@ -16,6 +16,8 @@ const resourceController = require("../controllers/resource_controller");
 const resourceAppController = require("../controllers/resource_app_controller");
 const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
+const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
+const reusablePuzzleInstance = require("../models/reusablePuzzleInstance");
 
 const multer = require("multer"),
     upload = multer({"dest": "./uploads/"});
@@ -159,6 +161,10 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/new", s
 router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams", sessionController.loginRequired, sessionController.studentRequired, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, teamController.create);
 router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)", sessionController.loginRequired, sessionController.studentRequired, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, participantController.checkTeamAvailable, membersController.add);
 
+//Routes for reusablePuzzleInstances
+router.get("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstances", sessionController.loginRequired, sessionController.adminOrAuthorRequired, reusablePuzzleController.getReusablePuzzleInstances);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstances", sessionController.loginRequired, sessionController.adminOrAuthorRequired, reusablePuzzleController.getReusablePuzzleInstances);
+
 // Routes for learning analytics
 router.get("/escapeRooms/:escapeRoomId/analytics/", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.analytics);
 router.get("/escapeRooms/:escapeRoomId/analytics/ranking", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.ranking);
@@ -189,6 +195,13 @@ router.get("/resources/:resourceId", resourceController.show);
 router.get("/resources/:resourceId/edit", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.edit);
 router.put("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.update);
 router.delete("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.destroy);
+
+//Routes for reusablePuzzles
+router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);
+router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, sessionController.adminOrAuthorRequired, reusablePuzzleController.getReusablePuzzle);
+
+router.get("/reusablePuzzlesInstances/new", sessionController.loginRequired,  reusablePuzzleController.renderPuzzleConfiguration);
+router.get("/reusablePuzzlesInstances/:reusablePuzzleInstanceId", sessionController.loginRequired, reusablePuzzleController.renderEditPuzzleConfiguration);
 
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
 module.exports = router;
