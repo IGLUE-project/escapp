@@ -1036,7 +1036,11 @@
             "emailConfirm":"Por favor, confirma tu correo electrónico haciendo click en el botón de confirmar",
             "emailConfirmButton":"confirmar",
             "emailResetPassword1":" Si recibes este mensaje es porque has solicitado recuperar tu contraseña en escapp.",
-            "emailResetPassword2":"Haz click en el siguiente link:"
+            "emailResetPassword2":"Haz click en el siguiente link:",
+            "notAllowedTeacherEmail": "No puedes registrarte como profesor con este correo electrónico",
+            "notAllowedStudentEmail": "No puedes registrarte como alumnno con este correo electrónico",
+            "notAllowedEmail": "No puedes registrarte con este correo electrónico",
+            "sucessfullyUpdatedUser": "El usuario se ha actualizado con éxito" 
         },
         "name": "Nombre",
         "password": "Contraseña",

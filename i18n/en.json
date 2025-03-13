@@ -1046,7 +1046,12 @@
             "emailConfirm":"Please, confirm your e-mail address, by clicking the 'confirm' button below",
             "emailConfirmButton":"confirmar",
             "emailResetPassword1":"If you are receiving this e-mail is because you reset your password in escapp.",
-            "emailResetPassword2":"This is the link to reset your password:"
+            "emailResetPassword2":"This is the link to reset your password:",
+            "notAllowedTeacherEmail": "You are not allowed to enroll as a teacher with this email",
+            "notAllowedStudentEmail": "You are not allowed to enroll as a student with this email",
+            "notAllowedEmail": "You are not allowed to enroll with this email",
+            "sucessfullyUpdatedUser":  "User successfully updated"
+
 
         },
         "name": "Name",

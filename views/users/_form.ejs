@@ -31,12 +31,13 @@
     </select></label>
 </div>
 <br />
-<%if (!user.id) {%>
+<%if (!user.id || locals.admin) {%>
 <div class="userField">
+    
     <label for="username"><span><%=i18n.user.username%></span>
     <input type="email" <%=user.id?"disabled":""%> class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
+    <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || locals.admin) {%>
         <div class="roleField">
-            
             <label for="teacher" class="roleLabel">
             <input class="chooseRole" type="radio" name="role" id="teacher" value="teacher"/>
             <span><%=i18n.user.teacher%></span>
@@ -44,11 +45,18 @@
             <label for="student" class="roleLabel">
             <input class="chooseRole" type="radio" name="role" id="student" value="student" checked/>
             <span><%=i18n.user.student%></span>
+            <%if (locals.admin) {%>
+            <label for="admin" class="roleLabel">
+                <input class="chooseRole" type="radio" name="role" id="admin" value="admin" checked/>
+                <span><%=i18n.user.admin%></span>
             </label>
+            <%}%>
         </div>
+        <%}%>
     </div>
     <br />
 <%}%>
+
 <%if (user.id) {%>
     <div class="userField">
         <label for="user_confirm_password"><span><%=i18n.user.lang%></span>
