@@ -20,25 +20,6 @@ const uploadResourceToCloudinary = (src, options) => new Promise((resolve, rejec
     );
 });
 
-exports.uploadResourceToFileSystem2 = function (src, escapeRoomId) {
-    const internalUrl = path.join(__dirname, "../catalog", escapeRoomId.toString());
-    const salt = `${Math.round(new Date().valueOf() * Math.random())}`;
-    const public_id = crypto.createHmac("sha256", salt).update(src).digest("hex");
-    const url = path.join("/uploads/", public_id);
-
-    if (!fs.existsSync(internalUrl)) {
-        fs.mkdirSync(internalUrl, {"recursive": true});
-    }
-    const destination = path.join(__dirname, "../catalog", escapeRoomId.toString(), public_id);
-
-    fs.copyFileSync(src, destination, fs.constants.COPYFILE_EXCL);
-    return {
-        public_id,
-        url
-    };
-};
-
-
 const uploadResourceToFileSystem = (src) => new Promise(function (resolve, reject) {
     const salt = `${Math.round(new Date().valueOf() * Math.random())}`;
     const public_id = crypto.createHmac("sha256", salt).update(src).

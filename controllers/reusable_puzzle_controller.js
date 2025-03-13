@@ -1,8 +1,10 @@
 const {models} = require("../models");
+const reusablePuzzleInstance = require("../models/reusablePuzzleInstance");
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {
         const reusablePuzzles = await models.reusablePuzzle.findAll();
+
         res.render("reusablePuzzles/index", reusablePuzzles);
     } catch (e) {
         next(e);
@@ -11,8 +13,10 @@ exports.getReusablePuzzles = async (req, res, next) => {
 
 exports.getReusablePuzzle = async (req, res, next) => {
     const {reusablePuzzleId} = req.params;
+
     try {
-        const reusablePuzzle = await models.reusablePuzzle.findOne({where: {reusablePuzzleId}});
+        const reusablePuzzle = await models.reusablePuzzle.findOne({"where": {reusablePuzzleId}});
+
         res.render("reusablePuzzles/details", reusablePuzzle);
     } catch (e) {
         next(e);
@@ -21,18 +25,21 @@ exports.getReusablePuzzle = async (req, res, next) => {
 
 exports.getReusablePuzzleInstances = async (req, res, next) => {
     const {escapeRoomId} = req.params;
+
     try {
-        const reusablePuzzleInstances = await models.reusablePuzzleInstance.findAll({where: {escapeRoomId}});
+        const reusablePuzzleInstances = await models.reusablePuzzleInstance.findAll({"where": {escapeRoomId}});
+
         res.json(reusablePuzzleInstances);
     } catch (e) {
         next(e);
     }
-}
+};
 
 exports.deleteReusablePuzzle = async (req, res, next) => {
     const {reusablePuzzleId} = req.params;
+
     try {
-        await models.reusablePuzzle.destroy({where: {reusablePuzzleId}});
+        await models.reusablePuzzle.destroy({"where": {reusablePuzzleId}});
         res.status(200);
     } catch (e) {
         next(e);
@@ -41,27 +48,42 @@ exports.deleteReusablePuzzle = async (req, res, next) => {
 
 exports.deleteReusablePuzzleInstance = async (req, res, next) => {
     const {reusablePuzzleInstanceId} = req.params;
+
     try {
-        await models.reusablePuzzleInstance.destroy({where: {reusablePuzzleInstanceId}});
+        await models.reusablePuzzleInstance.destroy({"where": {reusablePuzzleInstanceId}});
         res.status(200);
     } catch (e) {
         next(e);
     }
-}
+};
 
 
-exports.renderPuzzleConfiguration = async (_, res, ) => {
-    res.render("reusablePuzzles/reusablePuzzleCreation");
-}
+exports.renderPuzzleConfiguration = async (_, res) => {
+
+    const rPuzzles = await models.reusablePuzzle.findAll();
+    res.render("reusablePuzzles/reusablePuzzleCreation", {rPuzzles});
+};
 
 exports.renderEditPuzzleConfiguration = async (req, res, next) => {
     const {reusablePuzzleInstanceId} = req.params;
 
     try {
-     console.log(models.reusablePuzzleInstance)
-     let config = await models.reusablePuzzleInstance.findOne({where:{id:reusablePuzzleInstanceId}})
-     res.render("reusablePuzzles/reusablePuzzleConfiguration", {config});
+        console.log(models.reusablePuzzleInstance);
+        const config = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
+
+        res.render("reusablePuzzles/reusablePuzzleConfiguration", {config});
     } catch (e) {
         next(e);
     }
-}
+};
+
+exports.createReusablePuzzleInstance = async (req, res, next) => {
+    const {escapeRoomId} = req.params;
+    const {config, reusablePuzzleId} = req.body;
+    try {
+        await models.reusablePuzzleInstance.create({escapeRoomId,reusablePuzzleId, config});
+        next();
+    } catch (e) {
+        next(e);
+    }
+};

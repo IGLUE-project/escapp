@@ -493,3 +493,7 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     }
     return acc;
 }, {});
+
+exports.getERAssets = (escapeRoomId) => models.asset.findAll({"where": {escapeRoomId}});
+
+exports.getReusablePuzzlesInstances = (escapeRoomId) => models.reusablePuzzleInstance.findAll();

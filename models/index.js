@@ -270,9 +270,7 @@ escapeRoom.hasMany(reusablePuzzleInstance, {
     "hooks": true
 });
 
-reusablePuzzleInstance.belongsTo(escapeRoom, {
-    "foreignKey": "escapeRoomId"
-});
+reusablePuzzleInstance.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
 
 // Relation 1-to-N between reusablePuzzle and reusablePuzzleInstance:
 reusablePuzzle.hasMany(reusablePuzzleInstance, {
@@ -281,7 +279,5 @@ reusablePuzzle.hasMany(reusablePuzzleInstance, {
     "hooks": true
 });
 
-reusablePuzzleInstance.belongsTo(reusablePuzzle, {
-    "foreignKey": "reusablePuzzleId"
-});
+reusablePuzzleInstance.belongsTo(reusablePuzzle, {"foreignKey": "reusablePuzzleId"});
 module.exports = sequelize;

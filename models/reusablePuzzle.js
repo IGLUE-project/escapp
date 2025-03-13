@@ -9,9 +9,7 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.STRING,
                 "validate": {"notEmpty": {"msg": "name must not be empty"}}
             },
-            "description": {
-                "type": DataTypes.STRING,
-            },
+            "description": {"type": DataTypes.STRING}
         }
     );
 };

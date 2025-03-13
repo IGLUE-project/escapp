@@ -11,7 +11,7 @@ const fs = require("fs");
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
     const {escapeRoom} = req;
-    const {mode} = req.query || 'default';
+    const {mode} = req.query || "default";
 
     try {
         const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
@@ -56,36 +56,35 @@ exports.assetsUpdate = (req, res /* , next*/) => {
 // POST /escapeRooms/:escapeRoomId/uploadAssets
 exports.uploadAssets = async (req, res) => {
     const {escapeRoom} = req;
-    let uploadResult = null;
+    const uploadResult = null;
     const {i18n} = res.locals;
     const userId = req.session.user && req.session.user.id;
 
-    try {
+    console.log(req.file);
+    /*
+    Try {
         // await attHelper.checksCloudinaryEnv();
         // Save the new asset into Cloudinary:
-        uploadResult = attHelper.uploadResourceToFileSystem2(req.file.path, escapeRoom.id);
-        // UploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
+        //UploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
     } catch (err) {
         res.status(500);
         res.send(err);
     }
+    */
     try {
-        await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": uploadResult.public_id, "url": uploadResult.url, "filename": req.file.originalname, "mime": req.file.mimetype, userId}).save();
+        await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.file.originalname, "mime": req.file.mimetype, userId}).save();
 
         // Res.json({"id": saved.id, "url": uploadResult.url});
         const html = ckeditorResponse(req.query.CKEditorFuncNum, uploadResult.url);
 
         res.send(html);
     } catch (error) {
+        console.error(error);
         if (error instanceof Sequelize.ValidationError) {
-            res.status(500);
             res.send(i18n.common.flash.errorFile);
-            console.error(error);
             attHelper.deleteResource(uploadResult.public_id, models.asset);
         } else {
-            res.status(500);
             res.send(i18n.common.flash.errorFile);
-            console.error(error);
         }
     }
 };
@@ -102,7 +101,7 @@ exports.deleteAssets = async (req, res) => {
         if (asset) {
             if (!asset.url.includes("http")) {
                 try {
-                    fs.unlinkSync(path.join(__dirname, `../catalog/${asset.escapeRoomId}/${asset.public_id}`));
+                    fs.unlinkSync(path.join(__dirname, `uploads/${asset.public_id}`));
                 } catch (err) {
                     console.error("File does not exists, deleting from DB");
                 }
@@ -149,6 +148,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
             const escapeRoomAssets = [];
 
             myEscapeRooms.forEach((er) => {
+                console.log(er.assets);
                 er.assets.forEach((a) => {
                     if (a.public_id === public_id) {
                         escapeRoomAssets.push(a);
@@ -162,8 +162,8 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
             }
             [asset] = escapeRoomAssets;
         }
-        const file = `${asset.escapeRoomId}/${asset.public_id}`;
-        const filePath = path.join(__dirname, `../catalog/${file}`);
+        const file = asset.public_id;
+        const filePath = path.join(__dirname, `/../uploads/${file}`);
 
         res.sendFile(filePath);
     } catch (err) {

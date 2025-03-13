@@ -165,7 +165,7 @@ exports.all = (user, page = 1, limit = 10) => {
             },
             models.attachment,
             models.asset,
-            models.reusablePuzzleInstance,
+            models.reusablePuzzleInstance
         ]
     };
 

@@ -11,16 +11,14 @@ module.exports = {
                 "autoIncrement": true,
                 "unique": true
             },
-            "config": {
-                "type": Sequelize.STRING,
-            },
+            "config": {"type": Sequelize.STRING},
             "escapeRoomId": {
-                "type": Sequelize.STRING,
-                "allowNull": false,
+                "type": Sequelize.INTEGER,
+                "allowNull": false
             },
             "reusablePuzzleId": {
-                "type": Sequelize.STRING,
-                "allowNull": false,
+                "type": Sequelize.INTEGER,
+                "allowNull": false
             },
             "createdAt": {
                 "type": Sequelize.DATE,
@@ -34,5 +32,5 @@ module.exports = {
         {"sync": {"force": true}}
     ),
 
-    "down": (queryInterface) => queryInterface.dropTable("reuseablePuzzleInstances")
+    "down": (queryInterface) => queryInterface.dropTable("reusablePuzzleInstances")
 };

@@ -178,6 +178,17 @@ const renderPDF = (url, canvasId) => {
                 });
 }
 
+const deleteAsset = async (assetId) => {
+    const response = await fetch(`/escapeRooms/${escapeRoomId}/deleteAssets/${assetId}`, {
+        method: 'POST',
+    })
+    if (response.ok) {
+        const asset = $(`#${assetId}`);
+        asset.remove();
+    }
+}
+
+
 var insertContent = async (index, type, payload, puzzles) => {
     console.log(type, payload)
     var content = "";

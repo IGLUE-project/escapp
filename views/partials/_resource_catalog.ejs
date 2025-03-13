@@ -1,35 +1,70 @@
-<div style="height:200px;overflow-y:scroll;border:solid">
-        <button> <a  style="color:black" href="/reusablePuzzlesInstances/new"> Añadir puzzle </a></button>
-        <div style="display:flex;flex-direction:row;justify-content:space-between">
-                <p> Mi laberinto </p>
-                <div>
-                    <button> <a style="color:black" href="/reusablePuzzlesInstances/1"> Editar </a> </button>
-                    <button> Borrar </button>
-                    <button onclick='insertContent(0,"catalog",{url:"/uploads/f6c34eee3d46adc4bc3bf427a0cef796ce1bb16cae2248401759ccef39ed744f", mime:"image/jpeg"}, puzzleList)'> Añadir </button>
+<div style="width:100%">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="puzzle-tab" data-bs-toggle="tab" data-bs-target="#puzzle" type="button" role="tab" aria-controls="home" aria-selected="true">Puzzles</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="image-tab" data-bs-toggle="tab" data-bs-target="#image" type="button" role="tab" aria-controls="profile" aria-selected="false">Images</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="contact" aria-selected="false">Video</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other" type="button" role="tab" aria-controls="contact" aria-selected="false">Other</button>
+    </li>
+    </ul>
+    <div style="height:200px;overflow-y:scroll;border:solid;width:100%" class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="puzzle" role="tabpanel" aria-labelledby="puzzle-tab">
+        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
+        <button> <a  style="color:black" href="reusablePuzzleInstance/new"> Añadir puzzle </a></button>
+        <% reusablePuzzlesInstances.map(puzzle => {%>
+                <div style="display:flex;flex-direction:row;justify-content:space-between">
+                <p> <%=puzzle.name%></p>
+                        <div>
+                            <button> Borrar </button>
+                        </div>
                 </div>
-        </div>
-        <div style="display:flex;flex-direction:row;justify-content:space-between">
-                <p> Paneles </p>
-                <div>
-                    <button> Editar </button>
-                    <button> Borrar </button>
-                    <button> Añadir </button>
+         <% }) %>
+      </div>
+      <div class="tab-pane fade" id="image" role="tabpanel" aria-labelledby="image-tab">
+        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
+         <% assets.map(asset => {%>
+         <%   if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
+                <div style="display:flex;flex-direction:row;justify-content:space-between">
+                <p> <%=asset.filename%></p>
+                        <div>
+                            <button> Borrar </button>
+                            <button onclick='insertContent(0,"catalog",{url:"<%=asset.url%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                        </div>
                 </div>
-        </div>
-        <div style="display:flex;flex-direction:row;justify-content:space-between">
-                <p> Cables </p>
-                <div>
-                    <button> Editar </button>
-                    <button> Borrar </button>
-                    <button> Añadir </button>
+         <% } return null; }) %>
+
+      </div>
+      <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="video-tab">
+        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
+        <% assets.map(asset => {%>
+         <%   if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
+                <div style="display:flex;flex-direction:row;justify-content:space-between">
+                <p> <%=asset.filename%></p>
+                        <div>
+                            <button> Borrar </button>
+                            <button onclick='insertContent(0,"catalog",{url:"<%=asset.url%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                        </div>
                 </div>
-        </div>
-        <div style="display:flex;flex-direction:row;justify-content:space-between">
-                <p> Nombre </p>
-                <div>
-                    <button> Editar </button>
-                    <button> Borrar </button>
-                    <button> Añadir </button>
+         <% } return null; }) %>
+      </div>
+      <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab">
+        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
+        <% assets.map(asset => {%>
+         <%   if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
+                <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
+                <p> <%=asset.filename%></p>
+                        <div>
+                            <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <button onclick='insertContent(0,"catalog",{url:"<%=asset.public_id%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                        </div>
                 </div>
-        </div>
-</div>
+         <% } return null; }) %>
+      Otros</div>
+    </div>
+   </div>

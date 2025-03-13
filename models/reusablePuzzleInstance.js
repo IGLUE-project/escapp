@@ -3,10 +3,6 @@
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define(
         "reusablePuzzleInstance",
-        {
-            "config": {
-                "type": DataTypes.STRING,
-            },
-        }
+        {"config": {"type": DataTypes.STRING}}
     );
 };

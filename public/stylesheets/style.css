@@ -2012,7 +2012,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.step-instructions .building-block-bar {
   display: inline-block;
   padding: 0px;
-  width: 100%;
 }
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-button {
   background: none;
