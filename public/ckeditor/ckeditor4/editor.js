@@ -96,7 +96,13 @@ const catalogItem = (item, config) => {
     } else if (item.mime.search(applicationRegex) !== -1) {
             const editorId = config.editorId;
             const id = "canvas-" + editorId;
-            return `<canvas mime="${item.mime}" src="${item.url}" id="${id}" height="100px"/>`;
+            pdfList.push({canvasId:id, url:item.url, page:1});
+            return `<div><canvas mime="${item.mime}" src="${item.url}" id="${id}" height="100px"/>
+            <div id="canvas-${id}-controls" >
+                <button type="button" onclick="decremetPDFPage('${id}')">Prev</button>
+                <button  type="button" onclick="incrementPDFPage('${id}')"> Next</button>
+            </div>
+</div>`;
     }else {
         return `<div>${item.name}</div>`;
     }
@@ -107,13 +113,13 @@ const catalogItem = (item, config) => {
 const selectAsset = (url, mime, config) => {
     console.log(config)
     const id = config.editorId
-    const item = catalogItem({url, mime}, config);
+    const item = catalogItem({url, eime}, config);
     const editor = $(`#${id}`)
     editor.append(item);
     editor.attr("assetPublicId", url);
-    editor.attr("mime", mime);
+    editor.attr("", mime);
     if(mime === "application/pdf"){
-        renderPDF(url, $(item).attr("id"), id);
+        renderPDF(url, $(item).attr("id"));
     }else{
         console.log(id);
         console.log('replace')
@@ -121,61 +127,64 @@ const selectAsset = (url, mime, config) => {
     }
 }
 
+let pdfList = [];
 const catalogTemplate = async(id, payload) =>{
-    if(!payload.url){ // Adding new item from catalog, load dialog, fetch assets, put placeholder
-        window.addEventListener('message', (e)=>{
-            console.log(e.data);
-            const {config, mime, url} = e.data;
-            selectAsset(url, mime, {...config, editorId:id});
-        }, {once:true});
-        window.open(`/escapeRooms/${window.escapeRoomId}/assets?mode=iframe`, "selector", 'popup,'+'width='+screen.width*0.7+',height='+screen.height*0.5);
-        //Editor placeholder
-        return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
-                    <div class="editor" spellcheck="false" name=${id} id=${id}></div>
-                </div>`;
-    }else { // Render existing item
-        return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
-                    <div class="editor" spellcheck="false" mime=${payload.mime} assetPublicId=${payload.url} id=${id}>
-                        ${catalogItem({url:payload.url, mime:payload.mime,id, name:""}, {editorId:id})}
-                    </div>
-                </div>`;
+    return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
+                <div class="editor" spellcheck="false" mime=${payload.mime} assetPublicId=${payload.url} id=${id}>
+                    ${catalogItem({url:payload.url, mime:payload.mime,id, name:""}, {editorId:id})}
+                </div>
+            </div>`;
+}
+
+const incrementPDFPage = (id) => {
+    const pdf = pdfList.find((pdf)=>pdf.canvasId === id);
+    if (pdf) {
+        pdf.page++;
+        renderPDF(pdf.url, pdf.canvasId, pdf.page);
     }
 }
 
-const renderPDF = (url, canvasId) => {
+const decremetPDFPage = (id) => {
+    const pdf = pdfList.find((pdf)=>pdf.canvasId === id);
+    if (pdf) {
+        pdf.page--;
+        renderPDF(pdf.url, pdf.canvasId, pdf.page);
+    }
+}
+const renderPDF = (url, canvasId, page=1) => {
+    console.log(url, canvasId, page)
     const { pdfjsLib } = globalThis;
-    let pdfData = null;
-            pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf2/pdf.worker.min.mjs';
-            // Asynchronous download of PDF
-                    const loadingTask = pdfjsLib.getDocument(url);
-            loadingTask.promise.then(function(pdf) {
-                // Fetch the first page
-                let pageNumber = 1;
-                pdf.getPage(pageNumber).then(function(page) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf2/pdf.worker.min.mjs';
+    // Asynchronous download of PDF
+    const loadingTask = pdfjsLib.getDocument(url);
+    loadingTask.promise.then(function(pdf) {
+        // Fetch the first page
+        let pageNumber = page;
+        pdf.getPage(pageNumber).then(function(page) {
 
-                    const scale = 1.5;
-                    const viewport = page.getViewport({scale: scale});
+            const scale = 1.5;
+            const viewport = page.getViewport({scale: scale});
 
-                    // Prepare canvas using PDF page dimensions
-                    const canvas = $(`#${canvasId}`)[0];
-                    const context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
+            // Prepare canvas using PDF page dimensions
+            const canvas = $(`#${canvasId}`)[0];
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-                    // Render PDF page into canvas context
-                    const renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
-                    const renderTask = page.render(renderContext);
-                    renderTask.promise.then(function () {
-                        //CKEDITOR.replace(`${id}`);
-                    });
-                });
-            }, function (reason) {
-                    // PDF loading error
-                    console.error(reason);
-                });
+            // Render PDF page into canvas context
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            const renderTask = page.render(renderContext);
+            renderTask.promise.then(function () {
+                  //CKEDITOR.replace(`${id}`);
+            });
+        });
+    }, function (reason) {
+            // PDF loading error
+            console.error(reason);
+        });
 }
 
 const deleteAsset = async (assetId) => {
@@ -219,7 +228,8 @@ var insertContent = async (index, type, payload, puzzles) => {
     if (type === "text"|| (type === "catalog" && payload.url && payload.mime !== "application/pdf")) {
         CKEDITOR.replace(id);
     } else if(type === "catalog" && payload.url && payload.mime === "application/pdf"){
-        renderPDF(payload.url, "canvas-"+id, id);
+        pdfList.push({id, page:1});
+        renderPDF(payload.url, "canvas-"+id);
     }
 };
 

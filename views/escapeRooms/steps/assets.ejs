@@ -16,8 +16,6 @@
 
     <% if(mode === "catalogView"){ %>
         <button class="rounded editButton"  onclick="{window.location.replace(document.referrer)}" > Volver</button>
-   <% } else if(mode === "iframe"){ %>
-        <button class="rounded editButton"  onclick="sendMessage()" > Select File</button>
    <% } else { %>
         <button disabled class="rounded editButton" id="selectFile" onclick="returnFileUrl()">Select File</button>
    <% }  %>
@@ -25,10 +23,6 @@
     <br/>
     <br/>
 </div>
-
-<dialog id="configDialog">
-    <div style="background-color:red">jfdaksf</div>
-</dialog>
 
 <%- include('../../partials/_footer', {ignoreExtras: true}) %>
 <script src="/js/vendor/dropzone.js"></script>
@@ -52,21 +46,6 @@
         var fileUrl = fileSelected.url
         window.opener.CKEDITOR.tools.callFunction( funcNum, fileUrl );
         window.close();
-    }
-    function sendMessage() {
-        const url = fileSelected.url;
-        const mime = fileSelected.mime;
-        const dialogConfig = $("#configDialog");
-        console.log(dialogConfig);
-        const config = {};
-        dialogConfig.dialog({autoOpen: false,
-            close: function() {
-                window.opener.postMessage({url, mime, config}, '*')
-                window.close();
-            }
-
-        });
-        dialogConfig.dialog("open");
     }
         /* Click on file from gallery */
     $(document).on('click','.dz-preview *', function(){
