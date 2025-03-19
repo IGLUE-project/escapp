@@ -182,6 +182,7 @@ const deleteAsset = async (assetId) => {
     const response = await fetch(`/escapeRooms/${escapeRoomId}/deleteAssets/${assetId}`, {
         method: 'POST',
     })
+    console.log(response)
     if (response.ok) {
         const asset = $(`#${assetId}`);
         asset.remove();
@@ -333,7 +334,7 @@ $(()=>{
         var id = parent.attr("id");
         overlayTrigger(id);
     });
-
+    //TODO QUITAR ESTO
     $( ".add-content").on("click", function(){
         var type = this.dataset.content;
         var text = `<p>${window.placeholder}</p>`;

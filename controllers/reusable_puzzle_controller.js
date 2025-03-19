@@ -69,9 +69,9 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
 
     try {
         console.log(models.reusablePuzzleInstance);
-        const config = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
+        const {config, name, description} = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
 
-        res.render("reusablePuzzles/reusablePuzzleConfiguration", {config});
+        res.render("reusablePuzzles/reusablePuzzleConfiguration", {config, name, description});
     } catch (e) {
         next(e);
     }
@@ -79,9 +79,10 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
 
 exports.createReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId} = req.params;
-    const {config, reusablePuzzleId} = req.body;
+    const {config, name, description, reusablePuzzleId} = req.body;
     try {
-        await models.reusablePuzzleInstance.create({escapeRoomId,reusablePuzzleId, config});
+        await models.reusablePuzzleInstance.create({escapeRoomId,reusablePuzzleId,name, description ,config});
+        res.redirect(`/escapeRooms/${escapeRoomId}/team`);
         next();
     } catch (e) {
         next(e);

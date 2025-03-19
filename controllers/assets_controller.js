@@ -171,3 +171,53 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
         next(err);
     }
 };
+
+
+const imageRegex = new RegExp(/image\/.*/);
+const videoRegex = new RegExp(/video\/.*/);
+const audioRegex = new RegExp(/audio\/.*/);
+const applicationRegex = new RegExp(/application\/.*/);
+
+function appendParameterers(...parameters) {
+    let config = "";
+    parameters.forEach((parameter) => {
+        const name = parameter.name;
+        const value = parameter.value;
+        config += `${name}:${value};`;
+    });
+   return config;
+}
+
+//PUT /escapeRooms/:escapeRoomId/assets/:assetId
+exports.editAsset = async (req, res, next) => {
+    const {assetId} = req.params;
+
+    try {
+        const asset = await models.asset.findByPk(assetId);
+        if (asset) {
+            let config = "";
+            if(asset.mime.search(imageRegex) !== -1) {
+               config = appendParameterers({name: "width", value:req.body.width}, {name: "height", value:req.body.height});
+            }else if (mime.search(videoRegex) !== -1) {
+               config = appendParameterers({name: "width", value:req.body.width},
+                    {name: "height", value:req.body.height},
+                    {name: "controls", value:req.body.controls},
+                    {name: "autoplay", value:req.body.autoplay},
+                    {name: "dowload", value:req.body.dowload},
+                );
+            } else if (mime.search(audioRegex) !== -1) {
+            } else if (mime.search(applicationRegex) !== -1) {
+            } else {
+                return `<div>${item.name}</div>`;
+            }
+            await asset.update(config);
+            res.redirect('back');
+        } else {
+            res.status(404);
+            res.json({"msg": "Not found"});
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+

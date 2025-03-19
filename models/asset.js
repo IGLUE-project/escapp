@@ -19,6 +19,9 @@ module.exports = function (sequelize, DataTypes) {
             "mime": {
                 "type": DataTypes.STRING,
                 "validate": {"notEmpty": {"msg": "mime must not be empty"}}
+            },
+            "config": {
+                "type": DataTypes.TEXT
             }
         }
     );

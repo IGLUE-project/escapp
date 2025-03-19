@@ -1,20 +1,28 @@
 <div style="color:white">
     <h1> CREATE NEW PUZZLE </h1> <h2> Puzzle </h2>
     </select>
-    <h2>Configuration</h2>
     <form method="POST" action="../reusablePuzzleInstance">
+        <label> Name </label>
+        <input type="text" name="name"/>
+        <label> Description </label>
+        <input type="text" name="description"/>
+        </br>
+        <label> Puzzle type </label>
     <select name="reusablePuzzleId">
         <% rPuzzles.map(puzzle => {%>
                 <option value="<%=puzzle.id%>"> <%=puzzle.name%></option>
         <%}) %>
+        </select>
+        </br>
+        <h2>Configuration</h2>
         <label> Input </label>
-        <input type="text" name="config"/>
+        <input type="text" name="config_a"/>
         <label> Input </label>
-        <input type="text" name="b"/>
+        <input type="text" name="config_b"/>
         <label> Input </label>
-        <input type="text" name="g"/>
+        <input type="text" name="config_c"/>
         <label> Input </label>
-        <input type="text" name="t"/>
+        <input type="text" name="config_d"/>
         <input type="submit"/>
     </form>
     <button onclick="window.location.replace(document.referrer)">Volver</button>

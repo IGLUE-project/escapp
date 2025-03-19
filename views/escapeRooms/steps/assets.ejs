@@ -15,7 +15,7 @@
     <br/>
 
     <% if(mode === "catalogView"){ %>
-        <button class="rounded editButton"  onclick="window.location.replace(document.referrer)" > Volver</button>
+        <button class="rounded editButton"  onclick="{window.location.replace(document.referrer)}" > Volver</button>
    <% } else if(mode === "iframe"){ %>
         <button class="rounded editButton"  onclick="sendMessage()" > Select File</button>
    <% } else { %>

@@ -21,7 +21,8 @@
     </p>
 
     <div style="display:flex;align-items:center;flex-direction:column">
-        <%- include ("../../partials/_resource_catalog") %>
+        <%- include ("../../partials/_resource_catalog", {theme, endPoint, escapeRoom}) %>
+        </br>
         <%- include('../../partials/_instructionsMenu', {theme, endPoint, escapeRoom}) %>
     </div>
     <br/>

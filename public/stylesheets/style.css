@@ -2009,6 +2009,10 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.step-instructions video, #mainSection .main.step-instructions iframe {
   max-width: 100%;
 }
+#mainSection .main.step-instructions .building-block-img {
+  height: 25px;
+  vertical-align: middle;
+}
 #mainSection .main.step-instructions .building-block-bar {
   display: inline-block;
   padding: 0px;
@@ -2026,10 +2030,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-button:hover {
   background: white;
   color: #161938;
-}
-#mainSection .main.step-instructions .building-block-bar .building-block-bar-button .building-block-img {
-  height: 25px;
-  vertical-align: middle;
 }
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-button .building-block-icon.material-icons {
   font-size: 28px;

@@ -11,6 +11,11 @@ module.exports = {
                 "autoIncrement": true,
                 "unique": true
             },
+            "name": {
+                "type": Sequelize.STRING,
+                "validate": {"notEmpty": {"msg": "name must not be empty"}}
+            },
+            "description": {"type": Sequelize.STRING},
             "config": {"type": Sequelize.STRING},
             "escapeRoomId": {
                 "type": Sequelize.INTEGER,

@@ -1,39 +1,93 @@
 <div style="width:100%">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="puzzle-tab" data-bs-toggle="tab" data-bs-target="#puzzle" type="button" role="tab" aria-controls="home" aria-selected="true">Puzzles</button>
+        <div class="nav-link active" id="puzzle-tab" data-bs-toggle="tab" data-bs-target="#progress" type="button" role="tab" aria-controls="progress" aria-selected="true">Progress</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="image-tab" data-bs-toggle="tab" data-bs-target="#image" type="button" role="tab" aria-controls="profile" aria-selected="false">Images</button>
+        <div class="nav-link" id="puzzle-tab" data-bs-toggle="tab" data-bs-target="#puzzle" type="button" role="tab" aria-controls="home" aria-selected="false">Puzzles</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="contact" aria-selected="false">Video</button>
+        <div class="nav-link" id="image-tab" data-bs-toggle="tab" data-bs-target="#image" type="button" role="tab" aria-controls="profile" aria-selected="false">Images</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other" type="button" role="tab" aria-controls="contact" aria-selected="false">Other</button>
+        <div class="nav-link" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" typebutton" role="tab" aria-controls="contact" aria-selected="false">Video</div>
+    </li>
+    <li class="nav-item" role="presentation">
+        <div class="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other" type="button" role="tab" aria-controls="contact" aria-selected="false">Other</button>
     </li>
     </ul>
-    <div style="height:200px;overflow-y:scroll;border:solid;width:100%" class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="puzzle" role="tabpanel" aria-labelledby="puzzle-tab">
-        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
-        <button> <a  style="color:black" href="reusablePuzzleInstance/new"> Añadir puzzle </a></button>
-        <% reusablePuzzlesInstances.map(puzzle => {%>
+    <div style="height:200px;overflow-y:scroll;width:100%" class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="progress" role="tabpanel" aria-labelledby="puzzle-tab">
+        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.textAndMedia%>" data-content="text" >
+            <div>
+            <span class="building-block-icon material-icons"
+                    style="color: var(--brightblue);">
+                    text_format
+            </span>
+            <%=i18n.escapeRoom.steps.indications.front.textAndMedia%>
+            </div>
+            <div>
+                <button onclick='insertContent(0,"catalog",{}, puzzleList)'> Añadir </button>
+            </div>
+        </div>
+        <!-- <button class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.video%>" data-content="video">
+            <span class="building-block-icon material-icons" style="color: var(--success);">movie</span>
+            Video
+        </button>           -->
+        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button add-content"title="<%=i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
+            <div>
+                <img class="building-block-img" src="/images/countdown.png"/>
+                <%=i18n.escapeRoom.steps.indications.front.countdown%>
+            </div>
+            <div>
+                <button puzzleList)'> Añadir </button>
+            </div>
+        </div>
+        <div style="display:flex;flex-direction:row;justify-content:space-between"class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
+            <div>
+                <img class="building-block-img" src="/images/ranking.png"/>
+                <%=i18n.escapeRoom.steps.indications.front.ranking%>
+            </div>
+            <div>
+                <button onclick='insertContent(0,"catalog",{}, puzzleList)'> Añadir </button>
+            </div>
+        </div>
+        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
+            <div>
+                <span class="building-block-icon material-icons"
+                style="color: var(--lightred);">
+                show_chart
+                </span>
+                <%=i18n.escapeRoom.steps.indications.front.progress%>
+            </div>
+            <div>
+                <button onclick='insertContent(0,"catalog",{}, puzzleList)'> Añadir </button>
+            </div>
+        </div>
+        <span class="building-block-bar-separator"></span>
+    </div>
+      <div class="tab-pane fade" id="puzzle" role="tabpanel" aria-labelledby="puzzle-tab">
+        <%if(endPoint ==="team"){reusablePuzzlesInstances.map(puzzle => {%>
                 <div style="display:flex;flex-direction:row;justify-content:space-between">
                 <p> <%=puzzle.name%></p>
                         <div>
-                            <button> Borrar </button>
+                            <button onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'> Borrar </button>
+                            <button onclick='editReusablePuzzleInstance("<%=puzzle.id%>")'> Editar </button>
+                            <button onclick='copyURl("<%=puzzle.id%>")'> Copiar enlace </button>
+                            <button onclick='insertContent(0,"catalog",{}, puzzleList)'> Añadir </button>
                         </div>
                 </div>
-         <% }) %>
+         <% })} %>
       </div>
       <div class="tab-pane fade" id="image" role="tabpanel" aria-labelledby="image-tab">
-        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
          <% assets.map(asset => {%>
          <%   if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
-                <div style="display:flex;flex-direction:row;justify-content:space-between">
+                <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
                 <p> <%=asset.filename%></p>
                         <div>
-                            <button> Borrar </button>
+                            <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'> Editar </button>
+                            <button onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
                             <button onclick='insertContent(0,"catalog",{url:"<%=asset.url%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
                         </div>
                 </div>
@@ -41,30 +95,95 @@
 
       </div>
       <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="video-tab">
-        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
         <% assets.map(asset => {%>
          <%   if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
-                <div style="display:flex;flex-direction:row;justify-content:space-between">
+                <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
                 <p> <%=asset.filename%></p>
                         <div>
-                            <button> Borrar </button>
+                            <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'> Editar </button>
+                            <button onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
                             <button onclick='insertContent(0,"catalog",{url:"<%=asset.url%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
                         </div>
                 </div>
          <% } return null; }) %>
       </div>
       <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab">
-        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
         <% assets.map(asset => {%>
          <%   if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
                 <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
                 <p> <%=asset.filename%></p>
                         <div>
                             <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
-                            <button onclick='insertContent(0,"catalog",{url:"<%=asset.public_id%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'> Editar </button>
+                            <button onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
+                            <button onclick='insertContent(0,"catalog",{url:"<%=asset.url%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
                         </div>
                 </div>
          <% } return null; }) %>
       Otros</div>
     </div>
-   </div>
+    <div style="display:flex; justify-content:center">
+        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
+        <button> <a  style="color:black" href="reusablePuzzleInstance/new"> Añadir recurso del catalogo </a></button>
+    </div>
+    <dialog id="editDialog">
+        <form  action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
+        </form>
+    </dialog>
+</div>
+<script>
+    function editAsset(id, mime){
+        const dialog = $('#editDialog');
+        const form = dialog.find('form');
+        form.attr('action', `./asset/${id}`);
+        form.empty();
+        if(mime.search(imageRegex) !== -1) {
+            form.append(`<label for="width">Height</label><input type="number" name="width"/>
+                    <label for="height">Width</label><input type="number" name="height"/>`);
+        }else if (mime.search(videoRegex) !== -1) {
+            form.append(`<label for="width">Height</label><input type="number" name="width"/>
+                    <label for="height">Width</label><input type="number" name="height"/>
+                    <label for="autoplay">Autoplay</label><input type="number" name="autoplay"/>
+                    <label for="download">Dowloads</label><input type="number" name="download"/>
+                    <label for="controls">Controls</label><input type="number" name="controls"/>`);
+        } else if (mime.search(audioRegex) !== -1) {
+        } else if (mime.search(applicationRegex) !== -1) {
+        } else {
+            return `<div>${item.name}</div>`;
+        }
+        form.append(`<input type="submit"/>`);
+        dialog.dialog({
+            resizable: false,
+            width: window.innerWidth > 900 ? 860 : window.innerWidth*0.8,
+            height: "auto",
+            show: {
+                effect: "scale",
+                duration: 400
+            },
+            hide: {
+                effect: "scale",
+                duration: 400
+            },
+        }).show()
+
+    }
+    function deleteReusablePuzzleInstance(id){
+        fetch(`/reusablePuzzleInstance/${id}`, {
+            method: 'DELETE',
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+    function editReusablePuzzleInstance(id){
+        console.log('Todo')
+    }
+    function copyURl(url){
+        navigator.clipboard.writeText(window.location.origin+url);
+    }
+    function insertContent(index, target, content, puzzleList){
+        console.log('Todo')
+    }
+</script>
