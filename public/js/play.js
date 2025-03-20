@@ -94,17 +94,79 @@ var progressBarTemplate = ()=> `<progressbar>
 </progressbar>
 `;
 
-const catalogItem = (item) => {
-    const imageRegex = new RegExp(/image\/.*/);
-    const videoRegex = new RegExp(/video\/.*/);
-    const audioRegex = new RegExp(/audio\/.*/);
+const imageRegex = new RegExp(/image\/.*/);
+const videoRegex = new RegExp(/video\/.*/);
+const audioRegex = new RegExp(/audio\/.*/);
+const applicationRegex = new RegExp(/application\/.*/);
+
+function parseAssetConfig(mime, config){
+    if(!config) return {};
+    let texts = config.split(';');
+    configJSON = {};
+    texts.forEach(text => {
+        const data = text.split(':');
+        configJSON[data[0]] = data[1];
+        })
+    if(mime.search(imageRegex) !== -1) {
+        return {
+            width: configJSON.width,
+            height: configJSON.height
+        }
+    }else if (mime.search(videoRegex) !== -1) {
+        return {
+            width: configJSON.width,
+            height: configJSON.height,
+            controls: configJSON.controls,
+            autoplay: configJSON.autoplay,
+            download: configJSON.download
+        }
+    } else if (mime.search(audioRegex) !== -1) {
+        return {
+            controls: configJSON.controls,
+            autoplay: configJSON.autoplay,
+        }
+    } else if (mime.search(applicationRegex) !== -1) {
+        return {
+            width: configJSON.width,
+            height: configJSON.height,
+        }
+    } else {
+        return `<div>${item.name}</div>`;
+    }
+}
+
+const catalogItem = (item)=> {
+    const configJSON = parseAssetConfig( item.mime, item.config);
+    console.trace(item.config)
     item.mime = item.mime || "";
     if(item.mime.search(imageRegex) !== -1) {
-        return `<img src="${item.url}" onclick="selectAsset(this)" mime="${item.mime}"  src="${item.url}"/>`;
+        return `<img src="${item.url}" mime="${item.mime}" src="${item.url}" style="width=${configJSON.width}px;height=${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {
-            return `<video src="${item.url}" onclick="selectAsset(this)"  mime="${item.mime}" src="${item.url}" autoplay/>`;
+            return `<div class="ckeditor-html5-video" style="text-align: center;" mime="${item.mime}" src="${item.url}" ><video  mime="${item.mime}" src="${item.url}" /></div>`;
     } else if (item.mime.search(audioRegex) !== -1) {
-            return `<audio src="${item.url}" onclick="selectAsset(this)" mime="${item.mime}" src="${item.url}" />`;
+            return `<audio controls src="${item.url}"  mime="${item.mime}" src="${item.url}" height="100px"/>`;
+    } else if (item.mime.search(applicationRegex) !== -1) {
+        return `<div>
+        <object
+        data="${item.url}"
+        type="application/pdf"
+        width="100%"
+        height="100%"
+        >
+            <iframe
+            src="${item.url}"
+            width="100%"
+            height="100%"
+            style="border: none;"
+            >
+            <p>
+            Your browser does not support PDFs.
+            <a href="${item.url}">Download the PDF</a>
+            .
+            </p>
+            </iframe>
+        </object>
+    </div>`;
     }else {
         return `<div>${item.name}</div>`;
     }
@@ -527,7 +589,6 @@ var insertContent =async (type, payload, puzzles, index, prevIndex) => {
   } else {
     $(htmlContent).insertAfter(`#content-${prevIndex}`);
   }
-
 };
 
 

@@ -1,58 +1,60 @@
+
 <div style="width:100%">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <div class="nav-link active" id="puzzle-tab" data-bs-toggle="tab" data-bs-target="#progress" type="button" role="tab" aria-controls="progress" aria-selected="true">Progress</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <div class="nav-link" id="puzzle-tab" data-bs-toggle="tab" data-bs-target="#puzzle" type="button" role="tab" aria-controls="home" aria-selected="false">Puzzles</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <div class="nav-link" id="image-tab" data-bs-toggle="tab" data-bs-target="#image" type="button" role="tab" aria-controls="profile" aria-selected="false">Images</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <div class="nav-link" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" typebutton" role="tab" aria-controls="contact" aria-selected="false">Video</div>
-    </li>
-    <li class="nav-item" role="presentation">
-        <div class="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other" type="button" role="tab" aria-controls="contact" aria-selected="false">Other</button>
-    </li>
-    </ul>
-    <div style="height:200px;overflow-y:scroll;width:100%" class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="progress" role="tabpanel" aria-labelledby="puzzle-tab">
-        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.textAndMedia%>" data-content="text" >
-            <div>
+    <div style="display:flex;justify-content:space-around">
+        <button onclick="insertContentBlock()">
             <span class="building-block-icon material-icons"
                     style="color: var(--brightblue);">
                     text_format
             </span>
-            <%=i18n.escapeRoom.steps.indications.front.textAndMedia%>
-            </div>
-            <div>
-                <button onclick='insertContent(0,"catalog",{}, puzzleList)'> Añadir </button>
-            </div>
+            Añadir bloque de contenido
+        </button>
+        <button>
+            <a  style="color:black" href="reusablePuzzleInstance/new"> Añadir puzzle
+            </a>
+        </button>
+        <button>
+            <a  style="color:black" href="assets?mode=catalogView"> Subir archivo
+            </a>
+        </button>
+    </div>
+    <ul class="nav nav-tabs catalog-container" id="myTab" role="tablist">
+    <li class="nav-item active" role="presentation">
+        <div class="nav-link active" id="progress-tab" data-bs-toggle="tab" data-bs-target="#progress" type="button" role="tab" aria-controls="profile" aria-selected="false">Progreso</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <div class="nav-link" id="puzzles-tab" data-bs-toggle="tab" data-bs-target="#puzzle" type="button" role="tab" aria-controls="profile" aria-selected="false">Puzzles</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <div class="nav-link" id="multimedia-tab" data-bs-toggle="tab" data-bs-target="#multimedia" type="button" role="tab" aria-controls="profile" aria-selected="false">Multimedia</button>
+    </li>
+    </ul>
+    <div style="height:200px;overflow-y:scroll;width:100%;" class="tab-content catalog-container" id="myTabContent">
+      <div class="tab-pane fade show active" id="progress" role="tabpanel" aria-labelledby="puzzle-tab">
+        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.textAndMedia%>" data-content="text" >
         </div>
         <!-- <button class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.video%>" data-content="video">
             <span class="building-block-icon material-icons" style="color: var(--success);">movie</span>
             Video
         </button>           -->
-        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button add-content"title="<%=i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
+        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button "title="<%=i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
             <div>
                 <img class="building-block-img" src="/images/countdown.png"/>
                 <%=i18n.escapeRoom.steps.indications.front.countdown%>
             </div>
             <div>
-                <button puzzleList)'> Añadir </button>
+                <button onclick='insertAndScrollContent(0,"countdown",{}, puzzleList)'> Añadir </button>
             </div>
         </div>
-        <div style="display:flex;flex-direction:row;justify-content:space-between"class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
+        <div style="display:flex;flex-direction:row;justify-content:space-between"class="building-block-bar-button " title="<%=i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
             <div>
                 <img class="building-block-img" src="/images/ranking.png"/>
                 <%=i18n.escapeRoom.steps.indications.front.ranking%>
             </div>
             <div>
-                <button onclick='insertContent(0,"catalog",{}, puzzleList)'> Añadir </button>
+                <button onclick='insertAndScrollContent(0,"ranking",{}, puzzleList)'> Añadir </button>
             </div>
         </div>
-        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
+        <div style="display:flex;flex-direction:row;justify-content:space-between" class="building-block-bar-button " title="<%=i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
             <div>
                 <span class="building-block-icon material-icons"
                 style="color: var(--lightred);">
@@ -61,7 +63,7 @@
                 <%=i18n.escapeRoom.steps.indications.front.progress%>
             </div>
             <div>
-                <button onclick='insertContent(0,"catalog",{}, puzzleList)'> Añadir </button>
+                <button onclick='insertAndScrollContent(0,"progress",{}, puzzleList)'> Añadir </button>
             </div>
         </div>
         <span class="building-block-bar-separator"></span>
@@ -74,81 +76,105 @@
                             <button onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'> Borrar </button>
                             <button onclick='editReusablePuzzleInstance("<%=puzzle.id%>")'> Editar </button>
                             <button onclick='copyURl("<%=puzzle.id%>")'> Copiar enlace </button>
-                            <button onclick='insertContent(0,"catalog",{}, puzzleList)'> Añadir </button>
+                            <button onclick='insertAndScrollContent(0,"catalog",{url:"<%=puzzle.url%>",config: "<%=puzzle.config%>"  mime:"<%=puzzle.mime%>"}, puzzleList)'> Añadir </button>
                         </div>
                 </div>
          <% })} %>
       </div>
-      <div class="tab-pane fade" id="image" role="tabpanel" aria-labelledby="image-tab">
+      <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
          <% assets.map(asset => {%>
-         <%   if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
+         <% console.log(asset)%>
+         <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
                 <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
-                <p> <%=asset.filename%></p>
+                <p>
+                    <span class="building-block-icon material-icons" style="color: var(--brightblue);">
+                           image
+                    </span>
+                <%=asset.filename%></p>
                         <div>
                             <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
-                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'> Editar </button>
+                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
                             <button onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
-                            <button onclick='insertContent(0,"catalog",{url:"<%=asset.url%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                            <button onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
                         </div>
                 </div>
-         <% } return null; }) %>
+         <% } else  if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
+                <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
+                <p>
+                    <span class="building-block-icon material-icons" style="color: var(--brightblue);">
+                           videocam
+                    </span>
+                <%=asset.filename%></p>
+                        <div>
+                            <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
+                            <button onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
+                            <button onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                        </div>
+                </div>
+         <% } else  if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){ %>
+                <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
+                <p>
+                    <span class="building-block-icon material-icons" style="color: var(--brightblue);">
+                           music_note
+                    </span>
+                <%=asset.filename%></p>
+                        <div>
+                            <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
+                            <button onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
+                            <button onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                        </div>
+                </div>
+         <% } else  if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
+                <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
+                <p>
 
-      </div>
-      <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="video-tab">
-        <% assets.map(asset => {%>
-         <%   if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
-                <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
-                <p> <%=asset.filename%></p>
+                    <span class="building-block-icon material-icons" style="color: var(--brightblue);">
+                           description
+                    </span>
+                <%=asset.filename%></p>
                         <div>
                             <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
-                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'> Editar </button>
+                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
                             <button onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
-                            <button onclick='insertContent(0,"catalog",{url:"<%=asset.url%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                            <button onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
                         </div>
                 </div>
-         <% } return null; }) %>
+         <% } return null;%>
+         <%  }) %>
       </div>
-      <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab">
-        <% assets.map(asset => {%>
-         <%   if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
-                <div id=<%=asset.id%> style="display:flex;flex-direction:row;justify-content:space-between">
-                <p> <%=asset.filename%></p>
-                        <div>
-                            <button onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
-                            <button onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'> Editar </button>
-                            <button onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
-                            <button onclick='insertContent(0,"catalog",{url:"<%=asset.url%>", mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
-                        </div>
-                </div>
-         <% } return null; }) %>
-      Otros</div>
-    </div>
     <div style="display:flex; justify-content:center">
-        <button> <a  style="color:black" href="assets?mode=catalogView"> Subir archivo </a></button>
-        <button> <a  style="color:black" href="reusablePuzzleInstance/new"> Añadir recurso del catalogo </a></button>
     </div>
     <dialog id="editDialog">
         <form  action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
     </dialog>
 </div>
+
 <script>
-    function editAsset(id, mime){
+    function editAsset(id, mime, config){
+        console.log(config)
+        const configJSON = parseAssetConfig(mime, config);
         const dialog = $('#editDialog');
         const form = dialog.find('form');
         form.attr('action', `./asset/${id}`);
         form.empty();
+        console.log(configJSON)
         if(mime.search(imageRegex) !== -1) {
-            form.append(`<label for="width">Height</label><input type="number" name="width"/>
-                    <label for="height">Width</label><input type="number" name="height"/>`);
+            form.append(`<label for="width">Height</label><input type="number" value="${configJSON.height?configJSON.height:0}" name="width"/>
+                    <label for="height">Width</label><input type="number" value="${configJSON.width?configJSON.width:0}"  name="height"/>`);
         }else if (mime.search(videoRegex) !== -1) {
-            form.append(`<label for="width">Height</label><input type="number" name="width"/>
-                    <label for="height">Width</label><input type="number" name="height"/>
-                    <label for="autoplay">Autoplay</label><input type="number" name="autoplay"/>
-                    <label for="download">Dowloads</label><input type="number" name="download"/>
-                    <label for="controls">Controls</label><input type="number" name="controls"/>`);
+            form.append(`<label for="width">Height</label><input type="number"  value="${configJSON.height?configJSON.height:0}" name="width"/>
+                    <label for="height">Width</label><input type="number" value="${configJSON.width?configJSON.width:0}" name="height"/>
+                    <label for="autoplay">Autoplay</label><input ${configJSON.autoplay?"checked":""} type="checkbox" name="autoplay"/>
+                    <label for="download">Dowloads</label><input ${configJSON.download?"checked":""} type="checkbox" name="download"/>
+                    <label for="controls">Controls</label><input  ${configJSON.controls?"checked":""} type="checkbox" name="controls"/>`);
         } else if (mime.search(audioRegex) !== -1) {
+            form.append(`<label for="controls">Controls</label><input type="checkbox" ${configJSON.controls?"checked":""} name="controls"/>`);
         } else if (mime.search(applicationRegex) !== -1) {
+            form.append(`<label for="width">Height</label><input type="number" value="${configJSON.height?configJSON.height:0}" name="width"/>
+                    <label for="height">Width</label><input type="number" value="${configJSON.width?configJSON.width:0}"  name="height"/>`);
         } else {
             return `<div>${item.name}</div>`;
         }
@@ -168,6 +194,42 @@
         }).show()
 
     }
+    function parseAssetConfig(mime, config){
+        if(!config) return {};
+        let texts = config.split(';');
+        configJSON = {};
+        texts.forEach(text => {
+            const data = text.split(':');
+            configJSON[data[0]] = data[1];
+            })
+        if(mime.search(imageRegex) !== -1) {
+            return {
+                width: configJSON.width,
+                height: configJSON.height
+            }
+        }else if (mime.search(videoRegex) !== -1) {
+            return {
+                width: configJSON.width,
+                height: configJSON.height,
+                controls: configJSON.controls,
+                autoplay: configJSON.autoplay,
+                download: configJSON.download
+            }
+        } else if (mime.search(audioRegex) !== -1) {
+            return {
+                controls: configJSON.controls,
+                autoplay: configJSON.autoplay,
+            }
+        } else if (mime.search(applicationRegex) !== -1) {
+            return {
+                width: configJSON.width,
+                height: configJSON.height,
+            }
+        } else {
+            return `<div>${item.name}</div>`;
+        }
+    }
+
     function deleteReusablePuzzleInstance(id){
         fetch(`/reusablePuzzleInstance/${id}`, {
             method: 'DELETE',
@@ -183,7 +245,12 @@
     function copyURl(url){
         navigator.clipboard.writeText(window.location.origin+url);
     }
-    function insertContent(index, target, content, puzzleList){
-        console.log('Todo')
+    function insertContentBlock(){
+        const text = `<p>${window.placeholder}</p>`
+        insertAndScrollContent(0, 'text', {text}, puzzleList);
+        window.scrollTo(0, $('.building-block').children().last().offset().top);
+    }function insertAndScrollContent(index, type, payload, puzzles){
+        insertContent(index, type, payload, puzzles);
+        window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
 </script>

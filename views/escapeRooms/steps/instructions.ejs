@@ -5,7 +5,6 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="/js/vendor/jquery.ui.sortable.min.js"></script>
 <script src="/js/vendor/jquery.ui.touch-punch.min.js"></script>
-<script src="/pdf2/pdf.min.mjs" type="module"></script>
 <!-- <script src="https://www.youtube.com/iframe_api"></script> -->
 <%var theme = escapeRoom[endPoint + "Appearance"] || "litera" %>
 </head>
@@ -26,7 +25,7 @@
         <%- include('../../partials/_instructionsMenu', {theme, endPoint, escapeRoom}) %>
     </div>
     <br/>
-    <form method='POST' id="instructionsForm" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  >
+    <form style="width:100%" method='POST' id="instructionsForm" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  >
       <input type="hidden" id="appearance" name="appearance" value="<%=theme%>" />
       <div id="custom-content">
       </div>

@@ -60,7 +60,6 @@ exports.uploadAssets = async (req, res) => {
     const {i18n} = res.locals;
     const userId = req.session.user && req.session.user.id;
 
-    console.log(req.file);
     /*
     Try {
         // await attHelper.checksCloudinaryEnv();
@@ -148,7 +147,6 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
             const escapeRoomAssets = [];
 
             myEscapeRooms.forEach((er) => {
-                console.log(er.assets);
                 er.assets.forEach((a) => {
                     if (a.public_id === public_id) {
                         escapeRoomAssets.push(a);
@@ -163,8 +161,14 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
             [asset] = escapeRoomAssets;
         }
         const file = asset.public_id;
-        const filePath = path.join(__dirname, `/../uploads/${file}`);
 
+        const filePath = path.join(__dirname, `/../uploads/${file}`);
+        if(asset.mimte==="application/pdf"){
+            const data =fs.readFileSync(filePath);
+            res.contentType("application/pdf");
+            res.send(data);
+        }
+        res.setHeader('Content-Type', 'application/pdf');
         res.sendFile(filePath);
     } catch (err) {
         console.log(err);
@@ -198,19 +202,20 @@ exports.editAsset = async (req, res, next) => {
             let config = "";
             if(asset.mime.search(imageRegex) !== -1) {
                config = appendParameterers({name: "width", value:req.body.width}, {name: "height", value:req.body.height});
-            }else if (mime.search(videoRegex) !== -1) {
+            }else if (asset.mime.search(videoRegex) !== -1) {
                config = appendParameterers({name: "width", value:req.body.width},
                     {name: "height", value:req.body.height},
                     {name: "controls", value:req.body.controls},
                     {name: "autoplay", value:req.body.autoplay},
-                    {name: "dowload", value:req.body.dowload},
+                    {name: "download", value:req.body.dowload},
                 );
-            } else if (mime.search(audioRegex) !== -1) {
-            } else if (mime.search(applicationRegex) !== -1) {
+            } else if (asset.mime.search(audioRegex) !== -1) {
+               config = appendParameterers({name: "controls", value:req.body.controls},);
+            } else if (asset.mime.search(applicationRegex) !== -1) {
             } else {
                 return `<div>${item.name}</div>`;
             }
-            await asset.update(config);
+            await asset.update({config});
             res.redirect('back');
         } else {
             res.status(404);
