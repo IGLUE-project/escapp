@@ -18,14 +18,13 @@
 </div>
 <script>
     function change (ev) {
-       
         $('<input>').attr({
             type: 'hidden',
             id: 'progress',
             name: 'progress',
             value: $(ev).val()
         }).appendTo('.main > form');
-    
+        console.log($('.main > form'));
         $('.main > form').submit();
     }
 </script>
