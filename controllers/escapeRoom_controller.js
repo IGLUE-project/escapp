@@ -6,7 +6,7 @@ const cloudinary = require("cloudinary");
 const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets,getReusablePuzzlesInstances } = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances } = require("../helpers/utils");
 const es = require("../i18n/es");
 const en = require("../i18n/en");
 
@@ -323,7 +323,7 @@ exports.teamInterface = async (req, res, next) => {
 
         console.log(reusablePuzzlesInstances);
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
-        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "team", "endPoint": "team", assets,reusablePuzzlesInstances, availableReusablePuzzles});
+        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "team", "endPoint": "team", assets, reusablePuzzlesInstances, availableReusablePuzzles});
     } catch (e) {
         req.flash("error", res.locals.i18n.common.flash.errorEditingER);
         next(e);
@@ -336,6 +336,7 @@ exports.classInterface = async (req, res) => {
 
     const availableReusablePuzzles = await getReusablePuzzles();
     const assets = await getERAssets(escapeRoom.id);
+
     res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "class", "endPoint": "class", assets, availableReusablePuzzles});
 };
 // GET /escapeRooms/:escapeRoomId/indications
@@ -344,6 +345,7 @@ exports.indicationsInterface = async (req, res) => {
 
     const availableReusablePuzzles = await getReusablePuzzles();
     const assets = await getERAssets(escapeRoom.id);
+
     res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "indications", "endPoint": "indications", assets, availableReusablePuzzles});
 };
 

@@ -17,7 +17,7 @@ const resourceAppController = require("../controllers/resource_app_controller");
 const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
-// const reusablePuzzleInstance = require("../models/reusablePuzzleInstance");
+// Const reusablePuzzleInstance = require("../models/reusablePuzzleInstance");
 
 const multer = require("multer"),
     upload = multer({"dest": "./uploads/"});

@@ -59,8 +59,8 @@ exports.deleteReusablePuzzleInstance = async (req, res, next) => {
 
 
 exports.renderPuzzleConfiguration = async (_, res) => {
-
     const rPuzzles = await models.reusablePuzzle.findAll();
+
     res.render("reusablePuzzles/reusablePuzzleCreation", {rPuzzles});
 };
 
@@ -80,8 +80,9 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
 exports.createReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId} = req.params;
     const {config, name, description, reusablePuzzleId} = req.body;
+
     try {
-        await models.reusablePuzzleInstance.create({escapeRoomId,reusablePuzzleId,name, description ,config});
+        await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, config});
         res.redirect(`/escapeRooms/${escapeRoomId}/team`);
         next();
     } catch (e) {

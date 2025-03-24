@@ -20,9 +20,7 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.STRING,
                 "validate": {"notEmpty": {"msg": "mime must not be empty"}}
             },
-            "config": {
-                "type": DataTypes.TEXT
-            }
+            "config": {"type": DataTypes.TEXT}
         }
     );
 };

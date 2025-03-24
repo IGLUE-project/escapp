@@ -88,15 +88,16 @@ const applicationRegex = new RegExp(/application\/.*/);
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
     console.log(item.config)
+    console.log(configJSON)
     item.mime = item.mime || "";
     if(item.mime.search(imageRegex) !== -1) {
-        return `<img src="${item.url}" mime="${item.mime}" src="${item.url}" style="width=${configJSON.width}px;height=${configJSON.height}px">`;
+        return `<img src="${item.url}" mime="${item.mime}" src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {
             return `<div class="ckeditor-html5-video" style="text-align: center;" mime="${item.mime}" src="${item.url}" ><video  mime="${item.mime}" src="${item.url}" /></div>`;
     } else if (item.mime.search(audioRegex) !== -1) {
             return `<audio ${configJSON.controls!=="undefined"?"controls":null}  ${configJSON.autoplay="undefined"?"autoplay":null} src="${item.url}"  mime="${item.mime}" src="${item.url}"/>`;
     } else if (item.mime.search(applicationRegex) !== -1) {
-        return `<div>
+        return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
         <object
         data="${item.url}"
         type="application/pdf"
@@ -107,7 +108,6 @@ const catalogItem = (item)=> {
             src="${item.url}"
             width="100%"
             height="100%"
-            style="border: none;"
             >
             <p>
             Your browser does not support PDFs.

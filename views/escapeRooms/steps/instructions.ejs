@@ -18,11 +18,7 @@
     <p class="intro-paragraph">
       <%=i18n.escapeRoom.steps[endPoint].explanation%>
     </p>
-
-    <div style="display:flex;align-items:center;flex-direction:column">
-        <%- include ("../../partials/_resource_catalog", {theme, endPoint, escapeRoom}) %>
-        </br>
-        <%- include('../../partials/_instructionsMenu', {theme, endPoint, escapeRoom}) %>
+    <%- include ("../../partials/_resource_catalog", {theme, endPoint, escapeRoom}) %>
     </div>
     <br/>
     <form style="width:100%" method='POST' id="instructionsForm" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  >

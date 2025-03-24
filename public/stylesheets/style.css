@@ -2436,6 +2436,48 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   height: auto;
 }
 
+#editDialog form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: center;
+}
+#editDialog label {
+  padding: 10px;
+}
+
+#resourceCatalog {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--bckg);
+  overflow-y: auto;
+}
+#resourceCatalog .material-icons {
+  color: var(--brightblue);
+}
+#resourceCatalog a {
+  color: black;
+}
+#resourceCatalog .catalogItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 10px;
+}
+#resourceCatalog .listButton {
+  font-size: 16px;
+}
+#resourceCatalog .progressElement {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10px;
+}
+
 .indications #editor {
   color: white;
   font-size: 22px;

@@ -163,12 +163,14 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
         const file = asset.public_id;
 
         const filePath = path.join(__dirname, `/../uploads/${file}`);
-        if(asset.mimte==="application/pdf"){
-            const data =fs.readFileSync(filePath);
+
+        if (asset.mimte === "application/pdf") {
+            const data = fs.readFileSync(filePath);
+
             res.contentType("application/pdf");
             res.send(data);
         }
-        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader("Content-Type", "application/pdf");
         res.sendFile(filePath);
     } catch (err) {
         console.log(err);
@@ -182,41 +184,46 @@ const videoRegex = new RegExp(/video\/.*/);
 const audioRegex = new RegExp(/audio\/.*/);
 const applicationRegex = new RegExp(/application\/.*/);
 
-function appendParameterers(...parameters) {
+function appendParameterers (...parameters) {
     let config = "";
+
     parameters.forEach((parameter) => {
-        const name = parameter.name;
-        const value = parameter.value;
+        const {name} = parameter;
+        const {value} = parameter;
+
         config += `${name}:${value};`;
     });
-   return config;
+    return config;
 }
 
-//PUT /escapeRooms/:escapeRoomId/assets/:assetId
+// PUT /escapeRooms/:escapeRoomId/assets/:assetId
 exports.editAsset = async (req, res, next) => {
     const {assetId} = req.params;
 
     try {
         const asset = await models.asset.findByPk(assetId);
+
         if (asset) {
             let config = "";
-            if(asset.mime.search(imageRegex) !== -1) {
-               config = appendParameterers({name: "width", value:req.body.width}, {name: "height", value:req.body.height});
-            }else if (asset.mime.search(videoRegex) !== -1) {
-               config = appendParameterers({name: "width", value:req.body.width},
-                    {name: "height", value:req.body.height},
-                    {name: "controls", value:req.body.controls},
-                    {name: "autoplay", value:req.body.autoplay},
-                    {name: "download", value:req.body.dowload},
+            if (asset.mime.search(imageRegex) !== -1) {
+                config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
+            } else if (asset.mime.search(videoRegex) !== -1) {
+                config = appendParameterers(
+                    {"name": "width", "value": req.body.width},
+                    {"name": "height", "value": req.body.height},
+                    {"name": "controls", "value": req.body.controls},
+                    {"name": "autoplay", "value": req.body.autoplay},
+                    {"name": "download", "value": req.body.dowload}
                 );
             } else if (asset.mime.search(audioRegex) !== -1) {
-               config = appendParameterers({name: "controls", value:req.body.controls},);
+                config = appendParameterers({"name": "controls", "value": req.body.controls});
             } else if (asset.mime.search(applicationRegex) !== -1) {
+                config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else {
                 return `<div>${item.name}</div>`;
             }
             await asset.update({config});
-            res.redirect('back');
+            res.redirect("back");
         } else {
             res.status(404);
             res.json({"msg": "Not found"});
@@ -224,5 +231,5 @@ exports.editAsset = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-}
+};
 
