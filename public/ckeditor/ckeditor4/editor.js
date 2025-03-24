@@ -21,9 +21,8 @@ var blockTemplate = (index, content, type, puzzles) => {
     return`
 <div class="building-block" data-content-type="${type}" id="${id}" data-puzzles="${puzzles.join(",")}">
     ${content}
-    ${window.endPoint === "indications" ?  "" : `<div class="block-config">
-    ${window.endPoint === "class" ? '':
-    `<button type="button" class="block-config-button config-btn" title="${window.i18n.setupVisualization}"><span class="material-icons">settings</span></button>` }
+    <div class="block-config">
+    <button type="button" class="block-config-button config-btn" title="${window.i18n.setupVisualization}"><span class="material-icons">settings</span></button>
     <button type="button" class="block-config-button reorder-btn" title="${window.i18n.reorder}"><span class="material-icons">swap_vert</span></button>
     <button type="button" class="block-config-button delete-btn" title="${window.i18n.delete}"><span class="material-icons">delete</span></button>
         <div class="overlay-trigger" data-id="${id}">
@@ -32,7 +31,7 @@ var blockTemplate = (index, content, type, puzzles) => {
                 <button class="acceptButton" type="button" onclick="deleteDef('${id}')">${window.accept}</button>
             </form>
         </div>
-    </div>`}
+    </div>
 </div>
 `;}
 var textEditorTemplate = (id, text) => `<div class="editor-wrapper
@@ -87,32 +86,22 @@ const applicationRegex = new RegExp(/application\/.*/);
 //Render item depending on mime
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
-    console.log(item.config)
-    console.log(configJSON)
     item.mime = item.mime || "";
+    console.log(configJSON)
     if(item.mime.search(imageRegex) !== -1) {
-        return `<img src="${item.url}" mime="${item.mime}" src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
+        return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {
-            return `<div class="ckeditor-html5-video" style="text-align: center;" mime="${item.mime}" src="${item.url}" ><video  mime="${item.mime}" src="${item.url}" /></div>`;
+            return `<div class="ckeditor-html5-video" style="text-align: center;"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" /></div>`;
     } else if (item.mime.search(audioRegex) !== -1) {
-            return `<audio ${configJSON.controls!=="undefined"?"controls":null}  ${configJSON.autoplay="undefined"?"autoplay":null} src="${item.url}"  mime="${item.mime}" src="${item.url}"/>`;
+            return `<audio controls=${configJSON.controls!=="undefined"?"controls":null}  autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  mime="${item.mime}" src="${item.url}"/>`;
     } else if (item.mime.search(applicationRegex) !== -1) {
         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
-        <object
-        data="${item.url}"
-        type="application/pdf"
-        width="100%"
-        height="100%"
-        >
-            <iframe
-            src="${item.url}"
-            width="100%"
-            height="100%"
-            >
+        <object data="${item.url}" type="application/pdf" width="100%" height="100%">
+            <iframe src="${item.url}" width="100%" height="100%" >
             <p>
-            Your browser does not support PDFs.
-            <a href="${item.url}">Download the PDF</a>
-            .
+                Your browser does not support PDFs.
+                <a href="${item.url}">Download the PDF</a>
+                .
             </p>
             </iframe>
         </object>
@@ -125,7 +114,7 @@ const catalogItem = (item)=> {
 
 const catalogTemplate = async(id, payload) =>{
     return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
-                <div class="editor" spellcheck="false" mime=${payload.mime} assetPublicId=${payload.url} id=${id}>
+                <div class="editor" spellcheck="false" config=${payload.config} mime=${payload.mime} assetPublicId=${payload.url} id=${id}>
                     ${catalogItem({config:payload.config, url:payload.url, mime:payload.mime,id, name:""}, {editorId:id})}
                 </div>
             </div>`;
@@ -167,9 +156,20 @@ var insertContent = async (index, type, payload, puzzles) => {
     var htmlContent = $(blockTemplate(index, content, type, puzzles));
     $('#custom-content').append(htmlContent);
     //If type catalog but no url we have to wait until element selected
-    if (type === "text"|| (type === "catalog" && payload.url && payload.mime !== "application/pdf")) {
-        CKEDITOR.replace(id);
+    if (type === "text"|| (type === "catalog" && payload.url )) {
+        let editor = CKEDITOR.replace(id);
+        editor.on("instanceReady", function(){
+            let video = $(`#${id}`).parent().find("video");
+            if(video.length){
+                video[0].pause();
+            }
+            let audio = $(`#${id}`).parent().find("audio");
+            if(audio.length){
+                audio[0].pause();
+            }
+        });
     }
+
 };
 
 var deleteDef = (id) => {
@@ -314,12 +314,15 @@ $(()=>{
             var type = $(e).data("content-type");
             var puzzles = $(e).data("puzzles") !== "" ? $(e).data("puzzles").toString().split(",") : [];
             var obj = {type,puzzles};
-            const id = $(e).find(".editor").attr("id");
-            if ( type === "text") {
+            if(type === "text" || type === "catalog"){
+                const id = $(e).find(".editor").attr("id");
+                console.log($(e))
+                console.log(id);
+                console.log(CKEDITOR.instances[id])
+                console.log(CKEDITOR.instances)
                 obj.payload = {text: CKEDITOR.instances[id].getData()};
-            }
-            if ( type === "catalog") {
-                obj.payload = {url: $('#'+id).attr("assetPublicId"),config: $('#'+id).attr("config"), mime: $('#'+id).attr("mime")};
+                console.log(obj.payload)
+                obj.type = "text";
             }
             results.push(obj);
         });

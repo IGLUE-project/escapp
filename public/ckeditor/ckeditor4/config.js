@@ -83,8 +83,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserUploadMethod = 'form';
 	config.filebrowserImageBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/assets';
 	config.filebrowserBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/assets';
-    config.filebrowserUploadUrl = '/escapeRooms/'+window.escapeRoomId+'/uploadAssets';
-    config.filebrowserImageUploadUrl = '/escapeRooms/'+window.escapeRoomId+'/uploadAssets';
     config.filebrowserWindowWidth = '640';
     config.filebrowserWindowHeight = '480';
 };

@@ -321,7 +321,6 @@ exports.teamInterface = async (req, res, next) => {
         const assets = await getERAssets(escapeRoom.id);
         const reusablePuzzlesInstances = await getReusablePuzzlesInstances(escapeRoom.id);
 
-        console.log(reusablePuzzlesInstances);
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
         res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "team", "endPoint": "team", assets, reusablePuzzlesInstances, availableReusablePuzzles});
     } catch (e) {
