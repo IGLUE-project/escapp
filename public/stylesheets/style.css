@@ -45,7 +45,7 @@
   font-weight: 400 500 600 700;
   src: url("../../fonts/Lato/Lato-Regular.ttf") format("truetype");
 }
-button, input[type=submit] {
+button, input[type=submit], .aButton {
   background-color: white;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -57,22 +57,22 @@ button, input[type=submit] {
   outline: 0;
   cursor: pointer;
 }
-button:disabled, button.disabled, input[type=submit]:disabled, input[type=submit].disabled {
+button:disabled, button.disabled, input[type=submit]:disabled, input[type=submit].disabled, .aButton:disabled, .aButton.disabled {
   cursor: not-allowed;
 }
-button.disabled, button:disabled, input[type=submit].disabled, input[type=submit]:disabled {
+button.disabled, button:disabled, input[type=submit].disabled, input[type=submit]:disabled, .aButton.disabled, .aButton:disabled {
   opacity: 0.3;
 }
-button.rounded, input[type=submit].rounded {
+button.rounded, input[type=submit].rounded, .aButton.rounded {
   border-radius: 25px !important;
   padding: 8px 25px !important;
 }
-button.white, input[type=submit].white {
+button.white, input[type=submit].white, .aButton.white {
   background-color: white !important;
   color: #161938 !important;
   border-color: white !important;
 }
-button.login, input[type=submit].login {
+button.login, input[type=submit].login, .aButton.login {
   background-color: #48C18E;
   color: #161938;
   border: #48C18E;
@@ -83,7 +83,7 @@ button.login, input[type=submit].login {
   height: 42px;
   outline: 0;
 }
-button.registro, input[type=submit].registro {
+button.registro, input[type=submit].registro, .aButton.registro {
   border-radius: 20px;
   text-align: center;
   font-size: medium;
@@ -94,7 +94,7 @@ button.registro, input[type=submit].registro {
   color: #161938;
   border: #FAC855;
 }
-button.editButton, input[type=submit].editButton {
+button.editButton, input[type=submit].editButton, .aButton.editButton {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -108,7 +108,7 @@ button.editButton, input[type=submit].editButton {
   border-color: #FAC855;
   color: #161938;
 }
-button.cloneButton, input[type=submit].cloneButton {
+button.cloneButton, input[type=submit].cloneButton, .aButton.cloneButton {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -122,7 +122,7 @@ button.cloneButton, input[type=submit].cloneButton {
   border-color: #656683;
   color: #161938;
 }
-button.deleteButton, input[type=submit].deleteButton {
+button.deleteButton, input[type=submit].deleteButton, .aButton.deleteButton {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -136,7 +136,7 @@ button.deleteButton, input[type=submit].deleteButton {
   color: #161938;
   border-color: #F47E84;
 }
-button.playButton, input[type=submit].playButton {
+button.playButton, input[type=submit].playButton, .aButton.playButton {
   background-color: #FF6347;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -147,7 +147,7 @@ button.playButton, input[type=submit].playButton {
   text-align: center;
   outline: 0;
 }
-button.stopButton, input[type=submit].stopButton {
+button.stopButton, input[type=submit].stopButton, .aButton.stopButton {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -161,7 +161,7 @@ button.stopButton, input[type=submit].stopButton {
   border-color: #F3945E;
   color: #161938;
 }
-button.acceptButton, input[type=submit].acceptButton {
+button.acceptButton, input[type=submit].acceptButton, .aButton.acceptButton {
   background-color: #48C18E;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -172,7 +172,7 @@ button.acceptButton, input[type=submit].acceptButton {
   text-align: center;
   outline: 0;
 }
-button.compartirButton, input[type=submit].compartirButton {
+button.compartirButton, input[type=submit].compartirButton, .aButton.compartirButton {
   background-color: #36A2EB;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -183,13 +183,13 @@ button.compartirButton, input[type=submit].compartirButton {
   text-align: center;
   outline: 0;
 }
-button.inverse, input[type=submit].inverse {
+button.inverse, input[type=submit].inverse, .aButton.inverse {
   background-color: transparent;
   color: white;
   border-color: white;
   -webkit-text-fill-color: white !important;
 }
-button[type=submit], input[type=submit][type=submit] {
+button[type=submit], input[type=submit][type=submit], .aButton[type=submit] {
   cursor: pointer;
 }
 

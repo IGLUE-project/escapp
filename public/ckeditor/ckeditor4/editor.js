@@ -98,11 +98,6 @@ const catalogItem = (item)=> {
         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
         <object data="${item.url}" type="application/pdf" width="100%" height="100%">
             <iframe src="${item.url}" width="100%" height="100%" >
-            <p>
-                Your browser does not support PDFs.
-                <a href="${item.url}">Download the PDF</a>
-                .
-            </p>
             </iframe>
         </object>
     </div>`;
@@ -171,6 +166,8 @@ var insertContent = async (index, type, payload, puzzles) => {
             if(audio.length){
                 audio[0].pause();
             }
+            let pdf = $(`#${id}`).find("iframe");
+            console.log(pdf)
         });
     }
 
