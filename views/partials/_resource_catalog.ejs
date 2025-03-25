@@ -76,8 +76,8 @@
                         <div>
                             <div class="overlay-trigger"data-id="<%=asset.id%>">
                                     <p>borrar si no?</p>
-                                    <button class="deleteButton" type="button" onclick='overlaytriggercatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                             </div>
                             <button class="listButton" onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
                                 Borrar
@@ -96,7 +96,7 @@
                             <div class="overlay-trigger"data-id="<%=asset.id%>">
                                     <p>borrar si no?</p>
                                     <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                             </div>
                             <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
                             <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
@@ -115,7 +115,7 @@
                             <div class="overlay-trigger"data-id="<%=asset.id%>">
                                     <p>borrar si no?</p>
                                     <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                             </div>
                             <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
                             <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
@@ -132,7 +132,7 @@
                             <div class="overlay-trigger"data-id="<%=asset.id%>">
                                     <p>borrar si no?</p>
                                     <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                             </div>
                             <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
                             <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
@@ -149,7 +149,7 @@
                             <div class="overlay-trigger"data-id="<%=asset.id%>">
                                     <p>borrar si no?</p>
                                     <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                             </div>
                             <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
                             <button class="listButton" disabled> Editar </button>
@@ -279,7 +279,7 @@
         const overlay = $('.overlay-trigger[data-id="' + id + '"]');
         overlay.hide();
         if (!close) {
-            overlay.css("transform", `translateY(${overlay.height()/1.5}px`);
+            overlay.css("transform", `translateY(${overlay.height()/1.75}px`);
             overlay.show();
         }
     }
