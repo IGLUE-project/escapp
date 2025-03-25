@@ -106,13 +106,8 @@ const catalogItem = (item)=> {
     }
 }
 
-
 const catalogTemplate = async(id, payload) =>{
-    return `<div class="editor-wrapper ${window.endPoint === 'indications' ? 'indications' : '' }">
-                <div class="editor" spellcheck="false" config=${payload.config} mime=${payload.mime} assetPublicId=${payload.url} id=${id}>
-                    ${catalogItem({config:payload.config, url:payload.url, mime:payload.mime,id, name:""}, {editorId:id})}
-                </div>
-            </div>`;
+    return textEditorTemplate(id, `${catalogItem({config:payload.config, url:payload.url, mime:payload.mime,id, name:""}, {editorId:id})}`);
 }
 
 const deleteAsset = async (assetId) => {
@@ -145,6 +140,7 @@ var insertContent = async (index, type, payload, puzzles) => {
             content = progressBarTemplate();
             break;
         case "catalog":
+            type = "text"; //Reorder is not working otherwise
             content = await catalogTemplate(id, payload);
             break;
         default:
@@ -166,8 +162,6 @@ var insertContent = async (index, type, payload, puzzles) => {
             if(audio.length){
                 audio[0].pause();
             }
-            let pdf = $(`#${id}`).find("iframe");
-            console.log(pdf)
         });
     }
 
