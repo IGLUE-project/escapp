@@ -28,7 +28,7 @@
         <div class="nav-link" id="multimedia-tab" data-bs-toggle="tab" data-bs-target="#multimedia" type="button" role="tab" aria-controls="profile" aria-selected="false">Multimedia</button>
     </li>
     </ul>
-    <div style="height:200px;overflow-y:auto;width:100%;" class="tab-content catalog-container" id="myTabContent">
+    <div style="height:200px;overflow-y:auto;width:100%;position:relative" class="tab-content catalog-container" id="myTabContent">
       <div class="tab-pane fade show active" id="progress" role="tabpanel" aria-labelledby="puzzle-tab">
         <div class="catalogItem" class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.textAndMedia%>" data-content="text" >
         </div>
@@ -80,7 +80,14 @@
                     <span class="building-block-icon material-icons" "> image </span>
                 <%=asset.filename%></p>
                         <div>
-                            <button class="listButton" onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <div class="overlay-trigger"data-id="<%=asset.id%>">
+                                    <p>borrar si no?</p>
+                                    <button class="deleteButton" type="button" onclick='overlaytriggercatalog("<%=asset.id%>", true)'>cancelar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                            </div>
+                            <button class="listButton" onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                Borrar
+                            </button>
                             <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
                             <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
                             <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
@@ -92,7 +99,12 @@
                     <span class="building-block-icon material-icons" "> videocam </span>
                 <%=asset.filename%></p>
                         <div>
-                            <button class="listButton" onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <div class="overlay-trigger"data-id="<%=asset.id%>">
+                                    <p>borrar si no?</p>
+                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                            </div>
+                            <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
                             <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
                             <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
                             <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
@@ -106,7 +118,12 @@
                     </span>
                 <%=asset.filename%></p>
                         <div>
-                            <button class="listButton" onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <div class="overlay-trigger"data-id="<%=asset.id%>">
+                                    <p>borrar si no?</p>
+                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                            </div>
+                            <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
                             <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
                             <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
                             <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
@@ -118,10 +135,32 @@
                     <span class="building-block-icon material-icons" "> description </span>
                 <%=asset.filename%></p>
                         <div>
-                            <button class="listButton" onclick='deleteAsset("<%=asset.id%>")'> Borrar </button>
+                            <div class="overlay-trigger"data-id="<%=asset.id%>">
+                                    <p>borrar si no?</p>
+                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                            </div>
+                            <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
                             <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
                             <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
                             <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
+                        </div>
+                </div>
+         <% } else { %>
+                <div id=<%=asset.id%> class="catalogItem">
+                <p>
+                    <span class="building-block-icon material-icons" "> question_mark </span>
+                <%=asset.filename%></p>
+                        <div>
+                            <div class="overlay-trigger"data-id="<%=asset.id%>">
+                                    <p>borrar si no?</p>
+                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                    <button class="acceptButton" type="button" onclick='deleteasset("<%=asset.id%>")'>aceptar</button>
+                            </div>
+                            <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
+                            <button class="listButton" disabled> Editar </button>
+                            <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
+                            <button class="listButton" disabled> Añadir </button>
                         </div>
                 </div>
          <% } return null;%>
@@ -242,4 +281,13 @@
         insertContent(index, type, payload, puzzles);
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
+    function overlayTriggerCatalog(id, close) {
+        const overlay = $('.overlay-trigger[data-id="' + id + '"]');
+        overlay.hide();
+        if (!close) {
+            overlay.css("transform", `translateY(${overlay.height()/1.5}px`);
+            overlay.show();
+        }
+    }
+
 </script>

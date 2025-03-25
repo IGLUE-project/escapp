@@ -53,10 +53,11 @@ exports.assetsUpdate = (req, res /* , next*/) => {
     res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("assets") : progressBar || nextStep("assets")}`);
 };
 
+const supportedMimeTypes = ["image\/.*", "video\/mp4",  "video\/webm", "audio\/.*", "application\/pdf"];
+
 // POST /escapeRooms/:escapeRoomId/uploadAssets
 exports.uploadAssets = async (req, res) => {
     const {escapeRoom} = req;
-    const uploadResult = null;
     const {i18n} = res.locals;
     const userId = req.session.user && req.session.user.id;
 
@@ -71,10 +72,16 @@ exports.uploadAssets = async (req, res) => {
     }
     */
     try {
+        const mime = req.file.mimetype;
+        const isSupported = supportedMimeTypes.some((m) => new RegExp(m).test(mime));
+        console.log(isSupported)
+        if (!isSupported) {
+            req.file.mimetype = "unsupported";
+        }
         await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.file.originalname, "mime": req.file.mimetype, userId}).save();
 
         // Res.json({"id": saved.id, "url": uploadResult.url});
-        const html = ckeditorResponse(req.query.CKEditorFuncNum, uploadResult.url);
+        const html = ckeditorResponse(req.query.CKEditorFuncNum, req.file.url);
 
         res.send(html);
     } catch (error) {

@@ -127,6 +127,7 @@ const deleteAsset = async (assetId) => {
     if (response.ok) {
         const asset = $(`#${assetId}`);
         asset.remove();
+        overlayTrigger(assetId, false)
     }
 }
 
@@ -155,9 +156,12 @@ var insertContent = async (index, type, payload, puzzles) => {
     }
     var htmlContent = $(blockTemplate(index, content, type, puzzles));
     $('#custom-content').append(htmlContent);
-    //If type catalog but no url we have to wait until element selected
     if (type === "text"|| (type === "catalog" && payload.url )) {
         let editor = CKEDITOR.replace(id);
+        //When replacing there is a hidden div with the content that is latter
+        //read to save the content and an iframe that is the editor
+        //when autoplay is enabled both audios or videos are played
+        //and there is no way to stop the hidden one
         editor.on("instanceReady", function(){
             let video = $(`#${id}`).parent().find("video");
             if(video.length){
