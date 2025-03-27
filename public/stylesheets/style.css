@@ -46,6 +46,7 @@
   src: url("../../fonts/Lato/Lato-Regular.ttf") format("truetype");
 }
 button, input[type=submit], .aButton {
+  transition: 100ms ease-in-out;
   background-color: white;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -826,7 +827,8 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin-bottom: 15px;
 }
 .main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger {
-  box-shadow: 0px 0px 5px #999 !important;
+  box-shadow: 0px 0px 5px rgba(54, 54, 54, 0.55) !important;
+  border-radius: 6px;
 }
 .main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons {
   text-align: right;
@@ -2067,7 +2069,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-color: #FAC855;
   top: 5px;
   left: -35px;
-  position: absolute;
+  position: drop-shadow(0 0mm 4mm rgb(0, 0, 0)) solute;
   border-radius: 0px;
   text-align: center;
   border-radius: 5px 0px 0px 5px;
@@ -2454,8 +2456,21 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   scrollbar-color: var(--secondary) var(--bckg);
   overflow-y: auto;
 }
-#resourceCatalog .material-icons {
-  color: var(--brightblue);
+#resourceCatalog #text-block-add {
+  padding: 3px 18px 3px 10px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+}
+#resourceCatalog #text-block-add p {
+  margin: 0;
+  font-size: 18px;
+}
+#resourceCatalog .catalog-container {
+  cursor: pointer;
+  margin-top: 0px;
 }
 #resourceCatalog a {
   color: black;
@@ -2465,10 +2480,169 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-right: 10px;
+  margin: 0 18px;
+  border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
+  gap: 12px;
+  padding: 0px 0px;
+  max-height: 46px;
+}
+#resourceCatalog .catalogItem:last-child {
+  border-bottom: 0px;
+  margin-bottom: 54px;
+}
+#resourceCatalog .catalogItem .icon-text-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: "...";
+  max-height: 44px;
+  white-space: nowrap;
+  -webkit-line-clamp: 1;
+}
+#resourceCatalog .catalogItem .title {
+  margin: 12px 0;
+  display: inline-block;
+  max-width: 50ch;
+  overflow: hidden;
+  text-overflow: "...";
+  max-height: 27px;
+  color: rgb(193, 198, 209);
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  white-space: nowrap;
+  font-size: 18px;
+}
+#resourceCatalog .catalogItem .material-icons {
+  padding: 3px;
+  border-radius: 3px;
+}
+#resourceCatalog .catalogItem #purple {
+  background: rgb(91, 50, 129);
+}
+#resourceCatalog .catalogItem #blue {
+  background: rgb(0, 116, 211);
+}
+#resourceCatalog .catalogItem #green {
+  background: rgb(0, 105, 61);
+}
+#resourceCatalog .catalogItem #red {
+  background: rgb(185, 62, 68);
+}
+#resourceCatalog .catalogItem #gray {
+  background: rgb(75, 82, 87);
+}
+#resourceCatalog #myTabContent {
+  background: #161938;
+  border-radius: 0px 0px 8px 8px;
+  border: rgba(101, 102, 131, 0.7) 1px solid;
+  padding: 8px;
+}
+#resourceCatalog .button-group {
+  display: flex;
+  gap: 9px;
+  align-items: center;
 }
 #resourceCatalog .listButton {
   font-size: 16px;
+}
+#resourceCatalog .listButton p {
+  color: white;
+}
+#resourceCatalog .iconButton {
+  background: none;
+  border: 0px;
+  border-radius: 24px;
+}
+#resourceCatalog .editButton {
+  padding: 5px;
+}
+#resourceCatalog .editButton:hover {
+  background: rgb(35, 40, 92);
+}
+#resourceCatalog .editButton:hover #edit {
+  color: white;
+}
+#resourceCatalog .editButton:disabled {
+  padding: 5px;
+}
+#resourceCatalog .deleteButton {
+  padding: 5px;
+}
+#resourceCatalog .deleteButton:hover {
+  background: rgb(83, 17, 20);
+}
+#resourceCatalog .deleteButton:hover #delete {
+  color: #F47E84;
+}
+#resourceCatalog .linkButton {
+  background: none;
+  border: 0px;
+  border-radius: 24px;
+  padding: 5px;
+}
+#resourceCatalog .linkButton:hover {
+  background: rgb(35, 40, 92);
+}
+#resourceCatalog .linkButton:hover #link {
+  color: rgb(163, 218, 255);
+}
+#resourceCatalog .linkButton:hover .tooltip-link {
+  display: flex;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.57);
+  border-radius: 3px;
+  padding: 4px 9px;
+  color: #dadada;
+}
+#resourceCatalog .linkButton:hover #link-copied {
+  display: none;
+}
+#resourceCatalog .linkButton:hover:focus-within #link-copied {
+  display: flex;
+}
+#resourceCatalog .addButton {
+  display: flex;
+  padding: 0px 16px 0px 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgb(0, 116, 211);
+  color: white;
+  border: 0px;
+  height: 36px;
+}
+#resourceCatalog .addButton:hover {
+  background: rgba(0, 83, 192, 0.7);
+}
+#resourceCatalog .addButton p {
+  margin: 0;
+  display: ruby;
+}
+#resourceCatalog .addButton span {
+  color: white;
+}
+#resourceCatalog .newItemButton {
+  box-shadow: 0px 0px 40px 12px #161938;
+}
+#resourceCatalog .tooltip-link {
+  display: none;
+  font-size: 13px;
+}
+#resourceCatalog #link-copied {
+  background: rgb(0, 105, 61);
+}
+#resourceCatalog #delete {
+  color: rgb(185, 62, 68);
+}
+#resourceCatalog #edit {
+  color: #a1a3af;
+}
+#resourceCatalog #link {
+  color: #36A2EB;
+}
+#resourceCatalog #add {
+  color: white;
 }
 #resourceCatalog .progressElement {
   display: flex;
@@ -2476,6 +2650,19 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   align-items: center;
   justify-content: space-between;
   padding-right: 10px;
+  gap: 12px;
+}
+#resourceCatalog .progressElement p {
+  margin: 12px 0;
+  max-width: 90ch;
+}
+#resourceCatalog #addItem {
+  position: sticky;
+  left: 1000px;
+  bottom: 10px;
+  right: 10px;
+  margin-right: 16px;
+  font-size: 18px;
 }
 
 .indications #editor {
@@ -2842,7 +3029,8 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   width: 300px;
   z-index: 9999;
   padding: 10px;
-  box-shadow: 0px 0px 5px white;
+  box-shadow: 0px 0px 5px rgba(54, 54, 54, 0.55) !important;
+  border-radius: 6px;
 }
 #mainSection .main .overlay-trigger p {
   margin: 0;
@@ -2861,6 +3049,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-style: solid;
   margin-top: 0px;
   border-color: transparent transparent white transparent;
+}
+#mainSection .main .overlay-trigger .text-overlay {
+  font-size: 15px;
 }
 #mainSection .main .overlay-trigger button {
   outline: 0;
@@ -3879,7 +4070,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   .finish .ranking-table .ranking-members {
     display: none;
   }
-
   .showStudent .flex {
     flex-direction: column;
   }

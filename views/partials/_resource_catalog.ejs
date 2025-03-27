@@ -1,201 +1,403 @@
+<div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
+    <div style="width:100%">
+        <div style="display:flex;justify-content:space-around">
 
-<div id="resourceCatalog" style="display:flex;align-items:center;flex-direction:column">
-<div style="width:100%">
-    <div style="display:flex;justify-content:space-around">
-        <button onclick="insertContentBlock()">
-            <span class="building-block-icon material-icons" "> text_format </span>
-            Añadir bloque
-        </button>
-            <a class="aButton" href="reusablePuzzleInstance/new"> <span class="building-block-icon material-icons" > extension </span> Añadir puzzle </a>
-            <a class="aButton" href="assets?mode=catalogView"> <span class="building-block-icon material-icons" > save </span> Subir archivo  </a>
-    </div>
-    <ul class="nav nav-tabs catalog-container" id="myTab" role="tablist">
-    <li class="nav-item active" role="presentation">
-        <div class="nav-link active" id="progress-tab" data-bs-toggle="tab" data-bs-target="#progress" type="button" role="tab" aria-controls="profile" aria-selected="false">Progreso</button>
-    </li>
-    <% if (endPoint === 'team'){ %>
-    <li class="nav-item" role="presentation">
-        <div class="nav-link" id="puzzles-tab" data-bs-toggle="tab" data-bs-target="#puzzle" type="button" role="tab" aria-controls="profile" aria-selected="false">Puzzles</button>
-    </li>
-    <% } %>
-    <li class="nav-item" role="presentation">
-        <div class="nav-link" id="multimedia-tab" data-bs-toggle="tab" data-bs-target="#multimedia" type="button" role="tab" aria-controls="profile" aria-selected="false">Multimedia</button>
-    </li>
-    </ul>
-    <div style="height:200px;overflow-y:auto;width:100%;position:relative" class="tab-content catalog-container" id="myTabContent">
-      <div class="tab-pane fade show active" id="progress" role="tabpanel" aria-labelledby="puzzle-tab">
-        <div class="catalogItem" class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.textAndMedia%>" data-content="text" >
+
+
         </div>
-        <!-- <button class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.video%>" data-content="video">
+        <div style="display: flex; justify-content:space-between">
+            <ul class=" nav nav-tabs catalog-container" id="myTab" role="tablist">
+                <li class="nav-item active" role="presentation">
+                    <div class="nav-link active" id="progress-tab" data-bs-toggle="tab" data-bs-target="#progress"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false">Progreso</button>
+                </li>
+
+                <% if (endPoint==='team' ){ %>
+                    <li class="nav-item" role="presentation">
+                        <div class="nav-link" id="puzzles-tab" data-bs-toggle="tab" data-bs-target="#puzzle"
+                            type="button" role="tab" aria-controls="profile" aria-selected="false">Puzzles</button>
+                    </li>
+                    <% } %>
+                        <li class="nav-item" role="presentation">
+                            <div class="nav-link" id="multimedia-tab" data-bs-toggle="tab" data-bs-target="#multimedia"
+                                type="button" role="tab" aria-controls="profile" aria-selected="false">
+                                Multimedia</button>
+                        </li>
+            </ul>
+            <button class="addButton" id="text-block-add" onclick="insertContentBlock()">
+                <span class="building-block-icon material-icons"> add </span>
+                <p> Añadir bloque de texto</p>
+                <!-- <span class="building-block-icon material-icons"> text_format </span> -->
+            </button>
+        </div>
+        <div style=" height:240px;overflow-y:auto;width:100%;position:relative" class="tab-content catalog-container"
+            id="myTabContent">
+            <div class="tab-pane fade show active" id="progress" role="tabpanel" aria-labelledby="puzzle-tab">
+                <!-- <div class="catalogItem" class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.textAndMedia%>" data-content="text" >
+        </div> -->
+                <!-- <button class="building-block-bar-button add-content" title="<%=i18n.escapeRoom.steps.indications.front.video%>" data-content="video">
             <span class="building-block-icon material-icons" style="color: var(--success);">movie</span>
             Video
         </button>           -->
-        <div class="catalogItem" class="building-block-bar-button "title="<%=i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
-                <div class="progressElement">
-                    <img class="building-block-img" src="/images/countdown.png"/>
-                    <p><%=i18n.escapeRoom.steps.indications.front.countdown%></p>
+                <div class="catalogItem" class="building-block-bar-button "
+                    title="<%=i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
+                    <div class="progressElement">
+                        <img class="building-block-img" src="/images/countdown.png" />
+                        <p class="title">
+                            <%=i18n.escapeRoom.steps.indications.front.countdown%>
+                        </p>
+                    </div>
+                    <button class="listButton addButton" onclick='insertAndScrollContent(0,"countdown",{}, puzzleList)'
+                        class="listButton">
+                        <span class="building-block-icon material-icons" id="add"> add
+                        </span>
+                        <p> Añadir </p>
+                    </button>
                 </div>
-                <button onclick='insertAndScrollContent(0,"countdown",{}, puzzleList)'> Añadir </button>
+                <div class="catalogItem" class="building-block-bar-button "
+                    title="<%=i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
+                    <div class="progressElement">
+                        <img class="building-block-img" src="/images/ranking.png" />
+                        <p class="title">
+                            <%=i18n.escapeRoom.steps.indications.front.ranking%>
+                        </p>
+                    </div>
+                    <button class="listButton addButton" onclick='insertAndScrollContent(0,"ranking",{}, puzzleList)'
+                        class="listButton">
+                        <span class="building-block-icon material-icons" id="add"> add
+                        </span>
+                        <p> Añadir </p>
+                </div>
+                <div class="catalogItem" class="building-block-bar-button "
+                    title="<%=i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
+                    <div class="progressElement">
+                        <span class="building-block-icon material-icons" style="color: var(--lightred);">
+                            show_chart </span>
+                        <p class="title">
+                            <%=i18n.escapeRoom.steps.indications.front.progress%>
+                        </p>
+                    </div>
+                    <button class="listButton addButton" onclick='insertAndScrollContent(0,"progress",{}, puzzleList)'
+                        class="listButton">
+                        <span class="building-block-icon material-icons" id="add"> add
+                        </span>
+                        <p> Añadir </p>
+                    </button>
+                </div>
+
+
+                <!-- <span class="building-block-bar-separator"></span> -->
+            </div>
+            <div class="tab-pane fade" id="puzzle" role="tabpanel" aria-labelledby="puzzle-tab">
+
+                <div>
+
+                    <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
+                        <div class="catalogItem">
+                            <p class="title">
+                                <%=puzzle.name%>
+                            </p>
+                            <div class="button-group">
+                                <button class="listButton iconButton deleteButton"
+                                    onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>
+                                    <span class="building-block-icon material-icons" id="delete">
+                                        delete_outline </span>
+                                </button>
+                                <button class="listButton iconButton editButton"
+                                    onclick='editReusablePuzzleInstance("<%=puzzle.id%>")'>
+                                    <span class="building-block-icon material-icons" id="edit"> edit </span>
+                                </button>
+                                <button class="listButton linkButton" onclick='copyURl("<%=puzzle.id%>")'>
+                                    <span class="building-block-icon material-icons" id="link"> link </span>
+                                    <div class="tooltip-link"> Copiar enlace </div>
+                                    <div class="tooltip-link" id="link-copied"> ¡Enlace copiado! </div>
+                                </button>
+                                <button class="listButton addButton"
+                                    onclick='insertAndScrollContent(0,"catalog",{url:"<%=puzzle.url%>",config: "<%=puzzle.config%>"  mime:"<%=puzzle.mime%>"}, puzzleList)'>
+                                    <span class="building-block-icon material-icons" id="add"> add </span>
+                                    <p> Añadir puzzle </p>
+                                </button>
+                            </div>
+                        </div>
+                        <% })} %>
+                </div>
+                <a class="aButton newItemButton" href="reusablePuzzleInstance/new" id="addItem"> <span
+                        class="building-block-icon material-icons"> extension </span> Nuevo puzzle </a>
+            </div>
+            <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
+                <div>
+                    <% assets.map(asset=> {%>
+                        <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
+                            <div class="catalogItem" id=<%=asset.id%> >
+                                <div class="icon-text-container">
+                                    <span class="building-block-icon material-icons" id="green"> image </span>
+                                    <p class="title">
+                                        <%=asset.filename%>
+                                    </p>
+                                </div>
+                                <div class=" button-group">
+                                    <div class="overlay-trigger" data-id="<%=asset.id%>">
+                                        <p class="text-overlay">¿Estás seguro de que quieres borrar este
+                                            archivo?</p>
+                                        <button class="deleteButton" type="button"
+                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                        <button class="acceptButton" type="button"
+                                            onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                    </div>
+                                    <button class="listButton iconButton deleteButton"
+                                        onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                        <span class="building-block-icon material-icons" id="delete">
+                                            delete_outline </span>
+                                    </button>
+                                    <button class="listButton iconButton editButton"
+                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                        <span class="building-block-icon material-icons" id="edit"> edit
+                                        </span>
+                                    </button>
+                                    <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
+                                        <span class="building-block-icon material-icons" id="link"> link
+                                        </span>
+                                        <div class="tooltip-link"> Copiar enlace </div>
+                                        <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                        </div>
+                                    </button>
+
+                                    <button class="listButton addButton"
+                                        onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                        <span class="building-block-icon material-icons" id="add"> add
+                                        </span>
+                                        <p>Añadir archivo</p>
+                                    </button>
+                                </div>
+                            </div>
+                            <% } else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
+                                <div class="catalogItem" id=<%=asset.id%> >
+                                    <div class="icon-text-container">
+                                        <span class="building-block-icon material-icons" id="red"> videocam </span>
+                                            <p class="title">
+                                                <%=asset.filename%>
+                                            </p>
+                                    </div>
+                                    <div class=" button-group">
+                                        <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                            <p class="text-overlay">¿Estás seguro de que quieres borrar este
+                                                archivo?</p>
+                                            <button class="deleteButton" type="button"
+                                                onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                            <button class="acceptButton" type="button"
+                                                onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                        </div>
+                                        <button class="listButton iconButton deleteButton"
+                                            onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                            <span class="building-block-icon material-icons" id="delete">
+                                                delete_outline </span>
+                                        </button>
+                                        <button class="listButton iconButton editButton"
+                                            onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                            <span class="building-block-icon material-icons" id="edit"> edit
+                                            </span>
+                                        </button>
+                                        <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
+                                            <span class="building-block-icon material-icons" id="link"> link
+                                            </span>
+                                            <div class="tooltip-link"> Copiar enlace </div>
+                                            <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                            </div>
+                                        </button>
+                                        <button class="listButton addButton"
+                                            onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                            <span class="building-block-icon material-icons" id="add"> add
+                                            </span>
+                                            <p>Añadir archivo </p>
+                                        </button>
+                                    </div>
+                                </div>
+                                <% } else if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){ %>
+                                    <div class="catalogItem" id=<%=asset.id%> >
+                                        <div class="icon-text-container">
+                                            <span class="building-block-icon material-icons " id="purple">
+                                                music_note
+                                            </span>
+                                            <p class="title">
+                                                <%=asset.filename%>
+                                            </p>
+
+                                        </div>
+                                        <div class=" button-group">
+                                            <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                <p class="text-overlay">¿Estás seguro de que quieres borrar este
+                                                    archivo?</p>
+                                                <button class="deleteButton" type="button"
+                                                    onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                <button class="acceptButton" type="button"
+                                                    onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                            </div>
+                                            <button class="listButton iconButton deleteButton"
+                                                onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                                <span class="building-block-icon material-icons" id="delete">
+                                                    delete_outline </span>
+                                            </button>
+                                            <button class="listButton iconButton editButton"
+                                                onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                <span class="building-block-icon material-icons" id="edit"> edit
+                                                </span>
+                                            </button>
+                                            <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
+                                                <span class="building-block-icon material-icons" id="link"> link
+                                                </span>
+                                                <div class="tooltip-link"> Copiar enlace </div>
+                                                <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                                </div>
+                                            </button>
+                                            <button class="listButton addButton"
+                                                onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                <span class="building-block-icon material-icons" id="add"> add
+                                                </span>
+                                                <p>Añadir archivo</p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <% } else if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
+                                        <div class="catalogItem" id=<%=asset.id%> >
+                                            <div class="icon-text-container">
+                                                <span class="building-block-icon material-icons" id="blue"> description
+                                                </span>
+                                                <p class=" title">
+                                                    <%=asset.filename%>
+                                                </p>
+                                            </div>
+                                            <div class=" button-group">
+                                                <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                    <p class="text-overlay">¿Estás seguro de que quieres borrar este
+                                                        archivo?</p>
+                                                    <button class="deleteButton" type="button"
+                                                        onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                    <button class="acceptButton" type="button"
+                                                        onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                </div>
+                                                <button class="listButton iconButton deleteButton"
+                                                    onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                                    <span class="building-block-icon material-icons" id="delete">
+                                                        delete_outline </span>
+                                                </button>
+                                                <button class="listButton iconButton editButton"
+                                                    onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                    <span class="building-block-icon material-icons" id="edit"> edit
+                                                    </span>
+                                                </button>
+                                                <button class="listButton linkButton"
+                                                    onclick='copyURl("<%=asset.url%>")'>
+                                                    <span class="building-block-icon material-icons" id="link"> link
+                                                    </span>
+                                                    <div class="tooltip-link"> Copiar enlace </div>
+                                                    <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                                    </div>
+                                                </button>
+
+                                                <button class="listButton addButton"
+                                                    onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                    <span class="building-block-icon material-icons" id="add"> add
+                                                    </span>
+                                                    <p>Añadir archivo</p>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <% } else { %>
+                                            <div class="catalogItem" id=<%=asset.id%> >
+                                                <div class="icon-text-container">
+                                                    <span class="building-block-icon material-icons" id="gray"> question_mark </span>
+                                                    <p class="title">
+                                                        <%=asset.filename%></p>
+                                            </div>
+                                            <div class=" button-group">
+            
+                                                        <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                            <p class="text-overlay">¿Estás seguro de que quieres borrar
+                                                                este
+                                                                archivo?</p>
+                                                            <button class="deleteButton" type="button"
+                                                                onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                            <button class="acceptButton" type="button"
+                                                                onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                        </div>
+                                                        <button class="listButton iconButton deleteButton"
+                                                            onclick='overlayTriggerCatalog("<%=asset.id%>")'>
+                                                            <span class="building-block-icon material-icons"
+                                                                id="delete">
+                                                                delete_outline </span>
+                                                        </button>
+                                                        <button class="listButton iconButton editButton" disabled>
+                                                            <span class="building-block-icon material-icons" id="edit">
+                                                                edit
+                                                            </span>
+                                                        </button>
+                                                        <button class="listButton linkButton"
+                                                            onclick='copyURl("<%=asset.url%>")'>
+                                                            <span class="building-block-icon material-icons" id="link">
+                                                                link
+                                                            </span>
+                                                            <div class="tooltip-link"> Copiar enlace </div>
+                                                            <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                                            </div>
+                                                        </button>
+                                                        <button class="listButton addButton" disabled> <span
+                                                                class="building-block-icon material-icons" id="add">
+                                                                add
+                                                            </span>
+                                                            <p> Añadir archivo
+                                                            </p>
+                                                        </button>
+                                            </div>
+                </div>
+
+                <% } return null;%>
+                    <% }) %>
+            </div>
+            <a class="aButton newItemButton" href="assets?mode=catalogView" id="addItem"> <span
+                    class="building-block-icon material-icons"> save </span> Subir archivo </a>
         </div>
-        <div class="catalogItem"class="building-block-bar-button " title="<%=i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
-                <div class="progressElement">
-                    <img class="building-block-img" src="/images/ranking.png"/>
-                    <p><%=i18n.escapeRoom.steps.indications.front.ranking%></p>
-                </div>
-                <button onclick='insertAndScrollContent(0,"ranking",{}, puzzleList)'> Añadir </button>
-        </div>
-        <div class="catalogItem" class="building-block-bar-button " title="<%=i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
-                <div class="progressElement">
-                    <span class="building-block-icon material-icons" style="color: var(--lightred);"> show_chart </span>
-                    <p><%=i18n.escapeRoom.steps.indications.front.progress%></p>
-                </div>
-                <button onclick='insertAndScrollContent(0,"progress",{}, puzzleList)'> Añadir </button>
-        </div>
-        <span class="building-block-bar-separator"></span>
-    </div>
-      <div class="tab-pane fade" id="puzzle" role="tabpanel" aria-labelledby="puzzle-tab">
-        <%if(endPoint ==="team"){reusablePuzzlesInstances.map(puzzle => {%>
-                <div class="catalogItem">
-                <p> <%=puzzle.name%></p>
-                        <div>
-                            <button class="listButton" onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'> Borrar </button>
-                            <button class="listButton" onclick='editReusablePuzzleInstance("<%=puzzle.id%>")'> Editar </button>
-                            <button class="listButton" onclick='copyURl("<%=puzzle.id%>")'> Copiar enlace </button>
-                            <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=puzzle.url%>",config: "<%=puzzle.config%>"  mime:"<%=puzzle.mime%>"}, puzzleList)'> Añadir </button>
-                        </div>
-                </div>
-         <% })} %>
-      </div>
-      <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
-         <% assets.map(asset => {%>
-         <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
-                <div id=<%=asset.id%> class="catalogItem">
-                <p>
-                    <span class="building-block-icon material-icons" "> image </span>
-                <%=asset.filename%></p>
-                        <div>
-                            <div class="overlay-trigger"data-id="<%=asset.id%>">
-                                    <p>borrar si no?</p>
-                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
-                            </div>
-                            <button class="listButton" onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
-                                Borrar
-                            </button>
-                            <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
-                            <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
-                            <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
-                        </div>
-                </div>
-         <% } else  if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
-                <div id=<%=asset.id%> class="catalogItem">
-                <p>
-                    <span class="building-block-icon material-icons" "> videocam </span>
-                <%=asset.filename%></p>
-                        <div>
-                            <div class="overlay-trigger"data-id="<%=asset.id%>">
-                                    <p>borrar si no?</p>
-                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
-                            </div>
-                            <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
-                            <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
-                            <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
-                            <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
-                        </div>
-                </div>
-         <% } else  if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){ %>
-                <div id=<%=asset.id%> class="catalogItem">
-                <p>
-                    <span class="building-block-icon material-icons" ">
-                           music_note
-                    </span>
-                <%=asset.filename%></p>
-                        <div>
-                            <div class="overlay-trigger"data-id="<%=asset.id%>">
-                                    <p>borrar si no?</p>
-                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
-                            </div>
-                            <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
-                            <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
-                            <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
-                            <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
-                        </div>
-                </div>
-         <% } else  if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
-                <div id=<%=asset.id%> class="catalogItem">
-                <p>
-                    <span class="building-block-icon material-icons" "> description </span>
-                <%=asset.filename%></p>
-                        <div>
-                            <div class="overlay-trigger"data-id="<%=asset.id%>">
-                                    <p>borrar si no?</p>
-                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
-                            </div>
-                            <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
-                            <button class="listButton" onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'> Editar </button>
-                            <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
-                            <button class="listButton" onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'> Añadir </button>
-                        </div>
-                </div>
-         <% } else { %>
-                <div id=<%=asset.id%> class="catalogItem">
-                <p>
-                    <span class="building-block-icon material-icons" "> question_mark </span>
-                <%=asset.filename%></p>
-                        <div>
-                            <div class="overlay-trigger"data-id="<%=asset.id%>">
-                                    <p>borrar si no?</p>
-                                    <button class="deleteButton" type="button" onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button" onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
-                            </div>
-                            <button class="listButton" onclick='overlayTriggerCatalog("<%=asset.id%>")'> Borrar </button>
-                            <button class="listButton" disabled> Editar </button>
-                            <button class="listButton" onclick='copyURl("<%=asset.url%>")'> Copiar enlace </button>
-                            <button class="listButton" disabled> Añadir </button>
-                        </div>
-                </div>
-         <% } return null;%>
-         <%  }) %>
-      </div>
+
     </div>
 </div>
-<button class="building-block-bar-button theme-btn">
+<button class="building-block-bar-button theme-btn" style="margin-top: 12px; display:flex;">
     <span class="building-block-icon material-icons" style="color: var(--info);">color_lens</span>
-    <span class="theme-text"><%=i18n.escapeRoom.steps.indications.front.theme%>: <span id="theme-title"><%=theme[0].toUpperCase() +  theme.slice(1)%></span></span>
+    <span class="theme-text">
+        <%=i18n.escapeRoom.steps.indications.front.theme%>: <span id="theme-title">
+                <%=theme[0].toUpperCase() + theme.slice(1)%>
+            </span>
+    </span>
 </button>
 <br>
 <div style="display:flex; justify-content:center">
     <dialog id="editDialog">
-        <form  action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
+        <form action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
     </dialog>
 </div>
 
 <script>
-    function editAsset(id, mime, config){
+
+    function editAsset(id, mime, config) {
         const configJSON = parseAssetConfig(mime, config);
         const dialog = $('#editDialog');
         const form = dialog.find('form');
         form.attr('action', `./asset/${id}`);
         form.empty();
-        if(mime.search(imageRegex) !== -1) {
+        if (mime.search(imageRegex) !== -1) {
             form.append(`
-            <div><label for="width">Height</label><input type="number" value="${configJSON.height?configJSON.height:0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width?configJSON.width:0}"  name="height"/>px</div>`);
-        }else if (mime.search(videoRegex) !== -1) {
-            form.append(`<div><label for="width">Height</label><input type="number"  value="${configJSON.height?configJSON.height:0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width?configJSON.width:0}" name="height"/>px</div>
-                    <div><label for="autoplay">Autoplay</label><input ${configJSON.autoplay?"checked":""} type="checkbox" name="autoplay"/></div>
-                    <div><label for="download">Dowloads</label><input ${configJSON.download?"checked":""} type="checkbox" name="download"/></div>
-                    <div><label for="controls">Controls</label><input  ${configJSON.controls?"checked":""} type="checkbox" name="controls"/></div>`);
+            <div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
+                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
+        } else if (mime.search(videoRegex) !== -1) {
+            form.append(`<div><label for="width">Height</label><input type="number"  value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
+                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}" name="height"/>px</div>
+                    <div><label for="autoplay">Autoplay</label><input ${configJSON.autoplay ? "checked" : ""} type="checkbox" name="autoplay"/></div>
+                    <div><label for="download">Dowloads</label><input ${configJSON.download ? "checked" : ""} type="checkbox" name="download"/></div>
+                    <div><label for="controls">Controls</label><input  ${configJSON.controls ? "checked" : ""} type="checkbox" name="controls"/></div>`);
         } else if (mime.search(audioRegex) !== -1) {
-            form.append(`<div><label for="controls">Controls</label><input type="checkbox" ${configJSON.controls?"checked":""} name="controls"/></div>`);
+            form.append(`<div><label for="controls">Controls</label><input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/></div>`);
         } else if (mime.search(applicationRegex) !== -1) {
-            form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height?configJSON.height:0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width?configJSON.width:0}"  name="height"/>px</div>`);
+            form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
+                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
         } else {
             return `<div>${item.name}</div>`;
         }
@@ -203,7 +405,7 @@
         dialog.dialog({
             modal: true,
             resizable: false,
-            width: window.innerWidth > 900 ? 860 : window.innerWidth*0.8,
+            width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
             height: "auto",
             show: {
                 effect: "scale",
@@ -216,20 +418,20 @@
         }).show()
 
     }
-    function parseAssetConfig(mime, config){
-        if(!config) return {};
+    function parseAssetConfig(mime, config) {
+        if (!config) return {};
         let texts = config.split(';');
         configJSON = {};
         texts.forEach(text => {
             const data = text.split(':');
             configJSON[data[0]] = data[1];
-            })
-        if(mime.search(imageRegex) !== -1) {
+        })
+        if (mime.search(imageRegex) !== -1) {
             return {
                 width: configJSON.width,
                 height: configJSON.height
             }
-        }else if (mime.search(videoRegex) !== -1) {
+        } else if (mime.search(videoRegex) !== -1) {
             return {
                 width: configJSON.width,
                 height: configJSON.height,
@@ -252,7 +454,7 @@
         }
     }
 
-    function deleteReusablePuzzleInstance(id){
+    function deleteReusablePuzzleInstance(id) {
         fetch(`/reusablePuzzleInstance/${id}`, {
             method: 'DELETE',
         }).then(response => {
@@ -261,26 +463,44 @@
             }
         });
     }
-    function editReusablePuzzleInstance(id){
+    function editReusablePuzzleInstance(id) {
         console.log('Todo')
     }
-    function copyURl(url){
-        navigator.clipboard.writeText(window.location.origin+url);
+    function copyURl(url) {
+        navigator.clipboard.writeText(window.location.origin + url);
+
     }
-    function insertContentBlock(){
+    function insertContentBlock() {
         const text = `<p>${window.placeholder}</p>`
-        insertAndScrollContent(0, 'text', {text}, puzzleList);
+        insertAndScrollContent(0, 'text', { text }, puzzleList);
         window.scrollTo(0, $('.building-block').children().last().offset().top);
-    }function insertAndScrollContent(index, type, payload, puzzles){
+    }
+    function insertAndScrollContent(index, type, payload, puzzles) {
         insertContent(index, type, payload, puzzles);
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
+
     function overlayTriggerCatalog(id, close) {
         const overlay = $('.overlay-trigger[data-id="' + id + '"]');
         overlay.hide();
+
+
         if (!close) {
-            overlay.css("transform", `translateY(${overlay.height()/1.75}px`);
+            overlay.css("transform", `translateY(${overlay.height() / 2}px`);
             overlay.show();
+
+
+            // Borrar overlay con click afuera
+            // Espera un momento antes de agregar el listener, para evitar cierre inmediato
+            setTimeout(() => {
+                $(document).on('click.overlay', function (event) {
+                    // 1. Verifica si el clic NO fue directamente sobre el overlay.
+                    if (!overlay.is(event.target) && overlay.has(event.target).length === 0) { //2. Verifica si el clic NO fue en un hijo del overlay.
+                        overlay.hide();
+                        $(document).off('click.overlay'); // Elimina el evento después de ocultar el overlay
+                    }
+                });
+            }, 50);
         }
     }
 

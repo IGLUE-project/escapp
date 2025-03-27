@@ -54,7 +54,7 @@
           background-color: $brightyellow
           top: 5px
           left: -35px
-          position: absolute
+          position: drop-shadow(0 0mm 4mm rgb(0, 0, 00))solute
           border-radius: 0px
           text-align: center
           border-radius: 5px 0px 0px 5px
@@ -360,8 +360,20 @@
     padding: 10px
 
 #resourceCatalog
-  .material-icons
-    color: var(--brightblue)
+  #text-block-add
+    padding: 3px 18px 3px 10px
+    margin-bottom: 6px
+    display: flex
+    align-items: center
+    gap: 4px
+    height:40px
+    p
+      margin: 0
+      font-size: 18px
+  .catalog-container 
+    cursor: pointer
+    margin-top: 0px
+ 
   a
     color: black
   scrollbar-width: thin
@@ -372,15 +384,161 @@
     flex-direction: row
     justify-content: space-between
     align-items: center
-    padding-right: 10px
+    margin: 0 18px
+    border-bottom: 1px $textpurplelessop solid
+    gap: 12px
+    padding: 0px 0px
+    max-height: 46px
+    &:last-child
+      border-bottom:0px
+      margin-bottom: 54px
+    .icon-text-container
+      display: flex
+      gap: 12px
+      align-items: center
+
+      overflow: hidden 
+      text-overflow: "..." 
+      max-height: 44px
+      white-space: nowrap 
+      -webkit-line-clamp: 1
+    .title
+      margin: 12px 0
+      display: inline-block
+      max-width: 50ch
+      overflow: hidden
+      text-overflow: "..."
+      max-height: 27px
+      color: rgb(193, 198, 209)
+      line-clamp:1
+      -webkit-line-clamp: 1
+      white-space: nowrap
+      font-size: 18px
+    .material-icons
+      padding: 3px
+      border-radius: 3px
+    #purple 
+      background: rgb(91, 50, 129)
+    #blue 
+      background: $blue
+    #green 
+      background: $darkergreen
+    #red
+      background: $red
+    #gray
+      background: rgb(75, 82, 87)
+
+
+  #myTabContent
+    background: $darkerpurple
+    border-radius: 0px 0px 8px 8px
+    border: $textpurplelessop 1px solid
+    padding: 8px
+
+  .button-group
+    display: flex
+    gap: 9px
+    align-items: center
+
   .listButton
     font-size: 16px
+    p
+      color: white
+  .iconButton
+    background: none
+    border: 0px
+    border-radius: 24px
+  .editButton
+    padding: 5px
+    &:hover
+      background: $purple
+      #edit
+        color: white
+    &:disabled
+      padding: 5px
+  .deleteButton
+    padding: 5px
+    &:hover
+      background: $darkerred
+      #delete
+        color: $lightred
+  .linkButton
+    background: none
+    border: 0px
+    border-radius: 24px
+    padding: 5px
+    &:hover
+      background: $purple
+      #link 
+        color: $brighterblue
+      .tooltip-link
+        display: flex
+        position: absolute
+        background: $tooltipbg
+        border-radius: 3px
+        padding: 4px 9px
+        color: #dadada
+      #link-copied
+        display: none
+      &:focus-within
+        #link-copied
+          display: flex
+  .addButton
+    display: flex
+    padding: 0px 16px 0px 6px
+    display: flex
+    align-items: center
+    gap: 6px
+    background: $blue
+    color: white
+    border: 0px
+    height: 36px
+    &:hover
+      background: $darkerbluelessop
+    p
+      margin: 0
+      display: ruby
+    span  
+      color: white
+  .newItemButton
+    box-shadow: 0px 0px 40px 12px $darkerpurple
+
+
+
+  .tooltip-link
+    display: none
+    color:rgb(221, 221, 221)
+    font-size: 13px
+  #link-copied
+    background: $darkergreen
+  #delete
+    color: $red
+  #edit
+    color: $textgrey
+  #link
+    color: $brightblue
+  #add
+    color: white
+
   .progressElement
     display: flex
     flex-direction: row
     align-items: center
     justify-content: space-between
     padding-right: 10px
+    gap: 12px
+    p
+      margin: 12px 0
+      max-width: 90ch
+
+  #addItem
+    position: sticky
+    left: 1000px
+    bottom: 10px
+    right: 10px
+    margin-right: 16px
+    font-size: 18px
+
 
 .indications
   #editor
