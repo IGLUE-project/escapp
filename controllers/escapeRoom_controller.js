@@ -451,7 +451,7 @@ exports.admin = async (req, res, next) => {
     try {
         if (user && !user.isStudent) {
             ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll()));
-        } 
+        }
         const pages = Math.ceil(count / limit);
 
         if (page > pages && pages !== 0) {

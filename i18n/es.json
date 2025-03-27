@@ -1014,6 +1014,15 @@
         "student": "Alumno",
         "gender": "Género",
         "lang": "Idioma",
+        "eduLevelField": "Nivel educativo",
+        "eduLevel": {
+            "primary": "Educación primaria",
+            "secondary": "Educación secundaria",
+            "vet": "Formación profesional",
+            "higher": "Educación superior",
+            "other": "Otro",
+            "none": "Ninguno"
+        },
         "acceptTerms": "Condiciones de uso",
         "terms": "Al registrarme, confirmo que he leído y acepto los <a href='/terms' target='_blank'>Términos de Uso</a> y la <a href='/privacy' target='_blank'>Política de Privacidad</a>",
         "inputs": {

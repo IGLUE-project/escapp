@@ -196,9 +196,7 @@ exports.forTeacher = (id, page = 1, limit = 10) => ({
 
 exports.forAll = (page = 1, limit = 10) => ({
     "attributes": ["id", "title", "invitation"],
-    "include": [
-        models.attachment
-    ],
+    "include": [models.attachment],
     limit,
     "offset": (page - 1) * limit,
     "order": [["id", "desc"]]

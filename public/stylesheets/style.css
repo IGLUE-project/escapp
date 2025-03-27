@@ -4763,6 +4763,12 @@ table.mainTable tr td .icon {
   color: white !important;
   border-color: white !important;
   -webkit-text-fill-color: white !important;
+  padding-left: 1em;
+  padding-right: 1.5em;
+}
+.user-edit-form label::placeholder, .user-edit-form input::placeholder, .user-edit-form select::placeholder {
+  color: #656683 !important;
+  -webkit-text-fill-color: #656683 !important;
 }
 .user-edit-form .roleField .roleLabel {
   display: flex;

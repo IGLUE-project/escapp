@@ -16,6 +16,7 @@
     "css": "sass public/stylesheets/style.sass public/stylesheets/style.css",
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix",
+    "create-admin": "node scripts/admin.js",
     "unused": "unused-exports --path ./ --ignore node_modules/ --ignore public --ignore migrations"
   },
   "dependencies": {

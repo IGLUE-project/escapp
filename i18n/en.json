@@ -1026,6 +1026,15 @@
         "lang": "Language",
         "acceptTerms": "Terms and conditions",
         "terms": "By signing up, I acknowledge that I have read and agree to the <a href='/terms' target='_blank'>Terms of Use</a> and <a href='/privacy' target='_blank'>Privacy Policy</a>",
+        "eduLevelField": "Educational level",
+        "eduLevel": {
+            "primary": "Primary education",
+            "secondary": "Secondary education",
+            "vet": "Vocational education and training",
+            "higher": "Higher education",
+            "other": "Other",
+            "none": "None"
+        },
         "inputs": {
             "editUser": "Edit profile",
             "genderPlaceHolder": "Select your gender",

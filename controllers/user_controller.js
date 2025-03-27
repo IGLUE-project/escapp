@@ -42,7 +42,7 @@ exports.new = (req, res) => {
 
 // POST /users
 exports.create = (req, res, next) => {
-    const {name, surname, gender, username, password, confirm_password, role} = req.body;
+    const {name, surname, gender, username, password, confirm_password, role, eduLevel} = req.body;
     const {redir} = req.query;
     const {i18n} = res.locals;
 
@@ -62,6 +62,7 @@ exports.create = (req, res, next) => {
         name,
         surname,
         gender,
+        eduLevel,
         "username": (username || "").toLowerCase(),
         password,
         lang,
@@ -87,7 +88,7 @@ exports.create = (req, res, next) => {
     user.isStudent = Boolean(isStudent);
 
     // Save into the data base
-    user.save({"fields": ["name", "surname", "gender", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate"]}).
+    user.save({"fields": ["name", "surname", "gender", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate"]}).
         then(() => { // Render the users page
             req.flash("success", i18n.common.flash.successCreatingUser);
             req.body.login = username;
@@ -128,7 +129,7 @@ exports.update = (req, res, next) => {
     // User.username  = body.user.username; // edition not allowed
     const {i18n} = res.locals;
     const updateFromAdmin = Boolean(req.session.user.isAdmin);
-    const fields = ["password", "salt", "name", "surname", "gender", "lang"];
+    const fields = ["password", "salt", "name", "surname", "gender", "eduLevel", "lang"];
 
     if (updateFromAdmin) {
         fields.push("isStudent", "isAdmin");
@@ -140,22 +141,23 @@ exports.update = (req, res, next) => {
     user.name = body.name;
     user.surname = body.surname;
     user.gender = body.gender;
+    user.eduLevel = body.eduLevel;
     let scs = i18n.common.flash.successEditingUser;
 
     if (body.lang === "es" || body.lang === "en") {
         user.lang = body.lang;
         if (req.cookies && req.cookies.locale && (user.lang !== body.lang || req.cookies.locale !== body.lang)) {
             res.cookie("locale", body.lang);
-            const i18n = require(`../i18n/${body.lang}`);
+            const i18n2 = require(`../i18n/${body.lang}`);
 
-            scs = i18n.user.sucessfullyUpdatedUser;
+            scs = i18n2.user.sucessfullyUpdatedUser;
         }
     }
     if (body.password && body.confirm_password) {
         if (body.password === body.confirm_password) {
             user.password = body.password;
         } else {
-            req.flash("error", i18n.common.flash.passwordsDoNotMatch);
+            req.flash("error", i18n2.common.flash.passwordsDoNotMatch);
             res.redirect("back");
             return;
         }
