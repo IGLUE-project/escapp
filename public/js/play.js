@@ -192,7 +192,7 @@ const onPuzzleResponse = async ({code, correctAnswer, solution, "puzzleOrder": p
       try {
         time = incorrect.split(" ").length*1000;
       } catch(e){}
-      createAlert("danger", incorrect, false, time);
+      createAlert("danger", incorrect, false, Math.max(time, 4000));
     }
     if (ER.erState.waitingForPuzzleReply) {
       $('#puzzle-input').addClass(correctAnswer ? 'is-valid':'is-invalid');
@@ -438,7 +438,7 @@ const updatePuzzle = (order, currentPuzzle, prevPuzzleOrder) => {
 
 
 const createAlert = (level = "info", msg, keep = false, time = 5000) => {
-  const config = {"message": msg, "alertType": level, "position": "b l",  "hideAnimation": "slide", "showAnimation": "bounce"};
+  const config = {"message": msg, "alertType": level, "position": "b r",  "hideAnimation": "slide", "showAnimation": "bounce"};
   if (!keep) {
     config.time = time;
     config.autoHide = true;

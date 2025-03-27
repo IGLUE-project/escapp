@@ -436,3 +436,32 @@ exports.clone = async (req, res, next) => {
         next(err);
     }
 };
+
+// GET /escapeRoomsAdmin
+
+exports.admin = async (req, res, next) => {
+    const user = req.user || req.session.user;
+    let page = parseInt(req.query.page || 1, 10);
+
+    page = isNaN(page) || page < 1 ? 1 : page;
+    const limit = user.isStudent ? 10 : 9;
+    let escapeRooms = [];
+    let count = 0;
+
+    try {
+        if (user && !user.isStudent) {
+            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll()));
+        }
+        const pages = Math.ceil(count / limit);
+
+        if (page > pages && pages !== 0) {
+            res.redirect(`/escapeRooms?page=${pages}`);
+        } else {
+            const pageArray = paginate(page, pages, 5);
+
+            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray});
+        }
+    } catch (error) {
+        next(error);
+    }
+};

@@ -103,6 +103,7 @@
     text-align: center;
     padding: 20px;
     padding-top: 0px;
+    position:relative;
 }
 p {
     text-align: left;
@@ -580,4 +581,8 @@ ranking {
   .navbar-team-name {
     display: none;
   }
+}
+
+.alert {
+  margin-top: 60px;
 }

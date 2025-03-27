@@ -489,3 +489,62 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     }
     return acc;
 }, {});
+
+exports.isValidEmail = (email, whitelist = []) => {
+    // Basic email format validation regex
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+        return false; // Invalid email format
+    }
+
+    // Extract domain from email safely
+    const parts = email.split("@");
+
+    if (parts.length !== 2) {
+        return false;
+    } // Malformed email
+
+    const domain = parts[1].trim();
+
+    // Ensure whitelist is properly formatted (trim spaces)
+    const cleanedWhitelist = whitelist.map((domain) => domain.trim());
+
+    // Check if domain is in the whitelist
+    return cleanedWhitelist.includes(domain);
+};
+
+exports.getRole = (role, username = "", i18n) => {
+    const whitelist = process.env.WHITELIST_DOMAINS ? process.env.WHITELIST_DOMAINS.split(",").map((domain) => domain.trim()) : undefined;
+    const teacherWhitelist = process.env.TEACHER_DOMAINS ? process.env.TEACHER_DOMAINS.split(",").map((domain) => domain.trim()) : undefined;
+    const disableChoosingRole = JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false"); // Default to false
+
+    if ((!role || role === "teacher") && exports.isValidEmail(username, teacherWhitelist)) {
+        if (disableChoosingRole) {
+            return "teacher";
+        }
+        return role;
+    } else if (exports.isValidEmail(username, whitelist)) {
+        if (disableChoosingRole) {
+            return "student";
+        } else if (role === "student") {
+            return role;
+        } else if (role === "teacher") {
+            if (teacherWhitelist) {
+                throw new Error(i18n.user.messages.notAllowedTeacherEmail);
+            } else {
+                return role;
+            }
+        } else {
+            throw new Error(i18n.user.messages.notAllowedStudentEmail);
+        }
+    } else if (disableChoosingRole && !whitelist) {
+        return "student";
+    } else if (disableChoosingRole && whitelist && whitelist.length > 0) {
+        throw new Error(i18n.user.messages.notAllowedEmail);
+    } else if (role == "student" || role == "teacher") {
+        return role; // Allow any role if role selection is enabled
+    } else {
+        throw new Error(i18n.api.unauthorized);
+    }
+};

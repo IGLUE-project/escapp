@@ -3183,10 +3183,15 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main .puzzle-card .validatorInputs {
   height: auto;
+  margin-left: 1em;
 }
 #mainSection .main .puzzle-card .validatorInputs.numberInput {
   width: 30%;
-  margin-left: 2vw;
+}
+#mainSection .main .puzzle-card .validatorInputs.numberInput:focus, #mainSection .main .puzzle-card .validatorInputs.numberInput:active {
+  color: #656683 !important;
+  border-color: #656683 !important;
+  -webkit-text-fill-color: #656683 !important;
 }
 #mainSection .main .puzzle-card.ui-sortable-helper {
   height: 105px !important;
@@ -3226,7 +3231,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   justify-content: flex-start;
 }
 #mainSection .main .puzzle-card .flex-puzzle-card div {
-  margin-right: 20px;
+  margin-right: 0.5em;
 }
 #mainSection .main .puzzle-card .delete-puzzle {
   position: absolute;
@@ -4761,6 +4766,49 @@ table.mainTable tr td .icon {
 .userForm button {
   font-size: 16px;
   height: 36px;
+}
+
+.user-edit-form {
+  color: white;
+}
+.user-edit-form label, .user-edit-form input, .user-edit-form select {
+  color: white !important;
+  border-color: white !important;
+  -webkit-text-fill-color: white !important;
+  padding-left: 1em;
+  padding-right: 1.5em;
+}
+.user-edit-form label::placeholder, .user-edit-form input::placeholder, .user-edit-form select::placeholder {
+  color: #656683 !important;
+  -webkit-text-fill-color: #656683 !important;
+}
+.user-edit-form .roleField .roleLabel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  color: white;
+}
+.user-edit-form .roleField .roleLabel input {
+  width: auto;
+  color: white;
+}
+.user-edit-form .roleField .roleLabel span {
+  display: inline-block;
+  padding: 0px;
+}
+.user-edit-form .roleField .roleLabel span input, .user-edit-form .roleField .roleLabel span select {
+  width: 100%;
+  text-align-last: center;
+  padding: 0px 15px;
+}
+.user-edit-form .roleField .roleLabel span label span {
+  padding-bottom: 7px;
+  text-align: left;
+  display: block;
+}
+.user-edit-form .roleField .roleLabel span label:focus-within {
+  color: white;
 }
 
 .user-flex-container {

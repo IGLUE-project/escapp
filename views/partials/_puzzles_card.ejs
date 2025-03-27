@@ -47,12 +47,9 @@
             </div>
         </div>
         <div>
-            <h3>
+            <h3> <span class="material-icons">track_changes</span>
                 <label for="puzzles[<%=reto%>][automatic]">
-                    <span>
-                        <span class="material-icons">track_changes</span>
                        <%=i18n.escapeRoom.steps.puzzles.tracking%>
-                    </span>
                 </label>
             </h3>
             <select class="light" required  id="puzzles[<%=reto%>][automatic]" name="puzzles[<%=reto%>][automatic]" value="<%= puzzle.automatic %>" placeholder="<%i18n.escapeRoom.steps.puzzles.placeholder%>" autocomplete="off">
