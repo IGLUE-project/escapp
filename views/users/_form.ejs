@@ -33,22 +33,22 @@
 <br />
 <%if (!user.id || locals.admin) {%>
 <div class="userField">
-    
     <label for="username"><span><%=i18n.user.username%></span>
     <input type="email" <%=user.id?"disabled":""%> class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
     <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || locals.admin) {%>
         <div class="roleField">
             <label for="teacher" class="roleLabel">
-            <input class="chooseRole" type="radio" name="role" id="teacher" value="teacher"/>
-            <span><%=i18n.user.teacher%></span>
+                <input class="chooseRole" type="radio" name="role" id="teacher" value="teacher" <%if (locals.admin && !user.isStudent)  {%> checked <%}%> />
+                <span><%=i18n.user.roles.teacher%></span>
             </label>
             <label for="student" class="roleLabel">
-            <input class="chooseRole" type="radio" name="role" id="student" value="student" checked/>
-            <span><%=i18n.user.student%></span>
+                <input class="chooseRole" type="radio" name="role" id="student" value="student" <%if (!user.id) {%> checked <%}%>  <%if (locals.admin && user.isStudent)  {%> checked  <%}%>  />
+                <span><%=i18n.user.roles.student%></span>
+            </label>
             <%if (locals.admin) {%>
             <label for="admin" class="roleLabel">
-                <input class="chooseRole" type="radio" name="role" id="admin" value="admin" checked/>
-                <span><%=i18n.user.admin%></span>
+                <input class="chooseRole" type="radio" name="role" id="admin" value="admin" <%if (locals.admin && user.isAdmin)  {%> checked <%}%>  />
+                <span><%=i18n.user.roles.admin%></span>
             </label>
             <%}%>
         </div>

@@ -1060,7 +1060,7 @@
         "passLeaveBlank": "If you would like to change your password fill in the following fields. Otherwise, leave them blank",
         "roles": {
             "admin": "Admin",
-            "student": "student",
+            "student": "Student",
             "teacher": "Teacher"
         },
         "sessionExpired": "Your session has expired",

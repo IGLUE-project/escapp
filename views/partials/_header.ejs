@@ -10,6 +10,15 @@
                 <span style="display:inline-block;width:10px;"></span>
                 <a title="<%=i18n.common.ideas%>" href="/resources/"><span class="navBarIcon material-icons">widgets</span></a>
             <% } %>
+            <% if (session.user.isAdmin) { %>
+                <span style="display:inline-block;width:10px;"></span>
+                Admin
+                <span style="display:inline-block;width:10px;"></span>
+                <a title="<%=i18n.common.users%>" href="/users/index/"><span class="navBarIcon material-icons">people</span></a>
+                <span style="display:inline-block;width:10px;"></span>
+                <a title="<%=i18n.common.mainPage%>" href="/escapeRoomsAdmin"><span class="navBarIcon material-icons">games</span></a>
+            
+            <% } %>
         <% } %>
     </div>
     <div class="right">

@@ -438,7 +438,7 @@ const updatePuzzle = (order, currentPuzzle, prevPuzzleOrder) => {
 
 
 const createAlert = (level = "info", msg, keep = false, time = 5000) => {
-  const config = {"message": msg, "alertType": level, "position": "t r",  "hideAnimation": "slide", "showAnimation": "bounce"};
+  const config = {"message": msg, "alertType": level, "position": "b r",  "hideAnimation": "slide", "showAnimation": "bounce"};
   if (!keep) {
     config.time = time;
     config.autoHide = true;

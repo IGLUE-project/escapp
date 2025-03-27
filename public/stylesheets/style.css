@@ -4756,6 +4756,43 @@ table.mainTable tr td .icon {
   height: 36px;
 }
 
+.user-edit-form {
+  color: white;
+}
+.user-edit-form label, .user-edit-form input, .user-edit-form select {
+  color: white !important;
+  border-color: white !important;
+  -webkit-text-fill-color: white !important;
+}
+.user-edit-form .roleField .roleLabel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  color: white;
+}
+.user-edit-form .roleField .roleLabel input {
+  width: auto;
+  color: white;
+}
+.user-edit-form .roleField .roleLabel span {
+  display: inline-block;
+  padding: 0px;
+}
+.user-edit-form .roleField .roleLabel span input, .user-edit-form .roleField .roleLabel span select {
+  width: 100%;
+  text-align-last: center;
+  padding: 0px 15px;
+}
+.user-edit-form .roleField .roleLabel span label span {
+  padding-bottom: 7px;
+  text-align: left;
+  display: block;
+}
+.user-edit-form .roleField .roleLabel span label:focus-within {
+  color: white;
+}
+
 .user-flex-container {
   display: flex;
   flex-direction: row;

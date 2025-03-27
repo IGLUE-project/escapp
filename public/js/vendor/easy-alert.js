@@ -38,7 +38,7 @@
                 //Global alert called via $.easyAlert(...);
                 var globalPositionClass;
                 var containerStyle = {
-                    position: 'absolute',
+                    position: 'fixed',
                     'min-width': settings.globalMinWidth,
                     display: 'none'
                 };
@@ -121,7 +121,7 @@
                     } : null;
                 if (hasLeftOrRightAnimationShow)
                     showOptions.direction = hPos;
-                $alertContainer.appendTo('.previewContainer').show(showOptions);
+                $alertContainer.appendTo('body').show(showOptions);
                 return settings.message;
             }
             return this;

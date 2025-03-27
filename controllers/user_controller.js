@@ -284,3 +284,4 @@ exports.newResetPasswordHash = async (req, res) => {
         res.redirect("back");
     }
 };
+
