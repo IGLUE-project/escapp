@@ -205,4 +205,5 @@ router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleCo
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, sessionController.adminOrAuthorRequired, reusablePuzzleController.getReusablePuzzle);
 
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
+router.get("/uploads/webapps/:public_id/:file_name", sessionController.loginRequired, assetsController.getWebAppAsset);
 module.exports = router;
