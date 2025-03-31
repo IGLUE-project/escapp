@@ -2496,7 +2496,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   align-items: center;
   overflow: hidden;
   text-overflow: "...";
-  max-height: 44px;
+  max-height: 45px;
   white-space: nowrap;
   -webkit-line-clamp: 1;
 }
@@ -2566,13 +2566,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .editButton:disabled {
   padding: 5px;
 }
-#resourceCatalog .deleteButton {
+#resourceCatalog .delete-button {
   padding: 5px;
 }
-#resourceCatalog .deleteButton:hover {
+#resourceCatalog .delete-button:hover {
   background: rgb(83, 17, 20);
 }
-#resourceCatalog .deleteButton:hover #delete {
+#resourceCatalog .delete-button:hover #delete {
   color: #F47E84;
 }
 #resourceCatalog .linkButton {

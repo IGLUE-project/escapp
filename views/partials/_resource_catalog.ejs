@@ -98,7 +98,7 @@
                                 <%=puzzle.name%>
                             </p>
                             <div class="button-group">
-                                <button class="listButton iconButton deleteButton"
+                                <button class="listButton iconButton delete-button"
                                     onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>
                                     <span class="building-block-icon material-icons" id="delete">
                                         delete_outline </span>
@@ -144,7 +144,7 @@
                                         <button class="acceptButton" type="button"
                                             onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                     </div>
-                                    <button class="listButton iconButton deleteButton"
+                                    <button class="listButton iconButton delete-button"
                                         onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
                                         <span class="building-block-icon material-icons" id="delete">
                                             delete_outline </span>
@@ -187,7 +187,7 @@
                                             <button class="acceptButton" type="button"
                                                 onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                         </div>
-                                        <button class="listButton iconButton deleteButton"
+                                        <button class="listButton iconButton delete-button"
                                             onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
                                             <span class="building-block-icon material-icons" id="delete">
                                                 delete_outline </span>
@@ -232,7 +232,7 @@
                                                 <button class="acceptButton" type="button"
                                                     onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                             </div>
-                                            <button class="listButton iconButton deleteButton"
+                                            <button class="listButton iconButton delete-button"
                                                 onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
                                                 <span class="building-block-icon material-icons" id="delete">
                                                     delete_outline </span>
@@ -275,7 +275,7 @@
                                                     <button class="acceptButton" type="button"
                                                         onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                                 </div>
-                                                <button class="listButton iconButton deleteButton"
+                                                <button class="listButton iconButton delete-button"
                                                     onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
                                                     <span class="building-block-icon material-icons" id="delete">
                                                         delete_outline </span>
@@ -315,12 +315,12 @@
                                                             <p class="text-overlay">¿Estás seguro de que quieres borrar
                                                                 este
                                                                 archivo?</p>
-                                                            <button class="deleteButton" type="button"
+                                                            <button class="delete-button" type="button"
                                                                 onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
                                                             <button class="acceptButton" type="button"
                                                                 onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                                         </div>
-                                                        <button class="listButton iconButton deleteButton"
+                                                        <button class="listButton iconButton delete-button"
                                                             onclick='overlayTriggerCatalog("<%=asset.id%>")'>
                                                             <span class="building-block-icon material-icons"
                                                                 id="delete">
@@ -486,7 +486,7 @@
 
 
         if (!close) {
-            overlay.css("transform", `translateY(${overlay.height() / 2}px`);
+            overlay.css("transform", `translateY(${overlay.height() / 1.2}px`);
             overlay.show();
 
 
