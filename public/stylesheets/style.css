@@ -1388,6 +1388,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   vertical-align: text-bottom;
 }
 .escapeRooms .flexBoxEscapeRooms {
+  padding: 1em;
+  border: 2px solid white;
+  border-radius: 10px;
   display: flex;
   justify-content: space-around;
   flex-flow: row wrap;
@@ -1462,6 +1465,25 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.escapeRooms .escapeRoomListButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+.escapeRooms .escapeRoomListButtons button {
+  border: 2px solid white;
+  border-bottom: 2px solid #232850;
+  border-radius: 10px 10px 0 0;
+  background: transparent;
+  color: white;
+  font-size: 0.81em;
+  transform: translateX(-1em);
+}
+.escapeRooms .escapeRoomListButtons button.selected {
+  color: #232850;
+  background: white;
+  border-bottom-color: white;
 }
 
 @media (max-width: 1200px) {
@@ -1820,14 +1842,42 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .filters label:focus-within {
   color: white;
 }
-.filters select, .filters button.inverse {
+.filters select, .filters input, .filters button.inverse {
   color: white;
   -webkit-text-fill-color: white !important;
   border-color: white;
   padding: 10px;
 }
-.filters select {
+.filters select, .filters input {
   padding-right: 1.65em !important;
+}
+.filters .editButton {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
+  border-radius: 5px;
+  border-style: solid;
+  padding: 10px;
+  text-align: center;
+  outline: 0;
+  background-color: #FAC855 !important;
+  border-color: #FAC855 !important;
+  color: #161938 !important;
+}
+
+.collaborators .filters input {
+  width: 500px;
+  max-width: 50%;
+}
+.collaborators .flex-table-wrapper .flex-name, .collaborators .flex-table-wrapper .flex-email {
+  flex: 1;
+}
+.collaborators .flex-table-wrapper .flex-actions button {
+  padding: 2px;
+}
+.collaborators .flex-table-wrapper .flex-actions button span {
+  font-size: 1em;
 }
 
 #flassmessages {
@@ -3231,7 +3281,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   justify-content: flex-start;
 }
 #mainSection .main .puzzle-card .flex-puzzle-card div {
-  margin-right: 0.5em;
+  margin-right: 0.5em©;
 }
 #mainSection .main .puzzle-card .delete-puzzle {
   position: absolute;

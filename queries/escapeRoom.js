@@ -6,6 +6,11 @@ exports.load = {
         {
             "model": models.user,
             "as": "author"
+        },
+        {
+            "model": models.user,
+            "as": "userCoAuthor",
+            "required": false
         }
     ]
 };
@@ -84,6 +89,11 @@ exports.loadComplete = {
         {
             "model": models.user,
             "as": "author"
+        },
+        {
+            "model": models.user,
+            "as": "userCoAuthor",
+            "required": false
         }
     ],
     "order": [
@@ -169,7 +179,7 @@ exports.all = (user, page = 1, limit = 10) => {
     if (user) {
         findOptions.include[0].include[0].where = {"id": user};
         findOptions.include[0].include[0].required = true;
-        findOptions.attributes = ["id"];
+        findOptions.attributes = ["id", "title"];
         findOptions.distinct = false;
     }
     if (page !== null) {
@@ -181,14 +191,30 @@ exports.all = (user, page = 1, limit = 10) => {
 
 exports.forTeacher = (id, page = 1, limit = 10) => ({
     "attributes": ["id", "title", "invitation"],
+    "distinct": true,
     "include": [
         models.attachment,
         {
             "model": models.user,
             "as": "author",
-            "where": {id}
+            "attributes": [],
+
+            "required": false
+        },
+        {
+            "model": models.user,
+            "as": "userCoAuthor",
+            "attributes": [],
+            "duplicating": false,
+            "required": false
         }
     ],
+    "where": {
+        [Op.or]: [
+            { "authorId": id },
+            { "$userCoAuthor.id$": id }
+        ]
+    },
     limit,
     "offset": (page - 1) * limit,
     "order": [["id", "desc"]]

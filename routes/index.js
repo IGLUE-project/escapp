@@ -88,46 +88,46 @@ router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionControll
 
 // Routes for the resource /escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
-router.get("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorOrParticipantRequired, escapeRoomController.show);
+router.get("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, escapeRoomController.show);
 
 router.get("/escapeRooms/new", sessionController.loginRequired, sessionController.notStudentRequired, escapeRoomController.new);
 router.post("/escapeRooms", sessionController.loginRequired, sessionController.notStudentRequired, upload.single("image"), escapeRoomController.create);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.edit);
-router.put("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, upload.single("image"), escapeRoomController.update);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.edit);
+router.put("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("image"), escapeRoomController.update);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.destroy);
-router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.clone);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.clone);
 // Edit escape room steps
-router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.adminOrAuthorRequired, turnoController.turnos);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.adminOrAuthorRequired, turnoController.turnosUpdate);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/puzzles", sessionController.loginRequired, sessionController.adminOrAuthorRequired, puzzleController.retos);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/puzzles", sessionController.loginRequired, sessionController.adminOrAuthorRequired, puzzleController.retosUpdate);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrAuthorRequired, hintController.pistas);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrAuthorRequired, upload.single("hints"), hintController.pistasUpdate);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.assets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrAuthorRequired, upload.single("upload"), assetsController.assetsUpdate);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/uploadAssets", sessionController.loginRequired, sessionController.adminOrAuthorRequired, upload.single("upload"), assetsController.uploadAssets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/deleteAssets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.deleteAssets);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.evaluation);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.evaluationUpdate);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.indicationsInterface);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.indicationsInterfaceUpdate);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.teamInterface);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.teamInterfaceUpdate);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.classInterface);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.classInterfaceUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.turnos);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.turnosUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/puzzles", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, puzzleController.retos);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/puzzles", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, puzzleController.retosUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hintController.pistas);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("hints"), hintController.pistasUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.assets);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("upload"), assetsController.assetsUpdate);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/uploadAssets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("upload"), assetsController.uploadAssets);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/deleteAssets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.deleteAssets);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluation);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluationUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.indicationsInterface);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.indicationsInterfaceUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.teamInterface);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.teamInterfaceUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.classInterface);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.classInterfaceUpdate);
 
 // Routes for starting/stopping shifts
-router.get("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.adminOrAuthorRequired, turnoController.indexActivate);
-router.put("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.adminOrAuthorRequired, turnoController.activate);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/new", sessionController.loginRequired, sessionController.adminOrAuthorRequired, turnoController.create);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/reset", sessionController.loginRequired, sessionController.adminOrAuthorRequired, turnoController.reset);
-router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, turnoController.update);
-router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, turnoController.destroy);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.indexActivate);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.activate);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/new", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.create);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/reset", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.reset);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.update);
+router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.destroy);
 
 // Routes for hint app
-router.get("/escapeRooms/:escapeRoomId(\\d+)/hintApp", sessionController.loginRequired, sessionController.adminOrAuthorOrParticipantRequired, hintController.hintApp);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/hintAppWrapper", sessionController.loginRequired, sessionController.adminOrAuthorOrParticipantRequired, hintController.hintAppWrapper);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/xml", sessionController.loginRequired, sessionController.adminOrAuthorRequired, hintController.downloadMoodleXML);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/hintApp", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, hintController.hintApp);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/hintAppWrapper", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, hintController.hintAppWrapper);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/xml", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hintController.downloadMoodleXML);
 
 // Routes for playing - student
 router.post("/escapeRooms/:escapeRoomId(\\d+)/play", sessionController.loginRequired, sessionController.participantRequired, turnoController.isTurnNotPending, playController.startPlaying, playController.play);
@@ -136,50 +136,53 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/finish", sessionController.loginReq
 router.get("/escapeRooms/:escapeRoomId(\\d+)/results", sessionController.loginRequired, sessionController.participantRequired, turnoController.isTurnNotPending, turnoController.isTurnStarted, playController.ranking, playController.results);
 
 // Routes for playing - teacher
-router.get("/escapeRooms/:escapeRoomId(\\d+)/message", sessionController.loginRequired, sessionController.adminOrAuthorRequired, playController.ranking, playController.writeMessage);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/message", sessionController.loginRequired, sessionController.adminOrAuthorRequired, playController.ranking, playController.sendMessage);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/project", sessionController.loginRequired, sessionController.adminOrAuthorRequired, playController.ranking, playController.classInterface);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/play", sessionController.loginRequired, sessionController.adminOrAuthorRequired, playController.ranking, playController.classInterface);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/finish", sessionController.loginRequired, sessionController.adminOrAuthorRequired, playController.ranking, playController.finish, playController.results);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/confirm", sessionController.loginRequired, sessionController.adminOrAuthorRequired, participantController.confirmAttendance);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/puzzles/:puzzleId(\\d+)/check", sessionController.loginRequired, sessionController.adminOrAuthorOrParticipantRequired, apiController.checkParticipantSession, apiController.checkPuzzleSolution);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.showCollaborators);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.addCollaborators);
+router.delete("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.deleteCollaborators);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/message", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, playController.ranking, playController.writeMessage);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/message", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, playController.ranking, playController.sendMessage);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/project", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, playController.ranking, playController.classInterface);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/play", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, playController.ranking, playController.classInterface);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/finish", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, playController.ranking, playController.finish, playController.results);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/confirm", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, participantController.confirmAttendance);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/puzzles/:puzzleId(\\d+)/check", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, apiController.checkParticipantSession, apiController.checkPuzzleSolution);
 
 // Routes for the resource participants of a turn
-router.get("/escapeRooms/:escapeRoomId(\\d+)/participants", sessionController.loginRequired, sessionController.adminOrAuthorRequired, participantController.index);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/teams", sessionController.loginRequired, sessionController.adminOrAuthorRequired, teamController.index);
-router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)/user/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, participantController.studentLeave);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/participants", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, participantController.index);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/teams", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, teamController.index);
+router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)/user/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, participantController.studentLeave);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)", sessionController.loginRequired, participantController.studentLeave);
-router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)/reset", sessionController.loginRequired, sessionController.adminOrAuthorRequired, teamController.resetProgress);
-router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, teamController.delete);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)/reset", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, teamController.resetProgress);
+router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, teamController.delete);
 
 // Routes for the resource /teams
-router.get("/escapeRooms/:escapeRoomId(\\d+)/join", sessionController.loginRequired, sessionController.studentRequired, participantController.checkIsNotParticipant, participantController.checkSomeTurnAvailable, joinController.main);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/join", sessionController.loginRequired, sessionController.studentRequired, participantController.checkIsNotParticipant, participantController.checkSomeTurnAvailable, joinController.indexTurnos, teamController.create);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/join", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, participantController.checkIsNotParticipant, participantController.checkSomeTurnAvailable, joinController.main);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/join", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, participantController.checkIsNotParticipant, participantController.checkSomeTurnAvailable, joinController.indexTurnos, teamController.create);
 
-router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/select", sessionController.loginRequired, sessionController.studentRequired, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, joinController.mainTurnos, teamController.create);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/select", sessionController.loginRequired, sessionController.studentRequired, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, joinController.mainTurnos, teamController.create);
-// Router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/", sessionController.loginRequired, sessionController.studentRequired, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, turnoController.password);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionController.loginRequired, sessionController.studentRequired, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, joinController.selectTurno, teamController.create);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/select", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, joinController.mainTurnos, teamController.create);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/select", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, joinController.mainTurnos, teamController.create);
+// Router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, turnoController.password);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, joinController.selectTurno, teamController.create);
 
-router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams", sessionController.loginRequired, sessionController.studentRequired, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, teamController.indexTurnos);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/new", sessionController.loginRequired, sessionController.studentRequired, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, teamController.new);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams", sessionController.loginRequired, sessionController.studentRequired, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, teamController.create);
-router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)", sessionController.loginRequired, sessionController.studentRequired, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, participantController.checkTeamAvailable, membersController.add);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, teamController.indexTurnos);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/new", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, teamController.new);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, teamController.create);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)", sessionController.loginRequired, participantController.isNotAuthorOrCoAuthorOrAdmin, joinController.checkJoinToken, participantController.checkIsNotParticipant, participantController.checkTurnAvailable, participantController.checkTeamAvailable, membersController.add);
 
 // Routes for learning analytics
-router.get("/escapeRooms/:escapeRoomId/analytics/", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.analytics);
-router.get("/escapeRooms/:escapeRoomId/analytics/ranking", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.ranking);
-router.get("/escapeRooms/:escapeRoomId/analytics/timeline", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.timeline);
-router.get("/escapeRooms/:escapeRoomId/analytics/progress", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.progress);
-router.get("/escapeRooms/:escapeRoomId/analytics/histogram", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.histogram);
-router.get("/escapeRooms/:escapeRoomId/analytics/hints/participants", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.hintsByParticipants);
-router.get("/escapeRooms/:escapeRoomId/analytics/hints/teams", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.hintsByTeams);
-router.get("/escapeRooms/:escapeRoomId/analytics/puzzles/participants", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.puzzlesByParticipants);
-router.get("/escapeRooms/:escapeRoomId/analytics/puzzles/teams", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.puzzlesByTeams);
-router.get("/escapeRooms/:escapeRoomId/analytics/puzzles", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.puzzleStats);
-router.get("/escapeRooms/:escapeRoomId/analytics/grading", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.grading);
-router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.download);
-router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.adminOrAuthorRequired, analyticsController.downloadRaw);
+router.get("/escapeRooms/:escapeRoomId/analytics/", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.analytics);
+router.get("/escapeRooms/:escapeRoomId/analytics/ranking", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.ranking);
+router.get("/escapeRooms/:escapeRoomId/analytics/timeline", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.timeline);
+router.get("/escapeRooms/:escapeRoomId/analytics/progress", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.progress);
+router.get("/escapeRooms/:escapeRoomId/analytics/histogram", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.histogram);
+router.get("/escapeRooms/:escapeRoomId/analytics/hints/participants", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.hintsByParticipants);
+router.get("/escapeRooms/:escapeRoomId/analytics/hints/teams", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.hintsByTeams);
+router.get("/escapeRooms/:escapeRoomId/analytics/puzzles/participants", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.puzzlesByParticipants);
+router.get("/escapeRooms/:escapeRoomId/analytics/puzzles/teams", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.puzzlesByTeams);
+router.get("/escapeRooms/:escapeRoomId/analytics/puzzles", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.puzzleStats);
+router.get("/escapeRooms/:escapeRoomId/analytics/grading", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.grading);
+router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.download);
+router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.downloadRaw);
 
 // Routes for guide/apps/resources
 router.get("/inspiration", resourceController.showGuide);
@@ -198,6 +201,6 @@ router.put("/resources/:resourceId", sessionController.loginRequired, sessionCon
 router.delete("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.destroy);
 
 
-router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.browse);
+router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browse);
 
 module.exports = router;

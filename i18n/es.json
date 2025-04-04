@@ -183,6 +183,9 @@
             "errorEditingTurno": "Error al editar el turno",
             "errorEditingUser": "Error al editar el usuario",
             "errorExistingUser": "El usuario ya existe",
+            "errorUserNotExists": "El usuario no existe",
+            "errorUserIsNotTeacher": "El usuario no es profesor",
+            "errorUserIsAlreadyACollaborator": "El usuario ya es un colaborador",
             "errorFile": "Error al subir el fichero",
             "errorImage": "Error al subir la imagen",
             "errorMandatoryPass": "Es obligatorio introducir una contraseña",
@@ -214,6 +217,7 @@
             "successEditingTeam": "Equipo editado con éxito",
             "successEditingTurno": "Turno editado con éxito",
             "successEditingUser": "Usuario editado con éxito",
+            "successAddingCollaborator": "Colaborador añadido con éxito",
             "successImage": "Imagen subida con éxito",
             "youMustAcceptTerms": "You must accept the terms and conditions in order to register"
         },
@@ -352,6 +356,10 @@
             "createER": "Crear nueva escape room",
             "noERTeacher": "No has creado ninguna escape room, gestiónalas desde aquí...",
             "noERStudent": "No tienes ninguna escape room activa, utiliza en enlace original que te ha proporcionado tu profe para apuntarte.",
+            "myERs": "Mis escape rooms",
+            "otherERs": "Todas",
+            "emptyER": "No hay colaboradores",
+            "playingERs": "Participando",
             "yesERStudent": "Estas son las escape rooms disponibles",
             "yesERTeacher": "Gestiona las escape rooms desde aquí...",
             "notAvailable": "Escape Room no disponible"
@@ -764,6 +772,16 @@
         "waiting": "En espera",
         "disconnected": "Desonectado"
     },
+    "collaborators": {
+        "Collaborators": "Colaboradores",
+        "Name": "Nombre",
+        "Email": "E-mail",
+        "add": "añadir",
+        "delete": "borrar",
+        "areYouSureDelete": "¿Seguro que desea quitar este colaborador?",
+        "addCollaborator": "Añadir colaborador",
+        "owner": "Propietario"
+    },
     "puzzle": {
         "puzzle": "reto",
         "Puzzle": "Reto",
@@ -820,6 +838,7 @@
             "edit": "Editar",
             "join": "Enlace de invitación",
             "participants": "Participantes",
+            "collaborators": "Colaboradores",
             "teams": "Equipos",
             "shifts": "Turnos",
             "turnos": "Turnos",

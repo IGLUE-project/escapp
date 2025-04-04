@@ -99,6 +99,32 @@ escapeRoom.belongsTo(user, {
 });
 
 
+escapeRoom.belongsToMany(user, {
+    "as": "userCoAuthor",
+    "through": "coAuthors",
+    "foreignKey": {
+        "name": "escapeRoomId",
+        "allowNull": false
+    },
+    "onDelete": "CASCADE",
+    "otherKey": "userId",
+    "constraints": true
+
+});
+
+user.belongsToMany(escapeRoom, {
+    "as": "escapeRoomCoAuthored",
+    "through": "coAuthors",
+    "foreignKey": {
+        "name": "userId",
+        "allowNull": false
+    },
+    "onDelete": "CASCADE",
+    "otherKey": "escapeRoomId",
+    "constraints": true
+});
+
+
 // Relation N-to-M between Turno and User:
 //    A User participates in many turnos.
 //    A turn has many participants (the users who have added it as participant)

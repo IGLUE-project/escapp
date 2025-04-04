@@ -41,11 +41,11 @@ exports.create = async (req, res, next) => {
     const {user} = req.session;
     const {i18n} = res.locals;
 
-    if (!user.isStudent) {
-        req.flash("error", `${i18n.common.flash.errorCreatingTeam}`);
-        res.redirect("back");
-        return;
-    }
+    // If (!user.isStudent) {
+    //     Req.flash("error", `${i18n.common.flash.errorCreatingTeam}`);
+    //     Res.redirect("back");
+    //     Return;
+    // }
     const transaction = await sequelize.transaction();
 
     try {

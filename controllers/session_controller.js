@@ -143,6 +143,7 @@ exports.adminOrMyselfRequired = (req, res, next) => {
 exports.adminOrAuthorRequired = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
+
     const {i18n} = res.locals;
 
     if (isAdmin || isAuthor) {
@@ -153,13 +154,29 @@ exports.adminOrAuthorRequired = (req, res, next) => {
     }
 };
 
-// MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
-exports.adminOrAuthorOrParticipantRequired = async (req, res, next) => {
+exports.adminOrCoAuthorRequired = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
-        isAuthor = req.escapeRoom.authorId === req.session.user.id;
+        isAuthor = req.escapeRoom.authorId === req.session.user.id,
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
+
+    const {i18n} = res.locals;
+
+    if (isAdmin || isAuthor || isCoAuthor) {
+        next();
+    } else {
+        res.status(403);
+        next(new Error(i18n.api.forbidden));
+    }
+};
+
+// MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
+exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) => {
+    const isAdmin = Boolean(req.session.user.isAdmin),
+        isAuthor = req.escapeRoom.authorId === req.session.user.id,
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
 
     try {
-        if (isAdmin || isAuthor) {
+        if (isAdmin || isAuthor || isCoAuthor) {
             next();
             return;
         }

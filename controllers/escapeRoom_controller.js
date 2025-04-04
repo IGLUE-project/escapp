@@ -42,17 +42,33 @@ exports.load = async (req, res, next, escapeRoomId) => {
 // GET /escapeRooms
 exports.index = async (req, res, next) => {
     const user = req.user || req.session.user;
+    const isPublic = req.query.public;
+    const isOwn = req.query.own;
+    let whichMenu = "public";
+
+    if (isOwn || user && user.isStudent && !isPublic) {
+        whichMenu = "playing";
+    } else if (user && !user.isStudent && !isOwn && !isPublic) {
+        whichMenu = "created";
+    }
     let page = parseInt(req.query.page || 1, 10);
 
     page = isNaN(page) || page < 1 ? 1 : page;
-    const limit = user.isStudent ? 10 : 9;
+    const limit = whichMenu === "created" ? 9 : 10;
     let escapeRooms = [];
     let count = 0;
 
+    console.log({limit});
     try {
-        if (user && !user.isStudent) {
+        if (whichMenu == "created") {
             ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, page, limit)));
+        } else if (whichMenu == "playing") {
+            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, page, limit)));
+            if (count == 0) {
+                res.redirect("/escapeRooms?public=1");
+            }
         } else {
+            console.log("public");
             let erAll = [];
 
             count = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE NOT scope = TRUE OR scope IS NULL OR "participants"."userId"  = ${user.id}`, {"raw": true, "type": QueryTypes.SELECT});
@@ -81,7 +97,7 @@ exports.index = async (req, res, next) => {
         } else {
             const pageArray = paginate(page, pages, 5);
 
-            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray});
+            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray, whichMenu, isPublic, isOwn, "admin": false});
         }
     } catch (error) {
         next(error);
@@ -459,9 +475,80 @@ exports.admin = async (req, res, next) => {
         } else {
             const pageArray = paginate(page, pages, 5);
 
-            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray});
+            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true});
         }
     } catch (error) {
         next(error);
+    }
+};
+
+// GET /escapeRooms/:escapeRoomId/collaborators
+exports.showCollaborators = async (req, res) => {
+    const {escapeRoom} = req;
+
+    const collaborators = await escapeRoom.getUserCoAuthor();
+
+    res.render("escapeRooms/collaborators", {escapeRoom, collaborators});
+};
+
+
+// POST /escapeRooms/:escapeRoomId/collaborators
+exports.addCollaborators = async (req, res, next) => {
+    const {escapeRoom, body} = req;
+    const {collaborator} = body;
+    const transaction = await sequelize.transaction();
+    const {i18n} = res.locals;
+
+    try {
+        if (collaborator) {
+            const collab = await models.user.findOne({
+                "where": {"username": collaborator},
+                "include": {
+                    "model": models.escapeRoom,
+                    "as": "escapeRoomCoAuthored"
+                }
+            }, {transaction});
+
+            if (collab) {
+                if (collab.escapeRoomCoAuthored.some((x) => x.id = escapeRoom.id)) {
+                    await transaction.rollback();
+                    req.flash("error", i18n.common.flash.errorUserIsAlreadyACollaborator);
+                    res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
+                } else if (!collab.isStudent) {
+                    await escapeRoom.addUserCoAuthor(collab.id, {transaction});
+                    await transaction.commit();
+                    req.flash("success", i18n.common.flash.successAddingCollaborator);
+                    res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
+                } else {
+                    await transaction.rollback();
+                    req.flash("error", i18n.common.flash.errorUserIsNotTeacher);
+                    res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
+                }
+            } else {
+                await transaction.rollback();
+                req.flash("error", i18n.common.flash.errorUserNotExists);
+                res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
+            }
+        }
+    } catch (error) {
+        await transaction.rollback();
+        req.flash("error", `${error.message}`);
+        next(error);
+    }
+};
+
+// DELETE /escapeRooms/:escapeRoomId/collaborators
+exports.deleteCollaborators = async (req, res, next) => {
+    const {escapeRoom, body} = req;
+    const {collaborator} = body;
+
+    if (collaborator) {
+        try {
+            await escapeRoom.removeUserCoAuthor(collaborator);
+            res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
+        } catch (error) {
+            req.flash("error", `${error.message}`);
+            next(error);
+        }
     }
 };

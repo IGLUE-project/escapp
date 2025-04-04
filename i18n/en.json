@@ -187,6 +187,9 @@
             "errorEditingTurno": "An error occurred while editing the shift",
             "errorEditingUser": "An error occurred while editing the user",
             "errorExistingUser": "This user already exists",
+            "errorUserNotExists": "This user does not exist",
+            "errorUserIsNotTeacher": "The user is not a teacher",
+            "errorUserIsAlreadyACollaborator": "The user is already a collaborator",
             "errorFile": "An error occurred while uploading the file",
             "errorImage": "An error occurred while uploading the picture",
             "errorMandatoryPass": "Sorry, password is required for login",
@@ -197,6 +200,7 @@
             "resetPasswordSent": "We have sent you an email with a link to reset your password",
             "resetPasswordUserNotFound": "Sorry, you are not registered in escapp",
             "successActivatingTurno": "Shift successfully activated/deactivated",
+            "successAddingCollaborator": "Successfully added collaborator",
             "successCreatingER": "Escape Room successfully set up",
             "successCreatingHint": "Hint successfully created",
             "successCreatingPuzzle": "Puzzle successfully created",
@@ -359,6 +363,10 @@
             "createER": "Create new escape room",
             "noERTeacher": "You haven't created any Escape Rooms yet. Manage them from here",
             "noERStudent": "You haven't any active Escape Rooms yet, wait for your teacher's invitation.",
+            "myERs": "My escape rooms",
+            "otherERs":"All",
+            "emptyER": "No collaborators yet",
+            "playingERs":"Participating'",
             "yesERStudent": "These are your Escape Rooms",
             "yesERTeacher": "Manage your Escape Rooms from here",
             "notAvailable": "Escape Room not available"
@@ -775,6 +783,17 @@
         "waiting": "Waiting",
         "disconnected": "Disconnected"
     },
+    "collaborators": {
+        "Collaborators": "Collaborators",
+        "Name": "Name",
+        "Email": "E-mail",
+        "add": "add",
+        "delete": "delete",
+        "areYouSureDelete": "Are you sure you want to remove this collaborator?",
+
+        "addCollaborator": "Add collaborator",
+        "owner": "Owner"
+    },
     "puzzle": {
         "puzzle": "puzzle",
         "Puzzle": "Puzzle",
@@ -832,6 +851,7 @@
             "edit": "Edit",
             "join": "Join invitation",
             "participants": "Participants",
+            "collaborators": "Collaborators",
             "teams": "Teams",
             "share": "share",
             "shifts": "Shifts",
