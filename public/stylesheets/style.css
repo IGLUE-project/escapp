@@ -2069,7 +2069,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-color: #FAC855;
   top: 5px;
   left: -35px;
-  position: drop-shadow(0 0mm 4mm rgb(0, 0, 0)) solute;
+  position: absolute;
   border-radius: 0px;
   text-align: center;
   border-radius: 5px 0px 0px 5px;
@@ -2657,7 +2657,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   max-width: 90ch;
 }
 #resourceCatalog #addItem {
-  position: sticky;
   left: 1000px;
   bottom: 10px;
   right: 10px;

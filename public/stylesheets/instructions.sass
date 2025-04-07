@@ -54,7 +54,7 @@
           background-color: $brightyellow
           top: 5px
           left: -35px
-          position: drop-shadow(0 0mm 4mm rgb(0, 0, 00))solute
+          position: absolute
           border-radius: 0px
           text-align: center
           border-radius: 5px 0px 0px 5px
@@ -370,10 +370,10 @@
     p
       margin: 0
       font-size: 18px
-  .catalog-container 
+  .catalog-container
     cursor: pointer
     margin-top: 0px
- 
+
   a
     color: black
   scrollbar-width: thin
@@ -397,10 +397,10 @@
       gap: 12px
       align-items: center
 
-      overflow: hidden 
-      text-overflow: "..." 
+      overflow: hidden
+      text-overflow: "..."
       max-height: 45px
-      white-space: nowrap 
+      white-space: nowrap
       -webkit-line-clamp: 1
     .title
       margin: 12px 0
@@ -417,11 +417,11 @@
     .material-icons
       padding: 3px
       border-radius: 3px
-    #purple 
+    #purple
       background: rgb(91, 50, 129)
-    #blue 
+    #blue
       background: $blue
-    #green 
+    #green
       background: $darkergreen
     #red
       background: $red
@@ -469,7 +469,7 @@
     padding: 5px
     &:hover
       background: $purple
-      #link 
+      #link
         color: $brighterblue
       .tooltip-link
         display: flex
@@ -498,7 +498,7 @@
     p
       margin: 0
       display: ruby
-    span  
+    span
       color: white
   .newItemButton
     box-shadow: 0px 0px 40px 12px $darkerpurple
@@ -532,7 +532,6 @@
       max-width: 90ch
 
   #addItem
-    position: sticky
     left: 1000px
     bottom: 10px
     right: 10px
