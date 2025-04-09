@@ -1,3 +1,6 @@
+@use "common/buttons"
+@use "common/colors"
+
 #mainSection
   .main
     &.step-instructions
@@ -19,21 +22,21 @@
           font-size: 16px
           &:hover
             background: white
-            color: $darkerpurple
+            color: colors.$darkerpurple
           .building-block-img
             height: 25px
             vertical-align: middle
           .building-block-icon.material-icons
             font-size: 28px
             width: 24px
-            color: $darkerpurple
+            color: colors.$darkerpurple
             vertical-align: middle
             line-height: 25px
           &.theme-btn
             background: white
-            color: $darkerpurple
+            color: colors.$darkerpurple
             .theme-text
-              color: $darkerpurple
+              color: colors.$darkerpurple
         .building-block-bar-separator
           height: 40px
           width: 0px
@@ -52,7 +55,7 @@
         background-color: white
         .block-config
           width: 30px
-          background-color: $brightyellow
+          background-color: colors.$brightyellow
           top: 5px
           left: -35px
           position: absolute
@@ -69,14 +72,14 @@
             position: relative
             .material-icons
               font-size: 18px
-              color: $darkerpurple
+              color: colors.$darkerpurple
               display: inline-block
 
       .editor-wrapper
         background-color: var(--bckg)
         color: black
         &.indications .editor
-          background-color: $bckg
+          background-color: colors.$bckg
         #editor
           min-height: 300px
       .editor
@@ -129,9 +132,9 @@
       .ui-dialog .ui-dialog-titlebar
         background: white !important
         border-color: white !important
-        color: $lightred
+        color: colors.$lightred
       .gallery-msg
-        color: $textpurple
+        color: colors.$textpurple
         font-family: Lato, sans-serif !important
         font-size: 0.8em
         padding: 25px
@@ -145,33 +148,33 @@
         .fileUrlInput
           background: none
           border: none
-          color: $textpurple !important
+          color: colors.$textpurple !important
           font-family: Lato, sans-serif !important
           font-size: 0.8em
-          -webkit-text-fill-color: $textpurple !important
+          -webkit-text-fill-color: colors.$textpurple !important
           padding-left: 0px
           margin-left: 25px
           text-align: left
           width: 70%
-          border-bottom: 2px solid $lightred
+          border-bottom: 2px solid colors.$lightred
           border-radius: 0px
           padding-bottom: 0px
           height: 2em
           margin-bottom: 1em
-          caret-color: $textpurple
+          caret-color: colors.$textpurple
           &:hover, &:active, &:focus
-            color: $lightred !important
-            -webkit-text-fill-color: $lightred !important
+            color: colors.$lightred !important
+            -webkit-text-fill-color: colors.$lightred !important
       #uploadNew
-        @include common-button
+        @include buttons.common-button
         border-radius: 25px !important
         padding: 8px 20px !important
         font-size: 15px
-        background-color: $brightyellow
+        background-color: colors.$brightyellow
       #assetsForm
         margin-left: 50px
         margin-right: 20px
-        border: 2px dashed $brightyellow
+        border: 2px dashed colors.$brightyellow
         padding: 0px
         .dz-preview
           * 
@@ -191,19 +194,19 @@
               font-family: Lato, sans-serif
           &.file-selected
             .dz-image
-              border: 2px solid $brightgreen
+              border: 2px solid colors.$brightgreen
       .ui-dialog-buttonset
         text-align: right
         padding: 5px
         .ui-button
-          @include common-button
+          @include buttons.common-button
           border-radius: 25px !important
           padding: 8px 25px !important
           font-size: 18px
           &:first-child
-            background-color: $brightgreen
+            background-color: colors.$brightgreen
           &:last-child
-            background-color: $lightred
+            background-color: colors.$lightred
       .gamification-elements
         padding: 20px
         padding-left: 50px
@@ -228,11 +231,11 @@
           flex-direction: column
           justify-content: space-between
           &.gamification-element-selected
-            border: 2px solid $brightgreen
+            border: 2px solid colors.$brightgreen
           .gamification-element-title
             text-align: center
             font-family: 'Lato', sans-serif
-            color: $textpurple
+            color: colors.$textpurple
             height: 25%
             font-size: 11px
             margin: 0
@@ -304,7 +307,7 @@
         .config-list
           padding: 15px
           .config-paragraph
-            color: $brightgreen
+            color: colors.$brightgreen
           .puzzle-preview-select
             font-family: Lato !important
             font-size: 18px
@@ -338,7 +341,7 @@
             padding: 5px
             padding-bottom: 0px
             &.selected-theme
-              border-color: $brightgreen
+              border-color: colors.$brightgreen
             img
               width: 100%
               height: auto

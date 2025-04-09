@@ -1,3 +1,6 @@
+@use "common/colors"
+@use 'common/mixins'
+
 #mainSection
   .main
     &.step-appearance
@@ -20,7 +23,7 @@
             background-color: white
             @extend %scale-animation-down
             &.selected
-              border-color: $brightyellow
+              border-color: colors.$brightyellow
         .right-half-flex
           width: 50%
           height: 60vh

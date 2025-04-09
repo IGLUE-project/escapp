@@ -1,3 +1,6 @@
+@use "common/colors"
+@use 'common/mixins'
+
 #mainSection
   min-height: 100%
   background: none
@@ -30,7 +33,7 @@
       width: auto
       position: relative
       margin: 0
-      color: $textpurple
+      color: colors.$textpurple
       margin-bottom: 5px
 
     
@@ -39,7 +42,7 @@
     display: flex
     justify-content: space-between
     align-items: center
-    background-color: $darkerpurple
+    background-color: colors.$darkerpurple
     width: 100%
     z-index: 1
     position: absolute
@@ -84,7 +87,7 @@
           &:hover
             text-decoration: underline
         .material-icons
-          color: $brightgreen
+          color: colors.$brightgreen
         .select-wrapper
           position: relative
           .breadcrumb-select
@@ -113,7 +116,7 @@
               font-family: Lato !important
             option
               background: white
-              color: $darkerpurple
+              color: colors.$darkerpurple
       align-self: left
     footer
       margin-left: -35px
@@ -137,7 +140,7 @@
       p
         margin: 0
         margin-bottom: 10px
-        color: $darkerpurple
+        color: colors.$darkerpurple
       &::after
         background: transparent
         width: 0px
@@ -160,7 +163,7 @@
         font-size: 16px
         border-width: 2px
         border-style: solid
-        color: $darkerpurple
+        color: colors.$darkerpurple
         @extend %scale-animation-down
     .addItem
       background-color: #8994A7
@@ -176,11 +179,11 @@
       width: 20px
       font-size: 16px
       &.connected
-        color: $brightgreen
+        color: colors.$brightgreen
       &.disconnected
-        color: $lightred
+        color: colors.$lightred
       &.waiting
-        color: $brightyellow
+        color: colors.$brightyellow
 
 @media (min-width: 1200px)
   #mainSection

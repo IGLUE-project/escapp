@@ -1,20 +1,22 @@
+@use "common/colors"
+
 #mainSection
   .main
     &.inspiration
       font-size: 18px
       a.resources
-        color: $brightyellow
+        color: colors.$brightyellow
       *:not(i):not(h2)
         font-family: Lato, sans-serif
       h3
-        color: $brightgreen
+        color: colors.$brightgreen
         font-weight: bold
       h4
-        color: $brightyellow
+        color: colors.$brightyellow
         font-weight: bold
         font-size: 24px
       b, strong
-        color: $lightred
+        color: colors.$lightred
       .flex-images
         display: flex
         flex-direction: row
@@ -44,7 +46,7 @@
         li
           &::before
             content: "\2022"
-            color: $brightyellow
+            color: colors.$brightyellow
             font-weight: bold
             display: inline-block
             width: 1em
@@ -65,7 +67,7 @@
             width: 80px
           span
             font-weight: bold
-            color: $lightred
+            color: colors.$lightred
       .icon
         width: 80px
       .image

@@ -1,3 +1,6 @@
+@use "common/buttons"
+@use "common/colors"
+
 .filters
   line-height: 45px
   *
@@ -15,7 +18,7 @@
   select, input
     padding-right: 1.65em !important
   .editButton
-    @include common-button
-    background-color: $brightyellow !important
-    border-color: $brightyellow !important
-    color: $darkerpurple !important
+    @include buttons.common-button
+    background-color: colors.$brightyellow !important
+    border-color: colors.$brightyellow !important
+    color: colors.$darkerpurple !important

@@ -1,3 +1,6 @@
+@use "common/colors"
+@use 'common/mixins'
+
 #mainSection
   .main
     &.student
@@ -7,7 +10,7 @@
       justify-content: center
       align-items: center
       .dialog
-        background-color: $bckg
+        background-color: colors.$bckg
         width: 50%
         text-align: center
         padding: 30px 80px
@@ -17,7 +20,7 @@
           margin: 10px
           width: 40px
           height: 40px
-          background-color: $brightyellow
+          background-color: colors.$brightyellow
           border-radius: 50%
           vertical-align: middle
           line-height: 30px
@@ -43,7 +46,7 @@
         .teamCarouselItem
           background-color: white
           border-radius: 20px
-          color: $textpurple
+          color: colors.$textpurple
           font-size: 18px
           padding: 10px
           overflow: hidden
@@ -57,7 +60,7 @@
             font-size: 10px
             text-align: center
           &.selected
-            border: 2px solid $brightyellow
+            border: 2px solid colors.$brightyellow
           &:not(.disabled):hover
             @extend %scale-animation-down
         #teamCarouselItems-hidden
@@ -66,7 +69,7 @@
           font-size: 1.1em
         .add-team
           i
-            color: $textpurple
+            color: colors.$textpurple
             font-size: 28px
         .info
           font-size: 18px
@@ -81,7 +84,7 @@
               display: block
               overflow: hidden
               text-overflow: ellipsis
-              color: $brightyellow
+              color: colors.$brightyellow
       .teamName, .tokenInput
         overflow: hidden
         width: 200px
@@ -96,15 +99,15 @@
         #findTeam
           width: 100%
           &::placeholder
-            color: $textpurple
-            -webkit-text-fill-color: $textpurple !important
+            color: colors.$textpurple
+            -webkit-text-fill-color: colors.$textpurple !important
         .no-results
           position: absolute
           display: block
           text-align: center
           margin: auto
           width: 100%
-          color: $textpurple
+          color: colors.$textpurple
           margin-top: 10px
           .no-results-msg
             font-size: 0.5em

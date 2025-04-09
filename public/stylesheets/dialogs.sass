@@ -1,3 +1,5 @@
+@use "common/colors"
+
 .main, .portada
     .no-close
         .ui-dialog-titlebar
@@ -26,18 +28,18 @@
         hr
             margin-bottom: 20px
         h4
-            color: $brightgreen
+            color: colors.$brightgreen
             font-size: 20px
             margin-top: 5px
         .api-table
             td, th
                 font-size: 14px
-                color: $textpurple
+                color: colors.$textpurple
                 code
                     font-family: monospace
-                    color: $lightred
+                    color: colors.$lightred
             th
-                color: $lightred
+                color: colors.$lightred
                 font-weight: 600
                 text-align: left
             pre.sample-fetch
@@ -45,10 +47,10 @@
                 padding: 15px
                 font-size: 14px
                 font-family: monospace
-                background-color: $textpurple
+                background-color: colors.$textpurple
 
         .show_link
-            color: $darkerpurple
+            color: colors.$darkerpurple
             text-decoration: underline
             text-underline-position: under
         .joinUrl
@@ -61,10 +63,10 @@
             background: transparent
             border: none
             font-size: 1px
-            color: $brightorange
+            color: colors.$brightorange
             vertical-align: middle
         .qr
-            color: $lightred
+            color: colors.$lightred
         .start-er
             text-align: center
             button.pulseButton
@@ -73,7 +75,7 @@
                 cursor: pointer
         .join-instructions, .start-er
             font-size: 18px
-            color: $darkerpurple
+            color: colors.$darkerpurple
             
             .fullscreen
                 line-height: 43px
@@ -81,9 +83,9 @@
                     vertical-align: bottom
             
         a
-            color: $brightgreen
+            color: colors.$brightgreen
         .hl
-            color: $brightblue
+            color: colors.$brightblue
     .dialog-turno
         background: white
         padding: 10px
@@ -100,7 +102,7 @@
                     width: 100%
                 button
                     width: 100%
-                    border: 2px solid rgba($textpurple, 0.3)
+                    border: 2px solid rgba(colors.$textpurple, 0.3)
                     border-radius: 0px
                     .material-icons
                         color: var(--brightorange)
@@ -140,7 +142,7 @@
     .ui-dialog .ui-dialog-titlebar
         background: white !important
         border-color: white !important
-        color: $lightred
+        color: colors.$lightred
     .ui-dialog
         z-index: 9998
         &.ui-corner-all
@@ -150,7 +152,7 @@
         z-index: 0
         width: 100%
         height: 100%
-        background: $darkerpurple
+        background: colors.$darkerpurple
         display: block
         position: fixed
         top: 0

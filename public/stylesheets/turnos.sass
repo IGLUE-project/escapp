@@ -1,3 +1,6 @@
+@use "common/colors"
+@use 'common/mixins'
+
 #mainSection
   .main
     &.step-turnos
@@ -25,15 +28,15 @@
                   width: 100%
                   border: none
                   font-size: 1em
-                  caret-color: $textgrey
-                  color: $textgrey !important
-                  -webkit-text-fill-color: $textgrey !important
+                  caret-color: colors.$textgrey
+                  color: colors.$textgrey !important
+                  -webkit-text-fill-color: colors.$textgrey !important
                   &:focus, &:active, &:-webkit-autofill:focus, &:-webkit-autofill:active
-                    color: $textgrey !important
-                    -webkit-text-fill-color: $textgrey !important
+                    color: colors.$textgrey !important
+                    -webkit-text-fill-color: colors.$textgrey !important
                   &:-webkit-autofill
-                    -webkit-box-shadow: 0 0 0 30px $mainpurple inset !important
-                    -webkit-text-fill-color: $textgrey !important
+                    -webkit-box-shadow: 0 0 0 30px colors.$mainpurple inset !important
+                    -webkit-text-fill-color: colors.$textgrey !important
                   &.turnos-time-picker
                     width: 150%
                     margin-top: -1em
@@ -61,12 +64,12 @@
                 .material-icons
                   font-size: 16px
                 &.more
-                  background: $brightyellow
+                  background: colors.$brightyellow
                   right: 30px
                 &.less
-                  background: $lightred
+                  background: colors.$lightred
                 &.always
-                  background: $brightorange
+                  background: colors.$brightorange
                   right: 28px
                 
       .extraTurno
@@ -74,8 +77,8 @@
         button
           border-radius: 25px
           padding: 10px 20px
-          background-color: $brightgreen
-          border: 2px solid $brightgreen
+          background-color: colors.$brightgreen
+          border: 2px solid colors.$brightgreen
       .ui-dialog-title
         padding-left: 0
         font-size: 28px
@@ -84,7 +87,7 @@
         .turno-form-group
           .material-icons
             vertical-align: top
-            color: $brightgreen
+            color: colors.$brightgreen
           ::-webkit-calendar-picker-indicator
             filter: invert(1)
     .flexBoxTurnos
@@ -104,7 +107,7 @@
         &:not(.addTurno)
           background-color: white
           border: 3px solid transparent
-          color: $darkerpurple
+          color: colors.$darkerpurple
         &.addTurno
           line-height: 1em
           font-size: 3em
@@ -113,7 +116,7 @@
           opacity: 0.4
           cursor: not-allowed
         &.selected
-          border: 3px solid $brightyellow
+          border: 3px solid colors.$brightyellow
         &.turnoAlumno, &.turnoProfe
           cursor: pointer
           &:not(.disabled):not(.finished):hover
@@ -126,7 +129,7 @@
             cursor: pointer
         &.turnoProfe
           &.active
-            color: $brightgreen
+            color: colors.$brightgreen
         &.hidden:not(.always)
           display: none
         .hora
@@ -134,7 +137,7 @@
           margin-bottom: 8px
           overflow: hidden
         .place
-          color: $darkerpurple
+          color: colors.$darkerpurple
           font-size: 12px
           line-height: 100%
           overflow: hidden
@@ -145,12 +148,12 @@
           -webkit-box-orient: vertical
           max-height: 40px
           .no-place
-            color: $textgrey
+            color: colors.$textgrey
             font-size: 10px
             em
               opacity: 0.8
         &:not(.finished) .always
-          color: $brightgreen
+          color: colors.$brightgreen
         .always
           font-size: 17px
           line-height: 25px
