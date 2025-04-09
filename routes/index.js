@@ -66,6 +66,7 @@ router.get("/register", sessionController.logoutRequired, userController.new);
 router.post("/accept-cookies", sessionController.cookieAccept);
 router.get("/terms", sessionController.terms);
 router.get("/privacy", sessionController.privacy);
+router.get("/cookies", sessionController.cookiePolicy);
 router.get("/accept-new", sessionController.acceptNewShow);
 router.post("/accept-new", sessionController.acceptNew);
 

@@ -1140,6 +1140,7 @@
           "accept_button": "Aceptar y continuar",
           "view_terms": "Leer Términos de Uso",
           "view_privacy": "Leer Política de Privacidad",
+          "view_cookies": "Leer Política de Cookies",
           "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
         }
 }

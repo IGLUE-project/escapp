@@ -1155,6 +1155,7 @@
         "accept_button": "Accept and Continue",
         "view_terms": "Read Terms of Use",
         "view_privacy": "Read Privacy Policy",
+        "view_cookies": "Read Cookie Policy",
         "error_accepting": "Error updating terms and privacy policy acceptance"
     
     }

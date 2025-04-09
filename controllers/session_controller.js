@@ -346,6 +346,35 @@ exports.privacy = (req, res, next) => {
     }
 };
 
+exports.cookiePolicy = (req, res, next) => {
+    const {i18n} = res.locals;
+    const currentLang = i18n.lang;
+    const op = {"root": path.join("public")};
+
+    if (fs.existsSync(`../public/cookies/cookies_${currentLang}.html`)) {
+        res.sendFile(`cookies/cookies_${currentLang}.html`, op);
+    } else if (fs.existsSync(`../public/cookies/cookies_${currentLang}.pdf`)) {
+        res.sendFile(`cookies/cookies_${currentLang}.pdf`, op);
+    } else if (fs.existsSync("../public/cookies/cookies.html")) {
+        res.sendFile("cookies/cookies.html", op);
+    } else if (fs.existsSync("../public/cookies/cookies.pdf")) {
+        res.sendFile("cookies/cookies.pdf", op);
+    } else if (fs.existsSync("../public/cookies/cookies_en.html")) {
+        res.sendFile("cookies/cookies_en.html", op);
+    } else if (fs.existsSync("../public/cookies/cookies_en.pdf")) {
+        res.sendFile("cookies/cookies_en.pdf", op);
+    } else {
+        res.sendFile(
+            "default_cookies/default.html", op,
+            function (error) {
+                if (error) {
+                    next(error);
+                }
+            }
+        );
+    }
+};
+
 exports.acceptNewShow = (req, res) => {
     res.render("users/new_terms", {});
 };
