@@ -53,7 +53,7 @@ exports.isTurnNotPending = (req, res, next) => {
 };
 
 exports.isTurnStarted = (req, res, next) => {
-    if (req.session.user.isStudent) {
+    if (!req.session.user.isAdmin) {
         const [team] = req.participant.teamsAgregados;
 
         if (!(team.startTime instanceof Date && isFinite(team.startTime))) {
@@ -69,7 +69,7 @@ exports.turnos = async (req, res, next) => {
     const {escapeRoom} = req;
 
     try {
-        escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id}, "order": [["date", "ASC NULLS LAST"]]});
+        escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
 
         const {turnos} = escapeRoom;
 
@@ -84,7 +84,7 @@ exports.indexActivate = async (req, res, next) => {
     const {escapeRoom} = req;
 
     try {
-        const turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id}, "order": [["date", "ASC NULLS LAST"]]});
+        const turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
 
         res.render("turnos/_indexActivate.ejs", {turnos, escapeRoom});
     } catch (e) {
@@ -164,7 +164,7 @@ exports.create = async (req, res, next) => {
     } catch (error) {
         try {
             console.error(error);
-            req.escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id}, "order": [["date", "ASC NULLS LAST"]]});
+            req.escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
             req.escapeRoom.turnos.push(turn);
             if (error instanceof Sequelize.ValidationError) {
                 error.errors.forEach((err) => {
@@ -208,7 +208,7 @@ exports.update = async (req, res, next) => {
     } catch (error) {
         try {
             console.error(error);
-            req.escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id}, "order": [["date", "ASC NULLS LAST"]]});
+            req.escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
             req.escapeRoom.turnos.forEach((t) => {
                 if (t.id === turn.id) {
                     // eslint-disable-next-line no-param-reassign

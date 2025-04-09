@@ -350,6 +350,7 @@ exports.puzzleStats = async (req, res, next) => {
         if (teamList) {
             teamList.map((team) => {
                 const {turno, startTime} = team;
+
                 const actualStartTime = turno.startTime || startTime;
                 const retosSuperados = getRetosSuperadosIdTime(team.retos, actualStartTime);
                 let lastTime = 0;

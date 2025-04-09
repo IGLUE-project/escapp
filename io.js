@@ -31,6 +31,7 @@ exports.createServer = (server, sessionMiddleware) => {
                 const {token, username} = user;
                 const {"turnId": studentTurnId, teamId, participation, erState, errorMsg, language, teamInstructions} = await checkAccess(user, escapeRoomId, i18n, waiting);
 
+                console.log({teamId, participation, erState, errorMsg, language, teamInstructions});
                 if (language && (language === "es" || language === "en")) {
                     i18n = require(`./i18n/${language}`);
                 }

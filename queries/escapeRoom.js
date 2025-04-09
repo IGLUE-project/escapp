@@ -18,7 +18,11 @@ exports.load = {
 
 exports.loadShow = {
     "include": [
-        {"model": models.turno},
+        {
+            "model": models.turno,
+            "required": false,
+            "where": {"status": {[Op.not]: "test"}}
+        },
         {
             "model": models.puzzle,
             "include": [{"model": models.hint}]
@@ -74,6 +78,8 @@ exports.loadComplete = {
     "include": [
         {
             "model": models.turno,
+            "required": false,
+            "where": {"status": {[Op.not]: "test"}},
             "include": {
                 "model": models.team,
                 "attributes": ["id"]
@@ -163,6 +169,7 @@ exports.all = (user, page = 1, limit = 10) => {
                 "model": models.turno,
                 "attributes": ["status", "capacity", "from", "to"],
                 "required": true,
+                "where": {"status": {[Op.not]: "test"}},
                 "include": [
                     {
                         "model": models.user,

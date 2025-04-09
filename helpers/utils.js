@@ -51,7 +51,7 @@ exports.playInterface = async (name, req, res, next) => {
 
     const {token} = await models.user.findByPk(req.session.user.id);
 
-    if (isAdmin || isAuthor) {
+    if (name === "class" && (isAdmin || isAuthor)) {
         res.render("escapeRooms/play/play", {
             "escapeRoom": req.escapeRoom,
             cloudinary,
@@ -106,7 +106,7 @@ exports.playInterface = async (name, req, res, next) => {
 
             const team = teams && teams[0] ? teams[0] : {};
 
-            if (!team.startTime || team.turno.status !== "active" || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
+            if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
                 return;
             }
@@ -164,7 +164,7 @@ exports.renderEJS = (view, query = {}, options = {}) => new Promise((resolve, re
     });
 });
 
-exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId}});
+exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId, "status": {[Op.not]: "test"}}});
 
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]]});
 
@@ -542,7 +542,7 @@ exports.getRole = (role, username = "", i18n) => {
         return "student";
     } else if (disableChoosingRole && whitelist && whitelist.length > 0) {
         throw new Error(i18n.user.messages.notAllowedEmail);
-    } else if (role == "student" || role == "teacher") {
+    } else if (role === "student" || role === "teacher") {
         return role; // Allow any role if role selection is enabled
     } else {
         throw new Error(i18n.api.unauthorized);

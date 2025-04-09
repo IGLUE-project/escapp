@@ -1,4 +1,5 @@
 const {playInterface, automaticallySetAttendance, getERState, getERPuzzles} = require("../helpers/utils");
+const Sequelize = require("sequelize");
 const {getRetosSuperados, byRanking} = require("../helpers/analytics");
 const {models} = require("../models");
 const {MESSAGE} = require("../helpers/apiCodes");
@@ -113,7 +114,7 @@ exports.startPlaying = async (req, res, next) => {
 // GET /escapeRooms/:escapeRoomId/messages
 exports.writeMessage = async (req, res) => {
     const {escapeRoom} = req;
-    const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id}, "order": [["date", "ASC NULLS LAST"]]});
+    const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Sequelize.Op.ne]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
     const participants = await models.user.findAll(queries.user.participantsWithTurnoAndTeam(escapeRoom.id, undefined, "name"));
     const teams = await models.team.findAll(queries.team.teamComplete(escapeRoom.id, undefined, "name", true));
     const {turnId} = req.query;
@@ -130,7 +131,7 @@ exports.sendMessage = async (req, res) => {
         switch (to) {
         case "everyone":
             // eslint-disable-next-line no-case-declarations
-            const turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id}, "attributes": ["id"]});
+            const turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Sequelize.Op.not]: "test"}}, "attributes": ["id"]});
 
             for (const turno of turnos) {
                 sendTurnMessage(message, turno.id);

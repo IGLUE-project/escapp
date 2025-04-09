@@ -104,10 +104,7 @@ exports.create = (req, res, next) => {
                 error.errors.forEach((err) => {
                     req.flash("error", validationError(err, i18n));
                 });
-                // Console.log(error.errors[0])
-                // Console.log(error.errors[0].validatorArgs)
-                // Console.log(error.errors[0].path)
-                // Console.log(error.errors[0].validatorKey)
+
                 res.render("index", {user, "register": true, redir});
             } else {
                 next(error);
@@ -136,7 +133,7 @@ exports.update = (req, res, next) => {
         if (body.role === "student" || body.role === "teacher" || body.role === "admin") {
             user.isStudent = body.role === "student";
         }
-        user.isAdmin = body.role == "admin";
+        user.isAdmin = body.role === "admin";
     }
     user.name = body.name;
     user.surname = body.surname;
@@ -157,7 +154,7 @@ exports.update = (req, res, next) => {
         if (body.password === body.confirm_password) {
             user.password = body.password;
         } else {
-            req.flash("error", i18n2.common.flash.passwordsDoNotMatch);
+            req.flash("error", i18n.common.flash.passwordsDoNotMatch);
             res.redirect("back");
             return;
         }

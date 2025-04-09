@@ -829,7 +829,9 @@
         "sureUnjoin": "Are you sure you want to leave the Escape Room?",
         "congrats": "Congratulations! You've successfully exited the Escape Room.",
         "resultsTitle": "This is the escape room's leaderboard",
-        "unjoin": "leave"
+        "unjoin": "leave",
+        "reset": "reset",
+        "sureReset": "Are you sure you wish to restart the test?"
     },
     "showTeacher": {
         "actionList": {
@@ -860,7 +862,8 @@
             "turnos": "Shifts",
             "volver": "back",
             "actions": "Actions",
-            "information": "Information"
+            "information": "Information",
+            "test": "test"
         },
         "messages": {
             "noHintControl": "This Escape Room does not have any hint system yet",

@@ -816,7 +816,9 @@
         "sureUnjoin": "¿Seguro que deseas desapuntarte?",
         "congrats": "¡Enhorabuena! Has terminado con éxito la escape room",
         "resultsTitle": "Este es el ranking de resultados de la escape room",
-        "unjoin": "desapuntarse"
+        "unjoin": "desapuntarse",
+        "reset": "reiniciar",
+        "sureReset": "¿Seguro que deseas reiniciar la prueba?"
     },
     "showTeacher": {
         "actionList": {
@@ -847,7 +849,8 @@
             "shift": "turno",
             "volver": "volver",
             "actions": "Acciones",
-            "information": "Información"
+            "information": "Información",
+            "test": "probar"
 
         },
         "messages": {
@@ -1124,7 +1127,6 @@
         "waiting": "Enviar también a los participantes esperando para acceder a la escape room",
         "msgPlaceholder": "Escribe aquí tu mensaje",
         "msgPlaceholder2": "Escribe aquí tu mensaje. Todos los usuarios de esta lista que estén conectados ahora mismo lo recibirán."
-
     },
     "cookies": {
         "cookie_message": "Usamos solo cookies esenciales para garantizar el funcionamiento adecuado de este sitio. No utilizamos cookies de seguimiento ni de terceros.",

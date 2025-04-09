@@ -12,10 +12,19 @@
         
         <div class="escapeRoomListButtons">
             <% if (user && (!user.isStudent)) { %>
-                <a href="/escapeRooms"><button <%if (whichMenu=="created") {%> class="selected" <%}%>> <%=i18n.escapeRoom.main.myERs%></button></a>
+                <a href="/escapeRooms"><button <%if (whichMenu=="created") {%> class="selected" <%}%>> 
+                    <span class="material-icons">build</span>
+                    <%=i18n.escapeRoom.main.myERs%>
+                </button></a>
             <% } %>
-            <a href="/escapeRooms?own=1"><button <%if (whichMenu=="playing"){%> class="selected" <%}%>> <%=i18n.escapeRoom.main.playingERs%></button></a>
-            <a href="/escapeRooms?public=1"><button <%if (whichMenu=="public"){%> class="selected" <%}%>> <%=i18n.escapeRoom.main.otherERs%></button></a>
+            <a href="/escapeRooms?own=1"><button <%if (whichMenu=="playing"){%> class="selected" <%}%>> 
+                <span class="material-icons">play_circle</span>
+                <%=i18n.escapeRoom.main.playingERs%></button>
+            </a>
+            <a href="/escapeRooms?public=1"><button <%if (whichMenu=="public"){%> class="selected" <%}%>> 
+                <span class="material-icons">search</span>
+                <%=i18n.escapeRoom.main.otherERs%>
+            </button></a>
         </div>
        
         <div class="flexBoxEscapeRooms">
@@ -38,10 +47,25 @@
         </h1>
         <div class="escapeRoomListButtons">
             <% if (user && (!user.isStudent)) { %>
-                <a href="/escapeRooms"><button <%if (whichMenu=="created") {%> class="selected" <%}%>> <%=i18n.escapeRoom.main.myERs%></button></a>
+                <a href="/escapeRooms">
+                    <button <%if (whichMenu=="created") {%> class="selected" <%}%>> 
+                        <span class="material-icons">build</span>
+                        <span><%=i18n.escapeRoom.main.myERs%></span>
+                    </button>
+                </a>
             <% } %>
-            <a href="/escapeRooms?own=1"><button <%if (whichMenu=="playing"){%> class="selected" <%}%>> <%=i18n.escapeRoom.main.playingERs%></button></a>
-            <a href="/escapeRooms?public=1"><button <%if (whichMenu=="public"){%> class="selected" <%}%>> <%=i18n.escapeRoom.main.otherERs%></button></a>
+            <a href="/escapeRooms?own=1">
+                <button <%if (whichMenu=="playing"){%> class="selected" <%}%>> 
+                    <span class="material-icons">play_circle</span>
+                    <span><%=i18n.escapeRoom.main.playingERs%></span>
+                </button>
+            </a>
+            <a href="/escapeRooms?public=1">
+                <button <%if (whichMenu=="public"){%> class="selected" <%}%>> 
+                    <span class="material-icons">search</span>
+                    <span><%=i18n.escapeRoom.main.otherERs%></span>
+                </button>
+            </a>
         </div>
     
         <div class="flexBoxEscapeRooms">
@@ -95,11 +119,11 @@
             </br>
             <%page = parseInt(page)%>
             <div class="pagination align-right">
-                <a href="?page=1" title="<%=i18n.common.pagination.first%>"><span class="material-icons">first_page</span></a>
+                <a href="?page=1<%if(whichMenu=="own"){%>&playing=1<%}%><%if(whichMenu=="public"){%>&public=1<%}%>" title="<%=i18n.common.pagination.first%>"><span class="material-icons">first_page</span></a>
                 <%for (let p of pageArray) {%> 
-                    <a href="?page=<%=p%>" title="<%=i18n.common.pagination.page%> <%=p%>"><span><%-p === page ? `<strong>${p}</strong>`:p %></span></a>
+                    <a href="?page=<%=p%><%if(whichMenu=="own"){%>&playing=1<%}%><%if(whichMenu=="public"){%>&public=1<%}%>" title="<%=i18n.common.pagination.page%> <%=p%>"><span><%-p === page ? `<strong>${p}</strong>`:p %></span></a>
                 <%}%>
-                <a href="?page=<%=pages%>" title="<%=i18n.common.pagination.last%>"><span class="material-icons">last_page</span></a>
+                <a href="?page=<%=pages%><%if(whichMenu=="own"){%>&playing=1<%}%><%if(whichMenu=="public"){%>&public=1<%}%>" title="<%=i18n.common.pagination.last%>"><span class="material-icons">last_page</span></a>
             </div>
         <% } %>
     </br>

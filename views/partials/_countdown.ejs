@@ -6,7 +6,7 @@
         var startTime = undefined;
         var now = false // new Date("<%=new Date()%>");
         var max = <%=escapeRoom.duration * 60 || 24 * 60 * 60%>;
-        <%if (team && team.turno && team.turno.status === "active") {  %>
+        <%if (team && team.turno && (team.turno.status === "active" || team.turno.status == "test")) {  %>
                 countdown = true;
                 startTime = new Date("<%=team.turno.startTime || team.startTime%>");
                 duration = <%=escapeRoom.duration || 0%>;
