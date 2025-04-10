@@ -1103,7 +1103,15 @@
         "turno": "Turno",
         "man": "Hombre",
         "woman": "Mujer",
-        "other": "Otro"
+        "other": "Otro",
+        "delete": {
+            "deleteYourAccount": "Elimina tu cuenta",
+            "deleteYourAccountMsg1": "Si decides eliminar tu cuenta, toda la información personal asociada a ella será eliminada permanentemente de nuestro sistema.",
+            "deleteYourAccountMsg2": "Ten en cuenta:",
+            "deleteYourAccountMsg3": "Tus datos de participación anteriores permanecerán de forma anonimizada para fines de investigación y desarrollo, conforme a nuestra política de datos. Esto significa que tus contribuciones seguirán ayudando a mejorar la plataforma, pero ya no estarán vinculadas contigo de ninguna manera. De todas formas, lamentaríamos verte partir.",
+            "deleteYourAccountMsg5": "¿Estás seguro de que deseas eliminar tu cuenta?",
+            "deleteAccount": "confirmar borrado"
+        }
     },
     "hint": {
         "Hints": "Pistas",

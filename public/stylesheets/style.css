@@ -4842,6 +4842,14 @@ table.mainTable tr td .icon {
   color: #656683 !important;
   -webkit-text-fill-color: #656683 !important;
 }
+.user-edit-form .deleteUser {
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 1em;
+}
+.user-edit-form .deleteUser h3 {
+  color: #F47E84 !important;
+}
 .user-edit-form .roleField .roleLabel {
   display: flex;
   flex-direction: row;

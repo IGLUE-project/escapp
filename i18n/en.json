@@ -1117,7 +1117,16 @@
         "turno": "Shift",
         "man": "Man",
         "woman": "Woman",
-        "other": "Other"
+        "other": "Other",
+        "delete": {
+            "deleteYourAccount": "Delete Your Account",
+            "deleteYourAccountMsg1": "If you choose to delete your account, all personal information associated with it will be permanently removed from our system.",
+            "deleteYourAccountMsg2": "Please note:",
+            "deleteYourAccountMsg3": "Your past participation data will remain in anonymized form for research and development purposes, in line with our data policy. This means that while your contributions will still help improve our platform, they will no longer be linked to you in any way.",
+            "deleteYourAccountMsg4": "Anyways, we would be sorry to see you go.",
+            "deleteYourAccountMsg5": "Are you sure you want to delete your account?",
+            "deleteAccount": "confirm delete"
+        }
     },
     "hint": {
         "Hints": "Hints",

@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const mailer = require("../helpers/mailer");
-const {renderEJS, validationError, getRole} = require("../helpers/utils");
+const {renderEJS, validationError, getRole, generatePassword} = require("../helpers/utils");
 
 // Autoload the user with id equals to :userId
 exports.load = (req, res, next, userId) => {
@@ -181,18 +181,44 @@ exports.destroy = async (req, res, next) => {
     const transaction = await sequelize.transaction();
     const {i18n} = res.locals;
 
-    try {
-        await req.user.destroy({}, {transaction});// Deleting logged user.
-        if (req.session.user && req.session.user.id === req.user.id) {
-            // Close the user session
-            delete req.session.user;
+    if (req.session.user.isAdmin && req.query.total) {
+        try {
+            await req.user.destroy({}, {transaction});// Deleting logged user.
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // Close the user session
+                delete req.session.user;
+            }
+            transaction.commit();
+            req.flash("success", i18n.common.flash.successDeletingUser);
+            res.redirect("/goback");
+        } catch (error) {
+            transaction.rollback();
+            next(error);
         }
-        transaction.commit();
-        req.flash("success", i18n.common.flash.successDeletingUser);
-        res.redirect("/goback");
-    } catch (error) {
-        transaction.rollback();
-        next(error);
+    } else {
+        try {
+            const hostName = process.env.APP_NAME ? `${process.env.APP_NAME}` : "anonymized.org";
+
+            // Await req.user.destroy({}, {transaction}); // Deleting logged user
+            req.user.name = "Anonymous";
+            req.user.surname = "Anonymous";
+            req.user.dni = "00000000X";
+            req.user.username = `anonymized_${req.user.id}@${hostName}`;
+            req.user.password = generatePassword();
+
+            await req.user.save({transaction});
+
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // Close the user session
+                delete req.session.user;
+            }
+            transaction.commit();
+            req.flash("success", i18n.common.flash.successDeletingUser);
+            res.redirect("/goback");
+        } catch (error) {
+            transaction.rollback();
+            next(error);
+        }
     }
 };
 exports.index = (req, res, next) => {
@@ -283,4 +309,3 @@ exports.newResetPasswordHash = async (req, res) => {
         res.redirect("back");
     }
 };
-
