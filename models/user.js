@@ -53,6 +53,10 @@ module.exports = function (sequelize, DataTypes) {
                 return crypt.generateToken();
             }
         },
+        "anonymized": {
+            "type": DataTypes.BOOLEAN,
+            "defaultValue": false
+        },
         "isAdmin": {
             "type": DataTypes.BOOLEAN,
             "defaultValue": false

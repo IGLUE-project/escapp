@@ -200,7 +200,7 @@ exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, a
 exports.getRanking = async (escapeRoomId, turnoId) => {
     const teamsRaw = await models.team.findAll(queries.team.rankingShort(escapeRoomId, turnoId));
     const nPuzzles = await models.puzzle.count({"where": { escapeRoomId }});
-    const ranking = getRetosSuperados(teamsRaw, nPuzzles, true).sort(byRanking);
+    const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {user:{ anonymous: "Anonymous"}}).sort(byRanking);
 
     return ranking;
 };

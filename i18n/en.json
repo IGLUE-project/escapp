@@ -1100,6 +1100,7 @@
 
         },
         "name": "Name",
+        "anonymous": "Anonymous",
         "password": "Password",
         "passwordConfirm": "Confirm password",
         "passLeaveBlank": "If you would like to change your password fill in the following fields. Otherwise, leave them blank",
@@ -1159,8 +1160,8 @@
         "back_to_home": "Back to home"
     },
     "terms": {
-        "title": "Updated Terms of Use & Privacy Policy",
-        "description": "We have updated our Terms of Use and/or Privacy Policy. Please review and accept them to continue using the platform.",
+        "title": "Updated Terms of Use, Privacy Policy & Cookies Policy",
+        "description": "We have updated our Terms of Use, Privacy Policy and/or Cookies Policy. Please review and accept them to continue using the platform.",
         "accept_button": "Accept and Continue",
         "view_terms": "Read Terms of Use",
         "view_privacy": "Read Privacy Policy",

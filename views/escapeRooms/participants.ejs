@@ -55,8 +55,8 @@
                 <% for (var p in participants) {
                     var participant = participants[p]; %>
                 <div class="flex-row">
-                    <div class="flex-cell flex-name"><span><%- include("../partials/_connected",{participant})%> <%= participant.name %> <%= participant.surname %> </span></div>
-                    <div class="flex-cell flex-username"><span><a href="mailto:<%=participant.username%>"><%= participant.username %></a></span></div>
+                    <div class="flex-cell flex-name"><span><%- include("../partials/_connected",{participant})%> <%if(participant.anonymized) {%> <i><%=i18n.user.anonymous%> </i> <%} else {%> <%= participant.name %> <%= participant.surname %> <%}%></span></div>
+                    <div class="flex-cell flex-username"><span><%if(participant.anonymized) {%><i><%=i18n.user.anonymous%></i><%} else {%><a href="mailto:<%=participant.username%>"><%= participant.username %></a><%}%></span></div>
                     <div class="flex-cell flex-turno"><span><%= participant.turnDate ? getFullDate(participant.turnDate) : i18n.turno.alwaysOpen  %></span></div>
                     <div class="flex-cell flex-team"><span><%= participant.teamName%></span></div>
                     <div class="flex-cell flex-attendance">

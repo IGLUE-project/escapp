@@ -1086,6 +1086,7 @@
             "sucessfullyUpdatedUser": "El usuario se ha actualizado con éxito" 
         },
         "name": "Nombre",
+        "anonymous": "Anónimo",
         "password": "Contraseña",
         "passLeaveBlank": "Si deseas cambiar la contraseña, rellena los siguientes campos, sino déjalos en blanco",
         "passwordConfirm": "Confirmar contraseña",
@@ -1143,8 +1144,8 @@
         "back_to_home": "Volver a inicio"
     },
     "terms": {
-          "title": "Términos de uso y política de privacidad actualizados",
-          "description": "Hemos actualizado nuestros Términos de Uso y/o Política de Privacidad. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
+          "title": "Términos de uso, política de privacidad y política de cookies actualizados",
+          "description": "Hemos actualizado nuestros Términos de Uso, Política de Privacidad y/o Política de Cookies. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
           "accept_button": "Aceptar y continuar",
           "view_terms": "Leer Términos de Uso",
           "view_privacy": "Leer Política de Privacidad",

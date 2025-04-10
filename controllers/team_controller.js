@@ -95,7 +95,7 @@ exports.index = async (req, res, next) => {
             {
                 "model": models.user,
                 "as": "teamMembers",
-                "attributes": ["name", "surname", "username"]
+                "attributes": ["name", "surname", "username", "anonymized"]
 
             }
         ],

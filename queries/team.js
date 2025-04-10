@@ -70,7 +70,8 @@ exports.teamComplete = (escapeRoomId, turnId, order, waiting = false) => {
                 "as": "teamMembers",
                 "attributes": [
                     "name",
-                    "surname"
+                    "surname",
+                    "anonymized"
                 ]
             },
             {
@@ -160,7 +161,8 @@ exports.puzzlesByTeam = (escapeRoomId, turnId, hints = false) => {
                 "as": "teamMembers",
                 "attributes": [
                     "name",
-                    "surname"
+                    "surname",
+                    "anonymized"
                 ]
             }
         ],
@@ -196,7 +198,8 @@ exports.ranking = (escapeRoomId, turnId) => {
                 "as": "teamMembers",
                 "attributes": [
                     "name",
-                    "surname"
+                    "surname",
+                    "anonymized"
                 ],
                 "through": {
                     "model": models.members,
@@ -275,7 +278,8 @@ exports.rankingShort = (escapeRoomId, turnId) => {
                 "attributes": [
                     "name",
                     "surname",
-                    "username"
+                    "username",
+                    "anonymized"
                 ],
                 "through": {
                     "model": models.members,
@@ -363,7 +367,7 @@ exports.teamInfo = (escapeRoomId, includeTest = false) => {
                 "model": models.user,
                 "through": "members",
                 "as": "teamMembers",
-                "attributes": ["username"]
+                "attributes": ["username","anonymized"]
             }
         ]
     };

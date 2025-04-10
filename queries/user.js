@@ -129,7 +129,8 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
             "name",
             "surname",
             "gender",
-            "username"
+            "username",
+            "anonymized"
         ],
         "include": [
             {
@@ -199,7 +200,7 @@ exports.erTeam = (escapeRoomId) => ({
             "model": models.user,
             "through": "members",
             "as": "teamMembers",
-            "attributes": ["username"]
+            "attributes": ["username","anonymized"]
         }
     ]
 });

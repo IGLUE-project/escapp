@@ -180,15 +180,16 @@ exports.update = (req, res, next) => {
 exports.destroy = async (req, res, next) => {
     const transaction = await sequelize.transaction();
     const {i18n} = res.locals;
-
+   
     if (req.session.user.isAdmin && req.query.total) {
         try {
             await req.user.destroy({}, {transaction});// Deleting logged user.
+            transaction.commit();
             if (req.session.user && req.session.user.id === req.user.id) {
                 // Close the user session
                 delete req.session.user;
             }
-            transaction.commit();
+            
             req.flash("success", i18n.common.flash.successDeletingUser);
             res.redirect("/goback");
         } catch (error) {
@@ -198,21 +199,42 @@ exports.destroy = async (req, res, next) => {
     } else {
         try {
             const hostName = process.env.APP_NAME ? `${process.env.APP_NAME}` : "anonymized.org";
-
             // Await req.user.destroy({}, {transaction}); // Deleting logged user
             req.user.name = "Anonymous";
             req.user.surname = "Anonymous";
             req.user.dni = "00000000X";
+            req.user.anonymized = true;
             req.user.username = `anonymized_${req.user.id}@${hostName}`;
             req.user.password = generatePassword();
 
             await req.user.save({transaction});
-
+            const teams = await models.team.findAll({
+                "include": [
+                  {
+                    "model": models.user,
+                    "as": "teamMembers",
+                    "attributes": [],
+                    "through": { "attributes": [] }
+                  }
+                ],
+                "attributes": ['id'],
+                "group": ['team.id'],
+                "having": Sequelize.literal('COUNT("teamMembers"."id") = 1'),
+                "where": Sequelize.literal(`${req.user.id} IN (
+                  SELECT "userId" FROM "members" WHERE "members"."teamId" = "team"."id"
+                )`)
+              },{transaction});
+              await Promise.all(
+                teams.map(team =>
+                  team.update({ name: "Anonymous " + team.id }, { transaction })
+                )
+              );
+            transaction.commit();
             if (req.session.user && req.session.user.id === req.user.id) {
                 // Close the user session
                 delete req.session.user;
             }
-            transaction.commit();
+            
             req.flash("success", i18n.common.flash.successDeletingUser);
             res.redirect("/goback");
         } catch (error) {

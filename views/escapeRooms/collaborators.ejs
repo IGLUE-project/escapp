@@ -29,10 +29,16 @@
             </div>
             <div class="flex-row">
                 <div class="flex-cell flex-name">
-                    <%=escapeRoom.author.name%> <%=escapeRoom.author.surname%> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
+                    <% if (escapeRoom.author[i].anonymized) {%>
+                        <%=escapeRoom.author.name%> <%=escapeRoom.author.surname%> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
+                       <%}else{%>
+                        <i><%=i18n.user.anonymous%> </i> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
+                    <%}%>
                 </div>
                 <div class="flex-cell flex-email">
-                    <%=escapeRoom.author.username%>
+                    <% if (users[i].anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=users[i].username%> <%}%>
+                    <% if (escapeRoom.author[i].anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=escapeRoom.author[i].username%> <%}%>
+                    <%=%>
                 </div>
                 <div class="flex-cell flex-actions">
                 </div>
@@ -41,10 +47,19 @@
                 var collab = collaborators[t]; %>
             <div class="flex-row">
                 <div class="flex-cell flex-name">
-                    <%=collab.name%> <%=collab.surname%>
+                    <% if (collab.anonymized) {%>
+                        <i><%=i18n.user.anonymous%> </i>
+                    <% } else {%>
+                        <%=collab.name%> <%=collab.surname%>
+                    <%}%>
                 </div>
                 <div class="flex-cell flex-email">
-                    <%=collab.username%>
+                    <% if (collab.anonymized) {%>
+                        <i><%=i18n.user.anonymous%> </i>
+                    <% } else {%>
+                        <%=collab.username%>
+                    <%}%>
+                    
                 </div>
                  
                 <div class="flex-cell flex-actions">
