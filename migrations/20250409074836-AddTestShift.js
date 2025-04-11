@@ -2,7 +2,7 @@
 
 
 module.exports = {
-    async up (queryInterface, Sequelize) {
+    async up (queryInterface) {
         const transaction = await queryInterface.sequelize.transaction();
 
         try {
@@ -55,7 +55,7 @@ module.exports = {
         }
     },
 
-    async down (queryInterface, Sequelize) {
+    async down (queryInterface) {
     // Clean-up if needed
         await queryInterface.bulkDelete("turnos", { "status": "test" }, {});
     }

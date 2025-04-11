@@ -40,7 +40,7 @@ exports.load = async (req, res, next, escapeRoomId) => {
 };
 
 // GET /escapeRooms
-exports.index = async (req, res) => {
+exports.index = async (req, res, next) => {
     const user = req.user || req.session.user;
     const isPublic = req.query.public;
     const isOwn = req.query.own;
@@ -531,7 +531,7 @@ exports.addCollaborators = async (req, res, next) => {
             }, {transaction});
 
             if (collab) {
-                if (collab.escapeRoomCoAuthored.some((x) => x.id = escapeRoom.id)) {
+                if (collab.escapeRoomCoAuthored.some((x) => x.id == escapeRoom.id)) {
                     await transaction.rollback();
                     req.flash("error", i18n.common.flash.errorUserIsAlreadyACollaborator);
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
@@ -580,7 +580,7 @@ exports.deleteCollaborators = async (req, res, next) => {
     }
 };
 
-exports.test = async (req, res, next) => {
+exports.test = async (req, res) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
     const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
     const participant = participants && participants.length ? participants[0] : null;

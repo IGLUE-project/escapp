@@ -1,7 +1,6 @@
-const {authenticate} = require("../helpers/utils");
+const {authenticate, findFirstAvailableFile} = require("../helpers/utils");
 const {models} = require("../models");
 const query = require("../queries");
-const fs = require("fs");
 const path = require("path");
 /*
  * This variable contains the maximum inactivity time allowed without
@@ -288,90 +287,58 @@ exports.cookieAccept = (req, res) => {
 };
 
 
-exports.terms = (req, res, next) => {
-    const {i18n} = res.locals;
+exports.terms = async (req, res, next) => {
+    const { i18n } = res.locals;
     const currentLang = i18n.lang;
-    const op = {"root": path.join("public")};
+    const section = "terms";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { root: rootPath };
 
-    if (fs.existsSync(`../public/terms/terms_${currentLang}.html`)) {
-        res.sendFile(`terms/terms_${currentLang}.html`, op);
-    } else if (fs.existsSync(`../public/terms/terms_${currentLang}.pdf`)) {
-        res.sendFile(`terms/terms_${currentLang}.pdf`, op);
-    } else if (fs.existsSync("../public/terms/terms.html")) {
-        res.sendFile("terms/terms.html", op);
-    } else if (fs.existsSync("../public/terms/terms.pdf")) {
-        res.sendFile("terms/terms.pdf", op);
-    } else if (fs.existsSync("../public/terms/terms_en.html")) {
-        res.sendFile("terms/terms_en.html", op);
-    } else if (fs.existsSync("../public/terms/terms_en.pdf")) {
-        res.sendFile("terms/terms_en.pdf", op);
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
     } else {
-        res.sendFile(
-            "default_terms/default.html", op,
-            function (error) {
-                if (error) {
-                    next(error);
-                }
-            }
-        );
+        res.sendFile("default_terms/default.html", op, (err) => {
+            if (err) next(err);
+        });
     }
 };
 
-exports.privacy = (req, res, next) => {
-    const {i18n} = res.locals;
+exports.privacy = async (req, res, next) => {
+    const { i18n } = res.locals;
     const currentLang = i18n.lang;
-    const op = {"root": path.join("public")};
+    const section = "privacy";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { root: rootPath };
 
-    if (fs.existsSync(`../public/privacy/privacy_${currentLang}.html`)) {
-        res.sendFile(`privacy/privacy_${currentLang}.html`, op);
-    } else if (fs.existsSync(`../public/privacy/privacy_${currentLang}.pdf`)) {
-        res.sendFile(`privacy/privacy_${currentLang}.pdf`, op);
-    } else if (fs.existsSync("../public/privacy/privacy.html")) {
-        res.sendFile("privacy/privacy.html", op);
-    } else if (fs.existsSync("../public/privacy/privacy.pdf")) {
-        res.sendFile("privacy/privacy.pdf", op);
-    } else if (fs.existsSync("../public/privacy/privacy_en.html")) {
-        res.sendFile("privacy/privacy_en.html", op);
-    } else if (fs.existsSync("../public/privacy/privacy_en.pdf")) {
-        res.sendFile("privacy/privacy_en.pdf", op);
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
     } else {
-        res.sendFile(
-            "default_privacy/default.html", op,
-            function (error) {
-                if (error) {
-                    next(error);
-                }
-            }
-        );
+        res.sendFile("default_privacy/default.html", op, (err) => {
+            if (err) next(err);
+        });
     }
 };
 
-exports.cookiePolicy = (req, res, next) => {
-    const {i18n} = res.locals;
-    const currentLang = i18n.lang;
-    const op = {"root": path.join("public")};
 
-    if (fs.existsSync(`../public/cookies/cookies_${currentLang}.html`)) {
-        res.sendFile(`cookies/cookies_${currentLang}.html`, op);
-    } else if (fs.existsSync(`../public/cookies/cookies_${currentLang}.pdf`)) {
-        res.sendFile(`cookies/cookies_${currentLang}.pdf`, op);
-    } else if (fs.existsSync("../public/cookies/cookies.html")) {
-        res.sendFile("cookies/cookies.html", op);
-    } else if (fs.existsSync("../public/cookies/cookies.pdf")) {
-        res.sendFile("cookies/cookies.pdf", op);
-    } else if (fs.existsSync("../public/cookies/cookies_en.html")) {
-        res.sendFile("cookies/cookies_en.html", op);
-    } else if (fs.existsSync("../public/cookies/cookies_en.pdf")) {
-        res.sendFile("cookies/cookies_en.pdf", op);
+exports.cookiePolicy = async (req, res, next) => {
+    const { i18n } = res.locals;
+    const currentLang = i18n.lang;
+    const section = "cookies";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { root: rootPath };
+
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
     } else {
-        res.sendFile(
-            "default_cookies/default.html", op,
-            function (error) {
-                if (error) {
-                    next(error);
-                }
-            }
-        );
+        res.sendFile("default_cookies/default.html", op, (err) => {
+            if (err) next(err);
+        });
     }
 };
 

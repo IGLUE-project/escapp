@@ -367,7 +367,7 @@ exports.teamInfo = (escapeRoomId, includeTest = false) => {
                 "model": models.user,
                 "through": "members",
                 "as": "teamMembers",
-                "attributes": ["username","anonymized"]
+                "attributes": ["username", "anonymized"]
             }
         ]
     };

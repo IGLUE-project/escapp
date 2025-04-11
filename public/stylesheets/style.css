@@ -2741,7 +2741,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection #mainHeader #logoEU img, #mainSection #mainFooter #logoEU img {
   width: 100%;
 }
-#mainSection #mainHeader .langs, #mainSection #mainFooter .langs {
+#mainSection #mainHeader .langs, #mainSection #mainHeader .legal, #mainSection #mainFooter .langs, #mainSection #mainFooter .legal {
   width: auto;
   position: relative;
   margin: 0;
@@ -3206,12 +3206,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: large;
   font-family: Gugi, sans-serif;
 }
-.portada .contenedor .loginRight .langs {
+.portada .contenedor .loginRight .langs, .portada .contenedor .loginRight .legal {
   position: absolute;
   bottom: 0px;
   color: #656683;
 }
-.portada .contenedor .loginRight .langs a:hover {
+.portada .contenedor .loginRight .langs a:hover, .portada .contenedor .loginRight .legal a:hover {
   color: white;
   font-weight: bold;
 }
@@ -5073,7 +5073,7 @@ html body footer {
   padding: 18px;
   font-family: Gugi, Lato, sans-serif;
 }
-html body .langs {
+html body .langs, html body .legal {
   list-style: none;
   display: flex;
   flex-direction: row;
@@ -5084,12 +5084,12 @@ html body .langs {
   font-size: 12px;
   color: #656683;
 }
-html body .langs li a {
+html body .langs li a, html body .legal li a {
   padding-left: 5px;
   padding-right: 5px;
   color: #656683;
 }
-html body .langs li a:hover {
+html body .langs li a:hover, html body .legal li a:hover {
   font-weight: bold;
   color: white;
 }
@@ -5168,6 +5168,18 @@ select.light option, input.light:not([type=checkbox]) option {
   font-family: Lato !important;
   background: white;
   color: #161938;
+}
+
+.legal li {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+@media (max-width: 567px) {
+  .legal {
+    flex-direction: column !important;
+    font-size: 10px !important;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

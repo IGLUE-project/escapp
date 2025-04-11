@@ -9,6 +9,8 @@ const queries = require("../queries");
 const {OK, NOT_A_PARTICIPANT, PARTICIPANT, NOK, NOT_ACTIVE, NOT_STARTED, TOO_LATE, AUTHOR, ERROR} = require("../helpers/apiCodes");
 const {getRetosSuperados, byRanking, getPuzzleOrderSuperados} = require("./analytics");
 const {removeDiacritics} = require("./diacritics.js");
+const fs = require("fs");
+const path = require("path");
 
 exports.flattenObject = (obj, labels, min = false) => {
     const rs = {};
@@ -200,7 +202,7 @@ exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, a
 exports.getRanking = async (escapeRoomId, turnoId) => {
     const teamsRaw = await models.team.findAll(queries.team.rankingShort(escapeRoomId, turnoId));
     const nPuzzles = await models.puzzle.count({"where": { escapeRoomId }});
-    const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {user:{ anonymous: "Anonymous"}}).sort(byRanking);
+    const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {"user": { "anonymous": "Anonymous"}}).sort(byRanking);
 
     return ranking;
 };
@@ -508,7 +510,7 @@ exports.isValidEmail = (email, whitelist = []) => {
     const domain = parts[1].trim();
 
     // Ensure whitelist is properly formatted (trim spaces)
-    const cleanedWhitelist = whitelist.map((domain) => domain.trim());
+    const cleanedWhitelist = whitelist.map((dom) => dom.trim());
 
     // Check if domain is in the whitelist
     return cleanedWhitelist.includes(domain);
@@ -550,12 +552,37 @@ exports.getRole = (role, username = "", i18n) => {
 };
 
 exports.generatePassword = () => {
-    let length = 8,
-        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-        retVal = "";
+    const length = 8,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let retVal = "";
 
     for (let i = 0, n = charset.length; i < length; ++i) {
         retVal += charset.charAt(Math.floor(Math.random() * n));
     }
     return retVal;
+};
+
+exports.findFirstAvailableFile = async (section, lang) => {
+    const rootPath = path.join(__dirname, "../public");
+    const candidates = [
+        `${section}/${section}_${lang}.html`,
+        `${section}/${section}_${lang}.pdf`,
+        `${section}/${section}.html`,
+        `${section}/${section}.pdf`,
+        `${section}/${section}_en.html`,
+        `${section}/${section}_en.pdf`
+    ];
+
+    for (const relativeFile of candidates) {
+        const absolutePath = path.join(rootPath, relativeFile);
+        try {
+            await fs.access(absolutePath);
+            return relativeFile;
+        } catch(error) {
+            // Skip and continue
+            console.error(error)
+        }
+    }
+
+    return null;
 };

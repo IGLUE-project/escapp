@@ -30,7 +30,7 @@ exports.getRetosSuperados = (teams, nPuzzles, ignoreTurno = false, i18n) => team
         const startTime = turno.startTime || teamStartTime;
         const count = retos.length;
         const result = `${retos.length}/${nPuzzles}`;
-        const participants = teamMembers.map((member) =>  member.anonymized ? i18n.user.anonymous:`${member.name} ${member.surname}`).join(", ");
+        const participants = teamMembers.map((member) => member.anonymized ? i18n.user.anonymous : `${member.name} ${member.surname}`).join(", ");
         const finishTime = nPuzzles === parseInt(count, 10) && startTime ? Math.floor((new Date(latestRetoSuperado) - new Date(startTime)) / 10) / 100 : null;
 
         return { id, name, puzzlesSolved, "turno": ignoreTurno ? undefined : turno, startTime, latestRetoSuperado, finishTime, count, result, teamMembers, participants };

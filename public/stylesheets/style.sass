@@ -177,7 +177,7 @@ html
       // margin-left: -15px
       padding: 18px
       font-family: Gugi, Lato, sans-serif
-    .langs
+    .langs, .legal
       list-style: none
       display: flex
       flex-direction: row
@@ -251,3 +251,11 @@ select.light, input.light:not([type='checkbox'])
     font-family: Lato !important
     background: white
     color: colors.$darkerpurple
+.legal
+  li 
+    display: flex !important
+    flex-direction: row !important
+@media (max-width: 567px)
+  .legal
+    flex-direction: column !important
+    font-size: 10px !important
