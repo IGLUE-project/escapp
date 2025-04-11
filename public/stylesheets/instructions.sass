@@ -360,7 +360,7 @@
     padding: 10px
 
 #resourceCatalog
-  #text-block-add
+  .text-block-add
     padding: 3px 18px 3px 10px
     margin-bottom: 6px
     display: flex
@@ -380,10 +380,6 @@
   scrollbar-color: var(--secondary) var(--bckg)
   overflow-y: auto
   .catalogItem
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-    align-items: center
     margin: 0 18px
     border-bottom: 1px $textpurplelessop solid
     gap: 12px
@@ -493,6 +489,11 @@
     color: white
     border: 0px
     height: 36px
+    a
+      display: flex
+      color: white
+      span
+        padding-right: 6px
     &:hover
       background: $darkerbluelessop
     p
@@ -520,18 +521,7 @@
   #add
     color: white
 
-  .progressElement
-    display: flex
-    flex-direction: row
-    align-items: center
-    justify-content: space-between
-    padding-right: 10px
-    gap: 12px
-    p
-      margin: 12px 0
-      max-width: 90ch
-
-  #addItem
+  .addItem
     left: 1000px
     bottom: 10px
     right: 10px

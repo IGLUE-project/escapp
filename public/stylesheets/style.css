@@ -2456,7 +2456,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   scrollbar-color: var(--secondary) var(--bckg);
   overflow-y: auto;
 }
-#resourceCatalog #text-block-add {
+#resourceCatalog .text-block-add {
   padding: 3px 18px 3px 10px;
   margin-bottom: 6px;
   display: flex;
@@ -2464,7 +2464,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   gap: 4px;
   height: 40px;
 }
-#resourceCatalog #text-block-add p {
+#resourceCatalog .text-block-add p {
   margin: 0;
   font-size: 18px;
 }
@@ -2476,10 +2476,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: black;
 }
 #resourceCatalog .catalogItem {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   margin: 0 18px;
   border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
   gap: 12px;
@@ -2612,6 +2608,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border: 0px;
   height: 36px;
 }
+#resourceCatalog .addButton a {
+  display: flex;
+  color: white;
+}
+#resourceCatalog .addButton a span {
+  padding-right: 6px;
+}
 #resourceCatalog .addButton:hover {
   background: rgba(0, 83, 192, 0.7);
 }
@@ -2644,19 +2647,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog #add {
   color: white;
 }
-#resourceCatalog .progressElement {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 10px;
-  gap: 12px;
-}
-#resourceCatalog .progressElement p {
-  margin: 12px 0;
-  max-width: 90ch;
-}
-#resourceCatalog #addItem {
+#resourceCatalog .addItem {
   left: 1000px;
   bottom: 10px;
   right: 10px;
