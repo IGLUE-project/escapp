@@ -1,10 +1,10 @@
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
         <div style="display: flex; justify-content:end">
-            <button class="addButton"> <a href="reusablePuzzleInstance/new" >
-                <span class="building-block-icon material-icons"> extension </span>
+            <button class="addButton" onclick="createPuzzle()">
+            <span class="building-block-icon material-icons"> extension </span>
                 <p>Nuevo puzzle</p>
-            </a> </button>
+            </button>
 
             <button class="addButton"> <a href="assets?mode=catalogView" >
                 <span class="building-block-icon material-icons"> save </span>
@@ -317,6 +317,29 @@
         <form action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
     </dialog>
+    <dialog id="reusablePuzzleDialog">
+        <form method="POST" action="../reusablePuzzleInstance">
+            <label> Name </label>
+            <input type="text" name="name"/>
+            <label> Description </label>
+            <input type="text" name="description"/>
+            </br>
+            <label> Puzzle type </label>
+            <select name="reusablePuzzleId">
+            </select>
+            </br>
+            <h2>Configuration</h2>
+            <label> Input </label>
+            <input type="text" name="config_a"/>
+            <label> Input </label>
+            <input type="text" name="config_b"/>
+            <label> Input </label>
+            <input type="text" name="config_c"/>
+            <label> Input </label>
+            <input type="text" name="config_d"/>
+            <input type="submit"/>
+        </form>
+    </dialog>
 </div>
 
 <script>
@@ -396,6 +419,29 @@
         } else {
             return `<div>${item.name}</div>`;
         }
+    }
+
+    function createPuzzle(){
+        console.log
+        const dialog = $('#reusablePuzzleDialog')
+        const select = dialog.find('select');
+        window.reusablePuzzles.forEach(puzzle => {
+         select.append(`<option value = $i{puzzle.id}>${puzzle.name}</option>`)
+            })
+        dialog.dialog({
+            modal: true,
+            resizable: false,
+            width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
+            height: "auto",
+            show: {
+                effect: "scale",
+                duration: 400
+            },
+            hide: {
+                effect: "scale",
+                duration: 400
+            },
+        }).show()
     }
 
     function deleteReusablePuzzleInstance(id) {

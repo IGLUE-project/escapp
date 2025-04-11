@@ -68,7 +68,6 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
     const {reusablePuzzleInstanceId} = req.params;
 
     try {
-        console.log(models.reusablePuzzleInstance);
         const {config, name, description} = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
 
         res.render("reusablePuzzles/reusablePuzzleConfiguration", {config, name, description});
