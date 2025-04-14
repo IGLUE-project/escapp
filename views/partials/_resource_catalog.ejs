@@ -1,11 +1,13 @@
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
         <div style="display: flex; justify-content:end; margin-bottom:0.2em;">
+            <%if(endPoint === "team"){%>
             <button class="addButton" style="margin-right:0.2em" onclick="createPuzzle()">
                 <span class="building-block-icon material-icons"> extension </span>
                     <%console.log(i18n.escapeRoom.steps.indications)%>
                     <p><%=i18n.escapeRoom.steps.indications.front.catalog.newPuzzle%></p>
             </button>
+            <%}%>
             <button class="addButton"> <a href="assets?mode=catalogView" >
                 <span class="building-block-icon material-icons"> save </span>
                 <p> <%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>

@@ -187,6 +187,7 @@ $(()=>{
 
     for (var i in window.content) {
         var block = window.content[i];
+        console.log(block);
         insertContent(i, block.type, block.payload, block.puzzles)
     }
 
@@ -276,13 +277,6 @@ $(()=>{
         var parent = $(this).parent().parent();
         var id = parent.attr("id");
         overlayTrigger(id);
-    });
-    //TODO QUITAR ESTO
-    $( ".add-content").on("click", function(){
-        var type = this.dataset.content;
-        var text = `<p>${window.placeholder}</p>`;
-        insertContent(0, type, {text}, puzzleList);
-        window.scrollTo(0, $('.building-block').children().last().offset().top);
     });
 
     $('#custom-content').sortable({
