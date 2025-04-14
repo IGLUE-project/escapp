@@ -1,14 +1,14 @@
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
-        <div style="display: flex; justify-content:end">
-            <button class="addButton" onclick="createPuzzle()">
-            <span class="building-block-icon material-icons"> extension </span>
-                <p>Nuevo puzzle</p>
+        <div style="display: flex; justify-content:end; margin-bottom:0.2em;">
+            <button class="addButton" style="margin-right:0.2em" onclick="createPuzzle()">
+                <span class="building-block-icon material-icons"> extension </span>
+                    <%console.log(i18n.escapeRoom.steps.indications)%>
+                    <p><%=i18n.escapeRoom.steps.indications.front.catalog.newPuzzle%></p>
             </button>
-
             <button class="addButton"> <a href="assets?mode=catalogView" >
                 <span class="building-block-icon material-icons"> save </span>
-                <p> Subir archivo </p>
+                <p> <%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
             </a> </button>
             </div>
         <div style="height:240px;overflow-y:auto;width:100%;position:relative">
@@ -19,41 +19,41 @@
                    <col span="1" style="width: 30%;">
                 </colgroup>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Tipo</th>
+                    <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.name%></th>
+                    <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
                     <th></th>
                 </tr>
                 <tr class="catalogItem" class="building-block-bar-button "
-                    title="<%=i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
+                    title="<%i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
                     <td> <p class="title"> <%=i18n.escapeRoom.steps.indications.front.countdown%> </p> </td>
                     <td> <img class="building-block-img" src="/images/countdown.png" /> </td>
                     <td> <button class="listButton addButton" onclick='insertAndScrollContent(0,"countdown",{}, puzzleList)'
                         class="listButton">
                         <span class="building-block-icon material-icons" id="add"> add
                         </span>
-                        <p> Añadir bloque</p>
+                        <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
                     </button></td>
                 </tr>
                 <tr class="catalogItem" class="building-block-bar-button "
-                    title="<%=i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
+                    title="<%i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
                     <td> <p class="title"> <%=i18n.escapeRoom.steps.indications.front.ranking%> </td>
                     <td> <img class="building-block-img" src="/images/ranking.png" /> </td>
                     <td> <button class="listButton addButton" onclick='insertAndScrollContent(0,"ranking",{}, puzzleList)'
                         class="listButton">
                         <span class="building-block-icon material-icons" id="add"> add
                         </span>
-                        <p> Añadir bloque </p>
+                        <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
                     </td>
                 </tr>
                 <tr class="catalogItem" class="building-block-bar-button "
-                    title="<%=i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
+                    title="<%i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
                     <td> <p class="title"> <%=i18n.escapeRoom.steps.indications.front.progress%> </p> </td>
                     <td> <span class="building-block-icon material-icons" style="color: var(--lightred);"> show_chart </span> </td>
                     <td> <button class="listButton addButton" onclick='insertAndScrollContent(0,"progress",{}, puzzleList)'
                         class="listButton">
                         <span class="building-block-icon material-icons" id="add"> add
                         </span>
-                        <p> Añadir bloque </p>
+                        <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
                     </button></td>
                 </tr>
                 <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
@@ -74,12 +74,12 @@
                             <button class="listButton linkButton" onclick='copyURl("<%=puzzle.id%>")'>
                                 <span class="building-block-icon material-icons" id="link"> link </span>
                                 <div class="tooltip-link"> Copiar enlace </div>
-                                <div class="tooltip-link" id="link-copied"> ¡Enlace copiado! </div>
+                                <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%> </div>
                             </button>
                             <button class="listButton addButton"
                                 onclick='insertAndScrollContent(0,"catalog",{url:"<%=puzzle.url%>",config: "<%=puzzle.config%>"  mime:"<%=puzzle.mime%>"}, puzzleList)'>
                                 <span class="building-block-icon material-icons" id="add"> add </span>
-                                <p> Añadir bloque </p>
+                                <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
                             </button>
                         </div>
                         </td>
@@ -113,7 +113,7 @@
                                     <span class="building-block-icon material-icons" id="link"> link
                                     </span>
                                     <div class="tooltip-link"> Copiar enlace </div>
-                                    <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                    <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                     </div>
                                 </button>
 
@@ -121,7 +121,7 @@
                                     onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                     <span class="building-block-icon material-icons" id="add"> add
                                     </span>
-                                    <p>Añadir bloque</p>
+                                    <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
                                 </button>
                             </div>
                             </td>
@@ -154,14 +154,14 @@
                                         <span class="building-block-icon material-icons" id="link"> link
                                         </span>
                                         <div class="tooltip-link"> Copiar enlace </div>
-                                        <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                        <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                         </div>
                                     </button>
                                     <button class="listButton addButton"
                                         onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                         <span class="building-block-icon material-icons" id="add"> add
                                         </span>
-                                        <p>Añadir bloque </p>
+                                        <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
                                     </button>
                                 </div>
                                 </td>
@@ -194,14 +194,14 @@
                                             <span class="building-block-icon material-icons" id="link"> link
                                             </span>
                                             <div class="tooltip-link"> Copiar enlace </div>
-                                            <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                            <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                             </div>
                                         </button>
                                         <button class="listButton addButton"
                                             onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                             <span class="building-block-icon material-icons" id="add"> add
                                             </span>
-                                            <p>Añadir bloque</p>
+                                            <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
                                         </button>
                                     </div>
                                     </td>
@@ -235,7 +235,7 @@
                                                 <span class="building-block-icon material-icons" id="link"> link
                                                 </span>
                                                 <div class="tooltip-link"> Copiar enlace </div>
-                                                <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                                <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                 </div>
                                             </button>
 
@@ -243,7 +243,7 @@
                                                 onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                 <span class="building-block-icon material-icons" id="add"> add
                                                 </span>
-                                                <p>Añadir bloque</p>
+                                                <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
                                             </button>
                                         </div>
                                         </td>
@@ -279,14 +279,14 @@
                                                             link
                                                         </span>
                                                         <div class="tooltip-link"> Copiar enlace </div>
-                                                        <div class="tooltip-link" id="link-copied"> ¡Enlace copiado!
+                                                        <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                         </div>
                                                     </button>
                                                     <button class="listButton addButton" disabled> <span
                                                             class="building-block-icon material-icons" id="add">
                                                             add
                                                         </span>
-                                                        <p> Añadir bloque </p>
+                                                        <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
                                                     </button>
                                         </div>
                                         </td>
@@ -297,12 +297,12 @@
         </table>
         </div>
     </div>
-<div style="display:flex; align-items:center">
+<div style="display:flex; margin-top:0.5em; align-items:center">
     <button class="addButton" class="text-block-add" onclick="insertContentBlock()">
         <span class="building-block-icon material-icons"> add </span>
-        <p> Añadir bloque de texto</p>
+        <p><%= i18n.escapeRoom.steps.indications.front.catalog.addText%></p>
     </button>
-    <button class="building-block-bar-button theme-btn" style="display:flex;">
+    <button class="building-block-bar-button theme-btn" style="margin-left:0.2em;display:flex;">
         <span class="building-block-icon material-icons" style="color: var(--info);">color_lens</span>
         <span class="theme-text">
             <%=i18n.escapeRoom.steps.indications.front.theme%>: <span id="theme-title">

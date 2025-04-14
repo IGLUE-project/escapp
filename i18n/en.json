@@ -486,7 +486,20 @@
                     "Progress": "Progress",
                     "Time": "Time",
                     "Student": "Student",
-                    "resources": "Resource catalog"
+                    "resources": "Resource catalog",
+                    "catalog": {
+                        "newPuzzle": "New puzzle",
+                        "uploadFile": "Upload File",
+                        "addBlock": "Add block",
+                        "addText": "Add text block",
+                        "table": {
+                            "name": "Name",
+                            "type": "Type"
+                        },
+                        "copied": "URL copied!",
+                        "copyUrl": "Copy URL",
+                        "deleteConfirm": "Are you sure you want to delete this resource?"
+                    }
                 }
             },
             "list": {

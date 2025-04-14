@@ -87,7 +87,6 @@ const applicationRegex = new RegExp(/application\/.*/);
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
     item.mime = item.mime || "";
-    console.log(configJSON)
     if(item.mime.search(imageRegex) !== -1) {
         return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {

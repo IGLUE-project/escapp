@@ -477,7 +477,20 @@
                     "Progress": "Progreso",
                     "Time": "Tiempo",
                     "Student": "Alumno",
-                    "resourceCatalog": "Catálogo de recursos"
+                    "resourceCatalog": "Catálogo de recursos",
+                    "catalog": {
+                        "newPuzzle": "Nuevo puzzle",
+                        "uploadFile": "Subir fichero",
+                        "addBlock": "Añadir bloque",
+                        "addText": "Añadir bloque de texto",
+                        "table": {
+                            "name": "Nombre",
+                            "type": "Tipo"
+                        },
+                        "copied": "¡Enlace copiado!",
+                        "copyUrl": "Copiar enlace",
+                        "deleteConfirm": "¿Estás seguro de que quieres borrar este archivo?"
+                    }
                 }
             },
             "list": {
