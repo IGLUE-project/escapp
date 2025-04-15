@@ -8,6 +8,11 @@ const queries = require("../queries");
 const path = require("path");
 const fs = require("fs");
 
+const imageRegex = new RegExp(/image\/.*/);
+const videoRegex = new RegExp(/video\/.*/);
+const audioRegex = new RegExp(/audio\/.*/);
+const applicationRegex = new RegExp(/application\/.*/);
+
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
     const {escapeRoom} = req;
@@ -170,16 +175,47 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
         const file = asset.public_id;
 
         const filePath = path.join(__dirname, `/../uploads/${file}`);
-        console.log(filePath)
 
-        if (asset.mimte === "application/pdf") {
+        if (asset.mime === "application/pdf") {
             const data = fs.readFileSync(filePath);
-
+            res.setHeader("Content-Type", "application/pdf");
             res.contentType("application/pdf");
             res.send(data);
+        } else if (asset.mime.search(videoRegex) !== -1) {
+            console.log('video request')
+            const stat = fs.statSync(filePath);
+            const fileSize = stat.size;
+            const range = req.headers.range;
+
+            if (range) {
+                console.log('range request')
+                const parts = range.replace(/bytes=/, '').split('-');
+                const start = parseInt(parts[0], 10);
+                const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+                const chunkSize = end - start + 1;
+                const file = fs.createReadStream(filePath, { start, end });
+                const head = {
+                    'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': chunkSize,
+                    'Content-Type': 'video/mp4',
+                };
+
+                res.writeHead(206, head);
+                file.pipe(res);
+            } else {
+                const head = {
+                    'Content-Length': fileSize,
+                    'Content-Type': 'video/mp4',
+                };
+
+                res.writeHead(200, head);
+                fs.createReadStream(filePath).pipe(res);
+            }
+
+        } else {
+            res.sendFile(filePath);
         }
-        res.setHeader("Content-Type", "application/pdf");
-        res.sendFile(filePath);
     } catch (err) {
         console.log(err);
         next(err);
@@ -187,10 +223,6 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
 };
 
 
-const imageRegex = new RegExp(/image\/.*/);
-const videoRegex = new RegExp(/video\/.*/);
-const audioRegex = new RegExp(/audio\/.*/);
-const applicationRegex = new RegExp(/application\/.*/);
 
 function appendParameterers (...parameters) {
     let config = "";
