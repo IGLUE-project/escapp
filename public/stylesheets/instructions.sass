@@ -402,23 +402,24 @@
 #resourceCatalog
   .text-block-add
     padding: 3px 18px 3px 10px
-    margin-bottom: 6px
+    // margin-bottom: 6px
     display: flex
     align-items: center
     gap: 4px
     height:40px
     p
       margin: 0
-      font-size: 18px
+      // font-size: 18px
   .catalog-container
     cursor: pointer
     margin-top: 0px
-
+    border-collapse: collapse
   a
     color: black
   scrollbar-width: thin
   scrollbar-color: var(--secondary) var(--bckg)
   overflow-y: auto
+
   .catalogItem
     margin: 0 18px
     border-bottom: 1px $textpurplelessop solid
@@ -428,18 +429,18 @@
     &:last-child
       border-bottom:0px
       margin-bottom: 54px
+   
     .icon-text-container
       display: flex
       gap: 12px
       align-items: center
-
       overflow: hidden
       text-overflow: "..."
       max-height: 45px
       white-space: nowrap
       -webkit-line-clamp: 1
     .title
-      margin: 12px 0
+      margin: 12px 18px
       display: inline-block
       max-width: 50ch
       overflow: hidden
@@ -463,7 +464,14 @@
       background: $red
     #gray
       background: rgb(75, 82, 87)
-
+   
+    /*celda botón*/
+    .row-button
+      margin-right: 24px
+      display: flex
+      justify-content: end
+      height: 52px
+      align-items: center
 
   #myTabContent
     background: $darkerpurple
@@ -498,6 +506,19 @@
       background: $darkerred
       #delete
         color: $lightred
+ 
+
+  //BUTTONS
+  .uploadButton
+    height: 52px
+    a 
+      display: flex
+      margin-bottom: 0.2rem
+      align-items:center
+      gap: 0.3rem
+      color: $mainpurple
+    p
+      margin: 0
   .linkButton
     background: none
     border: 0px
@@ -521,26 +542,28 @@
           display: flex
   .addButton
     display: flex
-    padding: 0px 16px 0px 6px
-    display: flex
+    padding: 8px 16px 8px 6px
     align-items: center
     gap: 6px
     background: $blue
     color: white
     border: 0px
     height: 36px
+    &:hover
+      background: $darkerbluelessop
     a
       display: flex
       color: white
       span
         padding-right: 6px
-    &:hover
-      background: $darkerbluelessop
     p
       margin: 0
       display: ruby
     span
       color: white
+  #buttonMain
+    height: 52px
+    font-size: 1em
   .newItemButton
     box-shadow: 0px 0px 40px 12px $darkerpurple
 
@@ -608,3 +631,115 @@
 .ql-video
   margin: auto
   display: block
+
+  /*titulo tabla*/
+.tableTitles 
+  font-size: 14px
+  th
+    text-align: left
+   
+    padding: 18px 0 6px 0px 
+  th:first-child
+    padding: 18px 0 6px 18px 
+
+  /*MODAL CATALOG RESOURCE*/
+
+#modalCatalogResource
+  z-index: 999
+  position: absolute
+  background: #00000077
+  height: 100vh
+  width:100vw
+  top: 0px
+  right: 0px
+  z-index: 999
+
+
+.modalCatalogResource
+  display: none
+  .modalTitle
+    border-bottom: 1px $textpurplelessop solid
+    padding: 1.3rem 2rem 1rem 2rem
+    display: flex
+    justify-content: space-between
+    position: fixed
+    background: $purplebg
+    width: 970px
+    z-index: 999
+    border-radius: 6px 6px 0 0
+    h5
+      margin: 0px
+    span
+      cursor: pointer
+  .modalContainer 
+    background-color: $purplebg
+    border-radius: 8px
+    width: 970px
+    margin: auto
+    .sections
+      overflow: scroll
+      height: 55vh
+    section
+      padding: 1.2rem 2rem
+      .title-section
+        margin: 0 0 1rem 0
+        font-size: 20px
+
+  // RESOURCES GAMIFICATION ELEMENTS
+  .btn-group
+    display: flex
+    gap: 0.6rem
+  // RESOURCE CATALOG BUTTON
+  .resourceCatalogBtn
+    display: flex
+    align-items: center
+    background-color: #161938
+    color: #eeeeee
+    border: 1px solid $textpurplelessop
+    border-radius: 12px
+    gap: 1rem
+    padding: 0.5rem 1.5rem 0.5rem 1rem
+    font-family: Lato 
+    &:hover
+      background-color: $darkestpurple
+    p
+      margin: 0 0 6px 0
+
+  // RESOURCES INTERACTIVE RESOURCE
+  .resources-group
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr 1fr
+    grid-gap: 1rem
+    .resource-card
+      display: flex
+      flex-direction: column
+      border-radius: 6px
+      border: 1px $textpurplelessop solid
+
+      img
+        object-fit: cover
+        height: 80px
+        border-radius: 5px 5px 0px 0
+      .resourceCatalogBtn
+        border-radius: 0px 0px 6px 6px 
+        border: 0px
+  #scenery
+    width: 400px
+    border-radius: 6px
+    border: 1px $textpurplelessop solid
+    img 
+      height: 120px  
+      object-fit: cover 
+      width: 100%
+      border-radius: 5px 5px 0px 0
+    .resourceCatalogBtn
+      border-radius: 0px 0px 6px 6px 
+      border: 0px
+      width: 100%
+.active
+  display: flex
+  border-radius: 0px 0px 6px 6px 
+
+// .overflow-hidden
+//   overflow: hidden
+//   height: 100vh

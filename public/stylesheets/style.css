@@ -2503,7 +2503,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #resourceCatalog .text-block-add {
   padding: 3px 18px 3px 10px;
-  margin-bottom: 6px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -2511,11 +2510,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #resourceCatalog .text-block-add p {
   margin: 0;
-  font-size: 18px;
 }
 #resourceCatalog .catalog-container {
   cursor: pointer;
   margin-top: 0px;
+  border-collapse: collapse;
 }
 #resourceCatalog a {
   color: black;
@@ -2526,6 +2525,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   gap: 12px;
   padding: 0px 0px;
   max-height: 46px;
+  /*celda botón*/
 }
 #resourceCatalog .catalogItem:last-child {
   border-bottom: 0px;
@@ -2542,7 +2542,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   -webkit-line-clamp: 1;
 }
 #resourceCatalog .catalogItem .title {
-  margin: 12px 0;
+  margin: 12px 18px;
   display: inline-block;
   max-width: 50ch;
   overflow: hidden;
@@ -2572,6 +2572,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #resourceCatalog .catalogItem #gray {
   background: rgb(75, 82, 87);
+}
+#resourceCatalog .catalogItem .row-button {
+  margin-right: 24px;
+  display: flex;
+  justify-content: end;
+  height: 52px;
+  align-items: center;
 }
 #resourceCatalog #myTabContent {
   background: #161938;
@@ -2616,6 +2623,18 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .delete-button:hover #delete {
   color: #F47E84;
 }
+#resourceCatalog .uploadButton {
+  height: 52px;
+}
+#resourceCatalog .uploadButton a {
+  display: flex;
+  margin-bottom: 0.2rem;
+  gap: 0.3rem;
+  color: #232850;
+}
+#resourceCatalog .uploadButton p {
+  margin: 0;
+}
 #resourceCatalog .linkButton {
   background: none;
   border: 0px;
@@ -2644,14 +2663,16 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #resourceCatalog .addButton {
   display: flex;
-  padding: 0px 16px 0px 6px;
-  display: flex;
+  padding: 8px 16px 8px 6px;
   align-items: center;
   gap: 6px;
   background: rgb(0, 116, 211);
   color: white;
   border: 0px;
   height: 36px;
+}
+#resourceCatalog .addButton:hover {
+  background: rgba(0, 83, 192, 0.7);
 }
 #resourceCatalog .addButton a {
   display: flex;
@@ -2660,15 +2681,16 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .addButton a span {
   padding-right: 6px;
 }
-#resourceCatalog .addButton:hover {
-  background: rgba(0, 83, 192, 0.7);
-}
 #resourceCatalog .addButton p {
   margin: 0;
   display: ruby;
 }
 #resourceCatalog .addButton span {
   color: white;
+}
+#resourceCatalog #buttonMain {
+  height: 52px;
+  font-size: 1em;
 }
 #resourceCatalog .newItemButton {
   box-shadow: 0px 0px 40px 12px #161938;
@@ -2759,6 +2781,130 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .ql-video {
   margin: auto;
   display: block;
+  /*titulo tabla*/
+}
+
+.tableTitles {
+  font-size: 14px;
+  /*MODAL CATALOG RESOURCE*/
+}
+.tableTitles th {
+  text-align: left;
+  padding: 18px 0 6px 0px;
+}
+.tableTitles th:first-child {
+  padding: 18px 0 6px 18px;
+}
+
+#modalCatalogResource {
+  z-index: 999;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.4666666667);
+  height: 100vh;
+  width: 100vw;
+  top: 0px;
+  right: 0px;
+  z-index: 999;
+}
+
+.modalCatalogResource {
+  display: none;
+}
+.modalCatalogResource .modalTitle {
+  border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
+  padding: 1.3rem 2rem 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  background: #232951;
+  width: 970px;
+  z-index: 999;
+  border-radius: 6px 6px 0 0;
+}
+.modalCatalogResource .modalTitle h5 {
+  margin: 0px;
+}
+.modalCatalogResource .modalTitle span {
+  cursor: pointer;
+}
+.modalCatalogResource .modalContainer {
+  background-color: #232951;
+  border-radius: 8px;
+  width: 970px;
+  margin: auto;
+}
+.modalCatalogResource .modalContainer .sections {
+  overflow: scroll;
+  height: 55vh;
+}
+.modalCatalogResource .modalContainer section {
+  padding: 1.2rem 2rem;
+}
+.modalCatalogResource .modalContainer section .title-section {
+  margin: 0 0 1rem 0;
+  font-size: 20px;
+}
+.modalCatalogResource .btn-group {
+  display: flex;
+  gap: 0.6rem;
+}
+.modalCatalogResource .resourceCatalogBtn {
+  display: flex;
+  align-items: center;
+  background-color: #161938;
+  color: #eeeeee;
+  border: 1px solid rgba(101, 102, 131, 0.7);
+  border-radius: 12px;
+  gap: 1rem;
+  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  font-family: Lato;
+}
+.modalCatalogResource .resourceCatalogBtn:hover {
+  background-color: #050B2D;
+}
+.modalCatalogResource .resourceCatalogBtn p {
+  margin: 0 0 6px 0;
+}
+.modalCatalogResource .resources-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
+}
+.modalCatalogResource .resources-group .resource-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  border: 1px rgba(101, 102, 131, 0.7) solid;
+}
+.modalCatalogResource .resources-group .resource-card img {
+  object-fit: cover;
+  height: 80px;
+  border-radius: 5px 5px 0px 0;
+}
+.modalCatalogResource .resources-group .resource-card .resourceCatalogBtn {
+  border-radius: 0px 0px 6px 6px;
+  border: 0px;
+}
+.modalCatalogResource #scenery {
+  width: 400px;
+  border-radius: 6px;
+  border: 1px rgba(101, 102, 131, 0.7) solid;
+}
+.modalCatalogResource #scenery img {
+  height: 120px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 5px 5px 0px 0;
+}
+.modalCatalogResource #scenery .resourceCatalogBtn {
+  border-radius: 0px 0px 6px 6px;
+  border: 0px;
+  width: 100%;
+}
+
+.active {
+  display: flex;
+  border-radius: 0px 0px 6px 6px;
 }
 
 #mainSection .main.student {
