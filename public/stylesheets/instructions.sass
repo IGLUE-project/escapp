@@ -352,12 +352,52 @@
     align-items: center
     display: flex
     flex-direction: column
+    padding: 20px
+    justify-content: center 
+    gap: 1rem
+  label
+    padding: 10px 10px 0 0
+  .submit
+    height: 50px
+  input[type="checkbox"]
+    height: 16px
+    margin: 0
+  .titleLabelEdit
+    font-weight: bold
+    color: $textgrey
+    padding-bottom: 0.4rem
+    margin: 0 0 0.8rem  0
+    border-bottom: 1px solid rgb(219, 219, 219)
+  .containerBlocksEdit
+    max-width: 400px
+    min-width: 300px
     display: flex
     flex-direction: column
-    padding: 20px
-    justify-content: center
-  label
-    padding: 10px
+    gap: 2rem
+    margin-bottom: 1rem
+.editDialogForm
+    display: flex
+    flex-direction: row
+    gap: 3rem
+
+.editUnit
+    display: flex
+    flex-direction: row
+    gap: 0.8rem
+    align-items: center
+    input.light:not([type='checkbox'])
+      margin-left: 0
+      width: 100px
+  
+
+.checkBoxEditContainer
+  display: flex
+  padding-top: 1rem
+  flex-direction: row
+  gap: 3rem
+
+ 
+
 
 #resourceCatalog
   #text-block-add

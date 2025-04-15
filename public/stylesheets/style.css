@@ -2442,13 +2442,58 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   align-items: center;
   display: flex;
   flex-direction: column;
-  display: flex;
-  flex-direction: column;
   padding: 20px;
   justify-content: center;
+  gap: 1rem;
 }
 #editDialog label {
-  padding: 10px;
+  padding: 10px 10px 0 0;
+}
+#editDialog .submit {
+  height: 50px;
+}
+#editDialog input[type=checkbox] {
+  height: 16px;
+  margin: 0;
+}
+#editDialog .titleLabelEdit {
+  font-weight: bold;
+  color: #a1a3af;
+  padding-bottom: 0.4rem;
+  margin: 0 0 0.8rem 0;
+  border-bottom: 1px solid rgb(219, 219, 219);
+}
+#editDialog .containerBlocksEdit {
+  max-width: 400px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.editDialogForm {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+}
+
+.editUnit {
+  display: flex;
+  flex-direction: row;
+  gap: 0.8rem;
+  align-items: center;
+}
+.editUnit input.light:not([type=checkbox]) {
+  margin-left: 0;
+  width: 100px;
+}
+
+.checkBoxEditContainer {
+  display: flex;
+  padding-top: 1rem;
+  flex-direction: row;
+  gap: 3rem;
 }
 
 #resourceCatalog {

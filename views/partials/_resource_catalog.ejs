@@ -385,23 +385,80 @@
         form.empty();
         if (mime.search(imageRegex) !== -1) {
             form.append(`
-            <div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
+                    <div class="containerBlocksEdit">
+                        <div>
+                           <p class="titleLabelEdit"> Medidas </p>     
+            <div class="editDialogForm">
+                
+            <div>
+                <label for="height">Height</label>
+                <div class="editUnit">
+                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
+                    <p> px </p>
+                </div>
+            </div>
+            <div>
+                <label for="width">Width</label>
+                <div class="editUnit">
+                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
+                    <p> px </p>
+            </div>
+            </div>
+                        </div>
+            </div>`
+            
+        );
+
+            
         } else if (mime.search(videoRegex) !== -1) {
-            form.append(`<div><label for="width">Height</label><input type="number"  value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}" name="height"/>px</div>
+            form.append(` 
+            <div class="containerBlocksEdit">
+            <div >
+                <p class="titleLabelEdit"> Medidas </p>
+                <div class="editDialogForm">
+                <div>
+                    <label for="height">Height</label>
+                    <div class="editUnit">
+                        <input class="light" type="number" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
+                        <p> px </p>
+                    </div>
+                 </div>
+                <div>
+                    <label for="width">Width</label>
+                    <div class="editUnit">
+                        <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
+                        <p> px </p>
+                    </div>
+                </div>
+                </div>
+                </div>
+                <div>
+                    <p class="titleLabelEdit"> Opciones </p>
+                <div class="checkBoxEditContainer">
                     <div><label for="autoplay">Autoplay</label><input ${configJSON.autoplay ? "checked" : ""} type="checkbox" name="autoplay"/></div>
                     <div><label for="download">Dowloads</label><input ${configJSON.download ? "checked" : ""} type="checkbox" name="download"/></div>
-                    <div><label for="controls">Controls</label><input  ${configJSON.controls ? "checked" : ""} type="checkbox" name="controls"/></div>`);
+                    <div><label for="controls">Controls</label><input  ${configJSON.controls ? "checked" : ""} type="checkbox" name="controls"/></div>
+                </div>    
+                </div>
+                </div>
+                `);
         } else if (mime.search(audioRegex) !== -1) {
-            form.append(`<div><label for="controls">Controls</label><input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/></div>`);
+            form.append(`
+                        <div class="containerBlocksEdit">
+            <div>
+                 <p class="titleLabelEdit"> Opciones </p>
+                 <div>
+                <label for="controls">Controls</label>
+                <input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/>
+            </div>
+                 </div>`);
         } else if (mime.search(applicationRegex) !== -1) {
             form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
                     <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
         } else {
             return `<div>${item.name}</div>`;
         }
-        form.append(`<input type="submit"/>`);
+        form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
         dialog.dialog({
             modal: true,
             resizable: false,
