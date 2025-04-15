@@ -170,6 +170,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
         const file = asset.public_id;
 
         const filePath = path.join(__dirname, `/../uploads/${file}`);
+        console.log(filePath)
 
         if (asset.mimte === "application/pdf") {
             const data = fs.readFileSync(filePath);

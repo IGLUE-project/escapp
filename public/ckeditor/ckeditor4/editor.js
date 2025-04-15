@@ -87,7 +87,6 @@ const applicationRegex = new RegExp(/application\/.*/);
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
     item.mime = item.mime || "";
-    console.log(configJSON)
     if(item.mime.search(imageRegex) !== -1) {
         return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {
@@ -188,6 +187,7 @@ $(()=>{
 
     for (var i in window.content) {
         var block = window.content[i];
+        console.log(block);
         insertContent(i, block.type, block.payload, block.puzzles)
     }
 
@@ -277,13 +277,6 @@ $(()=>{
         var parent = $(this).parent().parent();
         var id = parent.attr("id");
         overlayTrigger(id);
-    });
-    //TODO QUITAR ESTO
-    $( ".add-content").on("click", function(){
-        var type = this.dataset.content;
-        var text = `<p>${window.placeholder}</p>`;
-        insertContent(0, type, {text}, puzzleList);
-        window.scrollTo(0, $('.building-block').children().last().offset().top);
     });
 
     $('#custom-content').sortable({

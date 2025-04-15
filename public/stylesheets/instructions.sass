@@ -54,7 +54,7 @@
           background-color: $brightyellow
           top: 5px
           left: -35px
-          position: drop-shadow(0 0mm 4mm rgb(0, 0, 00))solute
+          position: absolute
           border-radius: 0px
           text-align: center
           border-radius: 5px 0px 0px 5px
@@ -400,7 +400,7 @@
 
 
 #resourceCatalog
-  #text-block-add
+  .text-block-add
     padding: 3px 18px 3px 10px
     margin-bottom: 6px
     display: flex
@@ -410,20 +410,16 @@
     p
       margin: 0
       font-size: 18px
-  .catalog-container 
+  .catalog-container
     cursor: pointer
     margin-top: 0px
- 
+
   a
     color: black
   scrollbar-width: thin
   scrollbar-color: var(--secondary) var(--bckg)
   overflow-y: auto
   .catalogItem
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-    align-items: center
     margin: 0 18px
     border-bottom: 1px $textpurplelessop solid
     gap: 12px
@@ -437,10 +433,10 @@
       gap: 12px
       align-items: center
 
-      overflow: hidden 
-      text-overflow: "..." 
+      overflow: hidden
+      text-overflow: "..."
       max-height: 45px
-      white-space: nowrap 
+      white-space: nowrap
       -webkit-line-clamp: 1
     .title
       margin: 12px 0
@@ -457,11 +453,11 @@
     .material-icons
       padding: 3px
       border-radius: 3px
-    #purple 
+    #purple
       background: rgb(91, 50, 129)
-    #blue 
+    #blue
       background: $blue
-    #green 
+    #green
       background: $darkergreen
     #red
       background: $red
@@ -509,7 +505,7 @@
     padding: 5px
     &:hover
       background: $purple
-      #link 
+      #link
         color: $brighterblue
       .tooltip-link
         display: flex
@@ -533,12 +529,17 @@
     color: white
     border: 0px
     height: 36px
+    a
+      display: flex
+      color: white
+      span
+        padding-right: 6px
     &:hover
       background: $darkerbluelessop
     p
       margin: 0
       display: ruby
-    span  
+    span
       color: white
   .newItemButton
     box-shadow: 0px 0px 40px 12px $darkerpurple
@@ -560,19 +561,7 @@
   #add
     color: white
 
-  .progressElement
-    display: flex
-    flex-direction: row
-    align-items: center
-    justify-content: space-between
-    padding-right: 10px
-    gap: 12px
-    p
-      margin: 12px 0
-      max-width: 90ch
-
-  #addItem
-    position: sticky
+  .addItem
     left: 1000px
     bottom: 10px
     right: 10px
