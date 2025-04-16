@@ -9,6 +9,7 @@ seed.sh
 .vscode
 .DS_Store
 *.code-workspace
+catalog
 public/terms/*
 !public/terms/.gitkeep
 public/privacy/*

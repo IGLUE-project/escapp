@@ -493,8 +493,23 @@
                     "Members":"Members",
                     "Progress": "Progress",
                     "Time": "Time",
-                    "Student": "Student"
-
+                    "Student": "Student",
+                    "resources": "Resource catalog",
+                    "catalog": {
+                        "newPuzzle": "New puzzle",
+                        "uploadFile": "Upload File",
+                        "addResource": "Add new resource",
+                        "addBlock": "Add block",
+                        "addText": "Add text block",
+                        "table": {
+                            "name": "Name",
+                            "type": "Type",
+                            "noResources": "You haven't uploaded any resources yet"
+                        },
+                        "copied": "URL copied!",
+                        "copyUrl": "Copy URL",
+                        "deleteConfirm": "Are you sure you want to delete this resource?"
+                    }
                 }
             },
             "list": {
@@ -760,7 +775,8 @@
         "delete": "delete",
         "outside": "Other resources out of the scope of escapp",
         "fullscreen": "Share in fullscreen",
-        "intro": "The collection of puzzles below allows you to connect digital puzzle applications with the puzzle outline that you defined for your escapp escape room. You can customize their settings and share them with your students as a part of your escape room."
+        "intro": "The collection of puzzles below allows you to connect digital puzzle applications with the puzzle outline that you defined for your escapp escape room. You can customize their settings and share them with your students as a part of your escape room.",
+        "resourceCatalog": "Resource catalog"
     },
     "participant": {
         "attendanceSaved": "Attendance successfully saved",
@@ -1167,6 +1183,6 @@
         "view_privacy": "Read Privacy Policy",
         "view_cookies": "Read Cookie Policy",
         "error_accepting": "Error updating terms and privacy policy acceptance"
-    
+
     }
 }

@@ -292,7 +292,7 @@ exports.terms = async (req, res, next) => {
     const currentLang = i18n.lang;
     const section = "terms";
     const rootPath = path.join(__dirname, "../public");
-    const op = { root: rootPath };
+    const op = { "root": rootPath };
 
     const fileToServe = await findFirstAvailableFile(section, currentLang);
 
@@ -300,7 +300,9 @@ exports.terms = async (req, res, next) => {
         res.sendFile(fileToServe, op);
     } else {
         res.sendFile("default_terms/default.html", op, (err) => {
-            if (err) next(err);
+            if (err) {
+                next(err);
+            }
         });
     }
 };
@@ -310,7 +312,7 @@ exports.privacy = async (req, res, next) => {
     const currentLang = i18n.lang;
     const section = "privacy";
     const rootPath = path.join(__dirname, "../public");
-    const op = { root: rootPath };
+    const op = { "root": rootPath };
 
     const fileToServe = await findFirstAvailableFile(section, currentLang);
 
@@ -318,7 +320,9 @@ exports.privacy = async (req, res, next) => {
         res.sendFile(fileToServe, op);
     } else {
         res.sendFile("default_privacy/default.html", op, (err) => {
-            if (err) next(err);
+            if (err) {
+                next(err);
+            }
         });
     }
 };
@@ -329,7 +333,7 @@ exports.cookiePolicy = async (req, res, next) => {
     const currentLang = i18n.lang;
     const section = "cookies";
     const rootPath = path.join(__dirname, "../public");
-    const op = { root: rootPath };
+    const op = { "root": rootPath };
 
     const fileToServe = await findFirstAvailableFile(section, currentLang);
 
@@ -337,7 +341,9 @@ exports.cookiePolicy = async (req, res, next) => {
         res.sendFile(fileToServe, op);
     } else {
         res.sendFile("default_cookies/default.html", op, (err) => {
-            if (err) next(err);
+            if (err) {
+                next(err);
+            }
         });
     }
 };

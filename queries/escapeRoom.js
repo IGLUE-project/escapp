@@ -92,6 +92,7 @@ exports.loadComplete = {
         models.attachment,
         models.asset,
         models.hintApp,
+        models.reusablePuzzleInstance,
         {
             "model": models.user,
             "as": "author"
@@ -179,7 +180,9 @@ exports.all = (user, page = 1, limit = 10) => {
                     }
                 ]
             },
-            models.attachment
+            models.attachment,
+            models.asset,
+            models.reusablePuzzleInstance
         ]
     };
 

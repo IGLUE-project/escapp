@@ -30,7 +30,7 @@ const otherMsg = (info = "") => {
 };
 
 const quizInstructionsTemplate = () => {
-  return ` 
+  return `
     <h4 class="instructions-button">
     ${i18n.instructionsQuiz}<br/><br/>
       <button class="btn btn-success" id="btn-start-quiz">
@@ -50,7 +50,7 @@ const catsTemplate = (categories, hints) => {
 };
 
 const retoMsg = (puzzle, sol) => {
-  return `<li class="card reto-puzzle-li reto-puzzle-current animated zoomInUp"> 
+  return `<li class="card reto-puzzle-li reto-puzzle-current animated zoomInUp">
       <h6><b>${puzzle.title}</b></h6>
       ${puzzle.correct ? `<p><b>${i18n.msg}:</b> ${escapeHtml(puzzle.correct)}</p>`:``}
       ${puzzle.automatic ? '':`<p><b>${escapeHtml(i18n.sol)}:</b> <span class="hidden-sol">${escapeHtml(sol)}</span></p>`}
@@ -93,6 +93,14 @@ var progressBarTemplate = ()=> `<progressbar>
     </div>
 </progressbar>
 `;
+
+const imageRegex = new RegExp(/image\/.*/);
+const videoRegex = new RegExp(/video\/.*/);
+const audioRegex = new RegExp(/audio\/.*/);
+const applicationRegex = new RegExp(/application\/.*/);
+
+
+const caltaTemplate = ()=> `<div> Hola buenas </div>`;
 
 /** OUTGOING MESSAGES **/
 const error = (msg) => ({type: "ERROR", payload: {msg}});
@@ -206,7 +214,7 @@ const onHintResponse = async ({code, hintOrder: hintOrderPlus, puzzleOrder: puzz
   const message = msg;
   const hintOrder = hintOrderPlus - 1;
   const puzzleOrder = puzzleOrderPlus - 1;
-  
+
   if (hintOrderPlus) { // Existing hint
     updateHint(puzzleOrder, hintOrder, category);
     const moreAvail = checkAvailHintsForPuzzle(puzzleOrder);
@@ -230,7 +238,7 @@ const onHintResponse = async ({code, hintOrder: hintOrderPlus, puzzleOrder: puzz
       }
       $('.reto-hint-title-'+puzzleOrder).first().removeClass('animated');
     }
-    
+
   } else if(ER.info.allowCustomHints) {
     if (code == "OK") { // Hint obtained
       updateHint(puzzleOrder, null, category);
@@ -251,9 +259,9 @@ const onHintResponse = async ({code, hintOrder: hintOrderPlus, puzzleOrder: puzz
           if (ER.info.hintAppConditional) {
             cleanHintModal();
           }
-        } 
+        }
         createAlert("warning", i18n.noMoreLeftTeam);
-        
+
       }
     } else { // Hint not obtained (only quiz strategy)
       if (ER.erState.waitingForHintReply) { // Receive a hint that you requested
@@ -269,7 +277,7 @@ const onHintResponse = async ({code, hintOrder: hintOrderPlus, puzzleOrder: puzz
   }
   ER.erState.waitingForHintReply = false; // Stop waiting for hint response
   $('html').css('cursor','auto');
-  
+
 };
 
 const onInitialInfo = ({code, erState, participation}) => {
@@ -362,10 +370,10 @@ const hintReq = ()=>{
 
 const closeHintModal = async () => {
   // Close hint modal
-  $('#hintModal').addClass('zoomOut'); 
+  $('#hintModal').addClass('zoomOut');
   await forMs(300);
-  $('#hintModal').modal('hide'); 
-  
+  $('#hintModal').modal('hide');
+
 }
 
 const cleanHintModal = ()=> {
@@ -422,7 +430,7 @@ const updatePuzzle = (order, currentPuzzle, prevPuzzleOrder) => {
     // Update currentReto in modal
     $('.reto-hint-li').removeClass('reto-hint-current');
     $('.reto-hint-title-'+order).addClass('reto-hint-current');
-  
+
     if (currentPuzzle.automatic) {
       $('#puzzle-form').hide()
     } else {
@@ -469,11 +477,11 @@ const updateHint = (puzzleOrder, hintOrder, category) => {
 const updateSuperados = (puzzleOrder) => {
   ER.erState.retosSuperados.push(puzzleOrder)
   const pendingIndex = ER.erState.pending.indexOf(puzzleOrder);
-  if (pendingIndex !== -1 ) {ER.erState.pending.splice(pendingIndex, 1);} 
+  if (pendingIndex !== -1 ) {ER.erState.pending.splice(pendingIndex, 1);}
   ER.erState.latestRetoSuperado = ER.erState.retosSuperados.length ? Math.max(...ER.erState.retosSuperados) : null;
 }
 
-var insertContent = (type, payload, puzzles, index, prevIndex) => {
+var insertContent =async (type, payload, puzzles, index, prevIndex) => {
   var content = "";
   switch(type){
     case "countdown":
@@ -489,6 +497,9 @@ var insertContent = (type, payload, puzzles, index, prevIndex) => {
     case "progress":
       content = progressBarTemplate();
       break;
+    case "catalog":
+        content = await catalogTemplate(payload);
+      break;
     default:
   }
   var htmlContent = $(blockTemplate(content, index));
@@ -497,7 +508,6 @@ var insertContent = (type, payload, puzzles, index, prevIndex) => {
   } else {
     $(htmlContent).insertAfter(`#content-${prevIndex}`);
   }
-  
 };
 
 
@@ -537,7 +547,7 @@ const updateContent = (content) => {
     prevIndex = block.index;
 
   }
-  
+
   if (first !== null && document.getElementById(`content-${first}`)) {
     scrollToTargetAdjusted(document.getElementById(`content-${first}`));
   }
@@ -621,7 +631,7 @@ const checkAvailHintsForPuzzle = (puzzleOrder) => {
         timerTitle = setInterval(interval, 5000);
         interval();
       }, timeAheadMs % 5000);
-      
+
       updateHintTooltip(i18n.notUntil + " " + each);
       $('.btn-hints').attr("disabled", true);
       return false;
@@ -684,7 +694,9 @@ const autoPlay = (newBlocks = []) => {
 
     for (let b in newBlocks) {
       let block = newBlocks[b].toString();
+       console.log(ER.erState.startTime.toString(), erSt, previousBlocks.indexOf(block))
       if (erSt !== ER.erState.startTime.toString() || (previousBlocks.indexOf(block) === -1)) { // First time
+        console.log("First time")
         let auto = $( `#block-${block} [autoplay]` );
         let youtube = false;
 
@@ -693,8 +705,9 @@ const autoPlay = (newBlocks = []) => {
           auto = $(`#block-${block} iframe`).filter(function() {
             return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
           });
-        } 
+        }
         if (!auto.length) { // Video
+          console.log("Video")
           auto = $(`#block-${block} video`).filter(function() {
             return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
           });
@@ -715,7 +728,7 @@ const autoPlay = (newBlocks = []) => {
                 return true;
               } catch(e3){return false;}
             }
-              
+
           };
 
           setTimeout(async ()=>{
@@ -781,8 +794,8 @@ const autoPlay = (newBlocks = []) => {
 
 const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket = io('/', {query: {
-    escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId, 
-    turn: turnId == "undefined" ? undefined : turnId  
+    escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId,
+    turn: turnId == "undefined" ? undefined : turnId
   }});
   myTeamId = teamId;
   myUsername = username;
@@ -793,7 +806,7 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket.on("error", console.err);
 
   /*Join*/
-  socket.on("JOIN", onJoin); 
+  socket.on("JOIN", onJoin);
 
   /*Team join*/
   socket.on("JOIN_TEAM", onJoin);
@@ -802,10 +815,10 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket.on("JOIN_PARTICIPANT", onJoin);
 
   /*Start*/
-  socket.on("START", onStart); 
+  socket.on("START", onStart);
 
   /*Start*/
-  socket.on("STOP", onStop); 
+  socket.on("STOP", onStop);
 
   /*Initial info*/
   socket.on("INITIAL_INFO", onInitialInfo);
@@ -823,7 +836,7 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket.on("MESSAGE", onMessage);
 
   /*Join*/
-  // socket.on("LEAVE", onLeave); 
+  // socket.on("LEAVE", onLeave);
 
   /*Participant leave*/
   socket.on("LEAVE_PARTICIPANT", onLeave);
@@ -844,17 +857,17 @@ $( ()=>{
   $('[data-toggle="tooltip"]').tooltip({placement: "bottom"})
   $('.btn-hints-modal-title').tooltip({placement: "bottom"})
     .on('show.bs.tooltip', function(e) {
-      showModT= e.target.id;  
+      showModT= e.target.id;
     })
     .on('hide.bs.tooltip', function(e) {
-      showModT= false  
+      showModT= false
     });
   $('#btn-hints-nav-tooltip').tooltip({placement: "bottom"})
     .on('show.bs.tooltip', function(e) {
-      showNavT= true  
+      showNavT= true
     })
     .on('hide.bs.tooltip', function(e) {
-      showNavT= false  
+      showNavT= false
     });
   checkAvailHintsForPuzzle(ER.erState.currentlyWorkingOn);
   /** BTN ACTIONS **/

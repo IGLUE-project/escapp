@@ -52,7 +52,7 @@ $(function(){
                 node.setAttribute('src', url);
             } else {
                 node.removeAttribute('src')
-            }            
+            }
             node.setAttribute('class', 'ql-video')
             node.setAttribute('frameborder', node.frameborder || '0');
             node.setAttribute('allowfullscreen', true);
@@ -94,7 +94,7 @@ $(function(){
         node.setAttribute('controls', '');
         return node;
       }
-      
+
       static value(node) {
         return node.getAttribute('src');
       }
@@ -125,7 +125,7 @@ $(function(){
         node.setAttribute('contenteditable', 'false');
         node.setAttribute('draggable', 'true');
         node.classList.add('draggable-element');
-        node.innerHTML = ` 
+        node.innerHTML = `
             <div class="ranking-table table" style="height: 229px; ">
                 <div class="ranking-row ranking-header table-primary" style="top: 0px;" >
                     <div class="ranking-pos">#</div>
@@ -164,21 +164,21 @@ $(function(){
             node.setAttribute('contenteditable', 'false');
             node.setAttribute('draggable', 'true');
             node.classList.add('draggable-element');
-            node.innerHTML = ` 
+            node.innerHTML = `
                 <div class="col-xs-12 col-md-8 col-md-push-2 col-lg-6 col-lg-push-3" style="margin:auto;">
                     <div class="progress">
                       <div class="progress-bar puzzle-progress bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>`;
 
-            return node;   
+            return node;
         }
     }
 
     ProgressBlot.blotName = 'progressbar';
     ProgressBlot.tagName = 'progressbar';
     Quill.register(ProgressBlot);
-    
+
     Quill.register("modules/htmlEditButton", htmlEditButton);
 
     Quill.register('modules/VideoResize', VideoResize);
@@ -198,19 +198,19 @@ $(function(){
 
         [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
         window.endPoint === "indications" ?  [{ 'header': [2, 3, 4, 5, 6, false] }]:[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        window.endPoint === "indications" ? [] : [{ 'appearance': [ 
+        window.endPoint === "indications" ? [] : [{ 'appearance': [
             "litera", "cerulean", "journal", "sketchy", "darkly", "cyborg", "cosmo", "flatly", "lumen", "lux", "materia", "minty", "pulse", "sandstone", "simplex", "slate", "solar", "spacelab", "united", "yeti", "superhero"
         ] }],
-        [{ 'color': [ 
+        [{ 'color': [
             "var(--primary)", "var(--secondary)", "var(--success)", "var(--info)", "var(--warning)", "var(--danger)", "var(--light)", "var(--dark)"
-        ] }],        
+        ] }],
         [{ 'align': [] }],
         ['clean'],                                         // remove formatting button
         ['image']
     ];
 
     var range, fileSelected, gamificationElementSelected, quill;
-    
+
     function imageHandler() {
         quill = this.quill;
         range = quill.getSelection();
@@ -226,10 +226,10 @@ $(function(){
 
     var options = {
         modules: {
-            toolbar: { 
-                container: toolbarOptions, 
+            toolbar: {
+                container: toolbarOptions,
                 handlers: {
-                    image: imageHandler, 
+                    image: imageHandler,
                     appearance: appearanceHandler
                 }
             },
@@ -244,7 +244,7 @@ $(function(){
         },
         placeholder: window.placeholder || 'Write here your escape room instructions',
         readOnly: false,
-        theme: 'snow' 
+        theme: 'snow'
     };
 
     var editor = new Quill('#editor', options);
@@ -329,7 +329,7 @@ $(function(){
                 case "sourceFile":
                     if (fileSelected && fileSelected.mime) {
                         insertContent(range.index, fileSelected.url, fileSelected.mime, fileSelected.name);
-                    } 
+                    }
                     break;
                 case "sourceUrl":
                     let url = $('#urlInput').val().replace("http://","https://");
@@ -361,7 +361,7 @@ $(function(){
                                 if (this.readyState == this.DONE && this.status < 400) {
                                     const mime = this.getResponseHeader("Content-Type");
                                     insertContent(range.index, url, mime, url);
-                                } 
+                                }
                             };
                             xhttp.onerror = onerror;
                             xhttp.send();
@@ -374,7 +374,7 @@ $(function(){
                     }
                     break;
             }
-            
+
             $(".file-selected").removeClass("file-selected");
             $(".gamification-element-selected").removeClass("gamification-element-selected");
             fileSelected = null;
@@ -440,8 +440,8 @@ $(function(){
         });
     }
     $('.ql-html-popupContainer button').click(stopAutoplay)
-        
-    stopAutoplay(); 
+
+    stopAutoplay();
 });
 
 function onYouTubeIframeAPIReady() {
@@ -455,10 +455,10 @@ function onYouTubeIframeAPIReady() {
     } catch(e){console.error(e)}
     /*uncomment
     */
-    
+
 
 }
-    
+
 try {
     $("document").on("click", '.ql-html-popupContainer button', () => {
         $('iframe').each((_i,e) => {

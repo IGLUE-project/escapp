@@ -45,7 +45,8 @@
   font-weight: 400 500 600 700;
   src: url("../../fonts/Lato/Lato-Regular.ttf") format("truetype");
 }
-button, input[type=submit] {
+button, input[type=submit], .aButton {
+  transition: 100ms ease-in-out;
   background-color: white;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -57,22 +58,22 @@ button, input[type=submit] {
   outline: 0;
   cursor: pointer;
 }
-button:disabled, button.disabled, input[type=submit]:disabled, input[type=submit].disabled {
+button:disabled, button.disabled, input[type=submit]:disabled, input[type=submit].disabled, .aButton:disabled, .aButton.disabled {
   cursor: not-allowed;
 }
-button.disabled, button:disabled, input[type=submit].disabled, input[type=submit]:disabled {
+button.disabled, button:disabled, input[type=submit].disabled, input[type=submit]:disabled, .aButton.disabled, .aButton:disabled {
   opacity: 0.3;
 }
-button.rounded, input[type=submit].rounded {
+button.rounded, input[type=submit].rounded, .aButton.rounded {
   border-radius: 25px !important;
   padding: 8px 25px !important;
 }
-button.white, input[type=submit].white {
+button.white, input[type=submit].white, .aButton.white {
   background-color: white !important;
   color: #161938 !important;
   border-color: white !important;
 }
-button.login, input[type=submit].login {
+button.login, input[type=submit].login, .aButton.login {
   background-color: #48C18E;
   color: #161938;
   border: #48C18E;
@@ -83,7 +84,7 @@ button.login, input[type=submit].login {
   height: 42px;
   outline: 0;
 }
-button.registro, input[type=submit].registro {
+button.registro, input[type=submit].registro, .aButton.registro {
   border-radius: 20px;
   text-align: center;
   font-size: medium;
@@ -94,7 +95,7 @@ button.registro, input[type=submit].registro {
   color: #161938;
   border: #FAC855;
 }
-button.editButton, input[type=submit].editButton {
+button.editButton, input[type=submit].editButton, .aButton.editButton {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -108,7 +109,7 @@ button.editButton, input[type=submit].editButton {
   border-color: #FAC855;
   color: #161938;
 }
-button.cloneButton, input[type=submit].cloneButton {
+button.cloneButton, input[type=submit].cloneButton, .aButton.cloneButton {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -122,7 +123,7 @@ button.cloneButton, input[type=submit].cloneButton {
   border-color: #656683;
   color: #161938;
 }
-button.deleteButton, input[type=submit].deleteButton {
+button.deleteButton, input[type=submit].deleteButton, .aButton.deleteButton {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -136,7 +137,7 @@ button.deleteButton, input[type=submit].deleteButton {
   color: #161938;
   border-color: #F47E84;
 }
-button.playButton, input[type=submit].playButton {
+button.playButton, input[type=submit].playButton, .aButton.playButton {
   background-color: #FF6347;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -147,7 +148,7 @@ button.playButton, input[type=submit].playButton {
   text-align: center;
   outline: 0;
 }
-button.stopButton, input[type=submit].stopButton {
+button.stopButton, input[type=submit].stopButton, .aButton.stopButton {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -161,7 +162,7 @@ button.stopButton, input[type=submit].stopButton {
   border-color: #F3945E;
   color: #161938;
 }
-button.acceptButton, input[type=submit].acceptButton {
+button.acceptButton, input[type=submit].acceptButton, .aButton.acceptButton {
   background-color: #48C18E;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -172,7 +173,7 @@ button.acceptButton, input[type=submit].acceptButton {
   text-align: center;
   outline: 0;
 }
-button.compartirButton, input[type=submit].compartirButton {
+button.compartirButton, input[type=submit].compartirButton, .aButton.compartirButton {
   background-color: #36A2EB;
   color: #161938;
   font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -183,13 +184,13 @@ button.compartirButton, input[type=submit].compartirButton {
   text-align: center;
   outline: 0;
 }
-button.inverse, input[type=submit].inverse {
+button.inverse, input[type=submit].inverse, .aButton.inverse {
   background-color: transparent;
   color: white;
   border-color: white;
   -webkit-text-fill-color: white !important;
 }
-button[type=submit], input[type=submit][type=submit] {
+button[type=submit], input[type=submit][type=submit], .aButton[type=submit] {
   cursor: pointer;
 }
 
@@ -831,7 +832,8 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin-bottom: 15px;
 }
 .main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger, .portada .dialog-turno .flex-dialog-container .flex-block .overlay-trigger {
-  box-shadow: 0px 0px 5px #999 !important;
+  box-shadow: 0px 0px 5px rgba(54, 54, 54, 0.55) !important;
+  border-radius: 6px;
 }
 .main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons, .portada .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons {
   text-align: right;
@@ -2070,10 +2072,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.step-instructions video, #mainSection .main.step-instructions iframe {
   max-width: 100%;
 }
+#mainSection .main.step-instructions .building-block-img {
+  height: 25px;
+  vertical-align: middle;
+}
 #mainSection .main.step-instructions .building-block-bar {
   display: inline-block;
   padding: 0px;
-  width: 100%;
 }
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-button {
   background: none;
@@ -2437,6 +2442,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.step-instructions ranking .ranking-table .ranking-row .ranking-pos {
   transform: scale(1.5);
 }
+#mainSection .main.step-instructions #catalog div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 #mainSection .main.step-instructions #dialog-config {
   display: none;
 }
@@ -2491,6 +2501,290 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.step-instructions #dialog-themes .theme-list .theme-item img {
   width: 100%;
   height: auto;
+}
+
+#editDialog form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: center;
+  gap: 1rem;
+}
+#editDialog label {
+  padding: 10px 10px 0 0;
+}
+#editDialog .submit {
+  height: 50px;
+}
+#editDialog input[type=checkbox] {
+  height: 16px;
+  margin: 0;
+}
+#editDialog .titleLabelEdit {
+  font-weight: bold;
+  color: #a1a3af;
+  padding-bottom: 0.4rem;
+  margin: 0 0 0.8rem 0;
+  border-bottom: 1px solid rgb(219, 219, 219);
+}
+#editDialog .containerBlocksEdit {
+  max-width: 400px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.editDialogForm {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+}
+
+.editUnit {
+  display: flex;
+  flex-direction: row;
+  gap: 0.8rem;
+  align-items: center;
+}
+.editUnit input.light:not([type=checkbox]) {
+  margin-left: 0;
+  width: 100px;
+}
+
+.checkBoxEditContainer {
+  display: flex;
+  padding-top: 1rem;
+  flex-direction: row;
+  gap: 3rem;
+}
+
+#resourceCatalog {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--bckg);
+  overflow-y: auto;
+}
+#resourceCatalog .text-block-add {
+  padding: 3px 18px 3px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+}
+#resourceCatalog .text-block-add p {
+  margin: 0;
+}
+#resourceCatalog .catalog-container {
+  cursor: pointer;
+  margin-top: 0px;
+  border-collapse: collapse;
+}
+#resourceCatalog a {
+  color: black;
+}
+#resourceCatalog .catalogItem {
+  margin: 0 18px;
+  border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
+  gap: 12px;
+  padding: 0px 0px;
+  max-height: 46px;
+  /*celda botón*/
+}
+#resourceCatalog .catalogItem:last-child {
+  border-bottom: 0px;
+  margin-bottom: 54px;
+}
+#resourceCatalog .catalogItem .icon-text-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: "...";
+  max-height: 45px;
+  white-space: nowrap;
+  -webkit-line-clamp: 1;
+}
+#resourceCatalog .catalogItem .title {
+  margin: 12px 18px;
+  display: inline-block;
+  max-width: 50ch;
+  overflow: hidden;
+  text-overflow: "...";
+  max-height: 27px;
+  color: rgb(193, 198, 209);
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  white-space: nowrap;
+  font-size: 18px;
+}
+#resourceCatalog .catalogItem .material-icons {
+  padding: 3px;
+  border-radius: 3px;
+}
+#resourceCatalog .catalogItem #purple {
+  background: rgb(91, 50, 129);
+}
+#resourceCatalog .catalogItem #blue {
+  background: rgb(0, 116, 211);
+}
+#resourceCatalog .catalogItem #green {
+  background: rgb(0, 105, 61);
+}
+#resourceCatalog .catalogItem #red {
+  background: rgb(185, 62, 68);
+}
+#resourceCatalog .catalogItem #gray {
+  background: rgb(75, 82, 87);
+}
+#resourceCatalog .catalogItem .row-button {
+  margin-right: 24px;
+  display: flex;
+  justify-content: end;
+  height: 52px;
+  align-items: center;
+}
+#resourceCatalog #myTabContent {
+  background: #161938;
+  border-radius: 0px 0px 8px 8px;
+  border: rgba(101, 102, 131, 0.7) 1px solid;
+  padding: 8px;
+}
+#resourceCatalog .button-group {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+#resourceCatalog .listButton {
+  font-size: 16px;
+}
+#resourceCatalog .listButton p {
+  color: white;
+}
+#resourceCatalog .iconButton {
+  background: none;
+  border: 0px;
+  border-radius: 24px;
+}
+#resourceCatalog .editButton {
+  padding: 5px;
+}
+#resourceCatalog .editButton:hover {
+  background: rgb(35, 40, 92);
+}
+#resourceCatalog .editButton:hover #edit {
+  color: white;
+}
+#resourceCatalog .editButton:disabled {
+  padding: 5px;
+}
+#resourceCatalog .delete-button {
+  padding: 5px;
+}
+#resourceCatalog .delete-button:hover {
+  background: rgb(83, 17, 20);
+}
+#resourceCatalog .delete-button:hover #delete {
+  color: #F47E84;
+}
+#resourceCatalog .uploadButton {
+  height: 52px;
+}
+#resourceCatalog .uploadButton a {
+  display: flex;
+  margin-bottom: 0.2rem;
+  gap: 0.3rem;
+  color: #232850;
+}
+#resourceCatalog .uploadButton p {
+  margin: 0;
+}
+#resourceCatalog .linkButton {
+  background: none;
+  border: 0px;
+  border-radius: 24px;
+  padding: 5px;
+}
+#resourceCatalog .linkButton:hover {
+  background: rgb(35, 40, 92);
+}
+#resourceCatalog .linkButton:hover #link {
+  color: rgb(163, 218, 255);
+}
+#resourceCatalog .linkButton:hover .tooltip-link {
+  display: flex;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.57);
+  border-radius: 3px;
+  padding: 4px 9px;
+  color: #dadada;
+}
+#resourceCatalog .linkButton:hover #link-copied {
+  display: none;
+}
+#resourceCatalog .linkButton:hover:focus-within #link-copied {
+  display: flex;
+}
+#resourceCatalog .addButton {
+  display: flex;
+  padding: 8px 16px 8px 6px;
+  align-items: center;
+  gap: 6px;
+  background: rgb(0, 116, 211);
+  color: white;
+  border: 0px;
+  height: 36px;
+}
+#resourceCatalog .addButton:hover {
+  background: rgba(0, 83, 192, 0.7);
+}
+#resourceCatalog .addButton a {
+  display: flex;
+  color: white;
+}
+#resourceCatalog .addButton a span {
+  padding-right: 6px;
+}
+#resourceCatalog .addButton p {
+  margin: 0;
+  display: ruby;
+}
+#resourceCatalog .addButton span {
+  color: white;
+}
+#resourceCatalog #buttonMain {
+  height: 52px;
+  font-size: 1em;
+}
+#resourceCatalog .newItemButton {
+  box-shadow: 0px 0px 40px 12px #161938;
+}
+#resourceCatalog .tooltip-link {
+  display: none;
+  font-size: 13px;
+}
+#resourceCatalog #link-copied {
+  background: rgb(0, 105, 61);
+}
+#resourceCatalog #delete {
+  color: rgb(185, 62, 68);
+}
+#resourceCatalog #edit {
+  color: #a1a3af;
+}
+#resourceCatalog #link {
+  color: #36A2EB;
+}
+#resourceCatalog #add {
+  color: white;
+}
+#resourceCatalog .addItem {
+  left: 1000px;
+  bottom: 10px;
+  right: 10px;
+  margin-right: 16px;
+  font-size: 18px;
 }
 
 .indications #editor {
@@ -2552,6 +2846,130 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .ql-video {
   margin: auto;
   display: block;
+  /*titulo tabla*/
+}
+
+.tableTitles {
+  font-size: 14px;
+  /*MODAL CATALOG RESOURCE*/
+}
+.tableTitles th {
+  text-align: left;
+  padding: 18px 0 6px 0px;
+}
+.tableTitles th:first-child {
+  padding: 18px 0 6px 18px;
+}
+
+#modalCatalogResource {
+  z-index: 999;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.4666666667);
+  height: 100vh;
+  width: 100vw;
+  top: 0px;
+  right: 0px;
+  z-index: 999;
+}
+
+.modalCatalogResource {
+  display: none;
+}
+.modalCatalogResource .modalTitle {
+  border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
+  padding: 1.3rem 2rem 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  background: #232951;
+  width: 970px;
+  z-index: 999;
+  border-radius: 6px 6px 0 0;
+}
+.modalCatalogResource .modalTitle h5 {
+  margin: 0px;
+}
+.modalCatalogResource .modalTitle span {
+  cursor: pointer;
+}
+.modalCatalogResource .modalContainer {
+  background-color: #232951;
+  border-radius: 8px;
+  width: 970px;
+  margin: auto;
+}
+.modalCatalogResource .modalContainer .sections {
+  overflow: scroll;
+  height: 55vh;
+}
+.modalCatalogResource .modalContainer section {
+  padding: 1.2rem 2rem;
+}
+.modalCatalogResource .modalContainer section .title-section {
+  margin: 0 0 1rem 0;
+  font-size: 20px;
+}
+.modalCatalogResource .btn-group {
+  display: flex;
+  gap: 0.6rem;
+}
+.modalCatalogResource .resourceCatalogBtn {
+  display: flex;
+  align-items: center;
+  background-color: #161938;
+  color: #eeeeee;
+  border: 1px solid rgba(101, 102, 131, 0.7);
+  border-radius: 12px;
+  gap: 1rem;
+  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  font-family: Lato;
+}
+.modalCatalogResource .resourceCatalogBtn:hover {
+  background-color: #050B2D;
+}
+.modalCatalogResource .resourceCatalogBtn p {
+  margin: 0 0 6px 0;
+}
+.modalCatalogResource .resources-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
+}
+.modalCatalogResource .resources-group .resource-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  border: 1px rgba(101, 102, 131, 0.7) solid;
+}
+.modalCatalogResource .resources-group .resource-card img {
+  object-fit: cover;
+  height: 80px;
+  border-radius: 5px 5px 0px 0;
+}
+.modalCatalogResource .resources-group .resource-card .resourceCatalogBtn {
+  border-radius: 0px 0px 6px 6px;
+  border: 0px;
+}
+.modalCatalogResource #scenery {
+  width: 400px;
+  border-radius: 6px;
+  border: 1px rgba(101, 102, 131, 0.7) solid;
+}
+.modalCatalogResource #scenery img {
+  height: 120px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 5px 5px 0px 0;
+}
+.modalCatalogResource #scenery .resourceCatalogBtn {
+  border-radius: 0px 0px 6px 6px;
+  border: 0px;
+  width: 100%;
+}
+
+.active {
+  display: flex;
+  border-radius: 0px 0px 6px 6px;
 }
 
 #mainSection .main.student {
@@ -2863,7 +3281,8 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   width: 300px;
   z-index: 9999;
   padding: 10px;
-  box-shadow: 0px 0px 5px white;
+  box-shadow: 0px 0px 5px rgba(54, 54, 54, 0.55) !important;
+  border-radius: 6px;
 }
 #mainSection .main .overlay-trigger p {
   margin: 0;
@@ -2882,6 +3301,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-style: solid;
   margin-top: 0px;
   border-color: transparent transparent white transparent;
+}
+#mainSection .main .overlay-trigger .text-overlay {
+  font-size: 15px;
 }
 #mainSection .main .overlay-trigger button {
   outline: 0;

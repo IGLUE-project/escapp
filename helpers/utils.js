@@ -27,6 +27,8 @@ exports.saveInterface = async (name, req, res, next) => {
     const progressBar = body.progress;
     const {i18n} = res.locals;
 
+    console.log(body.instructions);
+
     escapeRoom[`${name}Instructions`] = body.instructions;
     escapeRoom[`${name}Appearance`] = body.appearance;
     try {
@@ -169,6 +171,10 @@ exports.renderEJS = (view, query = {}, options = {}) => new Promise((resolve, re
 exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId, "status": {[Op.not]: "test"}}});
 
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]]});
+
+exports.getReusablePuzzles = () => models.reusablePuzzle.findAll();
+
+exports.getReusablePuzzlesInstances = () => models.reusablePuzzleInstance.findAll();
 
 exports.getERPuzzlesAndHints = (escapeRoomId) => models.puzzle.findAll({
     "where": {escapeRoomId},
@@ -492,6 +498,8 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     return acc;
 }, {});
 
+exports.getERAssets = (escapeRoomId) => models.asset.findAll({"where": {escapeRoomId}});
+
 exports.isValidEmail = (email, whitelist = []) => {
     // Basic email format validation regex
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -575,12 +583,13 @@ exports.findFirstAvailableFile = async (section, lang) => {
 
     for (const relativeFile of candidates) {
         const absolutePath = path.join(rootPath, relativeFile);
+
         try {
             await fs.access(absolutePath);
             return relativeFile;
-        } catch(error) {
+        } catch (error) {
             // Skip and continue
-            console.error(error)
+            console.error(error);
         }
     }
 
