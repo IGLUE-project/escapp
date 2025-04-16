@@ -174,6 +174,8 @@ exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escape
 
 exports.getReusablePuzzles = () => models.reusablePuzzle.findAll();
 
+exports.getReusablePuzzlesInstances = () => models.reusablePuzzleInstance.findAll();
+
 exports.getERPuzzlesAndHints = (escapeRoomId) => models.puzzle.findAll({
     "where": {escapeRoomId},
     "include": [{"model": models.hint}],

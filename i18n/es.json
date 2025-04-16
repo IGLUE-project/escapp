@@ -494,7 +494,8 @@
                         "addText": "Añadir bloque de texto",
                         "table": {
                             "name": "Nombre",
-                            "type": "Tipo"
+                            "type": "Tipo",
+                            "noResources": "No has subido ningún recurso todavía"
                         },
                         "copied": "¡Enlace copiado!",
                         "copyUrl": "Copiar enlace",
@@ -1099,7 +1100,7 @@
             "notAllowedTeacherEmail": "No puedes registrarte como profesor con este correo electrónico",
             "notAllowedStudentEmail": "No puedes registrarte como alumnno con este correo electrónico",
             "notAllowedEmail": "No puedes registrarte con este correo electrónico",
-            "sucessfullyUpdatedUser": "El usuario se ha actualizado con éxito" 
+            "sucessfullyUpdatedUser": "El usuario se ha actualizado con éxito"
         },
         "name": "Nombre",
         "anonymous": "Anónimo",

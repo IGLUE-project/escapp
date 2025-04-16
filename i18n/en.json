@@ -503,7 +503,8 @@
                         "addText": "Add text block",
                         "table": {
                             "name": "Name",
-                            "type": "Type"
+                            "type": "Type",
+                            "noResources": "You haven't uploaded any resources yet"
                         },
                         "copied": "URL copied!",
                         "copyUrl": "Copy URL",
@@ -1182,6 +1183,6 @@
         "view_privacy": "Read Privacy Policy",
         "view_cookies": "Read Cookie Policy",
         "error_accepting": "Error updating terms and privacy policy acceptance"
-    
+
     }
 }
