@@ -1,3 +1,4 @@
+<script src="/js/vendor/jquery-ui.min.js"></script>
 <%if (!user.id) {%>
     <h1 class="loginWelcomeMessage">
         <%=i18n.user.messages.welcome%>
@@ -30,24 +31,45 @@
     </select></label>
 </div>
 <br />
-<%if (!user.id) {%>
+<div class="userField">
+    <label for="eduLevel"><span><%=i18n.user.eduLevelField%></span>
+    <select  class="customInput" id="eduLevel" name="eduLevel" value="<%= user.eduLevel %>" placeholder="<%=i18n.user.inputs.eduLevelPlaceHolder %>" autocomplete="off">
+        <option value <%= user.eduLevel ? "" : "selected" %> <%= !user.id ? "selected" : ""%>/>
+        <option value="primary" <%= user.eduLevel === "primary" ? "selected" : ""%>><%=i18n.user.eduLevel.primary%></option>
+        <option value="secondary" <%= user.eduLevel === "secondary" ? "selected" : ""%>><%=i18n.user.eduLevel.secondary%></option>
+        <option value="vet" <%= user.eduLevel === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
+        <option value="higher" <%= user.eduLevel === "higher" ? "selected" : ""%>><%=i18n.user.eduLevel.higher%></option>
+        <option value="other" <%= user.eduLevel === "other" ? "selected" : ""%>><%=i18n.user.eduLevel.other%></option>
+        <option value="none" <%= user.eduLevel === "none" ? "selected" : ""%>><%=i18n.user.eduLevel.none%></option>
+    </select></label>
+</div>
+<br />
+<%if (!user.id || locals.admin) {%>
 <div class="userField">
     <label for="username"><span><%=i18n.user.username%></span>
     <input type="email" <%=user.id?"disabled":""%> class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
+    <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || locals.admin) {%>
         <div class="roleField">
-            
             <label for="teacher" class="roleLabel">
-            <input class="chooseRole" type="radio" name="role" id="teacher" value="teacher"/>
-            <span><%=i18n.user.teacher%></span>
+                <input class="chooseRole" type="radio" name="role" id="teacher" value="teacher" <%if (locals.admin && !user.isStudent)  {%> checked <%}%> />
+                <span><%=i18n.user.roles.teacher%></span>
             </label>
             <label for="student" class="roleLabel">
-            <input class="chooseRole" type="radio" name="role" id="student" value="student" checked/>
-            <span><%=i18n.user.student%></span>
+                <input class="chooseRole" type="radio" name="role" id="student" value="student" <%if (!user.id) {%> checked <%}%>  <%if (locals.admin && user.isStudent)  {%> checked  <%}%>  />
+                <span><%=i18n.user.roles.student%></span>
             </label>
+            <%if (locals.admin) {%>
+            <label for="admin" class="roleLabel">
+                <input class="chooseRole" type="radio" name="role" id="admin" value="admin" <%if (locals.admin && user.isAdmin)  {%> checked <%}%>  />
+                <span><%=i18n.user.roles.admin%></span>
+            </label>
+            <%}%>
         </div>
+        <%}%>
     </div>
     <br />
 <%}%>
+
 <%if (user.id) {%>
     <div class="userField">
         <label for="user_confirm_password"><span><%=i18n.user.lang%></span>
@@ -79,8 +101,9 @@
 <div class="userField">
     <label for="accept_terms" ><span><%=i18n.user.acceptTerms%></span>
      <p>
-        <input type="checkbox" class="" id="accept_terms" name="accept_terms" checked required disabled readonly="true" onclick="javascript: return false;"/>
-        <%=i18n.user.terms%>
+        <input type="checkbox" class="" id="accept_terms" name="accept_terms" required/>
+        <%-i18n.user.terms%><br/>
+        
     </p>
 </label>
 </div>
@@ -101,9 +124,10 @@
 
 <%} %>
 
-
+</form>
 <script>
     function confirmPassword() {
+        
         var pw1 = document.getElementById('user_password').value;
         var pw2 = document.getElementById('user_confirm_password').value;
         if (!pw1 || !pw2) {
@@ -111,14 +135,20 @@
             return false;
         }
         if (pw1 === pw2) {
+            <%if (!user.id) {%>
+                if (!document.getElementById("accept_terms").checked) {
+                    $.easyAlert({message: "<%=i18n.common.flash.youMustAcceptTerms %>", alertType: 'danger', position: 'b l', time: 3000, autoHide: true})
+
+                    return false;
+                }
+            <%}%>
             return true;
         } else {
             $.easyAlert({message: "<%=i18n.user.messages.doNotMatch %>", alertType: 'danger', position: 'b l', time: 3000, autoHide: true})
             return false;
         }
-    }
+    }   
     
 </script>
 
-</form>
-</form>
+<style>body{height: 100vh;}</style>

@@ -19,6 +19,7 @@ const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
 // Const reusablePuzzleInstance = require("../models/reusablePuzzleInstance");
 
+
 const multer = require("multer"),
     upload = multer({"dest": "./uploads/"});
 
@@ -65,6 +66,10 @@ router.post("/", sessionController.create); // Create sesion
 router.delete("/", sessionController.destroy); // Close sesion
 router.get("/register", sessionController.logoutRequired, userController.new);
 router.post("/accept-cookies", sessionController.cookieAccept);
+router.get("/terms", sessionController.terms);
+router.get("/privacy", sessionController.privacy);
+router.get("/accept-new", sessionController.acceptNewShow);
+router.post("/accept-new", sessionController.acceptNew);
 
 // Routes for the resource /users
 router.get("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.show);
@@ -73,15 +78,18 @@ router.get("/users/password-reset/:userId(\\d+)", sessionController.logoutRequir
 router.post("/users/password-reset", sessionController.logoutRequired, userController.newResetPassword);
 router.post("/users/password-reset/:userId(\\d+)", sessionController.logoutRequired, userController.newResetPasswordHash);
 router.post("/users", sessionController.logoutRequired, userController.create, sessionController.create);
-router.get("/users/index", sessionController.loginRequired, sessionController.adminRequired, userController.index);
 router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.edit);
 router.put("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.update);
 router.delete("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.destroy);
 router.get("/users/:userId(\\d+)/escapeRooms", sessionController.loginRequired, sessionController.adminOrMyselfRequired, escapeRoomController.index);
 
+// Admin
+router.get("/users/index", sessionController.loginRequired, sessionController.adminRequired, userController.index);
+router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.admin);
+
+
 // Routes for the resource /escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
-router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.index);
 router.get("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorOrParticipantRequired, escapeRoomController.show);
 
 router.get("/escapeRooms/new", sessionController.loginRequired, sessionController.notStudentRequired, escapeRoomController.new);
@@ -205,4 +213,6 @@ router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleCo
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, sessionController.adminOrAuthorRequired, reusablePuzzleController.getReusablePuzzle);
 
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
+router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrAuthorRequired, assetsController.browse);
+
 module.exports = router;

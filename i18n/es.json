@@ -714,6 +714,11 @@
         "en": "Inglés",
         "es": "Español"
     },
+    "logos_eu": {
+        "img_url": "logo_eu_es.png",
+        "alt": "Cofinanciado por la Unión Europea",
+        "link": "https://iglue.dit.upm.es/es"
+    },
     "resources": {
         "title": "Recursos para crear retos",
         "coded": "Mensajes codificados",
@@ -1037,8 +1042,17 @@
         "student": "Alumno",
         "gender": "Género",
         "lang": "Idioma",
+        "eduLevelField": "Nivel educativo",
+        "eduLevel": {
+            "primary": "Educación primaria",
+            "secondary": "Educación secundaria",
+            "vet": "Formación profesional",
+            "higher": "Educación superior",
+            "other": "Otro",
+            "none": "Ninguno"
+        },
         "acceptTerms": "Condiciones de uso",
-        "terms": "Acepto ceder mis datos de uso de forma anonimizada con fines exclusivamente de investigación",
+        "terms": "Al registrarme, confirmo que he leído y acepto los <a href='/terms' target='_blank'>Términos de Uso</a> y la <a href='/privacy' target='_blank'>Política de Privacidad</a>",
         "inputs": {
             "editUser": "Editar usuario",
             "genderPlaceHolder": "Selecciona tu género",
@@ -1059,7 +1073,11 @@
             "emailConfirm":"Por favor, confirma tu correo electrónico haciendo click en el botón de confirmar",
             "emailConfirmButton":"confirmar",
             "emailResetPassword1":" Si recibes este mensaje es porque has solicitado recuperar tu contraseña en escapp.",
-            "emailResetPassword2":"Haz click en el siguiente link:"
+            "emailResetPassword2":"Haz click en el siguiente link:",
+            "notAllowedTeacherEmail": "No puedes registrarte como profesor con este correo electrónico",
+            "notAllowedStudentEmail": "No puedes registrarte como alumnno con este correo electrónico",
+            "notAllowedEmail": "No puedes registrarte con este correo electrónico",
+            "sucessfullyUpdatedUser": "El usuario se ha actualizado con éxito" 
         },
         "name": "Nombre",
         "password": "Contraseña",
@@ -1110,5 +1128,13 @@
         "accept_button": "aceptar",
         "privacy_policy": "Más información",
         "back_to_home": "Volver a inicio"
-    }
+    },
+    "terms": {
+          "title": "Términos de uso y política de privacidad actualizados",
+          "description": "Hemos actualizado nuestros Términos de Uso y/o Política de Privacidad. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
+          "accept_button": "Aceptar y continuar",
+          "view_terms": "Leer Términos de Uso",
+          "view_privacy": "Leer Política de Privacidad",
+          "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
+        }
 }

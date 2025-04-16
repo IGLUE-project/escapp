@@ -14,9 +14,13 @@ $card-background: $textpurple
       position: relative
       .validatorInputs
         height: auto
+        margin-left: 1em
         &.numberInput
           width: 30%
-          margin-left: 2vw
+          &:focus,&:active
+            color: $textpurple !important
+            border-color: $textpurple !important
+            -webkit-text-fill-color: $textpurple !important
       &.ui-sortable-helper
         height: 105px !important
       &.collapsed
@@ -50,7 +54,7 @@ $card-background: $textpurple
         flex-wrap: nowrap
         justify-content: flex-start
         div
-          margin-right: 20px
+          margin-right: 0.5em
       .delete-puzzle
         position: absolute
         right: 0

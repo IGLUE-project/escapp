@@ -725,6 +725,11 @@
         "en": "English",
         "es": "Spanish"
     },
+    "logos_eu": {
+        "img_url": "logo_eu_en.png",
+        "alt": "Co-funded by the European Union",
+        "link": "https://iglue.dit.upm.es"
+    },
     "resources": {
         "title": "Resources for creating puzzles",
         "coded": "Encoded messages",
@@ -1048,7 +1053,16 @@
         "gender": "Gender",
         "lang": "Language",
         "acceptTerms": "Terms and conditions",
-        "terms": "I hereby allow making use of my data in an anonymized way for research purposes exclusively.",
+        "terms": "By signing up, I acknowledge that I have read and agree to the <a href='/terms' target='_blank'>Terms of Use</a> and <a href='/privacy' target='_blank'>Privacy Policy</a>",
+        "eduLevelField": "Educational level",
+        "eduLevel": {
+            "primary": "Primary education",
+            "secondary": "Secondary education",
+            "vet": "Vocational education and training",
+            "higher": "Higher education",
+            "other": "Other",
+            "none": "None"
+        },
         "inputs": {
             "editUser": "Edit profile",
             "genderPlaceHolder": "Select your gender",
@@ -1069,7 +1083,12 @@
             "emailConfirm":"Please, confirm your e-mail address, by clicking the 'confirm' button below",
             "emailConfirmButton":"confirmar",
             "emailResetPassword1":"If you are receiving this e-mail is because you reset your password in escapp.",
-            "emailResetPassword2":"This is the link to reset your password:"
+            "emailResetPassword2":"This is the link to reset your password:",
+            "notAllowedTeacherEmail": "You are not allowed to enroll as a teacher with this email",
+            "notAllowedStudentEmail": "You are not allowed to enroll as a student with this email",
+            "notAllowedEmail": "You are not allowed to enroll with this email",
+            "sucessfullyUpdatedUser":  "User successfully updated"
+
 
         },
         "name": "Name",
@@ -1078,7 +1097,7 @@
         "passLeaveBlank": "If you would like to change your password fill in the following fields. Otherwise, leave them blank",
         "roles": {
             "admin": "Admin",
-            "student": "student",
+            "student": "Student",
             "teacher": "Teacher"
         },
         "sessionExpired": "Your session has expired",
@@ -1121,5 +1140,14 @@
         "accept_button": "accept",
         "privacy_policy": "Learn more",
         "back_to_home": "Back to home"
+    },
+    "terms": {
+        "title": "Updated Terms of Use & Privacy Policy",
+        "description": "We have updated our Terms of Use and/or Privacy Policy. Please review and accept them to continue using the platform.",
+        "accept_button": "Accept and Continue",
+        "view_terms": "Read Terms of Use",
+        "view_privacy": "Read Privacy Policy",
+        "error_accepting": "Error updating terms and privacy policy acceptance"
+    
     }
 }
