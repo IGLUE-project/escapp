@@ -1,13 +1,15 @@
+@use "common/colors"
+
 .apexcharts-canvas
   *
     font-family: "Lato", sans-serif !important
-    color: $textpurple
+    color: colors.$textpurple
 .apexcharts-xaxis-label, .apexcharts-yaxis-label, .apexcharts-legend-text
   color: white !important
   fill: white !important
 .apexcharts-tooltip-title
   background: white !important
-  color: $darkerpurple
+  color: colors.$darkerpurple
   font-weight: bold
   border-width: 0
   max-width: 40vw
@@ -16,7 +18,7 @@
 .apexcharts-menu-icon svg, .apexcharts-menu-icon:hover svg
   fill: white !important
 .apexcharts-tooltip
-  color: $textpurple
+  color: colors.$textpurple
   background-color: white !important
   fill: white !important
   &.light
@@ -30,6 +32,6 @@
   background-color: white
   border-radius: 0px
   .apexcharts-menu-itemss
-    color: $textpurple
+    color: colors.$textpurple
     font-family: Lato, sans-serif
 

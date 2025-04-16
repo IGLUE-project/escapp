@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const mailer = require("../helpers/mailer");
-const {renderEJS, validationError, getRole} = require("../helpers/utils");
+const {renderEJS, validationError, getRole, generatePassword} = require("../helpers/utils");
 
 // Autoload the user with id equals to :userId
 exports.load = (req, res, next, userId) => {
@@ -104,10 +104,7 @@ exports.create = (req, res, next) => {
                 error.errors.forEach((err) => {
                     req.flash("error", validationError(err, i18n));
                 });
-                // Console.log(error.errors[0])
-                // Console.log(error.errors[0].validatorArgs)
-                // Console.log(error.errors[0].path)
-                // Console.log(error.errors[0].validatorKey)
+
                 res.render("index", {user, "register": true, redir});
             } else {
                 next(error);
@@ -136,7 +133,7 @@ exports.update = (req, res, next) => {
         if (body.role === "student" || body.role === "teacher" || body.role === "admin") {
             user.isStudent = body.role === "student";
         }
-        user.isAdmin = body.role == "admin";
+        user.isAdmin = body.role === "admin";
     }
     user.name = body.name;
     user.surname = body.surname;
@@ -157,7 +154,7 @@ exports.update = (req, res, next) => {
         if (body.password === body.confirm_password) {
             user.password = body.password;
         } else {
-            req.flash("error", i18n2.common.flash.passwordsDoNotMatch);
+            req.flash("error", i18n.common.flash.passwordsDoNotMatch);
             res.redirect("back");
             return;
         }
@@ -184,18 +181,64 @@ exports.destroy = async (req, res, next) => {
     const transaction = await sequelize.transaction();
     const {i18n} = res.locals;
 
-    try {
-        await req.user.destroy({}, {transaction});// Deleting logged user.
-        if (req.session.user && req.session.user.id === req.user.id) {
-            // Close the user session
-            delete req.session.user;
+    if (req.session.user.isAdmin && req.query.total) {
+        try {
+            await req.user.destroy({}, {transaction});// Deleting logged user.
+            transaction.commit();
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // Close the user session
+                delete req.session.user;
+            }
+
+            req.flash("success", i18n.common.flash.successDeletingUser);
+            res.redirect("/goback");
+        } catch (error) {
+            transaction.rollback();
+            next(error);
         }
-        transaction.commit();
-        req.flash("success", i18n.common.flash.successDeletingUser);
-        res.redirect("/goback");
-    } catch (error) {
-        transaction.rollback();
-        next(error);
+    } else {
+        try {
+            const hostName = process.env.APP_NAME ? `${process.env.APP_NAME}` : "anonymized.org";
+            // Await req.user.destroy({}, {transaction}); // Deleting logged user
+
+            req.user.name = "Anonymous";
+            req.user.surname = "Anonymous";
+            req.user.dni = "00000000X";
+            req.user.anonymized = true;
+            req.user.username = `anonymized_${req.user.id}@${hostName}`;
+            req.user.password = generatePassword();
+
+            await req.user.save({transaction});
+            const teams = await models.team.findAll({
+                "include": [
+                    {
+                        "model": models.user,
+                        "as": "teamMembers",
+                        "attributes": [],
+                        "through": { "attributes": [] }
+                    }
+                ],
+                "attributes": ["id"],
+                "group": ["team.id"],
+                "having": Sequelize.literal("COUNT(\"teamMembers\".\"id\") = 1"),
+                "where": Sequelize.literal(`${req.user.id} IN (
+                  SELECT "userId" FROM "members" WHERE "members"."teamId" = "team"."id"
+                )`)
+            }, {transaction});
+
+            await Promise.all(teams.map((team) => team.update({ "name": `Anonymous ${team.id}`}, { transaction })));
+            transaction.commit();
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // Close the user session
+                delete req.session.user;
+            }
+
+            req.flash("success", i18n.common.flash.successDeletingUser);
+            res.redirect("/goback");
+        } catch (error) {
+            transaction.rollback();
+            next(error);
+        }
     }
 };
 exports.index = (req, res, next) => {
@@ -286,4 +329,3 @@ exports.newResetPasswordHash = async (req, res) => {
         res.redirect("back");
     }
 };
-

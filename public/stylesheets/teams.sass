@@ -1,19 +1,22 @@
+@use "common/colors"
+@use 'common/mixins'
+
 #mainSection .main.teams
   .overlay-trigger
     z-index: 99999
   .overlay-menu
-    color: $textpurple
+    color: colors.$textpurple
     button
       &.team-button
         padding: 0
       &.reset-team
-        color: $brightorange
+        color: colors.$brightorange
       &.delete-team
-        color: $lightred
+        color: colors.$lightred
       &.email-team
-        color: $brightyellow
+        color: colors.$brightyellow
       &.msg-team
-        color: $brightgreen
+        color: colors.$brightgreen
     .subtext
       text-align: left
       font-family: Lato
@@ -30,12 +33,12 @@
       width: calc(100% - 10px)
       margin: 5px
       resize: none
-      border: 1px solid $textpurple
-      color: $darkerpurple
+      border: 1px solid colors.$textpurple
+      color: colors.$darkerpurple
       font-family: Lato
 
       &::placeholder
-        color: $textpurple
+        color: colors.$textpurple
   #teams-msg
     float: right
     position: relative
@@ -116,24 +119,24 @@
       text-align: center
       font-size: 16px
       background: transparent
-      border: 2px solid $textpurple
-      color: $textpurple
+      border: 2px solid colors.$textpurple
+      color: colors.$textpurple
       @extend %scale-animation-down
       &.participants-button
         &.download-button
-          background-color: $lightred
-          color: $darkerpurple
-          border-color: $lightred
+          background-color: colors.$lightred
+          color: colors.$darkerpurple
+          border-color: colors.$lightred
           border-style: solid
         &.attendance-button
-          background-color: $brightgreen
-          color: $darkerpurple
-          border-color: $brightgreen
+          background-color: colors.$brightgreen
+          color: colors.$darkerpurple
+          border-color: colors.$brightgreen
           border-style: solid
         &.attendance-all-button
-          background-color: $brightyellow
-          color: $darkerpurple
-          border-color: $brightyellow
+          background-color: colors.$brightyellow
+          color: colors.$darkerpurple
+          border-color: colors.$brightyellow
           border-style: solid
   .no-teams
     display: block

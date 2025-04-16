@@ -1,3 +1,6 @@
+@use "common/buttons"
+@use "common/colors"
+
 .filters
   line-height: 45px
   *
@@ -7,10 +10,15 @@
     color: white
     &:focus-within
       color: white
-  select, button.inverse
+  select, input, button.inverse
     color: white
     -webkit-text-fill-color: white !important
     border-color: white
     padding: 10px
-  select
+  select, input
     padding-right: 1.65em !important
+  .editButton
+    @include buttons.common-button
+    background-color: colors.$brightyellow !important
+    border-color: colors.$brightyellow !important
+    color: colors.$darkerpurple !important

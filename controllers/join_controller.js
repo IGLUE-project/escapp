@@ -26,12 +26,12 @@ exports.main = (req, res, next) => {
     const token = req.query.token || req.body.token || "";
 
     try {
-        if (req.session.user.isStudent) {
-            res.render("escapeRooms/indexInvitation", {escapeRoom, token});
-        } else {
+        // If (req.session.user.isStudent) {
+        res.render("escapeRooms/indexInvitation", {escapeRoom, token});
+        /* } else {
             res.status(403);
             next(new Error(403));
-        }
+        }*/
     } catch (e) {
         next(e);
     }

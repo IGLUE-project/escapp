@@ -27,12 +27,20 @@
                     <li><a href="/escapeRooms/<%= escapeRoom.id %>/class"><%=i18n.showTeacher.actionList.classInterface%> <span class="material-icons">keyboard_arrow_right</span></a></li>
                     <li><a href="/escapeRooms/<%= escapeRoom.id %>/evaluation"><%=i18n.showTeacher.actionList.evaluation%> <span class="material-icons">keyboard_arrow_right</span></a></li>
                 <li class="actionTitle"><%=i18n.showTeacher.actionList.management%></li>
+                    <li><a href="/escapeRooms/<%= escapeRoom.id %>/collaborators"><%=i18n.showTeacher.actionList.collaborators%> <span class="material-icons">keyboard_arrow_right</span></a></li>
                     <li><a href="/escapeRooms/<%= escapeRoom.id %>/participants"><%=i18n.showTeacher.actionList.participants%> <span class="material-icons">keyboard_arrow_right</span></a></li>
                     <li><a href="/escapeRooms/<%= escapeRoom.id %>/teams"><%=i18n.showTeacher.actionList.teams%> <span class="material-icons">keyboard_arrow_right</span> </a></li>
                     <li><a href="/escapeRooms/<%= escapeRoom.id %>/activate"><%=i18n.showTeacher.actionList.turnos%> <span class="material-icons">keyboard_arrow_right</span> </a></li>
                     <li><a href="/escapeRooms/<%= escapeRoom.id %>/message"><%=i18n.showTeacher.actionList.message%> <span class="material-icons">keyboard_arrow_right</span> </a></li>
                     <li><a href="/escapeRooms/<%= escapeRoom.id %>/analytics"><%=i18n.showTeacher.actionList.analytics%> <span class="material-icons">keyboard_arrow_right</span> </a></li>
                     <li class="actionTitle"><%=i18n.showTeacher.actionList.actions%></li>
+
+                    <li>
+                        <a href="/escapeRooms/<%= escapeRoom.id %>/test">
+                            <button id="test-button" class="showMenuButton compartirButton"><%=i18n.showTeacher.actionList.test%></button>
+                        </a>
+                    </li>
+
                     <li><button id="compartir-button" class="showMenuButton acceptButton" <%- (escapeRoom.turnos && escapeRoom.turnos.length) ? '' : (' title=\"' + i18n.showTeacher.messages.noShiftsShare + '\" disabled') %> ><%=i18n.showTeacher.actionList.share%></button></li>
                     <% const now = new Date();
                     now.setHours(now.getHours() - now.getTimezoneOffset() / 60);%>
@@ -81,7 +89,11 @@
                         </div>
                     </li>
                     <%if(escapeRoom.teamInstructions  !=null && escapeRoom.classInstructions !=null && escapeRoom.classInstructions !=null){%>
-                    <li><a href="/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT"><button class="showMenuButton cloneButton" ><%=i18n.showTeacher.actionList.clone%></button></a></li>
+                    <li>
+                        <a href="/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT">
+                            <button class="showMenuButton cloneButton" ><%=i18n.showTeacher.actionList.clone%></button>
+                        </a>
+                    </li>
                     <%}%>
 
             </ul>

@@ -183,6 +183,9 @@
             "errorEditingTurno": "Error al editar el turno",
             "errorEditingUser": "Error al editar el usuario",
             "errorExistingUser": "El usuario ya existe",
+            "errorUserNotExists": "El usuario no existe",
+            "errorUserIsNotTeacher": "El usuario no es profesor",
+            "errorUserIsAlreadyACollaborator": "El usuario ya es un colaborador",
             "errorFile": "Error al subir el fichero",
             "errorImage": "Error al subir la imagen",
             "errorMandatoryPass": "Es obligatorio introducir una contraseña",
@@ -214,6 +217,7 @@
             "successEditingTeam": "Equipo editado con éxito",
             "successEditingTurno": "Turno editado con éxito",
             "successEditingUser": "Usuario editado con éxito",
+            "successAddingCollaborator": "Colaborador añadido con éxito",
             "successImage": "Imagen subida con éxito",
             "youMustAcceptTerms": "You must accept the terms and conditions in order to register"
         },
@@ -352,6 +356,10 @@
             "createER": "Crear nueva escape room",
             "noERTeacher": "No has creado ninguna escape room, gestiónalas desde aquí...",
             "noERStudent": "No tienes ninguna escape room activa, utiliza en enlace original que te ha proporcionado tu profe para apuntarte.",
+            "myERs": "Mis escape rooms",
+            "otherERs": "Todas",
+            "emptyER": "No hay colaboradores",
+            "playingERs": "Participando",
             "yesERStudent": "Estas son las escape rooms disponibles",
             "yesERTeacher": "Gestiona las escape rooms desde aquí...",
             "notAvailable": "Escape Room no disponible"
@@ -780,6 +788,16 @@
         "waiting": "En espera",
         "disconnected": "Desonectado"
     },
+    "collaborators": {
+        "Collaborators": "Colaboradores",
+        "Name": "Nombre",
+        "Email": "E-mail",
+        "add": "añadir",
+        "delete": "borrar",
+        "areYouSureDelete": "¿Seguro que desea quitar este colaborador?",
+        "addCollaborator": "Añadir colaborador",
+        "owner": "Propietario"
+    },
     "puzzle": {
         "puzzle": "reto",
         "Puzzle": "Reto",
@@ -814,7 +832,9 @@
         "sureUnjoin": "¿Seguro que deseas desapuntarte?",
         "congrats": "¡Enhorabuena! Has terminado con éxito la escape room",
         "resultsTitle": "Este es el ranking de resultados de la escape room",
-        "unjoin": "desapuntarse"
+        "unjoin": "desapuntarse",
+        "reset": "reiniciar",
+        "sureReset": "¿Seguro que deseas reiniciar la prueba?"
     },
     "showTeacher": {
         "actionList": {
@@ -836,6 +856,7 @@
             "edit": "Editar",
             "join": "Enlace de invitación",
             "participants": "Participantes",
+            "collaborators": "Colaboradores",
             "teams": "Equipos",
             "shifts": "Turnos",
             "turnos": "Turnos",
@@ -844,7 +865,8 @@
             "shift": "turno",
             "volver": "volver",
             "actions": "Acciones",
-            "information": "Información"
+            "information": "Información",
+            "test": "probar"
 
         },
         "messages": {
@@ -1080,6 +1102,7 @@
             "sucessfullyUpdatedUser": "El usuario se ha actualizado con éxito" 
         },
         "name": "Nombre",
+        "anonymous": "Anónimo",
         "password": "Contraseña",
         "passLeaveBlank": "Si deseas cambiar la contraseña, rellena los siguientes campos, sino déjalos en blanco",
         "passwordConfirm": "Confirmar contraseña",
@@ -1097,7 +1120,15 @@
         "turno": "Turno",
         "man": "Hombre",
         "woman": "Mujer",
-        "other": "Otro"
+        "other": "Otro",
+        "delete": {
+            "deleteYourAccount": "Elimina tu cuenta",
+            "deleteYourAccountMsg1": "Si decides eliminar tu cuenta, toda la información personal asociada a ella será eliminada permanentemente de nuestro sistema.",
+            "deleteYourAccountMsg2": "Ten en cuenta:",
+            "deleteYourAccountMsg3": "Tus datos de participación anteriores permanecerán de forma anonimizada para fines de investigación y desarrollo, conforme a nuestra política de datos. Esto significa que tus contribuciones seguirán ayudando a mejorar la plataforma, pero ya no estarán vinculadas contigo de ninguna manera. De todas formas, lamentaríamos verte partir.",
+            "deleteYourAccountMsg5": "¿Estás seguro de que deseas eliminar tu cuenta?",
+            "deleteAccount": "confirmar borrado"
+        }
     },
     "hint": {
         "Hints": "Pistas",
@@ -1121,7 +1152,6 @@
         "waiting": "Enviar también a los participantes esperando para acceder a la escape room",
         "msgPlaceholder": "Escribe aquí tu mensaje",
         "msgPlaceholder2": "Escribe aquí tu mensaje. Todos los usuarios de esta lista que estén conectados ahora mismo lo recibirán."
-
     },
     "cookies": {
         "cookie_message": "Usamos solo cookies esenciales para garantizar el funcionamiento adecuado de este sitio. No utilizamos cookies de seguimiento ni de terceros.",
@@ -1130,11 +1160,12 @@
         "back_to_home": "Volver a inicio"
     },
     "terms": {
-          "title": "Términos de uso y política de privacidad actualizados",
-          "description": "Hemos actualizado nuestros Términos de Uso y/o Política de Privacidad. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
+          "title": "Términos de uso, política de privacidad y política de cookies actualizados",
+          "description": "Hemos actualizado nuestros Términos de Uso, Política de Privacidad y/o Política de Cookies. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
           "accept_button": "Aceptar y continuar",
           "view_terms": "Leer Términos de Uso",
           "view_privacy": "Leer Política de Privacidad",
+          "view_cookies": "Leer Política de Cookies",
           "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
         }
 }

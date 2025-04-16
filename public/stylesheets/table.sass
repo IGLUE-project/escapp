@@ -1,8 +1,10 @@
+@use "common/colors"
+
 table.mainTable
   display: block !important
   overflow: auto
   margin: auto
-  color: $darkerpurple
+  color: colors.$darkerpurple
   border-spacing: 0px
   width: 100%
   font-size: 18px
@@ -12,10 +14,10 @@ table.mainTable
     display: inline-block !important
 
   tr
-    background-color: $purpleedit
+    background-color: colors.$purpleedit
     border-left: 1px solid white
     &:first-child, &.first
-      background-color: $darkerpurple
+      background-color: colors.$darkerpurple
       color: white
       th, td
         font-family: Gugi
@@ -49,16 +51,16 @@ table.mainTable
       &.align-left
         text-align: left
       &.complete
-        color: $brightgreen
+        color: colors.$brightgreen
         .icon
-          background-color: $brightgreen
+          background-color: colors.$brightgreen
       &.incomplete
-        color: $lightred
+        color: colors.$lightred
         .icon
-          background-color: $lightred
+          background-color: colors.$lightred
       .icon
         display: inline-block
         width: 24px
         height: 24px
-        border: 2px solid $darkerpurple
+        border: 2px solid colors.$darkerpurple
         border-radius: 12px

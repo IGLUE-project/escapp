@@ -112,19 +112,37 @@
     <br />
     <br />
     <a class="login" href="/"><%=i18n.user.actions.alreadyRegistered %></a>
+</form>
 <%} else {%>
     
+
+
     <br/>
     <a href="/"><button class="save white rounded" type="button"><%=i18n.common.back %></button></a>
     <button class="save editButton rounded" type="submit" value="edit"
     <%if (!user.id) {%> onclick="return confirmPassword()" <%}%>><%=i18n.user.actions.save %></button>
-    <br />
-    <br />
-    <br />
 
+    <br />
+    <br />
+    <br />
+</form>
+    <div class="deleteUser">
+        <form action="/users/<%=user.id%>?_method=delete" method="POST">
+            <h3><%=i18n.user.delete.deleteYourAccount%></h3>
+            <p><%=i18n.user.delete.deleteYourAccountMsg1%></p>
+            <p><%=i18n.user.delete.deleteYourAccountMsg2%></p>
+            <p><%=i18n.user.delete.deleteYourAccountMsg3%></p>
+            <p><%=i18n.user.delete.deleteYourAccountMsg4%></p>
+            <p><%=i18n.user.delete.deleteYourAccountMsg5%></p>
+            <button class="save deleteButton rounded" type="submit"><%=i18n.user.delete.deleteAccount%></button>
+        </form>
+       
+    </div>
+    <br />
+    <br />
 <%} %>
 
-</form>
+
 <script>
     function confirmPassword() {
         

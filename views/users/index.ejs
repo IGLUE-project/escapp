@@ -12,7 +12,9 @@
         <% for (var i in users) { %>
             <tr>
                 <td>
-                    <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
+                    <a href="/users/<%= users[i].id %>" >
+                        <% if (users[i].anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=users[i].username%> <%}%>
+                    </a>
                     <%= users[i].isAdmin ? "(admin)" : "" %>
                 </td>
                 <% if (session.user) { %>
@@ -25,11 +27,10 @@
                         </td>
                         <td>
                             <% if (session.user.isAdmin && session.user.id !== users[i].id) { %>
-                            
                             <button class="deleteButton rounded" onclick="overlayTrigger(<%=users[i].id%>)"><%=i18n.common.delete%></button>
                             <div class="overlay-trigger" data-id="<%=users[i].id%>">
                                 <form method="POST" action='/users/<%= users[i].id %>?_method=DELETE' >
-                                    <p><%=i18n.common.delete%> <%=i18n.user.user%>: <%= users[i].username %></p>
+                                    <p><%=i18n.common.delete%> <%=i18n.user.user%> : <% if (users[i].anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=users[i].username%> <%}%></p>
                                     <button class="deleteButton" type="button" onclick="overlayTrigger(<%=users[i].id%>, true)">
                                         <%=i18n.common.cancel%>
                                     </button>

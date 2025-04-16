@@ -9,6 +9,8 @@ const queries = require("../queries");
 const {OK, NOT_A_PARTICIPANT, PARTICIPANT, NOK, NOT_ACTIVE, NOT_STARTED, TOO_LATE, AUTHOR, ERROR} = require("../helpers/apiCodes");
 const {getRetosSuperados, byRanking, getPuzzleOrderSuperados} = require("./analytics");
 const {removeDiacritics} = require("./diacritics.js");
+const fs = require("fs");
+const path = require("path");
 
 exports.flattenObject = (obj, labels, min = false) => {
     const rs = {};
@@ -53,7 +55,7 @@ exports.playInterface = async (name, req, res, next) => {
 
     const {token} = await models.user.findByPk(req.session.user.id);
 
-    if (isAdmin || isAuthor) {
+    if (name === "class" && (isAdmin || isAuthor)) {
         res.render("escapeRooms/play/play", {
             "escapeRoom": req.escapeRoom,
             cloudinary,
@@ -108,7 +110,7 @@ exports.playInterface = async (name, req, res, next) => {
 
             const team = teams && teams[0] ? teams[0] : {};
 
-            if (!team.startTime || team.turno.status !== "active" || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
+            if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
                 return;
             }
@@ -166,7 +168,7 @@ exports.renderEJS = (view, query = {}, options = {}) => new Promise((resolve, re
     });
 });
 
-exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId}});
+exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId, "status": {[Op.not]: "test"}}});
 
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]]});
 
@@ -204,7 +206,7 @@ exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, a
 exports.getRanking = async (escapeRoomId, turnoId) => {
     const teamsRaw = await models.team.findAll(queries.team.rankingShort(escapeRoomId, turnoId));
     const nPuzzles = await models.puzzle.count({"where": { escapeRoomId }});
-    const ranking = getRetosSuperados(teamsRaw, nPuzzles, true).sort(byRanking);
+    const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {"user": { "anonymous": "Anonymous"}}).sort(byRanking);
 
     return ranking;
 };
@@ -513,7 +515,7 @@ exports.isValidEmail = (email, whitelist = []) => {
     const domain = parts[1].trim();
 
     // Ensure whitelist is properly formatted (trim spaces)
-    const cleanedWhitelist = whitelist.map((domain) => domain.trim());
+    const cleanedWhitelist = whitelist.map((dom) => dom.trim());
 
     // Check if domain is in the whitelist
     return cleanedWhitelist.includes(domain);
@@ -548,9 +550,45 @@ exports.getRole = (role, username = "", i18n) => {
         return "student";
     } else if (disableChoosingRole && whitelist && whitelist.length > 0) {
         throw new Error(i18n.user.messages.notAllowedEmail);
-    } else if (role == "student" || role == "teacher") {
+    } else if (role === "student" || role === "teacher") {
         return role; // Allow any role if role selection is enabled
     } else {
         throw new Error(i18n.api.unauthorized);
     }
+};
+
+exports.generatePassword = () => {
+    const length = 8,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let retVal = "";
+
+    for (let i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+};
+
+exports.findFirstAvailableFile = async (section, lang) => {
+    const rootPath = path.join(__dirname, "../public");
+    const candidates = [
+        `${section}/${section}_${lang}.html`,
+        `${section}/${section}_${lang}.pdf`,
+        `${section}/${section}.html`,
+        `${section}/${section}.pdf`,
+        `${section}/${section}_en.html`,
+        `${section}/${section}_en.pdf`
+    ];
+
+    for (const relativeFile of candidates) {
+        const absolutePath = path.join(rootPath, relativeFile);
+        try {
+            await fs.access(absolutePath);
+            return relativeFile;
+        } catch(error) {
+            // Skip and continue
+            console.error(error)
+        }
+    }
+
+    return null;
 };
