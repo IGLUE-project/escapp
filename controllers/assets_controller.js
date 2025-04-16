@@ -58,7 +58,7 @@ exports.assetsUpdate = (req, res /* , next*/) => {
     res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("assets") : progressBar || nextStep("assets")}`);
 };
 
-const supportedMimeTypes = ["image\/.*", "video\/mp4",  "video\/webm", "audio\/.*", "application\/pdf"];
+const supportedMimeTypes = ["image\/.*", "video\/mp4", "video\/webm", "audio\/.*", "application\/pdf"];
 
 // POST /escapeRooms/:escapeRoomId/uploadAssets
 exports.uploadAssets = async (req, res) => {
@@ -79,6 +79,7 @@ exports.uploadAssets = async (req, res) => {
     try {
         const mime = req.file.mimetype;
         const isSupported = supportedMimeTypes.some((m) => new RegExp(m).test(mime));
+
         if (!isSupported) {
             req.file.mimetype = "unsupported";
         }
@@ -92,7 +93,7 @@ exports.uploadAssets = async (req, res) => {
         console.error(error);
         if (error instanceof Sequelize.ValidationError) {
             res.send(i18n.common.flash.errorFile);
-            attHelper.deleteResource(uploadResult.public_id, models.asset);
+            // AttHelper.deleteResource(uploadResult.public_id, models.asset);
         } else {
             res.send(i18n.common.flash.errorFile);
         }
@@ -177,39 +178,39 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
 
         if (asset.mime === "application/pdf") {
             const data = fs.readFileSync(filePath);
+
             res.setHeader("Content-Type", "application/pdf");
             res.contentType("application/pdf");
             res.send(data);
         } else if (asset.mime.search(videoRegex) !== -1) {
             const stat = fs.statSync(filePath);
             const fileSize = stat.size;
-            const range = req.headers.range;
+            const {range} = req.headers;
 
             if (range) {
-                const parts = range.replace(/bytes=/, '').split('-');
+                const parts = range.replace(/bytes=/, "").split("-");
                 const start = parseInt(parts[0], 10);
                 const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
                 const chunkSize = end - start + 1;
-                const file = fs.createReadStream(filePath, { start, end });
+                const stream = fs.createReadStream(filePath, { start, end });
                 const head = {
-                    'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-                    'Accept-Ranges': 'bytes',
-                    'Content-Length': chunkSize,
-                    'Content-Type': 'video/mp4',
+                    "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": chunkSize,
+                    "Content-Type": "video/mp4"
                 };
 
                 res.writeHead(206, head);
-                file.pipe(res);
+                stream.pipe(res);
             } else {
                 const head = {
-                    'Content-Length': fileSize,
-                    'Content-Type': 'video/mp4',
+                    "Content-Length": fileSize,
+                    "Content-Type": "video/mp4"
                 };
 
                 res.writeHead(200, head);
                 fs.createReadStream(filePath).pipe(res);
             }
-
         } else {
             res.sendFile(filePath);
         }
@@ -218,7 +219,6 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
         next(err);
     }
 };
-
 
 
 function appendParameterers (...parameters) {
@@ -242,6 +242,7 @@ exports.editAsset = async (req, res, next) => {
 
         if (asset) {
             let config = "";
+
             if (asset.mime.search(imageRegex) !== -1) {
                 config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else if (asset.mime.search(videoRegex) !== -1) {
@@ -257,7 +258,7 @@ exports.editAsset = async (req, res, next) => {
             } else if (asset.mime.search(applicationRegex) !== -1) {
                 config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else {
-                return `<div>${item.name}</div>`;
+                return "";
             }
             await asset.update({config});
             res.redirect("back");

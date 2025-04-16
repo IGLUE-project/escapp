@@ -1,5 +1,4 @@
 const {models} = require("../models");
-const reusablePuzzleInstance = require("../models/reusablePuzzleInstance");
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {

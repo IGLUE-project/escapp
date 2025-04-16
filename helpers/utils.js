@@ -508,6 +508,7 @@ exports.isValidEmail = (email, whitelist = []) => {
 
     // Extract domain from email safely
     const parts = email.split("@");
+
     if (parts.length !== 2) {
         return false;
     } // Malformed email
@@ -545,7 +546,6 @@ exports.getRole = (role, username = "", i18n) => {
         } else {
             throw new Error(i18n.user.messages.notAllowedStudentEmail);
         }
-
     } else if (disableChoosingRole && !whitelist) {
         return "student";
     } else if (disableChoosingRole && whitelist && whitelist.length > 0) {
@@ -581,12 +581,13 @@ exports.findFirstAvailableFile = async (section, lang) => {
 
     for (const relativeFile of candidates) {
         const absolutePath = path.join(rootPath, relativeFile);
+
         try {
             await fs.access(absolutePath);
             return relativeFile;
-        } catch(error) {
+        } catch (error) {
             // Skip and continue
-            console.error(error)
+            console.error(error);
         }
     }
 

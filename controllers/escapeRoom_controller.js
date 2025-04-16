@@ -541,7 +541,7 @@ exports.addCollaborators = async (req, res, next) => {
             }, {transaction});
 
             if (collab) {
-                if (collab.escapeRoomCoAuthored.some((x) => x.id == escapeRoom.id)) {
+                if (collab.escapeRoomCoAuthored.some((x) => x.id === escapeRoom.id)) {
                     await transaction.rollback();
                     req.flash("error", i18n.common.flash.errorUserIsAlreadyACollaborator);
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);

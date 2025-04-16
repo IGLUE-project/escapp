@@ -370,7 +370,7 @@
     margin: 0
   .titleLabelEdit
     font-weight: bold
-    color: $textgrey
+    color: colors.$textgrey
     padding-bottom: 0.4rem
     margin: 0 0 0.8rem  0
     border-bottom: 1px solid rgb(219, 219, 219)
@@ -428,7 +428,7 @@
 
   .catalogItem
     margin: 0 18px
-    border-bottom: 1px $textpurplelessop solid
+    border-bottom: 1px colors.$textpurplelessop solid
     gap: 12px
     padding: 0px 0px
     max-height: 46px
@@ -463,11 +463,11 @@
     #purple
       background: rgb(91, 50, 129)
     #blue
-      background: $blue
+      background: colors.$blue
     #green
-      background: $darkergreen
+      background: colors.$darkergreen
     #red
-      background: $red
+      background: colors.$red
     #gray
       background: rgb(75, 82, 87)
 
@@ -480,9 +480,9 @@
       align-items: center
 
   #myTabContent
-    background: $darkerpurple
+    background: colors.$darkerpurple
     border-radius: 0px 0px 8px 8px
-    border: $textpurplelessop 1px solid
+    border: colors.$textpurplelessop 1px solid
     padding: 8px
 
   .button-group
@@ -501,7 +501,7 @@
   .editButton
     padding: 5px
     &:hover
-      background: $purple
+      background: colors.$purple
       #edit
         color: white
     &:disabled
@@ -509,9 +509,9 @@
   .delete-button
     padding: 5px
     &:hover
-      background: $darkerred
+      background: colors.$darkerred
       #delete
-        color: $lightred
+        color: colors.$lightred
 
 
   //BUTTONS
@@ -522,7 +522,7 @@
       margin-bottom: 0.2rem
       align-items:center
       gap: 0.3rem
-      color: $mainpurple
+      color: colors.$mainpurple
     p
       margin: 0
   .linkButton
@@ -531,13 +531,13 @@
     border-radius: 24px
     padding: 5px
     &:hover
-      background: $purple
+      background: colors.$purple
       #link
-        color: $brighterblue
+        color: colors.$brighterblue
       .tooltip-link
         display: flex
         position: absolute
-        background: $tooltipbg
+        background: colors.$tooltipbg
         border-radius: 3px
         padding: 4px 9px
         color: #dadada
@@ -551,12 +551,12 @@
     padding: 8px 16px 8px 6px
     align-items: center
     gap: 6px
-    background: $blue
+    background: colors.$blue
     color: white
     border: 0px
     height: 36px
     &:hover
-      background: $darkerbluelessop
+      background: colors.$darkerbluelessop
     a
       display: flex
       color: white
@@ -571,7 +571,7 @@
     height: 52px
     font-size: 1em
   .newItemButton
-    box-shadow: 0px 0px 40px 12px $darkerpurple
+    box-shadow: 0px 0px 40px 12px colors.$darkerpurple
 
 
 
@@ -580,13 +580,13 @@
     color:rgb(221, 221, 221)
     font-size: 13px
   #link-copied
-    background: $darkergreen
+    background: colors.$darkergreen
   #delete
-    color: $red
+    color: colors.$red
   #edit
-    color: $textgrey
+    color: colors.$textgrey
   #link
-    color: $brightblue
+    color: colors.$brightblue
   #add
     color: white
 
@@ -664,12 +664,12 @@
 .modalCatalogResource
   display: none
   .modalTitle
-    border-bottom: 1px $textpurplelessop solid
+    border-bottom: 1px colors.$textpurplelessop solid
     padding: 1.3rem 2rem 1rem 2rem
     display: flex
     justify-content: space-between
     position: fixed
-    background: $purplebg
+    background: colors.$purplebg
     width: 970px
     z-index: 999
     border-radius: 6px 6px 0 0
@@ -678,7 +678,7 @@
     span
       cursor: pointer
   .modalContainer
-    background-color: $purplebg
+    background-color: colors.$purplebg
     border-radius: 8px
     width: 970px
     margin: auto
@@ -701,13 +701,13 @@
     align-items: center
     background-color: #161938
     color: #eeeeee
-    border: 1px solid $textpurplelessop
+    border: 1px solid colors.$textpurplelessop
     border-radius: 12px
     gap: 1rem
     padding: 0.5rem 1.5rem 0.5rem 1rem
     font-family: Lato
     &:hover
-      background-color: $darkestpurple
+      background-color: colors.$darkestpurple
     p
       margin: 0 0 6px 0
 
@@ -720,7 +720,7 @@
       display: flex
       flex-direction: column
       border-radius: 6px
-      border: 1px $textpurplelessop solid
+      border: 1px colors.$textpurplelessop solid
 
       img
         object-fit: cover
@@ -732,7 +732,7 @@
   #scenery
     width: 400px
     border-radius: 6px
-    border: 1px $textpurplelessop solid
+    border: 1px colors.$textpurplelessop solid
     img
       height: 120px
       object-fit: cover
