@@ -211,6 +211,7 @@ router.delete("/resources/:resourceId", sessionController.loginRequired, session
 // Routes for reusablePuzzles
 router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, sessionController.adminOrAuthorRequired, reusablePuzzleController.getReusablePuzzle);
+router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
 
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
 router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browse);

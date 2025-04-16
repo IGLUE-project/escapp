@@ -879,7 +879,8 @@
             "volver": "back",
             "actions": "Actions",
             "information": "Information",
-            "test": "test"
+            "test": "test",
+            "resourceCatalog": "Resource catalog"
         },
         "messages": {
             "noHintControl": "This Escape Room does not have any hint system yet",

@@ -7,6 +7,7 @@ const {ckeditorResponse} = require("../helpers/utils");
 const queries = require("../queries");
 const path = require("path");
 const fs = require("fs");
+const StreamZip = require("node-stream-zip");
 
 const imageRegex = new RegExp(/image\/.*/);
 const videoRegex = new RegExp(/video\/.*/);
@@ -62,8 +63,8 @@ const supportedMimeTypes = ["image\/.*", "video\/mp4", "video\/webm", "audio\/.*
 
 // POST /escapeRooms/:escapeRoomId/uploadAssets
 exports.uploadAssets = async (req, res) => {
-    const {escapeRoom} = req;
-    const {i18n} = res.locals;
+    const { escapeRoom } = req;
+    const { i18n } = res.locals;
     const userId = req.session.user && req.session.user.id;
 
     /*
@@ -79,21 +80,38 @@ exports.uploadAssets = async (req, res) => {
     try {
         const mime = req.file.mimetype;
         const isSupported = supportedMimeTypes.some((m) => new RegExp(m).test(mime));
-
         if (!isSupported) {
             req.file.mimetype = "unsupported";
         }
-        await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.file.originalname, "mime": req.file.mimetype, userId}).save();
+        let asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.file.originalname, "mime": req.file.mimetype, userId }).save();
 
         // Res.json({"id": saved.id, "url": uploadResult.url});
         const html = ckeditorResponse(req.query.CKEditorFuncNum, req.file.url);
+
+        if (mime === "application/zip") {
+            let isWebapp = false;
+            const zip = new StreamZip.async({ file: req.file.path });
+            const entries = await zip.entries();
+            for (const entry of Object.values(entries)) {
+                if (entry.name === "index.html") {
+                    isWebapp = true;
+                    break;
+                }
+            }
+            if (isWebapp) {
+                const newPath = path.join(__dirname, `../uploads/webapps/${req.file.filename}`);
+                fs.mkdirSync(newPath);
+                await zip.extract(null, newPath);
+                await zip.close();
+                await asset.update({ "mime": "application/webapp", "url": `/uploads/webapps/${req.file.filename}/index.html` });
+            }
+        }
 
         res.send(html);
     } catch (error) {
         console.error(error);
         if (error instanceof Sequelize.ValidationError) {
             res.send(i18n.common.flash.errorFile);
-            // AttHelper.deleteResource(uploadResult.public_id, models.asset);
         } else {
             res.send(i18n.common.flash.errorFile);
         }
@@ -270,4 +288,43 @@ exports.editAsset = async (req, res, next) => {
         next(err);
     }
 };
+// GET /uploads/:public_id/:file_name
+exports.getWebAppAsset = async (req, res, next) => { // eslint-disable-line  no-unused-vars
+    const { public_id, file_name } = req.params;
+    let asset = null;
 
+    try {
+        asset = await models.asset.findOne({ "where": { public_id, "userId": req.session.user.id } });
+        if (!asset) {
+            const myEscapeRooms = await models.escapeRoom.findAll(queries.escapeRoom.all(req.session.user.id, null, null));
+            const escapeRoomAssets = [];
+
+            myEscapeRooms.forEach((er) => {
+                er.assets.forEach((a) => {
+                    if (a.public_id === public_id) {
+                        escapeRoomAssets.push(a);
+                    }
+                });
+            });
+            if (escapeRoomAssets.length !== 1) {
+                res.status(404);
+                res.json({ "msg": "Not found" });
+                return;
+            }
+            [asset] = escapeRoomAssets;
+        }
+
+        if (asset.mime !== "application/webapp") {
+            res.status(404);
+            res.json({ "msg": "Not found" });
+            return;
+        }
+
+        const filePath = path.join(__dirname, `/../uploads/webapps/${public_id}/${file_name}`);
+
+        res.sendFile(filePath);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+};

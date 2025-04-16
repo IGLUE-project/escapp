@@ -297,7 +297,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <% } else if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
+                                    <% } else if (asset.mime.search(new RegExp(/application\/pdf/))!==-1){ %>
                                         <tr class="catalogItem" id=<%=asset.id%> >
                                             <td>
                                                 <p class=" title">
@@ -306,6 +306,57 @@
                                             </td>
                                             <td> <span class="building-block-icon material-icons" id="blue">
                                                     description </span> </td>
+                                            <td>
+                                                <div class=" button-group row-button">
+                                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                        <p class="text-overlay">¿Estás seguro de que quieres
+                                                            borrar este
+                                                            archivo?</p>
+                                                        <button class="deleteButton" type="button"
+                                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                        <button class="acceptButton" type="button"
+                                                            onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                    </div>
+                                                    <button class="listButton iconButton delete-button"
+                                                        onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                                        <span class="building-block-icon material-icons" id="delete">
+                                                            delete_outline </span>
+                                                    </button>
+                                                    <button class="listButton iconButton editButton"
+                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                        <span class="building-block-icon material-icons" id="edit"> edit
+                                                        </span>
+                                                    </button>
+                                                    <button class="listButton linkButton"
+                                                        onclick='copyURl("<%=asset.url%>")'>
+                                                        <span class="building-block-icon material-icons" id="link"> link
+                                                        </span>
+                                                        <div class="tooltip-link"> Copiar enlace </div>
+                                                        <div class="tooltip-link" id="link-copied">
+                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                                        </div>
+                                                    </button>
+
+                                                    <button class="listButton addButton"
+                                                        onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                        <span class="building-block-icon material-icons" id="add"> add
+                                                        </span>
+                                                        <p>
+                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                                        </p>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% } else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1){ %>
+                                        <tr class="catalogItem" id=<%=asset.id%> >
+                                            <td>
+                                                <p class=" title">
+                                                    <%=asset.filename%>
+                                                </p>
+                                            </td>
+                                            <td> <span class="building-block-icon material-icons" id="purple">
+                                                    terminal </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
                                                     <div class=" overlay-trigger" data-id="<%=asset.id%>">
@@ -541,7 +592,10 @@
                 <input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/>
             </div>
                  </div>`);
-        } else if (mime.search(applicationRegex) !== -1) {
+        } else if (mime.search(pdfRegex) !== -1) {
+            form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
+                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
+        } else if (mime.search(webappRegex) !== -1) {
             form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
                     <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
         } else {
@@ -590,7 +644,12 @@
                 controls: configJSON.controls,
                 autoplay: configJSON.autoplay,
             }
-        } else if (mime.search(applicationRegex) !== -1) {
+        } else if (mime.search(pdfRegex) !== -1) {
+            return {
+                width: configJSON.width,
+                height: configJSON.height,
+            }
+        } else if (mime.search(webappRegex) !== -1) {
             return {
                 width: configJSON.width,
                 height: configJSON.height,

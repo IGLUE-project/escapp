@@ -867,8 +867,8 @@
             "volver": "volver",
             "actions": "Acciones",
             "information": "Información",
-            "test": "probar"
-
+            "test": "probar",
+            "resourceCatalog": "Catálogo de recursos"
         },
         "messages": {
             "copyAria": "Input invisible para permitir copiar el link de invitación",

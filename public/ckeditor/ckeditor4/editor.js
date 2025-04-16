@@ -81,7 +81,8 @@ var progressBarTemplate = ()=> `<div class="editor" >
 const imageRegex = new RegExp(/image\/.*/);
 const videoRegex = new RegExp(/video\/.*/);
 const audioRegex = new RegExp(/audio\/.*/);
-const applicationRegex = new RegExp(/application\/.*/);
+const pdfRegex = new RegExp(/application\/pdf/);
+const webappRegex = new RegExp(/application\/webapp/);
 
 //Render item depending on mime
 const catalogItem = (item)=> {
@@ -93,13 +94,18 @@ const catalogItem = (item)=> {
             return `<div class="ckeditor-html5-video" style="text-align: center;"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" /></div>`;
     } else if (item.mime.search(audioRegex) !== -1) {
             return `<audio controls=${configJSON.controls!=="undefined"?"controls":null}  autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  mime="${item.mime}" src="${item.url}"/>`;
-    } else if (item.mime.search(applicationRegex) !== -1) {
+    } else if (item.mime.search(pdfRegex) !== -1) {
         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
         <object data="${item.url}" type="application/pdf" width="100%" height="100%">
             <iframe src="${item.url}" width="100%" height="100%" >
             </iframe>
         </object>
     </div>`;
+     } else if (item.mime.search(webappRegex) !== -1) {
+         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
+             <iframe src="${item.url}" width="100%" height="100%" >
+             </iframe>
+     </div>`;
     }else {
         return `<div>${item.name}</div>`;
     }
