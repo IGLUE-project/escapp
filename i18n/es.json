@@ -481,6 +481,7 @@
                     "catalog": {
                         "newPuzzle": "Nuevo puzzle",
                         "uploadFile": "Subir fichero",
+                        "addResource": "Añadir nuevo recurso",
                         "addBlock": "Añadir bloque",
                         "addText": "Añadir bloque de texto",
                         "table": {

@@ -1,68 +1,214 @@
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
-    <div style="width:100%">
-        <div style="display: flex; justify-content:end; margin-bottom:0.2em;">
-            <%if(endPoint === "team"){%>
-            <button class="addButton" style="margin-right:0.2em" onclick="createPuzzle()">
-                <span class="building-block-icon material-icons"> extension </span>
-                    <%console.log(i18n.escapeRoom.steps.indications)%>
-                    <p><%=i18n.escapeRoom.steps.indications.front.catalog.newPuzzle%></p>
-            </button>
-            <%}%>
-            <button class="addButton"> <a href="assets?mode=catalogView" >
-                <span class="building-block-icon material-icons"> save </span>
-                <p> <%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
-            </a> </button>
+    <div id="modalCatalogResource" class="modalCatalogResource">
+        <div class="modalContainer">
+            <div class="modalTitle">
+                <h5 style="font-size: 1em; margin-top: 0px">
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.addResource%>
+                </h5>
+
+                <span class="building-block-icon material-icons" onclick="openModalCatalogResource()"> close </span>
+
             </div>
-        <div style="height:240px;overflow-y:auto;width:100%;position:relative">
-        <table style="width:100%;table-layout:fixed"  class="tab-content catalog-container" id="myTabContent">
-                <colgroup>
-                   <col span="1" style="width: 50%;">
-                   <col span="1" style="width: 20%;">
-                   <col span="1" style="width: 30%;">
-                </colgroup>
-                <tr>
-                    <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.name%></th>
-                    <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
-                    <th></th>
-                </tr>
-                <tr class="catalogItem" class="building-block-bar-button "
-                    title="<%i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
-                    <td> <p class="title"> <%=i18n.escapeRoom.steps.indications.front.countdown%> </p> </td>
-                    <td> <img class="building-block-img" src="/images/countdown.png" /> </td>
-                    <td> <button class="listButton addButton" onclick='insertAndScrollContent(0,"countdown",{}, puzzleList)'
-                        class="listButton">
+            <div style="margin: 4rem"></div>
+            <div class="sections">
+            <section >
+                <p class="title-section">Elementos de gamificación</p>
+                <div class="btn-group">
+                    <button class="resourceCatalogBtn">
+                        <span class="building-block-icon material-icons"> add </span>
+                        <p>cuenta atrás</p>
+                        <img class="building-block-img" src="/images/countdown.png" />
+                    </button>
+                    <button class="resourceCatalogBtn">
+                        <span class="building-block-icon material-icons"> add </span>
+                        <p>ranking</p>
+                        <img class="building-block-img" src="/images/ranking.png" />
+                    </button>
+                    <button class="resourceCatalogBtn">
+                        <span class="building-block-icon material-icons"> add </span>
+                        <p>progreso</p>
+                        <span class="building-block-icon material-icons" style="color: var(--lightred);">
+                            show_chart </span>
+                    </button>
+                </div>
+            </section>
+            <section>
+                <p class="title-section">Recursos interactivos vinculados a retos</p>
+                <div class="resources-group">
+                    <div class="resource-card">
+                        <img src="/images/keypad.png">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p>Keypad</p>
+                        </button>
+                    </div>
+                    <div class="resource-card">
+                        <img src="/images/keypad.png">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p>Keypad</p>
+                        </button>
+                    </div>
+                    <div class="resource-card">
+                        <img src="/images/keypad.png">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p>Keypad</p>
+                        </button>
+                    </div>
+                    <div class="resource-card">
+                        <img src="/images/keypad.png">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p>Keypad</p>
+                        </button>
+                    </div>
+                    <div class="resource-card">
+                        <img src="/images/keypad.png">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p>Keypad</p>
+                        </button>
+                    </div>
+                    <div class="resource-card">
+                        <img src="/images/keypad.png">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p>Keypad</p>
+                        </button>
+                    </div>
+                    <div class="resource-card">
+                        <img src="/images/keypad.png">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p>Keypad</p>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <p class="title-section">Escenarios 2D</p>
+                <div class="resource-card" id="scenery">
+                    <img src="/images/scenery.png">
+                    <button class="resourceCatalogBtn">
+                        <span class="building-block-icon material-icons"> add </span>
+                        <p>Escenarios 2D</p>
+                    </button>
+                </div>
+            </section>
+        </div>
+        </div>
+    </div>
+    <div style="width:100%">
+        <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem">
+            <%if(endPoint==="team" ){%>
+                <button class="addButton" style="margin-right:0.2em" onclick="createPuzzle()">
+                    <span class="building-block-icon material-icons"> extension </span>
+                    <%console.log(i18n.escapeRoom.steps.indications)%>
+                        <p>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.newPuzzle%>
+                        </p>
+                </button>
+                <%}%>
+                    <button class="building-block-bar-button uploadButton" onclick="openModalCatalogResource()">
+                        <a href="#">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p>
+                                <%=i18n.escapeRoom.steps.indications.front.catalog.addResource%>
+                            </p>
+                        </a>
+                    </button>
+                    <button class="building-block-bar-button uploadButton">
+                        <a href="assets?mode=catalogView">
+                            <span class="building-block-icon material-icons"> upload </span>
+                            <p>
+                                <%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%>
+                            </p>
+                        </a>
+                    </button>
+
+        </div>
+    </div>
+    <div style="height:240px;overflow-y:auto;width:100%;position:relative">
+
+        <table style="width:100%;table-layout:fixed; padding: 16px" class="tab-content catalog-container"
+            id="myTabContent">
+            <colgroup>
+                <col span="1" style="width: 50%;">
+                <col span="1" style="width: 20%;">
+                <col span="1" style="width: 30%;">
+            </colgroup>
+            <tr class="tableTitles">
+                <th>
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%>
+                </th>
+                <th>
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.table.type%>
+                </th>
+                <th></th>
+            </tr>
+            <tr class="catalogItem" class="building-block-bar-button "
+                title="<%i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
+                <td>
+                    <p class="title">
+                        <%=i18n.escapeRoom.steps.indications.front.countdown%>
+                    </p>
+                </td>
+                <td> <img class="building-block-img" src="/images/countdown.png" /> </td>
+                <td class="row-button"> <button class="listButton addButton"
+                        onclick='insertAndScrollContent(0,"countdown",{}, puzzleList)' class="listButton">
                         <span class="building-block-icon material-icons" id="add"> add
                         </span>
-                        <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
+                        <p>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                        </p>
                     </button></td>
-                </tr>
-                <tr class="catalogItem" class="building-block-bar-button "
-                    title="<%i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
-                    <td> <p class="title"> <%=i18n.escapeRoom.steps.indications.front.ranking%> </td>
-                    <td> <img class="building-block-img" src="/images/ranking.png" /> </td>
-                    <td> <button class="listButton addButton" onclick='insertAndScrollContent(0,"ranking",{}, puzzleList)'
-                        class="listButton">
+            </tr>
+            <tr class="catalogItem" class="building-block-bar-button "
+                title="<%i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
+                <td>
+                    <p class="title">
+                        <%=i18n.escapeRoom.steps.indications.front.ranking%>
+                </td>
+                <td> <img class="building-block-img" src="/images/ranking.png" /> </td>
+                <td class="row-button"> <button class="listButton addButton"
+                        onclick='insertAndScrollContent(0,"ranking",{}, puzzleList)' class="listButton">
                         <span class="building-block-icon material-icons" id="add"> add
                         </span>
-                        <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
+                        <p>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                        </p>
+                </td>
+            </tr>
+            <tr class="catalogItem" class="building-block-bar-button "
+                title="<%i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
+                <td>
+                    <p class="title">
+                        <%=i18n.escapeRoom.steps.indications.front.progress%>
+                    </p>
+                </td>
+                <td> <span class="building-block-icon material-icons" style="color: var(--lightred);">
+                        show_chart </span> </td>
+                <td class="row-button"> <button class="listButton addButton"
+                        onclick='insertAndScrollContent(0,"progress",{}, puzzleList)' class="listButton">
+                        <span class="building-block-icon material-icons" id="add"> add
+                        </span>
+                        <p>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                        </p>
+                    </button></td>
+            </tr>
+            <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
+                <tr class="catalogItem">
+                    <td>
+                        <p class="title">
+                            <%=puzzle.name%>
+                        </p>
                     </td>
-                </tr>
-                <tr class="catalogItem" class="building-block-bar-button "
-                    title="<%i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
-                    <td> <p class="title"> <%=i18n.escapeRoom.steps.indications.front.progress%> </p> </td>
-                    <td> <span class="building-block-icon material-icons" style="color: var(--lightred);"> show_chart </span> </td>
-                    <td> <button class="listButton addButton" onclick='insertAndScrollContent(0,"progress",{}, puzzleList)'
-                        class="listButton">
-                        <span class="building-block-icon material-icons" id="add"> add
-                        </span>
-                        <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
-                    </button></td>
-                </tr>
-                <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
-                    <tr class="catalogItem">
-                        <td> <p class="title"> <%=puzzle.name%> </p> </td>
-                        <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span> </td>
-                        <td>
+                    <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span>
+                    </td>
+                    <td>
                         <div class="button-group">
                             <button class="listButton iconButton delete-button"
                                 onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>
@@ -76,105 +222,34 @@
                             <button class="listButton linkButton" onclick='copyURl("<%=puzzle.id%>")'>
                                 <span class="building-block-icon material-icons" id="link"> link </span>
                                 <div class="tooltip-link"> Copiar enlace </div>
-                                <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%> </div>
+                                <div class="tooltip-link" id="link-copied">
+                                    <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                </div>
                             </button>
-                            <button class="listButton addButton"
+                            <button class="listButton addButton row-button"
                                 onclick='insertAndScrollContent(0,"catalog",{url:"<%=puzzle.url%>",config: "<%=puzzle.config%>"  mime:"<%=puzzle.mime%>"}, puzzleList)'>
                                 <span class="building-block-icon material-icons" id="add"> add </span>
-                                <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
+                                <p>
+                                    <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                </p>
                             </button>
                         </div>
-                        </td>
-                    </tr>
-                    <% })} %>
-                <% assets.map(asset=> {%>
-                    <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
-                        <tr class="catalogItem" id=<%=asset.id%> >
-                            <td> <p class="title"> <%=asset.filename%> </p> </td>
-                            <td> <span class="building-block-icon material-icons" id="green"> image </span> </td>
-                            <td><div class=" button-group">
-                                <div class="overlay-trigger" data-id="<%=asset.id%>">
-                                    <p class="text-overlay">¿Estás seguro de que quieres borrar este
-                                        archivo?</p>
-                                    <button class="deleteButton" type="button"
-                                        onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                    <button class="acceptButton" type="button"
-                                        onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
-                                </div>
-                                <button class="listButton iconButton delete-button"
-                                    onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
-                                    <span class="building-block-icon material-icons" id="delete">
-                                        delete_outline </span>
-                                </button>
-                                <button class="listButton iconButton editButton"
-                                    onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
-                                    <span class="building-block-icon material-icons" id="edit"> edit
-                                    </span>
-                                </button>
-                                <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
-                                    <span class="building-block-icon material-icons" id="link"> link
-                                    </span>
-                                    <div class="tooltip-link"> Copiar enlace </div>
-                                    <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                    </div>
-                                </button>
-
-                                <button class="listButton addButton"
-                                    onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
-                                    <span class="building-block-icon material-icons" id="add"> add
-                                    </span>
-                                    <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
-                                </button>
-                            </div>
-                            </td>
-                        </tr>
-                        <% } else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
+                    </td>
+                </tr>
+                <% })} %>
+                    <% assets.map(asset=> {%>
+                        <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
                             <tr class="catalogItem" id=<%=asset.id%> >
-                                <td> <p class="title"> <%=asset.filename%> </p> </td>
-                                <td> <span class="building-block-icon material-icons" id="red"> videocam </span> </td>
                                 <td>
-                                <div class=" button-group">
-                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
-                                        <p class="text-overlay">¿Estás seguro de que quieres borrar este
-                                            archivo?</p>
-                                        <button class="deleteButton" type="button"
-                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
-                                        <button class="acceptButton" type="button"
-                                            onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
-                                    </div>
-                                    <button class="listButton iconButton delete-button"
-                                        onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
-                                        <span class="building-block-icon material-icons" id="delete">
-                                            delete_outline </span>
-                                    </button>
-                                    <button class="listButton iconButton editButton"
-                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
-                                        <span class="building-block-icon material-icons" id="edit"> edit
-                                        </span>
-                                    </button>
-                                    <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
-                                        <span class="building-block-icon material-icons" id="link"> link
-                                        </span>
-                                        <div class="tooltip-link"> Copiar enlace </div>
-                                        <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                        </div>
-                                    </button>
-                                    <button class="listButton addButton"
-                                        onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
-                                        <span class="building-block-icon material-icons" id="add"> add
-                                        </span>
-                                        <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
-                                    </button>
-                                </div>
+                                    <p class="title">
+                                        <%=asset.filename%>
+                                    </p>
                                 </td>
-                            </tr>
-                            <% } else if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){ %>
-                                <tr class="catalogItem" id=<%=asset.id%> >
-                                    <td> <p class="title"> <%=asset.filename%> </p> </td>
-                                    <td> <span class="building-block-icon material-icons " id="purple"> music_note </span> </td>
-                                    <td>
-                                    <div class=" button-group">
-                                        <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                <td> <span class="building-block-icon material-icons" id="green"> image </span>
+                                </td>
+                                <td>
+                                    <div class=" button-group row-button">
+                                        <div class="overlay-trigger" data-id="<%=asset.id%>">
                                             <p class="text-overlay">¿Estás seguro de que quieres borrar este
                                                 archivo?</p>
                                             <button class="deleteButton" type="button"
@@ -196,24 +271,33 @@
                                             <span class="building-block-icon material-icons" id="link"> link
                                             </span>
                                             <div class="tooltip-link"> Copiar enlace </div>
-                                            <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                            <div class="tooltip-link" id="link-copied">
+                                                <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                             </div>
                                         </button>
+
                                         <button class="listButton addButton"
                                             onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                             <span class="building-block-icon material-icons" id="add"> add
                                             </span>
-                                            <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
+                                            <p>
+                                                <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                            </p>
                                         </button>
                                     </div>
+                                </td>
+                            </tr>
+                            <% } else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
+                                <tr class="catalogItem" id=<%=asset.id%> >
+                                    <td>
+                                        <p class="title">
+                                            <%=asset.filename%>
+                                        </p>
                                     </td>
-                                </tr>
-                                <% } else if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
-                                    <tr class="catalogItem" id=<%=asset.id%> >
-                                        <td> <p class=" title"> <%=asset.filename%> </p> </td>
-                                        <td> <span class="building-block-icon material-icons" id="blue"> description </span> </td>
-                                        <td>
-                                        <div class=" button-group">
+                                    <td> <span class="building-block-icon material-icons" id="red"> videocam
+                                        </span> </td>
+                                    <td>
+                                        <div class=" button-group row-button">
                                             <div class=" overlay-trigger" data-id="<%=asset.id%>">
                                                 <p class="text-overlay">¿Estás seguro de que quieres borrar este
                                                     archivo?</p>
@@ -232,31 +316,143 @@
                                                 <span class="building-block-icon material-icons" id="edit"> edit
                                                 </span>
                                             </button>
-                                            <button class="listButton linkButton"
-                                                onclick='copyURl("<%=asset.url%>")'>
+                                            <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
                                                 <span class="building-block-icon material-icons" id="link"> link
                                                 </span>
                                                 <div class="tooltip-link"> Copiar enlace </div>
-                                                <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                                <div class="tooltip-link" id="link-copied">
+                                                    <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                 </div>
                                             </button>
-
                                             <button class="listButton addButton"
                                                 onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                 <span class="building-block-icon material-icons" id="add"> add
                                                 </span>
-                                                <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
+                                                <p>
+                                                    <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                                </p>
                                             </button>
                                         </div>
+                                    </td>
+                                </tr>
+                                <% } else if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){ %>
+                                    <tr class="catalogItem" id=<%=asset.id%> >
+                                        <td>
+                                            <p class="title">
+                                                <%=asset.filename%>
+                                            </p>
+                                        </td>
+                                        <td> <span class="building-block-icon material-icons " id="purple">
+                                                music_note </span> </td>
+                                        <td>
+                                            <div class=" button-group row-button">
+                                                <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                    <p class="text-overlay">¿Estás seguro de que quieres borrar
+                                                        este
+                                                        archivo?</p>
+                                                    <button class="deleteButton" type="button"
+                                                        onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                    <button class="acceptButton" type="button"
+                                                        onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                </div>
+                                                <button class="listButton iconButton delete-button"
+                                                    onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                                    <span class="building-block-icon material-icons" id="delete">
+                                                        delete_outline </span>
+                                                </button>
+                                                <button class="listButton iconButton editButton"
+                                                    onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                    <span class="building-block-icon material-icons" id="edit">
+                                                        edit
+                                                    </span>
+                                                </button>
+                                                <button class="listButton linkButton"
+                                                    onclick='copyURl("<%=asset.url%>")'>
+                                                    <span class="building-block-icon material-icons" id="link">
+                                                        link
+                                                    </span>
+                                                    <div class="tooltip-link"> Copiar enlace </div>
+                                                    <div class="tooltip-link" id="link-copied">
+                                                        <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                                    </div>
+                                                </button>
+                                                <button class="listButton addButton"
+                                                    onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                    <span class="building-block-icon material-icons" id="add">
+                                                        add
+                                                    </span>
+                                                    <p>
+                                                        <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                                    </p>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
-                                    <% } else { %>
+                                    <% } else if (asset.mime.search(new RegExp(/application\/.*/))!==-1){ %>
                                         <tr class="catalogItem" id=<%=asset.id%> >
-                                            <td> <p class="title"> <%=asset.filename%></p> <div class=" button-group"> </td>
-                                            <td> <span class="building-block-icon material-icons" id="gray"> question_mark </span> </td>
                                             <td>
+                                                <p class=" title">
+                                                    <%=asset.filename%>
+                                                </p>
+                                            </td>
+                                            <td> <span class="building-block-icon material-icons" id="blue">
+                                                    description </span> </td>
+                                            <td>
+                                                <div class=" button-group row-button">
                                                     <div class=" overlay-trigger" data-id="<%=asset.id%>">
-                                                        <p class="text-overlay">¿Estás seguro de que quieres borrar
+                                                        <p class="text-overlay">¿Estás seguro de que quieres
+                                                            borrar este
+                                                            archivo?</p>
+                                                        <button class="deleteButton" type="button"
+                                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                        <button class="acceptButton" type="button"
+                                                            onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                    </div>
+                                                    <button class="listButton iconButton delete-button"
+                                                        onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                                        <span class="building-block-icon material-icons" id="delete">
+                                                            delete_outline </span>
+                                                    </button>
+                                                    <button class="listButton iconButton editButton"
+                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                        <span class="building-block-icon material-icons" id="edit"> edit
+                                                        </span>
+                                                    </button>
+                                                    <button class="listButton linkButton"
+                                                        onclick='copyURl("<%=asset.url%>")'>
+                                                        <span class="building-block-icon material-icons" id="link"> link
+                                                        </span>
+                                                        <div class="tooltip-link"> Copiar enlace </div>
+                                                        <div class="tooltip-link" id="link-copied">
+                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                                        </div>
+                                                    </button>
+
+                                                    <button class="listButton addButton"
+                                                        onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                        <span class="building-block-icon material-icons" id="add"> add
+                                                        </span>
+                                                        <p>
+                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                                        </p>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% } else { %>
+                                            <tr class="catalogItem" id=<%=asset.id%> >
+                                                <td>
+                                                    <p class="title">
+                                                        <%=asset.filename%>
+                                                    </p>
+                                                    <div class=" button-group row-button">
+                                                </td>
+                                                <td> <span class="building-block-icon material-icons" id="gray">
+                                                        question_mark </span> </td>
+                                                <td>
+                                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                        <p class="text-overlay">¿Estás seguro de que quieres
+                                                            borrar
                                                             este
                                                             archivo?</p>
                                                         <button class="delete-button" type="button"
@@ -266,8 +462,7 @@
                                                     </div>
                                                     <button class="listButton iconButton delete-button"
                                                         onclick='overlayTriggerCatalog("<%=asset.id%>")'>
-                                                        <span class="building-block-icon material-icons"
-                                                            id="delete">
+                                                        <span class="building-block-icon material-icons" id="delete">
                                                             delete_outline </span>
                                                     </button>
                                                     <button class="listButton iconButton editButton" disabled>
@@ -281,30 +476,29 @@
                                                             link
                                                         </span>
                                                         <div class="tooltip-link"> Copiar enlace </div>
-                                                        <div class="tooltip-link" id="link-copied"> <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                                        <div class="tooltip-link" id="link-copied">
+                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                         </div>
                                                     </button>
                                                     <button class="listButton addButton" disabled> <span
                                                             class="building-block-icon material-icons" id="add">
                                                             add
                                                         </span>
-                                                        <p> <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%> </p>
+                                                        <p>
+                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                                        </p>
                                                     </button>
-                                        </div>
-                                        </td>
-
-                                    </tr>
-            <% } return null;%>
-                <% }) %>
-        </table>
-        </div>
     </div>
-<div style="display:flex; margin-top:0.5em; align-items:center">
-    <button class="addButton" class="text-block-add" onclick="insertContentBlock()">
-        <span class="building-block-icon material-icons"> add </span>
-        <p><%= i18n.escapeRoom.steps.indications.front.catalog.addText%></p>
-    </button>
-    <button class="building-block-bar-button theme-btn" style="margin-left:0.2em;display:flex;">
+    </td>
+
+    </tr>
+    <% } return null;%>
+        <% }) %>
+            </table>
+
+</div>
+<div style="display:flex; margin-top:0.5em; align-items:center; justify-content: end; gap: 0.7rem">
+    <button class="building-block-bar-button theme-btn" style="display:flex;">
         <span class="building-block-icon material-icons" style="color: var(--info);">color_lens</span>
         <span class="theme-text">
             <%=i18n.escapeRoom.steps.indications.front.theme%>: <span id="theme-title">
@@ -312,6 +506,13 @@
                 </span>
         </span>
     </button>
+    <button class="addButton text-block-add" id="buttonMain" onclick="insertContentBlock()">
+        <span class="building-block-icon material-icons"> add </span>
+        <p>
+            <%= i18n.escapeRoom.steps.indications.front.catalog.addText%>
+        </p>
+    </button>
+
 </div>
 <br>
 <div style="display:flex; justify-content:center">
@@ -322,9 +523,9 @@
     <dialog id="reusablePuzzleDialog">
         <form method="POST" action="../reusablePuzzleInstance">
             <label> Name </label>
-            <input type="text" name="name"/>
+            <input type="text" name="name" />
             <label> Description </label>
-            <input type="text" name="description"/>
+            <input type="text" name="description" />
             </br>
             <label> Puzzle type </label>
             <select name="reusablePuzzleId">
@@ -332,20 +533,24 @@
             </br>
             <h2>Configuration</h2>
             <label> Input </label>
-            <input type="text" name="config_a"/>
+            <input type="text" name="config_a" />
             <label> Input </label>
-            <input type="text" name="config_b"/>
+            <input type="text" name="config_b" />
             <label> Input </label>
-            <input type="text" name="config_c"/>
+            <input type="text" name="config_c" />
             <label> Input </label>
-            <input type="text" name="config_d"/>
-            <input type="submit"/>
+            <input type="text" name="config_d" />
+            <input type="submit" />
         </form>
     </dialog>
 </div>
 
 <script>
-
+    function openModalCatalogResource() {
+        var modal = document.getElementById("modalCatalogResource")
+        modal.classList.toggle("active");
+     
+    }
     function editAsset(id, mime, config) {
         const configJSON = parseAssetConfig(mime, config);
         const dialog = $('#editDialog');
@@ -354,23 +559,80 @@
         form.empty();
         if (mime.search(imageRegex) !== -1) {
             form.append(`
-            <div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
+                    <div class="containerBlocksEdit">
+                        <div>
+                           <p class="titleLabelEdit"> Medidas </p>     
+            <div class="editDialogForm">
+                
+            <div>
+                <label for="height">Height</label>
+                <div class="editUnit">
+                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
+                    <p> px </p>
+                </div>
+            </div>
+            <div>
+                <label for="width">Width</label>
+                <div class="editUnit">
+                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
+                    <p> px </p>
+            </div>
+            </div>
+                        </div>
+            </div>`
+
+            );
+
+
         } else if (mime.search(videoRegex) !== -1) {
-            form.append(`<div><label for="width">Height</label><input type="number"  value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}" name="height"/>px</div>
+            form.append(` 
+            <div class="containerBlocksEdit">
+            <div >
+                <p class="titleLabelEdit"> Medidas </p>
+                <div class="editDialogForm">
+                <div>
+                    <label for="height">Height</label>
+                    <div class="editUnit">
+                        <input class="light" type="number" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
+                        <p> px </p>
+                    </div>
+                 </div>
+                <div>
+                    <label for="width">Width</label>
+                    <div class="editUnit">
+                        <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
+                        <p> px </p>
+                    </div>
+                </div>
+                </div>
+                </div>
+                <div>
+                    <p class="titleLabelEdit"> Opciones </p>
+                <div class="checkBoxEditContainer">
                     <div><label for="autoplay">Autoplay</label><input ${configJSON.autoplay ? "checked" : ""} type="checkbox" name="autoplay"/></div>
                     <div><label for="download">Dowloads</label><input ${configJSON.download ? "checked" : ""} type="checkbox" name="download"/></div>
-                    <div><label for="controls">Controls</label><input  ${configJSON.controls ? "checked" : ""} type="checkbox" name="controls"/></div>`);
+                    <div><label for="controls">Controls</label><input  ${configJSON.controls ? "checked" : ""} type="checkbox" name="controls"/></div>
+                </div>    
+                </div>
+                </div>
+                `);
         } else if (mime.search(audioRegex) !== -1) {
-            form.append(`<div><label for="controls">Controls</label><input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/></div>`);
+            form.append(`
+                        <div class="containerBlocksEdit">
+            <div>
+                 <p class="titleLabelEdit"> Opciones </p>
+                 <div>
+                <label for="controls">Controls</label>
+                <input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/>
+            </div>
+                 </div>`);
         } else if (mime.search(applicationRegex) !== -1) {
             form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
                     <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
         } else {
             return `<div>${item.name}</div>`;
         }
-        form.append(`<input type="submit"/>`);
+        form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
         dialog.dialog({
             modal: true,
             resizable: false,
@@ -423,13 +685,13 @@
         }
     }
 
-    function createPuzzle(){
+    function createPuzzle() {
         console.log
         const dialog = $('#reusablePuzzleDialog')
         const select = dialog.find('select');
         window.reusablePuzzles.forEach(puzzle => {
-         select.append(`<option value = $i{puzzle.id}>${puzzle.name}</option>`)
-            })
+            select.append(`<option value = $i{puzzle.id}>${puzzle.name}</option>`)
+        })
         dialog.dialog({
             modal: true,
             resizable: false,

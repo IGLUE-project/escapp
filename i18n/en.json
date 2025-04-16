@@ -490,6 +490,7 @@
                     "catalog": {
                         "newPuzzle": "New puzzle",
                         "uploadFile": "Upload File",
+                        "addResource": "Add new resource",
                         "addBlock": "Add block",
                         "addText": "Add text block",
                         "table": {
