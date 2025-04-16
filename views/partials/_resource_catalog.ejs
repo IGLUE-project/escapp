@@ -1,117 +1,68 @@
-<div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
-    <div id="modalCatalogResource" class="modalCatalogResource">
-        <div class="modalContainer">
-            <div class="modalTitle">
-                <h5 style="font-size: 1em; margin-top: 0px">
-                    <%=i18n.escapeRoom.steps.indications.front.catalog.addResource%>
-                </h5>
+<div id="modalCatalogResource" class="modalCatalogResource">
+    <div class="modalContainer">
+        <div class="modalTitle">
+            <h5 style="font-size: 1em; margin-top: 0px">
+                <%=i18n.escapeRoom.steps.indications.front.catalog.addResource%>
+            </h5>
 
-                <span class="building-block-icon material-icons" onclick="openModalCatalogResource()"> close </span>
+            <span class="building-block-icon material-icons" onclick="toggleCatalogModal()"> close </span>
 
+        </div>
+        <div style="margin: 4rem"></div>
+        <div class="sections">
+        <section >
+            <p class="title-section">Elementos de gamificación</p>
+            <div class="btn-group">
+                <button onclick='insertGamification(0,"countdown",{}, puzzleList)' class="resourceCatalogBtn">
+                    <span class="building-block-icon material-icons"> add </span>
+                    <p><%=i18n.escapeRoom.steps.indications.front.countdown%></p>
+                    <img class="building-block-img" src="/images/countdown.png" />
+                </button>
+                <button onclick='insertGamification(0,"ranking",{}, puzzleList)' class="resourceCatalogBtn">
+                    <span class="building-block-icon material-icons"> add </span>
+                    <p><%=i18n.escapeRoom.steps.indications.front.ranking%></p>
+                    <img class="building-block-img" src="/images/ranking.png" />
+                </button>
+                <button onclick='insertGamification(0,"progress",{}, puzzleList)' class="resourceCatalogBtn">
+                    <span class="building-block-icon material-icons"> add </span>
+                    <p><%=i18n.escapeRoom.steps.indications.front.progress%></p>
+                    <span class="building-block-icon material-icons" style="color: var(--lightred);">
+                        show_chart </span>
+                </button>
             </div>
-            <div style="margin: 4rem"></div>
-            <div class="sections">
-            <section >
-                <p class="title-section">Elementos de gamificación</p>
-                <div class="btn-group">
-                    <button class="resourceCatalogBtn">
-                        <span class="building-block-icon material-icons"> add </span>
-                        <p>cuenta atrás</p>
-                        <img class="building-block-img" src="/images/countdown.png" />
-                    </button>
-                    <button class="resourceCatalogBtn">
-                        <span class="building-block-icon material-icons"> add </span>
-                        <p>ranking</p>
-                        <img class="building-block-img" src="/images/ranking.png" />
-                    </button>
-                    <button class="resourceCatalogBtn">
-                        <span class="building-block-icon material-icons"> add </span>
-                        <p>progreso</p>
-                        <span class="building-block-icon material-icons" style="color: var(--lightred);">
-                            show_chart </span>
-                    </button>
-                </div>
-            </section>
-            <section>
-                <p class="title-section">Recursos interactivos vinculados a retos</p>
-                <div class="resources-group">
-                    <div class="resource-card">
+        </section>
+        <section>
+            <p class="title-section">Recursos interactivos vinculados a retos</p>
+            <div class="resources-group">
+                <%availableReusablePuzzles.forEach(puzzle => { %>
+                     <div class="resource-card">
                         <img src="/images/keypad.png">
                         <button class="resourceCatalogBtn">
                             <span class="building-block-icon material-icons"> add </span>
-                            <p>Keypad</p>
+                            <p><%=puzzle.name%></p>
                         </button>
                     </div>
-                    <div class="resource-card">
-                        <img src="/images/keypad.png">
-                        <button class="resourceCatalogBtn">
-                            <span class="building-block-icon material-icons"> add </span>
-                            <p>Keypad</p>
-                        </button>
-                    </div>
-                    <div class="resource-card">
-                        <img src="/images/keypad.png">
-                        <button class="resourceCatalogBtn">
-                            <span class="building-block-icon material-icons"> add </span>
-                            <p>Keypad</p>
-                        </button>
-                    </div>
-                    <div class="resource-card">
-                        <img src="/images/keypad.png">
-                        <button class="resourceCatalogBtn">
-                            <span class="building-block-icon material-icons"> add </span>
-                            <p>Keypad</p>
-                        </button>
-                    </div>
-                    <div class="resource-card">
-                        <img src="/images/keypad.png">
-                        <button class="resourceCatalogBtn">
-                            <span class="building-block-icon material-icons"> add </span>
-                            <p>Keypad</p>
-                        </button>
-                    </div>
-                    <div class="resource-card">
-                        <img src="/images/keypad.png">
-                        <button class="resourceCatalogBtn">
-                            <span class="building-block-icon material-icons"> add </span>
-                            <p>Keypad</p>
-                        </button>
-                    </div>
-                    <div class="resource-card">
-                        <img src="/images/keypad.png">
-                        <button class="resourceCatalogBtn">
-                            <span class="building-block-icon material-icons"> add </span>
-                            <p>Keypad</p>
-                        </button>
-                    </div>
-                </div>
-            </section>
+                <% })%>
+            </div>
+        </section>
 
-            <section>
-                <p class="title-section">Escenarios 2D</p>
-                <div class="resource-card" id="scenery">
-                    <img src="/images/scenery.png">
-                    <button class="resourceCatalogBtn">
-                        <span class="building-block-icon material-icons"> add </span>
-                        <p>Escenarios 2D</p>
-                    </button>
-                </div>
-            </section>
-        </div>
-        </div>
+        <section>
+            <p class="title-section">Escenarios 2D</p>
+            <div class="resource-card" id="scenery">
+                <img src="/images/scenery.png">
+                <button class="resourceCatalogBtn">
+                    <span class="building-block-icon material-icons"> add </span>
+                    <p>Escenarios 2D</p>
+                </button>
+            </div>
+        </section>
     </div>
+    </div>
+</div>
+<div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
         <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem">
-            <%if(endPoint==="team" ){%>
-                <button class="addButton" style="margin-right:0.2em" onclick="createPuzzle()">
-                    <span class="building-block-icon material-icons"> extension </span>
-                    <%console.log(i18n.escapeRoom.steps.indications)%>
-                        <p>
-                            <%=i18n.escapeRoom.steps.indications.front.catalog.newPuzzle%>
-                        </p>
-                </button>
-                <%}%>
-                    <button class="building-block-bar-button uploadButton" onclick="openModalCatalogResource()">
+                    <button class="building-block-bar-button uploadButton" onclick="toggleCatalogModal()">
                         <a href="#">
                             <span class="building-block-icon material-icons"> add </span>
                             <p>
@@ -147,57 +98,6 @@
                     <%=i18n.escapeRoom.steps.indications.front.catalog.table.type%>
                 </th>
                 <th></th>
-            </tr>
-            <tr class="catalogItem" class="building-block-bar-button "
-                title="<%i18n.escapeRoom.steps.indications.front.countdown%>" data-content="countdown">
-                <td>
-                    <p class="title">
-                        <%=i18n.escapeRoom.steps.indications.front.countdown%>
-                    </p>
-                </td>
-                <td> <img class="building-block-img" src="/images/countdown.png" /> </td>
-                <td class="row-button"> <button class="listButton addButton"
-                        onclick='insertAndScrollContent(0,"countdown",{}, puzzleList)' class="listButton">
-                        <span class="building-block-icon material-icons" id="add"> add
-                        </span>
-                        <p>
-                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
-                        </p>
-                    </button></td>
-            </tr>
-            <tr class="catalogItem" class="building-block-bar-button "
-                title="<%i18n.escapeRoom.steps.indications.front.ranking%>" data-content="ranking">
-                <td>
-                    <p class="title">
-                        <%=i18n.escapeRoom.steps.indications.front.ranking%>
-                </td>
-                <td> <img class="building-block-img" src="/images/ranking.png" /> </td>
-                <td class="row-button"> <button class="listButton addButton"
-                        onclick='insertAndScrollContent(0,"ranking",{}, puzzleList)' class="listButton">
-                        <span class="building-block-icon material-icons" id="add"> add
-                        </span>
-                        <p>
-                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
-                        </p>
-                </td>
-            </tr>
-            <tr class="catalogItem" class="building-block-bar-button "
-                title="<%i18n.escapeRoom.steps.indications.front.progress%>" data-content="progress">
-                <td>
-                    <p class="title">
-                        <%=i18n.escapeRoom.steps.indications.front.progress%>
-                    </p>
-                </td>
-                <td> <span class="building-block-icon material-icons" style="color: var(--lightred);">
-                        show_chart </span> </td>
-                <td class="row-button"> <button class="listButton addButton"
-                        onclick='insertAndScrollContent(0,"progress",{}, puzzleList)' class="listButton">
-                        <span class="building-block-icon material-icons" id="add"> add
-                        </span>
-                        <p>
-                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
-                        </p>
-                    </button></td>
             </tr>
             <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
                 <tr class="catalogItem">
@@ -546,10 +446,15 @@
 </div>
 
 <script>
-    function openModalCatalogResource() {
-        var modal = document.getElementById("modalCatalogResource")
-        modal.classList.toggle("active");
-     
+    function toggleCatalogModal() {
+        const modal = $("#modalCatalogResource");
+        if(modal.hasClass("active")) {
+            $('body').css("overflow", "scroll");
+        } else {
+            $('body').css("overflow", "hidden");
+        }
+        modal.toggleClass("active");
+
     }
     function editAsset(id, mime, config) {
         const configJSON = parseAssetConfig(mime, config);
@@ -561,9 +466,9 @@
             form.append(`
                     <div class="containerBlocksEdit">
                         <div>
-                           <p class="titleLabelEdit"> Medidas </p>     
+                           <p class="titleLabelEdit"> Medidas </p>
             <div class="editDialogForm">
-                
+
             <div>
                 <label for="height">Height</label>
                 <div class="editUnit">
@@ -585,7 +490,7 @@
 
 
         } else if (mime.search(videoRegex) !== -1) {
-            form.append(` 
+            form.append(`
             <div class="containerBlocksEdit">
             <div >
                 <p class="titleLabelEdit"> Medidas </p>
@@ -612,7 +517,7 @@
                     <div><label for="autoplay">Autoplay</label><input ${configJSON.autoplay ? "checked" : ""} type="checkbox" name="autoplay"/></div>
                     <div><label for="download">Dowloads</label><input ${configJSON.download ? "checked" : ""} type="checkbox" name="download"/></div>
                     <div><label for="controls">Controls</label><input  ${configJSON.controls ? "checked" : ""} type="checkbox" name="controls"/></div>
-                </div>    
+                </div>
                 </div>
                 </div>
                 `);
@@ -686,12 +591,6 @@
     }
 
     function createPuzzle() {
-        console.log
-        const dialog = $('#reusablePuzzleDialog')
-        const select = dialog.find('select');
-        window.reusablePuzzles.forEach(puzzle => {
-            select.append(`<option value = $i{puzzle.id}>${puzzle.name}</option>`)
-        })
         dialog.dialog({
             modal: true,
             resizable: false,
@@ -732,6 +631,11 @@
     function insertAndScrollContent(index, type, payload, puzzles) {
         insertContent(index, type, payload, puzzles);
         window.scrollTo(0, $('.building-block').children().last().offset().top);
+    }
+
+    function insertGamification(index, type, payload, puzzles) {
+        toggleCatalogModal();
+        insertAndScrollContent(index, type, payload, puzzles);
     }
 
     function overlayTriggerCatalog(id, close) {

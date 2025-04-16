@@ -79,7 +79,6 @@ exports.uploadAssets = async (req, res) => {
     try {
         const mime = req.file.mimetype;
         const isSupported = supportedMimeTypes.some((m) => new RegExp(m).test(mime));
-        console.log(isSupported)
         if (!isSupported) {
             req.file.mimetype = "unsupported";
         }
@@ -182,13 +181,11 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
             res.contentType("application/pdf");
             res.send(data);
         } else if (asset.mime.search(videoRegex) !== -1) {
-            console.log('video request')
             const stat = fs.statSync(filePath);
             const fileSize = stat.size;
             const range = req.headers.range;
 
             if (range) {
-                console.log('range request')
                 const parts = range.replace(/bytes=/, '').split('-');
                 const start = parseInt(parts[0], 10);
                 const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
@@ -217,7 +214,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
             res.sendFile(filePath);
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };
