@@ -1,3 +1,5 @@
+@use "common/colors"
+
 .main
   &.step-turnos
     #datepicker
@@ -16,18 +18,18 @@
         th
           color: #333
         th:nth-child(6), th:nth-child(7)
-          color: $lightred
+          color: colors.$lightred
         *
           font-family: 'Lato', sans-serif
           font-size: 16px
         td, a
-          color: $textpurple
+          color: colors.$textpurple
           text-align: center
           font-weight: bold
           &.turn-day-highlight
             .ui-state-default
               color: blue
-              background-color: $brightyellow
+              background-color: colors.$brightyellow
               border-radius: 50%
               color: black
         .ui-datepicker-header 
@@ -48,7 +50,7 @@
                 width: 0
                 height: 0
                 border: 10px solid transparent
-                border-right-color: $brightorange
+                border-right-color: colors.$brightorange
                 content: ''
               &.ui-icon
                 height: 20px
@@ -71,7 +73,7 @@
               cursor: pointer
             span::before
               border-right-color: transparent
-              border-left-color: $brightorange
+              border-left-color: colors.$brightorange
           &.ui-widget-header
             background-color: white
             border-color: white
@@ -82,8 +84,8 @@
           background-color: transparent
           border-color: transparent
         .ui-state-highlight:not(.ui-state-active)
-          color: $lightred
+          color: colors.$lightred
         .ui-state-active
-          background-color: $brightgreen !important
+          background-color: colors.$brightgreen !important
           border-radius: 50%
           color: black

@@ -1,33 +1,41 @@
 const {models} = require("../models");
 const Sequelize = require("sequelize");
+const {Op} = Sequelize;
 
-exports.escapeRoomsForUser = (escapeRoomId, userId) => ({
-    "include": [
-        {
-            "model": models.team,
-            "as": "teamsAgregados",
-            "required": true,
-            "include": [
-                {
-                    "model": models.user,
-                    "as": "teamMembers",
-                    "attributes": [
-                        "name",
-                        "id",
-                        "surname"
-                    ]
-                },
-                {
-                    "model": models.turno,
-                    "where": {escapeRoomId},
-                    "required": true
-                }
+exports.escapeRoomsForUser = (escapeRoomId, userId, includeTest = false) => {
+    const erUser = {
+        "include": [
+            {
+                "model": models.team,
+                "as": "teamsAgregados",
+                "required": true,
+                "include": [
+                    {
+                        "model": models.user,
+                        "as": "teamMembers",
+                        "attributes": [
+                            "name",
+                            "id",
+                            "surname"
+                        ]
+                    },
+                    {
+                        "model": models.turno,
+                        "where": {escapeRoomId},
+                        "required": true
+                    }
 
-            ]
-        }
-    ],
-    "where": {"id": userId}
-});
+                ]
+            }
+        ],
+        "where": {"id": userId}
+    };
+
+    if (!includeTest) {
+        erUser.include[0].include[1].where.status = {[Op.not]: "test"};
+    }
+    return erUser;
+};
 
 exports.puzzlesByParticipant = (escapeRoomId, turnId, orderBy, includeReqHints, includeTeamsThatDidntAttend) => {
     const options = {
@@ -40,7 +48,7 @@ exports.puzzlesByParticipant = (escapeRoomId, turnId, orderBy, includeReqHints, 
                 "include": [
                     {
                         "model": models.turno,
-                        "where": {},
+                        "where": {"status": {[Op.not]: "test"}},
                         "include": {
                             "model": models.escapeRoom,
                             "attributes": [],
@@ -93,6 +101,8 @@ exports.puzzlesByParticipant = (escapeRoomId, turnId, orderBy, includeReqHints, 
 
     if (turnId) {
         options.include[0].include[0].where.id = turnId;
+    } else {
+        options.include[0].include[0].where.status = {[Op.not]: "test"};
     }
     if (orderBy) {
         const isPg = process.env.DATABASE_URL;
@@ -119,7 +129,8 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
             "name",
             "surname",
             "gender",
-            "username"
+            "username",
+            "anonymized"
         ],
         "include": [
             {
@@ -145,7 +156,10 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
                 "attributes": ["id", "name"],
                 "include": {
                     "model": models.turno,
-                    "where": {escapeRoomId}
+                    "where": {
+                        escapeRoomId,
+                        "status": {[Op.not]: "test"}
+                    }
                 }
 
             }
@@ -154,6 +168,8 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
 
     if (turnId) {
         options.include[0].where.id = turnId;
+    } else {
+        options.include[0].where.status = {[Op.not]: "test"};
     }
     if (orderBy) {
         const isPg = process.env.DATABASE_URL;
@@ -184,7 +200,7 @@ exports.erTeam = (escapeRoomId) => ({
             "model": models.user,
             "through": "members",
             "as": "teamMembers",
-            "attributes": ["username"]
+            "attributes": ["username", "anonymized"]
         }
     ]
 });

@@ -1,3 +1,5 @@
+@use "common/colors"
+
 .ranking
   text-align: center
   .content
@@ -28,7 +30,7 @@
           padding:  5px 3vmin
           font-family: Lato, sans-serif
           font-size: 3vmin
-          color: $brightgreen
+          color: colors.$brightgreen
           background: white
           margin: 10px
           margin-top: 0px
@@ -39,7 +41,7 @@
           font-weight: bold
         .podium-rect
           flex: 1
-          background-color: $lightred
+          background-color: colors.$lightred
           width: 100%
           font-size: 13vmin
           text-align: center
@@ -57,7 +59,7 @@
           .podium-rect
             animation-delay: 5s  
         .star
-          color: $brightyellow
+          color: colors.$brightyellow
           font-size: 15vmin
           animation-delay: 1s
 
@@ -88,19 +90,19 @@
       position: absolute
       width: 100%
       height: 75px
-      background-color: $purpleedit
-      color: $darkerpurple
+      background-color: colors.$purpleedit
+      color: colors.$darkerpurple
       border: 2px solid white
       &.ranking-header
-        background-color: $darkerpurple
+        background-color: colors.$darkerpurple
         color: white
         border-radius: 20px 20px 0px 0px
         & > div
           font-family: Gugi
       &.myTeam
-        background-color: $lightred
+        background-color: colors.$lightred
         &.won   
-          background-color: $brightgreen  
+          background-color: colors.$brightgreen  
       div
         display: flex
         justify-content: center

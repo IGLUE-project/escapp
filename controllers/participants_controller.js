@@ -37,7 +37,7 @@ exports.checkSomeTurnAvailable = async (req, res, next) => {
     const turnos = await models.turno.findAll({
         "where": {
             "escapeRoomId": req.escapeRoom.id,
-            "status": {[Op.not]: "finished"}
+            "status": {[Op.notIn]: ["finished", "test"]}
         },
         "include": [{"model": models.user, "as": "students", "through": "participants"}],
         "order": [["date", "ASC NULLS LAST"]]
@@ -90,12 +90,12 @@ exports.index = async (req, res, next) => {
     const {turnId, orderBy} = query;
 
     try {
-        const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id}});
+        const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});
         const users = await models.user.findAll(queries.user.participantsWithTurnoAndTeam(escapeRoom.id, turnId, orderBy));
         const participants = [];
 
         users.forEach((user) => {
-            const {id, name, gender, username, surname, teamsAgregados, turnosAgregados} = user;
+            const {id, name, gender, username, surname, teamsAgregados, turnosAgregados, anonymized} = user;
             const [{"id": turnoId, "date": turnDate, "participants": parts}] = turnosAgregados;
             const [{"id": teamId, "name": teamName}] = teamsAgregados;
             const connected = isParticipantTeamConnected(id, teamId);
@@ -103,7 +103,7 @@ exports.index = async (req, res, next) => {
             let {attendance} = parts;
 
             attendance = Boolean(attendance);
-            participants.push({id, name, surname, gender, username, teamId, teamName, turnoId, turnDate, attendance, connected, waiting});
+            participants.push({id, name, surname, gender, username, teamId, teamName, turnoId, turnDate, attendance, connected, waiting, anonymized});
         });
         if (req.query.csv) {
             createCsvFile(res, participants, "participants");
@@ -118,7 +118,7 @@ exports.index = async (req, res, next) => {
 // POST /escapeRooms/:escapeRoomId/confirm
 exports.confirmAttendance = async (req, res) => {
     try {
-        const turnos = (await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id}})).map((t) => t.id);
+        const turnos = (await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}})).map((t) => t.id);
 
         await models.participants.update({"attendance": true}, { "where": {[Op.and]: [{"turnId": {[Op.in]: turnos}}, {"userId": {[Op.in]: req.body.attendance.yes}}]} });
         await models.participants.update({"attendance": false}, { "where": {[Op.and]: [{"turnId": {[Op.in]: turnos}}, {"userId": {[Op.in]: req.body.attendance.no}}]}});
@@ -179,5 +179,20 @@ exports.studentLeave = async (req, res, next) => {
         res.redirect(redirectUrl);
     } catch (e) {
         next(e);
+    }
+};
+
+exports.isNotAuthorOrCoAuthorOrAdmin = (req, res, next) => {
+    const isAdmin = Boolean(req.session.user.isAdmin),
+        isAuthor = req.escapeRoom.authorId === req.session.user.id,
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
+
+    const {i18n} = res.locals;
+
+    if (isAdmin || isAuthor || isCoAuthor) {
+        res.status(403);
+        next(new Error(i18n.api.forbidden));
+    } else {
+        next();
     }
 };

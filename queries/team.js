@@ -11,7 +11,11 @@ exports.teamRetosNoSuperados = (escapeRoomId, turnId) => {
             {
                 "model": models.turno,
                 "attributes": [],
-                "where": {escapeRoomId}
+                "required": false,
+                "where": {
+                    escapeRoomId,
+                    "status": {[Sequelize.Op.not]: "test"}
+                }
             },
             {
                 "model": models.retosSuperados,
@@ -55,14 +59,19 @@ exports.teamComplete = (escapeRoomId, turnId, order, waiting = false) => {
             {
                 "model": models.turno,
                 "attributes": ["startTime"],
-                "where": {escapeRoomId}
+                "required": true,
+                "where": {
+                    escapeRoomId,
+                    "status": {[Sequelize.Op.not]: "test"}
+                }
             },
             {
                 "model": models.user,
                 "as": "teamMembers",
                 "attributes": [
                     "name",
-                    "surname"
+                    "surname",
+                    "anonymized"
                 ]
             },
             {
@@ -134,7 +143,10 @@ exports.puzzlesByTeam = (escapeRoomId, turnId, hints = false) => {
         "include": [
             {
                 "model": models.turno,
-                "where": {escapeRoomId}
+                "where": {
+                    escapeRoomId,
+                    "status": {[Sequelize.Op.not]: "test"}
+                }
             },
             {
                 "model": models.puzzle,
@@ -149,7 +161,8 @@ exports.puzzlesByTeam = (escapeRoomId, turnId, hints = false) => {
                 "as": "teamMembers",
                 "attributes": [
                     "name",
-                    "surname"
+                    "surname",
+                    "anonymized"
                 ]
             }
         ],
@@ -185,7 +198,8 @@ exports.ranking = (escapeRoomId, turnId) => {
                 "as": "teamMembers",
                 "attributes": [
                     "name",
-                    "surname"
+                    "surname",
+                    "anonymized"
                 ],
                 "through": {
                     "model": models.members,
@@ -241,6 +255,8 @@ exports.ranking = (escapeRoomId, turnId) => {
 
     if (turnId) {
         options.include[1].where.id = turnId;
+    } else {
+        options.include[1].where.status = {[Sequelize.Op.ne]: "test"};
     }
 
     return options;
@@ -248,6 +264,7 @@ exports.ranking = (escapeRoomId, turnId) => {
 
 exports.rankingShort = (escapeRoomId, turnId) => {
     const options = {
+        "required": false,
         "where": {"startTime": {[Sequelize.Op.ne]: null}},
         "attributes": [
             "id",
@@ -261,7 +278,8 @@ exports.rankingShort = (escapeRoomId, turnId) => {
                 "attributes": [
                     "name",
                     "surname",
-                    "username"
+                    "username",
+                    "anonymized"
                 ],
                 "through": {
                     "model": models.members,
@@ -318,38 +336,47 @@ exports.rankingShort = (escapeRoomId, turnId) => {
 
     if (turnId) {
         options.include[1].where.id = turnId;
+    } else {
+        options.include[1].where.status = {[Sequelize.Op.not]: "test"};
     }
 
     return options;
 };
 
-exports.teamInfo = (escapeRoomId) => ({
-    "include": [
-        {
-            "model": models.turno,
-            "required": true,
-            "where": {escapeRoomId},
-            "include": [
-                {
-                    "model": models.escapeRoom,
-                    "attributes": ["duration", "forbiddenLateSubmissions"],
-                    "include": [
-                        {
-                            "model": models.puzzle,
-                            "attributes": ["id"]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "model": models.user,
-            "through": "members",
-            "as": "teamMembers",
-            "attributes": ["username"]
-        }
-    ]
-});
+exports.teamInfo = (escapeRoomId, includeTest = false) => {
+    const ret = {
+        "include": [
+            {
+                "model": models.turno,
+                "required": true,
+                "where": {escapeRoomId},
+                "include": [
+                    {
+                        "model": models.escapeRoom,
+                        "attributes": ["duration", "forbiddenLateSubmissions"],
+                        "include": [
+                            {
+                                "model": models.puzzle,
+                                "attributes": ["id"]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "model": models.user,
+                "through": "members",
+                "as": "teamMembers",
+                "attributes": ["username", "anonymized"]
+            }
+        ]
+    };
+
+    if (includeTest) {
+        ret.include[0].where.status = {[Sequelize.Op.not]: "test"};
+    }
+    return ret;
+};
 
 exports.puzzlesAndHints = () => (
     {

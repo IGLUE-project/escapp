@@ -1,3 +1,6 @@
+@use "common/colors"
+@use 'common/mixins'
+
 #mainSection .main.participants
   .flex-table-wrapper
     margin: 10px 0px
@@ -14,7 +17,7 @@
             white-space: pre
             overflow: hidden
             a
-              color: $darkerpurple
+              color: colors.$darkerpurple
               font-weight: normal
           &.flex-turno
             width: 18%
@@ -70,34 +73,34 @@
       @extend %common-button-props
       &.participants-button
         &.download-button
-          background-color: $lightred
-          color: $darkerpurple
-          border-color: $lightred
+          background-color: colors.$lightred
+          color: colors.$darkerpurple
+          border-color: colors.$lightred
           border-style: solid
         &.attendance-button
-          background-color: $brightgreen
-          color: $darkerpurple
-          border-color: $brightgreen
+          background-color: colors.$brightgreen
+          color: colors.$darkerpurple
+          border-color: colors.$brightgreen
           border-style: solid
         &.attendance-all-button
-          background-color: $brightyellow
-          color: $darkerpurple
-          border-color: $brightyellow
+          background-color: colors.$brightyellow
+          color: colors.$darkerpurple
+          border-color: colors.$brightyellow
           border-style: solid
         &.filter-button
           background-color: white
-          color: $darkerpurple
+          color: colors.$darkerpurple
           border-color: white
           border-style: solid
         &.see-button
-          background-color: $brightblue
-          color: $darkerpurple
-          border-color: $brightblue
+          background-color: colors.$brightblue
+          color: colors.$darkerpurple
+          border-color: colors.$brightblue
           border-style: solid
         &.msg-button
-          background-color: $brightyellow
-          color: $darkerpurple
-          border-color: $brightyellow
+          background-color: colors.$brightyellow
+          color: colors.$darkerpurple
+          border-color: colors.$brightyellow
           border-style: solid
     select
       padding-right: 1.65em !important

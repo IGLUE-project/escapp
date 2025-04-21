@@ -1,4 +1,4 @@
-@import 'common/colors'
+@use 'common/colors'
 .main
   &.summary
     .flex-container.analytics-menu
@@ -42,7 +42,7 @@
           flex-wrap: wrap
           .card
             background-color: white
-            color: $textpurple
+            color: colors.$textpurple
             width: 25%
             margin: 15px
             padding: 20px
@@ -50,20 +50,20 @@
             box-shadow: 2px 2px 41px rgba(255,255,255,0.25)
             box-sizing: content-box
             &.nParticipants
-              color: $brightyellow
+              color: colors.$brightyellow
             &.avgTeamSize
-              color: $lightred
+              color: colors.$lightred
             &.sucessRate
-              color: $brightgreen
+              color: colors.$brightgreen
             &.bestTime
-              color: $mainpurple
+              color: colors.$mainpurple
             &.avgReqHints
-              color: $brightorange
+              color: colors.$brightorange
             .card-title
               font-family: Gugi, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
               margin-bottom: 10px
             .card-content
-              color: $textpurple
+              color: colors.$textpurple
             .card-icon
               float: right
               i

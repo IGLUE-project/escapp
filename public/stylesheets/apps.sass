@@ -1,3 +1,6 @@
+@use "common/buttons"
+@use "common/colors"
+
 #root
     height: calc(100vh - 50px) !important
     .App 
@@ -26,18 +29,18 @@
             .left
                 border-right: none
         .buttons button
-            @include common-button
+            @include buttons.common-button
             border-radius: 25px !important
             padding: 8px 25px !important
-            background-color: $brightyellow
-            color: $darkerpurple
+            background-color: colors.$brightyellow
+            color: colors.$darkerpurple
             font-family: Gugi, Lato, sans-serif
             border: none
             text-transform: lowercase
             i
                 vertical-align: middle
             &:first-child
-                background-color: $brightgreen
+                background-color: colors.$brightgreen
                 margin-right: 10px
 .showApp
     height: 100vh

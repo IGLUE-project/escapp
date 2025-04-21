@@ -6,8 +6,6 @@ exports.sanitizePuzzles = (puzzles = []) => puzzles.
     map((puzzle, order) => {
         const {id, title, desc, sol, automatic, validator, correct, fail, hints, categories = ["General"]} = puzzle;
 
-        console.log(puzzle);
-
         return {
             "id": sanitizeId(id),
             "automatic": automatic === "1",

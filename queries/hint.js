@@ -62,6 +62,8 @@ exports.hintsByTeam = (escapeRoomId, turnId, orderBy) => {
 
     if (turnId) {
         options.include[0].where.id = turnId;
+    } else {
+        options.include[0].where.status = {[Sequelize.Op.ne]: "test"};
     }
     if (orderBy) {
         const isPg = process.env.DATABASE_URL;

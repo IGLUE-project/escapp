@@ -194,19 +194,19 @@ button[type=submit], input[type=submit][type=submit], .aButton[type=submit] {
   cursor: pointer;
 }
 
-#mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team, #mainSection .main #add-reto, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant, #mainSection #mainHeader .navBarIcon, #mainSection #mainFooter .navBarIcon {
+#mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto, #mainSection .main #add-reto, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant, #mainSection #mainHeader .navBarIcon, #mainSection #mainFooter .navBarIcon {
   transition: 0.1s all ease-in;
 }
-#mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team:hover, #mainSection .main #add-reto:hover, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto:hover, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i:hover, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint:hover, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant:hover, #mainSection #mainHeader .navBarIcon:hover, #mainSection #mainFooter .navBarIcon:hover, #mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team:active, #mainSection .main #add-reto:active, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto:active, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i:active, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint:active, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant:active, #mainSection #mainHeader .navBarIcon:active, #mainSection #mainFooter .navBarIcon:active, #mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team:focus, #mainSection .main #add-reto:focus, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto:focus, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i:focus, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint:focus, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant:focus, #mainSection #mainHeader .navBarIcon:focus, #mainSection #mainFooter .navBarIcon:focus {
+#mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team:hover, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint:hover, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i:hover, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto:hover, #mainSection .main #add-reto:hover, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant:hover, #mainSection #mainHeader .navBarIcon:hover, #mainSection #mainFooter .navBarIcon:hover, #mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team:active, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint:active, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i:active, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto:active, #mainSection .main #add-reto:active, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant:active, #mainSection #mainHeader .navBarIcon:active, #mainSection #mainFooter .navBarIcon:active, #mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team:focus, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint:focus, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i:focus, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto:focus, #mainSection .main #add-reto:focus, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant:focus, #mainSection #mainHeader .navBarIcon:focus, #mainSection #mainFooter .navBarIcon:focus {
   -webkit-transform: scale(1.2);
   -ms-transform: scale(1.2);
   transform: scale(1.2);
 }
 
-#mainSection .main .flexBoxTurnos .turno.turnoAlumno:not(.disabled):not(.finished):hover, #mainSection .main .flexBoxTurnos .turno.turnoProfe:not(.disabled):not(.finished):hover, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play, #mainSection .main.teams .filters input[type=submit], #mainSection .main.teams .filters button, #mainSection .main .overlay-trigger button, #mainSection .main.student .dialog .teamCarouselItem:not(.disabled):hover, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem.addEscapeRoom, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp, #mainSection .main.participants .filters input[type=submit], #mainSection .main.participants .filters button {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play, #mainSection .main .flexBoxTurnos .turno.turnoAlumno:not(.disabled):not(.finished):hover, #mainSection .main .flexBoxTurnos .turno.turnoProfe:not(.disabled):not(.finished):hover, #mainSection .main.teams .filters input[type=submit], #mainSection .main.teams .filters button, #mainSection .main .overlay-trigger button, #mainSection .main.student .dialog .teamCarouselItem:not(.disabled):hover, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem.addEscapeRoom, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp, #mainSection .main.participants .filters input[type=submit], #mainSection .main.participants .filters button {
   transition: 0.1s all ease-in;
 }
-#mainSection .main .flexBoxTurnos .turno.turnoAlumno:hover:not(.disabled):not(.finished), #mainSection .main .flexBoxTurnos .turno.turnoProfe:hover:not(.disabled):not(.finished), #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:hover, #mainSection .main.teams .filters input[type=submit]:hover, #mainSection .main.teams .filters button:hover, #mainSection .main .overlay-trigger button:hover, #mainSection .main.student .dialog .teamCarouselItem:hover:not(.disabled), .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:hover, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:hover, #mainSection .main.participants .filters input[type=submit]:hover, #mainSection .main.participants .filters button:hover, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:active, #mainSection .main.teams .filters input[type=submit]:active, #mainSection .main.teams .filters button:active, #mainSection .main .overlay-trigger button:active, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:active, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:active, #mainSection .main.participants .filters input[type=submit]:active, #mainSection .main.participants .filters button:active, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:focus, #mainSection .main.teams .filters input[type=submit]:focus, #mainSection .main.teams .filters button:focus, #mainSection .main .overlay-trigger button:focus, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:focus, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:focus, #mainSection .main.participants .filters input[type=submit]:focus, #mainSection .main.participants .filters button:focus {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:hover, #mainSection .main .flexBoxTurnos .turno.turnoAlumno:hover:not(.disabled):not(.finished), #mainSection .main .flexBoxTurnos .turno.turnoProfe:hover:not(.disabled):not(.finished), #mainSection .main.teams .filters input[type=submit]:hover, #mainSection .main.teams .filters button:hover, #mainSection .main .overlay-trigger button:hover, #mainSection .main.student .dialog .teamCarouselItem:hover:not(.disabled), .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:hover, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:hover, #mainSection .main.participants .filters input[type=submit]:hover, #mainSection .main.participants .filters button:hover, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:active, #mainSection .main.teams .filters input[type=submit]:active, #mainSection .main.teams .filters button:active, #mainSection .main .overlay-trigger button:active, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:active, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:active, #mainSection .main.participants .filters input[type=submit]:active, #mainSection .main.participants .filters button:active, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:focus, #mainSection .main.teams .filters input[type=submit]:focus, #mainSection .main.teams .filters button:focus, #mainSection .main .overlay-trigger button:focus, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:focus, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:focus, #mainSection .main.participants .filters input[type=submit]:focus, #mainSection .main.participants .filters button:focus {
   -webkit-transform: scale(0.8);
   -ms-transform: scale(0.8);
   transform: scale(0.8);
@@ -697,190 +697,195 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   text-align: center;
 }
 
-.main .no-close .ui-dialog-titlebar {
+.main .no-close .ui-dialog-titlebar, .portada .no-close .ui-dialog-titlebar {
   display: none;
 }
-.main #dialog-start > div {
+.main #dialog-start > div, .portada #dialog-start > div {
   text-align: center;
 }
-.main #dialog-preview-video, .main #dialog-preview-api, .main #dialog-share, .main #dialog-start {
+.main #dialog-preview-video, .main #dialog-preview-api, .main #dialog-share, .main #dialog-start, .portada #dialog-preview-video, .portada #dialog-preview-api, .portada #dialog-share, .portada #dialog-start {
   padding: 0;
   background-color: white;
   outline: none;
   border: none;
 }
-.main #dialog-preview-video #previewVideoContent, .main #dialog-preview-api #previewVideoContent, .main #dialog-share #previewVideoContent, .main #dialog-start #previewVideoContent {
+.main #dialog-preview-video #previewVideoContent, .main #dialog-preview-api #previewVideoContent, .main #dialog-share #previewVideoContent, .main #dialog-start #previewVideoContent, .portada #dialog-preview-video #previewVideoContent, .portada #dialog-preview-api #previewVideoContent, .portada #dialog-share #previewVideoContent, .portada #dialog-start #previewVideoContent {
   padding: 10px;
 }
-.main #api-button {
+.main #dialog-terms, .portada #dialog-terms {
+  background-color: white;
+  outline: none;
+  border: none;
+}
+.main #api-button, .portada #api-button {
   background: none;
   color: white;
   border: none;
 }
-.main #dialog-preview-api {
+.main #dialog-preview-api, .portada #dialog-preview-api {
   overflow: auto;
 }
-.main #dialog-preview-api, .main #dialog-share, .main #dialog-start {
+.main #dialog-preview-api, .main #dialog-share, .main #dialog-start, .main #dialog-terms, .portada #dialog-preview-api, .portada #dialog-share, .portada #dialog-start, .portada #dialog-terms {
   padding: 15px;
 }
-.main #dialog-preview-api hr, .main #dialog-share hr, .main #dialog-start hr {
+.main #dialog-preview-api hr, .main #dialog-share hr, .main #dialog-start hr, .main #dialog-terms hr, .portada #dialog-preview-api hr, .portada #dialog-share hr, .portada #dialog-start hr, .portada #dialog-terms hr {
   margin-bottom: 20px;
 }
-.main #dialog-preview-api h4, .main #dialog-share h4, .main #dialog-start h4 {
+.main #dialog-preview-api h4, .main #dialog-share h4, .main #dialog-start h4, .main #dialog-terms h4, .portada #dialog-preview-api h4, .portada #dialog-share h4, .portada #dialog-start h4, .portada #dialog-terms h4 {
   color: #48C18E;
   font-size: 20px;
   margin-top: 5px;
 }
-.main #dialog-preview-api .api-table td, .main #dialog-preview-api .api-table th, .main #dialog-share .api-table td, .main #dialog-share .api-table th, .main #dialog-start .api-table td, .main #dialog-start .api-table th {
+.main #dialog-preview-api .api-table td, .main #dialog-preview-api .api-table th, .main #dialog-share .api-table td, .main #dialog-share .api-table th, .main #dialog-start .api-table td, .main #dialog-start .api-table th, .main #dialog-terms .api-table td, .main #dialog-terms .api-table th, .portada #dialog-preview-api .api-table td, .portada #dialog-preview-api .api-table th, .portada #dialog-share .api-table td, .portada #dialog-share .api-table th, .portada #dialog-start .api-table td, .portada #dialog-start .api-table th, .portada #dialog-terms .api-table td, .portada #dialog-terms .api-table th {
   font-size: 14px;
   color: #656683;
 }
-.main #dialog-preview-api .api-table td code, .main #dialog-preview-api .api-table th code, .main #dialog-share .api-table td code, .main #dialog-share .api-table th code, .main #dialog-start .api-table td code, .main #dialog-start .api-table th code {
+.main #dialog-preview-api .api-table td code, .main #dialog-preview-api .api-table th code, .main #dialog-share .api-table td code, .main #dialog-share .api-table th code, .main #dialog-start .api-table td code, .main #dialog-start .api-table th code, .main #dialog-terms .api-table td code, .main #dialog-terms .api-table th code, .portada #dialog-preview-api .api-table td code, .portada #dialog-preview-api .api-table th code, .portada #dialog-share .api-table td code, .portada #dialog-share .api-table th code, .portada #dialog-start .api-table td code, .portada #dialog-start .api-table th code, .portada #dialog-terms .api-table td code, .portada #dialog-terms .api-table th code {
   font-family: monospace;
   color: #F47E84;
 }
-.main #dialog-preview-api .api-table th, .main #dialog-share .api-table th, .main #dialog-start .api-table th {
+.main #dialog-preview-api .api-table th, .main #dialog-share .api-table th, .main #dialog-start .api-table th, .main #dialog-terms .api-table th, .portada #dialog-preview-api .api-table th, .portada #dialog-share .api-table th, .portada #dialog-start .api-table th, .portada #dialog-terms .api-table th {
   color: #F47E84;
   font-weight: 600;
   text-align: left;
 }
-.main #dialog-preview-api .api-table pre.sample-fetch, .main #dialog-share .api-table pre.sample-fetch, .main #dialog-start .api-table pre.sample-fetch {
+.main #dialog-preview-api .api-table pre.sample-fetch, .main #dialog-share .api-table pre.sample-fetch, .main #dialog-start .api-table pre.sample-fetch, .main #dialog-terms .api-table pre.sample-fetch, .portada #dialog-preview-api .api-table pre.sample-fetch, .portada #dialog-share .api-table pre.sample-fetch, .portada #dialog-start .api-table pre.sample-fetch, .portada #dialog-terms .api-table pre.sample-fetch {
   color: white;
   padding: 15px;
   font-size: 14px;
   font-family: monospace;
   background-color: #656683;
 }
-.main #dialog-preview-api .show_link, .main #dialog-share .show_link, .main #dialog-start .show_link {
+.main #dialog-preview-api .show_link, .main #dialog-share .show_link, .main #dialog-start .show_link, .main #dialog-terms .show_link, .portada #dialog-preview-api .show_link, .portada #dialog-share .show_link, .portada #dialog-start .show_link, .portada #dialog-terms .show_link {
   color: #161938;
   text-decoration: underline;
   text-underline-position: under;
 }
-.main #dialog-preview-api .joinUrl, .main #dialog-share .joinUrl, .main #dialog-start .joinUrl {
+.main #dialog-preview-api .joinUrl, .main #dialog-share .joinUrl, .main #dialog-start .joinUrl, .main #dialog-terms .joinUrl, .portada #dialog-preview-api .joinUrl, .portada #dialog-share .joinUrl, .portada #dialog-start .joinUrl, .portada #dialog-terms .joinUrl {
   height: 10px;
   opacity: 0.01;
   width: 10px;
   padding: 2px;
   margin: 0px;
 }
-.main #dialog-preview-api .copy, .main #dialog-preview-api .qr, .main #dialog-share .copy, .main #dialog-share .qr, .main #dialog-start .copy, .main #dialog-start .qr {
+.main #dialog-preview-api .copy, .main #dialog-preview-api .qr, .main #dialog-share .copy, .main #dialog-share .qr, .main #dialog-start .copy, .main #dialog-start .qr, .main #dialog-terms .copy, .main #dialog-terms .qr, .portada #dialog-preview-api .copy, .portada #dialog-preview-api .qr, .portada #dialog-share .copy, .portada #dialog-share .qr, .portada #dialog-start .copy, .portada #dialog-start .qr, .portada #dialog-terms .copy, .portada #dialog-terms .qr {
   background: transparent;
   border: none;
   font-size: 1px;
   color: #F3945E;
   vertical-align: middle;
 }
-.main #dialog-preview-api .qr, .main #dialog-share .qr, .main #dialog-start .qr {
+.main #dialog-preview-api .qr, .main #dialog-share .qr, .main #dialog-start .qr, .main #dialog-terms .qr, .portada #dialog-preview-api .qr, .portada #dialog-share .qr, .portada #dialog-start .qr, .portada #dialog-terms .qr {
   color: #F47E84;
 }
-.main #dialog-preview-api .start-er, .main #dialog-share .start-er, .main #dialog-start .start-er {
+.main #dialog-preview-api .start-er, .main #dialog-share .start-er, .main #dialog-start .start-er, .main #dialog-terms .start-er, .portada #dialog-preview-api .start-er, .portada #dialog-share .start-er, .portada #dialog-start .start-er, .portada #dialog-terms .start-er {
   text-align: center;
 }
-.main #dialog-preview-api .start-er button.pulseButton, .main #dialog-share .start-er button.pulseButton, .main #dialog-start .start-er button.pulseButton {
+.main #dialog-preview-api .start-er button.pulseButton, .main #dialog-share .start-er button.pulseButton, .main #dialog-start .start-er button.pulseButton, .main #dialog-terms .start-er button.pulseButton, .portada #dialog-preview-api .start-er button.pulseButton, .portada #dialog-share .start-er button.pulseButton, .portada #dialog-start .start-er button.pulseButton, .portada #dialog-terms .start-er button.pulseButton {
   margin-top: 20px;
   font-size: 20px;
   cursor: pointer;
 }
-.main #dialog-preview-api .join-instructions, .main #dialog-preview-api .start-er, .main #dialog-share .join-instructions, .main #dialog-share .start-er, .main #dialog-start .join-instructions, .main #dialog-start .start-er {
+.main #dialog-preview-api .join-instructions, .main #dialog-preview-api .start-er, .main #dialog-share .join-instructions, .main #dialog-share .start-er, .main #dialog-start .join-instructions, .main #dialog-start .start-er, .main #dialog-terms .join-instructions, .main #dialog-terms .start-er, .portada #dialog-preview-api .join-instructions, .portada #dialog-preview-api .start-er, .portada #dialog-share .join-instructions, .portada #dialog-share .start-er, .portada #dialog-start .join-instructions, .portada #dialog-start .start-er, .portada #dialog-terms .join-instructions, .portada #dialog-terms .start-er {
   font-size: 18px;
   color: #161938;
 }
-.main #dialog-preview-api .join-instructions .fullscreen, .main #dialog-preview-api .start-er .fullscreen, .main #dialog-share .join-instructions .fullscreen, .main #dialog-share .start-er .fullscreen, .main #dialog-start .join-instructions .fullscreen, .main #dialog-start .start-er .fullscreen {
+.main #dialog-preview-api .join-instructions .fullscreen, .main #dialog-preview-api .start-er .fullscreen, .main #dialog-share .join-instructions .fullscreen, .main #dialog-share .start-er .fullscreen, .main #dialog-start .join-instructions .fullscreen, .main #dialog-start .start-er .fullscreen, .main #dialog-terms .join-instructions .fullscreen, .main #dialog-terms .start-er .fullscreen, .portada #dialog-preview-api .join-instructions .fullscreen, .portada #dialog-preview-api .start-er .fullscreen, .portada #dialog-share .join-instructions .fullscreen, .portada #dialog-share .start-er .fullscreen, .portada #dialog-start .join-instructions .fullscreen, .portada #dialog-start .start-er .fullscreen, .portada #dialog-terms .join-instructions .fullscreen, .portada #dialog-terms .start-er .fullscreen {
   line-height: 43px;
 }
-.main #dialog-preview-api .join-instructions .fullscreen #fullscreen-check, .main #dialog-preview-api .start-er .fullscreen #fullscreen-check, .main #dialog-share .join-instructions .fullscreen #fullscreen-check, .main #dialog-share .start-er .fullscreen #fullscreen-check, .main #dialog-start .join-instructions .fullscreen #fullscreen-check, .main #dialog-start .start-er .fullscreen #fullscreen-check {
+.main #dialog-preview-api .join-instructions .fullscreen #fullscreen-check, .main #dialog-preview-api .start-er .fullscreen #fullscreen-check, .main #dialog-share .join-instructions .fullscreen #fullscreen-check, .main #dialog-share .start-er .fullscreen #fullscreen-check, .main #dialog-start .join-instructions .fullscreen #fullscreen-check, .main #dialog-start .start-er .fullscreen #fullscreen-check, .main #dialog-terms .join-instructions .fullscreen #fullscreen-check, .main #dialog-terms .start-er .fullscreen #fullscreen-check, .portada #dialog-preview-api .join-instructions .fullscreen #fullscreen-check, .portada #dialog-preview-api .start-er .fullscreen #fullscreen-check, .portada #dialog-share .join-instructions .fullscreen #fullscreen-check, .portada #dialog-share .start-er .fullscreen #fullscreen-check, .portada #dialog-start .join-instructions .fullscreen #fullscreen-check, .portada #dialog-start .start-er .fullscreen #fullscreen-check, .portada #dialog-terms .join-instructions .fullscreen #fullscreen-check, .portada #dialog-terms .start-er .fullscreen #fullscreen-check {
   vertical-align: bottom;
 }
-.main #dialog-preview-api a, .main #dialog-share a, .main #dialog-start a {
+.main #dialog-preview-api a, .main #dialog-share a, .main #dialog-start a, .main #dialog-terms a, .portada #dialog-preview-api a, .portada #dialog-share a, .portada #dialog-start a, .portada #dialog-terms a {
   color: #48C18E;
 }
-.main #dialog-preview-api .hl, .main #dialog-share .hl, .main #dialog-start .hl {
+.main #dialog-preview-api .hl, .main #dialog-share .hl, .main #dialog-start .hl, .main #dialog-terms .hl, .portada #dialog-preview-api .hl, .portada #dialog-share .hl, .portada #dialog-start .hl, .portada #dialog-terms .hl {
   color: #36A2EB;
 }
-.main .dialog-turno {
+.main .dialog-turno, .portada .dialog-turno {
   background: white;
   padding: 10px;
   max-width: 100%;
 }
-.main .dialog-turno .flex-dialog-container {
+.main .dialog-turno .flex-dialog-container, .portada .dialog-turno .flex-dialog-container {
   position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
-.main .dialog-turno .flex-dialog-container .flex-block {
+.main .dialog-turno .flex-dialog-container .flex-block, .portada .dialog-turno .flex-dialog-container .flex-block {
   width: 33.33%;
   padding: 10px;
 }
-.main .dialog-turno .flex-dialog-container .flex-block a {
+.main .dialog-turno .flex-dialog-container .flex-block a, .portada .dialog-turno .flex-dialog-container .flex-block a {
   width: 100%;
 }
-.main .dialog-turno .flex-dialog-container .flex-block button {
+.main .dialog-turno .flex-dialog-container .flex-block button, .portada .dialog-turno .flex-dialog-container .flex-block button {
   width: 100%;
   border: 2px solid rgba(101, 102, 131, 0.3);
   border-radius: 0px;
 }
-.main .dialog-turno .flex-dialog-container .flex-block button .material-icons {
+.main .dialog-turno .flex-dialog-container .flex-block button .material-icons, .portada .dialog-turno .flex-dialog-container .flex-block button .material-icons {
   color: var(--brightorange);
   display: block;
   font-size: 60px;
   margin-bottom: 15px;
 }
-.main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger {
+.main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger, .portada .dialog-turno .flex-dialog-container .flex-block .overlay-trigger {
   box-shadow: 0px 0px 5px rgba(54, 54, 54, 0.55) !important;
   border-radius: 6px;
 }
-.main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons {
+.main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons, .portada .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons {
   text-align: right;
 }
-.main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons button {
+.main .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons button, .portada .dialog-turno .flex-dialog-container .flex-block .overlay-trigger .flex-buttons button {
   border: none !important;
   width: auto;
 }
 @media (max-width: 992px) {
-  .main .dialog-turno .flex-block {
+  .main .dialog-turno .flex-block, .portada .dialog-turno .flex-block {
     width: 50% !important;
   }
 }
 @media (max-width: 700px) {
-  .main .dialog-turno .flex-block {
+  .main .dialog-turno .flex-block, .portada .dialog-turno .flex-block {
     width: 100% !important;
   }
 }
-.main .ui-dialog {
+.main .ui-dialog, .portada .ui-dialog {
   outline: none !important;
   max-width: 90% !important;
   width: 850px !important;
 }
-.main .ui-dialog-title {
+.main .ui-dialog-title, .portada .ui-dialog-title {
   line-height: 50px;
   padding-left: 15px;
 }
-.main .ui-dialog-titlebar-close {
+.main .ui-dialog-titlebar-close, .portada .ui-dialog-titlebar-close {
   visibility: hidden;
   float: right;
   width: 50px;
 }
-.main .ui-button-icon-space {
+.main .ui-button-icon-space, .portada .ui-button-icon-space {
   visibility: visible;
 }
-.main .ui-button-icon-space:after {
+.main .ui-button-icon-space:after, .portada .ui-button-icon-space:after {
   content: "\e5cd";
   font-family: "Material Icons";
 }
-.main .ui-dialog .ui-dialog-titlebar {
+.main .ui-dialog .ui-dialog-titlebar, .portada .ui-dialog .ui-dialog-titlebar {
   background: white !important;
   border-color: white !important;
   color: #F47E84;
 }
-.main .ui-dialog {
+.main .ui-dialog, .portada .ui-dialog {
   z-index: 9998;
 }
-.main .ui-dialog.ui-corner-all {
+.main .ui-dialog.ui-corner-all, .portada .ui-dialog.ui-corner-all {
   border-radius: 0 !important;
   border-color: transparent !important;
 }
-.main .ui-widget-overlay {
+.main .ui-widget-overlay, .portada .ui-widget-overlay {
   z-index: 0;
   width: 100%;
   height: 100%;
@@ -1385,6 +1390,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   vertical-align: text-bottom;
 }
 .escapeRooms .flexBoxEscapeRooms {
+  padding: 1em;
+  border: 2px solid white;
+  border-radius: 10px;
   display: flex;
   justify-content: space-around;
   flex-flow: row wrap;
@@ -1460,6 +1468,25 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   flex-direction: column;
   justify-content: center;
 }
+.escapeRooms .escapeRoomListButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+.escapeRooms .escapeRoomListButtons button {
+  border: 2px solid white;
+  border-bottom: 2px solid transparent;
+  border-radius: 10px 10px 0 0;
+  background: transparent;
+  color: white;
+  font-size: 0.81em;
+  transform: translateX(-1em) translateY(2px);
+}
+.escapeRooms .escapeRoomListButtons button.selected {
+  color: #232850;
+  background: white;
+  border-bottom-color: white;
+}
 
 @media (max-width: 1200px) {
   .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper {
@@ -1474,6 +1501,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 @media (max-width: 576px) {
   .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper {
     width: 50%;
+  }
+  .escapeRooms .escapeRoomListButtons a button span {
+    display: none;
+  }
+  .escapeRooms .escapeRoomListButtons a button span.material-icons {
+    display: inline !important;
   }
 }
 .box__error {
@@ -1817,14 +1850,42 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .filters label:focus-within {
   color: white;
 }
-.filters select, .filters button.inverse {
+.filters select, .filters input, .filters button.inverse {
   color: white;
   -webkit-text-fill-color: white !important;
   border-color: white;
   padding: 10px;
 }
-.filters select {
+.filters select, .filters input {
   padding-right: 1.65em !important;
+}
+.filters .editButton {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
+  border-radius: 5px;
+  border-style: solid;
+  padding: 10px;
+  text-align: center;
+  outline: 0;
+  background-color: #FAC855 !important;
+  border-color: #FAC855 !important;
+  color: #161938 !important;
+}
+
+.collaborators .filters input {
+  width: 500px;
+  max-width: 50%;
+}
+.collaborators .flex-table-wrapper .flex-name, .collaborators .flex-table-wrapper .flex-email {
+  flex: 1;
+}
+.collaborators .flex-table-wrapper .flex-actions button {
+  padding: 2px;
+}
+.collaborators .flex-table-wrapper .flex-actions button span {
+  font-size: 1em;
 }
 
 #flassmessages {
@@ -2032,6 +2093,10 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-button:hover {
   background: white;
   color: #161938;
+}
+#mainSection .main.step-instructions .building-block-bar .building-block-bar-button .building-block-img {
+  height: 25px;
+  vertical-align: middle;
 }
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-button .building-block-icon.material-icons {
   font-size: 28px;
@@ -3093,9 +3158,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection #mainHeader #logoEU, #mainSection #mainFooter #logoEU {
   width: 12%;
-  min-width: 120px;
+  min-width: 175px;
 }
-#mainSection #mainHeader .langs, #mainSection #mainFooter .langs {
+#mainSection #mainHeader #logoEU img, #mainSection #mainFooter #logoEU img {
+  width: 100%;
+}
+#mainSection #mainHeader .langs, #mainSection #mainHeader .legal, #mainSection #mainFooter .langs, #mainSection #mainFooter .legal {
   width: auto;
   position: relative;
   margin: 0;
@@ -3115,6 +3183,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection #mainHeader #logoEU {
   position: fixed;
   bottom: 1em;
+}
+#mainSection #mainHeader #logoEU img {
+  width: 100%;
 }
 #mainSection #mainHeader .left, #mainSection #mainHeader .right {
   padding: 10px;
@@ -3561,12 +3632,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: large;
   font-family: Gugi, sans-serif;
 }
-.portada .contenedor .loginRight .langs {
+.portada .contenedor .loginRight .langs, .portada .contenedor .loginRight .legal {
   position: absolute;
   bottom: 0px;
   color: #656683;
 }
-.portada .contenedor .loginRight .langs a:hover {
+.portada .contenedor .loginRight .langs a:hover, .portada .contenedor .loginRight .legal a:hover {
   color: white;
   font-weight: bold;
 }
@@ -3594,10 +3665,19 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main .puzzle-card .validatorInputs {
   height: auto;
+  margin-left: 1em;
 }
 #mainSection .main .puzzle-card .validatorInputs.numberInput {
   width: 30%;
-  margin-left: 2vw;
+}
+#mainSection .main .puzzle-card .validatorInputs.numberInput:focus, #mainSection .main .puzzle-card .validatorInputs.numberInput:active {
+  color: #656683 !important;
+  border-color: #656683 !important;
+  -webkit-text-fill-color: #656683 !important;
+}
+#mainSection .main .puzzle-card .validatorInputs + label, #mainSection .main .puzzle-card .validatorInputs + span > * {
+  font-family: "Lato", sans-serif !important;
+  margin-bottom: -10px;
 }
 #mainSection .main .puzzle-card.ui-sortable-helper {
   height: 105px !important;
@@ -3637,7 +3717,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   justify-content: flex-start;
 }
 #mainSection .main .puzzle-card .flex-puzzle-card div {
-  margin-right: 20px;
+  margin-right: 0.5em©;
 }
 #mainSection .main .puzzle-card .delete-puzzle {
   position: absolute;
@@ -5174,6 +5254,57 @@ table.mainTable tr td .icon {
   height: 36px;
 }
 
+.user-edit-form {
+  color: white;
+}
+.user-edit-form label, .user-edit-form input, .user-edit-form select {
+  color: white !important;
+  border-color: white !important;
+  -webkit-text-fill-color: white !important;
+  padding-left: 1em;
+  padding-right: 1.5em;
+}
+.user-edit-form label::placeholder, .user-edit-form input::placeholder, .user-edit-form select::placeholder {
+  color: #656683 !important;
+  -webkit-text-fill-color: #656683 !important;
+}
+.user-edit-form .deleteUser {
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 1em;
+}
+.user-edit-form .deleteUser h3 {
+  color: #F47E84 !important;
+}
+.user-edit-form .roleField .roleLabel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  color: white;
+}
+.user-edit-form .roleField .roleLabel input {
+  width: auto;
+  color: white;
+}
+.user-edit-form .roleField .roleLabel span {
+  display: inline-block;
+  padding: 0px;
+}
+.user-edit-form .roleField .roleLabel span input, .user-edit-form .roleField .roleLabel span select {
+  width: 100%;
+  text-align-last: center;
+  padding: 0px 15px;
+}
+.user-edit-form .roleField .roleLabel span label span {
+  padding-bottom: 7px;
+  text-align: left;
+  display: block;
+}
+.user-edit-form .roleField .roleLabel span label:focus-within {
+  color: white;
+}
+
 .user-flex-container {
   display: flex;
   flex-direction: row;
@@ -5368,7 +5499,7 @@ html body footer {
   padding: 18px;
   font-family: Gugi, Lato, sans-serif;
 }
-html body .langs {
+html body .langs, html body .legal {
   list-style: none;
   display: flex;
   flex-direction: row;
@@ -5379,12 +5510,12 @@ html body .langs {
   font-size: 12px;
   color: #656683;
 }
-html body .langs li a {
+html body .langs li a, html body .legal li a {
   padding-left: 5px;
   padding-right: 5px;
   color: #656683;
 }
-html body .langs li a:hover {
+html body .langs li a:hover, html body .legal li a:hover {
   font-weight: bold;
   color: white;
 }
@@ -5463,6 +5594,18 @@ select.light option, input.light:not([type=checkbox]) option {
   font-family: Lato !important;
   background: white;
   color: #161938;
+}
+
+.legal li {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+@media (max-width: 567px) {
+  .legal {
+    flex-direction: column !important;
+    font-size: 10px !important;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -23,6 +23,11 @@ module.exports = function (sequelize, DataTypes) {
             "type": DataTypes.STRING,
             "validate": {"len": [0, 200]}
         },
+        "eduLevel": {
+            "type": DataTypes.STRING,
+            "allowNull": true,
+            "validate": {"isIn": [["primary", "secondary", "vet", "higher", "other", "none"]]}
+        },
         "username": {
             "type": DataTypes.STRING,
             "unique": true,
@@ -48,6 +53,10 @@ module.exports = function (sequelize, DataTypes) {
                 return crypt.generateToken();
             }
         },
+        "anonymized": {
+            "type": DataTypes.BOOLEAN,
+            "defaultValue": false
+        },
         "isAdmin": {
             "type": DataTypes.BOOLEAN,
             "defaultValue": false
@@ -60,6 +69,10 @@ module.exports = function (sequelize, DataTypes) {
             "type": DataTypes.STRING,
             "allowNull": true,
             "validate": {"isIn": [["en", "es"]]}
+        },
+        "lastAcceptedTermsDate": {
+            "type": DataTypes.DATE,
+            "allowNull": true
         }
     });
 

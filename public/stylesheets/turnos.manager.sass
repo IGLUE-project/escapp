@@ -1,3 +1,5 @@
+@use "common/colors"
+
 #mainSection
     .main
         &.turnos
@@ -5,7 +7,7 @@
                 .flex-table
                     .flex-row
                         &.active-turno
-                            background-color: $brightgreen  
+                            background-color: colors.$brightgreen  
                         .flex-cell 
                             &.flex-turno
                                 width: 35%
@@ -20,13 +22,13 @@
                                     width: 30px
                                     padding: 0
                                     border-radius: 50%
-                                    color: $brightblue
+                                    color: colors.$brightblue
                                     .material-icons
                                         font-size: 20px
                             &.flex-actions
                                 border-right: none
                                 .turno-btn
-                                    color: $lightred
+                                    color: colors.$lightred
                             .overlay-wrapper
                                 position: relative
                                 .overlay-trigger

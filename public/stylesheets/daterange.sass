@@ -1,24 +1,26 @@
+@use "common/colors"
+
 body
     .daterangepicker 
         border-radius: 0
         border: 0
         box-shadow: 0px 0px 10px #ddd
-        color: $darkerpurple
+        color: colors.$darkerpurple
         font-family: Lato
         z-index: 9999
         td
             &.active
-                background-color: $brightorange
+                background-color: colors.$brightorange
                 color: white
                 &:hover,&:active,&:focus
-                    background-color: $brightorange
+                    background-color: colors.$brightorange
                     color: white
             &.in-range:not(.active)
-                background-color: rgba($brightorange,0.4)
+                background-color: rgba(colors.$brightorange,0.4)
             &.off
                 visibility: hidden
         .applyBtn
-            color: $brightgreen
+            color: colors.$brightgreen
         .calendar-time
             width: auto
             .hourselect, .minuteselect

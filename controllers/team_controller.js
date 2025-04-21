@@ -41,11 +41,11 @@ exports.create = async (req, res, next) => {
     const {user} = req.session;
     const {i18n} = res.locals;
 
-    if (!user.isStudent) {
-        req.flash("error", `${i18n.common.flash.errorCreatingTeam}`);
-        res.redirect("back");
-        return;
-    }
+    // If (!user.isStudent) {
+    //     Req.flash("error", `${i18n.common.flash.errorCreatingTeam}`);
+    //     Res.redirect("back");
+    //     Return;
+    // }
     const transaction = await sequelize.transaction();
 
     try {
@@ -87,12 +87,15 @@ exports.index = async (req, res, next) => {
         "include": [
             {
                 "model": models.turno,
-                "where": {"escapeRoomId": escapeRoom.id}
+                "where": {
+                    "escapeRoomId": escapeRoom.id,
+                    "status": {[Op.not]: "test"}
+                }
             },
             {
                 "model": models.user,
                 "as": "teamMembers",
-                "attributes": ["name", "surname", "username"]
+                "attributes": ["name", "surname", "username", "anonymized"]
 
             }
         ],
@@ -103,7 +106,7 @@ exports.index = async (req, res, next) => {
         where.include[0].where.id = turnId;
     }
     try {
-        escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id}});
+        escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});
 
         const teams = await models.team.findAll(where);
 

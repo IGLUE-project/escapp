@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const mailer = require("../helpers/mailer");
-const {renderEJS, validationError} = require("../helpers/utils");
+const {renderEJS, validationError, getRole, generatePassword} = require("../helpers/utils");
 
 // Autoload the user with id equals to :userId
 exports.load = (req, res, next, userId) => {
@@ -35,13 +35,14 @@ exports.new = (req, res) => {
     res.render("index", {
         user,
         "register": true,
-        "redir": req.query.redir
+        "redir": req.query.redir,
+        "admin": false
     });
 };
 
 // POST /users
 exports.create = (req, res, next) => {
-    const {name, surname, gender, username, password, confirm_password, role} = req.body;
+    const {name, surname, gender, username, password, confirm_password, role, eduLevel} = req.body;
     const {redir} = req.query;
     const {i18n} = res.locals;
 
@@ -54,21 +55,26 @@ exports.create = (req, res, next) => {
         });
         return;
     }
+
+
     const lang = req.cookies && req.cookies.locale ? req.cookies.locale : null;
     const user = models.user.build({
-            name,
-            surname,
-            gender,
-            "username": (username || "").toLowerCase(),
-            password,
-            lang
-        }),
-        isStudent = role === "student",
-        isTeacher = role === "teacher";
+        name,
+        surname,
+        gender,
+        eduLevel,
+        "username": (username || "").toLowerCase(),
+        password,
+        lang,
+        "lastAcceptedTermsDate": new Date()
+    });
 
+    let role_override = role;
 
-    if (!isStudent && !isTeacher) {
-        req.flash("error", i18n.common.flash.mustBeUPMAccount);
+    try {
+        role_override = getRole(role, username, i18n);
+    } catch (e) {
+        req.flash("error", e);
         res.render("index", {
             user,
             "register": true,
@@ -76,10 +82,13 @@ exports.create = (req, res, next) => {
         });
         return;
     }
+
+    const isStudent = role_override === "student";
+
     user.isStudent = Boolean(isStudent);
 
     // Save into the data base
-    user.save({"fields": ["name", "surname", "gender", "username", "password", "isStudent", "salt", "token", "lang"]}).
+    user.save({"fields": ["name", "surname", "gender", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate"]}).
         then(() => { // Render the users page
             req.flash("success", i18n.common.flash.successCreatingUser);
             req.body.login = username;
@@ -95,10 +104,7 @@ exports.create = (req, res, next) => {
                 error.errors.forEach((err) => {
                     req.flash("error", validationError(err, i18n));
                 });
-                // Console.log(error.errors[0])
-                // Console.log(error.errors[0].validatorArgs)
-                // Console.log(error.errors[0].path)
-                // Console.log(error.errors[0].validatorKey)
+
                 res.render("index", {user, "register": true, redir});
             } else {
                 next(error);
@@ -110,25 +116,38 @@ exports.create = (req, res, next) => {
 exports.edit = (req, res) => {
     const {user} = req;
 
-    res.render("users/edit", {user});
+    res.render("users/edit", {user, "admin": Boolean(req.session.user.isAdmin)});
 };
+
 
 // PUT /users/:userId
 exports.update = (req, res, next) => {
     const {user, body} = req;
     // User.username  = body.user.username; // edition not allowed
     const {i18n} = res.locals;
+    const updateFromAdmin = Boolean(req.session.user.isAdmin);
+    const fields = ["password", "salt", "name", "surname", "gender", "eduLevel", "lang"];
 
+    if (updateFromAdmin) {
+        fields.push("isStudent", "isAdmin");
+        if (body.role === "student" || body.role === "teacher" || body.role === "admin") {
+            user.isStudent = body.role === "student";
+        }
+        user.isAdmin = body.role === "admin";
+    }
     user.name = body.name;
     user.surname = body.surname;
     user.gender = body.gender;
+    user.eduLevel = body.eduLevel;
     let scs = i18n.common.flash.successEditingUser;
 
     if (body.lang === "es" || body.lang === "en") {
         user.lang = body.lang;
         if (req.cookies && req.cookies.locale && (user.lang !== body.lang || req.cookies.locale !== body.lang)) {
             res.cookie("locale", body.lang);
-            scs = body.lang === "es" ? "El usuario se ha actualizado con éxito" : "User successfully updated";
+            const i18n2 = require(`../i18n/${body.lang}`);
+
+            scs = i18n2.user.sucessfullyUpdatedUser;
         }
     }
     if (body.password && body.confirm_password) {
@@ -141,7 +160,7 @@ exports.update = (req, res, next) => {
         }
     }
 
-    user.save({"fields": ["password", "salt", "name", "surname", "gender", "lang"]}).
+    user.save({fields}).
         then((user_saved) => {
             req.flash("success", scs);
             res.redirect(`/users/${user_saved.id}/edit`);
@@ -162,18 +181,64 @@ exports.destroy = async (req, res, next) => {
     const transaction = await sequelize.transaction();
     const {i18n} = res.locals;
 
-    try {
-        await req.user.destroy({}, {transaction});// Deleting logged user.
-        if (req.session.user && req.session.user.id === req.user.id) {
-            // Close the user session
-            delete req.session.user;
+    if (req.session.user.isAdmin && req.query.total) {
+        try {
+            await req.user.destroy({}, {transaction});// Deleting logged user.
+            transaction.commit();
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // Close the user session
+                delete req.session.user;
+            }
+
+            req.flash("success", i18n.common.flash.successDeletingUser);
+            res.redirect("/goback");
+        } catch (error) {
+            transaction.rollback();
+            next(error);
         }
-        transaction.commit();
-        req.flash("success", i18n.common.flash.successDeletingUser);
-        res.redirect("/goback");
-    } catch (error) {
-        transaction.rollback();
-        next(error);
+    } else {
+        try {
+            const hostName = process.env.APP_NAME ? `${process.env.APP_NAME}` : "anonymized.org";
+            // Await req.user.destroy({}, {transaction}); // Deleting logged user
+
+            req.user.name = "Anonymous";
+            req.user.surname = "Anonymous";
+            req.user.dni = "00000000X";
+            req.user.anonymized = true;
+            req.user.username = `anonymized_${req.user.id}@${hostName}`;
+            req.user.password = generatePassword();
+
+            await req.user.save({transaction});
+            const teams = await models.team.findAll({
+                "include": [
+                    {
+                        "model": models.user,
+                        "as": "teamMembers",
+                        "attributes": [],
+                        "through": { "attributes": [] }
+                    }
+                ],
+                "attributes": ["id"],
+                "group": ["team.id"],
+                "having": Sequelize.literal("COUNT(\"teamMembers\".\"id\") = 1"),
+                "where": Sequelize.literal(`${req.user.id} IN (
+                  SELECT "userId" FROM "members" WHERE "members"."teamId" = "team"."id"
+                )`)
+            }, {transaction});
+
+            await Promise.all(teams.map((team) => team.update({ "name": `Anonymous ${team.id}`}, { transaction })));
+            transaction.commit();
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // Close the user session
+                delete req.session.user;
+            }
+
+            req.flash("success", i18n.common.flash.successDeletingUser);
+            res.redirect("/goback");
+        } catch (error) {
+            transaction.rollback();
+            next(error);
+        }
     }
 };
 exports.index = (req, res, next) => {

@@ -1,7 +1,9 @@
+@use "common/colors"
+
 #mainSection
     .main.messages
         label
-            color: $textpurple
+            color: colors.$textpurple
             vertical-align: middle
             font-family: Lato
         #msg
@@ -11,14 +13,14 @@
             padding: 10px
             font-family: Lato
             font-size: 20px
-            color: $darkerpurple
+            color: colors.$darkerpurple
             &:hover, &:active, &:focus
                 outline: none
         #msg::-webkit-input-placeholder, #msg:-moz-placeholder, #msg::-moz-placeholder, #msg:-ms-input-placeholder, #msg::placeholder
-                color: $textpurple
+                color: colors.$textpurple
         input
             vertical-align: middle
-            color: $textpurple
+            color: colors.$textpurple
             margin-left: 20px 
             &:checked + label
                 color: white

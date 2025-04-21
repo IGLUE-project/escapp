@@ -14,8 +14,10 @@ module.exports = {
                 "salt": "aaaa",
                 "isAdmin": !process.env.TEST,
                 "dni": "xxxxxxxxx",
+                "eduLevel": "higher",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             },
             {
                 "name": "Pepe",
@@ -26,8 +28,10 @@ module.exports = {
                 "salt": "bbbb",
                 "isStudent": true,
                 "dni": "79881145Y",
+                "eduLevel": "higher",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             },
             {
                 "name": "Alfonso",
@@ -37,9 +41,11 @@ module.exports = {
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
                 "isStudent": true,
+                "eduLevel": "higher",
                 "dni": "67172247B",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             },
             {
                 "name": "Alejandro",
@@ -50,8 +56,10 @@ module.exports = {
                 "salt": "bbbb",
                 "isStudent": true,
                 "dni": "83477468A",
+                "eduLevel": "higher",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             },
             {
                 "name": "Nuria",
@@ -62,8 +70,10 @@ module.exports = {
                 "salt": "bbbb",
                 "isStudent": true,
                 "dni": "12166084G",
+                "eduLevel": "higher",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             },
             {
                 "name": "Clara",
@@ -74,8 +84,10 @@ module.exports = {
                 "salt": "bbbb",
                 "isStudent": true,
                 "dni": "01605680G",
+                "eduLevel": "higher",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             },
             {
                 "name": "Ana",
@@ -85,9 +97,11 @@ module.exports = {
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
                 "isStudent": true,
+                "eduLevel": "higher",
                 "dni": "82311181T",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             },
             {
                 "name": "José",
@@ -97,9 +111,11 @@ module.exports = {
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
                 "isStudent": true,
+                "eduLevel": "higher",
                 "dni": "03637194C",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             },
             {
                 "name": "Antonio",
@@ -109,9 +125,11 @@ module.exports = {
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
                 "isStudent": true,
+                "eduLevel": "higher",
                 "dni": "26077434B",
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
             }
         ]);
     },

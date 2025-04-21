@@ -1,6 +1,7 @@
-const {authenticate} = require("../helpers/utils");
+const {authenticate, findFirstAvailableFile} = require("../helpers/utils");
 const {models} = require("../models");
 const query = require("../queries");
+const path = require("path");
 /*
  * This variable contains the maximum inactivity time allowed without
  * Making requests.
@@ -44,7 +45,12 @@ exports.deleteExpiredUserSession = (req, res, next) => {
  */
 exports.loginRequired = (req, res, next) => {
     if (req.session.user) {
-        next();
+        if (!req.session.user.lastAcceptedTermsDate ||
+             req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY) {
+            res.redirect("/accept-new");
+        } else {
+            next();
+        }
     } else {
         res.redirect(`/?redir=${req.param("redir") || req.url}`);
     }
@@ -136,6 +142,7 @@ exports.adminOrMyselfRequired = (req, res, next) => {
 exports.adminOrAuthorRequired = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
+
     const {i18n} = res.locals;
 
     if (isAdmin || isAuthor) {
@@ -146,13 +153,29 @@ exports.adminOrAuthorRequired = (req, res, next) => {
     }
 };
 
-// MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
-exports.adminOrAuthorOrParticipantRequired = async (req, res, next) => {
+exports.adminOrCoAuthorRequired = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
-        isAuthor = req.escapeRoom.authorId === req.session.user.id;
+        isAuthor = req.escapeRoom.authorId === req.session.user.id,
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
+
+    const {i18n} = res.locals;
+
+    if (isAdmin || isAuthor || isCoAuthor) {
+        next();
+    } else {
+        res.status(403);
+        next(new Error(i18n.api.forbidden));
+    }
+};
+
+// MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
+exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) => {
+    const isAdmin = Boolean(req.session.user.isAdmin),
+        isAuthor = req.escapeRoom.authorId === req.session.user.id,
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
 
     try {
-        if (isAdmin || isAuthor) {
+        if (isAdmin || isAuthor || isCoAuthor) {
             next();
             return;
         }
@@ -171,15 +194,14 @@ exports.adminOrAuthorOrParticipantRequired = async (req, res, next) => {
 
 // MW that allows actions only if the user logged in is a participant of the escape room.
 exports.participantRequired = async (req, res, next) => {
-    const isAdmin = Boolean(req.session.user.isAdmin),
-        isAuthor = req.escapeRoom.authorId === req.session.user.id;
+    const isAdmin = Boolean(req.session.user.isAdmin);
 
     try {
-        if (isAdmin || isAuthor) {
+        if (isAdmin) {
             res.status(403);
             throw new Error("Forbidden");
         }
-        const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id));
+        const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
 
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
@@ -220,6 +242,7 @@ exports.create = async (req, res, next) => {
                 "username": user.username,
                 "isAdmin": user.isAdmin,
                 "isStudent": user.isStudent,
+                "lastAcceptedTermsDate": user.lastAcceptedTermsDate,
                 "expires": Date.now() + maxIdleTime
             };
 
@@ -261,4 +284,98 @@ exports.cookieAccept = (req, res) => {
         "maxAge": 1000 * 60 * 60 * 24 * 365 // 1 year
     });
     res.sendStatus(200);
+};
+
+
+exports.terms = async (req, res, next) => {
+    const { i18n } = res.locals;
+    const currentLang = i18n.lang;
+    const section = "terms";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { "root": rootPath };
+
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
+    } else {
+        res.sendFile("default_terms/default.html", op, (err) => {
+            if (err) {
+                next(err);
+            }
+        });
+    }
+};
+
+exports.privacy = async (req, res, next) => {
+    const { i18n } = res.locals;
+    const currentLang = i18n.lang;
+    const section = "privacy";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { "root": rootPath };
+
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
+    } else {
+        res.sendFile("default_privacy/default.html", op, (err) => {
+            if (err) {
+                next(err);
+            }
+        });
+    }
+};
+
+
+exports.cookiePolicy = async (req, res, next) => {
+    const { i18n } = res.locals;
+    const currentLang = i18n.lang;
+    const section = "cookies";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { "root": rootPath };
+
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
+    } else {
+        res.sendFile("default_cookies/default.html", op, (err) => {
+            if (err) {
+                next(err);
+            }
+        });
+    }
+};
+
+exports.acceptNewShow = (req, res) => {
+    res.render("users/new_terms", {});
+};
+
+exports.acceptNew = async (req, res, next) => {
+    const {i18n} = res.locals;
+
+    try {
+        if (!req.session.user) {
+            return res.status(401).send({ "error": i18n.api.unauthorized });
+        }
+
+        const userId = req.session.user.id;
+        const lastAcceptedTermsDate = new Date();
+        // Update the lastAcceptedTermsDate in the database
+
+        await models.user.update(
+            { lastAcceptedTermsDate },
+            { "where": { "id": userId } }
+        );
+
+        // Update session user data
+        req.session.user.lastAcceptedTermsDate = lastAcceptedTermsDate;
+
+        // Redirect user to dashboard or another relevant page
+        res.redirect("/"); // Adjust this route if needed
+    } catch (error) {
+        console.error(i18n.terms.error_accepting, error);
+        next(error);
+    }
 };

@@ -3,7 +3,7 @@ const queries = require("../queries");
 const {models} = sequelize;
 const {calculateNextHint} = require("./hint");
 const {checkPuzzle, getRanking, authenticate, checkTurnoAccess, getERState, automaticallySetAttendance, getCurrentPuzzle, getContentForPuzzle, getERPuzzles} = require("./utils");
-const {getAuthMessageAndCode, OK, NOK, AUTHOR, PARTICIPANT, TOO_LATE, NOT_STARTED, ERROR, HINT_RESPONSE, TEAM_STARTED, PUZZLE_RESPONSE, TEAM_PROGRESS, INITIAL_INFO, START_PLAYING, REQUEST_HINT, CHECK_PUZZLE, SOLVE_PUZZLE, PUZZLE_CHECKED, START, STOP, JOIN, JOIN_TEAM, JOIN_PARTICIPANT, LEAVE, LEAVE_TEAM, LEAVE_PARTICIPANT} = require("./apiCodes");
+const {getAuthMessageAndCode, OK, NOK, PARTICIPANT, TOO_LATE, NOT_STARTED, ERROR, HINT_RESPONSE, TEAM_STARTED, PUZZLE_RESPONSE, TEAM_PROGRESS, INITIAL_INFO, START_PLAYING, REQUEST_HINT, CHECK_PUZZLE, SOLVE_PUZZLE, PUZZLE_CHECKED, START, STOP, JOIN, JOIN_TEAM, JOIN_PARTICIPANT, LEAVE, LEAVE_TEAM, LEAVE_PARTICIPANT} = require("./apiCodes");
 
 /**
  * Send message to the whole team
@@ -273,7 +273,7 @@ exports.checkAccess = async (user, escapeRoomId, i18n, waiting) => {
             const participation = await checkTurnoAccess(teams, user, escapeRoom, true);
 
             // TODO comprobar author turno está en ER
-            if (participation !== "AUTHOR" && teams && teams.length) {
+            if (teams && teams.length) {
                 const [team] = teams;
                 const teamId = team.id;
                 const turnId = team.turno.id;
@@ -416,7 +416,7 @@ exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n) => {
 
             // TODO comprobar author turno está en ER
 
-            if (participation !== AUTHOR && teams && teams.length) {
+            if (teams && teams.length) {
                 const [team] = teams;
                 const attendance = participation === PARTICIPANT || participation === TOO_LATE;
                 // eslint-disable-next-line init-declarations
