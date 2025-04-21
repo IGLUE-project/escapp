@@ -2800,7 +2800,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   z-index: 999;
   position: absolute;
   background: rgba(0, 0, 0, 0.4666666667);
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   top: 0px;
   right: 0px;
@@ -2809,6 +2809,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 
 .modalCatalogResource {
   display: none;
+  justify-content: center;
 }
 .modalCatalogResource .modalTitle {
   border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
@@ -2832,10 +2833,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-radius: 8px;
   width: 970px;
   margin: auto;
+  position: fixed;
+  top: 10rem;
 }
 .modalCatalogResource .modalContainer .sections {
   overflow: scroll;
   height: 55vh;
+  margin-bottom: 2rem;
 }
 .modalCatalogResource .modalContainer section {
   padding: 1.2rem 2rem;

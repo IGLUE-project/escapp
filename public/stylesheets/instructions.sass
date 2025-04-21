@@ -648,15 +648,18 @@
   z-index: 999
   position: absolute
   background: #00000077
-  height: 100vh
+  height: 100%
   width:100vw
   top: 0px
   right: 0px
   z-index: 999
 
 
+
 .modalCatalogResource
   display: none
+  justify-content: center
+  
   .modalTitle
     border-bottom: 1px $textpurplelessop solid
     padding: 1.3rem 2rem 1rem 2rem
@@ -676,9 +679,12 @@
     border-radius: 8px
     width: 970px
     margin: auto
+    position: fixed
+    top: 10rem
     .sections
       overflow: scroll
       height: 55vh
+      margin-bottom: 2rem
     section
       padding: 1.2rem 2rem
       .title-section
