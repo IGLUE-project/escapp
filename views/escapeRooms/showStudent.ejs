@@ -12,12 +12,12 @@
 				<%if (turno.status === "test") {%>
 					<a href="/escapeRooms/<%=escapeRoom.id%>">
 						 <%=escapeRoom.title%>
-					</a> 
+					</a>
 				<%} else { %>
 					<span><%=escapeRoom.title%></span>
 				<%}%>
         </div>
-	</div>	
+	</div>
 	<div class="flex ">
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
@@ -27,7 +27,7 @@
 			<h1><%=escapeRoom.title%></h1>
 			<h2><%=i18n.turno.Turno%></h2>
 			<p><%= turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen%> <% if (turno.place) { %>(<%= turno.place %>)<% } %></p>
-			
+
 			<% if (!escapeRoom.teamSize || (escapeRoom.teamSize > 1)) { %>
 				<h2><%=i18n.team.Team%> </h2>
 				<h3><%=team.name%></h3>
@@ -51,7 +51,7 @@
 				<% } %>
 			</div>
 		</div>
-	
+
 		<div class="status animated fadeIn">
 			<% if (turno.status === "pending") { %>
 				<span id ="start">
@@ -110,6 +110,8 @@
 				</div>
 				<%}%>
 		</div>
+        <div><a href="<%=escapeRoom.id%>/report"> Reportar <a></div>
+        <div><a href="<%=escapeRoom.id%>/contact"> Contactar <a></div>
 	</div>
 	<br/><br/><br/><br/>
 
@@ -143,7 +145,7 @@ $(()=>{
 	var participant = JSON.parse('<%-JSON.stringify(participant)%>')
 	var socket;
 	const escapeRoomId = "<%= escapeRoom.id%>";
-	const teamId = <%= team.id || "undefined";%>   
+	const teamId = <%= team.id || "undefined";%>
 	const userId = <%= session.user.id %>;
 	const startTime = <%=Boolean(turno.startTime || team.startTime)%>;
 	const dialogOptions = {
@@ -158,8 +160,8 @@ $(()=>{
 		appendTo: '.main'
 	};
 	$("#dialog-start").dialog(dialogOptions);
-	$("#dialog-start").css("visibility","visible"); 
-	
+	$("#dialog-start").css("visibility","visible");
+
 
 	const onJoin = (msg, e) => {
 		if (!startTime && !CLICKED) {
@@ -177,20 +179,20 @@ $(()=>{
 
 	const initSocketServer = (escapeRoomId, teamId, turnId, userId) => {
 		socket = io('/', {query: {
-			escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId, 
-			team: teamId == "undefined" ? undefined : teamId, 
+			escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId,
+			team: teamId == "undefined" ? undefined : teamId,
 			turn: turnId == "undefined" ? undefined : turnId,
-			waiting: true  
+			waiting: true
 		}});
 		myTeamId = teamId;
-		socket.on("START", (msg)=>{onJoin(msg)}); 
-		// socket.on("JOIN", onJoin); 
-		socket.on("TEAM_STARTED", (msg)=>{onJoin(msg)}); 
-		socket.on("MESSAGE", (msg)=>{onMessage(msg)}); 
+		socket.on("START", (msg)=>{onJoin(msg)});
+		// socket.on("JOIN", onJoin);
+		socket.on("TEAM_STARTED", (msg)=>{onJoin(msg)});
+		socket.on("MESSAGE", (msg)=>{onMessage(msg)});
 	};
 	initSocketServer(<%= escapeRoom.id%>, teamId, <%= turno ? turno.id : "undefined" %>, userId);
 });
-</script> 
+</script>
 <% } %>
 </div>
 

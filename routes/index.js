@@ -124,6 +124,9 @@ router.post("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginReq
 router.get("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/new", sessionController.loginRequired, reusablePuzzleController.renderPuzzleConfiguration);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.createReusablePuzzleInstance, escapeRoomController.teamInterface);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/:reusablePuzzleInstanceId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.renderEditPuzzleConfiguration);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, escapeRoomController.showReport);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, escapeRoomController.generateReport);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRequired, escapeRoomController.showContact);
 
 // Routes for starting/stopping shifts
 router.get("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.indexActivate);

@@ -605,3 +605,31 @@ exports.test = async (req, res) => {
         res.redirect("escapeRooms/", req.escapeRoom.id);
     }
 };
+
+
+// GET /escapeRooms/:escapeRoomId/report
+exports.showReport = async (req, res) => {
+    const {escapeRoom} = req;
+    res.render("management/report", {escapeRoom});
+}
+// GET /escapeRooms/:escapeRoomId/contact
+exports.showContact = async (req, res) => {
+    const {escapeRoom} = req;
+    res.render("management/contact", {escapeRoom});
+}
+
+// POST /escapeRooms/:escapeRoomId/contact
+exports.generateReport = async (req, res) => {
+    const {escapeRoom} = req;
+    const {reason, comments} = req.body;
+    const sessionId = req.session.user.id
+    const report = models.report.build(
+        {reason,
+         comments,
+         escapeRoomId: escapeRoom.id,
+         reportAuthor: sessionId});
+
+    await report.save();
+    console.log(report);
+    res.render("management/report", {escapeRoom, report});
+}
