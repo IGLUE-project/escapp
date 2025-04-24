@@ -48,6 +48,7 @@
 
         <section>
             <p class="title-section">Escenarios 2D</p>
+           <div class="resources-group">
             <div class="resource-card" id="scenery">
                 <img src="/images/scenery.png">
                 <button class="resourceCatalogBtn">
@@ -55,6 +56,7 @@
                     <p>Escenarios 2D</p>
                 </button>
             </div>
+        </div>
         </section>
     </div>
     </div>
@@ -62,7 +64,7 @@
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
         <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem">
-                    <button class="building-block-bar-button uploadButton" onclick="toggleCatalogModal()">
+                    <button class="building-block-bar-button lg-button newItemButton" onclick="toggleCatalogModal()">
                         <a href="#">
                             <span class="building-block-icon material-icons"> add </span>
                             <p>
@@ -70,7 +72,7 @@
                             </p>
                         </a>
                     </button>
-                    <button class="building-block-bar-button uploadButton">
+                    <button class="building-block-bar-button lg-button newItemButton">
                         <a href="assets?mode=catalogView">
                             <span class="building-block-icon material-icons"> upload </span>
                             <p>
@@ -81,35 +83,38 @@
 
         </div>
     </div>
-    <div style="height:240px;overflow-y:auto;width:100%;position:relative">
-
-        <table style="width:100%;table-layout:fixed; padding: 16px" class="tab-content catalog-container"
+    <div class="tableContainer" >
+        <table style="width:100%;table-layout:fixed;" class="tab-content catalog-container"
             id="myTabContent">
             <colgroup>
                 <col span="1" style="width: 50%;">
-                <col span="1" style="width: 20%;">
-                <col span="1" style="width: 30%;">
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 35%;">
             </colgroup>
-            <tr class="tableTitles">
+            <tr class="tableTitlesContainer">
+
                 <th>
                     <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%>
                 </th>
                 <th>
                     <%=i18n.escapeRoom.steps.indications.front.catalog.table.type%>
                 </th>
-                <th></th>
+                <th> </th>
+
             </tr>
             <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
                 <tr class="catalogItem">
                     <td>
+                        
                         <p class="title">
                             <%=puzzle.name%>
                         </p>
+                        
                     </td>
                     <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span>
                     </td>
                     <td>
-                        <div class="button-group">
+                        <div class="button-group row-button">
                             <button class="listButton iconButton delete-button"
                                 onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>
                                 <span class="building-block-icon material-icons" id="delete">
@@ -126,7 +131,7 @@
                                     <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                 </div>
                             </button>
-                            <button class="listButton addButton row-button"
+                            <button class="sm-button addButton "
                                 onclick='insertAndScrollContent(0,"catalog",{url:"<%=puzzle.url%>",config: "<%=puzzle.config%>"  mime:"<%=puzzle.mime%>"}, puzzleList)'>
                                 <span class="building-block-icon material-icons" id="add"> add </span>
                                 <p>
@@ -160,14 +165,14 @@
                                     <div class=" button-group row-button">
                                         <div class="overlay-trigger" data-id="<%=asset.id%>">
                                             <p class="text-overlay">¿Estás seguro de que quieres borrar este
-                                                archivo?</p>
+                                                ítem?</p>
                                             <button class="deleteButton" type="button"
                                                 onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
                                             <button class="acceptButton" type="button"
                                                 onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                         </div>
                                         <button class="listButton iconButton delete-button"
-                                            onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                            onclick="overlayTriggerCatalog('<%=asset.id%>', false)" data-id="<%=asset.id%>">
                                             <span class="building-block-icon material-icons" id="delete">
                                                 delete_outline </span>
                                         </button>
@@ -185,7 +190,7 @@
                                             </div>
                                         </button>
 
-                                        <button class="listButton addButton"
+                                        <button class="sm-button addButton"
                                             onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                             <span class="building-block-icon material-icons" id="add"> add
                                             </span>
@@ -216,7 +221,7 @@
                                                     onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                             </div>
                                             <button class="listButton iconButton delete-button"
-                                                onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                                onclick="overlayTriggerCatalog('<%=asset.id%>', false)" data-id="<%=asset.id%>">
                                                 <span class="building-block-icon material-icons" id="delete">
                                                     delete_outline </span>
                                             </button>
@@ -233,7 +238,7 @@
                                                     <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                 </div>
                                             </button>
-                                            <button class="listButton addButton"
+                                            <button class="sm-button addButton"
                                                 onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                 <span class="building-block-icon material-icons" id="add"> add
                                                 </span>
@@ -265,7 +270,7 @@
                                                         onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                                 </div>
                                                 <button class="listButton iconButton delete-button"
-                                                    onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                                    onclick="overlayTriggerCatalog('<%=asset.id%>', false)" data-id="<%=asset.id%>">
                                                     <span class="building-block-icon material-icons" id="delete">
                                                         delete_outline </span>
                                                 </button>
@@ -285,7 +290,7 @@
                                                         <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                     </div>
                                                 </button>
-                                                <button class="listButton addButton"
+                                                <button class="sm-button addButton"
                                                     onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                     <span class="building-block-icon material-icons" id="add">
                                                         add
@@ -318,7 +323,7 @@
                                                             onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                                     </div>
                                                     <button class="listButton iconButton delete-button"
-                                                        onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
+                                                        onclick="overlayTriggerCatalog('<%=asset.id%>', false)" data-id="<%=asset.id%>">
                                                         <span class="building-block-icon material-icons" id="delete">
                                                             delete_outline </span>
                                                     </button>
@@ -337,7 +342,7 @@
                                                         </div>
                                                     </button>
 
-                                                    <button class="listButton addButton"
+                                                    <button class="sm-button addButton"
                                                         onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                         <span class="building-block-icon material-icons" id="add"> add
                                                         </span>
@@ -370,7 +375,7 @@
                                                             onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
                                                     </div>
                                                     <button class="listButton iconButton delete-button"
-                                                        onclick='overlayTriggerCatalog("<%=asset.id%>")'>
+                                                        onclick='overlayTriggerCatalog("<%=asset.id%>")' data-id="<%=asset.id%>">
                                                         <span class="building-block-icon material-icons" id="delete">
                                                             delete_outline </span>
                                                     </button>
@@ -389,7 +394,7 @@
                                                             <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                         </div>
                                                     </button>
-                                                    <button class="listButton addButton" disabled> <span
+                                                    <button class="sm-button addButton" disabled> <span
                                                             class="building-block-icon material-icons" id="add">
                                                             add
                                                         </span>
@@ -407,15 +412,15 @@
 
 </div>
 <div style="display:flex; margin-top:0.5em; align-items:center; justify-content: end; gap: 0.7rem">
-    <button class="building-block-bar-button theme-btn" style="display:flex;">
-        <span class="building-block-icon material-icons" style="color: var(--info);">color_lens</span>
+    <button class="building-block-bar-button lg-button theme-btn" style="display:flex;">
+        <span class="building-block-icon material-icons">color_lens</span>
         <span class="theme-text">
             <%=i18n.escapeRoom.steps.indications.front.theme%>: <span id="theme-title">
                     <%=theme[0].toUpperCase() + theme.slice(1)%>
                 </span>
         </span>
     </button>
-    <button class="addButton text-block-add" id="buttonMain" onclick="insertContentBlock()">
+    <button class="addButton text-block-add lg-button"  onclick="insertContentBlock()">
         <span class="building-block-icon material-icons"> add </span>
         <p>
             <%= i18n.escapeRoom.steps.indications.front.catalog.addText%>
@@ -648,27 +653,48 @@
         insertAndScrollContent(index, type, payload, puzzles);
     }
 
-    function overlayTriggerCatalog(id, close) {
+    function overlayTriggerCatalog(id, open) {
+        //definir el elemento de la tabla
+        const table = $(".tableContainer")
+
         const overlay = $('.overlay-trigger[data-id="' + id + '"]');
         overlay.hide();
-
-
-        if (!close) {
-            overlay.css("transform", `translateY(${overlay.height() / 1.2}px`);
+        // definir el elemento de "delete" y capturar su posición
+        const deleteButton = document.querySelector('.delete-button[data-id="' + id + '"]');
+        console.log(deleteButton, " delete")
+        const deletePosition = deleteButton.getBoundingClientRect()
+  
+        // todo lo de abajo se ejecuta si el modal está cerrado.
+        if (!open) {
+            // colocar el modal para que siempre esté dentro de la tabla
+            // dependiendo de la posición del botón de borrado
+            if (deletePosition.y <= 455) {
+                overlay.css("transform", `translateY( 80px)`);
+            } else {
+                overlay.css("transform", `translateY( -80px)`);
+            }
+         
             overlay.show();
 
-
-            // Borrar overlay con click afuera
+            // Ocultar overlay con click afuera
             // Espera un momento antes de agregar el listener, para evitar cierre inmediato
             setTimeout(() => {
                 $(document).on('click.overlay', function (event) {
+                    
                     // 1. Verifica si el clic NO fue directamente sobre el overlay.
                     if (!overlay.is(event.target) && overlay.has(event.target).length === 0) { //2. Verifica si el clic NO fue en un hijo del overlay.
                         overlay.hide();
+                        table.removeClass("overflow-hidden");
                         $(document).off('click.overlay'); // Elimina el evento después de ocultar el overlay
                     }
                 });
             }, 50);
+            // 2. añadir/ eliminar clases en la tabla de hide
+            table.addClass("overflow-hidden");
+            console.log(table.hasClass("overflow-hidden"));
+        }
+        if (open) {
+            table.removeClass("overflow-hidden");
         }
     }
 

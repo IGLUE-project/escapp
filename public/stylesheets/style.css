@@ -2106,11 +2106,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   line-height: 25px;
 }
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-button.theme-btn {
-  background: white;
+  background: transparent;
   color: #161938;
 }
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-button.theme-btn .theme-text {
-  color: #161938;
+  color: white;
 }
 #mainSection .main.step-instructions .building-block-bar .building-block-bar-separator {
   height: 40px;
@@ -2579,14 +2579,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .catalog-container {
   cursor: pointer;
   margin-top: 0px;
-  border-collapse: collapse;
 }
 #resourceCatalog a {
   color: black;
 }
 #resourceCatalog .catalogItem {
   margin: 0 18px;
-  border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
+  box-shadow: 0 1px 0 0 rgba(101, 102, 131, 0.7);
   gap: 12px;
   padding: 0px 0px;
   max-height: 46px;
@@ -2595,6 +2594,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .catalogItem:last-child {
   border-bottom: 0px;
   margin-bottom: 54px;
+}
+#resourceCatalog .catalogItem td {
+  height: 44px;
 }
 #resourceCatalog .catalogItem .icon-text-container {
   display: flex;
@@ -2607,7 +2609,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   -webkit-line-clamp: 1;
 }
 #resourceCatalog .catalogItem .title {
-  margin: 12px 18px;
+  margin: 0px;
   display: inline-block;
   max-width: 50ch;
   overflow: hidden;
@@ -2639,33 +2641,66 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background: rgb(75, 82, 87);
 }
 #resourceCatalog .catalogItem .row-button {
-  margin-right: 24px;
   display: flex;
   justify-content: end;
-  height: 52px;
+  height: 40px;
   align-items: center;
+}
+#resourceCatalog .tableContainer {
+  height: 275px;
+  overflow-y: auto;
+  width: 100%;
+  position: relative;
+  border: rgba(101, 102, 131, 0.7) 1px solid;
+}
+#resourceCatalog .overflow-hidden {
+  overflow-y: hidden;
 }
 #resourceCatalog #myTabContent {
   background: #161938;
   border-radius: 0px 0px 8px 8px;
-  border: rgba(101, 102, 131, 0.7) 1px solid;
-  padding: 8px;
+  padding: 0 12px 12px 12px;
 }
 #resourceCatalog .button-group {
   display: flex;
   gap: 9px;
   align-items: center;
 }
-#resourceCatalog .listButton {
-  font-size: 16px;
+#resourceCatalog .lg-button {
+  padding: 6px 12px;
+  border-radius: 24px;
+  font-size: 20px;
+  min-height: 44px;
 }
-#resourceCatalog .listButton p {
-  color: white;
+#resourceCatalog .lg-button a {
+  display: flex;
+  gap: 0.3rem;
+  color: #232850;
+}
+#resourceCatalog .lg-button a span {
+  margin-top: 0.1rem;
+}
+#resourceCatalog .lg-button a p {
+  margin: 0 0 0.2rem 0;
+}
+#resourceCatalog .sm-button {
+  font-size: 16px;
+  padding: 8px 16px 8px 6px;
+  height: 36px;
 }
 #resourceCatalog .iconButton {
   background: none;
   border: 0px;
   border-radius: 24px;
+}
+#resourceCatalog .delete-button {
+  padding: 5px;
+}
+#resourceCatalog .delete-button:hover {
+  background: rgb(83, 17, 20);
+}
+#resourceCatalog .delete-button:hover #delete {
+  color: #F47E84;
 }
 #resourceCatalog .editButton {
   padding: 5px;
@@ -2678,27 +2713,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #resourceCatalog .editButton:disabled {
   padding: 5px;
-}
-#resourceCatalog .delete-button {
-  padding: 5px;
-}
-#resourceCatalog .delete-button:hover {
-  background: rgb(83, 17, 20);
-}
-#resourceCatalog .delete-button:hover #delete {
-  color: #F47E84;
-}
-#resourceCatalog .uploadButton {
-  height: 52px;
-}
-#resourceCatalog .uploadButton a {
-  display: flex;
-  margin-bottom: 0.2rem;
-  gap: 0.3rem;
-  color: #232850;
-}
-#resourceCatalog .uploadButton p {
-  margin: 0;
 }
 #resourceCatalog .linkButton {
   background: none;
@@ -2726,9 +2740,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .linkButton:hover:focus-within #link-copied {
   display: flex;
 }
+#resourceCatalog .newItemButton {
+  border: 0px;
+}
+#resourceCatalog .newItemButton:hover {
+  background: rgb(163, 218, 255);
+}
 #resourceCatalog .addButton {
   display: flex;
-  padding: 8px 16px 8px 6px;
   align-items: center;
   gap: 6px;
   background: rgb(0, 116, 211);
@@ -2753,12 +2772,26 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .addButton span {
   color: white;
 }
-#resourceCatalog #buttonMain {
-  height: 52px;
-  font-size: 1em;
+#resourceCatalog .theme-btn {
+  background: transparent;
+  color: #161938;
 }
-#resourceCatalog .newItemButton {
-  box-shadow: 0px 0px 40px 12px #161938;
+#resourceCatalog .theme-btn:hover {
+  border: 2px solid rgb(163, 218, 255);
+}
+#resourceCatalog .theme-btn:hover span {
+  color: rgb(163, 218, 255);
+}
+#resourceCatalog .theme-btn:hover .theme-text {
+  color: rgb(163, 218, 255);
+}
+#resourceCatalog .theme-btn .theme-text {
+  color: white;
+  transition: 300ms;
+}
+#resourceCatalog .theme-btn span {
+  color: white;
+  transition: 300ms;
 }
 #resourceCatalog .tooltip-link {
   display: none;
@@ -2849,16 +2882,18 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   /*titulo tabla*/
 }
 
-.tableTitles {
+.tableTitlesContainer {
   font-size: 14px;
+  position: sticky;
+  top: 0px;
+  padding-bottom: 1rem;
+  background-color: #161938;
+  height: 34px;
+  box-shadow: 0 2px 0 0 #656683;
   /*MODAL CATALOG RESOURCE*/
 }
-.tableTitles th {
+.tableTitlesContainer th {
   text-align: left;
-  padding: 18px 0 6px 0px;
-}
-.tableTitles th:first-child {
-  padding: 18px 0 6px 18px;
 }
 
 #modalCatalogResource {
@@ -2944,6 +2979,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   flex-direction: column;
   border-radius: 6px;
   border: 1px rgba(101, 102, 131, 0.7) solid;
+  gap: 0px;
 }
 .modalCatalogResource .resources-group .resource-card img {
   object-fit: cover;

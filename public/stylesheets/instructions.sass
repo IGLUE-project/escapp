@@ -35,10 +35,10 @@
             vertical-align: middle
             line-height: 25px
           &.theme-btn
-            background: white
+            background: transparent
             color: colors.$darkerpurple
             .theme-text
-              color: colors.$darkerpurple
+              color: white
         .building-block-bar-separator
           height: 40px
           width: 0px
@@ -419,7 +419,7 @@
   .catalog-container
     cursor: pointer
     margin-top: 0px
-    border-collapse: collapse
+  
   a
     color: black
   scrollbar-width: thin
@@ -428,14 +428,18 @@
 
   .catalogItem
     margin: 0 18px
-    border-bottom: 1px colors.$textpurplelessop solid
+    // este border no funciona en tabla
+    // border-bottom: 1px colors.$textpurplelessop solid
+    box-shadow: 0 1px 0 0 colors.$textpurplelessop
     gap: 12px
     padding: 0px 0px
     max-height: 46px
     &:last-child
       border-bottom:0px
       margin-bottom: 54px
-
+    td
+      height: 44px
+     
     .icon-text-container
       display: flex
       gap: 12px
@@ -446,7 +450,7 @@
       white-space: nowrap
       -webkit-line-clamp: 1
     .title
-      margin: 12px 18px
+      margin: 0px 
       display: inline-block
       max-width: 50ch
       overflow: hidden
@@ -473,31 +477,67 @@
 
     /*celda botón*/
     .row-button
-      margin-right: 24px
       display: flex
       justify-content: end
-      height: 52px
+      height: 40px
       align-items: center
 
+  .tableContainer
+    height: 275px
+    overflow-y: auto
+    width: 100%
+    position: relative
+    border: colors.$textpurplelessop 1px solid
+    // padding: 8px
+  .overflow-hidden
+    overflow-y: hidden
+    
   #myTabContent
     background: colors.$darkerpurple
     border-radius: 0px 0px 8px 8px
-    border: colors.$textpurplelessop 1px solid
-    padding: 8px
+    padding: 0 12px 12px 12px
 
   .button-group
     display: flex
     gap: 9px
     align-items: center
 
-  .listButton
+
+  //BUTTONS
+
+  //sizes
+  .lg-button
+    padding: 6px 12px
+    border-radius: 24px
+    font-size: 20px
+    min-height: 44px
+    a
+      display: flex
+      //margin-bottom: 0.2rem
+      align-items:center
+      gap: 0.3rem
+      color: colors.$mainpurple
+      span
+        margin-top: 0.1rem
+      p
+        margin: 0 0 0.2rem 0
+  .sm-button
     font-size: 16px
-    p
-      color: white
+    padding: 8px 16px 8px 6px
+    height: 36px
+
+  // ICON BUTTONS
   .iconButton
     background: none
     border: 0px
     border-radius: 24px
+  // Delete icon button
+  .delete-button
+    padding: 5px
+    &:hover
+      background: colors.$darkerred
+      #delete
+        color: colors.$lightred
   .editButton
     padding: 5px
     &:hover
@@ -506,25 +546,6 @@
         color: white
     &:disabled
       padding: 5px
-  .delete-button
-    padding: 5px
-    &:hover
-      background: colors.$darkerred
-      #delete
-        color: colors.$lightred
-
-
-  //BUTTONS
-  .uploadButton
-    height: 52px
-    a
-      display: flex
-      margin-bottom: 0.2rem
-      align-items:center
-      gap: 0.3rem
-      color: colors.$mainpurple
-    p
-      margin: 0
   .linkButton
     background: none
     border: 0px
@@ -546,9 +567,15 @@
       &:focus-within
         #link-copied
           display: flex
+ 
+
+  .newItemButton
+    border: 0px 
+    &:hover 
+      background: colors.$brighterblue
+    // box-shadow: 0px 0px 40px 12px colors.$darkerpurple
   .addButton
     display: flex
-    padding: 8px 16px 8px 6px
     align-items: center
     gap: 6px
     background: colors.$blue
@@ -567,13 +594,24 @@
       display: ruby
     span
       color: white
-  #buttonMain
-    height: 52px
-    font-size: 1em
-  .newItemButton
-    box-shadow: 0px 0px 40px 12px colors.$darkerpurple
 
 
+  // theme button
+  .theme-btn
+    background: transparent
+    color: colors.$darkerpurple
+    &:hover
+      border: 2px solid colors.$brighterblue
+      span
+        color: colors.$brighterblue
+      .theme-text
+        color: colors.$brighterblue
+    .theme-text
+      color: white
+      transition: 300ms
+    span
+      color: white
+      transition: 300ms
 
   .tooltip-link
     display: none
@@ -639,14 +677,18 @@
   display: block
 
   /*titulo tabla*/
-.tableTitles
+.tableTitlesContainer
   font-size: 14px
+  position: sticky
+  top: 0px
+  padding-bottom: 1rem
+  background-color: colors.$darkerpurple
+  height: 34px
+  box-shadow: 0 2px 0 0  colors.$textpurple
+
   th
     text-align: left
 
-    padding: 18px 0 6px 0px
-  th:first-child
-    padding: 18px 0 6px 18px
 
   /*MODAL CATALOG RESOURCE*/
 
@@ -727,6 +769,7 @@
       flex-direction: column
       border-radius: 6px
       border: 1px colors.$textpurplelessop solid
+      gap: 0px
 
       img
         object-fit: cover
