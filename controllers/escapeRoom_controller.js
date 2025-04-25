@@ -615,7 +615,8 @@ exports.showReport = async (req, res) => {
 // GET /escapeRooms/:escapeRoomId/contact
 exports.showContact = async (req, res) => {
     const {escapeRoom} = req;
-    res.render("management/contact", {escapeRoom});
+    console.log(escapeRoom);
+    res.render("management/contact", {title: escapeRoom.title, author: escapeRoom.author.name + " " + escapeRoom.author.surname, email: escapeRoom.author.username});
 }
 
 // POST /escapeRooms/:escapeRoomId/contact
@@ -630,6 +631,5 @@ exports.generateReport = async (req, res) => {
          reportAuthor: sessionId});
 
     await report.save();
-    console.log(report);
     res.render("management/report", {escapeRoom, report});
 }

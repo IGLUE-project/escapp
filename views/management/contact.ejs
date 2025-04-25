@@ -1,1 +1,12 @@
-Contact
+<%- include ("../partials/_header.ejs") %>
+
+<div role="main" class="main">
+    <h2>Contactar con el autor</h2>
+    <div>
+        Username: <%= author%>
+    </div>
+    <div>
+        Email: <%= email %>
+    </div>
+    <a href="mailto:<%= email %>?subject=Consulta sobre la escape room <%= title %>">Enviar un correo</a>
+</div>
