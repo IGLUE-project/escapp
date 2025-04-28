@@ -575,9 +575,9 @@
                 <div>
                     <p class="titleLabelEdit"> Opciones </p>
                 <div class="checkBoxEditContainer">
-                    <div><label for="autoplay">Autoplay</label><input ${configJSON.autoplay ? "checked" : ""} type="checkbox" name="autoplay"/></div>
-                    <div><label for="download">Dowloads</label><input ${configJSON.download ? "checked" : ""} type="checkbox" name="download"/></div>
-                    <div><label for="controls">Controls</label><input  ${configJSON.controls ? "checked" : ""} type="checkbox" name="controls"/></div>
+                    <div><label for="autoplay">Autoplay</label><input ${configJSON.autoplay!== "undefined" ? "checked" : ""} type="checkbox" name="autoplay"/></div>
+                    <div><label for="download">Dowloads</label><input ${configJSON.download !== "undefined" ? "checked" : ""} type="checkbox" name="download"/></div>
+                    <div><label for="controls">Controls</label><input  ${configJSON.controls !== "undefined" ? "checked" : ""} type="checkbox" name="controls"/></div>
                 </div>
                 </div>
                 </div>

@@ -263,21 +263,20 @@ exports.editAsset = async (req, res, next) => {
 
             if (asset.mime.search(imageRegex) !== -1) {
                 config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
-            } else if (asset.mime.search(videoRegex) !== -1) {
+            } else if (asset.mime.search(videoRegex) !== -1 || asset.mime.search(audioRegex) !== -1) {
                 config = appendParameterers(
                     {"name": "width", "value": req.body.width},
                     {"name": "height", "value": req.body.height},
                     {"name": "controls", "value": req.body.controls},
                     {"name": "autoplay", "value": req.body.autoplay},
-                    {"name": "download", "value": req.body.dowload}
+                    {"name": "download", "value": req.body.download}
                 );
-            } else if (asset.mime.search(audioRegex) !== -1) {
-                config = appendParameterers({"name": "controls", "value": req.body.controls});
-            } else if (asset.mime.search(applicationRegex) !== -1) {
+            }  else if (asset.mime.search(applicationRegex) !== -1) {
                 config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else {
                 return "";
             }
+            console.log(config);
             await asset.update({config});
             res.redirect("back");
         } else {

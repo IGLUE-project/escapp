@@ -91,7 +91,7 @@ const catalogItem = (item)=> {
     if(item.mime.search(imageRegex) !== -1) {
         return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {
-            return `<div class="ckeditor-html5-video" style="text-align: center;"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" /></div>`;
+            return `<div class="ckeditor-html5-video" style="text-align: center;"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" download=${configJSON.download!=="undefined"?"download":null}/></div>`;
     } else if (item.mime.search(audioRegex) !== -1) {
             return `<audio controls=${configJSON.controls!=="undefined"?"controls":null}  autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  mime="${item.mime}" src="${item.url}"/>`;
     } else if (item.mime.search(pdfRegex) !== -1) {
@@ -193,7 +193,6 @@ $(()=>{
 
     for (var i in window.content) {
         var block = window.content[i];
-        console.log(block);
         insertContent(i, block.type, block.payload, block.puzzles)
     }
 
@@ -310,12 +309,7 @@ $(()=>{
             var obj = {type,puzzles};
             if(type === "text" || type === "catalog"){
                 const id = $(e).find(".editor").attr("id");
-                console.log($(e))
-                console.log(id);
-                console.log(CKEDITOR.instances[id])
-                console.log(CKEDITOR.instances)
                 obj.payload = {text: CKEDITOR.instances[id].getData()};
-                console.log(obj.payload)
                 obj.type = "text";
             }
             results.push(obj);
