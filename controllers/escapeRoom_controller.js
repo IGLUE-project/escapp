@@ -607,29 +607,3 @@ exports.test = async (req, res) => {
 };
 
 
-// GET /escapeRooms/:escapeRoomId/report
-exports.showReport = async (req, res) => {
-    const {escapeRoom} = req;
-    res.render("management/report", {escapeRoom});
-}
-// GET /escapeRooms/:escapeRoomId/contact
-exports.showContact = async (req, res) => {
-    const {escapeRoom} = req;
-    console.log(escapeRoom);
-    res.render("management/contact", {title: escapeRoom.title, author: escapeRoom.author.name + " " + escapeRoom.author.surname, email: escapeRoom.author.username});
-}
-
-// POST /escapeRooms/:escapeRoomId/contact
-exports.generateReport = async (req, res) => {
-    const {escapeRoom} = req;
-    const {reason, comments} = req.body;
-    const sessionId = req.session.user.id
-    const report = models.report.build(
-        {reason,
-         comments,
-         escapeRoomId: escapeRoom.id,
-         reportAuthor: sessionId});
-
-    await report.save();
-    res.render("management/report", {escapeRoom, report});
-}
