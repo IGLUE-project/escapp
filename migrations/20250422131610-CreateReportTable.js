@@ -17,12 +17,16 @@ module.exports = {
                 "validate": {"notEmpty": {"msg": "Se debe indicar el motivo de la denuncia."}}
             },
             "comments": Sequelize.STRING,
+            "readed": {
+                "type": Sequelize.BOOLEAN,
+                "defaultValue": false
+            },
             "reportAuthor": {
-                "type": Sequelize.STRING,
+                "type": Sequelize.INTEGER,
                 "allowNull": false,
             },
             "escapeRoomId": {
-                "type": Sequelize.STRING,
+                "type": Sequelize.INTEGER,
                 "allowNull": false,
             },
             "createdAt": {

@@ -17,6 +17,7 @@ const resourceAppController = require("../controllers/resource_app_controller");
 const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
+const managementController = require("../controllers/management_controller");
 // Const reusablePuzzleInstance = require("../models/reusablePuzzleInstance");
 
 
@@ -87,6 +88,9 @@ router.get("/users/:userId(\\d+)/escapeRooms", sessionController.loginRequired, 
 // Admin
 router.get("/users/index", sessionController.loginRequired, sessionController.adminRequired, userController.index);
 router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.admin);
+router.get("/reports", sessionController.loginRequired, sessionController.adminRequired, managementController.showReports);
+router.post("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.editReport);
+router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
 
 // Routes for the resource /escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
@@ -128,9 +132,9 @@ router.post("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginReq
 router.get("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/new", sessionController.loginRequired, reusablePuzzleController.renderPuzzleConfiguration);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.createReusablePuzzleInstance, escapeRoomController.teamInterface);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/:reusablePuzzleInstanceId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.renderEditPuzzleConfiguration);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, escapeRoomController.showReport);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, escapeRoomController.generateReport);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRequired, escapeRoomController.showContact);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.showReportForm);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.generateReport);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRequired, managementController.showContact);
 
 // Routes for starting/stopping shifts
 router.get("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.indexActivate);

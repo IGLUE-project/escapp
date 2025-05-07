@@ -312,12 +312,21 @@ reusablePuzzleInstance.belongsTo(reusablePuzzle, {"foreignKey": "reusablePuzzleI
 
 escapeRoom.hasMany(report, {
     "onDelete": "CASCADE",
-    "hooks": true
+    "hooks": true,
+    "foreignKey": "escapeRoomId"
 });
 
 report.belongsTo(escapeRoom, {
-    "as": "author",
+    "foreignKey": "escapeRoomId"
+});
+
+user.hasMany(report, {
+    "onDelete": "CASCADE",
+    "hooks": true,
     "foreignKey": "reportAuthor"
 });
 
+report.belongsTo(user, {
+    "foreignKey": "reportAuthor"
+});
 module.exports = sequelize;
