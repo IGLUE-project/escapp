@@ -99,7 +99,6 @@ exports.renderCreatePuzzle = async (req, res) => {
 
 
 exports.createReusablePuzzle = async (req, res, next) => {
-    const {name, description} = req.body;
 
     try {
         let hasConfig = false;
@@ -122,7 +121,9 @@ exports.createReusablePuzzle = async (req, res, next) => {
         const config = fs.readFileSync(path.join(newPath, "config.json"));
         const parsedConfig = JSON.parse(config);
 
-        await models.reusablePuzzle.create({name, description, config:parsedConfig});
+        const {name, description, puzzleConfig} = parsedConfig;
+
+        await models.reusablePuzzle.create({name, description, config:JSON.stringify(puzzleConfig)});
         res.redirect('back')
     }
     catch (e) {

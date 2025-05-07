@@ -31,13 +31,13 @@
                 </button>
             </div>
         </section>
-        <section>
+        <section class="sectionAddResource">
             <p class="title-section">Recursos interactivos vinculados a retos</p>
             <div class="resources-group">
                 <%availableReusablePuzzles.forEach(puzzle => { %>
                      <div class="resource-card">
                         <img src="/images/keypad.png">
-                        <button class="resourceCatalogBtn">
+                        <button class="resourceCatalogBtn" onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>)">
                             <span class="building-block-icon material-icons"> add </span>
                             <p><%=puzzle.name%></p>
                         </button>
@@ -46,7 +46,7 @@
             </div>
         </section>
 
-        <section>
+        <section class="sectionAddResource">
             <p class="title-section">Escenarios 2D</p>
             <div class="resource-card" id="scenery">
                 <img src="/images/scenery.png">
@@ -55,6 +55,11 @@
                     <p>Escenarios 2D</p>
                 </button>
             </div>
+        </section>
+        <section id="configZone" hidden>
+            <h2>Configuración</h2>
+            <form id="configForm">
+            </form>
         </section>
     </div>
     </div>
@@ -730,5 +735,32 @@
             }, 50);
         }
     }
+
+function openPuzzleConfiguration(puzzle){
+    const configZone = $('#configZone');
+    const config = JSON.parse(puzzle.config);
+    const configForm = $('#configForm');
+
+    configForm.empty();
+    configZone.removeAttr('hidden');
+
+    elements = generateConfig(config);
+    elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
+
+    configForm.html(elements);
+}
+
+
+function generateConfig(config) {
+    let result = ``;
+    Object.keys(config).forEach(key => {
+        const value = config[key];
+        result += `
+            <label for=${key}>${key}</label>
+            <input ${value.required ? "required='true'" : null} type=${value.type ? value.type : "text"} name=${key}/>
+            `
+    });
+    return result;
+}
 
 </script>
