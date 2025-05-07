@@ -487,11 +487,11 @@
                     "Student": "Alumno",
                     "resourceCatalog": "Catálogo de recursos",
                     "catalog": {
-                        "newPuzzle": "Nuevo puzzle",
-                        "uploadFile": "Subir fichero",
-                        "addResource": "Añadir nuevo recurso",
-                        "addBlock": "Añadir bloque",
-                        "addText": "Añadir bloque de texto",
+                        "newPuzzle": "nuevo puzzle",
+                        "uploadFile": "subir fichero",
+                        "addResource": "añadir nuevo recurso",
+                        "addBlock": "añadir bloque",
+                        "addText": "añadir bloque de texto",
                         "table": {
                             "name": "Nombre",
                             "type": "Tipo",
@@ -899,6 +899,7 @@
             "copyTitle": "Copia el enlace",
             "qrTitle": "Genera un código QR para compartir",
             "noShiftsShare": "No puedes compartir la escape room hasta que hayas establecido al menos un turno",
+            "noShiftsShareDraft": "No puedes compartir la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación').",
             "noShiftsStart": "No puedes comenzar la escape room hasta que hayas establecido al menos un turno",
             "join": {
                 "intro": "Para que tus alumnos puedan acceder a la escape room comparte con ellos el siguiente enlace:",
@@ -1032,6 +1033,7 @@
         "selectActivate": "Selecciona el turno que quieres activar/desactivar",
         "selectStudent": "Selecciona un turno",
         "areYouSureReset": "¿Seguro que quieres reiniciar este turno? Todo el progreso de los alumnos se perderá",
+        "areYouSureDelete": "¿Seguro que deseas eliminar este turno?",
         "resetProgress": "Reinicia el turno",
         "noTurnAvailable": "No hay ningún turno disponible en esta escape room",
         "theres": "Queda",

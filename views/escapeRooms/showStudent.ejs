@@ -18,7 +18,9 @@
 				<%}%>
         </div>
 	</div>
+	<div class="reporting"><a href="/escapeRooms/<%=escapeRoom.id%>/report"> Reportar <a> / <a href="/escapeRooms/<%=escapeRoom.id%>/contact"> Contactar <a></div>
 	<div class="flex ">
+		
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
 			<%- include ("../attachments/_show",{attachment}) %>
@@ -112,8 +114,8 @@
 				</div>
 				<%}%>
 		</div>
-        <div><a href="<%=escapeRoom.id%>/report"> Reportar <a></div>
-        <div><a href="<%=escapeRoom.id%>/contact"> Contactar <a></div>
+
+        
 	</div>
 	<br/><br/><br/><br/>
 
