@@ -552,6 +552,24 @@
                     "invalidRegex": "Expresión regular inválida"
                 }
             },
+            "after": {
+                "title": "Finalización",
+                "description": "Aquí puedes añadir la información que quieres mostrar a los alumnos una vez terminen la escape room. Puedes incluir una encuesta, un cuestionario posterior o cualquier otra información que quieras compartir con ellos"
+            },
+            "sharing": {
+                "title": "Publicación",
+                "description": "Puedes compartir tu escape room con otros profesores para que la utilicen en sus clases. Puedes hacerlo público para que los alumnos puedan apuntarse a ella desde la página principal de escapp",
+                "license": "Licencia",
+                "status": {
+                    "name": "Estado",
+                    "draft": "Borrador",
+                    "completed": "Completado"
+                },
+                "licenseExplanation": "¿Qué tipo de licencia quieres aplicar al contenido de tu escape room?. Esto afectará a la posibilidad de que otros profesores puedan utilizarla en sus clases",
+                "invitationExplanation": "¿Quieres que los alumnos tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
+                "scopeExplanation": "¿Quieres que los alumnos puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos alumnos que tengan el enlace directo",
+                "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los alumnos no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia."
+            },
             "turnos": {
                 "title": "Turnos",
                 "indicacion": "¿Alguna indicación?",
@@ -840,6 +858,7 @@
     "showTeacher": {
         "actionList": {
             "activateTurno": "comenzar",
+            "after": "Instrucciones finales",
             "analytics": "Analíticas de aprendizaje",
             "appearance": "Apariencia",
             "basic": "Configuración básica",
@@ -862,6 +881,7 @@
             "shifts": "Turnos",
             "turnos": "Turnos",
             "share": "compartir",
+            "sharing": "Publicación",
             "stop": "detener",
             "shift": "turno",
             "volver": "volver",

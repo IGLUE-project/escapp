@@ -1,12 +1,13 @@
 const steps = [
     "edit",
-    "turnos",
     "puzzles",
     "hints",
     "indications",
     "team",
     "class",
-    "evaluation"
+    "after",
+    "evaluation",
+    "sharing"
 ];
 
 exports.steps = () => [...steps];

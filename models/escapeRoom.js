@@ -112,6 +112,19 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.STRING,
                 "allowNull": true,
                 "validate": {"isIn": [["en", "es"]]}
+            },
+            "status": {
+                "type": DataTypes.STRING,
+                "allowNull": true,
+                "validate": {"isIn": [["draft", "completed"]]}
+            },
+            "license": {
+                "type": DataTypes.STRING,
+                "allowNull": true
+            },
+            "publishedOnce": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
             }
         }
     );

@@ -562,6 +562,20 @@
                 }
 
             },
+            "after": {
+                "title": "Post-activity instructions",
+                "description": "Here you can add the information you want to show students once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them"
+            },
+            "sharing": {
+                "title": "Publication",
+                "description": "You can publish your escape room so that other teachers can use it. You can also make it public so that students can see it in the home page and sign up for it",
+                "license": "License",
+                "status": {
+                    "name": "Status",
+                    "draft": "Draft",
+                    "completed": "Completed"
+                }
+            },
             "turnos": {
                 "title": "Shifts",
                 "indicacion": "Add a comment",
@@ -852,6 +866,7 @@
     "showTeacher": {
         "actionList": {
             "activateTurno": "start",
+            "after": "Post-activity instructions",
             "analytics": "Learning analytics",
             "appearance": "Appearance",
             "basic": "Basic configuration",
@@ -872,6 +887,7 @@
             "collaborators": "Collaborators",
             "teams": "Teams",
             "share": "share",
+            "sharing": "Publication",
             "shifts": "Shifts",
             "stop": "stop",
             "shift": "shift",

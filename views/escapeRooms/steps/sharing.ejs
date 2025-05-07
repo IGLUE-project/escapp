@@ -1,0 +1,73 @@
+<%- include ("../../partials/_header.ejs") %>
+ 
+<div role="main" class="main steps step-sharing">
+	<%- include ("../../partials/_breadcrumbStep") %>
+	<h1><%=i18n.escapeRoom.steps.sharing.title%></h1>  
+	<p class="intro-paragraph">
+    	<%=i18n.escapeRoom.steps.sharing.explanation%>
+    </p>
+  	<form class="basicConfig" method='POST' action='/escapeRooms/<%= escapeRoom.id %>/sharing'  >
+        <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
+            <label for="license"  class="itemNarrow">1. <%=i18n.escapeRoom.steps.sharing.license%>:</label>
+			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.licenseExplanation%></p>
+
+            <select class="customInput itemWide" id="license" name="license" autocomplete="off" <%=escapeRoom.publishedOnce   ? "disabled" : "" %>
+                <option value="CC BY" <%=escapeRoom.license == "CC BY"   ? "selected" : "" %>> CC BY </option>
+                <option value="CC BY-NC" <%=escapeRoom.license == "CC BY-NC"   ? "selected" : "" %>> CC BY-NC </option>
+                <option value="CC BY-SA" <%=escapeRoom.license == "CC BY-SA"   ? "selected" : "" %>> CC BY-SA </option>
+                <option value="CC BY-NC-SA" <%=escapeRoom.license == "CC BY-NC-SA"   ? "selected" : "" %>> CC BY-NC-SA </option>
+                <option value="CC BY-ND" <%=escapeRoom.license == "CC BY-ND"   ? "selected" : "" %>> CC BY-ND </option>
+                <option value="CC BY-NC-ND" <%=escapeRoom.license == "CC BY-NC-ND"   ? "selected" : "" %>> CC BY-NC-ND </option>
+            </select>
+        </div>
+
+        <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
+            <label for="status"  class="itemNarrow">2. <%=i18n.escapeRoom.steps.sharing.status.name%>:</label>
+			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.statusExplanation%></p>
+
+            <select class="customInput itemWide" id="status" name="status" autocomplete="off">
+                <option value="draft" <%=escapeRoom.status == "draft"  ? "selected" : "" %>><%=i18n.escapeRoom.steps.sharing.status.draft%> </option>
+                <option value="completed" <%=escapeRoom.status == "completed"  ? "selected" : "" %>><%=i18n.escapeRoom.steps.sharing.status.completed%></option>
+            </select>
+        </div>
+        
+        <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
+            <label for="scope"  class="itemNarrow">3. <%=i18n.showTeacher.titles["scope"]%>:</label>
+			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.scopeExplanation%></p>
+
+            <select class="customInput itemWide" id="scope" name="scope" autocomplete="off">
+                <option value="public" <%=!Boolean(escapeRoom.scope)  ? "" : "selected" %>><%=i18n.escapeRoom.invitation.scopes["public"]%> </option>
+                <option value="private" <%=Boolean(escapeRoom.scope) ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["private"]%></option>
+            </select>
+        </div>
+        
+        <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms;">
+            <label for="invitation"  class="itemNarrow">4. <%=i18n.showTeacher.titles.password%>:</label>
+			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.invitationExplanation%></p>
+
+            <input  type="text" class="customInput itemWide" id="invitation" name="invitation" value="<%= escapeRoom.invitation %>"  
+                    placeholder="<%=i18n.escapeRoom.steps.edit.passwordPlaceHolder%>" autocomplete="off"/>
+        </div>
+	
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+
+	  	<div class="align-right flex-buttons" style="margin-bottom: 60px;">
+            <button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
+			<button class="progress-buttons" type="submit" value="next" id="next" name="next"><%=i18n.common.finish%></button>
+			<button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
+		</div>
+        <%- include('../../partials/_progress', {progress}) %>
+	</form>
+	<br/><br/>
+</div>
+<%- include('../../partials/_footer', {ignoreExtras: true}) %>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<%- include ("../../partials/_scrollListener") %>

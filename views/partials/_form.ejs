@@ -73,20 +73,7 @@
     <option value="es"<%=escapeRoom.forceLang == "es" ? "selected" : "" %>><%=i18n.langs["es"]%></option>
   </select>
 </div>
- 
-<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1).length%>ms;">
-  <label for="scope"  class="itemNarrow">8. <%=i18n.showTeacher.titles["scope"]%>:</label>
-  <select class="customInput itemWide" id="scope" name="scope" autocomplete="off">
-    <option value="public" <%=!Boolean(escapeRoom.scope)  ? "" : "selected" %>><%=i18n.escapeRoom.invitation.scopes["public"]%> </option>
-    <option value="private" <%=Boolean(escapeRoom.scope) ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["private"]%></option>
-  </select>
-</div>
 
-<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">
-  <label for="invitation"  class="itemNarrow">9. <%=i18n.showTeacher.titles.password%>:</label>
-  <input  type="text" class="customInput itemWide" id="invitation" name="invitation" value="<%= escapeRoom.invitation %>"  
-         placeholder="<%=i18n.escapeRoom.steps.edit.passwordPlaceHolder%>" autocomplete="off"/>
-</div>
 
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
     <label class="itemNarrow">10. <%=i18n.showTeacher.titles.thumbnail%>:</label>
