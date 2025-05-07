@@ -1185,5 +1185,13 @@
         "view_cookies": "Read Cookie Policy",
         "error_accepting": "Error updating terms and privacy policy acceptance"
 
+    },
+    "reports": {
+        "r1": "Inapropriate content",
+        "r2": "Content not related to the activity",
+        "r3": "Inaccurate content",
+        "r4": "Escape room not accessible",
+        "r5": "Technical problems",
+        "r6": "Other"
     }
 }

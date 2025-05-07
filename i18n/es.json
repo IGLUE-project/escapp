@@ -1168,5 +1168,13 @@
           "view_privacy": "Leer Política de Privacidad",
           "view_cookies": "Leer Política de Cookies",
           "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
-        }
+        },
+    "reports": {
+        "r1": "Contenido inapropiado",
+        "r2": "Contenido no relacionado con la actividad",
+        "r3": "Contenido no accesible",
+        "r4": "Escape room no accesible",
+        "r5": "Problemas técnicos",
+        "r6": "Otros problemas"
+    }
 }

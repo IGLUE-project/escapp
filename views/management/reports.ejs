@@ -14,15 +14,15 @@
            <tr id=<%=report.id%> class="info noreaded">
                 <td><%= report.user.name%></td>
                 <td><%= report.escapeRoom.title%></td>
-                <td><%= report.reason%></td>
+                <td><%= i18n.reports[report.reason]%></td>
                 <td>
-                    <button class="Bnoreaded" onclick="markAsUnread('<%= report.id%>')">Un-Piola</button>
-                    <button class="Breaded" onclick="markAsRead('<%= report.id%>')">Piola</button>
+                    <button class="Bnoreaded" onclick="markAsUnread('<%= report.id%>')">Mande</button>
+                    <button class="Breaded" onclick="markAsRead('<%= report.id%>')">Oido cocina</button>
                     <button class="delete" onclick="deleteReport('<%= report.id%>')">Delete</button>
                 </td>
            </tr>
            <tr id="<%=report.id%>-c" class="noreaded comments">
-                <td colspan="4"><%= report.comments%></td>
+                <td class="comments" colspan="4"><%= report.comments%></td>
            <tr>
     <% }})%>
     <%reports.forEach(report => {%>
@@ -30,15 +30,15 @@
            <tr id=<%=report.id%> class="readed info">
                 <td><%= report.user.name%></td>
                 <td><%= report.escapeRoom.title%></td>
-                <td><%= report.reason%></td>
+                <td><%= i18n.reports[report.reason]%></td>
                 <td>
-                    <button class="Bnoreaded" onclick="markAsUnread('<%= report.id%>')">Un-Piola</button>
-                    <button class="Breaded" onclick="markAsRead('<%= report.id%>')">Piola</button>
+                    <button class="Bnoreaded" onclick="markAsUnread('<%= report.id%>')">Mande</button>
+                    <button class="Breaded" onclick="markAsRead('<%= report.id%>')">Oido cocina</button>
                     <button class="delete" onclick="deleteReport('<%= report.id%>')">Delete</button>
                 </td>
            </tr>
-           <tr id="<%=report.id%>-c" class="readed comments">
-                <td colspan="4"><%= report.comments%></td>
+           <tr id="<%=report.id%>-c" class="readed">
+                <td class="comments" colspan="4"><%= report.comments%></td>
            <tr>
         <% }%>
     <% })%>
@@ -52,13 +52,14 @@
  }
 .comments {
     border-bottom: solid 1px white;
+    padding: 10px;
 }
 .reportTable {
     width: 100%;
     border-collapse: collapse;
 }
 .readed {
-    color: #111;
+    color: #555;
 }
 
 .noreaded {

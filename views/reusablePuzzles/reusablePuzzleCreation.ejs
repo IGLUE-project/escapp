@@ -1,29 +1,12 @@
 <div style="color:white">
     <h1> CREATE NEW PUZZLE </h1> <h2> Puzzle </h2>
     </select>
-    <form method="POST" action="../reusablePuzzleInstance">
-        <label> Name </label>
-        <input type="text" name="name"/>
-        <label> Description </label>
-        <input type="text" name="description"/>
-        </br>
-        <label> Puzzle type </label>
-    <select name="reusablePuzzleId">
-        <% rPuzzles.map(puzzle => {%>
-                <option value="<%=puzzle.id%>"> <%=puzzle.name%></option>
-        <%}) %>
-        </select>
-        </br>
-        <h2>Configuration</h2>
-        <label> Input </label>
-        <input type="text" name="config_a"/>
-        <label> Input </label>
-        <input type="text" name="config_b"/>
-        <label> Input </label>
-        <input type="text" name="config_c"/>
-        <label> Input </label>
-        <input type="text" name="config_d"/>
+    <h1>Creación de un nuevo puzzle</h1>
+    <p> Suba un PDF con el fichero un fichero config.json </p>
+    <form method="POST" enctype="multipart/form-data" action="../reusablePuzzles">
+        <input type="file" name="upload"/>
         <input type="submit"/>
+        <br>
     </form>
     <button onclick="window.location.replace(document.referrer)">Volver</button>
 </div>

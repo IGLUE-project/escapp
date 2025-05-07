@@ -1,10 +1,13 @@
 const {models} = require("../models");
+const fs = require("fs");
+const path = require("path");
+const StreamZip = require("node-stream-zip");
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {
         const reusablePuzzles = await models.reusablePuzzle.findAll();
 
-        res.render("reusablePuzzles/index", reusablePuzzles);
+        res.render("reusablePuzzles/index", {reusablePuzzles});
     } catch (e) {
         next(e);
     }
@@ -14,7 +17,7 @@ exports.getReusablePuzzle = async (req, res, next) => {
     const {reusablePuzzleId} = req.params;
 
     try {
-        const reusablePuzzle = await models.reusablePuzzle.findOne({"where": {reusablePuzzleId}});
+        const reusablePuzzle = await models.reusablePuzzle.findOne({"where": {id:reusablePuzzleId}});
 
         res.render("reusablePuzzles/details", reusablePuzzle);
     } catch (e) {
@@ -58,6 +61,7 @@ exports.deleteReusablePuzzleInstance = async (req, res, next) => {
 
 
 exports.renderPuzzleConfiguration = async (_, res) => {
+
     const rPuzzles = await models.reusablePuzzle.findAll();
 
     res.render("reusablePuzzles/reusablePuzzleCreation", {rPuzzles});
@@ -84,6 +88,45 @@ exports.createReusablePuzzleInstance = async (req, res, next) => {
         res.redirect(`/escapeRooms/${escapeRoomId}/team`);
         next();
     } catch (e) {
+        next(e);
+    }
+};
+
+
+exports.renderCreatePuzzle = async (req, res) => {
+        res.render("reusablePuzzles/reusablePuzzleCreation");
+}
+
+
+exports.createReusablePuzzle = async (req, res, next) => {
+    const {name, description} = req.body;
+
+    try {
+        let hasConfig = false;
+        const zip = new StreamZip.async({ file: req.file.path });
+        const entries = await zip.entries();
+        for (const entry of Object.values(entries)) {
+            if (entry.name === "config.json") {
+                hasConfig = true;
+                break;
+            }
+        }
+
+        const newPath = path.join(__dirname, `../uploads/reusablePuzzles/${req.file.filename}`);
+        if (hasConfig) {
+            fs.mkdirSync(newPath);
+            await zip.extract(null, newPath);
+            await zip.close();
+        }
+
+        const config = fs.readFileSync(path.join(newPath, "config.json"));
+        const parsedConfig = JSON.parse(config);
+
+        await models.reusablePuzzle.create({name, description, config:parsedConfig});
+        res.redirect('back')
+    }
+    catch (e) {
+        console.error(e);
         next(e);
     }
 };

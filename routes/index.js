@@ -216,8 +216,10 @@ router.put("/resources/:resourceId", sessionController.loginRequired, sessionCon
 router.delete("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.destroy);
 
 // Routes for reusablePuzzles
+router.post("/reusablePuzzles", sessionController.loginRequired, sessionController.loginRequired, upload.single("upload"), reusablePuzzleController.createReusablePuzzle);
 router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);
-router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, sessionController.adminOrAuthorRequired, reusablePuzzleController.getReusablePuzzle);
+router.get("/reusablePuzzles/new", sessionController.loginRequired, reusablePuzzleController.renderCreatePuzzle);
+router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzle);
 router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
 
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);

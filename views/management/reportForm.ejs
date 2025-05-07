@@ -7,12 +7,11 @@
             <div style="display:flex;flex-direction:column;align-items:baseline">
                 <label for="reason">Motivo</label>
                 <select style="width:80vw;margin:1vw 0" id="reason" name="reason" >
-                    <option value="r1"> Motivo 1</option>
-                    <option value="r2"> Motivo 2</option>
-                    <option value="r3"> Motivo 3</option>
-                    <option value="r4"> Motivo 4</option>
-                    <option value="r5"> Motivo 5</option>
-                    <option value="r6"> Motivo 6</option>
+                <%console.log(i18n)%>
+                <% Object.entries(i18n.reports).forEach((entry) => { %>
+                    <% const [key, value] = entry;%>
+                    <option value="<%=key%>"><%=value%></option>
+                <% })%>
                 </select>
                 <label for="comments">Comentarios adicionales</label>
                 <input style="width:80vw;height:20vh;margin:1vw 0" type="text" id="comments" name="comments" >

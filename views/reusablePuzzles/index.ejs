@@ -1,2 +1,9 @@
 Index
 
+<% reusablePuzzles.forEach((puzzle)=>{%>
+        <div class="puzzle">
+            <h2><%=puzzle.name%></h2>
+            <p><%=puzzle.description%></p>
+            <p><%=JSON.stringify(puzzle.config)%></p>
+        </div>
+<%    })%>
