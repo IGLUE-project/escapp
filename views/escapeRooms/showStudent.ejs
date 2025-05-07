@@ -46,7 +46,9 @@
 			<div id="editor" class="editor" style="padding: 0px;">
 				<% if (escapeRoom["indicationsInstructions"]) {%>
 					<% var instructions = "";try {instructions = escapeRoom["indicationsInstructions"] || '[{"payload":{"text":""}}]'%>
-					<%-JSON.parse(instructions)[0].payload.text %>
+					<% JSON.parse(instructions).forEach((instruction)=>{ %>
+					<%-instruction.payload.text %>
+					<%})%>
 					<%}catch(e){}%>
 				<% } %>
 			</div>
