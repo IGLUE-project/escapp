@@ -1,7 +1,9 @@
 <head>
   <link rel="stylesheet" href="/stylesheets/vendor/dropzone.css">
 <link rel="stylesheet" href="/stylesheets/vendor/quill.snow.css">
+<% if (endPoint !== "indications") {%>
 <link rel="stylesheet" href="/stylesheets/vendor/bootswatch/<%=escapeRoom[endPoint + "Appearance"] || "litera"%>.editor.bootstrap.min.css">
+<%}%>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="/js/vendor/jquery.ui.sortable.min.js"></script>
 <script src="/js/vendor/jquery.ui.touch-punch.min.js"></script>
@@ -18,6 +20,7 @@
     <p class="intro-paragraph">
       <%=i18n.escapeRoom.steps[endPoint].explanation%>
     </p>
+
     <%- include ("../../partials/_resource_catalog", {theme, endPoint, escapeRoom}) %>
     </div>
     <br/>
