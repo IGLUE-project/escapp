@@ -148,7 +148,8 @@
             "notEmpty": "no puede estar vací@",
             "len": "es demasiado larg@",
             "min": "es demasiado bajo",
-            "max": "es demasiado elevado"
+            "max": "es demasiado elevado",
+            "isIn": "debe tomar uno de los valores permitidos"
         },
         "exit": "salir",
         "filter": "filtrar",
@@ -377,7 +378,7 @@
             "noERTeacher": "No has creado ninguna escape room, gestiónalas desde aquí...",
             "noERStudent": "No tienes ninguna escape room activa, utiliza en enlace original que te ha proporcionado tu profe para apuntarte.",
             "myERs": "Mis escape rooms",
-            "otherERs": "Todas",
+            "otherERs": "Públicas",
             "emptyER": "No hay colaboradores",
             "playingERs": "Participando",
             "yesERStudent": "Estas son las escape rooms disponibles",
@@ -574,7 +575,7 @@
             },
             "after": {
                 "title": "Finalización",
-                "description": "Aquí puedes añadir la información que quieres mostrar a los alumnos una vez terminen la escape room. Puedes incluir una encuesta, un cuestionario posterior o cualquier otra información que quieras compartir con ellos"
+                "explanation": "Aquí puedes añadir la información que quieres mostrar a los alumnos una vez terminen la escape room. Puedes incluir una encuesta, un cuestionario posterior o cualquier otra información que quieras compartir con ellos"
             },
             "sharing": {
                 "title": "Publicación",
@@ -628,6 +629,9 @@
             "teamSize": "El tamaño de los equipos",
             "scope": "La visibilidad",
             "invitation": "La contraseña",
+            "field": "El campo",
+            "level": "El nivel educativo",
+            "format": "El formato",
             "teamAppearance": "El tema de la interfaz de equipo",
             "classAppearance": "El tema de la interfaz de clase",
             "survey": "La encuesta",
@@ -640,6 +644,7 @@
             "forbiddenLateSubmissions": "La opción de permitir pasarse de tiempo",
             "classInstructions": "La interfaz de clase",
             "teamInstructions": "La interfaz de equipo",
+            "afterInstructions": "Las instrucciones al terminar",
             "indicationsInstructions": "Las instrucciones previas",
             "supportLink": "El link de soporte",
             "scoreParticipation": "La nota por asistencia",
@@ -957,7 +962,9 @@
             "video": "Vídeo",
             "share": "Compartir",
             "forceLang": "Forzar el idioma de escapp para los alumnos de esta escape room"
-        }
+        },
+        "cantManageUntilComplete": "No puedes gestionar la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación')."
+
     },
     "team": {
         "add": "Añada un equipo",

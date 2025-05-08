@@ -62,7 +62,7 @@
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
         <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem">
-                <% if (endPoint !== "indications") {%>
+                <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
                     <button class="building-block-bar-button uploadButton" onclick="toggleCatalogModal()">
                         <a href="#">
                             <span class="building-block-icon material-icons"> add </span>
@@ -352,7 +352,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    <% } else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1 && endPoint !== "indications"){ %>
+                                    <% } else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1 && endPoint !== "indications" && endPoint !== "after"){ %>
                                         <tr class="catalogItem" id=<%=asset.id%> >
                                             <td>
                                                 <p class=" title">
@@ -466,7 +466,7 @@
 </div>
 <div style="display:flex; margin-top:0.5em; align-items:center; justify-content: end; gap: 0.7rem">
 
-    <% if (endPoint !== "indications") {%>
+    <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
     <button class="building-block-bar-button theme-btn" style="display:flex;">
         <span class="building-block-icon material-icons" style="color: var(--info);">color_lens</span>
         <span class="theme-text">

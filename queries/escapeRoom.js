@@ -129,7 +129,7 @@ exports.ids = (ids) => {
             "id",
             "title",
             "invitation",
-            "scope" 
+            "scope"
         ],
         "distinct": true,
         "where": {"id": {[Op.in]: ids}},

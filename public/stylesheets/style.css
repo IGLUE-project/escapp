@@ -1144,6 +1144,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li {
   margin-bottom: 16px;
   position: relative;
+  padding-left: 1.5rem;
 }
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .overlay-trigger {
   top: 40px;
@@ -1160,6 +1161,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a:hover {
   color: #48C18E;
 }
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a.disabled-action {
+  cursor: not-allowed;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a.disabled-action:hover {
+  color: white;
+}
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .showMenuButton {
   font-size: 16px;
   border-radius: 20px;
@@ -1169,6 +1176,39 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .showMenuButton:hover {
   transform: scale(0.9);
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er {
+  position: relative;
+  margin: 2rem 0;
+  padding-left: 0.4rem;
+  list-style: none;
+  border-left: 2px solid #ffffff;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step {
+  position: relative;
+  padding-left: 1.5rem;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step::before {
+  content: "";
+  position: absolute;
+  left: -0.95rem;
+  top: 0.25rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: #aab2bd;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step.completed::before {
+  background-color: #48C18E;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step a {
+  display: inline-block;
+  text-decoration: none;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step a .material-icons {
+  vertical-align: middle;
+  margin-left: 0.25rem;
 }
 #mainSection .main.escapeRoomShow .flexShow .flexRow .flexShowLeft {
   width: 170px;
@@ -2178,7 +2218,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-color: var(--bckg);
   color: black;
 }
-#mainSection .main.step-instructions .editor-wrapper.indications .editor {
+#mainSection .main.step-instructions .editor-wrapper.indications .editor, #mainSection .main.step-instructions .editor-wrapper.after .editor {
   background-color: #2A2A52;
 }
 #mainSection .main.step-instructions .editor-wrapper #editor {
@@ -2810,19 +2850,19 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 18px;
 }
 
-.indications #editor {
+.indications #editor, .after #editor {
   color: white;
   font-size: 22px;
 }
-.indications #editor blockquote {
+.indications #editor blockquote, .after #editor blockquote {
   font-family: Lato, sans-serif;
   margin-top: 0px;
   margin-bottom: 0px;
 }
-.indications #editor a, .indications #editor b, .indications #editor i, .indications #editor strong, .indications #editor em, .indications #editor ul, .indications #editor li, .indications #editor span, .indications #editor u {
+.indications #editor a, .indications #editor b, .indications #editor i, .indications #editor strong, .indications #editor em, .indications #editor ul, .indications #editor li, .indications #editor span, .indications #editor u, .after #editor a, .after #editor b, .after #editor i, .after #editor strong, .after #editor em, .after #editor ul, .after #editor li, .after #editor span, .after #editor u {
   font-family: inherit;
 }
-.indications #editor pre {
+.indications #editor pre, .after #editor pre {
   font-family: monospace;
 }
 

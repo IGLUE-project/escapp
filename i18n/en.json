@@ -154,7 +154,8 @@
             "notEmpty": "cannot be empty",
             "len": "is too long",
             "min": "is too low",
-            "max": "is too high"
+            "max": "is too high",
+            "isIn": "must have one of the available values"
         },
         "exit": "exit",
         "filter": "filter",
@@ -384,7 +385,7 @@
             "noERTeacher": "You haven't created any Escape Rooms yet. Manage them from here",
             "noERStudent": "You haven't any active Escape Rooms yet, wait for your teacher's invitation.",
             "myERs": "My escape rooms",
-            "otherERs":"All",
+            "otherERs":"Public",
             "emptyER": "No collaborators yet",
             "playingERs":"Participating",
             "yesERStudent": "These are your Escape Rooms",
@@ -584,7 +585,7 @@
             },
             "after": {
                 "title": "Post-activity instructions",
-                "description": "Here you can add the information you want to show students once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them"
+                "explanation": "Here you can add the information you want to show students once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them"
             },
             "sharing": {
                 "title": "Publication",
@@ -638,6 +639,9 @@
             "teamSize": "The team size",
             "scope": "The visibility",
             "invitation": "The password",
+            "field": "The field",
+            "level": "The educational level",
+            "format": "The format",
             "teamAppearance": "The team interface theme",
             "classAppearance": "The class interface theme",
             "survey": "The survey",
@@ -648,7 +652,8 @@
             "feedback": "The feedback option",
             "allowCustomHints": "The custom hints opion",
             "forbiddenLateSubmissions": "The option to forbid late submissions",
-            "classInstructions": "The class interface",
+            "classInstrucations": "The class interface",
+            "afterInstructions": "Post-activity instructions ",
             "teamInstructions": "The team interface",
             "indicationsInstructions": "The pre-activity instrucionts",
             "supportLink": "The support link",
@@ -968,7 +973,8 @@
             "share": "Share",
             "forceLang": "Force specific language in escapp for the participants of this escape room"
 
-        }
+        },
+        "cantManageUntilComplete": "You cannot manage the escape room until you have changed its status to completed in the last step of the Setup ('Publication')."
     },
     "team": {
         "add": "Add a team",

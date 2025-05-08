@@ -46,8 +46,19 @@
 	<div class="animated fadeIn">
 		<div class="col-xs-12 indications text-left instructionsShow ">
 			<div id="editor" class="editor" style="padding: 0px;">
-				<% if (escapeRoom["indicationsInstructions"]) {%>
-					<% var instructions = "";try {instructions = escapeRoom["indicationsInstructions"] || '[{"payload":{"text":""}}]'%>
+				<%console.log(escapeRoom.duration)%>
+				<% if (escapeRoom["afterInstructions"] &&
+				(finished || (team.startTime && (new Date(team.startTime.getTime() + escapeRoom.duration * 60000) < new Date() ))))
+				 {%>
+					<% var instructions = "";
+					try {instructions = escapeRoom["afterInstructions"] || '[{"payload":{"text":""}}]'%>
+					<% JSON.parse(instructions).forEach((instruction)=>{ %>
+					<%-instruction.payload.text %>
+					<%})%>
+					<%}catch(e){}%>
+				<% } else if (escapeRoom["indicationsInstructions"]) {%>
+					<% var instructions = "";
+					try {instructions = escapeRoom["indicationsInstructions"] || '[{"payload":{"text":""}}]'%>
 					<% JSON.parse(instructions).forEach((instruction)=>{ %>
 					<%-instruction.payload.text %>
 					<%})%>

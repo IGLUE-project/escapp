@@ -71,6 +71,10 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.TEXT,
                 "validate": {"len": [0, 200000]}
             },
+            "afterInstructions": {
+                "type": DataTypes.TEXT,
+                "validate": {"len": [0, 200000]}
+            },
             "supportLink": {
                 "type": DataTypes.TEXT,
                 "validate": {"len": [0, 200000]}
@@ -136,7 +140,7 @@ module.exports = function (sequelize, DataTypes) {
             "format": {
                 "type": DataTypes.STRING,
                 "allowNull": true,
-                "validate": {"isIn": [["online", "hybrid"]]}
+                "validate": {"isIn": [["none", "online", "hybrid"]]}
             },
             "publishedOnce": {
                 "type": DataTypes.BOOLEAN,

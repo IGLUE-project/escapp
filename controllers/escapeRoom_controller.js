@@ -6,7 +6,7 @@ const cloudinary = require("cloudinary");
 const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances } = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
 const es = require("../i18n/es");
 const en = require("../i18n/en");
 
@@ -87,6 +87,7 @@ exports.index = async (req, res, next) => {
                 const isSignedUp = ids.indexOf(er.id) !== -1;
                 const isAuthorOrCoAuthor = er.author.id === user.id || er.userCoAuthor.some((e) => e.id === user.id);
                 const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
+
                 return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor };
             });
         }
@@ -118,7 +119,9 @@ exports.show = async (req, res) => {
 
         res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished});
     } else {
-        res.render("escapeRooms/show", {escapeRoom, cloudinary, hostName, "email": req.session.user.username});
+        const completed = stepsCompleted(escapeRoom);
+
+        res.render("escapeRooms/show", {escapeRoom, cloudinary, completed, hostName, "email": req.session.user.username});
     }
 };
 
@@ -221,6 +224,7 @@ exports.update = async (req, res) => {
     escapeRoom.level = body.level;
     escapeRoom.field = body.field;
     escapeRoom.format = body.format;
+    console.log({"level": body.level});
     escapeRoom.supportLink = body.supportLink;
 
     escapeRoom.teamSize = body.teamSize || 0;
@@ -274,7 +278,6 @@ exports.update = async (req, res) => {
         res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
     } catch (error) {
         console.error(error);
-        // Console.error(error);
         if (error instanceof Sequelize.ValidationError) {
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));
@@ -342,45 +345,6 @@ exports.evaluationUpdate = async (req, res) => {
         res.render("escapeRooms/steps/evaluation", {escapeRoom, "progress": "evaluation"});
     }
 };
-
-// GET /escapeRooms/:escapeRoomId/after
-exports.after = async (req, res, next) => {
-    try {
-        const {escapeRoom} = req;
-
-        res.render("escapeRooms/steps/after", {escapeRoom, "progress": "after"});
-    } catch (e) {
-        next(e);
-    }
-};
-
-// POST /escapeRooms/:escapeRoomId/after
-exports.afterUpdate = async (req, res) => {
-    const {body} = req;
-    const isPrevious = Boolean(body.previous);
-    const progressBar = body.progress;
-    const {i18n} = res.locals;
-    const {escapeRoom} = req;
-
-    try {
-        // EscapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
-        // EscapeRoom.scope = body.scope === "private";
-
-        // Await escapeRoom.save({"fields": ["invitation", "scope"]});
-
-        res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("after") : progressBar || nextStep("after")}`);
-    } catch (error) {
-        if (error instanceof Sequelize.ValidationError) {
-            error.errors.forEach((err) => {
-                req.flash("error", validationError(err, i18n));
-            });
-        } else {
-            req.flash("error", i18n.common.flash.errorEditingER);
-        }
-        res.render("escapeRooms/steps/after", {escapeRoom, "progress": "after"});
-    }
-};
-
 
 // GET /escapeRooms/:escapeRoomId/sharing
 exports.sharing = async (req, res, next) => {
@@ -464,7 +428,21 @@ exports.indicationsInterface = async (req, res) => {
     res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "indications", "endPoint": "indications", assets, availableReusablePuzzles});
 };
 
-// POST /escapeRooms/:escapeRoomId/class
+// GET /escapeRooms/:escapeRoomId/after
+exports.afterInterface = async (req, res) => {
+    const {escapeRoom} = req;
+
+    const availableReusablePuzzles = await getReusablePuzzles();
+    const assets = await getERAssets(escapeRoom.id);
+
+    res.render("escapeRooms/steps/after", {escapeRoom, "progress": "after", "endPoint": "after", assets, availableReusablePuzzles});
+};
+
+
+// POST /escapeRooms/:escapeRoomId/after
+exports.afterInterfaceUpdate = (req, res, next) => saveInterface("after", req, res, next);
+
+// POST /escapeRooms/:escapeRoomId/indications
 exports.indicationsInterfaceUpdate = (req, res, next) => saveInterface("indications", req, res, next);
 
 // POST /escapeRooms/:escapeRoomId/team
@@ -498,7 +476,7 @@ exports.clone = async (req, res, next) => {
     const transaction = await sequelize.transaction();
 
     try {
-        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
+        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${oldTitle}`;
         const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -535,6 +513,7 @@ exports.clone = async (req, res, next) => {
             classInstructions,
             teamInstructions,
             indicationsInstructions,
+            afterInstructions,
             scoreParticipation,
             hintLimit,
             hintSuccess,
@@ -544,7 +523,6 @@ exports.clone = async (req, res, next) => {
             automaticAttendance,
             "status": "draft",
             license,
-            scope,
             field,
             "publishedOnce": true,
             format,
