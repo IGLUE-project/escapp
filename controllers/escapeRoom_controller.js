@@ -70,8 +70,8 @@ exports.index = async (req, res, next) => {
         } else {
             let erAll = [];
 
-            count = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((scope = FALSE OR SCOPE IS NULL) AND (status = 'pending' OR status = 'active')) OR ("participants"."userId" =  ${user.id} AND status != 'test')`, {"raw": true, "type": QueryTypes.SELECT});
-            erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((scope = FALSE OR SCOPE IS NULL) AND (status = 'pending' OR status = 'active')) OR ("participants"."userId" =  ${user.id} AND status != 'test') ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(page - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
+            count = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE (("escapeRooms"."status" = 'completed') AND  (scope = FALSE OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active')) OR ("participants"."userId" =  ${user.id} AND "turnos"."status" != 'test')`, {"raw": true, "type": QueryTypes.SELECT});
+            erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE (("escapeRoom"."status" = 'completed') AND (scope = FALSE OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')) OR ("participants"."userId" =  ${user.id} AND "turnos"."status" != 'test') ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(page - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
             count = parseInt(count[0].count, 10);
 
             const orIds = erAll.map((e) => e.id);
@@ -124,7 +124,7 @@ exports.show = async (req, res) => {
 
 // GET /escapeRooms/new
 exports.new = (_req, res) => {
-    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "scope": false, "teamSize": "", "forceLang": ""};
+    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "forceLang": ""};
 
     res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
 };
@@ -141,7 +141,7 @@ exports.create = async (req, res) => {
     escapeRoom.forceLang = forceLang === "en" || forceLang === "es" ? forceLang : null;
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang","format","level","field"], transaction});
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": er.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});
 
@@ -218,14 +218,17 @@ exports.update = async (req, res) => {
     escapeRoom.forbiddenLateSubmissions = body.forbiddenLateSubmissions === "on";
     escapeRoom.description = body.description;
     escapeRoom.supportLink = body.supportLink;
-    escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
-    escapeRoom.scope = body.scope === "private";
+    escapeRoom.level = body.level;
+    escapeRoom.field = body.field;
+    escapeRoom.format = body.format;
+    escapeRoom.supportLink = body.supportLink;
+
     escapeRoom.teamSize = body.teamSize || 0;
     escapeRoom.forceLang = body.forceLang === "en" || body.forceLang === "es" ? body.forceLang : null;
     const progressBar = body.progress;
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "subject", "duration", "forbiddenLateSubmissions", "description", "scope", "teamSize", "supportLink", "forceLang", "invitation"]});
+        const er = await escapeRoom.save({"fields": ["title", "subject", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "forceLang","format","level","field"]});
 
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
@@ -340,6 +343,91 @@ exports.evaluationUpdate = async (req, res) => {
     }
 };
 
+// GET /escapeRooms/:escapeRoomId/after
+exports.after = async (req, res, next) => {
+    try {
+        const {escapeRoom} = req;
+
+        res.render("escapeRooms/steps/after", {escapeRoom, "progress": "after"});
+    } catch (e) {
+        next(e);
+    }
+};
+
+// POST /escapeRooms/:escapeRoomId/after
+exports.afterUpdate = async (req, res) => {
+    const {body} = req;
+    const isPrevious = Boolean(body.previous);
+    const progressBar = body.progress;
+    const {i18n} = res.locals;
+    const {escapeRoom} = req;
+
+    try {
+        // EscapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
+        // EscapeRoom.scope = body.scope === "private";
+
+        // Await escapeRoom.save({"fields": ["invitation", "scope"]});
+
+        res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("after") : progressBar || nextStep("after")}`);
+    } catch (error) {
+        if (error instanceof Sequelize.ValidationError) {
+            error.errors.forEach((err) => {
+                req.flash("error", validationError(err, i18n));
+            });
+        } else {
+            req.flash("error", i18n.common.flash.errorEditingER);
+        }
+        res.render("escapeRooms/steps/after", {escapeRoom, "progress": "after"});
+    }
+};
+
+
+// GET /escapeRooms/:escapeRoomId/sharing
+exports.sharing = async (req, res, next) => {
+    try {
+        const {escapeRoom} = req;
+
+        res.render("escapeRooms/steps/sharing", {escapeRoom, "progress": "sharing"});
+    } catch (e) {
+        next(e);
+    }
+};
+
+// POST /escapeRooms/:escapeRoomId/sharing
+exports.sharingUpdate = async (req, res) => {
+    const {body} = req;
+    const isPrevious = Boolean(body.previous);
+    const progressBar = body.progress;
+    const {i18n} = res.locals;
+    const {escapeRoom} = req;
+
+    try {
+        escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
+        escapeRoom.scope = body.scope === "private";
+        if (!escapeRoom.publishedOnce) {
+            escapeRoom.license = body.license;
+            if (escapeRoom.status === "draft" && body.status === "completed") {
+                escapeRoom.publishedOnce = true;
+            }
+        }
+
+        escapeRoom.status = body.status;
+        await escapeRoom.save({"fields": ["invitation", "scope", "license", "status", "publishedOnce"]});
+
+        res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("sharing") : progressBar || nextStep("sharing")}`);
+    } catch (error) {
+        console.error(error);
+        if (error instanceof Sequelize.ValidationError) {
+            error.errors.forEach((err) => {
+                req.flash("error", validationError(err, i18n));
+            });
+        } else {
+            req.flash("error", i18n.common.flash.errorEditingER);
+        }
+        res.render("escapeRooms/steps/sharing", {escapeRoom, "progress": "sharing"});
+    }
+};
+
 // GET /escapeRooms/:escapeRoomId/team
 exports.teamInterface = async (req, res, next) => {
     try {
@@ -410,7 +498,7 @@ exports.clone = async (req, res, next) => {
     const transaction = await sequelize.transaction();
 
     try {
-        const {"title": oldTitle, subject, duration, description, scope, invitation, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
+        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${oldTitle}`;
         const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -454,6 +542,13 @@ exports.clone = async (req, res, next) => {
             authorId,
             supportLink,
             automaticAttendance,
+            status: "draft",
+            license,
+            scope,
+            field,
+            publishedOnce: true,
+            format,
+            level,
             "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, score, hints}) => ({
                 title,
                 sol,
@@ -466,7 +561,7 @@ exports.clone = async (req, res, next) => {
                 "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
             })),
             "hintApp": hintApp ? attHelper.getFields(hintApp) : undefined,
-            "assets": assets && assets.length ? [...assets].map((asset) => attHelper.getFields(asset)) : undefined,
+            "assets": assets && assets.length ? [...assets].map((asset) => ({...attHelper.getFields(asset), userId: authorId})) : undefined,
             "attachment": attachment ? attHelper.getFields(attachment) : undefined
         }, {include});
 

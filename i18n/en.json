@@ -348,6 +348,20 @@
         "fields": {
 
         },
+        "iscedNone": "None",
+        "isced": {
+            "00":"Generic programmes and qualifications",
+            "01":"Education",
+            "02":"Arts and humanities",
+            "03":"Social sciences, journalism and information",
+            "04":"Business, administration and law",
+            "05":"Natural sciences, mathematics and statistics",
+            "06":"Information and Communication Technologies",
+            "07":"Engineering, manufacturing and construction",
+            "08":"Agriculture, forestry, fisheries and veterinary",
+            "09":"Health and welfare",
+            "10":"Services"
+        },
         "invitation": {
             "no": "no",
             "wannaJoin": "Would you like to join this Escape Room?",
@@ -496,11 +510,11 @@
                     "Student": "Student",
                     "resources": "Resource catalog",
                     "catalog": {
-                        "newPuzzle": "New puzzle",
-                        "uploadFile": "Upload File",
-                        "addResource": "Add new resource",
-                        "addBlock": "Add block",
-                        "addText": "Add text block",
+                        "newPuzzle": "new puzzle",
+                        "uploadFile": "upload file",
+                        "addResource": "add new resource",
+                        "addBlock": "add block",
+                        "addText": "add text block",
                         "table": {
                             "name": "Name",
                             "type": "Type",
@@ -562,6 +576,26 @@
                 }
 
             },
+            "after": {
+                "title": "Post-activity instructions",
+                "description": "Here you can add the information you want to show students once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them"
+            },
+            "sharing": {
+                "title": "Publication",
+                "description": "You can publish your escape room so that other teachers can use it. You can also make it public so that students can see it in the home page and sign up for it",
+                "license": "License",
+                "status": {
+                    "name": "Status",
+                    "draft": "Draft",
+                    "completed": "Completed"
+                },
+                "level": "Educational level",
+                "field": "Field",
+                "licenseExplanation": "What type of license do you want to apply to your escape room content? This will affect whether other teachers can use it in their classes.",
+                "invitationExplanation": "Do you want students to enter a password to join the escape room? If so, select the private option. Otherwise, select public, and they can join without a password.",
+                "scopeExplanation": "Do you want students to be able to join the escape room from the main page of escapp? If so, select the public option. Otherwise, select private, and only students with the direct link will be able to access it.",
+                "statusExplanation": "Have you finished creating the escape room? If so, select the completed option. Otherwise, select draft, and you can continue editing it later. Keep in mind that until you publish it, students will not be able to join. Once published, you will not be able to change the license."
+            },
             "turnos": {
                 "title": "Shifts",
                 "indicacion": "Add a comment",
@@ -585,7 +619,8 @@
             }
         },
         "general": {
-            "areYouSureDelete": "Are you sure you want to delete this escape room?"
+            "areYouSureDelete": "Are you sure you want to delete this escape room?",
+            "areYouSureClone": "Are you sure you want to clone this escape room?"
         },
         "attributes": {
             "title": "The title",
@@ -852,6 +887,7 @@
     "showTeacher": {
         "actionList": {
             "activateTurno": "start",
+            "after": "Post-activity instructions",
             "analytics": "Learning analytics",
             "appearance": "Appearance",
             "basic": "Basic configuration",
@@ -872,6 +908,7 @@
             "collaborators": "Collaborators",
             "teams": "Teams",
             "share": "share",
+            "sharing": "Publication",
             "shifts": "Shifts",
             "stop": "stop",
             "shift": "shift",
@@ -891,6 +928,7 @@
             "copyTitle": "Copy the link",
             "qrTitle": "Generate a QR code to share",
             "noShiftsShare": "You cannot share the escape room until you have created at least one shift",
+            "noShiftsShareDraft": "You cannot share the escape room until you have changed its status to completed in the last stp of the Setup ('Publication').",
             "noShiftsStart": "You cannot start the escape room until you have created at least one shift",
             "join": {
                 "intro": "Share the following link with yout students so they can access the escape room:",
@@ -1011,6 +1049,7 @@
         "selectActivate": "Select the shift you want to activate/deactivate",
         "selectStudent": "Select a shift",
         "areYouSureReset": "Are you sure you want to reset this shift? All of the students' progress will be lost",
+        "areYouSureDelete": "Are you sure you want to delete this shift?",
         "todayEscapeRoom": "The Escape Room will be celebrated this day",
         "Turno": "Shift",
         "Links": "Links",

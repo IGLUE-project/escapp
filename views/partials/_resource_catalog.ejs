@@ -92,6 +92,7 @@
                 <col span="1" style="width: 20%;">
                 <col span="1" style="width: 30%;">
             </colgroup>
+            <% if(assets.length != 0) {%>
             <tr class="tableTitles">
                 <th>
                     <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%>
@@ -101,6 +102,7 @@
                 </th>
                 <th></th>
             </tr>
+            <% } %>
             <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
                 <tr class="catalogItem">
                     <td>

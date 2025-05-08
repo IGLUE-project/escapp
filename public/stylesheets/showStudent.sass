@@ -4,6 +4,13 @@
   .main.showStudent
     background-image: none
     background: colors.$bckg
+    .button-share
+      border-top: 2px solid white
+      padding-top: 0.5em
+      margin-top: 0.5em
+    .reporting
+      text-align: right
+      font-size: small
     .flex
       display: flex
       flex-direction: row-reverse
@@ -17,6 +24,12 @@
           border-width: 5px
       .flex-er-info
         flex: 1
+        .flex-er-info-preview
+          flex-direction: row
+          flex-wrap: wrap
+          display: flex
+          div
+            width:50%
     .editor img
       max-width: 100%
       height: auto

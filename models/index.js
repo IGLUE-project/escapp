@@ -316,9 +316,7 @@ escapeRoom.hasMany(report, {
     "foreignKey": "escapeRoomId"
 });
 
-report.belongsTo(escapeRoom, {
-    "foreignKey": "escapeRoomId"
-});
+report.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
 
 user.hasMany(report, {
     "onDelete": "CASCADE",
@@ -326,7 +324,5 @@ user.hasMany(report, {
     "foreignKey": "reportAuthor"
 });
 
-report.belongsTo(user, {
-    "foreignKey": "reportAuthor"
-});
+report.belongsTo(user, {"foreignKey": "reportAuthor"});
 module.exports = sequelize;

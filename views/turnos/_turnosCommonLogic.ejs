@@ -10,6 +10,19 @@ const formatDate = (currentDate) => `${currentDate.getDate()} ${monthArray[curre
 const getDashDate = function(currentDate) {
     return currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
 }
+
+const isValidDate = (date) => {
+    if (Object.prototype.toString.call(date) === "[object Date]") {
+        if (isNaN(date)) { // d.getTime() or d.valueOf() will also work
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+    
+};
 const filterTurnos = (date) => {
 
     const turnos = $(".turno:not(.add-turno):not(.always-turno)");
@@ -39,7 +52,6 @@ const getQueryStringValue = (key) => decodeURIComponent(window.location.search.r
 let myDate = new Date(getQueryStringValue("date"));
 
 const date = (myDate && !isNaN(myDate.getDate())) ? myDate : new Date();
-
 updateDate(date);
 
 $(function () {
@@ -65,8 +77,8 @@ $(function () {
     $("#datepicker").datepicker({
         "onSelect" () {
 
-            const date = $("#datepicker").datepicker("getDate");
-
+            let date = new Date($("#datepicker").datepicker("getDate"));
+            date = isValidDate(date) ? date : new Date();
             updateDate(date);
 
         },
@@ -98,8 +110,8 @@ $(function () {
         $("#datepicker").datepicker("setDate", new Date(myDate));
 
     }
-    const date = $("#datepicker").datepicker("getDate");
-
+    let date = new Date($("#datepicker").datepicker("getDate"));
+    date = isValidDate(date) ? date : new Date();
     updateDate(date);
 
 
