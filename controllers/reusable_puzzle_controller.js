@@ -122,12 +122,13 @@ exports.createReusablePuzzle = async (req, res, next) => {
         const parsedConfig = JSON.parse(config);
 
         const {name, description, puzzleConfig} = parsedConfig;
-
+        puzzleConfig.baseUrl = `uploads/reusablePuzzles/${req.file.filename}`;
         await models.reusablePuzzle.create({name, description, config:JSON.stringify(puzzleConfig)});
         res.redirect('back')
     }
     catch (e) {
         console.error(e);
+        await fs.rm(path.join("../uploads/reusablePuzzles/${req.file.filename"), { recursive: true, force: true });
         next(e);
     }
 };

@@ -34,10 +34,14 @@
         <section class="sectionAddResource">
             <p class="title-section">Recursos interactivos vinculados a retos</p>
             <div class="resources-group">
-                <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
+                <%availableReusablePuzzles.forEach(puzzle => { %>
                      <div class="resource-card">
-                        <% if( goodConfig && goodConfig.thumbnail) {%>
-                            <img src="/<%=goodConfig.baseUrl%>/<%=goodConfig.thumbnail%>"/>
+                        <% console.log(puzzle.config) %>
+                        <% if( puzzle.config) {console.log(puzzle.config.thumbnail)}%>
+                        <% if( puzzle.config) {console.log(puzzle.config.baseUrl)}%>
+                        <% if( puzzle.config) {console.log(Object.keys(puzzle.config))}%>
+                        <% if( puzzle.config?.thumbnail) {%>
+                            <img src="<%=puzzle.config.baseURL%>/<%=puzzle.config.thumbnail%>"/>
                         <%} else{%>
                             <img src="/images/keypad.png"/>
                         <%} %>

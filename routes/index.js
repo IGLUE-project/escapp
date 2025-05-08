@@ -221,6 +221,7 @@ router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleCo
 router.get("/reusablePuzzles/new", sessionController.loginRequired, reusablePuzzleController.renderCreatePuzzle);
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzle);
 router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
+router.get("/uploads/reusablePuzzles/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
 
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
 router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browse);
