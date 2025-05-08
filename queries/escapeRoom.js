@@ -129,7 +129,7 @@ exports.ids = (ids) => {
             "id",
             "title",
             "invitation",
-            "scope"
+            "scope" 
         ],
         "distinct": true,
         "where": {"id": {[Op.in]: ids}},
@@ -147,7 +147,18 @@ exports.ids = (ids) => {
                     }
                 ]
             },
-            models.attachment
+            models.attachment,
+            {
+                "model": models.user,
+                "as": "author",
+                "required": false
+            },
+            {
+                "model": models.user,
+                "as": "userCoAuthor",
+                "duplicating": false,
+                "required": false
+            }
         ],
         "order": [["id", "desc"]]
     };

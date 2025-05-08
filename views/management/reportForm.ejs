@@ -12,23 +12,20 @@
 					
         </div>
 	</div>
-    <h1>Report content</h1>
-    <form class="participantList" method="POST" >
-        
-            <p>Reportar la escape room por contenido inadecuado</p>
-            <div style="display:flex;flex-direction:column;align-items:baseline">
-                <label for="reason" style = "color:white;">Motivo</label>
-                <select style="width:100%;margin:1vw 0;text-align: left;padding:0.5em; color:white  !important; border-color: white;" id="reason" name="reason" >
-                    <option value="r1"> Motivo 1</option>
-                    <option value="r2"> Motivo 2</option>
-                    <option value="r3"> Motivo 3</option>
-                    <option value="r4"> Motivo 4</option>
-                    <option value="r5"> Motivo 5</option>
-                    <option value="r6"> Motivo 6</option>
-                </select>
-                <label for="comments" style = "color:white;">Comentarios adicionales</label>
-                <textarea class="textarea" style="width:100%;height:20vh;min-height:100px;margin:1vw 0;text-align: left; padding: 0.5em; font-family: 'Lato' !important; border-color: white;"  id="comments" name="comments" ></textarea>
-                <input class="rounded editButton" type="submit" value="Enviar">
+    <h1> <%=i18n.management.report.title%></h1>
+    <form class="report" method="POST" >
+            <p><%=i18n.management.report.description%></p>
+            <div class ="report-body"">
+                <label for="reason"><%=i18n.management.report.reason%></label>
+                <div id="reason"> 
+                    <label><input type="radio" name="reason" value="inappropriateContent"> <%=i18n.management.report.reasons["inappropriateContent"]%></label><br>
+                    <label><input type="radio" name="reason" value="copyrightViolation"> <%=i18n.management.report.reasons["copyrightViolation"]%></label><br>
+                    <label><input type="radio" name="reason" value="policyViolation"> <%- i18n.management.report.reasons["policyViolation"]%></label><br>
+                    <label><input type="radio" name="reason" value="other"> <%=i18n.management.report.reasons["other"]%></label><br>
+                </div>
+                <label for="comments" ><%=i18n.management.report.additionalComments%></label>
+                <textarea class="textarea" id="comments" name="comments" ></textarea>
+                <button class="rounded editButton" type="submit"> <%=i18n.management.report.send%> </button>
             </div>
     </form>
 </div>

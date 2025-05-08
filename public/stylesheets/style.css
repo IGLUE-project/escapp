@@ -1461,6 +1461,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.add {
   background-color: #FAC855;
 }
+.escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.edit {
+  background-color: #36A2EB;
+}
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .erFoto {
   width: 100%;
   display: flex;
@@ -4247,12 +4250,86 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
     width: 35%;
   }
 }
+.report .report-body {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+.report .report-body label {
+  color: white;
+}
+.report .report-body #reason {
+  width: 100%;
+  margin: 1vw 0;
+  text-align: left;
+  padding: 0.5em;
+  color: white !important;
+  border-color: white;
+}
+.report .report-body #reason label {
+  font-family: "Lato" !important;
+  vertical-align: middle;
+}
+.report .report-body #reason input[type=radio] {
+  vertical-align: bottom;
+}
+.report .report-body textarea {
+  width: 100%;
+  height: 20vh;
+  min-height: 100px;
+  margin: 1vw 0;
+  text-align: left;
+  padding: 0.5em;
+  font-family: "Lato" !important;
+  border-color: white;
+}
+
+.reportList .tableHeader {
+  border-bottom: solid 1px white;
+  font-weight: bold;
+}
+.reportList .reportTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.reportList .readed {
+  color: #111;
+}
+.reportList .readed a {
+  color: #111;
+  font-weight: bold;
+}
+.reportList .noreaded {
+  color: #DDD;
+}
+.reportList .report-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0px;
+}
+.reportList .report-btn .material-icons {
+  font-size: 18px;
+}
+.reportList .report-btn:hover {
+  transform: scale(1.1);
+}
+.reportList .Breaded {
+  background-color: #48C18E;
+}
+.reportList .Bnoreaded {
+  background-color: #FAC855;
+}
+.reportList .delete {
+  background-color: #F47E84;
+}
+
 #mainSection .main.showStudent {
   background-image: none;
   background: #2A2A52;
 }
 #mainSection .main.showStudent .button-share {
-  border-top: 2px solid white;
+  text-align: center;
   padding-top: 0.5em;
   margin-top: 0.5em;
 }

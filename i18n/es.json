@@ -188,8 +188,8 @@
             "errorUserIsAlreadyACollaborator": "El usuario ya es un colaborador",
             "errorFile": "Error al subir el fichero",
             "errorImage": "Error al subir la imagen",
+            "errorSendingReport": "Error al enviar el reporte",
             "errorMandatoryPass": "Es obligatorio introducir una contraseña",
-            "mustBeUPMAccount": "Debes registrarte con tu cuenta de correo de la UPM",
             "passwordChangedSuccessfully": "Contraseña cambiada correctamente",
             "passwordsDoNotMatch": "Las contraseñas no coinciden",
             "problemSendingEmail": "Ha habido un problema con su petición",
@@ -219,6 +219,7 @@
             "successEditingUser": "Usuario editado con éxito",
             "successAddingCollaborator": "Colaborador añadido con éxito",
             "successImage": "Imagen subida con éxito",
+            "successSendingReport": "Reporte enviado con éxito",
             "youMustAcceptTerms": "You must accept the terms and conditions in order to register"
         },
         "guide": "Manual de usuario",
@@ -350,6 +351,11 @@
                 "public": "Visible para todos los usuarios en la página principal",
                 "private": "Sólo accesible por enlace"
             }
+        },
+        "format":{
+            "none": "No especificado",
+            "online": "Completamente en línea",
+            "hybrid": "Se necesitan algunos recursos físicos"
         },
         "iscedNone": "Ninguno",
         "isced": {
@@ -581,6 +587,7 @@
                 },
                 "level": "Nivel educativo",
                 "field": "Campo",
+                "format": "Formato",
                 "licenseExplanation": "¿Qué tipo de licencia quieres aplicar al contenido de tu escape room?. Esto afectará a la posibilidad de que otros profesores puedan utilizarla en sus clases",
                 "invitationExplanation": "¿Quieres que los alumnos tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
                 "scopeExplanation": "¿Quieres que los alumnos puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos alumnos que tengan el enlace directo",
@@ -1200,12 +1207,40 @@
         "back_to_home": "Volver a inicio"
     },
     "terms": {
-          "title": "Términos de uso, política de privacidad y política de cookies actualizados",
-          "description": "Hemos actualizado nuestros Términos de Uso, Política de Privacidad y/o Política de Cookies. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
-          "accept_button": "Aceptar y continuar",
-          "view_terms": "Leer Términos de Uso",
-          "view_privacy": "Leer Política de Privacidad",
-          "view_cookies": "Leer Política de Cookies",
-          "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
+        "title": "Términos de uso, política de privacidad y política de cookies actualizados",
+        "description": "Hemos actualizado nuestros Términos de Uso, Política de Privacidad y/o Política de Cookies. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
+        "accept_button": "Aceptar y continuar",
+        "view_terms": "Leer Términos de Uso",
+        "view_privacy": "Leer Política de Privacidad",
+        "view_cookies": "Leer Política de Cookies",
+        "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
+    },
+    "management":{
+        "contact": {
+            "title": "Contactar",
+            "pageTitle": "Contactar con el autor",
+            "description": "",
+            "author": "Autor",
+            "email": "E-mail",
+            "sendEmail": "Enviar un e-mail",
+            "subject": "Inquiry about the escape room"
+        },
+        "report": {
+            "title": "Reportar",
+            "pageTitle": "Reportar contenido",
+            "description": "Reportar la escape room por contenido inadecuado",
+            "send": "enviar",
+            "reason": "Motivo",
+            "additionalComments": "Comentarios adicionales",
+            "markAsUnread": "Marcar como no leído",
+            "markAsRead": "Marcar como leído",
+            "delete": "Eliminar",
+            "reasons": {
+                "inappropriateContent": "Contenido inapropiado",
+                "copyrightViolation": "Infracción de copyright",
+                "policyViolation": "Contenido que incumple los  <a href='/terms'>términos y condiciones</a> de la plataforma",
+                "other": "Otro"
+            } 
         }
+    }
 }

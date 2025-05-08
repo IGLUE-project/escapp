@@ -85,9 +85,9 @@ exports.index = async (req, res, next) => {
             escapeRooms = erAll.map((er) => {
                 const {id, title, invitation, attachment} = er;
                 const isSignedUp = ids.indexOf(er.id) !== -1;
+                const isAuthorOrCoAuthor = er.author.id === user.id || er.userCoAuthor.some((e) => e.id === user.id);
                 const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
-
-                return { id, title, invitation, attachment, disabled, isSignedUp };
+                return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor };
             });
         }
         const pages = Math.ceil(count / limit);
@@ -141,7 +141,7 @@ exports.create = async (req, res) => {
     escapeRoom.forceLang = forceLang === "en" || forceLang === "es" ? forceLang : null;
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang","format","level","field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang", "format", "level", "field"], transaction});
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": er.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});
 
@@ -228,7 +228,7 @@ exports.update = async (req, res) => {
     const progressBar = body.progress;
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "subject", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "forceLang","format","level","field"]});
+        const er = await escapeRoom.save({"fields": ["title", "subject", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "forceLang", "format", "level", "field"]});
 
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
@@ -542,11 +542,11 @@ exports.clone = async (req, res, next) => {
             authorId,
             supportLink,
             automaticAttendance,
-            status: "draft",
+            "status": "draft",
             license,
             scope,
             field,
-            publishedOnce: true,
+            "publishedOnce": true,
             format,
             level,
             "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, score, hints}) => ({
@@ -561,7 +561,7 @@ exports.clone = async (req, res, next) => {
                 "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
             })),
             "hintApp": hintApp ? attHelper.getFields(hintApp) : undefined,
-            "assets": assets && assets.length ? [...assets].map((asset) => ({...attHelper.getFields(asset), userId: authorId})) : undefined,
+            "assets": assets && assets.length ? [...assets].map((asset) => ({...attHelper.getFields(asset), "userId": authorId})) : undefined,
             "attachment": attachment ? attHelper.getFields(attachment) : undefined
         }, {include});
 

@@ -120,19 +120,23 @@ module.exports = function (sequelize, DataTypes) {
             },
             "license": {
                 "type": DataTypes.STRING,
-                "allowNull": true
+                "allowNull": true,
+                "validate": {"isIn": [["CC BY", "CC BY-NC", "CC BY-SA", "CC BY-NC-SA", "CC BY-ND", "CC BY-NC-ND"]]}
             },
             "field": {
                 "type": DataTypes.STRING,
-                "allowNull": true
+                "allowNull": true,
+                "validate": {"isIn": [["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10"]]}
             },
             "level": {
                 "type": DataTypes.STRING,
-                "allowNull": true
+                "allowNull": true,
+                "validate": {"isIn": [["primary", "secondary", "vet", "higher", "other"]]}
             },
             "format": {
                 "type": DataTypes.STRING,
-                "allowNull": true
+                "allowNull": true,
+                "validate": {"isIn": [["online", "hybrid"]]}
             },
             "publishedOnce": {
                 "type": DataTypes.BOOLEAN,

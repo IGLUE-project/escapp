@@ -5,7 +5,8 @@ exports.showReports = async (req, res) => {
         "include": [
             {"model": models.user, "attributes": ["name", "surname"]},
             {"model": models.escapeRoom, "attributes": ["title"]}
-        ]
+        ],
+        order:[ ["readed","ASC"],["createdAt", "DESC"]],
 
     });
 
@@ -30,18 +31,27 @@ exports.showContact = async (req, res) => {
 // POST /escapeRooms/:escapeRoomId/contact
 exports.generateReport = async (req, res) => {
     const {escapeRoom} = req;
+    const {i18n} = res.locals;
     const {reason, comments} = req.body;
     const sessionId = req.session.user.id;
-    const report = models.report.build({
-        reason,
-        comments,
-        "escapeRoomId": escapeRoom.id,
-        "reportAuthor": sessionId
-    });
+    try {
+        const report = models.report.build({
+            reason,
+            comments,
+            "escapeRoomId": escapeRoom.id,
+            "reportAuthor": sessionId
+        });
+        req.flash("success", i18n.common.flash.successSendingReport);
+        await report.save();
+        res.redirect(`/escapeRooms/${escapeRoom.id}`);
+    } catch (err) {
+        
+        req.flash("success", i18n.common.flash.errorSendingReport);
+        res.render("management/reportForm", {escapeRoom, report});
+    }
+   
 
-    console.log(report);
-    await report.save();
-    res.render("management/reportForm", {escapeRoom, report});
+   
 };
 
 exports.editReport = async (req, res) => {

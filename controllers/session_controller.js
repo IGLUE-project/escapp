@@ -185,7 +185,7 @@ exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) =>
         if (req.participant) {
             next();
         } else {
-            res.render("escapeRooms/preview", {escapeRoom: req.escapeRoom, user: req.session.user});
+            res.render("escapeRooms/preview", {"escapeRoom": req.escapeRoom, "user": req.session.user});
         }
     } catch (error) {
         next(error);

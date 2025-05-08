@@ -193,7 +193,7 @@
             "errorFile": "An error occurred while uploading the file",
             "errorImage": "An error occurred while uploading the picture",
             "errorMandatoryPass": "Sorry, password is required for login",
-            "mustBeUPMAccount": "You need to register with your UPM E-mail address",
+            "errorSendingReport": "An error occurred while sending the report",
             "passwordChangedSuccessfully": "Password changed successfully",
             "passwordsDoNotMatch": "Passwords do not match",
             "problemSendingEmail": "There was a problem with your request",
@@ -223,6 +223,7 @@
             "successEditingTurno": "Shift successfully edited",
             "successEditingUser": "User successfully edited",
             "successImage": "Picture successfully uploaded",
+            "successSendingReport":    "Report successfully sent",
             "youMustAcceptTerms": "Debes aceptar las condiciones para poder registrarte"
         },
         "guide": "User guide",
@@ -347,6 +348,11 @@
         },
         "fields": {
 
+        },
+        "format":{
+            "none": "Not specified",
+            "online": "Completely online",
+            "hybrid": "Some physical resources are needed"
         },
         "iscedNone": "None",
         "isced": {
@@ -591,6 +597,7 @@
                 },
                 "level": "Educational level",
                 "field": "Field",
+                "format": "Format",
                 "licenseExplanation": "What type of license do you want to apply to your escape room content? This will affect whether other teachers can use it in their classes.",
                 "invitationExplanation": "Do you want students to enter a password to join the escape room? If so, select the private option. Otherwise, select public, and they can join without a password.",
                 "scopeExplanation": "Do you want students to be able to join the escape room from the main page of escapp? If so, select the public option. Otherwise, select private, and only students with the direct link will be able to access it.",
@@ -1224,5 +1231,30 @@
         "view_cookies": "Read Cookie Policy",
         "error_accepting": "Error updating terms and privacy policy acceptance"
 
+    },
+    "management":{
+        "contact": {
+            "title": "Contact",
+            "pageTitle": "Contact the author",
+            "description": "",
+            "author": "Author",
+            "email": "E-mail",
+            "sendEmail": "Send an email",
+            "subject": "Consulta sobre la escape room"
+        },
+        "report": {
+            "title": "Report",
+            "pageTitle": "Report content",
+            "description": "Report the escape room for inappropriate content",
+            "send": "send",
+            "reason": "Reason",
+            "additionalComments": "Additional comments",
+            "reasons": {
+                "inappropriateContent": "Inappropriate content",
+                "copyrightViolation": "Copyright infringement",
+                "policyViolation": "Content that violates the platform's <a href='/terms'>terms and conditions</a>",
+                "other": "Other"
+            }
+        }
     }
 }

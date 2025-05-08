@@ -1,12 +1,15 @@
 <%- include ("../partials/_header.ejs") %>
 
 <div role="main" class="main">
-    <h2>Contactar con el autor</h2>
+    <h2><%=i18n.management.contact.pageTitle%></h2>
     <div>
-        Username: <%= author%>
+        <%=i18n.management.contact.author%>: <%= author%>
     </div>
     <div>
-        Email: <%= email %>
+        <%=i18n.management.contact.email%>: <%= email %>
     </div>
-    <a href="mailto:<%= email %>?subject=Consulta sobre la escape room <%= title %>">Enviar un correo</a>
+    <br/>
+    <a href="mailto:<%= email %>?subject=<%=i18n.management.contact.subject%>> <%= title %>">
+        <button class="editButton"><%=i18n.management.contact.sendEmail%></button>
+    </a>
 </div>
