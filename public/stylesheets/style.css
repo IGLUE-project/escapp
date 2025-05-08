@@ -4251,6 +4251,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-image: none;
   background: #2A2A52;
 }
+#mainSection .main.showStudent .button-share {
+  border-top: 2px solid white;
+  padding-top: 0.5em;
+  margin-top: 0.5em;
+}
 #mainSection .main.showStudent .reporting {
   text-align: right;
   font-size: small;
@@ -4271,6 +4276,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.showStudent .flex .flex-er-info {
   flex: 1;
+}
+#mainSection .main.showStudent .flex .flex-er-info .flex-er-info-preview {
+  flex-direction: row;
+  flex-wrap: wrap;
+  display: flex;
+}
+#mainSection .main.showStudent .flex .flex-er-info .flex-er-info-preview div {
+  width: 50%;
 }
 #mainSection .main.showStudent .editor img {
   max-width: 100%;

@@ -351,6 +351,20 @@
                 "private": "Sólo accesible por enlace"
             }
         },
+        "iscedNone": "Ninguno",
+        "isced": {
+            "00":"Programas y cualificaciones genéricos",
+            "01":"Educación",
+            "02":"Artes y humanidades",
+            "03":"Ciencias sociales, periodismo e información",
+            "04":"Empresa, administración y derecho",
+            "05":"Ciencias naturales, matemáticas y estadística",
+            "06":"Tecnologías de la información y la comunicación",
+            "07":"Ingeniería, industria y construcción",
+            "08": "Agricultura, silvicultura, pesca y veterinaria",
+            "09":"Salud y bienestar",
+            "10":"Servicios"
+        },
         "main": {
             "copyOf": "Copia de",
             "createER": "Crear nueva escape room",
@@ -565,6 +579,8 @@
                     "draft": "Borrador",
                     "completed": "Completado"
                 },
+                "level": "Nivel educativo",
+                "field": "Campo",
                 "licenseExplanation": "¿Qué tipo de licencia quieres aplicar al contenido de tu escape room?. Esto afectará a la posibilidad de que otros profesores puedan utilizarla en sus clases",
                 "invitationExplanation": "¿Quieres que los alumnos tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
                 "scopeExplanation": "¿Quieres que los alumnos puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos alumnos que tengan el enlace directo",
@@ -593,11 +609,12 @@
             }
         },
         "general": {
-            "areYouSureDelete": "¿Seguro que deseas eliminar esta escape room?"
+            "areYouSureDelete": "¿Seguro que deseas eliminar esta escape room?",
+            "areYouSureClone": "¿Seguro que deseas clonar esta escape room?"
         },
         "attributes": {
             "title": "El título",
-            "subject": "La asignatura",
+            "subject": "El tema",
             "duration": "La duración",
             "description": "La descripción",
             "hintInterval": "El tiempo entre pistas",
@@ -922,7 +939,7 @@
             "posttest": "Post-test",
             "pretest": "Pre-test",
             "puzzles": "Retos",
-            "subject": "Asignatura",
+            "subject": "Tema",
             "survey": "Encuesta",
             "teamSize": "Tamaño máx. equipos",
             "scope": "Privacidad",

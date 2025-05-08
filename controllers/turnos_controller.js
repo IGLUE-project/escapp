@@ -67,6 +67,7 @@ exports.isTurnStarted = (req, res, next) => {
 // GET /escapeRooms/:escapeRoomId/turnos
 exports.turnos = async (req, res, next) => {
     const {escapeRoom} = req;
+
     res.redirect(`/escapeRooms/${escapeRoom.id}/activate`);
     try {
         escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});

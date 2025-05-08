@@ -80,18 +80,20 @@ exports.uploadAssets = async (req, res) => {
     try {
         const mime = req.file.mimetype;
         const isSupported = supportedMimeTypes.some((m) => new RegExp(m).test(mime));
+
         if (!isSupported) {
             req.file.mimetype = "unsupported";
         }
-        let asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.file.originalname, "mime": req.file.mimetype, userId }).save();
+        const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.file.originalname, "mime": req.file.mimetype, userId }).save();
 
         // Res.json({"id": saved.id, "url": uploadResult.url});
         const html = ckeditorResponse(req.query.CKEditorFuncNum, req.file.url);
 
         if (mime === "application/zip") {
             let isWebapp = false;
-            const zip = new StreamZip.async({ file: req.file.path });
+            const zip = new StreamZip.async({ "file": req.file.path });
             const entries = await zip.entries();
+
             for (const entry of Object.values(entries)) {
                 if (entry.name === "index.html") {
                     isWebapp = true;
@@ -100,6 +102,7 @@ exports.uploadAssets = async (req, res) => {
             }
             if (isWebapp) {
                 const newPath = path.join(__dirname, `../uploads/webapps/${req.file.filename}`);
+
                 fs.mkdirSync(newPath);
                 await zip.extract(null, newPath);
                 await zip.close();
@@ -271,7 +274,7 @@ exports.editAsset = async (req, res, next) => {
                     {"name": "autoplay", "value": req.body.autoplay},
                     {"name": "download", "value": req.body.download}
                 );
-            }  else if (asset.mime.search(applicationRegex) !== -1) {
+            } else if (asset.mime.search(applicationRegex) !== -1) {
                 config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else {
                 return "";

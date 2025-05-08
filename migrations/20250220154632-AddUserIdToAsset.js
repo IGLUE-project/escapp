@@ -1,27 +1,27 @@
-'use strict';
+"use strict";
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+    "up": async (queryInterface, Sequelize) => {
     // Step 1: Add the column as nullable
-    await queryInterface.addColumn('assets', 'userId', {
-      type: Sequelize.INTEGER,
-      allowNull: true,
-    });
+        await queryInterface.addColumn("assets", "userId", {
+            "type": Sequelize.INTEGER,
+            "allowNull": true
+        });
 
-    // Step 2: Optionally backfill existing rows with a default user ID (e.g., 1)
-    await queryInterface.sequelize.query(`
+        // Step 2: Optionally backfill existing rows with a default user ID (e.g., 1)
+        await queryInterface.sequelize.query(`
       UPDATE "assets" SET "userId" = 1 WHERE "userId" IS NULL;
     `);
 
-    // Step 3: Alter column to be NOT NULL
-    await queryInterface.changeColumn('assets', 'userId', {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    });
-  },
+        // Step 3: Alter column to be NOT NULL
+        await queryInterface.changeColumn("assets", "userId", {
+            "type": Sequelize.INTEGER,
+            "allowNull": false
+        });
+    },
 
-  down: async (queryInterface, Sequelize) => {
+    "down": async (queryInterface, Sequelize) => {
     // Remove the column in rollback
-    await queryInterface.removeColumn('assets', 'userId');
-  }
+        await queryInterface.removeColumn("assets", "userId");
+    }
 };

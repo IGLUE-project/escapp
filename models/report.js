@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
             },
             "comments": DataTypes.STRING,
             "reportAuthor": DataTypes.STRING,
-            "readed": DataTypes.BOOLEAN,
+            "readed": DataTypes.BOOLEAN
         }
     );
 };

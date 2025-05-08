@@ -122,6 +122,18 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.STRING,
                 "allowNull": true
             },
+            "field": {
+                "type": DataTypes.STRING,
+                "allowNull": true
+            },
+            "level": {
+                "type": DataTypes.STRING,
+                "allowNull": true
+            },
+            "format": {
+                "type": DataTypes.STRING,
+                "allowNull": true
+            },
             "publishedOnce": {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
