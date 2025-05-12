@@ -1176,5 +1176,13 @@
         "r4": "Escape room no accesible",
         "r5": "Problemas técnicos",
         "r6": "Otros problemas"
+    },
+    "reusablePuzzles": {
+        "name": "Retos reutilizables",
+        "create": "Crear reto reutilizable",
+        "edit": "Editar reto",
+        "config": "Configuración",
+        "description": "Descripción"
     }
+
 }

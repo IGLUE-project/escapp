@@ -36,12 +36,12 @@
             <div class="resources-group">
                 <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
                      <div class="resource-card">
-                        <% if( goodConfig && goodConfig.thumbnail) {%>
-                            <img src="/<%=goodConfig.baseUrl%>/<%=goodConfig.thumbnail%>"/>
+                        <% if( goodConfig && goodConfig?.puzzleConfig?.thumbnail) {%>
+                            <img src="/uploads/reusablePuzzles/<%=puzzle.id%>/<%=goodConfig?.puzzleConfig?.thumbnail%>"/>
                         <%} else{%>
                             <img src="/images/keypad.png"/>
                         <%} %>
-                        <button class="resourceCatalogBtn" onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>)">
+                        <button class="resourceCatalogBtn" onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.id%> )">
                             <span class="building-block-icon material-icons"> add </span>
                             <p><%=puzzle.name%></p>
                         </button>
@@ -62,7 +62,7 @@
         </section>
         <section id="configZone" hidden>
             <h2>Configuración</h2>
-            <form id="configForm">
+            <form action="reusablePuzzleInstance" method="POST" id="configForm">
             </form>
         </section>
     </div>
@@ -109,6 +109,7 @@
                 <th></th>
             </tr>
             <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
+                <%let goodConfig={}; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
                 <tr class="catalogItem">
                     <td>
                         <p class="title">
@@ -118,31 +119,43 @@
                     <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span>
                     </td>
                     <td>
-                        <div class="button-group">
+                        <div class=" button-group row-button">
+                            <div class="overlay-trigger" data-id="<%=puzzle.id%>">
+                                <p class="text-overlay">¿Estás seguro de que quieres borrar este
+                                    archivo?</p>
+                                <button class="deleteButton" type="button"
+                                    onclick='overlayTriggerCatalog("<%=puzzle.id%>", true)'>cancelar</button>
+                                <button class="acceptButton" type="button"
+                                    onclick='deleteAsset("<%=puzzle.id%>")'>aceptar</button>
+                            </div>
                             <button class="listButton iconButton delete-button"
-                                onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>
+                                onclick="overlayTriggerCatalog('<%=puzzle.id%>', false)">
                                 <span class="building-block-icon material-icons" id="delete">
                                     delete_outline </span>
                             </button>
                             <button class="listButton iconButton editButton"
-                                onclick='editReusablePuzzleInstance("<%=puzzle.id%>")'>
-                                <span class="building-block-icon material-icons" id="edit"> edit </span>
+                                onclick='editAsset("<%=puzzle.id%>", "<%=puzzle.mime%>", "<%=puzzle.config%>")'>
+                                <span class="building-block-icon material-icons" id="edit"> edit
+                                </span>
                             </button>
-                            <button class="listButton linkButton" onclick='copyURl("<%=puzzle.id%>")'>
-                                <span class="building-block-icon material-icons" id="link"> link </span>
+                            <button class="listButton linkButton" onclick='copyURl("<%=puzzle.url%>")'>
+                                <span class="building-block-icon material-icons" id="link"> link
+                                </span>
                                 <div class="tooltip-link"> Copiar enlace </div>
                                 <div class="tooltip-link" id="link-copied">
                                     <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                 </div>
                             </button>
-                            <button class="listButton addButton row-button"
-                                onclick='insertAndScrollContent(0,"catalog",{url:"<%=puzzle.url%>",config: "<%=puzzle.config%>"  mime:"<%=puzzle.mime%>"}, puzzleList)'>
-                                <span class="building-block-icon material-icons" id="add"> add </span>
+
+                            <button class="listButton addButton"
+                                onclick='insertAndScrollContent(0,"catalog",{url:`/uploads/reusablePuzzles/<%=puzzle.reusablePuzzleId%>/index.html?conf=<%=puzzle.config%>`,config: "width:100%;height:100%;",  mime:"application/reusable"}, puzzleList)'>
+                                <span class="building-block-icon material-icons" id="add"> add
+                                </span>
                                 <p>
                                     <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
                                 </p>
                             </button>
-                        </div>
+                            </div>
                     </td>
                 </tr>
                 <% })} %>
@@ -516,6 +529,14 @@
 
 <script>
     function toggleCatalogModal() {
+        const configZone = $('#configZone');
+        const configForm = $('#configForm');
+        const resources = $('.sectionAddResource');
+
+        configZone.attr('hidden', true);
+        resources.removeAttr('hidden');
+
+        $(".sections").scrollTop(0);
         const modal = $("#modalCatalogResource");
         if(modal.hasClass("active")) {
             $('body').css("overflow", "scroll");
@@ -663,12 +684,18 @@
                 width: configJSON.width,
                 height: configJSON.height,
             }
+        } else if (mime.search(reusableRegex) !== -1) {
+            return {
+                width: configJSON.width,
+                height: configJSON.height,
+            }
         } else {
-            return `<div>${item.name}</div>`;
+            return {};
         }
     }
 
     function createPuzzle() {
+
         dialog.dialog({
             modal: true,
             resizable: false,
@@ -707,6 +734,9 @@
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
     function insertAndScrollContent(index, type, payload, puzzles) {
+        if(payload.url){
+            payload.url = encodeURI(payload.url);
+        }
         insertContent(index, type, payload, puzzles);
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
@@ -740,7 +770,7 @@
         }
     }
 
-function openPuzzleConfiguration(puzzle){
+function openPuzzleConfiguration(puzzle, baseId){
     const configZone = $('#configZone');
     const config = JSON.parse(puzzle.config);
     const configForm = $('#configForm');
@@ -750,12 +780,13 @@ function openPuzzleConfiguration(puzzle){
     configZone.removeAttr('hidden');
     resources.attr('hidden', true);
 
-
     elements = generateConfig(config);
+    elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
     elements += `<button onclick="volver()">Volver</button>`;
     elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
 
     configForm.html(elements);
+    $(".sections").scrollTop(0);
 }
 
 function volver(){
@@ -769,12 +800,11 @@ function volver(){
 
 
 function generateConfig(config) {
-    let result = ``;
+    let result = `<input type="text" name="name" required/>`;
 
     const language = window.lang;
-
-    Object.keys(config.formConfig).forEach(key => {
-        const value = config.formConfig[key];
+    Object.keys(config.puzzleConfig.formConfig).forEach(key => {
+        const value = config.puzzleConfig.formConfig[key];
         const localeText = value.text[language] ? value.text[language] : value.text['en'];
         result += `
             <label for=${key}>${localeText}</label>

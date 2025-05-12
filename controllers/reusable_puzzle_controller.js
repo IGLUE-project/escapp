@@ -2,6 +2,7 @@ const {models} = require("../models");
 const fs = require("fs");
 const path = require("path");
 const StreamZip = require("node-stream-zip");
+const sequelize = require("../models");
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {
@@ -81,10 +82,11 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
 
 exports.createReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId} = req.params;
-    const {config, name, description, reusablePuzzleId} = req.body;
+    const {name, description, reusablePuzzleId, ...config} = req.body;
 
+    console.log("config", config);
     try {
-        await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, config});
+        await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, config:JSON.stringify(config)});
         res.redirect(`/escapeRooms/${escapeRoomId}/team`);
         next();
     } catch (e) {
@@ -99,7 +101,8 @@ exports.renderCreatePuzzle = async (req, res) => {
 
 
 exports.createReusablePuzzle = async (req, res, next) => {
-
+    const {name, description} = req.body;
+    const t = await sequelize.transaction();
     try {
         let hasConfig = false;
         const zip = new StreamZip.async({ file: req.file.path });
@@ -111,7 +114,9 @@ exports.createReusablePuzzle = async (req, res, next) => {
             }
         }
 
-        const newPath = path.join(__dirname, `../uploads/reusablePuzzles/${req.file.filename}`);
+        let puzzle = await models.reusablePuzzle.create({name, description}, {transaction: t});
+
+        const newPath = path.join(__dirname, `../uploads/reusablePuzzles/${puzzle.id}`);
         if (hasConfig) {
             fs.mkdirSync(newPath);
             await zip.extract(null, newPath);
@@ -120,15 +125,20 @@ exports.createReusablePuzzle = async (req, res, next) => {
 
         const config = fs.readFileSync(path.join(newPath, "config.json"));
         const parsedConfig = JSON.parse(config);
-
-        const {name, description, puzzleConfig} = parsedConfig;
-        puzzleConfig.baseUrl = `uploads/reusablePuzzles/${req.file.filename}`;
-        await models.reusablePuzzle.create({name, description, config:JSON.stringify(puzzleConfig)});
+        puzzle.config = JSON.stringify(parsedConfig);
+        await puzzle.save({transaction: t});
+        await t.commit();
         res.redirect('back')
     }
     catch (e) {
+        await t.rollback();
         console.error(e);
-        await fs.rm(path.join("../uploads/reusablePuzzles/${req.file.filename"), { recursive: true, force: true });
-        next(e);
+        fs.rm(path.join("../uploads/reusablePuzzles/${req.file.filename"), { recursive: true, force: true },
+            (error) => {
+                if(error) {
+                    console.error("Error removing directory:", error);
+                }
+                next(e);
+            });
     }
 };

@@ -1193,5 +1193,12 @@
         "r4": "Escape room not accessible",
         "r5": "Technical problems",
         "r6": "Other"
+    },
+    "reusablePuzzles":{
+        "name": "Reusable puzzles",
+        "create": "Create reusable puzzle",
+        "edit": "Edit puzzle",
+        "config": "Configuration",
+        "description": "Descritpion"
     }
 }

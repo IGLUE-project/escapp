@@ -667,8 +667,13 @@
                 width: configJSON.width,
                 height: configJSON.height,
             }
+        } else if (mime.search(reusableRegex) !== -1) {
+            return {
+                width: configJSON.width,
+                height: configJSON.height,
+            }
         } else {
-            return `<div>${item.name}</div>`;
+            return {};
         }
     }
 

@@ -83,9 +83,11 @@ const videoRegex = new RegExp(/video\/.*/);
 const audioRegex = new RegExp(/audio\/.*/);
 const pdfRegex = new RegExp(/application\/pdf/);
 const webappRegex = new RegExp(/application\/webapp/);
+const reusableRegex = new RegExp(/application\/reusable/);
 
 //Render item depending on mime
 const catalogItem = (item)=> {
+    console.log(item);
     const configJSON = parseAssetConfig( item.mime, item.config);
     item.mime = item.mime || "";
     if(item.mime.search(imageRegex) !== -1) {
@@ -102,6 +104,11 @@ const catalogItem = (item)=> {
         </object>
     </div>`;
      } else if (item.mime.search(webappRegex) !== -1) {
+         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
+             <iframe src="${item.url}" width="100%" height="100%" >
+             </iframe>
+     </div>`;
+     } else if (item.mime.search(reusableRegex) !== -1) {
          return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
              <iframe src="${item.url}" width="100%" height="100%" >
              </iframe>

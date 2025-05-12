@@ -1,9 +1,45 @@
-Index
+<%- include ("../partials/_header.ejs") %>
 
+<div role="main" class="main">
+    <h1>
+    <%=i18n.reusablePuzzles.name%>
+    </h1>
+    <a  href="/reusablePuzzles/new">
+        <button style="margin-bottom:1em" type="button" class="rounded addButton"><%=i18n.reusablePuzzles.create%></button>
+    </a>
+    <table class="mainTable">
+        <tr>
+            <th><%=i18n.reusablePuzzles.name%></th><th><%=i18n.reusablePuzzles.description%></th><th><%=i18n.reusablePuzzles.config%></th><th><%=i18n.common.delete%></th>
+        </tr>
 <% reusablePuzzles.forEach((puzzle)=>{%>
-        <div class="puzzle">
-            <h2><%=puzzle.name%></h2>
-            <p><%=puzzle.description%></p>
-            <p><%=JSON.stringify(puzzle.config)%></p>
-        </div>
+        <tr class="puzzle">
+            <td><h2><%=puzzle.name%></h2></td>
+            <td><p><%=puzzle.description%></p></td>
+            <td><p><%=JSON.stringify(puzzle.config)%></p></td>
+            <td>
+            <button class="deleteButton" onclick="overlayTrigger(<%=puzzle.id%>)" type="button">Delete</button>
+            <div class="overlay-trigger" data-id="<%=puzzle.id%>">
+                <div class="overlay-trigger" data-id="<%=puzzle.id%>">
+                    <form method="POST" >
+                        <p><%=i18n.common.delete%> <%=i18n.reusablePuzzles.name%></p>
+                        <button class="deleteButton" type="button" onclick="overlayTrigger(<%=puzzle.id%>, true)">
+                            <%=i18n.common.cancel%>
+                        </button>
+                        <button class="acceptButton" type="submit">
+                            <%=i18n.common.accept%>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            </td>
+        </tr>
 <%    })%>
+    <script>
+    const overlayTrigger = (id, close) => {
+        $('.overlay-trigger').hide();
+        if (!close) {
+            $('.overlay-trigger[data-id="' + id + '"]').show();
+        }
+    };
+    </script>
+</div>

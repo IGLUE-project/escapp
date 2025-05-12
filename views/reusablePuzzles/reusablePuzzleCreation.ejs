@@ -1,12 +1,129 @@
-<div style="color:white">
-    <h1> CREATE NEW PUZZLE </h1> <h2> Puzzle </h2>
-    </select>
+<%- include ('../partials/_header.ejs') %>
+
+
+<div class='main' style='color:white;padding:20px'>
+
     <h1>Creación de un nuevo puzzle</h1>
-    <p> Suba un PDF con el fichero un fichero config.json </p>
-    <form method="POST" enctype="multipart/form-data" action="../reusablePuzzles">
-        <input type="file" name="upload"/>
-        <input type="submit"/>
-        <br>
+    <p> Suba un ZIP con el fichero un fichero config.json </p>
+    <form method='POST' style='width:30%' enctype='multipart/form-data' action='../reusablePuzzles'>
+        <div style='display:flex;flex-direction:column;justify-content:start'>
+            <input type='text' name='name' placeholder='Puzzle Name' required/>
+            <input type='text' name='description' placeholder='Puzzle description' required/>
+            <input type='file' name='upload'/>
+            <input type='submit'/>
+            <br>
+        </div>
     </form>
-    <button onclick="window.location.replace(document.referrer)">Volver</button>
+    <button onclick='window.location.replace(document.referrer)'>Volver</button>
+    <div>
+        <h3>Config</h3>
+        <div style="border:solid 1px;" >
+           <h2>Crear configuracion</h2>
+            <select id='typeSelectorConfig'>
+                <option value='number'>Number</option>
+                <option value='text'>String</option>
+                <option value='checkbox'>Boolean</option>
+                <option value='array'>Array</option>
+            </select>
+            <button onclick='appendToConfig()'> + </button>
+            <div id="configForm"></div>
+        </div>
+        <div>
+            <h4>Creador de tipos</h4>
+            <input type='text' id='type' placeholder='Type name'/>
+            <br/>
+            <select id='typeSelector'>
+                <option value='number'>Number</option>
+                <option value='text'>String</option>
+                <option value='checkbox'>Boolean</option>
+                <option value='array'>Array</option>
+            </select>
+            <button onclick='addElementToType()'> Añadir </button>
+            <div id='typeDisplay'> </div>
+            <button onclick='addType()'> Crear tipo </button>
+        </div>
+    </div>
 </div>
+
+<style>
+    input {
+        margin: 5px;
+        padding: 5px;
+    }
+
+</style>
+
+
+<script>
+    let currentType = {};
+    let index = 0;
+    const types = [{type: "text"},{type: "number"},{type: "checkbox"},{type: "array"}]
+
+    function addType(){
+        const name = $('#type').val();
+
+        const config = [];
+        Object.keys(currentType).forEach((key)=>{
+            config.push({name:$(`input[name=${key}]`).val(), type:currentType[key]});
+            })
+
+        $('#typeSelector').append(`<option value="${name}">${name}</option>`)
+        $('#typeSelectorConfig').append(`<option value="${name}>"${name}</option>`)
+        types.push({type:name, config})
+        $('#typeDisplay').empty();
+        currentType = {}
+        index = 0;
+    }
+
+    function addElementToType(){
+        type = document.getElementById('typeSelector').value;
+        const propertyName = "name-"+index
+        $(`input[name=${propertyName}]`)
+        currentType = {
+            ...currentType,
+            [propertyName]: type,
+        };
+        $('#typeDisplay').append(`<div><input type='text' name='name-${index}'/><label>${type}</label></div>`);
+        index++;
+    }
+
+    function renderConfig(item){
+       console.log(item)
+       const type = item.type;
+       let config;
+       types.map(t=>{if(t.type === type){config = t.config; return;}})
+
+       switch (type) {
+            case 'number':
+                return `<div>${item.name ? item.name : "<input name='${name}-name' type='text'/>"}Number</div>`;
+                break;
+            case 'text':
+                return `<div>${item.name ? item.name : "<input name='${name}-name' type='text'/>"}Text</div>`;
+                break;
+            case 'checkbox':
+                return `<div>${item.name ? item.name : "<input name='${name}-name' type='text'/>"}Checkbox</div>`;
+                break;
+            default:
+                if(!config){
+                    console.log("No config found")
+                    return "";
+                }
+                const childElement = config.map((el) => { return renderConfig(el); }).join('');
+                return `<div><h3>${item.name ? item.name : "<input name='${name}-name' type='text'/>"+ item.type}<h3>${childElement}</div>`
+                break;
+       }
+    }
+
+    const globalConfig = [];
+
+    function appendToConfig(){
+        type = $('#typeSelectorConfig').val();
+        const form = $('#configForm')
+        globalConfig.push({type});
+        console.log(globalConfig)
+        const configToRender = globalConfig.map((confItem)=>{return renderConfig(confItem)}).join('');
+        form.html(configToRender)
+    }
+
+
+</script>
