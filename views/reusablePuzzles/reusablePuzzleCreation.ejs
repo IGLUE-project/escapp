@@ -19,6 +19,7 @@
         <h3>Config</h3>
         <div style="border:solid 1px;" >
            <h2>Crear configuracion</h2>
+            <input type='text' id='nameTypeConfig' placeholder='Property name'/>
             <select id='typeSelectorConfig'>
                 <option value='number'>Number</option>
                 <option value='text'>String</option>
@@ -32,6 +33,7 @@
             <h4>Creador de tipos</h4>
             <input type='text' id='type' placeholder='Type name'/>
             <br/>
+            <input type='text' id='nameType' placeholder='Property name'/>
             <select id='typeSelector'>
                 <option value='number'>Number</option>
                 <option value='text'>String</option>
@@ -55,63 +57,61 @@
 
 
 <script>
-    let currentType = {};
+    let currentType = [];
     let index = 0;
     const types = [{type: "text"},{type: "number"},{type: "checkbox"},{type: "array"}]
 
     function addType(){
         const name = $('#type').val();
-
-        const config = [];
-        Object.keys(currentType).forEach((key)=>{
-            config.push({name:$(`input[name=${key}]`).val(), type:currentType[key]});
-            })
-
         $('#typeSelector').append(`<option value="${name}">${name}</option>`)
-        $('#typeSelectorConfig').append(`<option value="${name}>"${name}</option>`)
-        types.push({type:name, config})
+        $('#typeSelectorConfig').append(`<option value="${name}">${name}</option>`)
+        types.push({type:name, config: currentType});
         $('#typeDisplay').empty();
-        currentType = {}
+        currentType = [];
         index = 0;
     }
 
     function addElementToType(){
         type = document.getElementById('typeSelector').value;
-        const propertyName = "name-"+index
-        $(`input[name=${propertyName}]`)
-        currentType = {
+        const name = $('#nameType').val();
+        currentType = [
             ...currentType,
-            [propertyName]: type,
-        };
-        $('#typeDisplay').append(`<div><input type='text' name='name-${index}'/><label>${type}</label></div>`);
+            {name, type},
+        ];
+        $('#typeDisplay').append(`<div><label style="margin-right:10px">${name}</label><label>${type}</label></div>`);
         index++;
     }
 
-    function renderConfig(item){
-       console.log(item)
+    function renderConfig(item, depth=0){
+      const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF"];
+      const color = colors[depth%5];
+
        const type = item.type;
        let config;
        types.map(t=>{if(t.type === type){config = t.config; return;}})
-
+       let returnVal = "";
        switch (type) {
             case 'number':
-                return `<div>${item.name ? item.name : "<input name='${name}-name' type='text'/>"}Number</div>`;
+                returnVal = `<div>${item.name}  Number</div>`;
                 break;
             case 'text':
-                return `<div>${item.name ? item.name : "<input name='${name}-name' type='text'/>"}Text</div>`;
+                returnVal = `<div>${item.name}  Text</div>`;
                 break;
             case 'checkbox':
-                return `<div>${item.name ? item.name : "<input name='${name}-name' type='text'/>"}Checkbox</div>`;
+                returnVal = `<div>${item.name}  Checkbox</div>`;
                 break;
             default:
                 if(!config){
                     console.log("No config found")
                     return "";
                 }
-                const childElement = config.map((el) => { return renderConfig(el); }).join('');
-                return `<div><h3>${item.name ? item.name : "<input name='${name}-name' type='text'/>"+ item.type}<h3>${childElement}</div>`
+                let depthN = depth + 1;
+                const childElement = config.map((el) => { return renderConfig(el, depthN); }).join('');
+                returnVal = `<div>${item.name ? item.name : "<input name='${name}-name' type='text'/>"+ item.type}${childElement}</div>`
                 break;
        }
+        return `<div style="background-color:${color};z-index:${depth};margin-left:${20*depth}px"> ${returnVal}</div>`;
+
     }
 
     const globalConfig = [];
@@ -119,8 +119,8 @@
     function appendToConfig(){
         type = $('#typeSelectorConfig').val();
         const form = $('#configForm')
-        globalConfig.push({type});
-        console.log(globalConfig)
+        const name = $('#nameTypeConfig').val();
+        globalConfig.push({type, name});
         const configToRender = globalConfig.map((confItem)=>{return renderConfig(confItem)}).join('');
         form.html(configToRender)
     }
