@@ -110,7 +110,7 @@
             </tr>
             <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
                 <%let goodConfig={}; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
-                <tr class="catalogItem">
+                <tr id="p-<%=puzzle.id%>" class="catalogItem">
                     <td>
                         <p class="title">
                             <%=puzzle.name%>
@@ -126,7 +126,7 @@
                                 <button class="deleteButton" type="button"
                                     onclick='overlayTriggerCatalog("<%=puzzle.id%>", true)'>cancelar</button>
                                 <button class="acceptButton" type="button"
-                                    onclick='deleteAsset("<%=puzzle.id%>")'>aceptar</button>
+                                    onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>aceptar</button>
                             </div>
                             <button class="listButton iconButton delete-button"
                                 onclick="overlayTriggerCatalog('<%=puzzle.id%>', false)">
@@ -134,7 +134,7 @@
                                     delete_outline </span>
                             </button>
                             <button class="listButton iconButton editButton"
-                                onclick='editAsset("<%=puzzle.id%>", "<%=puzzle.mime%>", "<%=puzzle.config%>")'>
+                                onclick="editPuzzle('<%=puzzle.id%>', 'application/reusable', '<%=JSON.stringify({reusablePuzzleId:puzzle.reusablePuzzleId, name:puzzle.name, id:puzzle.id, config:puzzle.config})%>')">
                                 <span class="building-block-icon material-icons" id="edit"> edit
                                 </span>
                             </button>
@@ -148,7 +148,7 @@
                             </button>
 
                             <button class="listButton addButton"
-                                onclick='insertAndScrollContent(0,"catalog",{url:`/uploads/reusablePuzzles/<%=puzzle.reusablePuzzleId%>/index.html?conf=<%=puzzle.config%>`,config: "width:100%;height:100%;",  mime:"application/reusable"}, puzzleList)'>
+                                onclick='insertAndScrollContent(0,"catalog",{url:`/uploads/reusablePuzzles/<%=puzzle.reusablePuzzleId%>/index.html`, puzzleId:"<%=puzzle.id%>",  config: "<%=puzzle.config%>",  mime:"application/reusable"}, puzzleList)'>
                                 <span class="building-block-icon material-icons" id="add"> add
                                 </span>
                                 <p>
@@ -547,6 +547,58 @@
         modal.toggleClass("active");
 
     }
+
+
+    function editPuzzle(id, mime, puzzle) {
+        const jsonPuzzle = JSON.parse(puzzle);
+        const configJSON = {};
+
+        if(jsonPuzzle.config) {
+            texts = jsonPuzzle.config.split(';');
+            texts.forEach(text => {
+                    const data = text.split(':');
+                    configJSON[data[0]] = data[1];
+                    })
+        }
+        const puzzleid = jsonPuzzle.id;
+        const name = jsonPuzzle.name;
+        const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
+
+         fetch(`/uploads/reusablePuzzles/${reusablePuzzleId}/form.ejs`).then(res => {
+            res.text().then((partial)=>{
+                    const dialog = $('#editDialog');
+                    const form = dialog.find('form');
+                    form.attr('action', `./reusablePuzzleInstance/${puzzleid}`);
+                    form.empty();
+                    if (mime.search(reusableRegex) !== -1) {
+                    form.append(`<h2>General Configuration</h2><div><label for="name">Name</label><input type="text" value="${name ? name : ""}"  name="name"/></div>
+                                <div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
+                                <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>
+                                <div><label for="description">Description</label><input type="text" value="${configJSON.description ? configJSON.description : 0}"  name="description"/></div>
+                                <div><label for="thumbnail">Thumbnail</label><input type="text" value="${configJSON.thumbnail ? configJSON.thumbnail : 0}"  name="thumbnail"/></div><h2>Specific configuration</h2>`);
+                    }
+                    form.append(partial);
+                    form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
+                    dialog.dialog({
+                        modal: true,
+                        position:['top'],
+                        resizable: false,
+                        position: { my: "middle", at: "top", of: $('#resourceCatalog')},
+                        width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
+                        height: "auto",
+                        show: {
+                            effect: "scale",
+                            duration: 300
+                        },
+                        hide: {
+                            effect: "scale",
+                            duration: 300
+                        },
+                    }).show()
+                })
+            });
+    }
+
     function editAsset(id, mime, config) {
         const configJSON = parseAssetConfig(mime, config);
         const dialog = $('#editDialog');
@@ -628,7 +680,7 @@
         } else if (mime.search(webappRegex) !== -1) {
             form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
                     <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
-        } else {
+        }else {
             return `<div>${item.name}</div>`;
         }
         form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
@@ -646,7 +698,6 @@
                 duration: 400
             },
         }).show()
-
     }
     function parseAssetConfig(mime, config) {
         if (!config) return {};
@@ -713,11 +764,13 @@
     }
 
     function deleteReusablePuzzleInstance(id) {
-        fetch(`/reusablePuzzleInstance/${id}`, {
+        fetch(`/escapeRooms/${escapeRoomId}/reusablePuzzleInstance/${id}`, {
             method: 'DELETE',
         }).then(response => {
             if (response.ok) {
-                location.reload();
+                const asset = $(`#p-${id}`);
+                asset.remove();
+                overlayTrigger(id, false)
             }
         });
     }
@@ -779,14 +832,30 @@ function openPuzzleConfiguration(puzzle, baseId){
     configForm.empty();
     configZone.removeAttr('hidden');
     resources.attr('hidden', true);
-
-    elements = generateConfig(config);
-    elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
-    elements += `<button onclick="volver()">Volver</button>`;
-    elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
-
-    configForm.html(elements);
-    $(".sections").scrollTop(0);
+    if(config.url){
+        fetch(config.url)
+        .then(response => response.text())
+        .then(textString => {
+            let elements = textString;
+            elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
+            elements += `<button type="button" onclick="volver()">Volver</button>`;
+            elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
+            configForm.html(`<h2>General configuration</h2><div><label for="name">Name</label><input type="text" name="name"/></div>
+                                <div><label for="width">Height</label><input type="number" name="width"/>px</div>
+                                <div><label for="height">Width</label><input type="number" name="height"/>px</div>
+                                <div><label for="description">Description</label><input type="text"  name="description"/></div>
+                                <div><label for="thumbnail">Thumbnail</label><input type="text" name="thumbnail"/></div><h2>Puzzle configuration</h2>`)
+            configForm.append(elements);
+            $(".sections").scrollTop(0);
+        });
+    }else {
+        elements = generateConfig(config);
+        elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
+        elements += `<button type="button" onclick="volver()">Volver</button>`;
+        elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
+        configForm.html(elements);
+        $(".sections").scrollTop(0);
+    }
 }
 
 function volver(){
@@ -798,20 +867,67 @@ function volver(){
     resources.removeAttr('hidden');
 }
 
-
+let types = [];
 function generateConfig(config) {
     let result = `<input type="text" name="name" required/>`;
-
-    const language = window.lang;
-    Object.keys(config.puzzleConfig.formConfig).forEach(key => {
-        const value = config.puzzleConfig.formConfig[key];
-        const localeText = value.text[language] ? value.text[language] : value.text['en'];
-        result += `
-            <label for=${key}>${localeText}</label>
-            <input ${value.required ? "required='true'" : null} type=${value.type ? value.type : "text"} name=${key}/>
-            `
-    });
+    const configToRender = config.confg;
+    types = config.types;
+    result += configToRender.map(item => {return renderConfig(item)}).join('');
     return result;
 }
+
+
+function renderConfig(item, depth=0, inputName=""){
+    const type = item.type;
+    let config;
+    const isArray = type.substring(type.length-6) === '-array';
+    const arraySubtype = isArray ? type.substring(0,type.length-6) : null;
+
+    if(isArray){
+        types.map(t=>{if(t.type === arraySubtype){config = t.config; return;}})
+    } else {
+        types.map(t=>{if(t.type === type){config = t.config; return;}})
+    }
+
+    let inputNameN = inputName.length !==0 ? `${inputName}-${item.name}` : item.name;
+    let returnVal = "";
+
+    if(type === "text" || type === "number" || type === "checkbox"){
+        returnVal = `<div>${item.name}<input type=${item.type} name="${inputNameN}"/>  </div>`;
+    }else {
+        let depthN = depth + 1;
+        if(isArray){
+            inputNameIndex = `${inputNameN}-0`;
+            if(arraySubtype === "text" || arraySubtype === "number" || arraySubtype === "checkbox"){
+                returnVal = `<div id=${inputNameN}>
+                ${item.name}
+                </div>
+                <button type="button" onclick="addInput('${inputNameN}','${arraySubtype}')">+</button>
+                `;
+            }else{
+                const childElement = config.map((el) => { return renderConfig(el, depthN,inputNameIndex); }).join('');
+                returnVal = `<div id=${inputNameN}>
+                ${item.name }<div>${childElement}</div>
+                </div>
+                <button type="button" onclick="addInput('${inputNameN}','${arraySubtype}')">+</button>
+                `
+            }
+        } else {
+            const childElement = config.map((el) => { return renderConfig(el, depthN, inputNameN); }).join('');
+            returnVal = `<div>${item.name }${childElement}</div>`
+        }
+    }
+
+    return `<div style="z-index:${depth};margin-left:${20*depth}px"> ${returnVal}</div>`;
+}
+
+
+function addInput(name, type){
+    const index = $(`#${name}`).children().length;
+    const newName = `${name}-${index}`;
+    let newConfig = renderConfig({name:newName,type})
+    $(`#${name}`).append(newConfig);
+}
+
 
 </script>

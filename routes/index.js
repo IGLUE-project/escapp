@@ -125,8 +125,10 @@ router.post("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequ
 router.get("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.classInterface);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.classInterfaceUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/new", sessionController.loginRequired, reusablePuzzleController.renderPuzzleConfiguration);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.createReusablePuzzleInstance, escapeRoomController.teamInterface);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.upsertReusablePuzzleInstance, escapeRoomController.teamInterface);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/:reusablePuzzleInstanceId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.renderEditPuzzleConfiguration);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/:reusablePuzzleInstanceId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.upsertReusablePuzzleInstance);
+router.delete("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/:reusablePuzzleInstanceId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, reusablePuzzleController.deleteReusablePuzzleInstance);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.showReportForm);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.generateReport);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRequired, managementController.showContact);
@@ -217,6 +219,7 @@ router.delete("/resources/:resourceId", sessionController.loginRequired, session
 // Routes for reusablePuzzles
 router.post("/reusablePuzzles", sessionController.loginRequired, sessionController.loginRequired, upload.single("upload"), reusablePuzzleController.createReusablePuzzle);
 router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);
+router.get("/reusablePuzzleInstances/:reusablePuzzleInstanceId/config", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzlesInstanceConfig);
 router.get("/reusablePuzzles/new", sessionController.loginRequired, reusablePuzzleController.renderCreatePuzzle);
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzle);
 router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
