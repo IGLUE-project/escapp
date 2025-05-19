@@ -349,9 +349,11 @@ exports.evaluationUpdate = async (req, res) => {
 // GET /escapeRooms/:escapeRoomId/sharing
 exports.sharing = async (req, res, next) => {
     try {
-        const {escapeRoom} = req;
+        const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
 
-        res.render("escapeRooms/steps/sharing", {escapeRoom, "progress": "sharing"});
+        const completed = stepsCompleted(escapeRoom);
+
+        res.render("escapeRooms/steps/sharing", {escapeRoom, "progress": "sharing", completed});
     } catch (e) {
         next(e);
     }
@@ -476,7 +478,7 @@ exports.clone = async (req, res, next) => {
     const transaction = await sequelize.transaction();
 
     try {
-        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
+        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, publishedOnce} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${oldTitle}`;
         const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -524,7 +526,7 @@ exports.clone = async (req, res, next) => {
             "status": "draft",
             license,
             field,
-            "publishedOnce": true,
+            publishedOnce,
             format,
             level,
             "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, score, hints}) => ({
@@ -680,3 +682,4 @@ exports.test = async (req, res) => {
 };
 
 
+exports.showGuide = (req, res) => res.render("inspiration/inspiration");

@@ -12,8 +12,6 @@ const participantController = require("../controllers/participants_controller");
 const playController = require("../controllers/play_controller");
 const membersController = require("../controllers/members_controller");
 const analyticsController = require("../controllers/analytics_controller");
-const resourceController = require("../controllers/resource_controller");
-const resourceAppController = require("../controllers/resource_app_controller");
 const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
@@ -57,8 +55,6 @@ router.param("puzzleId", puzzleController.load);
 router.param("hintId", hintController.load);
 router.param("userId", userController.load);
 router.param("teamId", teamController.load);
-router.param("resourceId", resourceController.load);
-router.param("appId", resourceAppController.load);
 
 
 // Routes for LOGIN / REGISTER page /
@@ -204,20 +200,7 @@ router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.lo
 router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.downloadRaw);
 
 // Routes for guide/apps/resources
-router.get("/inspiration", resourceController.showGuide);
-router.get("/apps/new", sessionController.loginRequired, sessionController.adminRequired, resourceAppController.new);
-router.post("/apps/", sessionController.loginRequired, sessionController.adminRequired, resourceAppController.create);
-router.delete("/apps/:appId", sessionController.loginRequired, sessionController.adminRequired, resourceAppController.destroy);
-router.get("/resources", sessionController.loginRequired, sessionController.notStudentRequired, resourceAppController.index);
-router.get("/resources/my", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.index);
-
-// TODO sessionController.adminOrResourceAuthorRequired
-router.get("/resources/:appId/new", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.new);
-router.post("/apps/:appId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.create);
-router.get("/resources/:resourceId", resourceController.show);
-router.get("/resources/:resourceId/edit", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.edit);
-router.put("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.update);
-router.delete("/resources/:resourceId", sessionController.loginRequired, sessionController.notStudentRequired, resourceController.destroy);
+router.get("/inspiration", escapeRoomController.showGuide);
 
 // Routes for reusablePuzzles
 router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);

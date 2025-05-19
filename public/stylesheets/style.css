@@ -4579,6 +4579,116 @@ table.mainTable tr td .icon {
   border-radius: 12px;
 }
 
+.toggle-container {
+  position: relative;
+  padding: 0.9em;
+  border: 2px solid white;
+  background-color: white;
+  color: #050B2D;
+  width: 80%;
+  font-size: 0.7em;
+  margin: auto;
+  margin-top: 1em;
+  border-radius: 10px;
+  border: 4px solid #48C18E;
+}
+.toggle-container.draft {
+  border: 4px solid #F47E84;
+}
+.toggle-container .escapeRoomStatusP {
+  margin-block-start: 0em;
+  text-align: left;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus {
+  vertical-align: bottom;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus .escapeRoomStatusTitle {
+  color: #050B2D;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus .escapeRoomStatusActual {
+  color: #48C18E;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus .escapeRoomStatusActual.draft {
+  color: #F47E84;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus i, .toggle-container .escapeRoomStatusP .escapeRoomStatus .material-icons {
+  font-size: 32px;
+  color: #36A2EB;
+}
+.toggle-container .checklist-publishing {
+  text-align: left;
+  list-style: none;
+  padding-left: 5px;
+}
+.toggle-container .checklist-publishing li input {
+  height: auto;
+}
+.toggle-container .checklist-publishing li .hidden-submit {
+  opacity: 0;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+.toggle-container .checklist-publishing li span.material-icons {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  font-size: 18px !important;
+  font-family: "Material Icons";
+  vertical-align: bottom;
+  color: #F47E84;
+}
+.toggle-container .link-turnos-share .material-icons {
+  color: #36A2EB;
+}
+.toggle-container .toggle {
+  appearance: none;
+  margin: 0;
+  min-width: 84px;
+  min-height: 48px;
+  max-width: 84px;
+  max-height: 48px;
+  border-radius: 24px;
+  position: relative;
+  background-color: #F47E84;
+  border: 2px solid #b14147;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.toggle-container .toggle.dark {
+  background-color: #1a1a1a;
+  border-color: #979797;
+}
+.toggle-container .toggle.dark:after {
+  background-color: #1a1a1a;
+  border-color: #979797;
+}
+.toggle-container .toggle:checked {
+  background-color: #48C18E;
+  border-color: #106128;
+}
+.toggle-container .toggle:checked.dark {
+  background-color: #219b44;
+}
+.toggle-container .toggle:checked:after {
+  left: calc(100% - 40px - 2px);
+  border-color: #106128;
+}
+.toggle-container .toggle:after {
+  content: " ";
+  min-height: 40px;
+  min-width: 40px;
+  border: 2px solid #b14147;
+  background-color: white;
+  box-sizing: border-box;
+  border-radius: 50%;
+  position: absolute;
+  left: 0px;
+  pointer-events: none;
+  top: 2px;
+  transition: left 0.2s, border-color 0.2s;
+}
+
 #mainSection > .main.timeline {
   overflow: hidden;
   background-image: none;

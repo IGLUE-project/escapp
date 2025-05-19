@@ -592,7 +592,25 @@
                 "licenseExplanation": "¿Qué tipo de licencia quieres aplicar al contenido de tu escape room?. Esto afectará a la posibilidad de que otros profesores puedan utilizarla en sus clases",
                 "invitationExplanation": "¿Quieres que los alumnos tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
                 "scopeExplanation": "¿Quieres que los alumnos puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos alumnos que tengan el enlace directo",
-                "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los alumnos no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia."
+                "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los alumnos no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia.",
+                "checklist": {
+                    "step1": "Información básica obligatoria proporcionada",
+                    "step2": "Al menos un reto definido",
+                    "step3": "Al menos una pista definida (o pistas deshabilitadas)",
+                    "step4": "Instrucciones previas especificadas (o deshabilitadas)",
+                    "step5": "Interfaz de equipo definida (o deshabilitada)",
+                    "step6": "Interfaz de clase definida (o deshabilitada)",
+                    "step7": "Instrucciones posteriores a la actividad especificadas (o deshabilitadas)",
+                    "step8": "Rúbrica de evaluación creada",
+                    "congrats": "¡Enhorabuena! Has publicado tu escape room con éxito.",
+                    "congrats2":"Crea un turno para que los alumnos puedan apuntarse a la escape room.",
+                    "backToDraft":"¿Quieres volver a estado borrador? Para hacerlo, haz click en el interruptor. ",
+                    "erStatus": "Estado de la escape room ",
+                    "areYouReady": "¿Has terminado de editar tu escape room? ¡Hazla pública haciendo click en el interruptor! Recuerda que no podrás cambiar la licencia del contenido una vez publicada.",
+                    "stillInfoNeeded": "Aún tienes información obligatoria que debes completar antes de hacer pública tu escape room",
+                    "warningAboutLicense": "Una vez publiques tu escape room, no podrás cambiar la licencia. Cuando estés listo, haz clic en el interruptor."
+
+                }
             },
             "turnos": {
                 "title": "Turnos",
@@ -1003,6 +1021,7 @@
     },
     "turno": {
         "Actions": "Acciones",
+        "addTurno": "añadir turno",
         "all": "Todos los turnos",
         "alreadyIn": "Ya estas dentro de un turno.",
         "tooLate": "Es demasiado tarde para unirte a este equipo",

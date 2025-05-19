@@ -27,8 +27,6 @@ exports.saveInterface = async (name, req, res, next) => {
     const progressBar = body.progress;
     const {i18n} = res.locals;
 
-    console.log(body.instructions);
-
     escapeRoom[`${name}Instructions`] = body.instructions;
     escapeRoom[`${name}Appearance`] = body.appearance;
     try {
@@ -478,7 +476,6 @@ exports.validationError = ({instance, path, validatorKey}, i18n) => {
         }
         throw new Error("Error during validation");
     } catch (e) {
-        console.log("ddddd");
         return i18n.common.validationError;
     }
 };
@@ -602,7 +599,6 @@ exports.findFirstAvailableFile = async (section, lang) => {
 
 
 exports.stepsCompleted = (escapeRoom) => {
-    console.log(escapeRoom.teamInstructions);
     const step1 = Boolean(escapeRoom.title);
     const step2 = escapeRoom.puzzles && escapeRoom.puzzles.length > 0;
     const step3 = escapeRoom.hintLimit === 0 || escapeRoom.puzzles.map((p) => p.hints ? p.hints.length : 0).reduce((a, b) => a + b, 0) > 0;
