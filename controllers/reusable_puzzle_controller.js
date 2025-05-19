@@ -18,7 +18,7 @@ exports.getReusablePuzzle = async (req, res, next) => {
     const {reusablePuzzleId} = req.params;
 
     try {
-        const reusablePuzzle = await models.reusablePuzzle.findOne({"where": {id:reusablePuzzleId}});
+        const reusablePuzzle = await models.reusablePuzzle.findOne({"where": {"id": reusablePuzzleId}});
 
         res.render("reusablePuzzles/details", reusablePuzzle);
     } catch (e) {
@@ -31,7 +31,7 @@ exports.deleteReusablePuzzle = async (req, res, next) => {
     const {reusablePuzzleId} = req.params;
 
     try {
-        await models.reusablePuzzle.destroy({"where": {id:reusablePuzzleId}});
+        await models.reusablePuzzle.destroy({"where": {"id": reusablePuzzleId}});
         res.status(200);
         res.send();
     } catch (e) {
@@ -44,7 +44,7 @@ exports.deleteReusablePuzzleInstance = async (req, res, next) => {
     const {reusablePuzzleInstanceId} = req.params;
 
     try {
-        await models.reusablePuzzleInstance.destroy({"where": {id:reusablePuzzleInstanceId}});
+        await models.reusablePuzzleInstance.destroy({"where": {"id": reusablePuzzleInstanceId}});
         res.status(200);
         res.send();
     } catch (e) {
@@ -55,7 +55,6 @@ exports.deleteReusablePuzzleInstance = async (req, res, next) => {
 
 
 exports.renderPuzzleConfiguration = async (_, res) => {
-
     const rPuzzles = await models.reusablePuzzle.findAll();
 
     res.render("reusablePuzzles/reusablePuzzleCreation", {rPuzzles});
@@ -75,18 +74,20 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
 
 
 exports.renderCreatePuzzle = async (req, res) => {
-        res.render("reusablePuzzles/reusablePuzzleCreation");
-}
+    res.render("reusablePuzzles/reusablePuzzleCreation");
+};
 
 
 exports.createReusablePuzzle = async (req, res, next) => {
     const {name, description, config} = req.body;
     const t = await sequelize.transaction();
+
     try {
         let hasConfig = false;
         let hasForm = false;
-        const zip = new StreamZip.async({ file: req.file.path });
+        const zip = new StreamZip.async({ "file": req.file.path });
         const entries = await zip.entries();
+
         for (const entry of Object.values(entries)) {
             if (entry.name === "config.json") {
                 hasConfig = true;
@@ -95,7 +96,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
             }
         }
 
-        let puzzle = await models.reusablePuzzle.create({name, description, config}, {transaction: t});
+        const puzzle = await models.reusablePuzzle.create({name, description, config}, {"transaction": t});
 
         const newPath = path.join(__dirname, `../uploads/reusablePuzzles/${puzzle.id}`);
 
@@ -105,25 +106,26 @@ exports.createReusablePuzzle = async (req, res, next) => {
             await zip.close();
         }
 
-        if(hasForm) {
-            puzzle.config = JSON.stringify({url:`/uploads/reusablePuzzles/${puzzle.id}/form.ejs`})
-            puzzle.save({transaction: t});
+        if (hasForm) {
+            puzzle.config = JSON.stringify({"url": `/uploads/reusablePuzzles/${puzzle.id}/form.ejs`});
+            puzzle.save({"transaction": t});
         }
 
-        await puzzle.save({transaction: t});
+        await puzzle.save({"transaction": t});
         await t.commit();
-        res.redirect('back')
-    }
-    catch (e) {
+        res.redirect("back");
+    } catch (e) {
         await t.rollback();
         console.error(e);
-        fs.rm(path.join("../uploads/reusablePuzzles/${req.file.filename"), { recursive: true, force: true },
+        fs.rm(
+            path.join("../uploads/reusablePuzzles/${req.file.filename"), { "recursive": true, "force": true },
             (error) => {
-                if(error) {
+                if (error) {
                     console.error("Error removing directory:", error);
                 }
                 next(e);
-            });
+            }
+        );
     }
 };
 
@@ -133,32 +135,41 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
     const {name, description, reusablePuzzleId, ...config} = req.body;
 
-    let parsedConfig = "";
+    const t = await sequelize.transaction();
 
-    if (config) {
-        Object.keys(config).forEach((key) => {
-            parsedConfig += `${key}:${config[key]};`;
-        });
-    };
 
     try {
-        if(!reusablePuzzleInstanceId) {
-            await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, config: parsedConfig});
-            res.redirect('back');
-            return;
+        if (config.puzzle && config.puzzleSol) {
+            const puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}});
+
+            console.log(await models.puzzle.findAll());
+            console.log(puzzle);
+            if (puzzle) {
+                puzzle.sol = config.puzzleSol;
+                await puzzle.save({"transaction": t});
+            }
+            config.puzzleSol = undefined;
         }
 
-        let puzzle = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
-        puzzle.reusablePuzzleId = reusablePuzzleId || puzzle.reusablePuzzleId;
-        puzzle.name = name || puzzle.name;
-        puzzle.description = description || puzzle.description;
-        puzzle.config = parsedConfig || puzzle.config;
-        await puzzle.save();
-        res.redirect('back');
-    }catch (e) {
+        if (!reusablePuzzleInstanceId) {
+            await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(config)}, {"transaction": t});
+        } else {
+            const reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
+
+            reusablePuzzleInstance.reusablePuzzleId = reusablePuzzleId || reusablePuzzleInstance.reusablePuzzleId;
+            reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
+            reusablePuzzleInstance.description = description || reusablePuzzleInstance.description;
+            reusablePuzzleInstance.config = config ? JSON.stringify(config) : JSON.stringify(reusablePuzzleInstance.config);
+            await reusablePuzzleInstance.save({"transaction": t});
+        }
+
+        t.commit();
+        res.redirect("back");
+    } catch (e) {
+        t.rollback();
         next(e);
     }
-}
+};
 
 exports.getReusablePuzzleInstances = async (req, res, next) => {
     const {escapeRoomId} = req.params;
@@ -174,18 +185,19 @@ exports.getReusablePuzzleInstances = async (req, res, next) => {
 
 exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-line  no-unused-vars
     const {reusablePuzzleInstanceId} = req.params;
-    console.log(reusablePuzzleInstanceId);
+
     try {
-        const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId)
-        console.log(reusablePuzzleInstance);
+        const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);
+
         const filePath = path.join(__dirname, `/../uploads/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/index.html`);
-        if(reusablePuzzleInstance) {
-            res.render('reusablePuzzles/reusablePuzzleContainer', {file: filePath, config: reusablePuzzleInstance.config});
-        }else {
+
+        if (reusablePuzzleInstance) {
+            res.render("reusablePuzzles/reusablePuzzleContainer", {"file": filePath, "config": reusablePuzzleInstance.config});
+        } else {
             res.status(404).send("Puzzle not found");
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };

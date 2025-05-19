@@ -88,7 +88,6 @@ const reusableRegex = new RegExp(/application\/reusable/);
 //Render item depending on mime
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
-    console.log(item);
     if(item.mime.search(imageRegex) !== -1) {
         return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {
@@ -146,7 +145,6 @@ var insertContent = async (index, type, payload, puzzles) => {
             content = rankingTemplate();
             break;
         case "text":
-            console.log(payload);
             content = textEditorTemplate(
                 id, payload.text);
             break;

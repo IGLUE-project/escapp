@@ -1,14 +1,5 @@
 <script>
-    console.log("config",  <%- JSON.stringify(config)%>);
-    const text = <%- JSON.stringify(config)%>
-    const texts = text.split(';');
-    configJSON = {};
-    texts.forEach(text => {
-        const data = text.split(':');
-        configJSON[data[0]] = data[1];
-    })
-    console.log("configJSON", configJSON);
-    window.config = configJSON;
+    window.config =  <%- JSON.parse(JSON.stringify(config))%>
 </script>
 <div>
     <%- include(file) %>

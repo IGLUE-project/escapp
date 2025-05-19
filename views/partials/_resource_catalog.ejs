@@ -138,7 +138,7 @@
                                     delete_outline </span>
                             </button>
                             <button class="listButton iconButton editButton"
-                                onclick="editPuzzle('<%=puzzle.id%>', 'application/reusable', '<%=JSON.stringify({reusablePuzzleId:puzzle.reusablePuzzleId, name:puzzle.name, description:puzzle.description, id:puzzle.id, config:puzzle.config})%>')">
+                                onclick="editPuzzle('<%=puzzle.id%>', 'application/reusable', <%=JSON.stringify({reusablePuzzleId:puzzle.reusablePuzzleId, name:puzzle.name, description:puzzle.description, id:puzzle.id, config:puzzle.config})%>)">
                                 <span class="building-block-icon material-icons" id="edit"> edit
                                 </span>
                             </button>
@@ -152,7 +152,7 @@
                             </button>
 
                             <button class="listButton addButton"
-                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: "<%=puzzle.config%>",  mime:"application/reusable"}, puzzleList)'>
+                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: <%=JSON.stringify(puzzle.config)%>,  mime:"application/reusable"}, puzzleList)'>
                                 <span class="building-block-icon material-icons" id="add"> add
                                 </span>
                                 <p>
@@ -559,17 +559,8 @@
     }
 
 
-    function editPuzzle(id, mime, puzzle) {
-        const jsonPuzzle = JSON.parse(puzzle);
-        const configJSON = {};
-
-        if(jsonPuzzle.config) {
-            texts = jsonPuzzle.config.split(';');
-            texts.forEach(text => {
-                    const data = text.split(':');
-                    configJSON[data[0]] = data[1];
-                    })
-        }
+    function editPuzzle(id, mime, jsonPuzzle) {
+        const configJSON = jsonPuzzle.config;
         const puzzleid = jsonPuzzle.id;
         const name = jsonPuzzle.name;
         const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
@@ -814,6 +805,7 @@
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
     function insertAndScrollContent(index, type, payload, puzzles) {
+        console.log(payload);
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
