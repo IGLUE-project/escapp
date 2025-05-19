@@ -15,7 +15,9 @@
          value: escapeRoom.subject,
          required: true
 
-     },
+     }]
+%>
+<% let formFields2 = [
      {
         name: "description",
         id: "desc",
@@ -58,36 +60,68 @@
         <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
                placeholder="<%=i18n.escapeRoom.steps.edit[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
     </div>
+     
+<%}%>
+
+
+<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
+  <label for="field" class="itemNarrow">3. <%=i18n.escapeRoom.steps.sharing.field%>:</label>
+  <select class="customInput itemWide" id="field" name="field" autocomplete="off"> 
+    <option value="" <%=!escapeRoom.field ? "selected" : "" %>><%=i18n.escapeRoom.iscedNone%></option>
+    <option value="00" <%=escapeRoom.field == "00" ? "selected" : "" %>><%=i18n.escapeRoom.isced["00"]%></option>
+    <option value="01" <%=escapeRoom.field == "01" ? "selected" : "" %>><%=i18n.escapeRoom.isced["01"]%></option>
+    <option value="02" <%=escapeRoom.field == "02" ? "selected" : "" %>><%=i18n.escapeRoom.isced["02"]%></option>
+    <option value="03" <%=escapeRoom.field == "03" ? "selected" : "" %>><%=i18n.escapeRoom.isced["03"]%></option>
+    <option value="04" <%=escapeRoom.field == "04" ? "selected" : "" %>><%=i18n.escapeRoom.isced["04"]%></option>
+    <option value="05" <%=escapeRoom.field == "05" ? "selected" : "" %>><%=i18n.escapeRoom.isced["05"]%></option>
+    <option value="06" <%=escapeRoom.field == "06" ? "selected" : "" %>><%=i18n.escapeRoom.isced["06"]%></option>
+    <option value="07" <%=escapeRoom.field == "07" ? "selected" : "" %>><%=i18n.escapeRoom.isced["07"]%></option>
+    <option value="08" <%=escapeRoom.field == "08" ? "selected" : "" %>><%=i18n.escapeRoom.isced["08"]%></option>
+    <option value="09" <%=escapeRoom.field == "09" ? "selected" : "" %>><%=i18n.escapeRoom.isced["09"]%></option>
+    <option value="10" <%=escapeRoom.field == "10" ? "selected" : "" %>><%=i18n.escapeRoom.isced["10"]%></option>
+  </select>
+</div>
+<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
+  <label for="level" class="itemNarrow">4. <%=i18n.escapeRoom.steps.sharing.level%>:</label>
+  <select class="customInput itemWide" id="level" name="level" autocomplete="off">
+    <option value="" <%=!escapeRoom.level ? "selected" : "" %>><%=i18n.user.eduLevel["none"]%></option>
+    <option value="primary" <%=escapeRoom.level == "primary" ? "selected" : "" %>><%=i18n.user.eduLevel["primary"]%></option>
+    <option value="secondary" <%=escapeRoom.level == "secondary" ? "selected" : "" %>><%=i18n.user.eduLevel["secondary"]%></option>
+    <option value="vet" <%=escapeRoom.level == "vet" ? "selected" : "" %>><%=i18n.user.eduLevel["vet"]%></option>
+    <option value="higher" <%=escapeRoom.level == "higher" ? "selected" : "" %>><%=i18n.user.eduLevel["higher"]%></option>
+    <option value="other" <%=escapeRoom.level == "other" ? "selected" : "" %>><%=i18n.user.eduLevel["other"]%></option>
+  </select>
+</div>
+<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
+  <label for="format" class="itemNarrow">4. <%=i18n.escapeRoom.steps.sharing.format%>:</label>
+  <select class="customInput itemWide" id="format" name="format" autocomplete="off">
+    <option value="none" <%=!escapeRoom.format  || (escapeRoom.format == "none")? "selected" : "" %>><%=i18n.escapeRoom.format["none"]%></option>
+    <option value="online" <%=escapeRoom.format == "online" ? "selected" : "" %>><%=i18n.escapeRoom.format["online"]%></option>
+    <option value="hybrid" <%=escapeRoom.format == "hybrid" ? "selected" : "" %>><%=i18n.escapeRoom.format["hybrid"]%></option>
+  </select>
+</div>
+<% for (let f in formFields2) {
+  var field = formFields2[f];%>
+    <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*f%>ms;">
+        <label for="<%=field.id%>"  class="itemNarrow"><%=parseInt(f)+5%>. <%=i18n.showTeacher.titles[field.i18n]%>:</label>
+        <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
+               placeholder="<%=i18n.escapeRoom.steps.edit[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
+    </div>
     <% if (field.name === "duration") { %> 
       <label class="note animated slideInUp" style="animation-delay: <%=200*f%>ms;" for="forbiddenLateSubmissions" ><%=i18n.escapeRoom.steps.edit.forbiddenLateSubmissionsPlaceHolder%>
         <input class="customCheckbox" type="checkbox" name="forbiddenLateSubmissions" id="forbiddenLateSubmissions" <%= escapeRoom.forbiddenLateSubmissions ? "checked" : "" %> />
       </label>
     <% } %>
-    
 <%}%>
+
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*formFields.length%>ms;">
-  <label for="<%=field.id%>"  class="itemNarrow">7. <%=i18n.showTeacher.titles["forceLang"]%>:</label>
+  <label for="<%=field.id%>"  class="itemNarrow">9. <%=i18n.showTeacher.titles["forceLang"]%>:</label>
   <select class="customInput itemWide" id="forceLang" name="forceLang" autocomplete="off">
     <option value="" <%=escapeRoom.forceLang  ? "" : "selected" %>><%=i18n.langs["dontForce"]%> </option>
     <option value="en" <%=escapeRoom.forceLang == "en"  ? "selected" : "" %>><%=i18n.langs["en"]%></option>
     <option value="es"<%=escapeRoom.forceLang == "es" ? "selected" : "" %>><%=i18n.langs["es"]%></option>
   </select>
 </div>
- 
-<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1).length%>ms;">
-  <label for="scope"  class="itemNarrow">8. <%=i18n.showTeacher.titles["scope"]%>:</label>
-  <select class="customInput itemWide" id="scope" name="scope" autocomplete="off">
-    <option value="public" <%=!Boolean(escapeRoom.scope)  ? "" : "selected" %>><%=i18n.escapeRoom.invitation.scopes["public"]%> </option>
-    <option value="private" <%=Boolean(escapeRoom.scope) ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["private"]%></option>
-  </select>
-</div>
-
-<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">
-  <label for="invitation"  class="itemNarrow">9. <%=i18n.showTeacher.titles.password%>:</label>
-  <input  type="text" class="customInput itemWide" id="invitation" name="invitation" value="<%= escapeRoom.invitation %>"  
-         placeholder="<%=i18n.escapeRoom.steps.edit.passwordPlaceHolder%>" autocomplete="off"/>
-</div>
-
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
     <label class="itemNarrow">10. <%=i18n.showTeacher.titles.thumbnail%>:</label>
     <input class="attach" type="file" id="img" name="image"/>

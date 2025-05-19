@@ -71,6 +71,7 @@
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
         <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem">
+                <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
                     <button class="building-block-bar-button uploadButton" onclick="toggleCatalogModal()">
                         <a href="#">
                             <span class="building-block-icon material-icons"> add </span>
@@ -87,6 +88,7 @@
                             </p>
                         </a>
                     </button>
+                <% } %>
 
         </div>
     </div>
@@ -99,6 +101,7 @@
                 <col span="1" style="width: 20%;">
                 <col span="1" style="width: 30%;">
             </colgroup>
+            <% if(assets.length != 0) {%>
             <tr class="tableTitles">
                 <th>
                     <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%>
@@ -108,6 +111,7 @@
                 </th>
                 <th></th>
             </tr>
+            <% } %>
             <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
                 <%let goodConfig={}; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
                 <tr id="p-<%=puzzle.id%>" class="catalogItem">
@@ -370,7 +374,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    <% } else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1){ %>
+                                    <% } else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1 && endPoint !== "indications" && endPoint !== "after"){ %>
                                         <tr class="catalogItem" id=<%=asset.id%> >
                                             <td>
                                                 <p class=" title">
@@ -422,6 +426,8 @@
                                             </td>
                                         </tr>
                                         <% } else { %>
+
+                                        <!-- Mirar si queremos poner elementos desconocidos
                                             <tr class="catalogItem" id=<%=asset.id%> >
                                                 <td>
                                                     <p class="title">
@@ -470,16 +476,19 @@
                                                             <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
                                                         </p>
                                                     </button>
-    </div>
-    </td>
+                </div>
+                </td>
 
-    </tr>
+                </tr>
+    -->
     <% } return null;%>
         <% }) %>
             </table>
 
 </div>
 <div style="display:flex; margin-top:0.5em; align-items:center; justify-content: end; gap: 0.7rem">
+
+    <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
     <button class="building-block-bar-button theme-btn" style="display:flex;">
         <span class="building-block-icon material-icons" style="color: var(--info);">color_lens</span>
         <span class="theme-text">
@@ -488,6 +497,7 @@
                 </span>
         </span>
     </button>
+    <% } %>
     <button class="addButton text-block-add" id="buttonMain" onclick="insertContentBlock()">
         <span class="building-block-icon material-icons"> add </span>
         <p>

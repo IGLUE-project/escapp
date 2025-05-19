@@ -154,7 +154,8 @@
             "notEmpty": "cannot be empty",
             "len": "is too long",
             "min": "is too low",
-            "max": "is too high"
+            "max": "is too high",
+            "isIn": "must have one of the available values"
         },
         "exit": "exit",
         "filter": "filter",
@@ -193,7 +194,7 @@
             "errorFile": "An error occurred while uploading the file",
             "errorImage": "An error occurred while uploading the picture",
             "errorMandatoryPass": "Sorry, password is required for login",
-            "mustBeUPMAccount": "You need to register with your UPM E-mail address",
+            "errorSendingReport": "An error occurred while sending the report",
             "passwordChangedSuccessfully": "Password changed successfully",
             "passwordsDoNotMatch": "Passwords do not match",
             "problemSendingEmail": "There was a problem with your request",
@@ -223,6 +224,7 @@
             "successEditingTurno": "Shift successfully edited",
             "successEditingUser": "User successfully edited",
             "successImage": "Picture successfully uploaded",
+            "successSendingReport":    "Report successfully sent",
             "youMustAcceptTerms": "Debes aceptar las condiciones para poder registrarte"
         },
         "guide": "User guide",
@@ -348,6 +350,25 @@
         "fields": {
 
         },
+        "format":{
+            "none": "Not specified",
+            "online": "Completely online",
+            "hybrid": "Some physical resources are needed"
+        },
+        "iscedNone": "None",
+        "isced": {
+            "00":"Generic programmes and qualifications",
+            "01":"Education",
+            "02":"Arts and humanities",
+            "03":"Social sciences, journalism and information",
+            "04":"Business, administration and law",
+            "05":"Natural sciences, mathematics and statistics",
+            "06":"Information and Communication Technologies",
+            "07":"Engineering, manufacturing and construction",
+            "08":"Agriculture, forestry, fisheries and veterinary",
+            "09":"Health and welfare",
+            "10":"Services"
+        },
         "invitation": {
             "no": "no",
             "wannaJoin": "Would you like to join this Escape Room?",
@@ -364,7 +385,7 @@
             "noERTeacher": "You haven't created any Escape Rooms yet. Manage them from here",
             "noERStudent": "You haven't any active Escape Rooms yet, wait for your teacher's invitation.",
             "myERs": "My escape rooms",
-            "otherERs":"All",
+            "otherERs":"Public",
             "emptyER": "No collaborators yet",
             "playingERs":"Participating",
             "yesERStudent": "These are your Escape Rooms",
@@ -496,11 +517,11 @@
                     "Student": "Student",
                     "resources": "Resource catalog",
                     "catalog": {
-                        "newPuzzle": "New puzzle",
-                        "uploadFile": "Upload File",
-                        "addResource": "Add new resource",
-                        "addBlock": "Add block",
-                        "addText": "Add text block",
+                        "newPuzzle": "new puzzle",
+                        "uploadFile": "upload file",
+                        "addResource": "add new resource",
+                        "addBlock": "add block",
+                        "addText": "add text block",
                         "table": {
                             "name": "Name",
                             "type": "Type",
@@ -562,6 +583,27 @@
                 }
 
             },
+            "after": {
+                "title": "Post-activity instructions",
+                "explanation": "Here you can add the information you want to show students once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them"
+            },
+            "sharing": {
+                "title": "Publication",
+                "description": "You can publish your escape room so that other teachers can use it. You can also make it public so that students can see it in the home page and sign up for it",
+                "license": "License",
+                "status": {
+                    "name": "Status",
+                    "draft": "Draft",
+                    "completed": "Completed"
+                },
+                "level": "Educational level",
+                "field": "Field",
+                "format": "Format",
+                "licenseExplanation": "What type of license do you want to apply to your escape room content? This will affect whether other teachers can use it in their classes.",
+                "invitationExplanation": "Do you want students to enter a password to join the escape room? If so, select the private option. Otherwise, select public, and they can join without a password.",
+                "scopeExplanation": "Do you want students to be able to join the escape room from the main page of escapp? If so, select the public option. Otherwise, select private, and only students with the direct link will be able to access it.",
+                "statusExplanation": "Have you finished creating the escape room? If so, select the completed option. Otherwise, select draft, and you can continue editing it later. Keep in mind that until you publish it, students will not be able to join. Once published, you will not be able to change the license."
+            },
             "turnos": {
                 "title": "Shifts",
                 "indicacion": "Add a comment",
@@ -585,7 +627,8 @@
             }
         },
         "general": {
-            "areYouSureDelete": "Are you sure you want to delete this escape room?"
+            "areYouSureDelete": "Are you sure you want to delete this escape room?",
+            "areYouSureClone": "Are you sure you want to clone this escape room?"
         },
         "attributes": {
             "title": "The title",
@@ -596,6 +639,9 @@
             "teamSize": "The team size",
             "scope": "The visibility",
             "invitation": "The password",
+            "field": "The field",
+            "level": "The educational level",
+            "format": "The format",
             "teamAppearance": "The team interface theme",
             "classAppearance": "The class interface theme",
             "survey": "The survey",
@@ -606,7 +652,8 @@
             "feedback": "The feedback option",
             "allowCustomHints": "The custom hints opion",
             "forbiddenLateSubmissions": "The option to forbid late submissions",
-            "classInstructions": "The class interface",
+            "classInstrucations": "The class interface",
+            "afterInstructions": "Post-activity instructions ",
             "teamInstructions": "The team interface",
             "indicationsInstructions": "The pre-activity instrucionts",
             "supportLink": "The support link",
@@ -852,6 +899,7 @@
     "showTeacher": {
         "actionList": {
             "activateTurno": "start",
+            "after": "Post-activity instructions",
             "analytics": "Learning analytics",
             "appearance": "Appearance",
             "basic": "Basic configuration",
@@ -872,6 +920,7 @@
             "collaborators": "Collaborators",
             "teams": "Teams",
             "share": "share",
+            "sharing": "Publication",
             "shifts": "Shifts",
             "stop": "stop",
             "shift": "shift",
@@ -891,6 +940,7 @@
             "copyTitle": "Copy the link",
             "qrTitle": "Generate a QR code to share",
             "noShiftsShare": "You cannot share the escape room until you have created at least one shift",
+            "noShiftsShareDraft": "You cannot share the escape room until you have changed its status to completed in the last stp of the Setup ('Publication').",
             "noShiftsStart": "You cannot start the escape room until you have created at least one shift",
             "join": {
                 "intro": "Share the following link with yout students so they can access the escape room:",
@@ -923,7 +973,8 @@
             "share": "Share",
             "forceLang": "Force specific language in escapp for the participants of this escape room"
 
-        }
+        },
+        "cantManageUntilComplete": "You cannot manage the escape room until you have changed its status to completed in the last step of the Setup ('Publication')."
     },
     "team": {
         "add": "Add a team",
@@ -1011,6 +1062,7 @@
         "selectActivate": "Select the shift you want to activate/deactivate",
         "selectStudent": "Select a shift",
         "areYouSureReset": "Are you sure you want to reset this shift? All of the students' progress will be lost",
+        "areYouSureDelete": "Are you sure you want to delete this shift?",
         "todayEscapeRoom": "The Escape Room will be celebrated this day",
         "Turno": "Shift",
         "Links": "Links",
@@ -1186,19 +1238,36 @@
         "error_accepting": "Error updating terms and privacy policy acceptance"
 
     },
-    "reports": {
-        "r1": "Inapropriate content",
-        "r2": "Content not related to the activity",
-        "r3": "Inaccurate content",
-        "r4": "Escape room not accessible",
-        "r5": "Technical problems",
-        "r6": "Other"
-    },
     "reusablePuzzles":{
         "name": "Reusable puzzles",
         "create": "Create reusable puzzle",
         "edit": "Edit puzzle",
         "config": "Configuration",
         "description": "Descritpion"
+    },
+    "management":{
+        "contact": {
+            "title": "Contact",
+            "pageTitle": "Contact the author",
+            "description": "",
+            "author": "Author",
+            "email": "E-mail",
+            "sendEmail": "Send an email",
+            "subject": "Consulta sobre la escape room"
+        },
+        "report": {
+            "title": "Report",
+            "pageTitle": "Report content",
+            "description": "Report the escape room for inappropriate content",
+            "send": "send",
+            "reason": "Reason",
+            "additionalComments": "Additional comments",
+            "reasons": {
+                "inappropriateContent": "Inappropriate content",
+                "copyrightViolation": "Copyright infringement",
+                "policyViolation": "Content that violates the platform's <a href='/terms'>terms and conditions</a>",
+                "other": "Other"
+            }
+        }
     }
 }

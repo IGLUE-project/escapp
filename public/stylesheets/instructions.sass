@@ -80,7 +80,7 @@
       .editor-wrapper
         background-color: var(--bckg)
         color: black
-        &.indications .editor
+        &.indications .editor, &.after .editor
           background-color: colors.$bckg
         #editor
           min-height: 300px
@@ -520,7 +520,7 @@
     a
       display: flex
       margin-bottom: 0.2rem
-      align-items:center
+      align-items: center
       gap: 0.3rem
       color: colors.$mainpurple
     p
@@ -572,12 +572,9 @@
     font-size: 1em
   .newItemButton
     box-shadow: 0px 0px 40px 12px colors.$darkerpurple
-
-
-
   .tooltip-link
     display: none
-    color:rgb(221, 221, 221)
+    color: rgb(221, 221, 221)
     font-size: 13px
   #link-copied
     background: colors.$darkergreen
@@ -598,7 +595,7 @@
     font-size: 18px
 
 
-.indications
+.indications, .after
   #editor
     color: white
     font-size: 22px
@@ -659,6 +656,10 @@
   top: 0px
   right: 0px
   z-index: 999
+
+#modalCatalogResource.active
+  display: flex
+  border-radius: 0px 0px 6px 6px
 
 
 .modalCatalogResource
@@ -747,6 +748,4 @@
       border-radius: 0px 0px 6px 6px
       border: 0px
       width: 100%
-.active
-  display: flex
-  border-radius: 0px 0px 6px 6px
+

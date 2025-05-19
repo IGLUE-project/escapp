@@ -4,11 +4,14 @@ module.exports = function (sequelize, DataTypes) {
         {
             "reason": {
                 "type": DataTypes.STRING,
-                "validate": {"notEmpty": {"msg": "Se debe indicar el motivo de la denuncia."}}
+                "validate": {
+                    "notEmpty": {"msg": "The reason of the report must be specified."},
+                    "isIn": [["inappropriateContent", "copyrightViolation", "policyViolation", "other"]]
+                }
             },
             "comments": DataTypes.STRING,
             "reportAuthor": DataTypes.STRING,
-            "readed": DataTypes.BOOLEAN,
+            "readed": DataTypes.BOOLEAN
         }
     );
 };

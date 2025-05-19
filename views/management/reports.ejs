@@ -1,82 +1,44 @@
 <%- include ("../partials/_header.ejs") %>
 
-<div role="main" class="main">
+<div role="main" class="main reportList">
 
-<table class="reportTable">
-    <tr class="tableHeader">
-        <td>Author</td>
-        <td>Escape Room</td>
-        <td>Reason</td>
-        <td>A</td>
+<table class="mainTable">
+    <tr>
+        <th>Author</th>
+        <th>Escape Room</th>
+        <th>Reason</th>
+        <th>Comments</th>
+        <th>Actions</th>
     </tr>
     <%reports.forEach(report => {%>
-        <%if(report.readed === false){%>
-           <tr id=<%=report.id%> class="info noreaded">
+           <tr id=<%=report.id%> class="info <%=report.readed ? "readed":"noreaded"%>">
                 <td><%= report.user.name%></td>
                 <td><%= report.escapeRoom.title%></td>
-                <td><%= i18n.reports[report.reason]%></td>
+                <td><%- i18n.management.report.reasons[report.reason]%></td>
+                <td id="<%=report.id%>-c" class="<%=report.readed ? "readed":"noreaded"%> comments">
+                    <%= report.comments%>
+                </td>
                 <td>
-                    <button class="Bnoreaded" onclick="markAsUnread('<%= report.id%>')">Mande</button>
-                    <button class="Breaded" onclick="markAsRead('<%= report.id%>')">Oido cocina</button>
-                    <button class="delete" onclick="deleteReport('<%= report.id%>')">Delete</button>
+                    <button class="report-btn  Bnoreaded" onclick="markAsUnread('<%= report.id%>')"
+                        title="<%=i18n.management.report.markAsUnread%>">
+                        <span class="material-icons">mark_email_unread</span>
+                    </button>
+                    <button class="report-btn  Breaded" onclick="markAsRead('<%= report.id%>')"
+                        title="<%=i18n.management.report.markAsRead%>"> 
+                        <span class="material-icons">mark_email_read</span>
+                    </button>
+                    <button class="report-btn delete" onclick="deleteReport('<%= report.id%>')"
+                        title="<%=i18n.management.report.delete%>">
+                        <span class="material-icons">delete</span>
+                    </button>
                 </td>
            </tr>
-           <tr id="<%=report.id%>-c" class="noreaded comments">
-                <td class="comments" colspan="4"><%= report.comments%></td>
-           <tr>
-    <% }})%>
-    <%reports.forEach(report => {%>
-        <%if(report.readed === true){%>
-           <tr id=<%=report.id%> class="readed info">
-                <td><%= report.user.name%></td>
-                <td><%= report.escapeRoom.title%></td>
-                <td><%= i18n.reports[report.reason]%></td>
-                <td>
-                    <button class="Bnoreaded" onclick="markAsUnread('<%= report.id%>')">Mande</button>
-                    <button class="Breaded" onclick="markAsRead('<%= report.id%>')">Oido cocina</button>
-                    <button class="delete" onclick="deleteReport('<%= report.id%>')">Delete</button>
-                </td>
-           </tr>
-           <tr id="<%=report.id%>-c" class="readed">
-                <td class="comments" colspan="4"><%= report.comments%></td>
-           <tr>
-        <% }%>
+           
     <% })%>
 </table>
 </div>
 
-<style>
- .tableHeader {
-    border-bottom: solid 1px white;
-    font-weight: bold;
- }
-.comments {
-    border-bottom: solid 1px white;
-    padding: 10px;
-}
-.reportTable {
-    width: 100%;
-    border-collapse: collapse;
-}
-.readed {
-    color: #555;
-}
 
-.noreaded {
-    color: #DDD;
-}
-
-.Breaded {
-    background-color: #4CAF50;
-}
-.Bnoreaded {
-    background-color: yellow;
-}
-.delete {
-    background-color: #f44336;
-}
-
-</style>
 
 <script>
     async function markAsRead(id) {

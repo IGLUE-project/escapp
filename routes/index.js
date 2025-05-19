@@ -99,7 +99,7 @@ router.post("/escapeRooms", sessionController.loginRequired, sessionController.n
 router.get("/escapeRooms/:escapeRoomId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.edit);
 router.put("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("image"), escapeRoomController.update);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.adminOrAuthorRequired, escapeRoomController.destroy);
-router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.clone);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequired, sessionController.notStudentRequired, escapeRoomController.clone);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.test);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.participantRequired, playController.startPlaying, playController.play);
 
@@ -120,6 +120,10 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.logi
 router.post("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluationUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.indicationsInterface);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.indicationsInterfaceUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/after", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.afterInterface);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/after", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.afterInterfaceUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/sharing", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.sharing);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/sharing", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.sharingUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.teamInterface);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.teamInterfaceUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.classInterface);

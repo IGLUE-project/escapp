@@ -115,7 +115,8 @@
 		}); 
 
         $( ".addTurno" ).on( "click", function() {
-            const d = new Date($("#datepicker").datepicker("getDate"));
+            let d = new Date($("#datepicker").datepicker("getDate"));
+            d = isValidDate(d) ? d : new Date();
             d.setHours(9,0,0,0);
             const fullDate = getFullDate(d);
             $( "#turno-date-new input" ).val(fullDate);

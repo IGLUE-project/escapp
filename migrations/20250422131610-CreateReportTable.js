@@ -23,11 +23,11 @@ module.exports = {
             },
             "reportAuthor": {
                 "type": Sequelize.INTEGER,
-                "allowNull": false,
+                "allowNull": false
             },
             "escapeRoomId": {
                 "type": Sequelize.INTEGER,
-                "allowNull": false,
+                "allowNull": false
             },
             "createdAt": {
                 "type": Sequelize.DATE,

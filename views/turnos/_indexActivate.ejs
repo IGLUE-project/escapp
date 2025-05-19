@@ -1,3 +1,6 @@
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <%- include ("../partials/_header.ejs") %>
 <div role="main" class="main participants teams turnos">
     <div class="breadcrumbs-container">
@@ -10,6 +13,9 @@
         </div>
     </div>
     <h1><%=i18n.turno.activateTurnos%></h1>
+    <button class="rounded editButton addTurno"  >
+		add turno <span>+</span>
+    </button>
     <div class="flex-table-wrapper">
         <div class="flex-table animated jello">
             <div class="flex-row flex-row-title">
@@ -45,6 +51,21 @@
                     </a>
                 </div>
                 <div class="flex-cell flex-actions">
+                    <button class="turno-btn edit-turno" onclick="overlayTrigger('edit-<%=turno.id%>')" style="color:var(--mainpurple);" title="<%=i18n.turno.edit%>" data-turno-id="<%=turno.id%>">
+                        <span class="material-icons">edit</span>
+                    </button>
+                    <div class="overlay-wrapper">
+                        <button class="turno-btn" onclick="overlayTrigger('delete-<%=turno.id%>')" title="<%=i18n.escapeRoom.steps.turnos.deleteTitle%>" style="color:var(--lightred);">
+                            <span class="material-icons">delete</span>
+                        </button>
+                        <div class="overlay-trigger" data-id="delete-<%=turno.id%>">
+                            <form method="POST" action="/escapeRooms/<%= escapeRoom.id %>/turnos/<%=turno.id%>?_method=DELETE">
+                                <p><%=i18n.turno.areYouSureDelete%></p>
+                                <button class="deleteButton" type="button" onclick="overlayTrigger('delete-<%=turno.id%>', true)"><%=i18n.common.cancel%></button>
+                                <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
+                            </form>
+                        </div>
+                    </div>
                     <%if (turno.status !== "pending"){%>
                         <div class="overlay-wrapper">
                             <button class="turno-btn" onclick="overlayTrigger('reset-<%=turno.id%>')" title="<%=i18n.turno.resetProgress%>" style="color:var(--brightyellow);">
@@ -65,6 +86,7 @@
                                 <span class="material-icons"><%= turno.status === "active"? "stop" : "play_arrow"%></span>
                             </button>
                             <div class="overlay-trigger" data-id="activate-<%=turno.id%>">
+                                
                                 <form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/activate?_method=put">
                                     <p><%=i18n.turno[turno.status === "active"? "areYouSureStop": "areYouSureStart"]%></p>
                                     <input type="hidden" id="turnSelected" name="turnSelected" value="<%=turno.id%>">
@@ -74,6 +96,8 @@
                             </div>
                         </div>
                     <%}%>
+
+
                 </div>
             </div>
             <% } %>
@@ -84,7 +108,9 @@
             <% } %>
         </div>
     </div>
+    
     <br/><br/><br/>
+    <%- include ("../partials/_footer") %>
 </div>
 
 <script>
@@ -95,4 +121,19 @@
         }
     };
 </script> 
-<%- include ("../partials/_footer") %>
+
+ 
+<script>
+    var selectedDates = [
+    <% for (var d = 0; d < turnos.length; d++) { %>
+        new Date("<%= turnos[d].date%>") <%if (d !== turnos.length -1) {%>,<% }%>
+    <% } %>
+    ].map(d=>{d.setHours(0,0,0,0); return d.getTime()}); 
+    
+</script>
+    
+
+<%- include ("./_turnosCommonLogic") %>
+
+<%- include ("./_turnosEdit") %>
+

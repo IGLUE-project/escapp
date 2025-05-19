@@ -203,10 +203,10 @@ button[type=submit], input[type=submit][type=submit], .aButton[type=submit] {
   transform: scale(1.2);
 }
 
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play, #mainSection .main .flexBoxTurnos .turno.turnoAlumno:not(.disabled):not(.finished):hover, #mainSection .main .flexBoxTurnos .turno.turnoProfe:not(.disabled):not(.finished):hover, #mainSection .main.teams .filters input[type=submit], #mainSection .main.teams .filters button, #mainSection .main .overlay-trigger button, #mainSection .main.student .dialog .teamCarouselItem:not(.disabled):hover, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem.addEscapeRoom, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp, #mainSection .main.participants .filters input[type=submit], #mainSection .main.participants .filters button {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play, #mainSection .main .flexBoxTurnos .turno.turnoAlumno:not(.disabled):not(.finished):hover, #mainSection .main .flexBoxTurnos .turno.turnoProfe:not(.disabled):not(.finished):hover, #mainSection .main.teams .filters input[type=submit], #mainSection .main.teams .filters button, #mainSection .main .overlay-trigger button, #mainSection .main.student .dialog .teamCarouselItem:not(.disabled):hover, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem.addEscapeRoom, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp, #mainSection .main.participants .filters input[type=submit], #mainSection .main.participants .filters button {
   transition: 0.1s all ease-in;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:hover, #mainSection .main .flexBoxTurnos .turno.turnoAlumno:hover:not(.disabled):not(.finished), #mainSection .main .flexBoxTurnos .turno.turnoProfe:hover:not(.disabled):not(.finished), #mainSection .main.teams .filters input[type=submit]:hover, #mainSection .main.teams .filters button:hover, #mainSection .main .overlay-trigger button:hover, #mainSection .main.student .dialog .teamCarouselItem:hover:not(.disabled), .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:hover, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:hover, #mainSection .main.participants .filters input[type=submit]:hover, #mainSection .main.participants .filters button:hover, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:active, #mainSection .main.teams .filters input[type=submit]:active, #mainSection .main.teams .filters button:active, #mainSection .main .overlay-trigger button:active, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:active, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:active, #mainSection .main.participants .filters input[type=submit]:active, #mainSection .main.participants .filters button:active, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:focus, #mainSection .main.teams .filters input[type=submit]:focus, #mainSection .main.teams .filters button:focus, #mainSection .main .overlay-trigger button:focus, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:focus, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:focus, #mainSection .main.participants .filters input[type=submit]:focus, #mainSection .main.participants .filters button:focus {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:hover, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:hover, #mainSection .main .flexBoxTurnos .turno.turnoAlumno:hover:not(.disabled):not(.finished), #mainSection .main .flexBoxTurnos .turno.turnoProfe:hover:not(.disabled):not(.finished), #mainSection .main.teams .filters input[type=submit]:hover, #mainSection .main.teams .filters button:hover, #mainSection .main .overlay-trigger button:hover, #mainSection .main.student .dialog .teamCarouselItem:hover:not(.disabled), .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:hover, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:hover, #mainSection .main.participants .filters input[type=submit]:hover, #mainSection .main.participants .filters button:hover, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:active, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:active, #mainSection .main.teams .filters input[type=submit]:active, #mainSection .main.teams .filters button:active, #mainSection .main .overlay-trigger button:active, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:active, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:active, #mainSection .main.participants .filters input[type=submit]:active, #mainSection .main.participants .filters button:active, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:focus, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.turno-play:focus, #mainSection .main.teams .filters input[type=submit]:focus, #mainSection .main.teams .filters button:focus, #mainSection .main .overlay-trigger button:focus, .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem:focus, #mainSection .main.step-appearance .half-flex-container .left-half-flex .buttonApp:focus, #mainSection .main.participants .filters input[type=submit]:focus, #mainSection .main.participants .filters button:focus {
   -webkit-transform: scale(0.8);
   -ms-transform: scale(0.8);
   transform: scale(0.8);
@@ -1144,6 +1144,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li {
   margin-bottom: 16px;
   position: relative;
+  padding-left: 1.5rem;
 }
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .overlay-trigger {
   top: 40px;
@@ -1160,6 +1161,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a:hover {
   color: #48C18E;
 }
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a.disabled-action {
+  cursor: not-allowed;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a.disabled-action:hover {
+  color: white;
+}
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .showMenuButton {
   font-size: 16px;
   border-radius: 20px;
@@ -1169,6 +1176,39 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .showMenuButton:hover {
   transform: scale(0.9);
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er {
+  position: relative;
+  margin: 2rem 0;
+  padding-left: 0.4rem;
+  list-style: none;
+  border-left: 2px solid #ffffff;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step {
+  position: relative;
+  padding-left: 1.5rem;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step::before {
+  content: "";
+  position: absolute;
+  left: -0.95rem;
+  top: 0.25rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: #aab2bd;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step.completed::before {
+  background-color: #48C18E;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step a {
+  display: inline-block;
+  text-decoration: none;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step a .material-icons {
+  vertical-align: middle;
+  margin-left: 0.25rem;
 }
 #mainSection .main.escapeRoomShow .flexShow .flexRow .flexShowLeft {
   width: 170px;
@@ -1379,6 +1419,24 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
     display: none !important;
   }
 }
+.status-ribbon {
+  width: 60px;
+  font-size: 0.71em;
+  padding: 4px;
+  position: absolute;
+  right: -10px;
+  top: -5px;
+  text-align: center;
+  border-radius: 25px;
+  transform: rotate(20deg);
+  background-color: #F47E84;
+  text-transform: lowercase;
+}
+.status-ribbon a {
+  color: #161938;
+  font-weight: bolder;
+}
+
 .escapeRooms .pagination span {
   width: 24px;
   font-size: 20px;
@@ -1442,6 +1500,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.add {
   background-color: #FAC855;
+}
+.escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.edit {
+  background-color: #36A2EB;
 }
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .erFoto {
   width: 100%;
@@ -2157,7 +2218,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-color: var(--bckg);
   color: black;
 }
-#mainSection .main.step-instructions .editor-wrapper.indications .editor {
+#mainSection .main.step-instructions .editor-wrapper.indications .editor, #mainSection .main.step-instructions .editor-wrapper.after .editor {
   background-color: #2A2A52;
 }
 #mainSection .main.step-instructions .editor-wrapper #editor {
@@ -2694,6 +2755,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .uploadButton a {
   display: flex;
   margin-bottom: 0.2rem;
+  align-items: center;
   gap: 0.3rem;
   color: #232850;
 }
@@ -2762,6 +2824,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #resourceCatalog .tooltip-link {
   display: none;
+  color: rgb(221, 221, 221);
   font-size: 13px;
 }
 #resourceCatalog #link-copied {
@@ -2787,19 +2850,19 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 18px;
 }
 
-.indications #editor {
+.indications #editor, .after #editor {
   color: white;
   font-size: 22px;
 }
-.indications #editor blockquote {
+.indications #editor blockquote, .after #editor blockquote {
   font-family: Lato, sans-serif;
   margin-top: 0px;
   margin-bottom: 0px;
 }
-.indications #editor a, .indications #editor b, .indications #editor i, .indications #editor strong, .indications #editor em, .indications #editor ul, .indications #editor li, .indications #editor span, .indications #editor u {
+.indications #editor a, .indications #editor b, .indications #editor i, .indications #editor strong, .indications #editor em, .indications #editor ul, .indications #editor li, .indications #editor span, .indications #editor u, .after #editor a, .after #editor b, .after #editor i, .after #editor strong, .after #editor em, .after #editor ul, .after #editor li, .after #editor span, .after #editor u {
   font-family: inherit;
 }
-.indications #editor pre {
+.indications #editor pre, .after #editor pre {
   font-family: monospace;
 }
 
@@ -2870,6 +2933,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   top: 0px;
   right: 0px;
   z-index: 999;
+}
+
+#modalCatalogResource.active {
+  display: flex;
+  border-radius: 0px 0px 6px 6px;
 }
 
 .modalCatalogResource {
@@ -2971,11 +3039,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-radius: 0px 0px 6px 6px;
   border: 0px;
   width: 100%;
-}
-
-.active {
-  display: flex;
-  border-radius: 0px 0px 6px 6px;
 }
 
 #mainSection .main.student {
@@ -4233,9 +4296,92 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
     width: 35%;
   }
 }
+.report .report-body {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+.report .report-body label {
+  color: white;
+}
+.report .report-body #reason {
+  width: 100%;
+  margin: 1vw 0;
+  text-align: left;
+  padding: 0.5em;
+  color: white !important;
+  border-color: white;
+}
+.report .report-body #reason label {
+  font-family: "Lato" !important;
+  vertical-align: middle;
+}
+.report .report-body #reason input[type=radio] {
+  vertical-align: bottom;
+}
+.report .report-body textarea {
+  width: 100%;
+  height: 20vh;
+  min-height: 100px;
+  margin: 1vw 0;
+  text-align: left;
+  padding: 0.5em;
+  font-family: "Lato" !important;
+  border-color: white;
+}
+
+.reportList .tableHeader {
+  border-bottom: solid 1px white;
+  font-weight: bold;
+}
+.reportList .reportTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.reportList .readed {
+  color: #111;
+}
+.reportList .readed a {
+  color: #111;
+  font-weight: bold;
+}
+.reportList .noreaded {
+  color: #DDD;
+}
+.reportList .report-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0px;
+}
+.reportList .report-btn .material-icons {
+  font-size: 18px;
+}
+.reportList .report-btn:hover {
+  transform: scale(1.1);
+}
+.reportList .Breaded {
+  background-color: #48C18E;
+}
+.reportList .Bnoreaded {
+  background-color: #FAC855;
+}
+.reportList .delete {
+  background-color: #F47E84;
+}
+
 #mainSection .main.showStudent {
   background-image: none;
   background: #2A2A52;
+}
+#mainSection .main.showStudent .button-share {
+  text-align: center;
+  padding-top: 0.5em;
+  margin-top: 0.5em;
+}
+#mainSection .main.showStudent .reporting {
+  text-align: right;
+  font-size: small;
 }
 #mainSection .main.showStudent .flex {
   display: flex;
@@ -4253,6 +4399,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.showStudent .flex .flex-er-info {
   flex: 1;
+}
+#mainSection .main.showStudent .flex .flex-er-info .flex-er-info-preview {
+  flex-direction: row;
+  flex-wrap: wrap;
+  display: flex;
+}
+#mainSection .main.showStudent .flex .flex-er-info .flex-er-info-preview div {
+  width: 50%;
 }
 #mainSection .main.showStudent .editor img {
   max-width: 100%;
@@ -5000,23 +5154,23 @@ table.mainTable tr td .icon {
   padding: 15px;
 }
 
-#mainSection .main.step-turnos {
+#mainSection .main.step-turnos, #mainSection .main.turnos {
   position: relative;
 }
-#mainSection .main.step-turnos .contenedor {
+#mainSection .main.step-turnos .contenedor, #mainSection .main.turnos .contenedor {
   display: flex;
   height: 100%;
 }
-#mainSection .main.step-turnos .contenedor h2 {
+#mainSection .main.step-turnos .contenedor h2, #mainSection .main.turnos .contenedor h2 {
   color: white;
 }
-#mainSection .main.step-turnos .contenedor .turnosLeft {
+#mainSection .main.step-turnos .contenedor .turnosLeft, #mainSection .main.turnos .contenedor .turnosLeft {
   width: 50%;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight {
+#mainSection .main.step-turnos .contenedor .turnosRight, #mainSection .main.turnos .contenedor .turnosRight {
   width: 50%;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker {
   background: transparent;
   padding: 0px;
   margin: 0px;
@@ -5029,28 +5183,28 @@ table.mainTable tr td .icon {
   color: #a1a3af !important;
   -webkit-text-fill-color: #a1a3af !important;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:focus, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:active, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill:focus, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill:active {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:focus, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:active, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill:focus, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill:active, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:focus, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:active, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill:focus, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill:active {
   color: #a1a3af !important;
   -webkit-text-fill-color: #a1a3af !important;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px #232850 inset !important;
   -webkit-text-fill-color: #a1a3af !important;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker {
   width: 150%;
   margin-top: -1em;
   margin-bottom: -1em;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker::-webkit-clear-button, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker::-ms-clear {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker::-webkit-clear-button, #mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker::-ms-clear, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker::-webkit-clear-button, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-time-picker::-ms-clear {
   display: none;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-place-picker {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-place-picker, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno.add-turno .turnos-picker.turnos-place-picker {
   resize: none;
   height: 40px;
   outline: none !important;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button {
   padding: 3px;
   padding-left: 4px;
   font-size: 14px;
@@ -5065,41 +5219,41 @@ table.mainTable tr td .icon {
   bottom: -10px;
   right: 5px;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button .material-icons {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button .material-icons, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button .material-icons {
   font-size: 16px;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.more {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.more, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.more {
   background: #FAC855;
   right: 30px;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.less {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.less, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.less {
   background: #F47E84;
 }
-#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.always {
+#mainSection .main.step-turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.always, #mainSection .main.turnos .contenedor .turnosRight .flexBoxTurnos .turno .little-button.always {
   background: #F3945E;
   right: 28px;
 }
-#mainSection .main.step-turnos .extraTurno {
+#mainSection .main.step-turnos .extraTurno, #mainSection .main.turnos .extraTurno {
   text-align: right;
 }
-#mainSection .main.step-turnos .extraTurno button {
+#mainSection .main.step-turnos .extraTurno button, #mainSection .main.turnos .extraTurno button {
   border-radius: 25px;
   padding: 10px 20px;
   background-color: #48C18E;
   border: 2px solid #48C18E;
 }
-#mainSection .main.step-turnos .ui-dialog-title {
+#mainSection .main.step-turnos .ui-dialog-title, #mainSection .main.turnos .ui-dialog-title {
   padding-left: 0;
   font-size: 28px;
 }
-#mainSection .main.step-turnos .dialog-turno {
+#mainSection .main.step-turnos .dialog-turno, #mainSection .main.turnos .dialog-turno {
   height: auto !important;
 }
-#mainSection .main.step-turnos .dialog-turno .turno-form-group .material-icons {
+#mainSection .main.step-turnos .dialog-turno .turno-form-group .material-icons, #mainSection .main.turnos .dialog-turno .turno-form-group .material-icons {
   vertical-align: top;
   color: #48C18E;
 }
-#mainSection .main.step-turnos .dialog-turno .turno-form-group ::-webkit-calendar-picker-indicator {
+#mainSection .main.step-turnos .dialog-turno .turno-form-group ::-webkit-calendar-picker-indicator, #mainSection .main.turnos .dialog-turno .turno-form-group ::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 #mainSection .main .flexBoxTurnos {
@@ -5410,7 +5564,7 @@ html body option {
   color: #161938;
   background-color: white;
 }
-html body input, html body select {
+html body input, html body select, html body .textarea {
   background: transparent;
   -webkit-text-fill-color: #656683 !important;
   color: #656683;
@@ -5427,41 +5581,41 @@ html body input, html body select {
   box-shadow: none !important;
   filter: none;
 }
-html body input:-moz-focusring, html body select:-moz-focusring {
+html body input:-moz-focusring, html body select:-moz-focusring, html body .textarea:-moz-focusring {
   color: transparent !important;
   text-shadow: 0 0 0 #000;
 }
-html body input:active, html body input:focus, html body select:active, html body select:focus {
+html body input:active, html body input:focus, html body select:active, html body select:focus, html body .textarea:active, html body .textarea:focus {
   -webkit-text-fill-color: white !important;
   color: white !important;
   border-color: white !important;
 }
-html body input:-webkit-autofill, html body select:-webkit-autofill {
+html body input:-webkit-autofill, html body select:-webkit-autofill, html body .textarea:-webkit-autofill {
   -webkit-text-fill-color: #656683 !important;
   transition: background-color 5000000s step-end 0s;
   font-family: Gugi !important;
 }
-html body input:-webkit-autofill:active, html body input:-webkit-autofill:focus, html body select:-webkit-autofill:active, html body select:-webkit-autofill:focus {
+html body input:-webkit-autofill:active, html body input:-webkit-autofill:focus, html body select:-webkit-autofill:active, html body select:-webkit-autofill:focus, html body .textarea:-webkit-autofill:active, html body .textarea:-webkit-autofill:focus {
   -webkit-text-fill-color: white !important;
   color: white !important;
   border-color: white !important;
 }
-html body input:-moz-autofill, html body input:-moz-autofill-preview, html body select:-moz-autofill, html body select:-moz-autofill-preview {
+html body input:-moz-autofill, html body input:-moz-autofill-preview, html body select:-moz-autofill, html body select:-moz-autofill-preview, html body .textarea:-moz-autofill, html body .textarea:-moz-autofill-preview {
   filter: none;
 }
-html body input:-moz-autofill:hover, html body input:-moz-autofill:focus, html body input:-moz-autofill:active, html body input:-moz-autofill-preview:hover, html body input:-moz-autofill-preview:focus, html body input:-moz-autofill-preview:active, html body select:-moz-autofill:hover, html body select:-moz-autofill:focus, html body select:-moz-autofill:active, html body select:-moz-autofill-preview:hover, html body select:-moz-autofill-preview:focus, html body select:-moz-autofill-preview:active {
+html body input:-moz-autofill:hover, html body input:-moz-autofill:focus, html body input:-moz-autofill:active, html body input:-moz-autofill-preview:hover, html body input:-moz-autofill-preview:focus, html body input:-moz-autofill-preview:active, html body select:-moz-autofill:hover, html body select:-moz-autofill:focus, html body select:-moz-autofill:active, html body select:-moz-autofill-preview:hover, html body select:-moz-autofill-preview:focus, html body select:-moz-autofill-preview:active, html body .textarea:-moz-autofill:hover, html body .textarea:-moz-autofill:focus, html body .textarea:-moz-autofill:active, html body .textarea:-moz-autofill-preview:hover, html body .textarea:-moz-autofill-preview:focus, html body .textarea:-moz-autofill-preview:active {
   color: white !important;
   border-color: white !important;
   -webkit-text-fill-color: white !important;
 }
-html body input:focus, html body input:active, html body input:-webkit-autofill:hover, html body input:-webkit-autofill:focus, html body input:-webkit-autofill:active, html body input-webkit-autofill::first-line, html body select:focus, html body select:active, html body select:-webkit-autofill:hover, html body select:-webkit-autofill:focus, html body select:-webkit-autofill:active, html body select-webkit-autofill::first-line {
+html body input:focus, html body input:active, html body input:-webkit-autofill:hover, html body input:-webkit-autofill:focus, html body input:-webkit-autofill:active, html body input-webkit-autofill::first-line, html body select:focus, html body select:active, html body select:-webkit-autofill:hover, html body select:-webkit-autofill:focus, html body select:-webkit-autofill:active, html body select-webkit-autofill::first-line, html body .textarea:focus, html body .textarea:active, html body .textarea:-webkit-autofill:hover, html body .textarea:-webkit-autofill:focus, html body .textarea:-webkit-autofill:active, html body .textarea-webkit-autofill::first-line {
   font-family: Gugi !important;
   background-color: transparent;
   color: white !important;
   -webkit-text-fill-color: white !important;
   border-color: white !important;
 }
-html body input:focus + label, html body input:active + label, html body input:-webkit-autofill:hover + label, html body input:-webkit-autofill:focus + label, html body input:-webkit-autofill:active + label, html body input-webkit-autofill::first-line + label, html body select:focus + label, html body select:active + label, html body select:-webkit-autofill:hover + label, html body select:-webkit-autofill:focus + label, html body select:-webkit-autofill:active + label, html body select-webkit-autofill::first-line + label {
+html body input:focus + label, html body input:active + label, html body input:-webkit-autofill:hover + label, html body input:-webkit-autofill:focus + label, html body input:-webkit-autofill:active + label, html body input-webkit-autofill::first-line + label, html body select:focus + label, html body select:active + label, html body select:-webkit-autofill:hover + label, html body select:-webkit-autofill:focus + label, html body select:-webkit-autofill:active + label, html body select-webkit-autofill::first-line + label, html body .textarea:focus + label, html body .textarea:active + label, html body .textarea:-webkit-autofill:hover + label, html body .textarea:-webkit-autofill:focus + label, html body .textarea:-webkit-autofill:active + label, html body .textarea-webkit-autofill::first-line + label {
   color: white;
 }
 html body .select-wrapper {

@@ -148,7 +148,8 @@
             "notEmpty": "no puede estar vací@",
             "len": "es demasiado larg@",
             "min": "es demasiado bajo",
-            "max": "es demasiado elevado"
+            "max": "es demasiado elevado",
+            "isIn": "debe tomar uno de los valores permitidos"
         },
         "exit": "salir",
         "filter": "filtrar",
@@ -188,8 +189,8 @@
             "errorUserIsAlreadyACollaborator": "El usuario ya es un colaborador",
             "errorFile": "Error al subir el fichero",
             "errorImage": "Error al subir la imagen",
+            "errorSendingReport": "Error al enviar el reporte",
             "errorMandatoryPass": "Es obligatorio introducir una contraseña",
-            "mustBeUPMAccount": "Debes registrarte con tu cuenta de correo de la UPM",
             "passwordChangedSuccessfully": "Contraseña cambiada correctamente",
             "passwordsDoNotMatch": "Las contraseñas no coinciden",
             "problemSendingEmail": "Ha habido un problema con su petición",
@@ -219,6 +220,7 @@
             "successEditingUser": "Usuario editado con éxito",
             "successAddingCollaborator": "Colaborador añadido con éxito",
             "successImage": "Imagen subida con éxito",
+            "successSendingReport": "Reporte enviado con éxito",
             "youMustAcceptTerms": "You must accept the terms and conditions in order to register"
         },
         "guide": "Manual de usuario",
@@ -351,13 +353,32 @@
                 "private": "Sólo accesible por enlace"
             }
         },
+        "format":{
+            "none": "No especificado",
+            "online": "Completamente en línea",
+            "hybrid": "Se necesitan algunos recursos físicos"
+        },
+        "iscedNone": "Ninguno",
+        "isced": {
+            "00":"Programas y cualificaciones genéricos",
+            "01":"Educación",
+            "02":"Artes y humanidades",
+            "03":"Ciencias sociales, periodismo e información",
+            "04":"Empresa, administración y derecho",
+            "05":"Ciencias naturales, matemáticas y estadística",
+            "06":"Tecnologías de la información y la comunicación",
+            "07":"Ingeniería, industria y construcción",
+            "08": "Agricultura, silvicultura, pesca y veterinaria",
+            "09":"Salud y bienestar",
+            "10":"Servicios"
+        },
         "main": {
             "copyOf": "Copia de",
             "createER": "Crear nueva escape room",
             "noERTeacher": "No has creado ninguna escape room, gestiónalas desde aquí...",
             "noERStudent": "No tienes ninguna escape room activa, utiliza en enlace original que te ha proporcionado tu profe para apuntarte.",
             "myERs": "Mis escape rooms",
-            "otherERs": "Todas",
+            "otherERs": "Públicas",
             "emptyER": "No hay colaboradores",
             "playingERs": "Participando",
             "yesERStudent": "Estas son las escape rooms disponibles",
@@ -487,11 +508,11 @@
                     "Student": "Alumno",
                     "resourceCatalog": "Catálogo de recursos",
                     "catalog": {
-                        "newPuzzle": "Nuevo puzzle",
-                        "uploadFile": "Subir fichero",
-                        "addResource": "Añadir nuevo recurso",
-                        "addBlock": "Añadir bloque",
-                        "addText": "Añadir bloque de texto",
+                        "newPuzzle": "nuevo puzzle",
+                        "uploadFile": "subir fichero",
+                        "addResource": "añadir nuevo recurso",
+                        "addBlock": "añadir bloque",
+                        "addText": "añadir bloque de texto",
                         "table": {
                             "name": "Nombre",
                             "type": "Tipo",
@@ -552,6 +573,27 @@
                     "invalidRegex": "Expresión regular inválida"
                 }
             },
+            "after": {
+                "title": "Finalización",
+                "explanation": "Aquí puedes añadir la información que quieres mostrar a los alumnos una vez terminen la escape room. Puedes incluir una encuesta, un cuestionario posterior o cualquier otra información que quieras compartir con ellos"
+            },
+            "sharing": {
+                "title": "Publicación",
+                "description": "Puedes compartir tu escape room con otros profesores para que la utilicen en sus clases. Puedes hacerlo público para que los alumnos puedan apuntarse a ella desde la página principal de escapp",
+                "license": "Licencia",
+                "status": {
+                    "name": "Estado",
+                    "draft": "Borrador",
+                    "completed": "Completado"
+                },
+                "level": "Nivel educativo",
+                "field": "Campo",
+                "format": "Formato",
+                "licenseExplanation": "¿Qué tipo de licencia quieres aplicar al contenido de tu escape room?. Esto afectará a la posibilidad de que otros profesores puedan utilizarla en sus clases",
+                "invitationExplanation": "¿Quieres que los alumnos tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
+                "scopeExplanation": "¿Quieres que los alumnos puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos alumnos que tengan el enlace directo",
+                "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los alumnos no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia."
+            },
             "turnos": {
                 "title": "Turnos",
                 "indicacion": "¿Alguna indicación?",
@@ -575,17 +617,21 @@
             }
         },
         "general": {
-            "areYouSureDelete": "¿Seguro que deseas eliminar esta escape room?"
+            "areYouSureDelete": "¿Seguro que deseas eliminar esta escape room?",
+            "areYouSureClone": "¿Seguro que deseas clonar esta escape room?"
         },
         "attributes": {
             "title": "El título",
-            "subject": "La asignatura",
+            "subject": "El tema",
             "duration": "La duración",
             "description": "La descripción",
             "hintInterval": "El tiempo entre pistas",
             "teamSize": "El tamaño de los equipos",
             "scope": "La visibilidad",
             "invitation": "La contraseña",
+            "field": "El campo",
+            "level": "El nivel educativo",
+            "format": "El formato",
             "teamAppearance": "El tema de la interfaz de equipo",
             "classAppearance": "El tema de la interfaz de clase",
             "survey": "La encuesta",
@@ -598,6 +644,7 @@
             "forbiddenLateSubmissions": "La opción de permitir pasarse de tiempo",
             "classInstructions": "La interfaz de clase",
             "teamInstructions": "La interfaz de equipo",
+            "afterInstructions": "Las instrucciones al terminar",
             "indicationsInstructions": "Las instrucciones previas",
             "supportLink": "El link de soporte",
             "scoreParticipation": "La nota por asistencia",
@@ -840,6 +887,7 @@
     "showTeacher": {
         "actionList": {
             "activateTurno": "comenzar",
+            "after": "Instrucciones finales",
             "analytics": "Analíticas de aprendizaje",
             "appearance": "Apariencia",
             "basic": "Configuración básica",
@@ -862,6 +910,7 @@
             "shifts": "Turnos",
             "turnos": "Turnos",
             "share": "compartir",
+            "sharing": "Publicación",
             "stop": "detener",
             "shift": "turno",
             "volver": "volver",
@@ -879,6 +928,7 @@
             "copyTitle": "Copia el enlace",
             "qrTitle": "Genera un código QR para compartir",
             "noShiftsShare": "No puedes compartir la escape room hasta que hayas establecido al menos un turno",
+            "noShiftsShareDraft": "No puedes compartir la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación').",
             "noShiftsStart": "No puedes comenzar la escape room hasta que hayas establecido al menos un turno",
             "join": {
                 "intro": "Para que tus alumnos puedan acceder a la escape room comparte con ellos el siguiente enlace:",
@@ -901,7 +951,7 @@
             "posttest": "Post-test",
             "pretest": "Pre-test",
             "puzzles": "Retos",
-            "subject": "Asignatura",
+            "subject": "Tema",
             "survey": "Encuesta",
             "teamSize": "Tamaño máx. equipos",
             "scope": "Privacidad",
@@ -912,7 +962,9 @@
             "video": "Vídeo",
             "share": "Compartir",
             "forceLang": "Forzar el idioma de escapp para los alumnos de esta escape room"
-        }
+        },
+        "cantManageUntilComplete": "No puedes gestionar la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación')."
+
     },
     "team": {
         "add": "Añada un equipo",
@@ -1012,6 +1064,7 @@
         "selectActivate": "Selecciona el turno que quieres activar/desactivar",
         "selectStudent": "Selecciona un turno",
         "areYouSureReset": "¿Seguro que quieres reiniciar este turno? Todo el progreso de los alumnos se perderá",
+        "areYouSureDelete": "¿Seguro que deseas eliminar este turno?",
         "resetProgress": "Reinicia el turno",
         "noTurnAvailable": "No hay ningún turno disponible en esta escape room",
         "theres": "Queda",
@@ -1169,20 +1222,40 @@
           "view_cookies": "Leer Política de Cookies",
           "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
         },
-    "reports": {
-        "r1": "Contenido inapropiado",
-        "r2": "Contenido no relacionado con la actividad",
-        "r3": "Contenido no accesible",
-        "r4": "Escape room no accesible",
-        "r5": "Problemas técnicos",
-        "r6": "Otros problemas"
-    },
     "reusablePuzzles": {
         "name": "Retos reutilizables",
         "create": "Crear reto reutilizable",
         "edit": "Editar reto",
         "config": "Configuración",
         "description": "Descripción"
+    },
+    "management":{
+        "contact": {
+            "title": "Contactar",
+            "pageTitle": "Contactar con el autor",
+            "description": "",
+            "author": "Autor",
+            "email": "E-mail",
+            "sendEmail": "Enviar un e-mail",
+            "subject": "Inquiry about the escape room"
+        },
+        "report": {
+            "title": "Reportar",
+            "pageTitle": "Reportar contenido",
+            "description": "Reportar la escape room por contenido inadecuado",
+            "send": "enviar",
+            "reason": "Motivo",
+            "additionalComments": "Comentarios adicionales",
+            "markAsUnread": "Marcar como no leído",
+            "markAsRead": "Marcar como leído",
+            "delete": "Eliminar",
+            "reasons": {
+                "inappropriateContent": "Contenido inapropiado",
+                "copyrightViolation": "Infracción de copyright",
+                "policyViolation": "Contenido que incumple los  <a href='/terms'>términos y condiciones</a> de la plataforma",
+                "other": "Otro"
+            }
+        }
     }
 
 }

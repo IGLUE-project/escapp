@@ -68,6 +68,7 @@ exports.isTurnStarted = (req, res, next) => {
 exports.turnos = async (req, res, next) => {
     const {escapeRoom} = req;
 
+    res.redirect(`/escapeRooms/${escapeRoom.id}/activate`);
     try {
         escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
 
@@ -134,7 +135,7 @@ exports.create = async (req, res, next) => {
     const {date, place, from, to, capacity, password} = req.body;
     const {i18n} = res.locals;
     const modDate = date === "always" ? null : new Date(date);
-    const back = date === "always" ? `/escapeRooms/${req.escapeRoom.id}/turnos` : `/escapeRooms/${req.escapeRoom.id}/turnos?date=${modDate.getFullYear()}-${modDate.getMonth() + 1}-${modDate.getDate()}`;
+    const back = date === "always" ? `/escapeRooms/${req.escapeRoom.id}/activate` : `/escapeRooms/${req.escapeRoom.id}/activate?date=${modDate.getFullYear()}-${modDate.getMonth() + 1}-${modDate.getDate()}`;
 
     let turn = {
         "capacity": parseInt(capacity || 0, 10),
@@ -173,7 +174,7 @@ exports.create = async (req, res, next) => {
             } else {
                 req.flash("error", `${i18n.common.flash.errorCreatingTurno}`);
             }
-            res.render("escapeRooms/steps/turnos", {"escapeRoom": req.escapeRoom, "turnos": req.escapeRoom.turnos, "progress": "turnos", "error": "new"});
+            res.render("turnos/_indexActivate.ejs", {"escapeRoom": req.escapeRoom, "turnos": req.escapeRoom.turnos, "progress": "turnos", "error": "new"});
         } catch (e) {
             console.error(e);
             next(e);
@@ -196,7 +197,7 @@ exports.update = async (req, res, next) => {
     turn.to = to ? new Date(to) : null;
     turn.password = password;
     turn.status = date === "always" && turn.status === "pending" ? "active" : turn.status;
-    const back = date === "always" ? `/escapeRooms/${req.escapeRoom.id}/turnos` : `/escapeRooms/${req.escapeRoom.id}/turnos?date=${modDate.getFullYear()}-${modDate.getMonth() + 1}-${modDate.getDate()}`;
+    const back = date === "always" ? `/escapeRooms/${req.escapeRoom.id}/activate` : `/escapeRooms/${req.escapeRoom.id}/activate?date=${modDate.getFullYear()}-${modDate.getMonth() + 1}-${modDate.getDate()}`;
 
     try {
         if (!isValidDate(turn.date) || !isValidDate(turn.from) || !isValidDate(turn.to)) {
@@ -222,7 +223,7 @@ exports.update = async (req, res, next) => {
             } else {
                 req.flash("error", `${i18n.common.flash.errorEditingTurno}`);
             }
-            res.render("escapeRooms/steps/turnos", {"escapeRoom": req.escapeRoom, "turnos": req.escapeRoom.turnos, "progress": "turnos", "error": turn.id});
+            res.render("turnos/_indexActivate.ejs", {"escapeRoom": req.escapeRoom, "turnos": req.escapeRoom.turnos, "progress": "turnos", "error": turn.id});
         } catch (e) {
             console.error(e);
             next(e);
@@ -238,7 +239,7 @@ exports.destroy = async (req, res, next) => {
 
     try {
         const date = req.turn.date ? `?date=${modDate.getFullYear()}-${modDate.getMonth() + 1}-${modDate.getDate()}` : "";
-        const back = `/escapeRooms/${req.params.escapeRoomId}/turnos${date}`;
+        const back = `/escapeRooms/${req.params.escapeRoomId}/activate${date}`;
 
         const teams = await req.turn.getTeams({"attributes": ["id"]});
         const teamIds = teams.map((t) => t.id);

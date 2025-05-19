@@ -1,22 +1,32 @@
 <%- include ("../partials/_header.ejs") %>
 <div role="main" class="main">
-    <h2>Report content</h2>
-    <form method="POST">
-        <div >
-            <p>Reportar la escape room por contenido inadecuado</p>
-            <div style="display:flex;flex-direction:column;align-items:baseline">
-                <label for="reason">Motivo</label>
-                <select style="width:80vw;margin:1vw 0" id="reason" name="reason" >
-                <%console.log(i18n)%>
-                <% Object.entries(i18n.reports).forEach((entry) => { %>
-                    <% const [key, value] = entry;%>
-                    <option value="<%=key%>"><%=value%></option>
-                <% })%>
-                </select>
-                <label for="comments">Comentarios adicionales</label>
-                <input style="width:80vw;height:20vh;margin:1vw 0" type="text" id="comments" name="comments" >
-                <input style="margin-top:3vh" type="submit" value="Enviar">
-            </div>
+    <div class="breadcrumbs-container">
+        <div class="breadcrumbs">
+			<a href="/escapeRooms"><%=i18n.common.my%></a>
+				<span class="material-icons">chevron_right</span>
+					<a href="/escapeRooms/<%=escapeRoom.id%>">
+						 <%=escapeRoom.title%>
+					</a>
+                    <span class="material-icons">chevron_right</span>
+					<span>Report</span>
+					
         </div>
+	</div>
+    <h1> <%=i18n.management.report.title%></h1>
+    <form class="report" method="POST" >
+            <p><%=i18n.management.report.description%></p>
+            <div class ="report-body"">
+                <label for="reason"><%=i18n.management.report.reason%></label>
+                <div id="reason"> 
+                    <label><input type="radio" name="reason" value="inappropriateContent"> <%=i18n.management.report.reasons["inappropriateContent"]%></label><br>
+                    <label><input type="radio" name="reason" value="copyrightViolation"> <%=i18n.management.report.reasons["copyrightViolation"]%></label><br>
+                    <label><input type="radio" name="reason" value="policyViolation"> <%- i18n.management.report.reasons["policyViolation"]%></label><br>
+                    <label><input type="radio" name="reason" value="other"> <%=i18n.management.report.reasons["other"]%></label><br>
+                </div>
+                <label for="comments" ><%=i18n.management.report.additionalComments%></label>
+                <textarea class="textarea" id="comments" name="comments" ></textarea>
+                <button class="rounded editButton" type="submit"> <%=i18n.management.report.send%> </button>
+            </div>
     </form>
 </div>
+<%- include ("../partials/_footer.ejs") %>

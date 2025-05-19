@@ -147,7 +147,18 @@ exports.ids = (ids) => {
                     }
                 ]
             },
-            models.attachment
+            models.attachment,
+            {
+                "model": models.user,
+                "as": "author",
+                "required": false
+            },
+            {
+                "model": models.user,
+                "as": "userCoAuthor",
+                "duplicating": false,
+                "required": false
+            }
         ],
         "order": [["id", "desc"]]
     };

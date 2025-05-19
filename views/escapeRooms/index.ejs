@@ -81,7 +81,7 @@
                         if (disabled) {
                             href = "/escapeRooms/";
                         } else {
-                            href += "/join";
+                            href += "/";
                         } 
                     }
                 }%>
@@ -96,11 +96,15 @@
                             <div class="sign">
                                 <span class="material-icons">check</span>
                             </div>
-                            <%} else if (!disabled){%>
-                            <div class="sign add">
-                                <span class="material-icons">add</span>
+                            <%} else if (escapeRoom.isAuthorOrCoAuthor){%>
+                            <div class="sign edit">
+                                <span class="material-icons">edit</span>
                             </div>
-                            <%}%>
+                            <%} else if (!disabled ){%>
+                                <div class="sign add">
+                                    <span class="material-icons">add</span>
+                                </div>
+                                <%}%>
                         <%}%>
                     </div>
                 </a>
