@@ -1188,6 +1188,7 @@
         },
         "name": "Name",
         "anonymous": "Anonymous",
+        "anonymizedCantLogin": "This account has been anonymized and you cannot log in with it anymore.",
         "password": "Password",
         "passwordConfirm": "Confirm password",
         "passLeaveBlank": "If you would like to change your password fill in the following fields. Otherwise, leave them blank",
