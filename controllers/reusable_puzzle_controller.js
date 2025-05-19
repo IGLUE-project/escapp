@@ -128,19 +128,6 @@ exports.createReusablePuzzle = async (req, res, next) => {
 };
 
 // INSTANCES
-
-exports.getReusablePuzzlesInstanceConfig = async (req, res, next) => {
-    const {reusablePuzzleInstanceId} = req.params;
-    try {
-        const reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
-        res.send(reusablePuzzleInstance.config);
-    } catch (e) {
-        console.log(e)
-        next(e);
-    }
-
-}
-
 exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId, reusablePuzzleInstanceId} = req.params;
 
@@ -185,5 +172,20 @@ exports.getReusablePuzzleInstances = async (req, res, next) => {
     }
 };
 
-
-
+exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-line  no-unused-vars
+    const {reusablePuzzleInstanceId} = req.params;
+    console.log(reusablePuzzleInstanceId);
+    try {
+        const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId)
+        console.log(reusablePuzzleInstance);
+        const filePath = path.join(__dirname, `/../uploads/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/index.html`);
+        if(reusablePuzzleInstance) {
+            res.render('reusablePuzzles/reusablePuzzleContainer', {file: filePath, config: reusablePuzzleInstance.config});
+        }else {
+            res.status(404).send("Puzzle not found");
+        }
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+};

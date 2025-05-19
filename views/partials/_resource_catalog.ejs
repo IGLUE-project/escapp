@@ -134,7 +134,7 @@
                                     delete_outline </span>
                             </button>
                             <button class="listButton iconButton editButton"
-                                onclick="editPuzzle('<%=puzzle.id%>', 'application/reusable', '<%=JSON.stringify({reusablePuzzleId:puzzle.reusablePuzzleId, name:puzzle.name, id:puzzle.id, config:puzzle.config})%>')">
+                                onclick="editPuzzle('<%=puzzle.id%>', 'application/reusable', '<%=JSON.stringify({reusablePuzzleId:puzzle.reusablePuzzleId, name:puzzle.name, description:puzzle.description, id:puzzle.id, config:puzzle.config})%>')">
                                 <span class="building-block-icon material-icons" id="edit"> edit
                                 </span>
                             </button>
@@ -148,7 +148,7 @@
                             </button>
 
                             <button class="listButton addButton"
-                                onclick='insertAndScrollContent(0,"catalog",{url:`/uploads/reusablePuzzles/<%=puzzle.reusablePuzzleId%>/index.html`, puzzleId:"<%=puzzle.id%>",  config: "<%=puzzle.config%>",  mime:"application/reusable"}, puzzleList)'>
+                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: "<%=puzzle.config%>",  mime:"application/reusable"}, puzzleList)'>
                                 <span class="building-block-icon material-icons" id="add"> add
                                 </span>
                                 <p>
@@ -563,6 +563,7 @@
         const puzzleid = jsonPuzzle.id;
         const name = jsonPuzzle.name;
         const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
+        const description = jsonPuzzle.description;
 
          fetch(`/uploads/reusablePuzzles/${reusablePuzzleId}/form.ejs`).then(res => {
             res.text().then((partial)=>{
@@ -571,11 +572,17 @@
                     form.attr('action', `./reusablePuzzleInstance/${puzzleid}`);
                     form.empty();
                     if (mime.search(reusableRegex) !== -1) {
-                    form.append(`<h2>General Configuration</h2><div><label for="name">Name</label><input type="text" value="${name ? name : ""}"  name="name"/></div>
-                                <div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
-                                <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>
-                                <div><label for="description">Description</label><input type="text" value="${configJSON.description ? configJSON.description : 0}"  name="description"/></div>
-                                <div><label for="thumbnail">Thumbnail</label><input type="text" value="${configJSON.thumbnail ? configJSON.thumbnail : 0}"  name="thumbnail"/></div><h2>Specific configuration</h2>`);
+                    form.append(`<h2>General configuration</h2><div><label for="name">Name</label><input type="text" value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" name="name"/></div>
+                            <div><label for="description">Description</label><input type="text" value="${description ? description : ''}"  name="description"/></div>
+                                <div><label for="width">Height</label><input type="number" value=${configJSON.height ? configJSON.height : 100} name="width"/>px</div>
+                                <div><label for="height">Width</label><input type="number" value=${configJSON.width ? configJSON.width : 100} name="height"/>px</div>
+                                <div><label for="puzzle">Associated puzzle</label><select id="associantedPuzzle" onchange="setPuzzleSol()"  name="puzzle">
+                                ${window.puzzles.map((puzzle,index) => {
+                                    return `<option value="${puzzle.id}">${index}</option>`
+                                }).join('')}
+                                <div><label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value=${puzzles ? puzzles[0].sol : ""}  name="puzzleSol"/>
+                                </select></div><h2>Puzzle configuration</h2>
+                                `);
                     }
                     form.append(partial);
                     form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
@@ -597,6 +604,16 @@
                     }).show()
                 })
             });
+    }
+
+    function setPuzzleSol() {
+        const puzzleSol = $('#puzzleSol');
+        const puzzleId = $('#associantedPuzzle').val();
+        const puzzleSelected = window.puzzles.find(p => p.id == puzzleId);
+        console.log(puzzleSelected);
+        if(puzzleSelected) {
+            puzzleSol.val(puzzleSelected.sol)
+        }
     }
 
     function editAsset(id, mime, config) {
@@ -840,11 +857,17 @@ function openPuzzleConfiguration(puzzle, baseId){
             elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
             elements += `<button type="button" onclick="volver()">Volver</button>`;
             elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
-            configForm.html(`<h2>General configuration</h2><div><label for="name">Name</label><input type="text" name="name"/></div>
+            configForm.html((`<h2>General configuration</h2><div><label for="name">Name</label><input type="text" name="name"/></div>
                                 <div><label for="width">Height</label><input type="number" name="width"/>px</div>
                                 <div><label for="height">Width</label><input type="number" name="height"/>px</div>
                                 <div><label for="description">Description</label><input type="text"  name="description"/></div>
-                                <div><label for="thumbnail">Thumbnail</label><input type="text" name="thumbnail"/></div><h2>Puzzle configuration</h2>`)
+                                <div><label for="puzzle">Associated puzzle</label><select id="associantedPuzzle" onchange="setPuzzleSol()"  name="puzzle">
+                                ${window.puzzles.map((puzzle,index) => {
+                                    return `<option value="${puzzle.id}">${index}</option>`
+                                }).join('')}
+                                <div><label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value=${puzzles ? puzzles[0].sol : ""}  name="puzzleSol"/>
+                                </select></div><h2>Puzzle configuration</h2>
+                                `))
             configForm.append(elements);
             $(".sections").scrollTop(0);
         });

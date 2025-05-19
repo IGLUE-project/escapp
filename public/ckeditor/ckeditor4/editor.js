@@ -88,6 +88,7 @@ const reusableRegex = new RegExp(/application\/reusable/);
 //Render item depending on mime
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
+    console.log(item);
     if(item.mime.search(imageRegex) !== -1) {
         return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {
@@ -108,20 +109,8 @@ const catalogItem = (item)=> {
      </div>`;
      } else if (item.mime.search(reusableRegex) !== -1) {
          return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
-             <iframe src="${item.url}" width="100%" height="100%" >
+             <iframe src="${item.url}" width="100%" height="100%" id="${item.id}" >
                 <script>
-                    fetch("/reusablePuzzleInstances/" + ${item.puzzleId} +'/config').then(ans => {
-                        if (ans.ok) { ans.text().then((text)=>{
-                                    const texts = text.split(';');
-                                    if (!texts) return {};
-                                    configJSON = {};
-                                    texts.forEach(text => {
-                                        const data = text.split(':');
-                                        configJSON[data[0]] = data[1];
-                                    })
-                                    window.config = configJSON;
-                            });
-                        }})
                 </script>
              </iframe>
      </div>`;
@@ -157,6 +146,7 @@ var insertContent = async (index, type, payload, puzzles) => {
             content = rankingTemplate();
             break;
         case "text":
+            console.log(payload);
             content = textEditorTemplate(
                 id, payload.text);
             break;
