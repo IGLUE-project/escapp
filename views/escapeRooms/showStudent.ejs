@@ -23,12 +23,12 @@
 		
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
-			<%- include ("../attachments/_show",{attachment}) %>
+			<%- include ("../attachments/_show",{attachment, id: escapeRoom.id}) %>
 		</div>
 		<div class="flex-er-info animated fadeIn">
 			<h1><%=escapeRoom.title%></h1>
 			<h2><%=i18n.turno.Turno%></h2>
-			<p><%= turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen%> <% if (turno.place) { %>(<%= turno.place %>)<% } %></p>
+			<p><%= turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen%> <% if (turno.place) { %>(<%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%>)<% } %></p>
 
 			<% if (!escapeRoom.teamSize || (escapeRoom.teamSize > 1)) { %>
 				<h2><%=i18n.team.Team%> </h2>

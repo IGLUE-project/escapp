@@ -28,7 +28,7 @@
                 var turno = turnos[t]; %>
             <div class="flex-row <%= (turno.status === "active" && turno.date) ? "active-turno":"" %>">
                 <div class="flex-cell flex-turno">
-                    <%if (turno.place) {%> <%=turno.place %> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
+                    <%if (turno.place) {%> <%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
                 </div>
                 <div class="flex-cell flex-status"><b><%=i18n.turno.statuses[turno.status]%></b></div>
 
@@ -54,6 +54,7 @@
                     <button class="turno-btn edit-turno" onclick="overlayTrigger('edit-<%=turno.id%>')" style="color:var(--mainpurple);" title="<%=i18n.turno.edit%>" data-turno-id="<%=turno.id%>">
                         <span class="material-icons">edit</span>
                     </button>
+                     <%if (turno.place == "_PUBLIC"){%>
                     <div class="overlay-wrapper">
                         <button class="turno-btn" onclick="overlayTrigger('delete-<%=turno.id%>')" title="<%=i18n.escapeRoom.steps.turnos.deleteTitle%>" style="color:var(--lightred);">
                             <span class="material-icons">delete</span>
@@ -66,6 +67,7 @@
                             </form>
                         </div>
                     </div>
+                    <%}%>
                     <%if (turno.status !== "pending"){%>
                         <div class="overlay-wrapper">
                             <button class="turno-btn" onclick="overlayTrigger('reset-<%=turno.id%>')" title="<%=i18n.turno.resetProgress%>" style="color:var(--brightyellow);">

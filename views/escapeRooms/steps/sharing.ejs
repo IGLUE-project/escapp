@@ -87,7 +87,7 @@
                 </p>
                 <p style="font-size: small;"><%=i18n.escapeRoom.steps.sharing.checklist.backToDraft%></p>
             <%}%>
-            <input type="checkbox" class="toggle" id="theswitch" role="switch" <%if(escapeRoom.status == "completed"){%>checked <%}%> />
+            <input type="checkbox" class="toggle" id="theswitch" role="switch" <%if(escapeRoom.status == "completed"){%>checked <%} else if(!isCompleted){%> disabled <%}%> />
         </div>
 		<br/>
 		<br/>

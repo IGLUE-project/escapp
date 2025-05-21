@@ -1431,6 +1431,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   transform: rotate(20deg);
   background-color: #F47E84;
   text-transform: lowercase;
+  border: 2px solid white;
 }
 .status-ribbon a {
   color: #161938;
@@ -1447,6 +1448,15 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 24px;
   vertical-align: text-bottom;
 }
+.escapeRooms .escapeRoomFilters .filter-button {
+  font-family: "Material Icons";
+  padding: 6px !important;
+  margin: 0;
+  vertical-align: middle;
+  background: transparent;
+  border: transparent;
+  color: white;
+}
 .escapeRooms .flexBoxEscapeRooms {
   padding: 1em;
   border: 2px solid white;
@@ -1460,6 +1470,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .escapeRooms .flexBoxEscapeRooms:after {
   content: "";
   flex: 1;
+}
+.escapeRooms .flexBoxEscapeRooms .notFound {
+  margin-top: 0px;
+  flex-basis: 100%;
+  color: #9091A6;
 }
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper {
   width: 19.99%;
@@ -1534,7 +1549,10 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   flex-direction: row;
   justify-content: right;
 }
-.escapeRooms .escapeRoomListButtons button {
+.escapeRooms .escapeRoomListButtons .escapeRoomSearch {
+  flex: 1;
+}
+.escapeRooms .escapeRoomListButtons button.dashboard-button {
   border: 2px solid white;
   border-bottom: 2px solid transparent;
   border-radius: 10px 10px 0 0;
@@ -1543,7 +1561,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 0.81em;
   transform: translateX(-1em) translateY(2px);
 }
-.escapeRooms .escapeRoomListButtons button.selected {
+.escapeRooms .escapeRoomListButtons button.dashboard-button.selected {
   color: #232850;
   background: white;
   border-bottom-color: white;
@@ -1559,7 +1577,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
     width: 33.33%;
   }
 }
-@media (max-width: 576px) {
+@media (max-width: 800px) {
   .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper {
     width: 50%;
   }
@@ -1568,6 +1586,20 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   }
   .escapeRooms .escapeRoomListButtons a button span.material-icons {
     display: inline !important;
+  }
+}
+@media (max-width: 500px) {
+  .escapeRoomListButtons {
+    flex-wrap: wrap;
+  }
+  .escapeRoomListButtons .escapeRoomSearch {
+    flex-grow: 1;
+    flex-basis: 100% !important;
+    margin-bottom: 1em;
+    width: 100%;
+  }
+  .escapeRoomListButtons .escapeRoomSearch #searchbar {
+    width: 85%;
   }
 }
 .box__error {

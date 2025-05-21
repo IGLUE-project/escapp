@@ -135,7 +135,7 @@
             <div class="flexShow">
                 <div class="attachmentShow" >
                     <% var attachment = escapeRoom.attachment; %>
-                    <%- include ("../attachments/_show") %>
+                    <%- include ("../attachments/_show",{attachment, id: escapeRoom.id}) %>
                     <%if (!escapeRoom.status || escapeRoom.status == "draft") {%>
                     <span class="status-ribbon"><a href="/escapeRooms/<%= escapeRoom.id %>/sharing"><%=i18n.escapeRoom.steps.sharing.status.draft%></a></span>
                     <% } %>
@@ -334,7 +334,7 @@
             <%for(let turno of escapeRoom.turnos){%>
                 <%if (turno.password) {%>
                     <% var invitationLink = hostName + "/escapeRooms/" + escapeRoom.id + "/turnos/" + turno.id + "/select?token=" + turno.password %>
-                    <p class="join-instructions join-turno" style="color: var(--lightred);"><b><%= turno.date ? getFullDate(turno.date) : i18n.turno.alwaysOpen  %> <%if(turno.place){%>(<%=turno.place%>)<%}%></b></p>
+                    <p class="join-instructions join-turno" style="color: var(--lightred);"><b><%= turno.date ? getFullDate(turno.date) : i18n.turno.alwaysOpen  %> <%if(turno.place){%>(<%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%>)<%}%></b></p>
                     <ul class="join-turno-list">
                         <li>
                             <%-include("../partials/_copyLink",{invitationLink,key: turno.id})%>

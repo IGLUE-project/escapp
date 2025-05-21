@@ -12,7 +12,7 @@
 		
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
-			<%- include ("../attachments/_show",{attachment}) %>
+			<%- include ("../attachments/_show",{attachment, id: escapeRoom.id}) %>
             
 		</div>
 		<div class="flex-er-info animated fadeIn">

@@ -237,6 +237,7 @@
         },
         "next": "next",
         "save": "save",
+        "search": "search",
         "see": "see",
         "orderBy": "Order by",
         "previous": "back",
@@ -382,8 +383,10 @@
         "main": {
             "copyOf": "Copy of",
             "createER": "Create new escape room",
-            "noERTeacher": "You haven't created any Escape Rooms yet. Manage them from here",
-            "noERStudent": "You haven't any active Escape Rooms yet, wait for your teacher's invitation.",
+            "noERTeacher": "You haven't created any Escape Rooms yet",
+            "noERStudent": "You are not enrolled in any escape room yet.",
+            "noERPublic": "There are no escape rooms currently available.",
+            "notFound": "There are no results for your search. Try a different search!",
             "myERs": "My escape rooms",
             "otherERs":"Public",
             "emptyER": "No collaborators yet",
@@ -1074,6 +1077,7 @@
         	"dec": "December"
         },
         "place": "Location",
+        "PUBLIC": "Public",
         "noPlace": "Place not specified",
         "fullTurno": "The shift you selected is full. Select another one",
         "notActive": "This Escape Room isn't available for you right now",
