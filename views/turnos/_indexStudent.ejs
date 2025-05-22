@@ -77,11 +77,11 @@ const formatDate = function (currentDate) {
             <% var disabled = (full || finished || enrollmentNotAllowed);%>
             <div class="turno turnoAlumno <%= disabled ? "disabled finished":""%>" title="<%=title%>" data-date="<%=dateNoTime.getTime()%>" id="turno-<%=turn.id%>" data-id="<%=turn.id%>">
                 <div class="hora">
-                    <%- turn.date ? formatTime(date) : `<span class="always">${i18n.turno.always}</span>` %>
+                    <%- turn.date ? formatTime(date) : `<span class="always">${turn.place =="_PUBLIC" ? i18n.turno.PUBLIC.toLowerCase() : i18n.turno.always}</span>` %>
                 </div>
                 <div class="place">
                     <% if (turn.place) { %>
-                        <%= turn.place %> <br/>
+                       	<%= turn.place =="_PUBLIC" ? i18n.turno.publicSub : turn.place %> <br/>
                     <% } %>
                 </div>
             </div>

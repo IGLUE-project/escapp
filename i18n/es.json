@@ -227,6 +227,7 @@
         "guide": "Manual de usuario",
         "ideas": "Ideas para retos",
         "mainPage": "Pág. principal",
+        "ok": "ok",
         "pagination": {
             "first": "Primera página",
             "last": "Última página",
@@ -1037,6 +1038,7 @@
         	"nextText": "Sig >",
         	"prevText": "< Ant"
         	},
+        "automaticallyPublic": "Este turno se ha creado automáticamente porque la escape room es pública",
 	    "days": {
 			"d": "Domingo",
 			"l": "Lunes",
@@ -1071,6 +1073,7 @@
         "noPlace": "Lugar no indicado",
         "place": "Lugar",
         "PUBLIC": "Público",
+        "publicSub": "abierto",
         "activateTurnos": "Administrar los turnos de la escape room",
         "areYouSureStop": "¿Seguro que deseas detener este turno?",
         "areYouSureStartScheduledFor": "¿Seguro que deseas comenzar el turno programado para",

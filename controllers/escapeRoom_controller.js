@@ -9,6 +9,7 @@ const {nextStep, prevStep} = require("../helpers/progress");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
 const es = require("../i18n/es");
 const en = require("../i18n/en");
+const { escape } = require("sequelize/lib/sql-string");
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -156,7 +157,7 @@ exports.create = async (req, res) => {
 
         if (!req.file) {
             await transaction.commit();
-            res.redirect(`/escapeRooms/${escapeRoom.id}/turnos`);
+            res.redirect(`/escapeRooms/${escapeRoom.id}/puzzles`);
             return;
         }
 
@@ -368,22 +369,31 @@ exports.sharingUpdate = async (req, res) => {
     const progressBar = body.progress;
     const {i18n} = res.locals;
     const {escapeRoom} = req;
+    const transaction = await sequelize.transaction();
 
     try {
-        escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
         escapeRoom.scope = body.scope === "private";
-        if (!escapeRoom.publishedOnce) {
+        if (escapeRoom.scope) { // Only public rooms  can have a password
+            escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
+        } else {
+            escapeRoom.invitation = undefined;
+        }
+        if (!escapeRoom.publishedOnce) { // Cannot change the license of a published room
             escapeRoom.license = body.license;
-            if (escapeRoom.status === "draft" && body.status === "completed") {
+            if ((escapeRoom.status === "draft" || !escapeRoom.status) && body.status === "completed") {
                 escapeRoom.publishedOnce = true;
+                if (!escapeRoom.scope) {
+                    await models.turno.create({"place": "_PUBLIC", "status": "active", "escapeRoomId": escapeRoom.id }, {transaction});
+                }
             }
         }
 
         escapeRoom.status = body.status;
-        await escapeRoom.save({"fields": ["invitation", "scope", "license", "status", "publishedOnce"]});
-
+        await escapeRoom.save({"fields": ["invitation", "scope", "license", "status", "publishedOnce"], transaction});
+        await transaction.commit();
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("sharing") : progressBar || nextStep("sharing")}`);
     } catch (error) {
+        await transaction.rollback();
         console.error(error);
         if (error instanceof Sequelize.ValidationError) {
             error.errors.forEach((err) => {
@@ -392,7 +402,11 @@ exports.sharingUpdate = async (req, res) => {
         } else {
             req.flash("error", i18n.common.flash.errorEditingER);
         }
-        res.render("escapeRooms/steps/sharing", {escapeRoom, "progress": "sharing"});
+        const escapeRoom2 = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
+
+        const completed = stepsCompleted(escapeRoom2);
+
+        res.render("escapeRooms/steps/sharing", {escapeRoom, completed, "progress": "sharing"});
     }
 };
 
@@ -422,6 +436,7 @@ exports.classInterface = async (req, res) => {
 
     res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "class", "endPoint": "class", assets, availableReusablePuzzles});
 };
+
 // GET /escapeRooms/:escapeRoomId/indications
 exports.indicationsInterface = async (req, res) => {
     const {escapeRoom} = req;
@@ -494,6 +509,7 @@ exports.clone = async (req, res, next) => {
         if (attachment) {
             include.push(models.attachment);
         }
+
         const escapeRoom = models.escapeRoom.build({
             "title": newTitle,
             subject,
@@ -528,7 +544,7 @@ exports.clone = async (req, res, next) => {
             "status": "draft",
             license,
             field,
-            publishedOnce,
+            "publishedOnce": false,
             format,
             level,
             "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, score, hints}) => ({
@@ -547,6 +563,7 @@ exports.clone = async (req, res, next) => {
             "attachment": attachment ? attHelper.getFields(attachment) : undefined
         }, {include});
 
+        console.log(escapeRoom);
         const saved = await escapeRoom.save({transaction});
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});

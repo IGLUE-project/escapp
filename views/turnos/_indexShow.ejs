@@ -38,18 +38,20 @@ var pastDates = [];
 	<a href="" title="<%=i18n.turno.statusMsg[turn.status]%>" onclick="return false;">
 		<div class="turno turno-play turnoProfe <%=turn.status === "active" ? "active" : "finished" %>" data-date="<%=dateNoTime.getTime()%>" id="turno-<%=turn.id%>">
 			<div class="hora">
-				<%- turn.date ? formatTime(date) : `<span class="always">${i18n.turno.always}</span>`%>
+				<%- turn.date ? formatTime(date) : `<span class="always">${ turn.place =="_PUBLIC" ? i18n.turno.PUBLIC.toLowerCase() : i18n.turno.always}</span>`%>
 			</div>
 			<div class="place">
 				<% if (turn.place) { %>
-					<%= turn.place %> <br/>
+					<%= turn.place =="_PUBLIC" ? i18n.turno.publicSub : turn.place %> <br/>
 				<% } %>
 			</div>
 		</div>
 	</a>
-	<div id="dialog-turno-<%=turn.id%>" class="dialog-turno hidden" title="<%=i18n.turno.Turno%> <%= turn.date ? getFullDate(turn.date) : i18n.turno.alwaysOpen  %> <%if(turn.place){%>(<%=turn.place%>)<%}%>">
+	<div id="dialog-turno-<%=turn.id%>" class="dialog-turno hidden" title="<%=i18n.turno.Turno%> <%= turn.date ? getFullDate(turn.date) : i18n.turno.alwaysOpen  %> <%if(turn.place){%><%=turn.place =="_PUBLIC" ? "" :("("+turn.place+")")%><%}%>">
 		<div class="flex-dialog-container">
-			<div class="flex-block">
+			<%if(turn.place !=="_PUBLIC"){%>
+				<div class="flex-block">
+				
 				<button class="turno-btn" title="<%=i18n.turno[turn.status === "active"? "stop" : "start"]%>"  <%if (turn.status === "finished") {%>   disabled <% } else { %> onclick="overlayTrigger('activate-<%=turn.id%>')"` <% } %>>
 					<span class="material-icons"  style="color: var(--brightgreen);" ><%= turn.status === "active"? "stop" : "play_arrow"%></span>
 					<span><%=i18n.escapeRoom.play[turn.status === "active"? "stop" : "start"]%></span>
@@ -64,7 +66,9 @@ var pastDates = [];
 						</div>
 					</form>
 				</div>
+					
 			</div>
+			
 			<div class="flex-block">
 				<button class="turno-btn" title="<%=i18n.turno.resetProgress%>" onclick="overlayTrigger('reset-<%=turn.id%>')" title="<%=i18n.turno.resetProgress%>" >
 					<span class="material-icons" style="color: var(--brightyellow);" >settings_backup_restore</span>
@@ -80,6 +84,7 @@ var pastDates = [];
 					</form>
 				</div>
 			</div>
+			<%}%>
 			<div class="flex-block">
 				<a href="/escapeRooms/<%=escapeRoom.id%>/participants?turnId=<%=turn.id%>">
 					<button class="turno-btn" title="<%=i18n.analytics.grading.attendance%>" >

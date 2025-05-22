@@ -110,7 +110,7 @@ exports.publicRoutes = (escapeRoomId, userId, puzzleId, turnoId) => [
     }, */
     {
         "route": `/escapeRooms/${escapeRoomId}/results`,
-        "statusCode": 302
+        "statusCode": 403
     },
     {
         "route": `/escapeRooms/${escapeRoomId}/finish`,
@@ -127,10 +127,6 @@ exports.publicRoutes = (escapeRoomId, userId, puzzleId, turnoId) => [
     {
         "route": "/inspiration",
         "statusCode": 200
-    },
-    {
-        "route": "/resources",
-        "statusCode": 302
     },
     {
         "route": `/escapeRooms/${escapeRoomId}/participants`,
@@ -297,7 +293,7 @@ exports.teacherRoutes = (escapeRoomId, userId, puzzleId, turnoId) => [
     },
     {
         "route": `/escapeRooms/${escapeRoomId}/play`,
-        "statusCode": 403
+        "statusCode": 302
     },
     /* {
         "route": `/escapeRooms/${escapeRoomId}/project`,
@@ -305,11 +301,11 @@ exports.teacherRoutes = (escapeRoomId, userId, puzzleId, turnoId) => [
     }, */
     {
         "route": `/escapeRooms/${escapeRoomId}/results`,
-        "statusCode": 403
+        "statusCode": 302
     },
     {
         "route": `/escapeRooms/${escapeRoomId}/finish`,
-        "statusCode": 403
+        "statusCode": 302
     },
     {
         "route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/play`,
@@ -317,10 +313,6 @@ exports.teacherRoutes = (escapeRoomId, userId, puzzleId, turnoId) => [
     },
     {
         "route": "/inspiration",
-        "statusCode": 200
-    },
-    {
-        "route": "/resources",
         "statusCode": 200
     },
     {
@@ -513,10 +505,6 @@ exports.studentRoutes = (escapeRoomId, userId, puzzleId, turnoId) => [
     {
         "route": "/inspiration",
         "statusCode": 200
-    },
-    {
-        "route": "/resources",
-        "statusCode": 403
     },
     {
         "route": `/escapeRooms/${escapeRoomId}/participants`,
