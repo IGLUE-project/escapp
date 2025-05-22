@@ -34,15 +34,14 @@ exports.generateReport = async (req, res) => {
     const {i18n} = res.locals;
     const {reason, comments} = req.body;
     const sessionId = req.session.user.id;
+    const report = models.report.build({
+        reason,
+        comments,
+        "escapeRoomId": escapeRoom.id,
+        "reportAuthor": sessionId
+    });
 
     try {
-        const report = models.report.build({
-            reason,
-            comments,
-            "escapeRoomId": escapeRoom.id,
-            "reportAuthor": sessionId
-        });
-
         req.flash("success", i18n.common.flash.successSendingReport);
         await report.save();
         res.redirect(`/escapeRooms/${escapeRoom.id}`);

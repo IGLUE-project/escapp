@@ -43,12 +43,6 @@ require(path.join(__dirname, "requestedHint"))(sequelize, Sequelize.DataTypes);
 // Import the definition of the Asset Table from attachment.js
 require(path.join(__dirname, "asset"))(sequelize, Sequelize.DataTypes);
 
-// Import the definition of the App Table from app.js
-require(path.join(__dirname, "app"))(sequelize, Sequelize.DataTypes);
-
-// Import the definition of the Resource Table from app.js
-require(path.join(__dirname, "resource"))(sequelize, Sequelize.DataTypes);
-
 // Import the definition of the RetosSuperados Table from retosSuperados.js
 require(path.join(__dirname, "retosSuperados"))(sequelize, Sequelize.DataTypes);
 
@@ -61,7 +55,7 @@ require(path.join(__dirname, "reusablePuzzle"))(sequelize, Sequelize.DataTypes);
 require(path.join(__dirname, "report"))(sequelize, Sequelize.DataTypes);
 
 // Relation between models
-const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, app, resource, reusablePuzzle, reusablePuzzleInstance, report} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
+const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
 
 // Relation 1-to-N between Escape Room and Turno:
 
@@ -272,25 +266,6 @@ user.hasMany(asset, {
 });
 
 asset.belongsTo(user);
-
-resource.belongsTo(app);
-resource.belongsTo(puzzle);
-
-user.hasMany(resource, {
-    "onDelete": "CASCADE",
-    "hooks": true,
-    "foreignKey": "authorId"
-});
-
-app.hasMany(resource, {
-    "onDelete": "CASCADE",
-    "hooks": true
-});
-
-puzzle.hasMany(resource, {
-    "onDelete": "CASCADE",
-    "hooks": true
-});
 
 // Relation 1-to-N between EscapeRoom and reusablePuzzleInstance:
 escapeRoom.hasMany(reusablePuzzleInstance, {

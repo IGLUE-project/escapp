@@ -166,7 +166,7 @@ exports.ids = (ids) => {
     return findOptions;
 };
 
-exports.all = (user, page = 1, limit = 10) => {
+exports.all = (user, page = 1, limit = 10, search) => {
     const findOptions = {
         "attributes": [
             "id",
@@ -207,10 +207,30 @@ exports.all = (user, page = 1, limit = 10) => {
         findOptions.limit = limit;
         findOptions.offset = (page - 1) * limit;
     }
+    if (search) {
+        findOptions.where = {
+            [Op.and]: [
+                {
+                    [Op.or]: [
+                        {
+                            "title": {
+                                [Op.iLike]: `%${search}%`
+                            }
+                        },
+                        {
+                            "description": {
+                                [Op.iLike]: `%${search}%`
+                            }
+                        }
+                    ]
+                } 
+            ]
+        };
+    }
     return findOptions;
 };
 
-exports.forTeacher = (id, page = 1, limit = 10) => ({
+exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
     "attributes": ["id", "title", "invitation"],
     "distinct": true,
     "include": [
@@ -231,10 +251,28 @@ exports.forTeacher = (id, page = 1, limit = 10) => ({
         }
     ],
     "where": {
-        [Op.or]: [
-            { "authorId": id },
-            { "$userCoAuthor.id$": id }
-        ]
+        [Op.and]: [
+            {
+                [Op.or]:[
+                    {
+                        "title": {
+                            [Op.iLike]: `%${search}%`
+                        }
+                    },
+                    {
+                        "description": {
+                            [Op.iLike]: `%${search}%`
+                        }
+                    }
+                ]
+            },
+            {   
+                [Op.or]: [
+                    { "authorId": id },
+                    { "$userCoAuthor.id$": id }
+                ]
+            }]
+
     },
     limit,
     "offset": (page - 1) * limit,
