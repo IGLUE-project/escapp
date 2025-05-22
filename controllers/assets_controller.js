@@ -330,3 +330,18 @@ exports.getWebAppAsset = async (req, res, next) => { // eslint-disable-line  no-
         next(err);
     }
 };
+
+exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-line  no-unused-vars
+    const {puzzle_id, file_name } = req.params;
+
+    try {
+        const filePath = path.join(__dirname, `/../uploads/reusablePuzzles/${puzzle_id}/${file_name}`);
+
+        res.sendFile(filePath);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+};
+
+

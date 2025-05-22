@@ -1261,6 +1261,13 @@
         "error_accepting": "Error updating terms and privacy policy acceptance"
 
     },
+    "reusablePuzzles":{
+        "name": "Reusable puzzles",
+        "create": "Create reusable puzzle",
+        "edit": "Edit puzzle",
+        "config": "Configuration",
+        "description": "Descritpion"
+    },
     "management":{
         "contact": {
             "title": "Contact",
