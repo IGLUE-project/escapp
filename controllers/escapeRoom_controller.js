@@ -372,7 +372,6 @@ exports.sharingUpdate = async (req, res) => {
     const transaction = await sequelize.transaction();
 
     try {
-       
         escapeRoom.scope = body.scope === "private";
         if (escapeRoom.scope) { // Only public rooms  can have a password
             escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
@@ -381,14 +380,14 @@ exports.sharingUpdate = async (req, res) => {
         }
         if (!escapeRoom.publishedOnce) { // Cannot change the license of a published room
             escapeRoom.license = body.license;
-            if (((escapeRoom.status === "draft") ||  !escapeRoom.status) && body.status === "completed") {
+            if ((escapeRoom.status === "draft" || !escapeRoom.status) && body.status === "completed") {
                 escapeRoom.publishedOnce = true;
-                if (!escapeRoom.scope) { 
+                if (!escapeRoom.scope) {
                     await models.turno.create({"place": "_PUBLIC", "status": "active", "escapeRoomId": escapeRoom.id }, {transaction});
                 }
             }
         }
-        
+
         escapeRoom.status = body.status;
         await escapeRoom.save({"fields": ["invitation", "scope", "license", "status", "publishedOnce"], transaction});
         await transaction.commit();
@@ -510,7 +509,7 @@ exports.clone = async (req, res, next) => {
         if (attachment) {
             include.push(models.attachment);
         }
-        
+
         const escapeRoom = models.escapeRoom.build({
             "title": newTitle,
             subject,
@@ -545,7 +544,7 @@ exports.clone = async (req, res, next) => {
             "status": "draft",
             license,
             field,
-            publishedOnce: false,
+            "publishedOnce": false,
             format,
             level,
             "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, score, hints}) => ({
@@ -563,7 +562,8 @@ exports.clone = async (req, res, next) => {
             "assets": assets && assets.length ? [...assets].map((asset) => ({...attHelper.getFields(asset), "userId": authorId})) : undefined,
             "attachment": attachment ? attHelper.getFields(attachment) : undefined
         }, {include});
-        console.log(escapeRoom)
+
+        console.log(escapeRoom);
         const saved = await escapeRoom.save({transaction});
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});
