@@ -2596,7 +2596,17 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   height: auto;
 }
 
-#editDialog form {
+.editDialog, #editDialog {
+  background: #232951;
+}
+.editDialog label, .editDialog p, .editDialog textarea, .editDialog select, .editDialog span, #editDialog label, #editDialog p, #editDialog textarea, #editDialog select, #editDialog span {
+  color: #eeeeee;
+}
+.editDialog input, .editDialog select, #editDialog input, #editDialog select {
+  border-color: #eeeeee;
+  color: #eeeeee;
+}
+.editDialog form, #editDialog form {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -2604,24 +2614,23 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   justify-content: center;
   gap: 1rem;
 }
-#editDialog label {
+.editDialog label, #editDialog label {
   padding: 10px 10px 0 0;
 }
-#editDialog .submit {
+.editDialog .submit, #editDialog .submit {
   height: 50px;
 }
-#editDialog input[type=checkbox] {
+.editDialog input[type=checkbox], #editDialog input[type=checkbox] {
   height: 16px;
   margin: 0;
 }
-#editDialog .titleLabelEdit {
+.editDialog .titleLabelEdit, #editDialog .titleLabelEdit {
   font-weight: bold;
-  color: #a1a3af;
   padding-bottom: 0.4rem;
   margin: 0 0 0.8rem 0;
   border-bottom: 1px solid rgb(219, 219, 219);
 }
-#editDialog .containerBlocksEdit {
+.editDialog .containerBlocksEdit, #editDialog .containerBlocksEdit {
   max-width: 400px;
   min-width: 300px;
   display: flex;

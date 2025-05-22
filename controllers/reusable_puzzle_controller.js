@@ -106,8 +106,11 @@ exports.createReusablePuzzle = async (req, res, next) => {
             await zip.close();
         }
 
+        const puzzleConfig = fs.readFileSync(path.join(newPath, "config.json"));
+        const parsedConfig = JSON.parse(puzzleConfig);
+
         if (hasForm) {
-            puzzle.config = JSON.stringify({"url": `/uploads/reusablePuzzles/${puzzle.id}/form.ejs`});
+            puzzle.config = JSON.stringify({"url": `/uploads/reusablePuzzles/${puzzle.id}/form.ejs`, ...parsedConfig });
             puzzle.save({"transaction": t});
         }
 
@@ -137,22 +140,13 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
     const t = await sequelize.transaction();
 
+    let newInstanceId = "";
 
     try {
-        if (config.puzzle && config.puzzleSol) {
-            const puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}});
-
-            console.log(await models.puzzle.findAll());
-            console.log(puzzle);
-            if (puzzle) {
-                puzzle.sol = config.puzzleSol;
-                await puzzle.save({"transaction": t});
-            }
-            config.puzzleSol = undefined;
-        }
-
         if (!reusablePuzzleInstanceId) {
-            await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(config)}, {"transaction": t});
+            const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(config)}, {"transaction": t});
+
+            newInstanceId = reusablePuzzle.id;
         } else {
             const reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
 
@@ -161,6 +155,18 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             reusablePuzzleInstance.description = description || reusablePuzzleInstance.description;
             reusablePuzzleInstance.config = config ? JSON.stringify(config) : JSON.stringify(reusablePuzzleInstance.config);
             await reusablePuzzleInstance.save({"transaction": t});
+        }
+
+        if (config.puzzle && config.puzzleSol) {
+            const puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}});
+
+            if (puzzle) {
+                puzzle.sol = config.puzzleSol;
+                puzzle.validator = config.validator;
+                puzzle.assignedReusablePuzzleInstance = newInstanceId ? newInstanceId : reusablePuzzleInstanceId;
+                await puzzle.save({"transaction": t});
+            }
+            config.puzzleSol = undefined;
         }
 
         t.commit();
@@ -192,7 +198,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const filePath = path.join(__dirname, `/../uploads/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/index.html`);
 
         if (reusablePuzzleInstance) {
-            res.render("reusablePuzzles/reusablePuzzleContainer", {"file": filePath, "config": reusablePuzzleInstance.config});
+            res.render("reusablePuzzles/reusablePuzzleContainer", {"file": filePath, "config": reusablePuzzleInstance.config, "layout": false});
         } else {
             res.status(404).send("Puzzle not found");
         }

@@ -144,6 +144,7 @@
         "confirm": "confirm",
         "completado": "completed",
         "continue": "next",
+        "reset": "reset",
         "delete": "delete",
         "download": "download",
         "edit": "edit",

@@ -212,18 +212,10 @@ exports.all = (user, page = 1, limit = 10, search) => {
             [Op.and]: [
                 {
                     [Op.or]: [
-                        {
-                            "title": {
-                                [Op.iLike]: `%${search}%`
-                            }
-                        },
-                        {
-                            "description": {
-                                [Op.iLike]: `%${search}%`
-                            }
-                        }
+                        {"title": {[Op.iLike]: `%${search}%`}},
+                        {"description": {[Op.iLike]: `%${search}%`}}
                     ]
-                } 
+                }
             ]
         };
     }
@@ -253,25 +245,18 @@ exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
     "where": {
         [Op.and]: [
             {
-                [Op.or]:[
-                    {
-                        "title": {
-                            [Op.iLike]: `%${search}%`
-                        }
-                    },
-                    {
-                        "description": {
-                            [Op.iLike]: `%${search}%`
-                        }
-                    }
+                [Op.or]: [
+                    {"title": {[Op.iLike]: `%${search}%`}},
+                    {"description": {[Op.iLike]: `%${search}%`}}
                 ]
             },
-            {   
+            {
                 [Op.or]: [
                     { "authorId": id },
                     { "$userCoAuthor.id$": id }
                 ]
-            }]
+            }
+        ]
 
     },
     limit,

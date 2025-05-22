@@ -34,7 +34,7 @@
         <section class="sectionAddResource">
             <p class="title-section">Recursos interactivos vinculados a retos</p>
             <div class="resources-group">
-                <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
+                    <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config); console.log(goodConfig)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
                      <div class="resource-card">
                         <% if( goodConfig && goodConfig?.puzzleConfig?.thumbnail) {%>
                             <img src="/uploads/reusablePuzzles/<%=puzzle.id%>/<%=goodConfig?.puzzleConfig?.thumbnail%>"/>
@@ -560,11 +560,20 @@
 
 
     function editPuzzle(id, mime, jsonPuzzle) {
-        const configJSON = jsonPuzzle.config;
+        let configJSON;
+        try{
+            configJSON = JSON.parse(jsonPuzzle.config);
+        }catch{
+            configJSON = {}
+        }
+        console.log(configJSON);
         const puzzleid = jsonPuzzle.id;
         const name = jsonPuzzle.name;
         const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
         const description = jsonPuzzle.description;
+        const puzzles = window.puzzles;
+        const assignedPuzzle = puzzles.find(p => p.assignedReusablePuzzleInstance == jsonPuzzle.id) || null;
+        const selectedValidator = assignedPuzzle ? assignedPuzzle.validator : (puzzles[0] ? puzzles[0].validator : null);
 
          fetch(`/uploads/reusablePuzzles/${reusablePuzzleId}/form.ejs`).then(res => {
             res.text().then((partial)=>{
@@ -573,20 +582,70 @@
                     form.attr('action', `./reusablePuzzleInstance/${puzzleid}`);
                     form.empty();
                     if (mime.search(reusableRegex) !== -1) {
-                    form.append(`<h2>General configuration</h2><div><label for="name">Name</label><input type="text" value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" name="name"/></div>
-                            <div><label for="description">Description</label><input type="text" value="${description ? description : ''}"  name="description"/></div>
-                                <div><label for="width">Height</label><input type="number" value=${configJSON.height ? configJSON.height : 100} name="width"/>px</div>
-                                <div><label for="height">Width</label><input type="number" value=${configJSON.width ? configJSON.width : 100} name="height"/>px</div>
-                                <div><label for="puzzle">Associated puzzle</label><select id="associantedPuzzle" onchange="setPuzzleSol()"  name="puzzle">
-                                ${window.puzzles.map((puzzle,index) => {
-                                    return `<option value="${puzzle.id}">${index}</option>`
-                                }).join('')}
-                                <div><label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value=${puzzles ? puzzles[0].sol : ""}  name="puzzleSol"/>
-                                </select></div><h2>Puzzle configuration</h2>
-                                `);
+                    form.append(`
+                <div >
+                    <p class="titleLabelEdit"> Name and description </p>
+                    <div>
+                        <label for="name">Name</label>
+                            <input value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" type="text"  name="name"/>
+                     </div>
+                    <div>
+                        <label for="description">Descritption</label>
+                            <input value="${jsonPuzzle.description ? jsonPuzzle.description : ''}" type="text"  name="description"/>
+                     </div>
+                    <p class="titleLabelEdit"> Medidas </p>
+                    <div >
+                    <div>
+                        <label for="height">Height</label>
+                        <div class="editUnit">
+                            <input  value="${configJSON.height ? configJSON.height : ''}" type="number" name="height"/>
+                            <p> px </p>
+                        </div>
+                     </div>
+                    <div>
+                        <label for="width">Width</label>
+                        <div class="editUnit">
+                            <input value="${configJSON.width ? configJSON.width : ''}" type="number" name="width"/>
+                            <p> px </p>
+                        </div>
+                    </div>
+                    </div>
+                    <div>
+                        <p class="titleLabelEdit"> Assigned Puzzle </p>
+                            <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzleid})"  name="puzzle">
+                                    <option value="none">None</option>
+                                    ${window.puzzles.map((puzzle,index) => {
+                                        return `<option ${assignedPuzzle && assignedPuzzle.id === puzzle.id ? "selected": null} value="${puzzle.id}">${puzzle.title}</option>`
+                                    }).join('')}
+                                </select>
+                    <div>
+                        <div id="assignPuzzDiv" ${assignedPuzzle ? null: "hidden"} >
+                                <label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value="${assignedPuzzle ? assignedPuzzle.sol  : ''}"  name="puzzleSol"/>
+                            </div>
+                                <span ${assignedPuzzle && assignedPuzzle.assignedReusablePuzzleInstance != puzzleid ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
+                                warning
+                                </span>
+                                  <select id="inputValidator" ${assignedPuzzle ? null : "hidden"} name="validator">
+                                            <option value="exact" ${selectedValidator === "exact" ? "selected": null}>
+                                                <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
+                                            </option>
+                                            <option value="caseinsensitive" ${selectedValidator === "caseinsensitive"? "selected": null}} >
+                                                <%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%>
+                                            </option>
+                                            <option value="range" ${selectedValidator === "range"? "selected": null} >
+                                                <%=i18n.escapeRoom.steps.puzzles.validator.range%>
+                                            </option>
+                                            <option value="regex" ${selectedValidator === "regex"? "selected": null} >
+                                                <%=i18n.escapeRoom.steps.puzzles.validator.regex%>
+                                            </option>
+                                        </select>
+                    </div>
+                </div>
+                </div>
+                `);
                     }
                     form.append(partial);
-                    form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
+                    form.append(` <input type="reset" />  <input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
                     dialog.dialog({
                         modal: true,
                         position:['top'],
@@ -607,13 +666,30 @@
             });
     }
 
-    function setPuzzleSol() {
+    function setPuzzleSol(id) {
         const puzzleSol = $('#puzzleSol');
-        const puzzleId = $('#associantedPuzzle').val();
+        const puzzleId = $('#associatedPuzzle').val();
+        const span = $('#warningSpan');
+        const validator = $('#inputValidator');
         const puzzleSelected = window.puzzles.find(p => p.id == puzzleId);
-        console.log(puzzleSelected);
+        const assignDiv = $('#assignPuzzDiv')
+
         if(puzzleSelected) {
             puzzleSol.val(puzzleSelected.sol)
+            if (puzzleSelected.assignedReusablePuzzleInstance && puzzleSelected.assignedReusablePuzzleInstance != id) {
+                span.show();
+            }else {
+                span.hide();
+            }
+            $(`#inputValidator option:selected`).attr("selected", "null");
+            $(`#inputValidator option[value="${puzzleSelected.validator}"]`).attr("selected", "selected");
+            assignDiv.show();
+            validator.show()
+        } else {
+            puzzleSol.val("");
+            span.hide();
+            validator.hide()
+            assignDiv.hide();
         }
     }
 
@@ -627,27 +703,27 @@
             form.append(`
                     <div class="containerBlocksEdit">
                         <div>
-                           <p class="titleLabelEdit"> Medidas </p>
-            <div class="editDialogForm">
+                            <p class="titleLabelEdit"> Medidas </p>
+                            <div class="editDialogForm">
 
-            <div>
-                <label for="height">Height</label>
-                <div class="editUnit">
-                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
-                    <p> px </p>
-                </div>
-            </div>
-            <div>
-                <label for="width">Width</label>
-                <div class="editUnit">
-                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
-                    <p> px </p>
-            </div>
-            </div>
+                            <div>
+                                <label for="height">Height</label>
+                                <div class="editUnit">
+                                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
+                                    <p> px </p>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="width">Width</label>
+                                <div class="editUnit">
+                                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
+                                    <p> px </p>
+                                </div>
+                            </div>
                         </div>
-            </div>`
+                    </div>`
 
-            );
+                    );
 
 
         } else if (mime.search(videoRegex) !== -1) {
@@ -693,11 +769,55 @@
             </div>
                  </div>`);
         } else if (mime.search(pdfRegex) !== -1) {
-            form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
+            form.append(`
+                    <div class="containerBlocksEdit">
+                        <div>
+                            <p class="titleLabelEdit"> Medidas </p>
+                            <div class="editDialogForm">
+
+                            <div>
+                                <label for="height">Height</label>
+                                <div class="editUnit">
+                                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
+                                    <p> px </p>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="width">Width</label>
+                                <div class="editUnit">
+                                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
+                                    <p> px </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+
+                    );
         } else if (mime.search(webappRegex) !== -1) {
-            form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
-                    <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
+            form.append(`
+                    <div class="containerBlocksEdit">
+                        <div>
+                            <p class="titleLabelEdit"> Medidas </p>
+                            <div class="editDialogForm">
+
+                            <div>
+                                <label for="height">Height</label>
+                                <div class="editUnit">
+                                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
+                                    <p> px </p>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="width">Width</label>
+                                <div class="editUnit">
+                                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
+                                    <p> px </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+
+                    );
         }else {
             return `<div>${item.name}</div>`;
         }
@@ -792,9 +912,7 @@
             }
         });
     }
-    function editReusablePuzzleInstance(id) {
-        console.log('Todo')
-    }
+
     function copyURl(url) {
         navigator.clipboard.writeText(window.location.origin + url);
 
@@ -805,7 +923,6 @@
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
     function insertAndScrollContent(index, type, payload, puzzles) {
-        console.log(payload);
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
@@ -859,17 +976,66 @@ function openPuzzleConfiguration(puzzle, baseId){
             elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
             elements += `<button type="button" onclick="volver()">Volver</button>`;
             elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
-            configForm.html((`<h2>General configuration</h2><div><label for="name">Name</label><input type="text" name="name"/></div>
-                                <div><label for="width">Height</label><input type="number" name="width"/>px</div>
-                                <div><label for="height">Width</label><input type="number" name="height"/>px</div>
-                                <div><label for="description">Description</label><input type="text"  name="description"/></div>
-                                <div><label for="puzzle">Associated puzzle</label><select id="associantedPuzzle" onchange="setPuzzleSol()"  name="puzzle">
-                                ${window.puzzles.map((puzzle,index) => {
-                                    return `<option value="${puzzle.id}">${index}</option>`
-                                }).join('')}
-                                <div><label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value=${puzzles ? puzzles[0].sol : ""}  name="puzzleSol"/>
-                                </select></div><h2>Puzzle configuration</h2>
-                                `))
+            configForm.html(((`
+                <div >
+                <div class="editDialog">
+                    <p class="titleLabelEdit"> Name and description </p>
+                    <div>
+                        <label for="name">Name</label>
+                            <input  type="text"  name="name"/>
+                     </div>
+                    <div>
+                        <label for="description">Descritption</label>
+                            <input  type="text"  name="description"/>
+                     </div>
+                    <p class="titleLabelEdit"> Medidas </p>
+                    <div >
+                    <div>
+                        <label for="height">Height</label>
+                        <div class="editUnit">
+                            <input   type="number" name="height"/>
+                            <p> px </p>
+                        </div>
+                     </div>
+                    <div>
+                        <label for="width">Width</label>
+                        <div class="editUnit">
+                            <input  type="number" name="width"/>
+                            <p> px </p>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    <div>
+                        <p class="titleLabelEdit"> Assigned Puzzle </p>
+                            <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzle.id})"  name="puzzle">
+                                    ${window.puzzles.map((puzzle,index) => {
+                                        return `<option value="${puzzle.id}">${puzzle.title}</option>`
+                                    }).join('')}
+                                </select>
+                                <div>
+                                <label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value=${puzzles ? puzzles[0].sol : ""}  name="puzzleSol"/>
+                                <span ${puzzles && puzzles[0]?.assignedReusablePuzzleInstance && puzzles[0]?.assignedReusablePuzzleInstance != puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
+                                warning
+                                </span>
+                                  <select name="validator">
+                                            <option value="exact" ${puzzles && puzzles[0]?.validator && puzzles[0].validator === 'exact' ? "selected" : null }>
+                                                <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
+                                            </option>
+                                            <option value="caseinsensitive" ${puzzles && puzzles[0]?.validator && puzzles[0].validator === "caseinsensitive" ?  "selected" : null } >
+                                                <%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%>
+                                            </option>
+                                            <option value="range" ${puzzles && puzzles[0]?.validator && puzzles[0].validator === 'range' ? "selected"  : null } >
+                                                <%=i18n.escapeRoom.steps.puzzles.validator.range%>
+                                            </option>
+                                            <option value="regex" ${puzzles && puzzles[0]?.validator && puzzles[0].validator === 'regex' ? "selected"  : null } >
+                                                <%=i18n.escapeRoom.steps.puzzles.validator.regex%>
+                                            </option>
+                                        </select>
+                                    </div>
+                    </div>
+                    </div>
+                `)))
             configForm.append(elements);
             $(".sections").scrollTop(0);
         });
@@ -877,6 +1043,7 @@ function openPuzzleConfiguration(puzzle, baseId){
         elements = generateConfig(config);
         elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
         elements += `<button type="button" onclick="volver()">Volver</button>`;
+        elements += `<button type="reset" >Volver</button>`;
         elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
         configForm.html(elements);
         $(".sections").scrollTop(0);
