@@ -142,8 +142,6 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         if (config.puzzle && config.puzzleSol) {
             const puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}});
 
-            console.log(await models.puzzle.findAll());
-            console.log(puzzle);
             if (puzzle) {
                 puzzle.sol = config.puzzleSol;
                 await puzzle.save({"transaction": t});

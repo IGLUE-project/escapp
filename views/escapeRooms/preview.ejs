@@ -31,7 +31,12 @@
                 <%if(escapeRoom.license){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.license%></h3>
-                        <p><%=escapeRoom.license%></p>
+                        <p> 
+                            <%var cc = escapeRoom.license.split(" ")[1].toLowerCase();%>
+                            <a href="https://creativecommons.org/licenses/<%=cc%>/4.0/" target="_blank">
+                                <img style="height: 46px;" src="/images/cc/<%=cc%>.png" alt="">
+                            </a>
+                        </p>
                     </div>
                 <%}%>
                 <%if(escapeRoom.subject){%>

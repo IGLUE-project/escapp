@@ -305,11 +305,11 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
                 if (correctAnswer) {
                     code = OK;
                     if (!alreadySolved && !readOnly) {
-                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true, answer}, {transaction});
+                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "userId": user.id, "success": true, answer}, {transaction});
                     }
                 } else {
                     if (!alreadySolved && !readOnly) {
-                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "success": false, answer}, {transaction});
+                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "userId": user.id, "success": false, answer}, {transaction});
                     }
                     status = 423;
                 }
@@ -486,15 +486,17 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     const {id} = val;
     const success = val["puzzlesSolved.success"];
     const when = val["puzzlesSolved.createdAt"];
+    const userId = val["puzzlesSolved.user.id"];
+    const username = val["puzzlesSolved.user.username"];
     const answer = val["puzzlesSolved.answer"];
     const order = useIdInsteadOfOrder ? val["puzzlesSolved.puzzle.id"] : val["puzzlesSolved.puzzle.order"];
 
     if (!acc[id]) {
-        acc[id] = {[order]: [{success, when, answer}] };
+        acc[id] = {[order]: [{success, when, answer, userId, username}] };
     } else if (!acc[id][order]) {
-        acc[id][order] = [{success, when, answer}];
+        acc[id][order] = [{success, when, answer, userId, username}];
     } else {
-        acc[id][order].push({success, when, answer});
+        acc[id][order].push({success, when, answer, userId, username});
     }
     return acc;
 }, {});

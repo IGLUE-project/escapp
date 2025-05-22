@@ -226,6 +226,7 @@ puzzle.belongsToMany(team, {
 });
 
 // Relation N-to-M between Team and Puzzle:
+retosSuperados.belongsTo(user, { "unique": false, "foreignKey": "userId" });
 retosSuperados.belongsTo(team, { "unique": false, "foreignKey": "teamId" });
 retosSuperados.belongsTo(puzzle, { "unique": false, "foreignKey": "puzzleId" });
 
@@ -238,10 +239,19 @@ team.hasMany(retosSuperados, {
     }
 });
 
+user.hasMany(retosSuperados, {
+    "as": "personSolved",
+    "foreignKey": {
+        "name": "userId",
+        "unique": false,
+        "allowNull": false
+    }
+});
+
 // Relation N-to-M between Team and Hint:
 requestedHint.belongsTo(hint, {});
 requestedHint.belongsTo(team, {});
-
+requestedHint.belongsTo(user, {});
 
 team.hasMany(requestedHint, {
     "onDelete": "CASCADE",
@@ -249,6 +259,11 @@ team.hasMany(requestedHint, {
 });
 
 hint.hasMany(requestedHint, {
+    "onDelete": "CASCADE",
+    "hooks": true
+});
+
+user.hasMany(requestedHint, {
     "onDelete": "CASCADE",
     "hooks": true
 });

@@ -604,6 +604,7 @@
                 "field": "Field",
                 "format": "Format",
                 "licenseExplanation": "What type of license do you want to apply to your escape room content? This will affect whether other teachers can use it in their classes.",
+                "licenseExplanationAlreadyPublished": "You cannot change the license anymore since your escape room has already been published before.",
                 "invitationExplanation": "Do you want students to enter a password to join the escape room? If so, select the private option. Otherwise, select public, and they can join without a password.",
                 "scopeExplanation": "Do you want students to be able to join the escape room from the main page of escapp? If so, select the public option. Otherwise, select private, and only students with the direct link will be able to access it.",
                 "statusExplanation": "Have you finished creating the escape room? If so, select the completed option. Otherwise, select draft, and you can continue editing it later. Keep in mind that until you publish it, students will not be able to join. Once published, you will not be able to change the license.",
@@ -620,7 +621,7 @@
                     "congrats2":"Create a shift so students can sign up for the escape room.",
                     "backToDraft":"Do you want to go back to draft? To do so, click on the switch. ",
                     "erStatus": "Escape room status",
-                    "areYouReady": "Are you done editing your escape room? Make it public by clicking on the switch! Remember that you will not be able to change the content license once published.",
+                    "areYouReady": "Are you done editing your escape room? Make it public by clicking on the switch! Remember that you will not be able to change the content license once published. You can still test the escape room before going public by yourself or by inviting some of your colleagues.",
                     "stillInfoNeeded": "You still have some mandatory information that you need to complete before making your escape room public.",
                     "warningAboutLicense": "Once you publish your escape room, you will not be able to change the license. Once you are ready, click on the switch."
                 }

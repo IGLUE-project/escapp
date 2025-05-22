@@ -376,7 +376,7 @@ exports.sharingUpdate = async (req, res) => {
         if (escapeRoom.scope) { // Only public rooms  can have a password
             escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
         } else {
-            escapeRoom.invitation = undefined;
+            escapeRoom.invitation = null;
         }
         if (!escapeRoom.publishedOnce) { // Cannot change the license of a published room
             escapeRoom.license = body.license;
