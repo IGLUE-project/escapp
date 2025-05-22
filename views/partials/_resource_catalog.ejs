@@ -10,8 +10,8 @@
         </div>
         <div style="margin: 4rem"></div>
         <div class="sections">
-        <section >
-            <p class="title-section">Elementos de gamificación</p>
+        <section class="sectionAddResource">
+            <p class="title-section ">Elementos de gamificación</p>
             <div class="btn-group">
                 <button onclick='insertGamification(0,"countdown",{}, puzzleList)' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
@@ -31,13 +31,17 @@
                 </button>
             </div>
         </section>
-        <section>
+        <section class="sectionAddResource">
             <p class="title-section">Recursos interactivos vinculados a retos</p>
             <div class="resources-group">
-                <%availableReusablePuzzles.forEach(puzzle => { %>
+                <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
                      <div class="resource-card">
-                        <img src="/images/keypad.png">
-                        <button class="resourceCatalogBtn">
+                        <% if( goodConfig && goodConfig?.puzzleConfig?.thumbnail) {%>
+                            <img src="/uploads/reusablePuzzles/<%=puzzle.id%>/<%=goodConfig?.puzzleConfig?.thumbnail%>"/>
+                        <%} else{%>
+                            <img src="/images/keypad.png"/>
+                        <%} %>
+                        <button class="resourceCatalogBtn" onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.id%> )">
                             <span class="building-block-icon material-icons"> add </span>
                             <p><%=puzzle.name%></p>
                         </button>
@@ -46,7 +50,7 @@
             </div>
         </section>
 
-        <section>
+        <section class="sectionAddResource">
             <p class="title-section">Escenarios 2D</p>
             <div class="resource-card" id="scenery">
                 <img src="/images/scenery.png">
@@ -55,6 +59,11 @@
                     <p>Escenarios 2D</p>
                 </button>
             </div>
+        </section>
+        <section id="configZone" hidden>
+            <h2>Configuración</h2>
+            <form action="reusablePuzzleInstance" method="POST" id="configForm">
+            </form>
         </section>
     </div>
     </div>
@@ -104,7 +113,8 @@
             </tr>
             <% } %>
             <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
-                <tr class="catalogItem">
+                <%let goodConfig={}; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
+                <tr id="p-<%=puzzle.id%>" class="catalogItem">
                     <td>
                         <p class="title">
                             <%=puzzle.name%>
@@ -113,31 +123,43 @@
                     <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span>
                     </td>
                     <td>
-                        <div class="button-group">
+                        <div class=" button-group row-button">
+                            <div class="overlay-trigger" data-id="<%=puzzle.id%>">
+                                <p class="text-overlay">¿Estás seguro de que quieres borrar este
+                                    archivo?</p>
+                                <button class="deleteButton" type="button"
+                                    onclick='overlayTriggerCatalog("<%=puzzle.id%>", true)'>cancelar</button>
+                                <button class="acceptButton" type="button"
+                                    onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>aceptar</button>
+                            </div>
                             <button class="listButton iconButton delete-button"
-                                onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>
+                                onclick="overlayTriggerCatalog('<%=puzzle.id%>', false)">
                                 <span class="building-block-icon material-icons" id="delete">
                                     delete_outline </span>
                             </button>
                             <button class="listButton iconButton editButton"
-                                onclick='editReusablePuzzleInstance("<%=puzzle.id%>")'>
-                                <span class="building-block-icon material-icons" id="edit"> edit </span>
+                                onclick="editPuzzle('<%=puzzle.id%>', 'application/reusable', <%=JSON.stringify({reusablePuzzleId:puzzle.reusablePuzzleId, name:puzzle.name, description:puzzle.description, id:puzzle.id, config:puzzle.config})%>)">
+                                <span class="building-block-icon material-icons" id="edit"> edit
+                                </span>
                             </button>
-                            <button class="listButton linkButton" onclick='copyURl("<%=puzzle.id%>")'>
-                                <span class="building-block-icon material-icons" id="link"> link </span>
+                            <button class="listButton linkButton" onclick='copyURl("<%=puzzle.url%>")'>
+                                <span class="building-block-icon material-icons" id="link"> link
+                                </span>
                                 <div class="tooltip-link"> Copiar enlace </div>
                                 <div class="tooltip-link" id="link-copied">
                                     <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                 </div>
                             </button>
-                            <button class="listButton addButton row-button"
-                                onclick='insertAndScrollContent(0,"catalog",{url:"<%=puzzle.url%>",config: "<%=puzzle.config%>"  mime:"<%=puzzle.mime%>"}, puzzleList)'>
-                                <span class="building-block-icon material-icons" id="add"> add </span>
+
+                            <button class="listButton addButton"
+                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: <%=JSON.stringify(puzzle.config)%>,  mime:"application/reusable"}, puzzleList)'>
+                                <span class="building-block-icon material-icons" id="add"> add
+                                </span>
                                 <p>
                                     <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
                                 </p>
                             </button>
-                        </div>
+                            </div>
                     </td>
                 </tr>
                 <% })} %>
@@ -517,6 +539,14 @@
 
 <script>
     function toggleCatalogModal() {
+        const configZone = $('#configZone');
+        const configForm = $('#configForm');
+        const resources = $('.sectionAddResource');
+
+        configZone.attr('hidden', true);
+        resources.removeAttr('hidden');
+
+        $(".sections").scrollTop(0);
         const modal = $("#modalCatalogResource");
         if(modal.hasClass("active")) {
             $('body').css("overflow", "scroll");
@@ -527,6 +557,66 @@
         modal.toggleClass("active");
 
     }
+
+
+    function editPuzzle(id, mime, jsonPuzzle) {
+        const configJSON = jsonPuzzle.config;
+        const puzzleid = jsonPuzzle.id;
+        const name = jsonPuzzle.name;
+        const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
+        const description = jsonPuzzle.description;
+
+         fetch(`/uploads/reusablePuzzles/${reusablePuzzleId}/form.ejs`).then(res => {
+            res.text().then((partial)=>{
+                    const dialog = $('#editDialog');
+                    const form = dialog.find('form');
+                    form.attr('action', `./reusablePuzzleInstance/${puzzleid}`);
+                    form.empty();
+                    if (mime.search(reusableRegex) !== -1) {
+                    form.append(`<h2>General configuration</h2><div><label for="name">Name</label><input type="text" value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" name="name"/></div>
+                            <div><label for="description">Description</label><input type="text" value="${description ? description : ''}"  name="description"/></div>
+                                <div><label for="width">Height</label><input type="number" value=${configJSON.height ? configJSON.height : 100} name="width"/>px</div>
+                                <div><label for="height">Width</label><input type="number" value=${configJSON.width ? configJSON.width : 100} name="height"/>px</div>
+                                <div><label for="puzzle">Associated puzzle</label><select id="associantedPuzzle" onchange="setPuzzleSol()"  name="puzzle">
+                                ${window.puzzles.map((puzzle,index) => {
+                                    return `<option value="${puzzle.id}">${index}</option>`
+                                }).join('')}
+                                <div><label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value=${puzzles ? puzzles[0].sol : ""}  name="puzzleSol"/>
+                                </select></div><h2>Puzzle configuration</h2>
+                                `);
+                    }
+                    form.append(partial);
+                    form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
+                    dialog.dialog({
+                        modal: true,
+                        position:['top'],
+                        resizable: false,
+                        position: { my: "middle", at: "top", of: $('#resourceCatalog')},
+                        width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
+                        height: "auto",
+                        show: {
+                            effect: "scale",
+                            duration: 300
+                        },
+                        hide: {
+                            effect: "scale",
+                            duration: 300
+                        },
+                    }).show()
+                })
+            });
+    }
+
+    function setPuzzleSol() {
+        const puzzleSol = $('#puzzleSol');
+        const puzzleId = $('#associantedPuzzle').val();
+        const puzzleSelected = window.puzzles.find(p => p.id == puzzleId);
+        console.log(puzzleSelected);
+        if(puzzleSelected) {
+            puzzleSol.val(puzzleSelected.sol)
+        }
+    }
+
     function editAsset(id, mime, config) {
         const configJSON = parseAssetConfig(mime, config);
         const dialog = $('#editDialog');
@@ -608,7 +698,7 @@
         } else if (mime.search(webappRegex) !== -1) {
             form.append(`<div><label for="width">Height</label><input type="number" value="${configJSON.height ? configJSON.height : 0}" name="width"/>px</div>
                     <div><label for="height">Width</label><input type="number" value="${configJSON.width ? configJSON.width : 0}"  name="height"/>px</div>`);
-        } else {
+        }else {
             return `<div>${item.name}</div>`;
         }
         form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
@@ -626,7 +716,6 @@
                 duration: 400
             },
         }).show()
-
     }
     function parseAssetConfig(mime, config) {
         if (!config) return {};
@@ -664,12 +753,18 @@
                 width: configJSON.width,
                 height: configJSON.height,
             }
+        } else if (mime.search(reusableRegex) !== -1) {
+            return {
+                width: configJSON.width,
+                height: configJSON.height,
+            }
         } else {
-            return `<div>${item.name}</div>`;
+            return {};
         }
     }
 
     function createPuzzle() {
+
         dialog.dialog({
             modal: true,
             resizable: false,
@@ -687,11 +782,13 @@
     }
 
     function deleteReusablePuzzleInstance(id) {
-        fetch(`/reusablePuzzleInstance/${id}`, {
+        fetch(`/escapeRooms/${escapeRoomId}/reusablePuzzleInstance/${id}`, {
             method: 'DELETE',
         }).then(response => {
             if (response.ok) {
-                location.reload();
+                const asset = $(`#p-${id}`);
+                asset.remove();
+                overlayTrigger(id, false)
             }
         });
     }
@@ -708,6 +805,10 @@
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
     function insertAndScrollContent(index, type, payload, puzzles) {
+        console.log(payload);
+        if(payload.url){
+            payload.url = encodeURI(payload.url);
+        }
         insertContent(index, type, payload, puzzles);
         window.scrollTo(0, $('.building-block').children().last().offset().top);
     }
@@ -740,5 +841,118 @@
             }, 50);
         }
     }
+
+function openPuzzleConfiguration(puzzle, baseId){
+    const configZone = $('#configZone');
+    const config = JSON.parse(puzzle.config);
+    const configForm = $('#configForm');
+    const resources = $('.sectionAddResource');
+
+    configForm.empty();
+    configZone.removeAttr('hidden');
+    resources.attr('hidden', true);
+    if(config.url){
+        fetch(config.url)
+        .then(response => response.text())
+        .then(textString => {
+            let elements = textString;
+            elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
+            elements += `<button type="button" onclick="volver()">Volver</button>`;
+            elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
+            configForm.html((`<h2>General configuration</h2><div><label for="name">Name</label><input type="text" name="name"/></div>
+                                <div><label for="width">Height</label><input type="number" name="width"/>px</div>
+                                <div><label for="height">Width</label><input type="number" name="height"/>px</div>
+                                <div><label for="description">Description</label><input type="text"  name="description"/></div>
+                                <div><label for="puzzle">Associated puzzle</label><select id="associantedPuzzle" onchange="setPuzzleSol()"  name="puzzle">
+                                ${window.puzzles.map((puzzle,index) => {
+                                    return `<option value="${puzzle.id}">${index}</option>`
+                                }).join('')}
+                                <div><label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value=${puzzles ? puzzles[0].sol : ""}  name="puzzleSol"/>
+                                </select></div><h2>Puzzle configuration</h2>
+                                `))
+            configForm.append(elements);
+            $(".sections").scrollTop(0);
+        });
+    }else {
+        elements = generateConfig(config);
+        elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
+        elements += `<button type="button" onclick="volver()">Volver</button>`;
+        elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
+        configForm.html(elements);
+        $(".sections").scrollTop(0);
+    }
+}
+
+function volver(){
+    const configZone = $('#configZone');
+    const configForm = $('#configForm');
+    const resources = $('.sectionAddResource');
+
+    configZone.attr('hidden', true);
+    resources.removeAttr('hidden');
+}
+
+let types = [];
+function generateConfig(config) {
+    let result = `<input type="text" name="name" required/>`;
+    const configToRender = config.confg;
+    types = config.types;
+    result += configToRender.map(item => {return renderConfig(item)}).join('');
+    return result;
+}
+
+
+function renderConfig(item, depth=0, inputName=""){
+    const type = item.type;
+    let config;
+    const isArray = type.substring(type.length-6) === '-array';
+    const arraySubtype = isArray ? type.substring(0,type.length-6) : null;
+
+    if(isArray){
+        types.map(t=>{if(t.type === arraySubtype){config = t.config; return;}})
+    } else {
+        types.map(t=>{if(t.type === type){config = t.config; return;}})
+    }
+
+    let inputNameN = inputName.length !==0 ? `${inputName}-${item.name}` : item.name;
+    let returnVal = "";
+
+    if(type === "text" || type === "number" || type === "checkbox"){
+        returnVal = `<div>${item.name}<input type=${item.type} name="${inputNameN}"/>  </div>`;
+    }else {
+        let depthN = depth + 1;
+        if(isArray){
+            inputNameIndex = `${inputNameN}-0`;
+            if(arraySubtype === "text" || arraySubtype === "number" || arraySubtype === "checkbox"){
+                returnVal = `<div id=${inputNameN}>
+                ${item.name}
+                </div>
+                <button type="button" onclick="addInput('${inputNameN}','${arraySubtype}')">+</button>
+                `;
+            }else{
+                const childElement = config.map((el) => { return renderConfig(el, depthN,inputNameIndex); }).join('');
+                returnVal = `<div id=${inputNameN}>
+                ${item.name }<div>${childElement}</div>
+                </div>
+                <button type="button" onclick="addInput('${inputNameN}','${arraySubtype}')">+</button>
+                `
+            }
+        } else {
+            const childElement = config.map((el) => { return renderConfig(el, depthN, inputNameN); }).join('');
+            returnVal = `<div>${item.name }${childElement}</div>`
+        }
+    }
+
+    return `<div style="z-index:${depth};margin-left:${20*depth}px"> ${returnVal}</div>`;
+}
+
+
+function addInput(name, type){
+    const index = $(`#${name}`).children().length;
+    const newName = `${name}-${index}`;
+    let newConfig = renderConfig({name:newName,type})
+    $(`#${name}`).append(newConfig);
+}
+
 
 </script>

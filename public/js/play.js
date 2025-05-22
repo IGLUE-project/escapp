@@ -97,7 +97,8 @@ var progressBarTemplate = ()=> `<progressbar>
 const imageRegex = new RegExp(/image\/.*/);
 const videoRegex = new RegExp(/video\/.*/);
 const audioRegex = new RegExp(/audio\/.*/);
-const applicationRegex = new RegExp(/application\/.*/);
+const applicationRegex = new RegExp(/application\/webapp/);
+const reusableRegex = new RegExp(/application\/reusable/);
 
 
 const caltaTemplate = ()=> `<div> Hola buenas </div>`;

@@ -1241,13 +1241,20 @@
         "back_to_home": "Volver a inicio"
     },
     "terms": {
-        "title": "Términos de uso, política de privacidad y política de cookies actualizados",
-        "description": "Hemos actualizado nuestros Términos de Uso, Política de Privacidad y/o Política de Cookies. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
-        "accept_button": "Aceptar y continuar",
-        "view_terms": "Leer Términos de Uso",
-        "view_privacy": "Leer Política de Privacidad",
-        "view_cookies": "Leer Política de Cookies",
-        "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
+          "title": "Términos de uso, política de privacidad y política de cookies actualizados",
+          "description": "Hemos actualizado nuestros Términos de Uso, Política de Privacidad y/o Política de Cookies. Por favor, revísalos y acéptalos para continuar usando la plataforma.",
+          "accept_button": "Aceptar y continuar",
+          "view_terms": "Leer Términos de Uso",
+          "view_privacy": "Leer Política de Privacidad",
+          "view_cookies": "Leer Política de Cookies",
+          "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
+        },
+    "reusablePuzzles": {
+        "name": "Retos reutilizables",
+        "create": "Crear reto reutilizable",
+        "edit": "Editar reto",
+        "config": "Configuración",
+        "description": "Descripción"
     },
     "management":{
         "contact": {
@@ -1274,7 +1281,8 @@
                 "copyrightViolation": "Infracción de copyright",
                 "policyViolation": "Contenido que incumple los  <a href='/terms'>términos y condiciones</a> de la plataforma",
                 "other": "Otro"
-            } 
+            }
         }
     }
+
 }

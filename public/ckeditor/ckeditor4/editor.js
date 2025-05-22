@@ -83,11 +83,11 @@ const videoRegex = new RegExp(/video\/.*/);
 const audioRegex = new RegExp(/audio\/.*/);
 const pdfRegex = new RegExp(/application\/pdf/);
 const webappRegex = new RegExp(/application\/webapp/);
+const reusableRegex = new RegExp(/application\/reusable/);
 
 //Render item depending on mime
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
-    item.mime = item.mime || "";
     if(item.mime.search(imageRegex) !== -1) {
         return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
     }else if (item.mime.search(videoRegex) !== -1) {
@@ -106,13 +106,20 @@ const catalogItem = (item)=> {
              <iframe src="${item.url}" width="100%" height="100%" >
              </iframe>
      </div>`;
+     } else if (item.mime.search(reusableRegex) !== -1) {
+         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
+             <iframe src="${item.url}" width="100%" height="100%" id="${item.id}" >
+                <script>
+                </script>
+             </iframe>
+     </div>`;
     }else {
         return `<div>${item.name}</div>`;
     }
 }
 
 const catalogTemplate = async(id, payload) =>{
-    return textEditorTemplate(id, `${catalogItem({config:payload.config, url:payload.url, mime:payload.mime,id, name:""}, {editorId:id})}`);
+    return textEditorTemplate(id, `${catalogItem({config:payload.config, url:payload.url, puzzleId:payload.puzzleId,  mime:payload.mime,id, name:""}, {editorId:id})}`);
 }
 
 const deleteAsset = async (assetId) => {
@@ -309,7 +316,8 @@ $(()=>{
             var obj = {type,puzzles};
             if(type === "text" || type === "catalog"){
                 const id = $(e).find(".editor").attr("id");
-                obj.payload = {text: CKEDITOR.instances[id].getData()};
+                //Por algun motivo el tag de script da problemas y hay que cambiarlo por este
+                obj.payload = {text: CKEDITOR.instances[id].getData().replaceAll("</script>", "<\\/script>")};
                 obj.type = "text";
             }
             results.push(obj);
