@@ -1,43 +1,7 @@
 <%- include ("../partials/_header.ejs") %>
 <div role="main" class="main escapeRooms" >
     <div class="escapeRoomList">
-        <% if (escapeRooms.length==0) { %>
-        <h1 role="title">
-            <% if (user && (user.isStudent)) { %>
-                <%=i18n.escapeRoom.main.noERStudent%>
-            <% } else { %>
-                <%=i18n.escapeRoom.main.noERTeacher%>
-            <% } %>
-        </h1>
-        
-        <div class="escapeRoomListButtons">
-            <% if (user && (!user.isStudent)) { %>
-                <a href="/escapeRooms"><button <%if (whichMenu=="created") {%> class="selected" <%}%>> 
-                    <span class="material-icons">build</span>
-                    <%=i18n.escapeRoom.main.myERs%>
-                </button></a>
-            <% } %>
-            <a href="/escapeRooms?own=1"><button <%if (whichMenu=="playing"){%> class="selected" <%}%>> 
-                <span class="material-icons">play_circle</span>
-                <%=i18n.escapeRoom.main.playingERs%></button>
-            </a>
-            <a href="/escapeRooms?public=1"><button <%if (whichMenu=="public"){%> class="selected" <%}%>> 
-                <span class="material-icons">search</span>
-                <%=i18n.escapeRoom.main.otherERs%>
-            </button></a>
-        </div>
-       
-        <div class="flexBoxEscapeRooms">
-            
-            <% if (user && (whichMenu === "created")) { %>
-                <a href="/escapeRooms/new" class="escapeRoomItemWrapper animated bounceIn" title="<%=i18n.escapeRoom.main.createER%>">
-                    <div class="escapeRoomItem addItem addEscapeRoom gugi">
-                        <span>+</span>
-                    </div>
-                </a>
-            <% } %>
-        </div>
-        <% } else {  %>
+
         <h1 role="title">
             <% if (user && (user.isStudent)) { %> <!--todo-->
                 <%=i18n.escapeRoom.main.yesERStudent%>
@@ -45,30 +9,41 @@
                 <%=i18n.escapeRoom.main.yesERTeacher%>
             <% } %>
         </h1>
+       
         <div class="escapeRoomListButtons">
+             <%-include("../partials/_search", {search})%>
             <% if (user && (!user.isStudent)) { %>
-                <a href="/escapeRooms">
-                    <button <%if (whichMenu=="created") {%> class="selected" <%}%>> 
+                <a href="/escapeRooms<%if(search){%>?search=<%=search%><%}%>">
+                    <button class="dashboard-button <%if (whichMenu=="created") {%>selected<%}%>"> 
                         <span class="material-icons">build</span>
                         <span><%=i18n.escapeRoom.main.myERs%></span>
                     </button>
                 </a>
             <% } %>
-            <a href="/escapeRooms?own=1">
-                <button <%if (whichMenu=="playing"){%> class="selected" <%}%>> 
+            <a href="/escapeRooms?own=1<%if(search){%>&search=<%=search%><%}%>">
+                <button class="dashboard-button <%if (whichMenu=="playing"){%> selected<%}%>"> 
                     <span class="material-icons">play_circle</span>
                     <span><%=i18n.escapeRoom.main.playingERs%></span>
                 </button>
             </a>
-            <a href="/escapeRooms?public=1">
-                <button <%if (whichMenu=="public"){%> class="selected" <%}%>> 
+            <a href="/escapeRooms?public=1<%if(search){%>&search=<%=search%><%}%>">
+                <button class="dashboard-button <%if (whichMenu=="public"){%> selected<%}%>"> 
                     <span class="material-icons">search</span>
                     <span><%=i18n.escapeRoom.main.otherERs%></span>
                 </button>
             </a>
         </div>
-    
+ 
         <div class="flexBoxEscapeRooms">
+             <% if (escapeRooms.length == 0) { %>
+                <% if (user && (whichMenu == "public")) { %>
+                    <p class="notFound"><%=search ? i18n.escapeRoom.main.notFound : i18n.escapeRoom.main.noERsPublic%></p>
+                <% } else if (user && (whichMenu == "created")) { %>
+                    <p class="notFound"><%=search ? i18n.escapeRoom.main.notFound : i18n.escapeRoom.main.noERTeacher%></p>
+                <% } else if (user && (whichMenu == "playing")) { %>
+                    <p class="notFound"><%=search ? i18n.escapeRoom.main.notFound : i18n.escapeRoom.main.noERsPlaying%></p>
+                <% } %>
+            <% } %>
             <% for (var i in escapeRooms) { %>
                 <% var escapeRoom = escapeRooms[i]; %>
                 <% var attachment = escapeRoom.attachment; %>
@@ -82,13 +57,13 @@
                             href = "/escapeRooms/";
                         } else {
                             href += "/";
-                        } 
+                        }
                     }
                 }%>
                 <a href="<%=href%>" <%-disabled ? "onclick='return false;'":'' %> class="escapeRoomItemWrapper animated bounceIn" title="<%=disabled ? i18n.escapeRoom.main.notAvailable :  (escapeRoom.title||"").replace("\"","'")%>"style="animation-delay: <%=100*i%>ms;"  >
                     <div class="escapeRoomItem <%= disabled ?' disabled':'' %>">
                         <div class="erFoto" style="text-align: center">
-                            <div class="bckgFoto" style="background-image: url(<% if (attachment) {%><%=attachment.url%><%} else {%>/images/placeholder.jpg<%}%>)"></div>
+                            <div class="bckgFoto" style="background-image: url(<% if (attachment) {%><%=attachment.url%><%} else {%>/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png<%}%>)"></div>
                             <h2 class="escapeRoomTitle"><%= escapeRoom.title %></h2>
                         </div>
                         <% if (user && whichMenu == "public" && !admin) {%>
@@ -96,11 +71,15 @@
                             <div class="sign">
                                 <span class="material-icons">check</span>
                             </div>
-                            <%} else if (!disabled){%>
-                            <div class="sign add">
-                                <span class="material-icons">add</span>
+                            <%} else if (escapeRoom.isAuthorOrCoAuthor){%>
+                            <div class="sign edit">
+                                <span class="material-icons">edit</span>
                             </div>
-                            <%}%>
+                            <%} else if (!disabled ){%>
+                                <div class="sign add">
+                                    <span class="material-icons">add</span>
+                                </div>
+                                <%}%>
                         <%}%>
                     </div>
                 </a>
@@ -113,8 +92,7 @@
             </a>
             <% } %>
         </div>
-        <% } %>
-
+ 
         <%if (pages > 1){%>
             </br>
             <%page = parseInt(page)%>

@@ -23,7 +23,7 @@
                     <option value=""></option>
                     <% for (let turno of turnos){%>
                         <option value="<%=turno.id%>" <%if(turnId == turno.id){%>selected<%}%>>
-                        <%if (turno.place) {%> <%=turno.place %> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
+                        <%if (turno.place) {%> <%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
                         </option>
                     <%}%>
                 </select>

@@ -27,8 +27,6 @@ exports.saveInterface = async (name, req, res, next) => {
     const progressBar = body.progress;
     const {i18n} = res.locals;
 
-    console.log(body.instructions);
-
     escapeRoom[`${name}Instructions`] = body.instructions;
     escapeRoom[`${name}Appearance`] = body.appearance;
     try {
@@ -467,6 +465,8 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
 
 
 exports.validationError = ({instance, path, validatorKey}, i18n) => {
+    console.log(i18n.common.error[validatorKey]);
+    console.log(i18n[instance.constructor.name].attributes[path]);
     try {
         if (i18n[instance.constructor.name] &&
             i18n[instance.constructor.name].attributes &&
@@ -474,6 +474,7 @@ exports.validationError = ({instance, path, validatorKey}, i18n) => {
             i18n.common.error[validatorKey]) {
             return `${i18n[instance.constructor.name].attributes[path]} ${i18n.common.error[validatorKey]}`;
         }
+        throw new Error("Error during validation");
     } catch (e) {
         return i18n.common.validationError;
     }
@@ -594,4 +595,19 @@ exports.findFirstAvailableFile = async (section, lang) => {
     }
 
     return null;
+};
+
+
+exports.stepsCompleted = (escapeRoom) => {
+    const step1 = Boolean(escapeRoom.title);
+    const step2 = escapeRoom.puzzles && escapeRoom.puzzles.length > 0;
+    const step3 = escapeRoom.hintLimit === 0 || escapeRoom.puzzles.map((p) => p.hints ? p.hints.length : 0).reduce((a, b) => a + b, 0) > 0;
+    const step4 = Boolean(escapeRoom.indicationsInstructions);
+    const step5 = Boolean(escapeRoom.teamInstructions);
+    const step6 = Boolean(escapeRoom.classInstructions);
+    const step7 = Boolean(escapeRoom.afterInstructions);
+    const step8 = (escapeRoom.scoreParticipation || 0) + escapeRoom.puzzles.map((p) => p.score ? p.score : 0).reduce((a, b) => a + b, 0) > 0;
+    const step9 = escapeRoom.status == "completed";
+
+    return [step1, step2, step3, step4, step5, step6, step7, step8, step9];
 };

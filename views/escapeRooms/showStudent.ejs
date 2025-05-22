@@ -18,17 +18,17 @@
 				<%}%>
         </div>
 	</div>
-	<div class="reporting"><a href="/escapeRooms/<%=escapeRoom.id%>/report"> Reportar <a> / <a href="/escapeRooms/<%=escapeRoom.id%>/contact"> Contactar <a></div>
+	<div class="reporting"><a href="/escapeRooms/<%=escapeRoom.id%>/report"> Reportar </a> / <a href="/escapeRooms/<%=escapeRoom.id%>/contact"> Contactar </a></div>
 	<div class="flex ">
 		
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
-			<%- include ("../attachments/_show",{attachment}) %>
+			<%- include ("../attachments/_show",{attachment, id: escapeRoom.id}) %>
 		</div>
 		<div class="flex-er-info animated fadeIn">
 			<h1><%=escapeRoom.title%></h1>
 			<h2><%=i18n.turno.Turno%></h2>
-			<p><%= turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen%> <% if (turno.place) { %>(<%= turno.place %>)<% } %></p>
+			<p><%= turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen%> <% if (turno.place) { %>(<%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%>)<% } %></p>
 
 			<% if (!escapeRoom.teamSize || (escapeRoom.teamSize > 1)) { %>
 				<h2><%=i18n.team.Team%> </h2>
@@ -46,8 +46,19 @@
 	<div class="animated fadeIn">
 		<div class="col-xs-12 indications text-left instructionsShow ">
 			<div id="editor" class="editor" style="padding: 0px;">
-				<% if (escapeRoom["indicationsInstructions"]) {%>
-					<% var instructions = "";try {instructions = escapeRoom["indicationsInstructions"] || '[{"payload":{"text":""}}]'%>
+				<%console.log(escapeRoom.duration)%>
+				<% if (escapeRoom["afterInstructions"] &&
+				(finished || (team.startTime && (new Date(team.startTime.getTime() + escapeRoom.duration * 60000) < new Date() ))))
+				 {%>
+					<% var instructions = "";
+					try {instructions = escapeRoom["afterInstructions"] || '[{"payload":{"text":""}}]'%>
+					<% JSON.parse(instructions).forEach((instruction)=>{ %>
+					<%-instruction.payload.text %>
+					<%})%>
+					<%}catch(e){}%>
+				<% } else if (escapeRoom["indicationsInstructions"]) {%>
+					<% var instructions = "";
+					try {instructions = escapeRoom["indicationsInstructions"] || '[{"payload":{"text":""}}]'%>
 					<% JSON.parse(instructions).forEach((instruction)=>{ %>
 					<%-instruction.payload.text %>
 					<%})%>
@@ -78,6 +89,18 @@
 					</form>
 				</span>
 			<%}%>
+			<div style="display: inline-block;">
+				<button class="rounded cloneButton" title="<%=i18n.escapeRoom.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
+					<%=i18n.showTeacher.actionList.clone%>
+				</button>
+				<div class="overlay-trigger" data-id="clone-<%=escapeRoom.id%>">
+					<form method="POST" action='/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT' >
+						<p><%=i18n.escapeRoom.general.areYouSureClone%></p>
+						<button class="deleteButton" type="button" onclick="overlayTrigger('clone-<%=escapeRoom.id%>', true)"><%=i18n.common.cancel%></button>
+						<button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
+					</form>
+				</div>
+			</div>
 			<% if (turno.status !== "pending" && team.startTime) { %>
 				<a href="/escapeRooms/<%=escapeRoom.id%>/results">
 					<button class="rounded editButton" type="button"><%=i18n.showStudent.results%></button>

@@ -92,6 +92,14 @@
     <option value="other" <%=escapeRoom.level == "other" ? "selected" : "" %>><%=i18n.user.eduLevel["other"]%></option>
   </select>
 </div>
+<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
+  <label for="format" class="itemNarrow">4. <%=i18n.escapeRoom.steps.sharing.format%>:</label>
+  <select class="customInput itemWide" id="format" name="format" autocomplete="off">
+    <option value="none" <%=!escapeRoom.format  || (escapeRoom.format == "none")? "selected" : "" %>><%=i18n.escapeRoom.format["none"]%></option>
+    <option value="online" <%=escapeRoom.format == "online" ? "selected" : "" %>><%=i18n.escapeRoom.format["online"]%></option>
+    <option value="hybrid" <%=escapeRoom.format == "hybrid" ? "selected" : "" %>><%=i18n.escapeRoom.format["hybrid"]%></option>
+  </select>
+</div>
 <% for (let f in formFields2) {
   var field = formFields2[f];%>
     <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*f%>ms;">

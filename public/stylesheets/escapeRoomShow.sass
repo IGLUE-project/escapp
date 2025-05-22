@@ -1,4 +1,7 @@
 @use "common/colors"
+$line-color: #ffffff
+$dot-color: #aab2bd
+$text-color: #1a1a1a
 
 #mainSection
   .main.escapeRoomShow
@@ -38,6 +41,7 @@
           li
             margin-bottom: 16px
             position: relative
+            padding-left: 1.5rem
             .overlay-trigger
               top: 40px
             &.actionTitle
@@ -49,6 +53,10 @@
               line-height: 24px
               &:hover
                 color: colors.$brightgreen
+              &.disabled-action
+                cursor: not-allowed
+                &:hover
+                  color: white
 
             .showMenuButton
               font-size: 16px
@@ -58,6 +66,36 @@
               transition: 0.1s all ease-in
               &:hover
                 transform: scale(0.9)
+        .timeline-er
+          position: relative
+          margin: 2rem 0
+          padding-left: 0.4rem
+          list-style: none
+          border-left: 2px solid $line-color
+          .timeline-step
+            position: relative
+            padding-left: 1.5rem
+
+            &::before
+              content: ''
+              position: absolute
+              left: -.95rem
+              top: 0.25rem
+              width: 0.75rem
+              height: 0.75rem
+              background-color: $dot-color
+              border-radius: 50%
+              border: 2px solid white
+            &.completed::before
+              background-color: colors.$brightgreen
+            a
+              display: inline-block
+              text-decoration: none
+              .material-icons
+                vertical-align: middle
+                margin-left: 0.25rem
+
+
     .flexShow
       .flexRow
         .flexShowLeft
@@ -239,6 +277,7 @@
   transform: rotate(20deg)
   background-color: colors.$lightred
   text-transform: lowercase
+  border: 2px solid white
   a
     color: colors.$darkerpurple
     font-weight: bolder

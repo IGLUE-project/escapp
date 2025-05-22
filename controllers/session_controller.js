@@ -185,7 +185,7 @@ exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) =>
         if (req.participant) {
             next();
         } else {
-            res.render("escapeRooms/preview", {escapeRoom: req.escapeRoom, user: req.session.user});
+            res.render("escapeRooms/preview", {"escapeRoom": req.escapeRoom, "user": req.session.user});
         }
     } catch (error) {
         next(error);
@@ -236,6 +236,11 @@ exports.create = async (req, res, next) => {
         const user = await authenticate((login || "").toLowerCase(), password);
 
         if (user) {
+            if (user.anonymized) {
+                req.flash("error", i18n.user.anonymizedCantLogin);
+                res.render("index", {redir});
+                return;
+            }
             req.session.user = {
                 "id": user.id,
                 "name": `${user.name} ${user.surname}`,

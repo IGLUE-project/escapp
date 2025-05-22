@@ -1144,6 +1144,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li {
   margin-bottom: 16px;
   position: relative;
+  padding-left: 1.5rem;
 }
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .overlay-trigger {
   top: 40px;
@@ -1160,6 +1161,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a:hover {
   color: #48C18E;
 }
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a.disabled-action {
+  cursor: not-allowed;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li a.disabled-action:hover {
+  color: white;
+}
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .showMenuButton {
   font-size: 16px;
   border-radius: 20px;
@@ -1169,6 +1176,39 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .showMenuButton:hover {
   transform: scale(0.9);
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er {
+  position: relative;
+  margin: 2rem 0;
+  padding-left: 0.4rem;
+  list-style: none;
+  border-left: 2px solid #ffffff;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step {
+  position: relative;
+  padding-left: 1.5rem;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step::before {
+  content: "";
+  position: absolute;
+  left: -0.95rem;
+  top: 0.25rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: #aab2bd;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step.completed::before {
+  background-color: #48C18E;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step a {
+  display: inline-block;
+  text-decoration: none;
+}
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er .timeline-step a .material-icons {
+  vertical-align: middle;
+  margin-left: 0.25rem;
 }
 #mainSection .main.escapeRoomShow .flexShow .flexRow .flexShowLeft {
   width: 170px;
@@ -1391,6 +1431,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   transform: rotate(20deg);
   background-color: #F47E84;
   text-transform: lowercase;
+  border: 2px solid white;
 }
 .status-ribbon a {
   color: #161938;
@@ -1407,6 +1448,15 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 24px;
   vertical-align: text-bottom;
 }
+.escapeRooms .escapeRoomFilters .filter-button {
+  font-family: "Material Icons";
+  padding: 6px !important;
+  margin: 0;
+  vertical-align: middle;
+  background: transparent;
+  border: transparent;
+  color: white;
+}
 .escapeRooms .flexBoxEscapeRooms {
   padding: 1em;
   border: 2px solid white;
@@ -1420,6 +1470,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .escapeRooms .flexBoxEscapeRooms:after {
   content: "";
   flex: 1;
+}
+.escapeRooms .flexBoxEscapeRooms .notFound {
+  margin-top: 0px;
+  flex-basis: 100%;
+  color: #9091A6;
 }
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper {
   width: 19.99%;
@@ -1461,6 +1516,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.add {
   background-color: #FAC855;
 }
+.escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.edit {
+  background-color: #36A2EB;
+}
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .erFoto {
   width: 100%;
   display: flex;
@@ -1491,7 +1549,10 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   flex-direction: row;
   justify-content: right;
 }
-.escapeRooms .escapeRoomListButtons button {
+.escapeRooms .escapeRoomListButtons .escapeRoomSearch {
+  flex: 1;
+}
+.escapeRooms .escapeRoomListButtons button.dashboard-button {
   border: 2px solid white;
   border-bottom: 2px solid transparent;
   border-radius: 10px 10px 0 0;
@@ -1500,7 +1561,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 0.81em;
   transform: translateX(-1em) translateY(2px);
 }
-.escapeRooms .escapeRoomListButtons button.selected {
+.escapeRooms .escapeRoomListButtons button.dashboard-button.selected {
   color: #232850;
   background: white;
   border-bottom-color: white;
@@ -1516,7 +1577,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
     width: 33.33%;
   }
 }
-@media (max-width: 576px) {
+@media (max-width: 800px) {
   .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper {
     width: 50%;
   }
@@ -1525,6 +1586,20 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   }
   .escapeRooms .escapeRoomListButtons a button span.material-icons {
     display: inline !important;
+  }
+}
+@media (max-width: 500px) {
+  .escapeRoomListButtons {
+    flex-wrap: wrap;
+  }
+  .escapeRoomListButtons .escapeRoomSearch {
+    flex-grow: 1;
+    flex-basis: 100% !important;
+    margin-bottom: 1em;
+    width: 100%;
+  }
+  .escapeRoomListButtons .escapeRoomSearch #searchbar {
+    width: 85%;
   }
 }
 .box__error {
@@ -2175,7 +2250,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-color: var(--bckg);
   color: black;
 }
-#mainSection .main.step-instructions .editor-wrapper.indications .editor {
+#mainSection .main.step-instructions .editor-wrapper.indications .editor, #mainSection .main.step-instructions .editor-wrapper.after .editor {
   background-color: #2A2A52;
 }
 #mainSection .main.step-instructions .editor-wrapper #editor {
@@ -2807,19 +2882,19 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 18px;
 }
 
-.indications #editor {
+.indications #editor, .after #editor {
   color: white;
   font-size: 22px;
 }
-.indications #editor blockquote {
+.indications #editor blockquote, .after #editor blockquote {
   font-family: Lato, sans-serif;
   margin-top: 0px;
   margin-bottom: 0px;
 }
-.indications #editor a, .indications #editor b, .indications #editor i, .indications #editor strong, .indications #editor em, .indications #editor ul, .indications #editor li, .indications #editor span, .indications #editor u {
+.indications #editor a, .indications #editor b, .indications #editor i, .indications #editor strong, .indications #editor em, .indications #editor ul, .indications #editor li, .indications #editor span, .indications #editor u, .after #editor a, .after #editor b, .after #editor i, .after #editor strong, .after #editor em, .after #editor ul, .after #editor li, .after #editor span, .after #editor u {
   font-family: inherit;
 }
-.indications #editor pre {
+.indications #editor pre, .after #editor pre {
   font-family: monospace;
 }
 
@@ -4247,12 +4322,86 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
     width: 35%;
   }
 }
+.report .report-body {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+.report .report-body label {
+  color: white;
+}
+.report .report-body #reason {
+  width: 100%;
+  margin: 1vw 0;
+  text-align: left;
+  padding: 0.5em;
+  color: white !important;
+  border-color: white;
+}
+.report .report-body #reason label {
+  font-family: "Lato" !important;
+  vertical-align: middle;
+}
+.report .report-body #reason input[type=radio] {
+  vertical-align: bottom;
+}
+.report .report-body textarea {
+  width: 100%;
+  height: 20vh;
+  min-height: 100px;
+  margin: 1vw 0;
+  text-align: left;
+  padding: 0.5em;
+  font-family: "Lato" !important;
+  border-color: white;
+}
+
+.reportList .tableHeader {
+  border-bottom: solid 1px white;
+  font-weight: bold;
+}
+.reportList .reportTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.reportList .readed {
+  color: #111;
+}
+.reportList .readed a {
+  color: #111;
+  font-weight: bold;
+}
+.reportList .noreaded {
+  color: #DDD;
+}
+.reportList .report-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0px;
+}
+.reportList .report-btn .material-icons {
+  font-size: 18px;
+}
+.reportList .report-btn:hover {
+  transform: scale(1.1);
+}
+.reportList .Breaded {
+  background-color: #48C18E;
+}
+.reportList .Bnoreaded {
+  background-color: #FAC855;
+}
+.reportList .delete {
+  background-color: #F47E84;
+}
+
 #mainSection .main.showStudent {
   background-image: none;
   background: #2A2A52;
 }
 #mainSection .main.showStudent .button-share {
-  border-top: 2px solid white;
+  text-align: center;
   padding-top: 0.5em;
   margin-top: 0.5em;
 }
@@ -4460,6 +4609,116 @@ table.mainTable tr td .icon {
   height: 24px;
   border: 2px solid #161938;
   border-radius: 12px;
+}
+
+.toggle-container {
+  position: relative;
+  padding: 0.9em;
+  border: 2px solid white;
+  background-color: white;
+  color: #050B2D;
+  width: 80%;
+  font-size: 0.7em;
+  margin: auto;
+  margin-top: 1em;
+  border-radius: 10px;
+  border: 4px solid #48C18E;
+}
+.toggle-container.draft {
+  border: 4px solid #F47E84;
+}
+.toggle-container .escapeRoomStatusP {
+  margin-block-start: 0em;
+  text-align: left;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus {
+  vertical-align: bottom;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus .escapeRoomStatusTitle {
+  color: #050B2D;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus .escapeRoomStatusActual {
+  color: #48C18E;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus .escapeRoomStatusActual.draft {
+  color: #F47E84;
+}
+.toggle-container .escapeRoomStatusP .escapeRoomStatus i, .toggle-container .escapeRoomStatusP .escapeRoomStatus .material-icons {
+  font-size: 32px;
+  color: #36A2EB;
+}
+.toggle-container .checklist-publishing {
+  text-align: left;
+  list-style: none;
+  padding-left: 5px;
+}
+.toggle-container .checklist-publishing li input {
+  height: auto;
+}
+.toggle-container .checklist-publishing li .hidden-submit {
+  opacity: 0;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+.toggle-container .checklist-publishing li span.material-icons {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  font-size: 18px !important;
+  font-family: "Material Icons";
+  vertical-align: bottom;
+  color: #F47E84;
+}
+.toggle-container .link-turnos-share .material-icons {
+  color: #36A2EB;
+}
+.toggle-container .toggle {
+  appearance: none;
+  margin: 0;
+  min-width: 84px;
+  min-height: 48px;
+  max-width: 84px;
+  max-height: 48px;
+  border-radius: 24px;
+  position: relative;
+  background-color: #F47E84;
+  border: 2px solid #b14147;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.toggle-container .toggle.dark {
+  background-color: #1a1a1a;
+  border-color: #979797;
+}
+.toggle-container .toggle.dark:after {
+  background-color: #1a1a1a;
+  border-color: #979797;
+}
+.toggle-container .toggle:checked {
+  background-color: #48C18E;
+  border-color: #106128;
+}
+.toggle-container .toggle:checked.dark {
+  background-color: #219b44;
+}
+.toggle-container .toggle:checked:after {
+  left: calc(100% - 40px - 2px);
+  border-color: #106128;
+}
+.toggle-container .toggle:after {
+  content: " ";
+  min-height: 40px;
+  min-width: 40px;
+  border: 2px solid #b14147;
+  background-color: white;
+  box-sizing: border-box;
+  border-radius: 50%;
+  position: absolute;
+  left: 0px;
+  pointer-events: none;
+  top: 2px;
+  transition: left 0.2s, border-color 0.2s;
 }
 
 #mainSection > .main.timeline {
