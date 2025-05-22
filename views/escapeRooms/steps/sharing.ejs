@@ -41,7 +41,7 @@
             </select>
         </div>
         
-        <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms;">
+        <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms; <%=Boolean(escapeRoom.scope) ?  '' : 'display: none;'%>" id = "invitationBlock"   ">
             <label for="invitation"  class="itemNarrow">3. <%=i18n.showTeacher.titles.password%>:</label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.invitationExplanation%></p>
 
@@ -110,6 +110,19 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script LANGUAGE="JavaScript">
+$('#scope').on('change', function(e){
+		var option = e.target.value;
+
+		switch(option) {
+			case 'public':
+				$('#invitationBlock').hide();
+                break;
+            case 'private':
+				$('#invitationBlock').show(); 
+                break;
+            default:
+                break;
+    }})
 
 function confirmSubmit(e) {
     e.preventDefault();

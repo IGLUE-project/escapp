@@ -71,7 +71,7 @@ module.exports = function (app) {
             return "var(--brightgreen)";
         }
     };
-    app.locals.getPlaceholder = function getColor(id) {
+    app.locals.getPlaceholder = function getColor (id) {
         const index = id % 5;
         let color;
 

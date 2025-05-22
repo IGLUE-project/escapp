@@ -230,6 +230,7 @@
         "guide": "User guide",
         "ideas": "Puzzle ideas",
         "mainPage": "Main page",
+        "ok": "ok",
         "pagination": {
             "first": "First page",
             "last": "Last page",
@@ -1045,6 +1046,7 @@
         	"nextText": "Next >",
         	"prevText": "< Back"
         	},
+        "automaticallyPublic": "This shift has been created automatically because the escape room is publicly available",
 	    "days": {
 			"d": "Sunday",
 			"l": "Monday",
@@ -1077,6 +1079,7 @@
         	"dec": "December"
         },
         "place": "Location",
+        "publicSub": "open to all",
         "PUBLIC": "Public",
         "noPlace": "Place not specified",
         "fullTurno": "The shift you selected is full. Select another one",
