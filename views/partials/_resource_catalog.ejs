@@ -34,7 +34,7 @@
         <section class="sectionAddResource">
             <p class="title-section">Recursos interactivos vinculados a retos</p>
             <div class="resources-group">
-                    <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config); console.log(goodConfig)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
+                    <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config);}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
                      <div class="resource-card">
                         <% if( goodConfig && goodConfig?.puzzleConfig?.thumbnail) {%>
                             <img src="/uploads/reusablePuzzles/<%=puzzle.id%>/<%=goodConfig?.puzzleConfig?.thumbnail%>"/>
@@ -509,7 +509,7 @@
 <br>
 <div style="display:flex; justify-content:center">
     <dialog id="editDialog">
-        <form action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
+        <form  onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
     </dialog>
     <dialog id="reusablePuzzleDialog">
@@ -524,15 +524,6 @@
             </select>
             </br>
             <h2>Configuration</h2>
-            <label> Input </label>
-            <input type="text" name="config_a" />
-            <label> Input </label>
-            <input type="text" name="config_b" />
-            <label> Input </label>
-            <input type="text" name="config_c" />
-            <label> Input </label>
-            <input type="text" name="config_d" />
-            <input type="submit" />
         </form>
     </dialog>
 </div>
@@ -566,7 +557,6 @@
         }catch{
             configJSON = {}
         }
-        console.log(configJSON);
         const puzzleid = jsonPuzzle.id;
         const name = jsonPuzzle.name;
         const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
@@ -1119,6 +1109,25 @@ function addInput(name, type){
     const newName = `${name}-${index}`;
     let newConfig = renderConfig({name:newName,type})
     $(`#${name}`).append(newConfig);
+}
+
+function send(e,form) {
+    fetch(form.action, {method:'post', body: new URLSearchParams(new FormData(form))})
+    .then((res)=>{
+        if(res.status !== 200){
+            return;
+        }
+        res.json().then((resJSON)=>{
+            const row = $('#resourceCatalog').find((`#${resJSON.id}`))
+            const editButton = row.find('.editButton');
+            const addButton = row.find('.addButton');
+            const regex = new RegExp(/(.*\(.*) ("[^"]*")(.*)/);
+            editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
+            addButton.attr('onclick', addButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
+            })
+    });
+    e.preventDefault();
+    $('#editDialog').dialog('close');
 }
 
 

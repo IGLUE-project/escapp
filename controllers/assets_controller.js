@@ -1,3 +1,4 @@
+/* eslint no-sync: 0 */
 const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
@@ -164,6 +165,7 @@ exports.browse = async (req, res, next) => {
 
         res.render("escapeRooms/steps/assets", {"escapeRoom": req.escapeRoom, assets});
     } catch (err) {
+        console.log(err);
         next(err);
     }
 };
@@ -232,6 +234,8 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 res.writeHead(200, head);
                 fs.createReadStream(filePath).pipe(res);
             }
+        } else if (asset.mime.search(applicationRegex)) {
+            res.render("partials/webappContainer", {"path": filePath, "layout": false});
         } else {
             res.sendFile(filePath);
         }
@@ -242,7 +246,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
 };
 
 
-function appendParameterers (...parameters) {
+const appendParameterers = (...parameters) => {
     let config = "";
 
     parameters.forEach((parameter) => {
@@ -252,7 +256,7 @@ function appendParameterers (...parameters) {
         config += `${name}:${value};`;
     });
     return config;
-}
+};
 
 // PUT /escapeRooms/:escapeRoomId/assets/:assetId
 exports.editAsset = async (req, res, next) => {
@@ -279,9 +283,8 @@ exports.editAsset = async (req, res, next) => {
             } else {
                 return "";
             }
-            console.log(config);
             await asset.update({config});
-            res.redirect("back");
+            res.json({config, id: asset.id});
         } else {
             res.status(404);
             res.json({"msg": "Not found"});
@@ -331,7 +334,7 @@ exports.getWebAppAsset = async (req, res, next) => { // eslint-disable-line  no-
     }
 };
 
-exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-line  no-unused-vars
+exports.getReusablePuzzleAsset = (req, res, next) => { // eslint-disable-line  no-unused-vars
     const {puzzle_id, file_name } = req.params;
 
     try {

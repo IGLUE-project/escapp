@@ -9,7 +9,6 @@ const {nextStep, prevStep} = require("../helpers/progress");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
 const es = require("../i18n/es");
 const en = require("../i18n/en");
-const { escape } = require("sequelize/lib/sql-string");
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {

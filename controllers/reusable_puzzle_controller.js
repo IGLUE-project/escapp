@@ -1,3 +1,4 @@
+/* eslint-disable  no-sync*/
 const {models} = require("../models");
 const fs = require("fs");
 const path = require("path");
@@ -73,7 +74,7 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
 };
 
 
-exports.renderCreatePuzzle = async (req, res) => {
+exports.renderCreatePuzzle = (req, res) => {
     res.render("reusablePuzzles/reusablePuzzleCreation");
 };
 
