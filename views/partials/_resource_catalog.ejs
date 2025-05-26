@@ -823,8 +823,11 @@
     }
     function parseAssetConfig(mime, config) {
         if (!config) return {};
+        let configJSON = {};
+        if(mime.search(reusableRegex) !== -1){
+            configJSON = JSON.parse(config)
+        }
         let texts = config.split(';');
-        configJSON = {};
         texts.forEach(text => {
             const data = text.split(':');
             configJSON[data[0]] = data[1];
@@ -904,14 +907,18 @@
     function insertContentBlock() {
         const text = `<p>${window.placeholder}</p>`
         insertAndScrollContent(0, 'text', { text }, puzzleList);
-        window.scrollTo(0, $('.building-block').children().last().offset().top);
+        if($('.building-block').children().last().offset()) {
+            window.scrollTo(0, $('.building-block').children().last().offset().top);
+        }
     }
     function insertAndScrollContent(index, type, payload, puzzles) {
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
         insertContent(index, type, payload, puzzles);
-        window.scrollTo(0, $('.building-block').children().last().offset().top);
+        if($('.building-block').children().last().offset()) {
+            window.scrollTo(0, $('.building-block').children().last().offset().top);
+        }
     }
 
     function insertGamification(index, type, payload, puzzles) {
@@ -1111,17 +1118,24 @@ function send(e,form) {
         if(res.status !== 200){
             return;
         }
-        if (!res.id){
-            return;
-        }
         res.json().then((resJSON)=>{
-            const row = $('#resourceCatalog').find((`#p-${resJSON.id}`))
-            const editButton = row.find('.editButton');
-            const addButton = row.find('.addButton');
-            const regex = new RegExp(/(.*\(.*) ("[^"]*")(.*)/);
-            editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
-            addButton.attr('onclick', addButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
-            })
+            if(resJSON.type !== "reusable"){
+                const row = $('#resourceCatalog').find((`#${resJSON.id}`))
+                const editButton = row.find('.editButton');
+                const addButton = row.find('.addButton');
+                const regex = new RegExp(/(.*\(.*) ("[^"]*")(.*)/);
+                editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
+                addButton.attr('onclick', addButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
+            } else {
+                const row = $('#resourceCatalog').find((`#p-${resJSON.id}`))
+                const editButton = row.find('.editButton');
+                const addButton = row.find('.addButton');
+                const regex = new RegExp(/(.*\(.*)(config\":)(.*)(}\))/);
+                const regexAdd = new RegExp(/(.*\(.*)(config: ")(.*)(,\s*mime.*)/);
+                editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1$2"${JSON.stringify(resJSON.config).replaceAll("\"", "\\\"")}"$4`));
+                addButton.attr('onclick', addButton.attr('onclick').replace(regexAdd, `$1$2${JSON.stringify(resJSON.config).replaceAll("\"", "\\\"")}"$4`));
+            }
+        })
     });
     e.preventDefault();
     $('#editDialog').dialog('close');

@@ -140,7 +140,10 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
     try {
         if (!reusablePuzzleInstanceId) {
-            const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(config)}, {"transaction": t});
+            const trimedConfig = config;
+            trimedConfig.puzzleSol = null;
+            trimedConfig.validator = null;
+            const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
             newInstanceId = reusablePuzzle.id;
         } else {
@@ -167,7 +170,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         }
 
         t.commit();
-        res.json({config})
+        res.json({config, id: newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         t.rollback();
         next(e);
