@@ -1,7 +1,7 @@
 
 <script>
     window.config =  <%- JSON.parse(JSON.stringify(config))%>
-    window.path = <%- JSON.parse(JSON.stringify(path))%>
+    window.config.language = window.lang;
 </script>
 
 <iframe src="<%=JSON.stringify(path)%>">

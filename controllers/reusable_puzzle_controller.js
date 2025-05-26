@@ -84,15 +84,12 @@ exports.createReusablePuzzle = async (req, res, next) => {
     const t = await sequelize.transaction();
 
     try {
-        let hasConfig = false;
         let hasForm = false;
         const zip = new StreamZip.async({ "file": req.file.path });
         const entries = await zip.entries();
 
         for (const entry of Object.values(entries)) {
-            if (entry.name === "config.json") {
-                hasConfig = true;
-            } else if (entry.name === "form.ejs") {
+            if (entry.name === "form.ejs") {
                 hasForm = true;
             }
         }
@@ -101,11 +98,9 @@ exports.createReusablePuzzle = async (req, res, next) => {
 
         const newPath = path.join(__dirname, `../uploads/reusablePuzzles/${puzzle.id}`);
 
-        if (hasConfig) {
-            fs.mkdirSync(newPath);
-            await zip.extract(null, newPath);
-            await zip.close();
-        }
+        fs.mkdirSync(newPath);
+        await zip.extract(null, newPath);
+        await zip.close();
 
         const puzzleConfig = fs.readFileSync(path.join(newPath, "config.json"));
         const parsedConfig = JSON.parse(puzzleConfig);
@@ -165,13 +160,14 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 puzzle.sol = config.puzzleSol;
                 puzzle.validator = config.validator;
                 puzzle.assignedReusablePuzzleInstance = newInstanceId ? newInstanceId : reusablePuzzleInstanceId;
+                config.puzzleSol = undefined;
                 await puzzle.save({"transaction": t});
             }
             config.puzzleSol = undefined;
         }
 
         t.commit();
-        res.redirect("back");
+        res.json({config})
     } catch (e) {
         t.rollback();
         next(e);
@@ -195,11 +191,21 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
 
     try {
         const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);
+        const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
+
+        const solutionLength = linkedPuzzle ? (linkedPuzzle.validator !== "regex" ? linkedPuzzle.sol.length : 0) : 0;
 
         const filePath = path.join(__dirname, `/../uploads/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/index.html`);
+        let hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+        const basePath = hostName + "/uploads/reusablePuzzles/" + reusablePuzzleInstance.reusablePuzzleId + "/";
+
+       const config = { ...JSON.parse(reusablePuzzleInstance.config), solutionLength,  escappClientSettings : {
+          endpoint:hostName + "/api/escapeRooms/" + reusablePuzzleInstance.escapeRoomId,
+          linkedPuzzleIds: [1],
+        }}
 
         if (reusablePuzzleInstance) {
-            res.render("reusablePuzzles/reusablePuzzleContainer", {"file": filePath, "config": reusablePuzzleInstance.config, "layout": false});
+            res.render("reusablePuzzles/reusablePuzzleContainer", {"file": filePath, basePath, hostName, config, "layout": false});
         } else {
             res.status(404).send("Puzzle not found");
         }

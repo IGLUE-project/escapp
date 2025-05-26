@@ -125,12 +125,13 @@
                     <td>
                         <div class=" button-group row-button">
                             <div class="overlay-trigger" data-id="<%=puzzle.id%>">
-                                <p class="text-overlay">¿Estás seguro de que quieres borrar este
-                                    archivo?</p>
+                                <p class="text-overlay">
+                                    <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                </p>
                                 <button class="deleteButton" type="button"
-                                    onclick='overlayTriggerCatalog("<%=puzzle.id%>", true)'>cancelar</button>
+                                    onclick='overlayTriggerCatalog("<%=puzzle.id%>", true)'><%=i18n.common.cancel%></button>
                                 <button class="acceptButton" type="button"
-                                    onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'>aceptar</button>
+                                    onclick='deleteReusablePuzzleInstance("<%=puzzle.id%>")'><%=i18n.common.accept%></button>
                             </div>
                             <button class="listButton iconButton delete-button"
                                 onclick="overlayTriggerCatalog('<%=puzzle.id%>', false)">
@@ -185,12 +186,13 @@
                                 <td>
                                     <div class=" button-group row-button">
                                         <div class="overlay-trigger" data-id="<%=asset.id%>">
-                                            <p class="text-overlay">¿Estás seguro de que quieres borrar este
-                                                archivo?</p>
+                                            <p class="text-overlay">
+                                                <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                            </p>
                                             <button class="deleteButton" type="button"
-                                                onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                onclick='overlayTriggerCatalog("<%=asset.id%>", true)'><%=i18n.common.cancel%></button>
                                             <button class="acceptButton" type="button"
-                                                onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                onclick='deleteAsset("<%=asset.id%>")'><%=i18n.common.accept%></button>
                                         </div>
                                         <button class="listButton iconButton delete-button"
                                             onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
@@ -234,12 +236,13 @@
                                     <td>
                                         <div class=" button-group row-button">
                                             <div class=" overlay-trigger" data-id="<%=asset.id%>">
-                                                <p class="text-overlay">¿Estás seguro de que quieres borrar este
-                                                    archivo?</p>
+                                                <p class="text-overlay">
+                                                    <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                                </p>
                                                 <button class="deleteButton" type="button"
-                                                    onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                    onclick='overlayTriggerCatalog("<%=asset.id%>", true)'><%=i18n.common.cancel%></button>
                                                 <button class="acceptButton" type="button"
-                                                    onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                    onclick='deleteAsset("<%=asset.id%>")'><%=i18n.common.accept%></button>
                                             </div>
                                             <button class="listButton iconButton delete-button"
                                                 onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
@@ -282,13 +285,14 @@
                                         <td>
                                             <div class=" button-group row-button">
                                                 <div class=" overlay-trigger" data-id="<%=asset.id%>">
-                                                    <p class="text-overlay">¿Estás seguro de que quieres borrar
-                                                        este
+                                                    <p class="text-overlay">
+                                                        <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                                    </p>
                                                         archivo?</p>
                                                     <button class="deleteButton" type="button"
-                                                        onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                        onclick='overlayTriggerCatalog("<%=asset.id%>", true)'><%=i18n.common.cancel%></button>
                                                     <button class="acceptButton" type="button"
-                                                        onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                        onclick='deleteAsset("<%=asset.id%>")'><%=i18n.common.accept%></button>
                                                 </div>
                                                 <button class="listButton iconButton delete-button"
                                                     onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
@@ -335,13 +339,13 @@
                                             <td>
                                                 <div class=" button-group row-button">
                                                     <div class=" overlay-trigger" data-id="<%=asset.id%>">
-                                                        <p class="text-overlay">¿Estás seguro de que quieres
-                                                            borrar este
-                                                            archivo?</p>
+                                                        <p class="text-overlay">
+                                                            <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                                        </p>
                                                         <button class="deleteButton" type="button"
-                                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'><%=i18n.common.cancel%></button>
                                                         <button class="acceptButton" type="button"
-                                                            onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                            onclick='deleteAsset("<%=asset.id%>")'><%=i18n.common.accept%></button>
                                                     </div>
                                                     <button class="listButton iconButton delete-button"
                                                         onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
@@ -386,13 +390,13 @@
                                             <td>
                                                 <div class=" button-group row-button">
                                                     <div class=" overlay-trigger" data-id="<%=asset.id%>">
-                                                        <p class="text-overlay">¿Estás seguro de que quieres
-                                                            borrar este
-                                                            archivo?</p>
+                                                        <p class="text-overlay">
+                                                            <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                                        </p>
                                                         <button class="deleteButton" type="button"
-                                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'><%=i18n.common.cancel%></button>
                                                         <button class="acceptButton" type="button"
-                                                            onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                            onclick='deleteAsset("<%=asset.id%>")'><%=i18n.common.accept%></button>
                                                     </div>
                                                     <button class="listButton iconButton delete-button"
                                                         onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
@@ -446,7 +450,7 @@
                                                         <button class="delete-button" type="button"
                                                             onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
                                                         <button class="acceptButton" type="button"
-                                                            onclick='deleteAsset("<%=asset.id%>")'>aceptar</button>
+                                                            onclick='deleteAsset("<%=asset.id%>")'><%=i18n.common.accept%></button>
                                                     </div>
                                                     <button class="listButton iconButton delete-button"
                                                         onclick='overlayTriggerCatalog("<%=asset.id%>")'>
@@ -514,16 +518,6 @@
     </dialog>
     <dialog id="reusablePuzzleDialog">
         <form method="POST" action="../reusablePuzzleInstance">
-            <label> Name </label>
-            <input type="text" name="name" />
-            <label> Description </label>
-            <input type="text" name="description" />
-            </br>
-            <label> Puzzle type </label>
-            <select name="reusablePuzzleId">
-            </select>
-            </br>
-            <h2>Configuration</h2>
         </form>
     </dialog>
 </div>
@@ -574,26 +568,26 @@
                     if (mime.search(reusableRegex) !== -1) {
                     form.append(`
                 <div >
-                    <p class="titleLabelEdit"> Name and description </p>
+                    <p class="titleLabelEdit"> ${i18n.catalog.config.nameDescription} </p>
                     <div>
-                        <label for="name">Name</label>
+                        <label for="name">${i18n.catalog.config.name}</label>
                             <input value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" type="text"  name="name"/>
                      </div>
                     <div>
-                        <label for="description">Descritption</label>
+                        <label for="description">${i18n.catalog.config.description}</label>
                             <input value="${jsonPuzzle.description ? jsonPuzzle.description : ''}" type="text"  name="description"/>
                      </div>
-                    <p class="titleLabelEdit"> Medidas </p>
+                    <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
                     <div >
                     <div>
-                        <label for="height">Height</label>
+                        <label for="height">${i18n.catalog.config.height}</label>
                         <div class="editUnit">
                             <input  value="${configJSON.height ? configJSON.height : ''}" type="number" name="height"/>
                             <p> px </p>
                         </div>
                      </div>
                     <div>
-                        <label for="width">Width</label>
+                        <label for="width">${i18n.catalog.config.measures}</label>
                         <div class="editUnit">
                             <input value="${configJSON.width ? configJSON.width : ''}" type="number" name="width"/>
                             <p> px </p>
@@ -601,7 +595,7 @@
                     </div>
                     </div>
                     <div>
-                        <p class="titleLabelEdit"> Assigned Puzzle </p>
+                        <p class="titleLabelEdit"> ${i18n.catalog.config.assignedPuzzle}</p>
                             <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzleid})"  name="puzzle">
                                     <option value="none">None</option>
                                     ${window.puzzles.map((puzzle,index) => {
@@ -693,18 +687,18 @@
             form.append(`
                     <div class="containerBlocksEdit">
                         <div>
-                            <p class="titleLabelEdit"> Medidas </p>
+                            <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
                             <div class="editDialogForm">
 
                             <div>
-                                <label for="height">Height</label>
+                                <label for="height">${i18n.catalog.config.height}</label>
                                 <div class="editUnit">
                                     <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
                                     <p> px </p>
                                 </div>
                             </div>
                             <div>
-                                <label for="width">Width</label>
+                                <label for="width">${i18n.catalog.config.width}</label>
                                 <div class="editUnit">
                                     <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
                                     <p> px </p>
@@ -720,17 +714,17 @@
             form.append(`
             <div class="containerBlocksEdit">
             <div >
-                <p class="titleLabelEdit"> Medidas </p>
+                <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
                 <div class="editDialogForm">
                 <div>
-                    <label for="height">Height</label>
+                    <label for="height">${i18n.catalog.config.height}</label>
                     <div class="editUnit">
                         <input class="light" type="number" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
                         <p> px </p>
                     </div>
                  </div>
                 <div>
-                    <label for="width">Width</label>
+                    <label for="width">${i18n.catalog.config.width}</label>
                     <div class="editUnit">
                         <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
                         <p> px </p>
@@ -739,11 +733,11 @@
                 </div>
                 </div>
                 <div>
-                    <p class="titleLabelEdit"> Opciones </p>
+                    <p class="titleLabelEdit"> ${i18n.catalog.config.options} </p>
                 <div class="checkBoxEditContainer">
-                    <div><label for="autoplay">Autoplay</label><input ${configJSON.autoplay!== "undefined" ? "checked" : ""} type="checkbox" name="autoplay"/></div>
-                    <div><label for="download">Dowloads</label><input ${configJSON.download !== "undefined" ? "checked" : ""} type="checkbox" name="download"/></div>
-                    <div><label for="controls">Controls</label><input  ${configJSON.controls !== "undefined" ? "checked" : ""} type="checkbox" name="controls"/></div>
+                    <div><label for="autoplay">${i18n.catalog.config.autoplay}</label><input ${configJSON.autoplay!== "undefined" ? "checked" : ""} type="checkbox" name="autoplay"/></div>
+                    <div><label for="download">${i18n.catalog.config.download}</label><input ${configJSON.download !== "undefined" ? "checked" : ""} type="checkbox" name="download"/></div>
+                    <div><label for="controls">${i18n.catalog.config.controls}</label><input  ${configJSON.controls !== "undefined" ? "checked" : ""} type="checkbox" name="controls"/></div>
                 </div>
                 </div>
                 </div>
@@ -762,18 +756,18 @@
             form.append(`
                     <div class="containerBlocksEdit">
                         <div>
-                            <p class="titleLabelEdit"> Medidas </p>
+                            <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
                             <div class="editDialogForm">
 
                             <div>
-                                <label for="height">Height</label>
+                                <label for="height">${i18n.catalog.config.height}</label>
                                 <div class="editUnit">
                                     <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
                                     <p> px </p>
                                 </div>
                             </div>
                             <div>
-                                <label for="width">Width</label>
+                                <label for="width">${i18n.catalog.config.width}</label>
                                 <div class="editUnit">
                                     <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
                                     <p> px </p>
@@ -787,18 +781,18 @@
             form.append(`
                     <div class="containerBlocksEdit">
                         <div>
-                            <p class="titleLabelEdit"> Medidas </p>
+                            <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
                             <div class="editDialogForm">
 
                             <div>
-                                <label for="height">Height</label>
+                                <label for="height">${i18n.catalog.config.height}</label>
                                 <div class="editUnit">
                                     <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
                                     <p> px </p>
                                 </div>
                             </div>
                             <div>
-                                <label for="width">Width</label>
+                                <label for="width">${i18n.catalog.config.height}</label>
                                 <div class="editUnit">
                                     <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
                                     <p> px </p>
@@ -1117,8 +1111,11 @@ function send(e,form) {
         if(res.status !== 200){
             return;
         }
+        if (!res.id){
+            return;
+        }
         res.json().then((resJSON)=>{
-            const row = $('#resourceCatalog').find((`#${resJSON.id}`))
+            const row = $('#resourceCatalog').find((`#p-${resJSON.id}`))
             const editButton = row.find('.editButton');
             const addButton = row.find('.addButton');
             const regex = new RegExp(/(.*\(.*) ("[^"]*")(.*)/);

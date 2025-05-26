@@ -165,7 +165,7 @@ exports.browse = async (req, res, next) => {
 
         res.render("escapeRooms/steps/assets", {"escapeRoom": req.escapeRoom, assets});
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };
@@ -284,7 +284,7 @@ exports.editAsset = async (req, res, next) => {
                 return "";
             }
             await asset.update({config});
-            res.json({config, id: asset.id});
+            res.json({config, "id": asset.id});
         } else {
             res.status(404);
             res.json({"msg": "Not found"});
@@ -329,7 +329,7 @@ exports.getWebAppAsset = async (req, res, next) => { // eslint-disable-line  no-
 
         res.sendFile(filePath);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };
@@ -342,9 +342,8 @@ exports.getReusablePuzzleAsset = (req, res, next) => { // eslint-disable-line  n
 
         res.sendFile(filePath);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };
-
 
