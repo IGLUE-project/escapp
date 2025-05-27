@@ -338,7 +338,7 @@ exports.getReusablePuzzleAsset = (req, res, next) => { // eslint-disable-line  n
     const {puzzle_id, file_name } = req.params;
 
     try {
-        const filePath = path.join(__dirname, `/../uploads/reusablePuzzles/${puzzle_id}/${file_name}`);
+        const filePath = path.join(__dirname, `/../reusablePuzzles/${puzzle_id}/${file_name}`);
 
         res.sendFile(filePath);
     } catch (err) {

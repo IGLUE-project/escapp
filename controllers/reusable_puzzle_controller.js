@@ -96,7 +96,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
 
         const puzzle = await models.reusablePuzzle.create({name, description, config}, {"transaction": t});
 
-        const newPath = path.join(__dirname, `../uploads/reusablePuzzles/${puzzle.id}`);
+        const newPath = path.join(__dirname, `../reusablePuzzles/${puzzle.id}`);
 
         fs.mkdirSync(newPath);
         await zip.extract(null, newPath);
@@ -106,9 +106,12 @@ exports.createReusablePuzzle = async (req, res, next) => {
         const parsedConfig = JSON.parse(puzzleConfig);
 
         if (hasForm) {
-            puzzle.config = JSON.stringify({"url": `/uploads/reusablePuzzles/${puzzle.id}/form.ejs`, ...parsedConfig });
-            puzzle.save({"transaction": t});
+            puzzle.config = JSON.stringify({"url": `/reusablePuzzles/${puzzle.id}/form.ejs`, ...parsedConfig });
+        } else {
+            puzzle.config = JSON.stringify({"url": "", ...parsedConfig });
         }
+
+        puzzle.save({"transaction": t});
 
         await puzzle.save({"transaction": t});
         await t.commit();
@@ -117,7 +120,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
         await t.rollback();
         console.error(e);
         fs.rm(
-            path.join("../uploads/reusablePuzzles/${req.file.filename"), { "recursive": true, "force": true },
+            path.join("../reusablePuzzles/${req.file.filename"), { "recursive": true, "force": true },
             (error) => {
                 if (error) {
                     console.error("Error removing directory:", error);
@@ -214,9 +217,9 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
 
         const solutionLength = linkedPuzzle ? (linkedPuzzle.validator !== "regex" ? linkedPuzzle.sol.length : 0) : 0;
 
-        const filePath = path.join(__dirname, `/../uploads/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/index.html`);
+        const filePath = path.join(__dirname, `/../reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/index.html`);
         let hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
-        const basePath = hostName + "/uploads/reusablePuzzles/" + reusablePuzzleInstance.reusablePuzzleId + "/";
+        const basePath = hostName + "/reusablePuzzles/" + reusablePuzzleInstance.reusablePuzzleId + "/";
 
        const config = { ...JSON.parse(reusablePuzzleInstance.config), solutionLength,  escappClientSettings : {
           endpoint:hostName + "/api/escapeRooms/" + reusablePuzzleInstance.escapeRoomId,
