@@ -36,8 +36,8 @@
             <div class="resources-group">
                     <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config);}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
                      <div class="resource-card">
-                        <% if( goodConfig && goodConfig?.puzzleConfig?.thumbnail) {%>
-                            <img src="/uploads/reusablePuzzles/<%=puzzle.id%>/<%=goodConfig?.puzzleConfig?.thumbnail%>"/>
+                        <% if( goodConfig && goodConfig?.thumbnail) {%>
+                            <img src="/reusablePuzzles/<%=puzzle.id%>/<%=goodConfig?.thumbnail%>"/>
                         <%} else{%>
                             <img src="/images/keypad.png"/>
                         <%} %>
@@ -62,7 +62,7 @@
         </section>
         <section id="configZone" hidden>
             <h2>Configuración</h2>
-            <form action="reusablePuzzleInstance" method="POST" id="configForm">
+            <form action="reusablePuzzleInstance"  method="POST" id="configForm">
             </form>
         </section>
     </div>
@@ -431,60 +431,56 @@
                                         </tr>
                                         <% } else { %>
 
-                                        <!-- Mirar si queremos poner elementos desconocidos
-                                            <tr class="catalogItem" id=<%=asset.id%> >
-                                                <td>
-                                                    <p class="title">
-                                                        <%=asset.filename%>
-                                                    </p>
-                                                    <div class=" button-group row-button">
-                                                </td>
-                                                <td> <span class="building-block-icon material-icons" id="gray">
-                                                        question_mark </span> </td>
-                                                <td>
+                                        <tr class="catalogItem" id=<%=asset.id%> >
+                                            <td>
+                                                <p class=" title">
+                                                    <%=asset.filename%>
+                                                </p>
+                                            </td>
+                                            <td> <span class="building-block-icon material-icons" id="purple">
+                                                    question_mark </span> </td>
+                                            <td>
+                                                <div class=" button-group row-button">
                                                     <div class=" overlay-trigger" data-id="<%=asset.id%>">
-                                                        <p class="text-overlay">¿Estás seguro de que quieres
-                                                            borrar
-                                                            este
-                                                            archivo?</p>
-                                                        <button class="delete-button" type="button"
-                                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'>cancelar</button>
+                                                        <p class="text-overlay">
+                                                            <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                                        </p>
+                                                        <button class="deleteButton" type="button"
+                                                            onclick='overlayTriggerCatalog("<%=asset.id%>", true)'><%=i18n.common.cancel%></button>
                                                         <button class="acceptButton" type="button"
                                                             onclick='deleteAsset("<%=asset.id%>")'><%=i18n.common.accept%></button>
                                                     </div>
                                                     <button class="listButton iconButton delete-button"
-                                                        onclick='overlayTriggerCatalog("<%=asset.id%>")'>
+                                                        onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
                                                         <span class="building-block-icon material-icons" id="delete">
                                                             delete_outline </span>
                                                     </button>
-                                                    <button class="listButton iconButton editButton" disabled>
-                                                        <span class="building-block-icon material-icons" id="edit">
-                                                            edit
+                                                    <button disabled class="listButton iconButton editButton"
+                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                        <span class="building-block-icon material-icons" id="edit"> edit
                                                         </span>
                                                     </button>
                                                     <button class="listButton linkButton"
                                                         onclick='copyURl("<%=asset.url%>")'>
-                                                        <span class="building-block-icon material-icons" id="link">
-                                                            link
+                                                        <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
                                                         <div class="tooltip-link"> Copiar enlace </div>
                                                         <div class="tooltip-link" id="link-copied">
                                                             <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                         </div>
                                                     </button>
-                                                    <button class="listButton addButton" disabled> <span
-                                                            class="building-block-icon material-icons" id="add">
-                                                            add
+
+                                                    <button disabled class="listButton addButton"
+                                                        onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                        <span class="building-block-icon material-icons" id="add"> add
                                                         </span>
                                                         <p>
                                                             <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
                                                         </p>
                                                     </button>
-                </div>
-                </td>
-
-                </tr>
-    -->
+                                                </div>
+                                            </td>
+                                        </tr>
     <% } return null;%>
         <% }) %>
             </table>
@@ -513,7 +509,7 @@
 <br>
 <div style="display:flex; justify-content:center">
     <dialog id="editDialog" style="overflow:auto">
-        <form  onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
+        <form onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
     </dialog>
     <dialog id="reusablePuzzleDialog">
@@ -559,7 +555,7 @@
         const assignedPuzzle = puzzles.find(p => p.assignedReusablePuzzleInstance == jsonPuzzle.id) || null;
         const selectedValidator = assignedPuzzle ? assignedPuzzle.validator : (puzzles[0] ? puzzles[0].validator : null);
 
-         fetch(`/uploads/reusablePuzzles/${reusablePuzzleId}/form.ejs`).then(res => {
+         fetch(`/reusablePuzzles/${reusablePuzzleId}/form.ejs`).then(res => {
             res.text().then((partial)=>{
                     const dialog = $('#editDialog');
                     const form = dialog.find('form');
@@ -959,6 +955,7 @@ function openPuzzleConfiguration(puzzle, baseId){
     configZone.removeAttr('hidden');
     resources.attr('hidden', true);
     if(config.url){
+        console.log(config.url)
         fetch(config.url)
         .then(response => response.text())
         .then(textString => {

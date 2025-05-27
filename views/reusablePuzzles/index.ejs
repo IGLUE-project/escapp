@@ -9,15 +9,17 @@
     </a>
     <table class="mainTable">
         <tr>
-            <th><%=i18n.reusablePuzzles.name%></th><th><%=i18n.reusablePuzzles.description%></th><th><%=i18n.reusablePuzzles.config%></th><th><%=i18n.common.delete%></th>
+            <th><%=i18n.reusablePuzzles.name%></th><th><%=i18n.reusablePuzzles.description%></th><th><%=i18n.reusablePuzzles.config%></th><th><%=i18n.common.edit%></th><th><%=i18n.common.delete%></th>
         </tr>
 <% reusablePuzzles.forEach((puzzle)=>{%>
         <tr class="puzzle">
             <td><h2><%=puzzle.name%></h2></td>
             <td><p><%=puzzle.description%></p></td>
             <td><p><%=JSON.stringify(puzzle.config)%></p></td>
+            <td> <button class="acceptButton" type="button"><a href="reusablePuzzles/new?name=<%=puzzle.name%>">Edit</></button> </td>
             <td>
             <button class="deleteButton" onclick="overlayTrigger(<%=puzzle.id%>)" type="button">Delete</button>
+            </td>
             <div class="overlay-trigger" data-id="<%=puzzle.id%>">
                 <div class="overlay-trigger" data-id="<%=puzzle.id%>">
                     <form method="POST" >

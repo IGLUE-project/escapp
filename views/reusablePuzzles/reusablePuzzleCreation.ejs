@@ -7,9 +7,11 @@
     <p> Suba un ZIP </p>
     <form method='POST' style='width:30%' enctype='multipart/form-data' action='../reusablePuzzles'>
         <div style='display:flex;flex-direction:column;justify-content:start'>
-            <input type='text' name='name' placeholder='Puzzle Name' required/>
+            <input type='text' value='<%=name%>'  name='name' placeholder='Puzzle Name' required/>
             <input type='text' name='description' placeholder='Puzzle description' required/>
             <input type='file' name='upload'/>
+            <input type='text' name='form' placeholder="Form name if zip has no form"/>
+            <input type='text' name='thumbnail' placeholder="Thumbnail file"/>
             <!--
             <input type='text' id="formConfigInput" name='config' hidden/>
             <div>

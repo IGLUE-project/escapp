@@ -234,8 +234,8 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 res.writeHead(200, head);
                 fs.createReadStream(filePath).pipe(res);
             }
-        } else if (asset.mime.search(applicationRegex)) {
-            res.render("partials/webappContainer", {"path": filePath, "layout": false});
+        } else if (asset.mime.search(applicationRegex) !== -1) {
+            res.render("partials/_webappContainer", {"path": filePath, "layout": false});
         } else {
             res.sendFile(filePath);
         }
