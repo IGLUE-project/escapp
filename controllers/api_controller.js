@@ -128,6 +128,7 @@ exports.checkPuzzleSolution = async (req, res, next) => {
         }
 
         req.response = await checkPuzzle(solution, puzzle, escapeRoom, teams, user, i18n, true);
+        console.log(solution,puzzle, escapeRoom, teams, user, i18n);
         const {code, correctAnswer, participation, authentication, msg, erState} = req.response.body;
 
         if (participation === PARTICIPANT) {

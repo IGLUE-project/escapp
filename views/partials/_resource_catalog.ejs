@@ -101,7 +101,7 @@
                 <col span="1" style="width: 20%;">
                 <col span="1" style="width: 30%;">
             </colgroup>
-            <% if(assets.length != 0) {%>
+            <% if(assets.length != 0 || reusablePuzzlesInstances.length != 0) {%>
             <tr class="tableTitles">
                 <th>
                     <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%>
@@ -164,7 +164,7 @@
                     </td>
                 </tr>
                 <% })} %>
-                    <% if(assets.length === 0) {%>
+                    <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
                         <tr class="catalogItem">
                             <td colspan="3" style="text-align: center; height:200px">
                                 <p class="title">
@@ -512,7 +512,7 @@
 </div>
 <br>
 <div style="display:flex; justify-content:center">
-    <dialog id="editDialog">
+    <dialog id="editDialog" style="overflow:auto">
         <form  onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
     </dialog>
@@ -571,7 +571,7 @@
                     <p class="titleLabelEdit"> ${i18n.catalog.config.nameDescription} </p>
                     <div>
                         <label for="name">${i18n.catalog.config.name}</label>
-                            <input value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" type="text"  name="name"/>
+                            <input value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" type="text" required  name="name"/>
                      </div>
                     <div>
                         <label for="description">${i18n.catalog.config.description}</label>
@@ -636,7 +636,7 @@
                         resizable: false,
                         position: { my: "middle", at: "top", of: $('#resourceCatalog')},
                         width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
-                        height: "auto",
+                        height: window.innerHeight*0.5,
                         show: {
                             effect: "scale",
                             duration: 300
@@ -810,7 +810,6 @@
             modal: true,
             resizable: false,
             width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
-            height: "auto",
             show: {
                 effect: "scale",
                 duration: 400
@@ -973,7 +972,7 @@ function openPuzzleConfiguration(puzzle, baseId){
                     <p class="titleLabelEdit"> Name and description </p>
                     <div>
                         <label for="name">Name</label>
-                            <input  type="text"  name="name"/>
+                            <input  type="text" required  name="name"/>
                      </div>
                     <div>
                         <label for="description">Descritption</label>

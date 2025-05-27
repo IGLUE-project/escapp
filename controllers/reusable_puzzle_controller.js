@@ -140,38 +140,54 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
     try {
         if (!reusablePuzzleInstanceId) {
-            const trimedConfig = config;
+            const trimedConfig = {...config};
             trimedConfig.puzzleSol = null;
             trimedConfig.validator = null;
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
             newInstanceId = reusablePuzzle.id;
         } else {
-            const reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
+            const reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": String(reusablePuzzleInstanceId)}});
+            const trimedConfig = {...config};
+            trimedConfig.puzzleSol = null;
+            trimedConfig.validator = null;
 
+            const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
+            if(linkedPuzzle){
+                linkedPuzzle.assignedReusablePuzzleInstance = null;
+                await linkedPuzzle.save({"transaction": t});
+            }
             reusablePuzzleInstance.reusablePuzzleId = reusablePuzzleId || reusablePuzzleInstance.reusablePuzzleId;
             reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
             reusablePuzzleInstance.description = description || reusablePuzzleInstance.description;
-            reusablePuzzleInstance.config = config ? JSON.stringify(config) : JSON.stringify(reusablePuzzleInstance.config);
+            reusablePuzzleInstance.config = JSON.stringify(trimedConfig);
             await reusablePuzzleInstance.save({"transaction": t});
         }
 
-        if (config.puzzle && config.puzzleSol) {
+        console.log(config.puzzle)
+        if (config.puzzle) {
             const puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}});
 
             if (puzzle) {
-                puzzle.sol = config.puzzleSol;
-                puzzle.validator = config.validator;
+                console.log(newInstanceId, reusablePuzzleInstanceId);
+                puzzle.sol = config.puzzleSol ? config.puzzleSol : puzzle.sol;
+                puzzle.validator = config.validator ? config.validator : puzzle.validator;
                 puzzle.assignedReusablePuzzleInstance = newInstanceId ? newInstanceId : reusablePuzzleInstanceId;
                 config.puzzleSol = undefined;
                 await puzzle.save({"transaction": t});
+                console.log(puzzle);
             }
             config.puzzleSol = undefined;
         }
 
         t.commit();
-        res.json({config, id: newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        if (newInstanceId === "") {
+            res.json({config, id: newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        }else{
+            res.redirect('back');
+        }
     } catch (e) {
+        console.error(e);
         t.rollback();
         next(e);
     }
@@ -204,7 +220,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
 
        const config = { ...JSON.parse(reusablePuzzleInstance.config), solutionLength,  escappClientSettings : {
           endpoint:hostName + "/api/escapeRooms/" + reusablePuzzleInstance.escapeRoomId,
-          linkedPuzzleIds: [1],
+          linkedPuzzleIds: [linkedPuzzle ? linkedPuzzle.order+1 : null],
         }}
 
         if (reusablePuzzleInstance) {
