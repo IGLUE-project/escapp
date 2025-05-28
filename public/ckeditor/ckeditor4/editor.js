@@ -89,26 +89,26 @@ const reusableRegex = new RegExp(/application\/reusable/);
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
     if(item.mime.search(imageRegex) !== -1) {
-        return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px">`;
+        return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%">`;
     }else if (item.mime.search(videoRegex) !== -1) {
-            return `<div class="ckeditor-html5-video" style="text-align: center;"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" download=${configJSON.download!=="undefined"?"download":null}/></div>`;
+            return `<div class="ckeditor-html5-video" style="text-align: center;max-width:100%"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" download=${configJSON.download!=="undefined"?"download":null}/></div>`;
     } else if (item.mime.search(audioRegex) !== -1) {
             return `<audio controls=${configJSON.controls!=="undefined"?"controls":null}  autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  mime="${item.mime}" src="${item.url}"/>`;
     } else if (item.mime.search(pdfRegex) !== -1) {
-        return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
+        return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%"  >
         <object data="${item.url}" type="application/pdf" width="100%" height="100%">
-            <iframe src="${item.url}" width="100%" height="100%" >
+            <iframe style="border:none" src="${item.url}" width="100%" height="100%" >
             </iframe>
         </object>
     </div>`;
      } else if (item.mime.search(webappRegex) !== -1) {
-         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
+         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%"  >
              <iframe src="${item.url}" width="100%" height="100%" >
              </iframe>
      </div>`;
      } else if (item.mime.search(reusableRegex) !== -1) {
-         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px"  >
-             <iframe src="${item.url}" width="100%" height="100%" id="${item.id}" >
+         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%"  >
+             <iframe src="${item.url}" style="border:none" width="100%" height="100%" id="${item.id}" >
                 <script>
                 </script>
              </iframe>

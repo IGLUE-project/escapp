@@ -562,7 +562,6 @@ exports.clone = async (req, res, next) => {
             "attachment": attachment ? attHelper.getFields(attachment) : undefined
         }, {include});
 
-        console.log(escapeRoom);
         const saved = await escapeRoom.save({transaction});
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});

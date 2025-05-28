@@ -287,7 +287,7 @@ exports.editAsset = async (req, res, next) => {
             res.json({config, "id": asset.id});
         } else {
             res.status(404);
-            res.json({"msg": "Not found"});
+            res.send("Asset not found, did you remove it?");
         }
     } catch (err) {
         next(err);
@@ -334,11 +334,18 @@ exports.getWebAppAsset = async (req, res, next) => { // eslint-disable-line  no-
     }
 };
 
-exports.getReusablePuzzleAsset = (req, res, next) => { // eslint-disable-line  no-unused-vars
+exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-line  no-unused-vars
     const {puzzle_id, file_name } = req.params;
 
     try {
-        const filePath = path.join(__dirname, `/../reusablePuzzles/${puzzle_id}/${file_name}`);
+        let name = undefined;
+        if(puzzle_id !== "forms") {
+            const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
+            name = reusablePuzzle ? reusablePuzzle.name : null;
+        }else{ //If they are asking for a hardcoded form
+            name = puzzle_id;
+        }
+        const filePath = path.join(__dirname, `/../reusablePuzzles/${name}/${file_name}`);
 
         res.sendFile(filePath);
     } catch (err) {
@@ -347,3 +354,20 @@ exports.getReusablePuzzleAsset = (req, res, next) => { // eslint-disable-line  n
     }
 };
 
+exports.getFormForInstance = async (req, res, next) => {
+    const {puzzle_id} = req.params;
+
+    try{
+        const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id)
+        const reusable = await models.reusablePuzzle.findByPk(instance.reusablePuzzleId);
+        const config = JSON.parse(reusable.config)
+        const regex = new RegExp(/\/reusablePuzzles\/[0-9]*\//) //Non hardcoded forms
+        config.url = config.url.replace(regex,"/reusablePuzzles/"+reusable.name+"/")
+        const filePath = path.join(__dirname, "/../", config.url);
+
+        res.sendFile(filePath);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+}

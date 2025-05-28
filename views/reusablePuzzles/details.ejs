@@ -1,1 +1,26 @@
-Details
+<%- include ('../partials/_header.ejs') %>
+
+<div class='main' style='color:white;padding:20px'>
+    <h1>Creación de un nuevo puzzle</h1>
+    <p> Suba un ZIP </p>
+    <form method='POST' style='width:30%' enctype='multipart/form-data' action='/reusablePuzzles/<%=id%>?_method=PUT'>
+        <div style='display:flex;flex-direction:column;justify-content:start'>
+            <input type='text' value='<%=name%>'  name='name' placeholder='Puzzle Name' required/>
+            <input type='text' value='<%=description%>' name='description' placeholder='Puzzle description' required/>
+            <input type='file' name='file'/>
+            <input type='text' value='<%=form%>' name='form' placeholder="Form name if zip has no form"/>
+            <input type='file' name='thumbnail' placeholder="Thumbnail file"/>
+            <input type='submit'/>
+            <br>
+        </div>
+    </form>
+    <button onclick='window.location.replace(document.referrer)'>Volver</button>
+</div>
+
+<style>
+    input {
+        margin: 5px;
+        padding: 5px;
+    }
+
+</style>

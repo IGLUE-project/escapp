@@ -1,0 +1,53 @@
+<div>
+    <label for="skin">Select Skin:</label>
+    <select id="skinSelect" name="skin">
+        <option value="RETRO">Retro</option>
+        <option value="STANDARD">Standard></option>
+        <option value="FUTURISTIC">Futuristic</option>
+    </select>
+</div>
+
+<div>
+    <label for="actionAfterSolve">Action After Solve:</label>
+    <select  id="actionValue" name="actionAfterSolve">
+        <option value="SHOW_MESSAGE">SEND_MESSAGE</option>
+        <option value="NONE">None</option>
+    </select>
+</div>
+
+<div id="actionDiv">
+    <label for="message">Message after solve:</label>
+    <input id="messageInput" type="message" name="message" placeholder="Message to send after solving" />
+</div>
+
+<div>
+    <label for="background">Background URL:</label>
+    <input type="text" id="backgroundInput"  name="background" placeholder="Background URL" />
+</div>
+
+<div>
+    <label for="keysType">Keys Type:</label>
+    <select name="keysType">
+        <option value="NUMBERS">Numbers</option>
+        <option value="LETTERS">Letters</option>
+        <option value="SYMBOLS">Symbols</option>
+    </select>
+</div>
+
+<script>
+
+document.getElementById('actionValue').addEventListener('change', function() {
+    if (this.value === 'SHOW_MESSAGE') {
+        document.getElementById("actionDiv").style.display = 'block';
+    } else {
+        document.getElementById("actionDiv").style.display = 'none';
+    }
+});
+
+document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig.background || '';
+document.getElementById("messageInput").value =  window.currentOpenPuzzleConfig.message || '';
+document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig.skin || 'RETRO';
+document.getElementById("actionValue").value =  window.currentOpenPuzzleConfig.actionAfterSolve || 'None';
+
+
+</script>

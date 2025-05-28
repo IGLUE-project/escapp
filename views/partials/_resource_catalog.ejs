@@ -62,7 +62,7 @@
         </section>
         <section id="configZone" hidden>
             <h2>Configuración</h2>
-            <form action="reusablePuzzleInstance"  method="POST" id="configForm">
+            <form action="reusablePuzzleInstance" style="background-image:url('../images/background.png")" method="POST" id="configForm">
             </form>
         </section>
     </div>
@@ -509,7 +509,7 @@
 <br>
 <div style="display:flex; justify-content:center">
     <dialog id="editDialog" style="overflow:auto">
-        <form onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
+        <form  onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
     </dialog>
     <dialog id="reusablePuzzleDialog">
@@ -552,10 +552,10 @@
         const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
         const description = jsonPuzzle.description;
         const puzzles = window.puzzles;
+        window.currentOpenPuzzleConfig = configJSON;
         const assignedPuzzle = puzzles.find(p => p.assignedReusablePuzzleInstance == jsonPuzzle.id) || null;
         const selectedValidator = assignedPuzzle ? assignedPuzzle.validator : (puzzles[0] ? puzzles[0].validator : null);
-
-         fetch(`/reusablePuzzles/${reusablePuzzleId}/form.ejs`).then(res => {
+         fetch(`/reusablePuzzlesInstances/${jsonPuzzle.id}/form`).then(res => {
             res.text().then((partial)=>{
                     const dialog = $('#editDialog');
                     const form = dialog.find('form');

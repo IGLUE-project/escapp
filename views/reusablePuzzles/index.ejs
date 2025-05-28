@@ -16,32 +16,17 @@
             <td><h2><%=puzzle.name%></h2></td>
             <td><p><%=puzzle.description%></p></td>
             <td><p><%=JSON.stringify(puzzle.config)%></p></td>
-            <td> <button class="acceptButton" type="button"><a href="reusablePuzzles/new?name=<%=puzzle.name%>">Edit</></button> </td>
+            <td> <button class="acceptButton" type="button"><a href="reusablePuzzles/<%=puzzle.id%>">Edit</></button> </td>
             <td>
-            <button class="deleteButton" onclick="overlayTrigger(<%=puzzle.id%>)" type="button">Delete</button>
+            <form method="POST" action="reusablePuzzles/<%=puzzle.id%>?_method=DELETE">
+                <button class="deleteButton" >Delete</button>
+            </form>
             </td>
             <div class="overlay-trigger" data-id="<%=puzzle.id%>">
                 <div class="overlay-trigger" data-id="<%=puzzle.id%>">
-                    <form method="POST" >
-                        <p><%=i18n.common.delete%> <%=i18n.reusablePuzzles.name%></p>
-                        <button class="deleteButton" type="button" onclick="overlayTrigger(<%=puzzle.id%>, true)">
-                            <%=i18n.common.cancel%>
-                        </button>
-                        <button class="acceptButton" type="submit">
-                            <%=i18n.common.accept%>
-                        </button>
-                    </form>
                 </div>
             </div>
             </td>
         </tr>
 <%    })%>
-    <script>
-    const overlayTrigger = (id, close) => {
-        $('.overlay-trigger').hide();
-        if (!close) {
-            $('.overlay-trigger[data-id="' + id + '"]').show();
-        }
-    };
-    </script>
 </div>
