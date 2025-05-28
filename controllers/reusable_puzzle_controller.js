@@ -34,7 +34,10 @@ exports.deleteReusablePuzzle = async (req, res, next) => {
     const {puzzle_id} = req.params;
 
     try {
-        await models.reusablePuzzle.destroy({"where": {"id": puzzle_id}});
+        const puzzle = await models.reusablePuzzle.findOne({"where": {"id": puzzle_id}});
+        const pathDelete = path.join(__dirname, `../reusablePuzzles/${puzzle.name}`);
+        await puzzle.destroy();
+        fs.rmdir(pathDelete, { "recursive": true, "force": true }, (error) => {console.error(error);})
         res.status(200);
         res.redirect("back");
     } catch (e) {
