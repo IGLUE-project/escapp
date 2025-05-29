@@ -525,7 +525,20 @@
                         },
                         "copied": "¡Enlace copiado!",
                         "copyUrl": "Copiar enlace",
-                        "deleteConfirm": "¿Estás seguro de que quieres borrar este archivo?"
+                        "deleteConfirm": "¿Estás seguro de que quieres borrar este archivo?",
+                        "config": {
+                            "description": "Descripción",
+                            "name": "Nombre",
+                            "width": "Ancho",
+                            "height": "Alto",
+                            "measures": "Medidas",
+                            "assignedPuzzle": "Reto asignado",
+                            "autoplay": "Autoplay",
+                            "controls": "Controles",
+                            "download": "Descarga",
+                            "nameDescription": "Nombre y descripción",
+                            "options": "Opciones"
+                        }
                     }
                 }
             },

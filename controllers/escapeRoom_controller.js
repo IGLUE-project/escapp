@@ -9,7 +9,6 @@ const {nextStep, prevStep} = require("../helpers/progress");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
 const es = require("../i18n/es");
 const en = require("../i18n/en");
-const { escape } = require("sequelize/lib/sql-string");
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -563,7 +562,6 @@ exports.clone = async (req, res, next) => {
             "attachment": attachment ? attHelper.getFields(attachment) : undefined
         }, {include});
 
-        console.log(escapeRoom);
         const saved = await escapeRoom.save({transaction});
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});

@@ -205,12 +205,15 @@ router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionControlle
 router.get("/inspiration", escapeRoomController.showGuide);
 
 // Routes for reusablePuzzles
-router.post("/reusablePuzzles", sessionController.loginRequired, sessionController.loginRequired, upload.single("upload"), reusablePuzzleController.createReusablePuzzle);
+router.post("/reusablePuzzles", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{name: "thumbnail", maxCount:1}, {name: "file", maxCount:1}]), reusablePuzzleController.createReusablePuzzle);
 router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);
+router.put("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{name: "thumbnail", maxCount:1}, {name: "file", maxCount:1}]), reusablePuzzleController.editReusablePuzzle);
 router.get("/reusablePuzzles/new", sessionController.loginRequired, reusablePuzzleController.renderCreatePuzzle);
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzle);
+router.get("/reusablePuzzles/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
 router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
-router.get("/uploads/reusablePuzzles/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
+router.get("/reusablePuzzlesInstances/:puzzle_id/form", sessionController.loginRequired, assetsController.getFormForInstance);
+router.delete("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, sessionController.loginRequired, reusablePuzzleController.deleteReusablePuzzle);
 
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
 router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browse);

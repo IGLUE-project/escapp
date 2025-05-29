@@ -1,3 +1,4 @@
+/* eslint no-sync: 0 */
 const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
@@ -164,6 +165,7 @@ exports.browse = async (req, res, next) => {
 
         res.render("escapeRooms/steps/assets", {"escapeRoom": req.escapeRoom, assets});
     } catch (err) {
+        console.error(err);
         next(err);
     }
 };
@@ -232,6 +234,8 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 res.writeHead(200, head);
                 fs.createReadStream(filePath).pipe(res);
             }
+        } else if (asset.mime.search(applicationRegex) !== -1) {
+            res.render("partials/_webappContainer", {"path": filePath, "layout": false});
         } else {
             res.sendFile(filePath);
         }
@@ -242,7 +246,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
 };
 
 
-function appendParameterers (...parameters) {
+const appendParameterers = (...parameters) => {
     let config = "";
 
     parameters.forEach((parameter) => {
@@ -252,7 +256,7 @@ function appendParameterers (...parameters) {
         config += `${name}:${value};`;
     });
     return config;
-}
+};
 
 // PUT /escapeRooms/:escapeRoomId/assets/:assetId
 exports.editAsset = async (req, res, next) => {
@@ -279,12 +283,11 @@ exports.editAsset = async (req, res, next) => {
             } else {
                 return "";
             }
-            console.log(config);
             await asset.update({config});
-            res.redirect("back");
+            res.json({config, "id": asset.id});
         } else {
             res.status(404);
-            res.json({"msg": "Not found"});
+            res.send("Asset not found, did you remove it?");
         }
     } catch (err) {
         next(err);
@@ -326,7 +329,7 @@ exports.getWebAppAsset = async (req, res, next) => { // eslint-disable-line  no-
 
         res.sendFile(filePath);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };
@@ -335,13 +338,36 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
     const {puzzle_id, file_name } = req.params;
 
     try {
-        const filePath = path.join(__dirname, `/../uploads/reusablePuzzles/${puzzle_id}/${file_name}`);
+        let name = undefined;
+        if(puzzle_id !== "forms") {
+            const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
+            name = reusablePuzzle ? reusablePuzzle.name : null;
+        }else{ //If they are asking for a hardcoded form
+            name = puzzle_id;
+        }
+        const filePath = path.join(__dirname, `/../reusablePuzzles/${name}/${file_name}`);
 
         res.sendFile(filePath);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };
 
+exports.getFormForInstance = async (req, res, next) => {
+    const {puzzle_id} = req.params;
 
+    try{
+        const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id)
+        const reusable = await models.reusablePuzzle.findByPk(instance.reusablePuzzleId);
+        const config = JSON.parse(reusable.config)
+        const regex = new RegExp(/\/reusablePuzzles\/[0-9]*\//) //Non hardcoded forms
+        config.url = config.url.replace(regex,"/reusablePuzzles/"+reusable.name+"/")
+        const filePath = path.join(__dirname, "/../", config.url);
+
+        res.sendFile(filePath);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+}

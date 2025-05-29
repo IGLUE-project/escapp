@@ -1,6 +1,8 @@
 <script>
-    window.config =  <%- JSON.parse(JSON.stringify(config))%>
+    window.ESCAPP_APP_SETTINGS =  <%- JSON.stringify(config)%>
+    console.log("ESCAPP_APP_SETTINGS", window.ESCAPP_APP_SETTINGS);
 </script>
+<base href=<%=basePath%> />
 <div>
     <%- include(file) %>
 <div>

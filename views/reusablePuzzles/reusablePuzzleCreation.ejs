@@ -4,12 +4,14 @@
 <div class='main' style='color:white;padding:20px'>
 
     <h1>Creación de un nuevo puzzle</h1>
-    <p> Suba un ZIP con el fichero un fichero config.json </p>
+    <p> Suba un ZIP </p>
     <form method='POST' style='width:30%' enctype='multipart/form-data' action='../reusablePuzzles'>
         <div style='display:flex;flex-direction:column;justify-content:start'>
             <input type='text' name='name' placeholder='Puzzle Name' required/>
             <input type='text' name='description' placeholder='Puzzle description' required/>
-            <input type='file' name='upload'/>
+            <input type='file' required name='file'/>
+            <input type='text' name='form' placeholder="Form name if zip has no form"/>
+            <input type='file' name='thumbnail' placeholder="Thumbnail file"/>
             <!--
             <input type='text' id="formConfigInput" name='config' hidden/>
             <div>

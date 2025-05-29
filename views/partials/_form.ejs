@@ -1,4 +1,5 @@
 <% let formFields = [
+
      {
          name: "title",
          id: "tit",
@@ -60,13 +61,13 @@
         <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
                placeholder="<%=i18n.escapeRoom.steps.edit[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
     </div>
-     
+
 <%}%>
 
 
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
   <label for="field" class="itemNarrow">3. <%=i18n.escapeRoom.steps.sharing.field%>:</label>
-  <select class="customInput itemWide" id="field" name="field" autocomplete="off"> 
+  <select class="customInput itemWide" id="field" name="field" autocomplete="off">
     <option value="" <%=!escapeRoom.field ? "selected" : "" %>><%=i18n.escapeRoom.iscedNone%></option>
     <option value="00" <%=escapeRoom.field == "00" ? "selected" : "" %>><%=i18n.escapeRoom.isced["00"]%></option>
     <option value="01" <%=escapeRoom.field == "01" ? "selected" : "" %>><%=i18n.escapeRoom.isced["01"]%></option>
@@ -107,7 +108,7 @@
         <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
                placeholder="<%=i18n.escapeRoom.steps.edit[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
     </div>
-    <% if (field.name === "duration") { %> 
+    <% if (field.name === "duration") { %>
       <label class="note animated slideInUp" style="animation-delay: <%=200*f%>ms;" for="forbiddenLateSubmissions" ><%=i18n.escapeRoom.steps.edit.forbiddenLateSubmissionsPlaceHolder%>
         <input class="customCheckbox" type="checkbox" name="forbiddenLateSubmissions" id="forbiddenLateSubmissions" <%= escapeRoom.forbiddenLateSubmissions ? "checked" : "" %> />
       </label>
