@@ -649,7 +649,7 @@ exports.downloadRaw = async (req, res) => {
                             "timestamp": convertDate(rns.when),
                             "minute": Math.round(100 * (rns.when - startTime) / 1000 / 60) / 100,
                             "event": "PUZZLE_FAILED_TO_SOLVE",
-                            "userId":rns.userId,
+                            "userId": rns.userId,
                             // "username":rns.username,
                             "puzzleId": retos[r].order + 1,
                             "puzzleName": retos[r].title,
@@ -678,6 +678,7 @@ exports.downloadRaw = async (req, res) => {
                 const hintTS = h.createdAt;
                 const puzId = h.hint ? puzzleIdToOrder[h.hint.puzzleId] : "";
                 const hintId = h.hint ? `${puzId}.${h.hint.order + 1}` : "";
+
                 logs.push({
                     ...logBase,
                     "event": h.success ? "HINT_OBTAINED" : "HINT_FAILED_TO_OBTAIN",
@@ -695,7 +696,7 @@ exports.downloadRaw = async (req, res) => {
                 });
             }
         }
-        //res.json(logs);
+        // Res.json(logs);
         createCsvFile(res, logs);
     } catch (e) {
         console.error(e);

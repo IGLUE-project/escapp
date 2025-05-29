@@ -31,9 +31,9 @@ exports.teamRetosNoSuperados = (escapeRoomId, turnId) => {
                     },
                     {
                         "model": models.user,
-                        "attributes": ["id","username"],
+                        "attributes": ["id", "username"],
                         "required": false
-                    },
+                    }
 
                 ]
             }
@@ -159,7 +159,7 @@ exports.puzzlesByTeam = (escapeRoomId, turnId, hints = false) => {
                 "as": "retos",
                 "through": {
                     "model": models.retosSuperados,
-                    
+
                     "where": {"success": true}
                 }
             },
@@ -181,7 +181,7 @@ exports.puzzlesByTeam = (escapeRoomId, turnId, hints = false) => {
             "model": models.requestedHint,
             "include": [
                 {"model": models.hint},
-                {"model": models.user, required: false}
+                {"model": models.user, "required": false}
             ]
         });
     }
