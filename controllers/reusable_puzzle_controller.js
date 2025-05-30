@@ -282,6 +282,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
             if (puzzle) {
                 puzzle.sol = config.puzzleSol ? config.puzzleSol : puzzle.sol;
+                puzzle.automatic = true;
                 puzzle.validator = config.validator ? config.validator : puzzle.validator;
                 puzzle.assignedReusablePuzzleInstance = newInstanceId ? newInstanceId : reusablePuzzleInstanceId;
                 config.puzzleSol = undefined;
