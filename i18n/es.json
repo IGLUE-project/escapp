@@ -134,6 +134,7 @@
     },
     "common": {
         "accept": "aceptar",
+        "add": "añadir",
         "author": "autor",
         "back": "volver",
         "cancel": "cancelar",
@@ -526,6 +527,10 @@
                         "copied": "¡Enlace copiado!",
                         "copyUrl": "Copiar enlace",
                         "deleteConfirm": "¿Estás seguro de que quieres borrar este archivo?",
+                        "gamificationElements": "Elementos de gamificación",
+                        "interactiveResources": "Recursos interactivos vinculados a retos",
+                        "interactiveResourcesNotAllowed": "No puedes añadir recursos vinculados a retos hasta que hayas creado al menos un reto en la escape room",
+                        "scenarios2D": "Escenarios 2D",
                         "config": {
                             "description": "Descripción",
                             "name": "Nombre",
@@ -533,6 +538,7 @@
                             "height": "Alto",
                             "measures": "Medidas",
                             "assignedPuzzle": "Reto asignado",
+                            "puzzleSolution": "Solución",
                             "autoplay": "Autoplay",
                             "controls": "Controles",
                             "download": "Descarga",

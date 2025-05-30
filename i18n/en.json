@@ -138,6 +138,7 @@
     },
     "common": {
         "accept": "accept",
+        "add": "add",
         "author": "author",
         "back": "back",
         "cancel": "cancel",
@@ -535,6 +536,10 @@
                         "copied": "URL copied!",
                         "copyUrl": "Copy URL",
                         "deleteConfirm": "Are you sure you want to delete this resource?",
+                        "gamificationElements": "Gamification elements",
+                        "interactiveResources": "Interactive resources linked to puzzles",
+                        "interactiveResourcesNotAllowed": "You cannot add resources linked to puzzles until you have created at least one puzzle in the escape room",
+                        "scenarios2D": "2D scenarios",
                         "config": {
                             "description": "Description",
                             "name": "Name",
@@ -542,6 +547,7 @@
                             "height": "Height",
                             "measures": "Measures",
                             "assignedPuzzle": "Assigned puzzle",
+                            "puzzleSolution": "Solution",
                             "autoplay": "Autoplay",
                             "controls": "Controls",
                             "download": "Download",
@@ -1309,6 +1315,25 @@
                 "policyViolation": "Content that violates the platform's <a href='/terms'>terms and conditions</a>",
                 "other": "Other"
             }
+        }
+    },
+    "reusablePuzzleApps": {
+        "keypad": {
+            "selectSkin": "Select Skin",
+            "Standard": "Standard",
+            "Retro": "Retro",
+            "Futuristic": "Futuristic",
+            "actionAfterSolve": "Action after solving",
+            "none": "None",
+            "sendMessage": "Send a message",
+            "Message": "Message",
+            "MessagePlaceholder": "Message to send after solving",
+            "BackgroundURL": "Background URL",
+            "BackgroundURLPlaceholder": "Background image URL. You can copy it from your resource catalog",
+            "KeyStyle": "Key style",
+            "Numbers": "Numbers",
+            "Letters": "Letters",
+            "Symbols": "Symbols"
         }
     }
 }
