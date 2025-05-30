@@ -327,7 +327,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
 
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
         const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
-        const basePath = `${hostName}/reusablePuzzles/installed/${reusablePuzzleInstance.reusablePuzzleId}/`;
+        const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
         const config = {
             ...JSON.parse(reusablePuzzleInstance.config),
@@ -388,6 +388,7 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
     } catch (err) {
         console.error(err);
         const msg = "Error loading reusable puzzle, the admin could have deleted it.";
+
         res.status(404).send(msg);
     }
 };

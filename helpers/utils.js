@@ -170,7 +170,7 @@ exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRo
 
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]]});
 
-exports.getReusablePuzzles = () => models.reusablePuzzle.findAll();
+exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({"attributes": ["name", "description", "config", ["id", "reusablePuzzleId"]]});
 
 exports.getReusablePuzzlesInstances = () => models.reusablePuzzleInstance.findAll();
 
@@ -465,8 +465,7 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
 
 
 exports.validationError = ({instance, path, validatorKey}, i18n) => {
-    console.log(i18n.common.error[validatorKey]);
-    console.log(i18n[instance.constructor.name].attributes[path]);
+
     try {
         if (i18n[instance.constructor.name] &&
             i18n[instance.constructor.name].attributes &&

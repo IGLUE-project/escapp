@@ -381,7 +381,13 @@ exports.getFormForInstance = async (req, res, next) => {
         config.url = config.url.replace(regex, `/reusablePuzzles/installed/${reusable.name}/`);
         const filePath = path.join(__dirname, "/../", config.url);
 
-        res.sendFile(filePath);
+        ejs.renderFile(filePath, {"i18n": res.locals.i18n}, {}, function (err, data) {
+            if (err) {
+                throw new Error(err);
+            }
+            res.setHeader("Content-type", "text/html");
+            res.send(data);
+        });
     } catch (err) {
         console.error(err);
         next(err);

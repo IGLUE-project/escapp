@@ -74,7 +74,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.allowedContent = true
 	config.stylesSet = 'my_styles';
 	config.contentsCss = window.theme;
-    console.log(window.theme);
 	// config.colorButton_colors = 'primary,secondary,info,warning,danger';
 	// config.colorButton_foreStyle = {
 	// 	element: 'span',

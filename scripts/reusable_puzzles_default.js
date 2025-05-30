@@ -1,4 +1,4 @@
-const {reusablePuzzles} = require("./reusable_puzzle.js")
+const {reusablePuzzles} = require("./reusable_puzzle.js");
 
 const reusablePuzzlesList = [
     {
@@ -18,5 +18,6 @@ const reusablePuzzlesList = [
 
 for (i in reusablePuzzlesList) {
     const puz = reusablePuzzlesList[i];
+
     reusablePuzzles(puz.name, puz.description, puz.form, puz.zip, puz.thumbnail);
 }

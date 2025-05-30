@@ -18,11 +18,12 @@ var config = {
 
 var blockTemplate = (index, content, type, puzzles) => {
     var id = 'block-'+type+'-'+index+'-'+Date.now();
+
     return`
 <div class="building-block" data-content-type="${type}" id="${id}" data-puzzles="${puzzles.join(",")}">
     ${content}
     <div class="block-config">
-    <button type="button" class="block-config-button config-btn" title="${window.i18n.setupVisualization}"><span class="material-icons">settings</span></button>
+    ${((window.endPoint !== "indications") && (window.endPoint !== "after")) ? `<button type="button" class="block-config-button config-btn" title="${window.i18n.setupVisualization}"><span class="material-icons">settings</span></button>`: ''}
     <button type="button" class="block-config-button reorder-btn" title="${window.i18n.reorder}"><span class="material-icons">swap_vert</span></button>
     <button type="button" class="block-config-button delete-btn" title="${window.i18n.delete}"><span class="material-icons">delete</span></button>
         <div class="overlay-trigger" data-id="${id}">
@@ -35,7 +36,7 @@ var blockTemplate = (index, content, type, puzzles) => {
 </div>
 `;}
 var textEditorTemplate = (id, text) => `<div class="editor-wrapper
-${window.endPoint === 'indications' ? 'indications' : '' }">
+${((window.endPoint === 'indications') || (window.endPoint === 'after')) ? 'indications' : '' }">
     <div id="${id}" name="${id}" class="editor" spellcheck="false">${text}</div>
 </div>`;
 
@@ -102,12 +103,16 @@ const catalogItem = (item)=> {
         </object>
     </div>`;
      } else if (item.mime.search(webappRegex) !== -1) {
-         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%"  >
+        configJSON.width = "100%";
+        configJSON.height = "auto";
+         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px;aspect-ratio:4/3;"  >
              <iframe src="${item.url}" width="100%" height="100%" >
              </iframe>
      </div>`;
      } else if (item.mime.search(reusableRegex) !== -1) {
-         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%"  >
+        configJSON.width = "100%";
+        configJSON.height = "auto";
+         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:1500px;aspect-ratio:4/3"  >
              <iframe src="${item.url}" style="border:none" width="100%" height="100%" id="${item.id}" >
                 <script>
                 </script>

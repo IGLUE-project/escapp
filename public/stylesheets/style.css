@@ -3094,7 +3094,8 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 .modalCatalogResource .resources-group .resource-card img {
   object-fit: cover;
-  height: 80px;
+  height: 150px;
+  aspect-ratio: 4/3;
   border-radius: 5px 5px 0px 0;
 }
 .modalCatalogResource .resources-group .resource-card .resourceCatalogBtn {

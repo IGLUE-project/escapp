@@ -39,27 +39,32 @@
             <div class="resources-group">
                     <% 
                     availableReusablePuzzles.forEach(puzzle => {
-                        let goodConfig; 
+                
+                        let goodConfig;
                         try { 
                             goodConfig = JSON.parse(puzzle.config);
                         } catch(e) { 
                             console.error("Error parsing JSON:", puzzle.config); 
                         }
                     %>
+                    
                      <div class="resource-card">
                         <% if( goodConfig && goodConfig?.thumbnail) {%>
-                            <img src="/reusablePuzzles/<%=puzzle.id%>/<%=goodConfig?.thumbnail%>"/>
+                            <img src="/reusablePuzzles/<%=puzzle.dataValues.reusablePuzzleId%>/<%=goodConfig?.thumbnail%>"/>
                         <%} else{%>
                             <img src="/images/keypad.png"/>
                         <%} %>
+                        <%=puzzle.id%>
                         <button 
                             class="resourceCatalogBtn" 
+                            data-name = "<%=puzzle.name%>"
+                            data-description = <%=puzzle.description%>
                             <%if (escapeRoom.puzzles.length == 0) {%> 
                                 disabled 
                                 title="<%=i18n.escapeRoom.steps.indications.front.catalog.interactiveResourcesNotAllowed%>"
                                 style = "cursor: help;"
                             <%} else {%> 
-                                onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.id%> )"
+                                onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.dataValues.reusablePuzzleId%> )"
                             <%}%>>
                             <span class="building-block-icon material-icons"> add </span>
                             <p><%=puzzle.name%></p>
@@ -103,13 +108,14 @@
                             <p><%=i18n.escapeRoom.steps.indications.front.catalog.addResource%></p>
                         </a>
                     </button>
+                <% } %>
                     <button class="rounded building-block-bar-button uploadButton">
                         <a href="assets?mode=catalogView">
                             <span class="building-block-icon material-icons"> upload </span>
                             <p><%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
                         </a>
                     </button>
-                <% } %>
+                
 
         </div>
     </div>
@@ -174,8 +180,8 @@
                                 </div>
                             </button>
 
-                            <button class="rounded listButton addButton"
-                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: <%=JSON.stringify(puzzle.config)%>,  mime:"application/reusable"}, puzzleList)'>
+                            <button class="rounded listButton addButton" 
+                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: <%=JSON.stringify(puzzle.config)%>,  mime:"application/reusable"}, [window.puzzles.findIndex(p=>p.id == <%=JSON.parse(puzzle.config).puzzle%>)])'>
                                 <span class="building-block-icon material-icons" id="add"> add
                                 </span>
                                 <p>
@@ -237,7 +243,7 @@
                                                 <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                             </div>
                                         </button>
-
+                                             
                                         <button class="rounded listButton addButton"
                                             onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                             <span class="building-block-icon material-icons" id="add"> add
@@ -558,9 +564,11 @@
 
     }
 
-    function puzzleForm(config, puzzle, reusablePuzzleId) {
+    function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, puzzleDesc) {
         return `
         <div class="editDialog">
+            <h3 style="margin: 0;"> ${ puzzleName } </h3>
+            <p> ${ puzzleDesc } </p>
             <h4 class="titleLabelEdit">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.config.nameDescription%> 
             </h4>
@@ -568,31 +576,31 @@
                 <label for="name">
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%>
                 </label>
-                <input id="nameOfReusablePuzzle" type="text" required name="name"/>
+                <input id="nameOfReusablePuzzle" type="text" required name="name" value="${puzzle.name || ''}"/>
             </div>
             <div>
                 <label for="description">
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.description%>
                 </label>
-                <input id="descOfReusablePuzzle" type="text" name="description"/>
+                <input id="descOfReusablePuzzle" type="text" name="description" value="${puzzle.description || ''}"/>
             </div>
-            <!--<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.measures%> </h4>
-            <div >
-            <div>
-                <label for="height"><%=i18n.escapeRoom.steps.indications.front.catalog.config.height%></label>
-                <span class="editUnit">
-                    <input   type="number" name="height"/>
-                    <p> px </p>
-                </span>
-            </div>
-            <div>
-                <label for="width"><%=i18n.escapeRoom.steps.indications.front.catalog.config.width%></label>
-                <span class="editUnit">
-                    <input  type="number" name="width"/>
-                    <p> px </p>
-                </span>
-            </div>
-            </div>-->
+                <!--<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.measures%> </h4>
+                <div >
+                <div>
+                    <label for="height"><%=i18n.escapeRoom.steps.indications.front.catalog.config.height%></label>
+                    <span class="editUnit">
+                        <input   type="number" name="height"/>
+                        <p> px </p>
+                    </span>
+                </div>
+                <div>
+                    <label for="width"><%=i18n.escapeRoom.steps.indications.front.catalog.config.width%></label>
+                    <span class="editUnit">
+                        <input  type="number" name="width"/>
+                        <p> px </p>
+                    </span>
+                </div>
+                </div>-->
             </div>
             <div class="editDialog">
                 <h4 class="titleLabelEdit">
@@ -634,113 +642,12 @@
                 <h4 class="titleLabelEdit"> Customization </h4>
             </div>
         `
-        /*return `
-                <div class="editDialog">
-                    <h4 class="titleLabelEdit"> ${i18n.catalog.config.nameDescription} </h4>
-                    <div>
-                        <label for="name">${i18n.catalog.config.name}</label>
-                            <input value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" type="text" required  name="name"/>
-                     </div>
-                    <div>
-                        <label for="description">${i18n.catalog.config.description}</label>
-                            <input value="${jsonPuzzle.description ? jsonPuzzle.description : ''}" type="text"  name="description"/>
-                     </div>
-                    <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
-                    <div >
-                    <div>
-                        <label for="height">${i18n.catalog.config.height}</label>
-                        <span class="editUnit">
-                            <input  value="${config.height ? config.height : ''}" type="number" name="height"/>
-                            <p> px </p>
-                        </span>
-                     </div>
-                    <div>
-                        <label for="width">${i18n.catalog.config.measures}</label>
-                        <span class="editUnit">
-                            <input value="${config.width ? config.width : ''}" type="number" name="width"/>
-                            <p> px </p>
-                        </span>
-                    </div>
-                    </div>
-                    <div>
-                        <h4 class="titleLabelEdit"> ${i18n.catalog.config.assignedPuzzle}</h4>
-                        <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzleid},configJSON,reusablePuzzleId)"  name="puzzle">
-                                <option value="none">None</option>
-                                ${window.puzzles.map((puzzle,index) => {
-                                    return `<option ${assignedPuzzle && assignedPuzzle.id === puzzle.id ? "selected": null} value="${puzzle.id}">${puzzle.title}</option>`
-                                }).join('')}
-                        </select>
-                        <div>
-                            <div id="assignPuzzDiv" ${assignedPuzzle ? null: "hidden"} >
-                                <label for="puzzleSol
-                                <input id="puzzleSol" value="${assignedPuzzle ? assignedPuzzle.sol  : ''}"  name="puzzleSol"/>
-                            </div>
-                            <span ${assignedPuzzle && assignedPuzzle.assignedReusablePuzzleInstance != puzzleid ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
-                            warning
-                            </span>
-                            <select id="inputValidator" ${assignedPuzzle ? null : "hidden"} name="validator">
-                                <option value="exact" ${selectedValidator === "exact" ? "selected": null}>
-                                    <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
-                                </option>
-                                <option value="caseinsensitive" ${selectedValidator === "caseinsensitive"? "selected": null}} >
-                                    <%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%>
-                                </option>
-                                <option value="range" ${selectedValidator === "range"? "selected": null} >
-                                    <%=i18n.escapeRoom.steps.puzzles.validator.range%>
-                                </option>
-                                <option value="regex" ${selectedValidator === "regex"? "selected": null} >
-                                    <%=i18n.escapeRoom.steps.puzzles.validator.regex%>
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                `*/
+       
     }
     function editPuzzle(id, mime, jsonPuzzle) {
-        let configJSON;
-        try{
-            configJSON = JSON.parse(jsonPuzzle.config);
-        }catch{
-            configJSON = {}
-        }
-        const puzzleid = jsonPuzzle.id;
-        const name = jsonPuzzle.name;
-        const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
-        const description = jsonPuzzle.description;
-        const puzzles = window.puzzles;
-        window.currentOpenPuzzleConfig = configJSON;
-        const assignedPuzzle = puzzles.find(p => p.assignedReusablePuzzleInstance == jsonPuzzle.id) || null;
-        const selectedValidator = assignedPuzzle ? assignedPuzzle.validator : (puzzles[0] ? puzzles[0].validator : null);
-         fetch(`/reusablePuzzlesInstances/${jsonPuzzle.id}/form`).then(res => {
-            res.text().then((partial)=>{
-                    const dialog = $('#editDialog');
-                    const form = dialog.find('form');
-                    form.attr('action', `./reusablePuzzleInstance/${puzzleid}`);
-                    form.empty();
-                    if (mime.search(reusableRegex) !== -1) {
-                        form.append(puzzleForm(configJSON, jsonPuzzle, puzzleid));
-                    }
-                    form.append(partial);
-                    form.append(` <input type="reset" />  <input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
-                    dialog.dialog({
-                        modal: true,
-                        position:['top'],
-                        resizable: false,
-                        position: { my: "middle", at: "top", of: $('#resourceCatalog')},
-                        width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
-                        height: window.innerHeight*0.5,
-                        show: {
-                            effect: "scale",
-                            duration: 300
-                        },
-                        hide: {
-                            effect: "scale",
-                            duration: 300
-                        },
-                    }).show()
-                })
-            });
+        toggleCatalogModal();
+        openPuzzleConfiguration(jsonPuzzle, jsonPuzzle.reusablePuzzleId);
+        return;
     }
 
     function setPuzzleSol(id, config, reusablePuzzleId) {
@@ -830,23 +737,23 @@
                 <div>
                     <h4 class="titleLabelEdit"> ${i18n.catalog.config.options} </h4>
                 <div class="checkBoxEditContainer">
-                    <div><label for="autoplay">${i18n.catalog.config.autoplay}</label><input ${configJSON.autoplay!== "undefined" ? "checked" : ""} type="checkbox" name="autoplay"/></div>
+                    <div><label for="autoplay">${i18n.catalog.config.autoplay}</label><input ${configJSON.autoplay !== "undefined" ? "checked" : ""} type="checkbox" name="autoplay"/></div>
                     <div><label for="download">${i18n.catalog.config.download}</label><input ${configJSON.download !== "undefined" ? "checked" : ""} type="checkbox" name="download"/></div>
-                    <div><label for="controls">${i18n.catalog.config.controls}</label><input  ${configJSON.controls !== "undefined" ? "checked" : ""} type="checkbox" name="controls"/></div>
+                    <div><label for="controls">${i18n.catalog.config.controls}</label><input ${configJSON.controls !== "undefined" ? "checked" : ""} type="checkbox" name="controls"/></div>
                 </div>
                 </div>
                 </div>
                 `);
         } else if (mime.search(audioRegex) !== -1) {
             form.append(`
-                        <div class="containerBlocksEdit">
-            <div>
-                 <h4 class="titleLabelEdit"> Opciones </h4>
-                 <div>
-                <label for="controls">Controls</label>
-                <input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/>
-            </div>
-                 </div>`);
+            <div class="containerBlocksEdit">
+                <div>
+                    <h4 class="titleLabelEdit"> Opciones </h4>
+                    <div>
+                    <label for="controls">Controls</label>
+                    <input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/>
+                </div>
+            </div>`);
         } else if (mime.search(pdfRegex) !== -1) {
             form.append(`
                     <div class="containerBlocksEdit">
@@ -1032,7 +939,6 @@
             overlay.css("transform", `translateY(${overlay.height() / 1.2}px`);
             overlay.show();
 
-
             // Borrar overlay con click afuera
             // Espera un momento antes de agregar el listener, para evitar cierre inmediato
             setTimeout(() => {
@@ -1052,11 +958,14 @@
         const config = JSON.parse(puzzle.config);
         const configForm = $('#configForm');
         const resources = $('.sectionAddResource');
+        const puzzleName = puzzle.name;
+        const puzzleDesc = puzzle.description;
         configForm.empty();
         configZone.removeAttr('hidden');
         resources.attr('hidden', true);
-        if(config.url){
-            fetch(config.url)
+        
+        if(config.url || puzzle.id){
+            fetch(config.url ? config.url : `/reusablePuzzlesInstances/${puzzle.id}/form`)
             .then(response => response.text())
             .then(textString => {
                 let elements = textString;
@@ -1065,12 +974,13 @@
                 elements += `<input type="submit" class="btn rounded acceptButton"  value="<%=i18n.common.save%>"/>`;
                 elements += `<button type="button" class="btn rounded deleteButton" onclick="goBack()"><%=i18n.common.back%></button>`;
                 elements += `</div>`;
-                configForm.html(puzzleForm(config, puzzle, baseId));
-            
+                configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzleDesc));
+                configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
+
                 $('#appendFormElementsHere').append(elements);
                 config.solutionLength = puzzles ? puzzles[0].sol?.length : 0;
                 config.puzzle =  puzzles ? puzzles[0].id : undefined;
-                updateIframe(config, puzzle.id);
+                updateIframe(config, puzzle.reusablePuzzleId);
 
                 $(".sections").scrollTop(0);
             });
@@ -1082,6 +992,7 @@
             elements += `<input type="submit" class="acceptButton" value="<%=i18n.common.save%>"/>`;
             configForm.html(elements);
             $(".sections").scrollTop(0);
+            configForm.attr("action",  "reusablePuzzleInstance");
         }
     }
 
