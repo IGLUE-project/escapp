@@ -257,8 +257,9 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             trimedConfig.puzzleSol = null;
             trimedConfig.validator = null;
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
-
+            reusablePuzzleInstance = reusablePuzzle;
             newInstanceId = reusablePuzzle.id;
+
         } else {
             reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
             const trimedConfig = {...config};
@@ -291,13 +292,8 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             }
             config.puzzleSol = undefined;
         }
-
         t.commit();
-        if (newInstanceId === "") {
-            res.json({config, name: reusablePuzzleInstance.name, description: reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
-        } else {
-            res.redirect("back");
-        }
+        res.json({config, name: reusablePuzzleInstance.name, description: reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();
