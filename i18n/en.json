@@ -1333,7 +1333,8 @@
             "KeyStyle": "Key style",
             "Numbers": "Numbers",
             "Letters": "Letters",
-            "Symbols": "Symbols"
+            "Symbols": "Symbols",
+            "None": "None"
         }
     }
 }

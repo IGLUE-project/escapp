@@ -248,6 +248,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     const t = await sequelize.transaction();
 
     let newInstanceId = "";
+    let reusablePuzzleInstance;
 
     try {
         if (!reusablePuzzleInstanceId) {
@@ -259,7 +260,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
             newInstanceId = reusablePuzzle.id;
         } else {
-            const reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
+            reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
             const trimedConfig = {...config};
 
             trimedConfig.puzzleSol = null;
@@ -293,7 +294,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
         t.commit();
         if (newInstanceId === "") {
-            res.json({config, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+            res.json({config, name: reusablePuzzleInstance.name, description: reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
         } else {
             res.redirect("back");
         }

@@ -2598,6 +2598,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 
 .editDialog, #editDialog {
   background: #232951;
+  z-index: 999;
 }
 .editDialog label, .editDialog p, .editDialog textarea, .editDialog select, .editDialog span, #editDialog label, #editDialog p, #editDialog textarea, #editDialog select, #editDialog span {
   color: #eeeeee;
