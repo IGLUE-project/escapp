@@ -292,11 +292,14 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         }
 
         t.commit();
-        if (newInstanceId === "") {
+        //if (newInstanceId === "") {
+        //    res.json({config, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        //} else {
+        
             res.json({config, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
-        } else {
-            res.redirect("back");
-        }
+        //}
+
+     
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -316,6 +319,7 @@ exports.getReusablePuzzleInstances = async (req, res, next) => {
     }
 };
 
+// GET /escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstances/:reusablePuzzleInstanceId/render
 exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-line  no-unused-vars
     const {reusablePuzzleInstanceId} = req.params;
 
@@ -323,7 +327,6 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleInstance.reusablePuzzleId);
         const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
-
         const solutionLength = linkedPuzzle ? linkedPuzzle.validator !== "regex" ? linkedPuzzle.sol.length : 0 : 0;
 
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
@@ -356,6 +359,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
     }
 };
 
+// GET /reusablePuzzlePreview/:reusablePuzzleId
 exports.renderReusablePuzzlePreview = async (req, res, next) => {
     const {reusablePuzzleId} = req.params;
     const receivedConfig = req.query.config ? JSON.parse(req.query.config) : {};

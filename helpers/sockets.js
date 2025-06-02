@@ -93,6 +93,7 @@ exports.getInfoFromSocket = ({handshake}) => {
  * Authenticate user using socket info
  */
 exports.socketAuthenticate = async ({request, handshake}) => {
+    
     try {
         if (request && request.session && request.session.user) {
             return models.user.findByPk(request.session.user.id);

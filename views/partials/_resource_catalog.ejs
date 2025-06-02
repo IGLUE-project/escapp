@@ -8,7 +8,7 @@
 
         </div>
         <div style="margin: 4rem"></div>
-        <div class="sections">
+        <div class="sections" <%if(endPoint=="class"){%> style="height: auto;"<%}%>> 
         <section class="sectionAddResource">
             <p class="title-section ">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.gamificationElements%>
@@ -33,9 +33,11 @@
             </div>
         </section>
         <section class="sectionAddResource">
+            <%if(availableReusablePuzzles.length){%>
             <p class="title-section">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.interactiveResources%>
             </p>
+            <%}%>
             <div class="resources-group">
                     <% 
                     availableReusablePuzzles.forEach(puzzle => {
