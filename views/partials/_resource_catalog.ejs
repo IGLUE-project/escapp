@@ -1118,8 +1118,10 @@
                 const formData = new FormData(closestForm);
                 const newConfig = Object.fromEntries(formData.entries());
                 newConfig.solutionLength = $("#puzzleSol").val().length;
+                console.log(formData);
+                console.log(newConfig);
                 if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
-                    updateIframe(newConfig,1);
+                    updateIframe(newConfig,newConfig.reusablePuzzleId);
                 }
             }
         });
