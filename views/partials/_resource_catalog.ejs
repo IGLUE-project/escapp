@@ -647,6 +647,7 @@
         $('.previewReusablePuzzle').show();
         const jsonPuzzle = window.reusablePuzzleInstances.find(p => p.id == id);
         toggleCatalogModal();
+        console.log(jsonPuzzle)
         openPuzzleConfiguration(jsonPuzzle, jsonPuzzle.reusablePuzzleId);
         return;
     }
@@ -905,18 +906,25 @@
 
     function insertAndScrollContent(index, type, id, puzzles) {
         let payload = {};
+        let newType = type;
 
         if(type === "reusable") {
             const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
             payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
+            newType = "catalog"
+       } else if(type === "countdown" || type === "progress" || type === "ranking") {
+            payload = id;
         }else{
             const asset = window.assets.find(p => p.id == id);
             payload = { mime: asset.mime, config: asset.config, url: asset.url}
+            newType = "catalog"
         }
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
-        insertContent(index, "catalog", payload, puzzles);
+
+
+        insertContent(index, newType, payload, puzzles);
         if($('.building-block').children().last().offset()) {
             window.scrollTo(0, $('.building-block').children().last().offset().top);
         }
@@ -1092,10 +1100,12 @@
                     });
                     toggleCatalogModal();
                     const row = $(`#p-${resJSON.id}`);
+                    console.log(resJSON);
                     window.reusablePuzzleInstances.push(resJSON)
                     console.log(row)
                     if(!row.length) {
-
+                        const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
+                        console.log(config)
                         $('#myTabContent tr:last').after(`<tr class="catalogItem" id=p-${resJSON.id}>
                             <td>
                                 <p class="title">
@@ -1121,7 +1131,7 @@
                                             delete_outline </span>
                                     </button>
                                     <button class="listButton iconButton editButton"
-                                        onclick="editPuzzle('${resJSON.id}', 'application/reusable', '${JSON.stringify({reusablePuzzleId: resJSON.reusablePuzzleId, name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config})})">
+                                        onclick="editPuzzle('${resJSON.id}', 'application/reusable', ${config})">
                                         <span class="building-block-icon material-icons" id="edit"> edit
                                         </span>
                                     </button>
@@ -1172,7 +1182,6 @@
                 const formData = new FormData(closestForm);
                 const newConfig = Object.fromEntries(formData.entries());
                 newConfig.solutionLength = $("#puzzleSol").val().length;
-                console.log(formData);
                 console.log(newConfig);
                 if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
                     updateIframe(newConfig,newConfig.reusablePuzzleId);
