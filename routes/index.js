@@ -21,6 +21,17 @@ const managementController = require("../controllers/management_controller");
 const multer = require("multer"),
     upload = multer({"dest": "./uploads/"});
 
+
+//Instructions only pdf
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'application/pdf') {
+    cb(null, true);
+  } else {
+    cb(new Error('Only pdf allowed'), false);
+  }
+}
+const instructions = multer({"dest": "./uploads/instructions/",fileFilter})
+
 router.all("*", sessionController.deleteExpiredUserSession);
 
 
@@ -119,7 +130,7 @@ router.post("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.lo
 router.get("/escapeRooms/:escapeRoomId(\\d+)/after", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.afterInterface);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/after", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.afterInterfaceUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/sharing", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.sharing);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/sharing", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.sharingUpdate);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/sharing", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, instructions.single("instructions"), escapeRoomController.sharingUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.teamInterface);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/team", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.teamInterfaceUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/class", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.classInterface);

@@ -9,6 +9,7 @@ const {nextStep, prevStep} = require("../helpers/progress");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
 const es = require("../i18n/es");
 const en = require("../i18n/en");
+const fs = require("fs");
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -387,12 +388,30 @@ exports.sharingUpdate = async (req, res) => {
         }
 
         escapeRoom.status = body.status;
-        await escapeRoom.save({"fields": ["invitation", "scope", "license", "status", "publishedOnce"], transaction});
+
+        const instructionsFile = req.file;
+        console.log(body.keepInstructions);
+
+        if (instructionsFile && instructionsFile.filename) {
+            if( escapeRoom.instructions) {
+                fs.unlinkSync(escapeRoom.instructions);
+            }
+            escapeRoom.instructions = instructionsFile.path;
+        } else if( body.keepInstructions === "0") {
+                fs.unlinkSync(escapeRoom.instructions);
+                escapeRoom.instructions = null;
+        }
+
+
+        await escapeRoom.save({"fields": ["invitation", "scope", "license","instructions", "status", "publishedOnce"], transaction});
         await transaction.commit();
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("sharing") : progressBar || nextStep("sharing")}`);
     } catch (error) {
         await transaction.rollback();
         console.error(error);
+        if(req.file){
+            fs.unlinkSync(req.file.path);
+        }
         if (error instanceof Sequelize.ValidationError) {
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));
