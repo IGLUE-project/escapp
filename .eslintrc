@@ -9,7 +9,7 @@
 	  "experimentalObjectRestSpread": true,
 	  "sourceType": "module"
 	},
-	"extends": "eslint:recommended",
+	"extends": ["eslint:recommended"],
 	"rules": {
 		"array-bracket-spacing": 1,
 		"accessor-pairs": 1,
@@ -265,6 +265,6 @@
 		"yield-star-spacing": 1,
 		"max-len": 0,
 		"strict": 0,
-		"no-console": 0,
+		"no-console": 0
 	}
 }

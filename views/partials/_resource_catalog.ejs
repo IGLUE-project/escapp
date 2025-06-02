@@ -4,14 +4,15 @@
             <h5 style="font-size: 1em; margin-top: 0px">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.addResource%>
             </h5>
-
             <span class="building-block-icon material-icons" onclick="toggleCatalogModal()"> close </span>
 
         </div>
         <div style="margin: 4rem"></div>
         <div class="sections">
         <section class="sectionAddResource">
-            <p class="title-section ">Elementos de gamificación</p>
+            <p class="title-section ">
+                <%=i18n.escapeRoom.steps.indications.front.catalog.gamificationElements%>
+            </p>
             <div class="btn-group">
                 <button onclick='insertGamification(0,"countdown",{}, puzzleList)' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
@@ -32,16 +33,39 @@
             </div>
         </section>
         <section class="sectionAddResource">
-            <p class="title-section">Recursos interactivos vinculados a retos</p>
+            <p class="title-section">
+                <%=i18n.escapeRoom.steps.indications.front.catalog.interactiveResources%>
+            </p>
             <div class="resources-group">
-                    <%availableReusablePuzzles.forEach(puzzle => {let goodConfig; try{ goodConfig = JSON.parse(puzzle.config);}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
+                    <% 
+                    availableReusablePuzzles.forEach(puzzle => {
+                
+                        let goodConfig;
+                        try { 
+                            goodConfig = JSON.parse(puzzle.config);
+                        } catch(e) { 
+                            console.error("Error parsing JSON:", puzzle.config); 
+                        }
+                    %>
+                    
                      <div class="resource-card">
                         <% if( goodConfig && goodConfig?.thumbnail) {%>
-                            <img src="/reusablePuzzles/<%=puzzle.id%>/<%=goodConfig?.thumbnail%>"/>
+                            <img src="/reusablePuzzles/<%=puzzle.dataValues.reusablePuzzleId%>/<%=goodConfig?.thumbnail%>"/>
                         <%} else{%>
                             <img src="/images/keypad.png"/>
                         <%} %>
-                        <button class="resourceCatalogBtn" onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.id%> )">
+                        <%=puzzle.id%>
+                        <button 
+                            class="resourceCatalogBtn" 
+                            data-name = "<%=puzzle.name%>"
+                            data-description = <%=puzzle.description%>
+                            <%if (escapeRoom.puzzles.length == 0) {%> 
+                                disabled 
+                                title="<%=i18n.escapeRoom.steps.indications.front.catalog.interactiveResourcesNotAllowed%>"
+                                style = "cursor: help;"
+                            <%} else {%> 
+                                onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.dataValues.reusablePuzzleId%> )"
+                            <%}%>>
                             <span class="building-block-icon material-icons"> add </span>
                             <p><%=puzzle.name%></p>
                         </button>
@@ -50,20 +74,26 @@
             </div>
         </section>
 
-        <section class="sectionAddResource">
-            <p class="title-section">Escenarios 2D</p>
+        <!--<section class="sectionAddResource">
+            <p class="title-section">
+                <%=i18n.escapeRoom.steps.indications.front.catalog.scenarios2D%>
+            </p>
             <div class="resource-card" id="scenery">
                 <img src="/images/scenery.png">
                 <button class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
-                    <p>Escenarios 2D</p>
+                    <p><%=i18n.escapeRoom.steps.indications.front.catalog.scenarios2D%></p>
                 </button>
             </div>
-        </section>
+        </section>-->
         <section id="configZone" hidden>
-            <h2>Configuración</h2>
-            <form action="reusablePuzzleInstance" style="background-image:url('../images/background.png")" method="POST" id="configForm">
-            </form>
+            <div class="configReusablePuzzle">
+                <form action="reusablePuzzleInstance" style="background-image:url('../images/background.png')" method="POST" id="configForm">
+                </form>
+                <div class="previewReusablePuzzle">
+                    <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
+                </div>
+            </div>
         </section>
     </div>
     </div>
@@ -72,28 +102,24 @@
     <div style="width:100%">
         <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem">
                 <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
-                    <button class="building-block-bar-button uploadButton" onclick="toggleCatalogModal()">
+                    <button class="rounded building-block-bar-button uploadButton" onclick="toggleCatalogModal()">
                         <a href="#">
                             <span class="building-block-icon material-icons"> add </span>
-                            <p>
-                                <%=i18n.escapeRoom.steps.indications.front.catalog.addResource%>
-                            </p>
-                        </a>
-                    </button>
-                    <button class="building-block-bar-button uploadButton">
-                        <a href="assets?mode=catalogView">
-                            <span class="building-block-icon material-icons"> upload </span>
-                            <p>
-                                <%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%>
-                            </p>
+                            <p><%=i18n.escapeRoom.steps.indications.front.catalog.addResource%></p>
                         </a>
                     </button>
                 <% } %>
+                    <button class="rounded building-block-bar-button uploadButton">
+                        <a href="assets?mode=catalogView">
+                            <span class="building-block-icon material-icons"> upload </span>
+                            <p><%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
+                        </a>
+                    </button>
+                
 
         </div>
     </div>
-    <div style="height:240px;overflow-y:auto;width:100%;position:relative">
-
+    <div style="min-height:40px;height:auto; max-height: 240px; overflow-y:auto;width:100%;position:relative">
         <table style="width:100%;table-layout:fixed; padding: 16px" class="tab-content catalog-container"
             id="myTabContent">
             <colgroup>
@@ -103,17 +129,19 @@
             </colgroup>
             <% if(assets.length != 0 || reusablePuzzlesInstances.length != 0) {%>
             <tr class="tableTitles">
-                <th>
-                    <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%>
-                </th>
-                <th>
-                    <%=i18n.escapeRoom.steps.indications.front.catalog.table.type%>
-                </th>
+                <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.name%></th>
+                <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
                 <th></th>
             </tr>
             <% } %>
-            <%if(endPoint==="team" ){reusablePuzzlesInstances.map(puzzle=> {%>
-                <%let goodConfig={}; try{ goodConfig = JSON.parse(puzzle.config)}catch(e){ console.error("Error parsing JSON:", puzzle.config); }%>
+            <%if(endPoint==="team"){
+                reusablePuzzlesInstances.map(puzzle=> { 
+                let goodConfig={}; 
+                try{ 
+                    goodConfig = JSON.parse(puzzle.config)
+                } catch(e){ 
+                    console.error("Error parsing JSON:", puzzle.config); 
+            }%>
                 <tr id="p-<%=puzzle.id%>" class="catalogItem">
                     <td>
                         <p class="title">
@@ -146,14 +174,14 @@
                             <button class="listButton linkButton" onclick='copyURl("<%=puzzle.url%>")'>
                                 <span class="building-block-icon material-icons" id="link"> link
                                 </span>
-                                <div class="tooltip-link"> Copiar enlace </div>
+                                <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
                                 <div class="tooltip-link" id="link-copied">
                                     <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                 </div>
                             </button>
 
-                            <button class="listButton addButton"
-                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: <%=JSON.stringify(puzzle.config)%>,  mime:"application/reusable"}, puzzleList)'>
+                            <button class="rounded listButton addButton" 
+                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: <%=JSON.stringify(puzzle.config)%>,  mime:"application/reusable"}, [window.puzzles.findIndex(p=>p.id == <%=JSON.parse(puzzle.config).puzzle%>)])'>
                                 <span class="building-block-icon material-icons" id="add"> add
                                 </span>
                                 <p>
@@ -197,7 +225,8 @@
                                         <button class="listButton iconButton delete-button"
                                             onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
                                             <span class="building-block-icon material-icons" id="delete">
-                                                delete_outline </span>
+                                                delete_outline
+                                            </span>
                                         </button>
                                         <button class="listButton iconButton editButton"
                                             onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
@@ -207,13 +236,15 @@
                                         <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
                                             <span class="building-block-icon material-icons" id="link"> link
                                             </span>
-                                            <div class="tooltip-link"> Copiar enlace </div>
+                                            <div class="tooltip-link">
+                                                <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>
+                                            </div>
                                             <div class="tooltip-link" id="link-copied">
                                                 <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                             </div>
                                         </button>
-
-                                        <button class="listButton addButton"
+                                             
+                                        <button class="rounded listButton addButton"
                                             onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                             <span class="building-block-icon material-icons" id="add"> add
                                             </span>
@@ -227,15 +258,14 @@
                             <% } else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){ %>
                                 <tr class="catalogItem" id=<%=asset.id%> >
                                     <td>
-                                        <p class="title">
-                                            <%=asset.filename%>
-                                        </p>
+                                        <p class="title"><%=asset.filename%></p>
                                     </td>
-                                    <td> <span class="building-block-icon material-icons" id="red"> videocam
-                                        </span> </td>
+                                    <td> 
+                                        <span class="building-block-icon material-icons" id="red"> videocam </span> 
+                                    </td>
                                     <td>
                                         <div class=" button-group row-button">
-                                            <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                            <div class="overlay-trigger" data-id="<%=asset.id%>">
                                                 <p class="text-overlay">
                                                     <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                 </p>
@@ -246,29 +276,22 @@
                                             </div>
                                             <button class="listButton iconButton delete-button"
                                                 onclick="overlayTriggerCatalog('<%=asset.id%>', false)">
-                                                <span class="building-block-icon material-icons" id="delete">
-                                                    delete_outline </span>
+                                                <span class="building-block-icon material-icons" id="delete"> delete_outline </span>
                                             </button>
                                             <button class="listButton iconButton editButton"
                                                 onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
-                                                <span class="building-block-icon material-icons" id="edit"> edit
-                                                </span>
+                                                <span class="building-block-icon material-icons" id="edit"> edit  </span>
                                             </button>
                                             <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
                                                 <span class="building-block-icon material-icons" id="link"> link
                                                 </span>
-                                                <div class="tooltip-link"> Copiar enlace </div>
-                                                <div class="tooltip-link" id="link-copied">
-                                                    <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                                </div>
+                                                <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
+                                                <div class="tooltip-link" id="link-copied">  <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>  </div>
                                             </button>
-                                            <button class="listButton addButton"
+                                            <button class="rounded listButton addButton"
                                                 onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
-                                                <span class="building-block-icon material-icons" id="add"> add
-                                                </span>
-                                                <p>
-                                                    <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
-                                                </p>
+                                                <span class="building-block-icon material-icons" id="add"> add </span>
+                                                <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
                                             </button>
                                         </div>
                                     </td>
@@ -287,8 +310,7 @@
                                                 <div class=" overlay-trigger" data-id="<%=asset.id%>">
                                                     <p class="text-overlay">
                                                         <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
-                                                    </p>
-                                                        archivo?</p>
+                                                    </p> 
                                                     <button class="deleteButton" type="button"
                                                         onclick='overlayTriggerCatalog("<%=asset.id%>", true)'><%=i18n.common.cancel%></button>
                                                     <button class="acceptButton" type="button"
@@ -310,12 +332,12 @@
                                                     <span class="building-block-icon material-icons" id="link">
                                                         link
                                                     </span>
-                                                    <div class="tooltip-link"> Copiar enlace </div>
+                                                    <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
                                                     <div class="tooltip-link" id="link-copied">
                                                         <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                     </div>
                                                 </button>
-                                                <button class="listButton addButton"
+                                                <button class="rounded listButton addButton"
                                                     onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                     <span class="building-block-icon material-icons" id="add">
                                                         add
@@ -361,13 +383,13 @@
                                                         onclick='copyURl("<%=asset.url%>")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        <div class="tooltip-link"> Copiar enlace </div>
+                                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
                                                         <div class="tooltip-link" id="link-copied">
                                                             <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                         </div>
                                                     </button>
 
-                                                    <button class="listButton addButton"
+                                                    <button class="rounded listButton addButton"
                                                         onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                         <span class="building-block-icon material-icons" id="add"> add
                                                         </span>
@@ -412,13 +434,13 @@
                                                         onclick='copyURl("<%=asset.url%>")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        <div class="tooltip-link"> Copiar enlace </div>
+                                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
                                                         <div class="tooltip-link" id="link-copied">
                                                             <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                         </div>
                                                     </button>
 
-                                                    <button class="listButton addButton"
+                                                    <button class="rounded listButton addButton"
                                                         onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                         <span class="building-block-icon material-icons" id="add"> add
                                                         </span>
@@ -464,13 +486,13 @@
                                                         onclick='copyURl("<%=asset.url%>")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        <div class="tooltip-link"> Copiar enlace </div>
+                                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
                                                         <div class="tooltip-link" id="link-copied">
                                                             <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                                         </div>
                                                     </button>
 
-                                                    <button disabled class="listButton addButton"
+                                                    <button disabled class="rounded listButton addButton"
                                                         onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
                                                         <span class="building-block-icon material-icons" id="add"> add
                                                         </span>
@@ -486,7 +508,7 @@
             </table>
 
 </div>
-<div style="display:flex; margin-top:0.5em; align-items:center; justify-content: end; gap: 0.7rem">
+<div style="display:flex; margin-top:2em; align-items:center; justify-content: end; gap: 0.7rem">
 
     <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
     <button class="building-block-bar-button theme-btn" style="display:flex;">
@@ -498,7 +520,7 @@
         </span>
     </button>
     <% } %>
-    <button class="addButton text-block-add" id="buttonMain" onclick="insertContentBlock()">
+    <button class="rounded addButton text-block-add" id="buttonMain" onclick="insertContentBlock()">
         <span class="building-block-icon material-icons"> add </span>
         <p>
             <%= i18n.escapeRoom.steps.indications.front.catalog.addText%>
@@ -509,8 +531,11 @@
 <br>
 <div style="display:flex; justify-content:center">
     <dialog id="editDialog" style="overflow:auto">
-        <form  onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
+        <form onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
+        <div class="previewReusablePuzzle">
+                    <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
+                </div>
     </dialog>
     <dialog id="reusablePuzzleDialog">
         <form method="POST" action="../reusablePuzzleInstance">
@@ -539,126 +564,105 @@
 
     }
 
-
-    function editPuzzle(id, mime, jsonPuzzle) {
-        let configJSON;
-        try{
-            configJSON = JSON.parse(jsonPuzzle.config);
-        }catch{
-            configJSON = {}
-        }
-        const puzzleid = jsonPuzzle.id;
-        const name = jsonPuzzle.name;
-        const reusablePuzzleId = jsonPuzzle.reusablePuzzleId;
-        const description = jsonPuzzle.description;
-        const puzzles = window.puzzles;
-        window.currentOpenPuzzleConfig = configJSON;
-        const assignedPuzzle = puzzles.find(p => p.assignedReusablePuzzleInstance == jsonPuzzle.id) || null;
-        const selectedValidator = assignedPuzzle ? assignedPuzzle.validator : (puzzles[0] ? puzzles[0].validator : null);
-         fetch(`/reusablePuzzlesInstances/${jsonPuzzle.id}/form`).then(res => {
-            res.text().then((partial)=>{
-                    const dialog = $('#editDialog');
-                    const form = dialog.find('form');
-                    form.attr('action', `./reusablePuzzleInstance/${puzzleid}`);
-                    form.empty();
-                    if (mime.search(reusableRegex) !== -1) {
-                    form.append(`
+    function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, puzzleDesc) {
+        return `
+        <div class="editDialog">
+            <h3 style="margin: 0;"> ${ puzzleName } </h3>
+            <p> ${ puzzleDesc } </p>
+            <h4 class="titleLabelEdit">
+                <%=i18n.escapeRoom.steps.indications.front.catalog.config.nameDescription%> 
+            </h4>
+            <div>
+                <label for="name">
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%>
+                </label>
+                <input id="nameOfReusablePuzzle" type="text" required name="name" value="${puzzle.name || ''}"/>
+            </div>
+            <div>
+                <label for="description">
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.config.description%>
+                </label>
+                <input id="descOfReusablePuzzle" type="text" name="description" value="${puzzle.description || ''}"/>
+            </div>
+                <!--<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.measures%> </h4>
                 <div >
-                    <p class="titleLabelEdit"> ${i18n.catalog.config.nameDescription} </p>
+                <div>
+                    <label for="height"><%=i18n.escapeRoom.steps.indications.front.catalog.config.height%></label>
+                    <span class="editUnit">
+                        <input   type="number" name="height"/>
+                        <p> px </p>
+                    </span>
+                </div>
+                <div>
+                    <label for="width"><%=i18n.escapeRoom.steps.indications.front.catalog.config.width%></label>
+                    <span class="editUnit">
+                        <input  type="number" name="width"/>
+                        <p> px </p>
+                    </span>
+                </div>
+                </div>-->
+            </div>
+            <div class="editDialog">
+                <h4 class="titleLabelEdit">
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.config.assignedPuzzle%>
+                </h4>
+                    <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzle.id},config,${reusablePuzzleId})"  name="puzzle">
+                        ${window.puzzles.map((puzzle,index) => {
+                            return `<option value="${puzzle.id}">${puzzle.title}</option>`
+                        }).join('')}
+                    </select>
                     <div>
-                        <label for="name">${i18n.catalog.config.name}</label>
-                            <input value="${jsonPuzzle.name ? jsonPuzzle.name : ''}" type="text" required  name="name"/>
-                     </div>
-                    <div>
-                        <label for="description">${i18n.catalog.config.description}</label>
-                            <input value="${jsonPuzzle.description ? jsonPuzzle.description : ''}" type="text"  name="description"/>
-                     </div>
-                    <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
-                    <div >
-                    <div>
-                        <label for="height">${i18n.catalog.config.height}</label>
-                        <div class="editUnit">
-                            <input  value="${configJSON.height ? configJSON.height : ''}" type="number" name="height"/>
-                            <p> px </p>
-                        </div>
-                     </div>
-                    <div>
-                        <label for="width">${i18n.catalog.config.measures}</label>
-                        <div class="editUnit">
-                            <input value="${configJSON.width ? configJSON.width : ''}" type="number" name="width"/>
-                            <p> px </p>
-                        </div>
-                    </div>
-                    </div>
-                    <div>
-                        <p class="titleLabelEdit"> ${i18n.catalog.config.assignedPuzzle}</p>
-                            <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzleid})"  name="puzzle">
-                                    <option value="none">None</option>
-                                    ${window.puzzles.map((puzzle,index) => {
-                                        return `<option ${assignedPuzzle && assignedPuzzle.id === puzzle.id ? "selected": null} value="${puzzle.id}">${puzzle.title}</option>`
-                                    }).join('')}
-                                </select>
-                    <div>
-                        <div id="assignPuzzDiv" ${assignedPuzzle ? null: "hidden"} >
-                                <label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value="${assignedPuzzle ? assignedPuzzle.sol  : ''}"  name="puzzleSol"/>
+                    <label for="puzzleSol">
+                        <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
+                    </label>
+                    
+                    <input id="puzzleSol" value=${window.puzzles ? window.puzzles[0].sol : ""} 
+                        onchange="updateIframe(config, ${puzzle.id})" 
+                        name="puzzleSol"/>
+                    <span ${window.puzzles && window.puzzles[0]?.assignedReusablePuzzleInstance && window.puzzles[0]?.assignedReusablePuzzleInstance != puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
+                    warning
+                    </span>
+                    <select name="validator">
+                            <option value="exact" ${window.puzzles && window.puzzles[0]?.validator && window.puzzles[0].validator === 'exact' ? "selected" : null }>
+                                <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
+                            </option>
+                            <option value="caseinsensitive" ${window.puzzles && window.puzzles[0]?.validator && window.puzzles[0].validator === "caseinsensitive" ?  "selected" : null } >
+                                <%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%>
+                            </option>
+                            <option value="range" ${window.puzzles && window.puzzles[0]?.validator && window.puzzles[0].validator === 'range' ? "selected"  : null } >
+                                <%=i18n.escapeRoom.steps.puzzles.validator.range%>
+                            </option>
+                            <option value="regex" ${window.puzzles && window.puzzles[0]?.validator && window.puzzles[0].validator === 'regex' ? "selected"  : null } >
+                                <%=i18n.escapeRoom.steps.puzzles.validator.regex%>
+                            </option>
+                        </select>
                             </div>
-                                <span ${assignedPuzzle && assignedPuzzle.assignedReusablePuzzleInstance != puzzleid ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
-                                warning
-                                </span>
-                                  <select id="inputValidator" ${assignedPuzzle ? null : "hidden"} name="validator">
-                                            <option value="exact" ${selectedValidator === "exact" ? "selected": null}>
-                                                <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
-                                            </option>
-                                            <option value="caseinsensitive" ${selectedValidator === "caseinsensitive"? "selected": null}} >
-                                                <%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%>
-                                            </option>
-                                            <option value="range" ${selectedValidator === "range"? "selected": null} >
-                                                <%=i18n.escapeRoom.steps.puzzles.validator.range%>
-                                            </option>
-                                            <option value="regex" ${selectedValidator === "regex"? "selected": null} >
-                                                <%=i18n.escapeRoom.steps.puzzles.validator.regex%>
-                                            </option>
-                                        </select>
-                    </div>
-                </div>
-                </div>
-                `);
-                    }
-                    form.append(partial);
-                    form.append(` <input type="reset" />  <input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
-                    dialog.dialog({
-                        modal: true,
-                        position:['top'],
-                        resizable: false,
-                        position: { my: "middle", at: "top", of: $('#resourceCatalog')},
-                        width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
-                        height: window.innerHeight*0.5,
-                        show: {
-                            effect: "scale",
-                            duration: 300
-                        },
-                        hide: {
-                            effect: "scale",
-                            duration: 300
-                        },
-                    }).show()
-                })
-            });
+            </div>
+            <div class="editDialog" id="appendFormElementsHere">
+                <h4 class="titleLabelEdit"> Customization </h4>
+            </div>
+        `
+       
+    }
+    function editPuzzle(id, mime, jsonPuzzle) {
+        toggleCatalogModal();
+        openPuzzleConfiguration(jsonPuzzle, jsonPuzzle.reusablePuzzleId);
+        return;
     }
 
-    function setPuzzleSol(id) {
+    function setPuzzleSol(id, config, reusablePuzzleId) {
         const puzzleSol = $('#puzzleSol');
         const puzzleId = $('#associatedPuzzle').val();
         const span = $('#warningSpan');
         const validator = $('#inputValidator');
         const puzzleSelected = window.puzzles.find(p => p.id == puzzleId);
-        const assignDiv = $('#assignPuzzDiv')
+        const assignDiv = $('#assignPuzzDiv');
 
         if(puzzleSelected) {
             puzzleSol.val(puzzleSelected.sol)
             if (puzzleSelected.assignedReusablePuzzleInstance && puzzleSelected.assignedReusablePuzzleInstance != id) {
                 span.show();
-            }else {
+            } else {
                 span.hide();
             }
             $(`#inputValidator option:selected`).attr("selected", "null");
@@ -671,6 +675,8 @@
             validator.hide()
             assignDiv.hide();
         }
+        config.solutionLength = puzzleSol.val().length;
+        updateIframe(config, reusablePuzzleId);
     }
 
     function editAsset(id, mime, config) {
@@ -683,22 +689,22 @@
             form.append(`
                     <div class="containerBlocksEdit">
                         <div>
-                            <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
+                            <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
                             <div class="editDialogForm">
 
                             <div>
                                 <label for="height">${i18n.catalog.config.height}</label>
-                                <div class="editUnit">
+                                <span class="editUnit">
                                     <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
                                     <p> px </p>
-                                </div>
+                                </span>
                             </div>
                             <div>
                                 <label for="width">${i18n.catalog.config.width}</label>
-                                <div class="editUnit">
+                                <span class="editUnit">
                                     <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
                                     <p> px </p>
-                                </div>
+                                </span>
                             </div>
                         </div>
                     </div>`
@@ -710,64 +716,64 @@
             form.append(`
             <div class="containerBlocksEdit">
             <div >
-                <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
+                <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
                 <div class="editDialogForm">
                 <div>
                     <label for="height">${i18n.catalog.config.height}</label>
-                    <div class="editUnit">
+                    <span class="editUnit">
                         <input class="light" type="number" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
                         <p> px </p>
-                    </div>
+                    </span>
                  </div>
                 <div>
                     <label for="width">${i18n.catalog.config.width}</label>
-                    <div class="editUnit">
+                    <span class="editUnit">
                         <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
                         <p> px </p>
-                    </div>
+                    </span>
                 </div>
                 </div>
                 </div>
                 <div>
-                    <p class="titleLabelEdit"> ${i18n.catalog.config.options} </p>
+                    <h4 class="titleLabelEdit"> ${i18n.catalog.config.options} </h4>
                 <div class="checkBoxEditContainer">
-                    <div><label for="autoplay">${i18n.catalog.config.autoplay}</label><input ${configJSON.autoplay!== "undefined" ? "checked" : ""} type="checkbox" name="autoplay"/></div>
+                    <div><label for="autoplay">${i18n.catalog.config.autoplay}</label><input ${configJSON.autoplay !== "undefined" ? "checked" : ""} type="checkbox" name="autoplay"/></div>
                     <div><label for="download">${i18n.catalog.config.download}</label><input ${configJSON.download !== "undefined" ? "checked" : ""} type="checkbox" name="download"/></div>
-                    <div><label for="controls">${i18n.catalog.config.controls}</label><input  ${configJSON.controls !== "undefined" ? "checked" : ""} type="checkbox" name="controls"/></div>
+                    <div><label for="controls">${i18n.catalog.config.controls}</label><input ${configJSON.controls !== "undefined" ? "checked" : ""} type="checkbox" name="controls"/></div>
                 </div>
                 </div>
                 </div>
                 `);
         } else if (mime.search(audioRegex) !== -1) {
             form.append(`
-                        <div class="containerBlocksEdit">
-            <div>
-                 <p class="titleLabelEdit"> Opciones </p>
-                 <div>
-                <label for="controls">Controls</label>
-                <input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/>
-            </div>
-                 </div>`);
+            <div class="containerBlocksEdit">
+                <div>
+                    <h4 class="titleLabelEdit"> Opciones </h4>
+                    <div>
+                    <label for="controls">Controls</label>
+                    <input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/>
+                </div>
+            </div>`);
         } else if (mime.search(pdfRegex) !== -1) {
             form.append(`
                     <div class="containerBlocksEdit">
                         <div>
-                            <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
+                            <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
                             <div class="editDialogForm">
 
                             <div>
                                 <label for="height">${i18n.catalog.config.height}</label>
-                                <div class="editUnit">
+                                <span class="editUnit">
                                     <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
                                     <p> px </p>
-                                </div>
+                                </span>
                             </div>
                             <div>
                                 <label for="width">${i18n.catalog.config.width}</label>
-                                <div class="editUnit">
+                                <span class="editUnit">
                                     <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
                                     <p> px </p>
-                                </div>
+                                </span>
                             </div>
                         </div>
                     </div>`
@@ -777,31 +783,32 @@
             form.append(`
                     <div class="containerBlocksEdit">
                         <div>
-                            <p class="titleLabelEdit"> ${i18n.catalog.config.measures} </p>
+                            <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
                             <div class="editDialogForm">
 
                             <div>
                                 <label for="height">${i18n.catalog.config.height}</label>
-                                <div class="editUnit">
+                                <span class="editUnit">
                                     <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
                                     <p> px </p>
-                                </div>
+                                </span>
                             </div>
                             <div>
                                 <label for="width">${i18n.catalog.config.height}</label>
-                                <div class="editUnit">
+                                <span class="editUnit">
                                     <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
                                     <p> px </p>
-                                </div>
+                                </span>
                             </div>
                         </div>
                     </div>`
 
                     );
-        }else {
+        } else {
             return `<div>${item.name}</div>`;
         }
         form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
+        
         dialog.dialog({
             modal: true,
             resizable: false,
@@ -816,6 +823,7 @@
             },
         }).show()
     }
+
     function parseAssetConfig(mime, config) {
         if (!config) return {};
         let configJSON = {};
@@ -897,8 +905,8 @@
 
     function copyURl(url) {
         navigator.clipboard.writeText(window.location.origin + url);
-
     }
+
     function insertContentBlock() {
         const text = `<p>${window.placeholder}</p>`
         insertAndScrollContent(0, 'text', { text }, puzzleList);
@@ -906,6 +914,7 @@
             window.scrollTo(0, $('.building-block').children().last().offset().top);
         }
     }
+
     function insertAndScrollContent(index, type, payload, puzzles) {
         if(payload.url){
             payload.url = encodeURI(payload.url);
@@ -930,7 +939,6 @@
             overlay.css("transform", `translateY(${overlay.height() / 1.2}px`);
             overlay.show();
 
-
             // Borrar overlay con click afuera
             // Espera un momento antes de agregar el listener, para evitar cierre inmediato
             setTimeout(() => {
@@ -945,197 +953,164 @@
         }
     }
 
-function openPuzzleConfiguration(puzzle, baseId){
-    const configZone = $('#configZone');
-    const config = JSON.parse(puzzle.config);
-    const configForm = $('#configForm');
-    const resources = $('.sectionAddResource');
+    function openPuzzleConfiguration(puzzle, baseId){
+        const configZone = $('#configZone');
+        const config = JSON.parse(puzzle.config);
+        const configForm = $('#configForm');
+        const resources = $('.sectionAddResource');
+        const puzzleName = puzzle.name;
+        const puzzleDesc = puzzle.description;
+        configForm.empty();
+        configZone.removeAttr('hidden');
+        resources.attr('hidden', true);
+        
+        if(config.url || puzzle.id){
+            fetch(config.url ? config.url : `/reusablePuzzlesInstances/${puzzle.id}/form`)
+            .then(response => response.text())
+            .then(textString => {
+                let elements = textString;
+                elements += '<div class="editDialogButtons">';
+                elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
+                elements += `<input type="submit" class="btn rounded acceptButton"  value="<%=i18n.common.save%>"/>`;
+                elements += `<button type="button" class="btn rounded deleteButton" onclick="goBack()"><%=i18n.common.back%></button>`;
+                elements += `</div>`;
+                configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzleDesc));
+                configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
 
-    configForm.empty();
-    configZone.removeAttr('hidden');
-    resources.attr('hidden', true);
-    if(config.url){
-        console.log(config.url)
-        fetch(config.url)
-        .then(response => response.text())
-        .then(textString => {
-            let elements = textString;
-            elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
-            elements += `<button type="button" onclick="volver()">Volver</button>`;
-            elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
-            configForm.html(((`
-                <div >
-                <div class="editDialog">
-                    <p class="titleLabelEdit"> Name and description </p>
-                    <div>
-                        <label for="name">Name</label>
-                            <input  type="text" required  name="name"/>
-                     </div>
-                    <div>
-                        <label for="description">Descritption</label>
-                            <input  type="text"  name="description"/>
-                     </div>
-                    <p class="titleLabelEdit"> Medidas </p>
-                    <div >
-                    <div>
-                        <label for="height">Height</label>
-                        <div class="editUnit">
-                            <input   type="number" name="height"/>
-                            <p> px </p>
-                        </div>
-                     </div>
-                    <div>
-                        <label for="width">Width</label>
-                        <div class="editUnit">
-                            <input  type="number" name="width"/>
-                            <p> px </p>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                    <div>
-                        <p class="titleLabelEdit"> Assigned Puzzle </p>
-                            <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzle.id})"  name="puzzle">
-                                    ${window.puzzles.map((puzzle,index) => {
-                                        return `<option value="${puzzle.id}">${puzzle.title}</option>`
-                                    }).join('')}
-                                </select>
-                                <div>
-                                <label for="puzzleSol">Puzzle solution</label><input id="puzzleSol" value=${puzzles ? puzzles[0].sol : ""}  name="puzzleSol"/>
-                                <span ${puzzles && puzzles[0]?.assignedReusablePuzzleInstance && puzzles[0]?.assignedReusablePuzzleInstance != puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
-                                warning
-                                </span>
-                                  <select name="validator">
-                                            <option value="exact" ${puzzles && puzzles[0]?.validator && puzzles[0].validator === 'exact' ? "selected" : null }>
-                                                <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
-                                            </option>
-                                            <option value="caseinsensitive" ${puzzles && puzzles[0]?.validator && puzzles[0].validator === "caseinsensitive" ?  "selected" : null } >
-                                                <%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%>
-                                            </option>
-                                            <option value="range" ${puzzles && puzzles[0]?.validator && puzzles[0].validator === 'range' ? "selected"  : null } >
-                                                <%=i18n.escapeRoom.steps.puzzles.validator.range%>
-                                            </option>
-                                            <option value="regex" ${puzzles && puzzles[0]?.validator && puzzles[0].validator === 'regex' ? "selected"  : null } >
-                                                <%=i18n.escapeRoom.steps.puzzles.validator.regex%>
-                                            </option>
-                                        </select>
-                                    </div>
-                    </div>
-                    </div>
-                `)))
-            configForm.append(elements);
-            $(".sections").scrollTop(0);
-        });
-    }else {
-        elements = generateConfig(config);
-        elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
-        elements += `<button type="button" onclick="volver()">Volver</button>`;
-        elements += `<button type="reset" >Volver</button>`;
-        elements += `<input type="submit" value="<%=i18n.common.save%>"/>`;
-        configForm.html(elements);
-        $(".sections").scrollTop(0);
-    }
-}
+                $('#appendFormElementsHere').append(elements);
+                config.solutionLength = puzzles ? puzzles[0].sol?.length : 0;
+                config.puzzle =  puzzles ? puzzles[0].id : undefined;
+                updateIframe(config, puzzle.reusablePuzzleId);
 
-function volver(){
-    const configZone = $('#configZone');
-    const configForm = $('#configForm');
-    const resources = $('.sectionAddResource');
-
-    configZone.attr('hidden', true);
-    resources.removeAttr('hidden');
-}
-
-let types = [];
-function generateConfig(config) {
-    let result = `<input type="text" name="name" required/>`;
-    const configToRender = config.confg;
-    types = config.types;
-    result += configToRender.map(item => {return renderConfig(item)}).join('');
-    return result;
-}
-
-
-function renderConfig(item, depth=0, inputName=""){
-    const type = item.type;
-    let config;
-    const isArray = type.substring(type.length-6) === '-array';
-    const arraySubtype = isArray ? type.substring(0,type.length-6) : null;
-
-    if(isArray){
-        types.map(t=>{if(t.type === arraySubtype){config = t.config; return;}})
-    } else {
-        types.map(t=>{if(t.type === type){config = t.config; return;}})
-    }
-
-    let inputNameN = inputName.length !==0 ? `${inputName}-${item.name}` : item.name;
-    let returnVal = "";
-
-    if(type === "text" || type === "number" || type === "checkbox"){
-        returnVal = `<div>${item.name}<input type=${item.type} name="${inputNameN}"/>  </div>`;
-    }else {
-        let depthN = depth + 1;
-        if(isArray){
-            inputNameIndex = `${inputNameN}-0`;
-            if(arraySubtype === "text" || arraySubtype === "number" || arraySubtype === "checkbox"){
-                returnVal = `<div id=${inputNameN}>
-                ${item.name}
-                </div>
-                <button type="button" onclick="addInput('${inputNameN}','${arraySubtype}')">+</button>
-                `;
-            }else{
-                const childElement = config.map((el) => { return renderConfig(el, depthN,inputNameIndex); }).join('');
-                returnVal = `<div id=${inputNameN}>
-                ${item.name }<div>${childElement}</div>
-                </div>
-                <button type="button" onclick="addInput('${inputNameN}','${arraySubtype}')">+</button>
-                `
-            }
+                $(".sections").scrollTop(0);
+            });
         } else {
-            const childElement = config.map((el) => { return renderConfig(el, depthN, inputNameN); }).join('');
-            returnVal = `<div>${item.name }${childElement}</div>`
+            elements = generateConfig(config);
+            elements += `<input type="text"  hidden value=${baseId} name="reusablePuzzleId"/>`;
+            elements += `<button type="button" class="editButton" onclick="goBack()"><%=i18n.common.back%></button>`;
+            elements += `<button type="reset" class="editButton" ><%=i18n.common.reset%></button>`;
+            elements += `<input type="submit" class="acceptButton" value="<%=i18n.common.save%>"/>`;
+            configForm.html(elements);
+            $(".sections").scrollTop(0);
+            configForm.attr("action",  "reusablePuzzleInstance");
         }
     }
 
-    return `<div style="z-index:${depth};margin-left:${20*depth}px"> ${returnVal}</div>`;
-}
+    function updateIframe(config, reusablePuzzleId) {
+        $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${config.puzzle}&config=${encodeURIComponent(JSON.stringify(config))}`);
+    }
 
+    function goBack(){
+        const configZone = $('#configZone');
+        const configForm = $('#configForm');
+        const resources = $('.sectionAddResource');
 
-function addInput(name, type){
-    const index = $(`#${name}`).children().length;
-    const newName = `${name}-${index}`;
-    let newConfig = renderConfig({name:newName,type})
-    $(`#${name}`).append(newConfig);
-}
+        configZone.attr('hidden', true);
+        resources.removeAttr('hidden');
+    }
 
-function send(e,form) {
-    fetch(form.action, {method:'post', body: new URLSearchParams(new FormData(form))})
-    .then((res)=>{
-        if(res.status !== 200){
-            return;
+    let types = [];
+    function generateConfig(config) {
+        let result = `<input type="text" name="name" required/>`;
+        const configToRender = config.confg;
+        types = config.types;
+        result += configToRender.map(item => {return renderConfig(item)}).join('');
+        return result;
+    }
+
+    function renderConfig(item, depth=0, inputName=""){
+        const type = item.type;
+        let config;
+        const isArray = type.substring(type.length-6) === '-array';
+        const arraySubtype = isArray ? type.substring(0,type.length-6) : null;
+
+        if(isArray){
+            types.map(t=>{if(t.type === arraySubtype){config = t.config; return;}})
+        } else {
+            types.map(t=>{if(t.type === type){config = t.config; return;}})
         }
-        res.json().then((resJSON)=>{
-            if(resJSON.type !== "reusable"){
-                const row = $('#resourceCatalog').find((`#${resJSON.id}`))
-                const editButton = row.find('.editButton');
-                const addButton = row.find('.addButton');
-                const regex = new RegExp(/(.*\(.*) ("[^"]*")(.*)/);
-                editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
-                addButton.attr('onclick', addButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
+
+        let inputNameN = inputName.length !==0 ? `${inputName}-${item.name}` : item.name;
+        let returnVal = "";
+
+        if(type === "text" || type === "number" || type === "checkbox"){
+            returnVal = `<div>${item.name}<input type=${item.type} name="${inputNameN}"/>  </div>`;
+        }else {
+            let depthN = depth + 1;
+            if(isArray){
+                inputNameIndex = `${inputNameN}-0`;
+                if(arraySubtype === "text" || arraySubtype === "number" || arraySubtype === "checkbox"){
+                    returnVal = `<div id=${inputNameN}>
+                    ${item.name}
+                    </div>
+                    <button type="button" onclick="addInput('${inputNameN}','${arraySubtype}')">+</button>
+                    `;
+                }else{
+                    const childElement = config.map((el) => { return renderConfig(el, depthN,inputNameIndex); }).join('');
+                    returnVal = `<div id=${inputNameN}>
+                    ${item.name }<div>${childElement}</div>
+                    </div>
+                    <button type="button" onclick="addInput('${inputNameN}','${arraySubtype}')">+</button>
+                    `
+                }
             } else {
-                const row = $('#resourceCatalog').find((`#p-${resJSON.id}`))
-                const editButton = row.find('.editButton');
-                const addButton = row.find('.addButton');
-                const regex = new RegExp(/(.*\(.*)(config\":)(.*)(}\))/);
-                const regexAdd = new RegExp(/(.*\(.*)(config: ")(.*)(,\s*mime.*)/);
-                editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1$2"${JSON.stringify(resJSON.config).replaceAll("\"", "\\\"")}"$4`));
-                addButton.attr('onclick', addButton.attr('onclick').replace(regexAdd, `$1$2${JSON.stringify(resJSON.config).replaceAll("\"", "\\\"")}"$4`));
+                const childElement = config.map((el) => { return renderConfig(el, depthN, inputNameN); }).join('');
+                returnVal = `<div>${item.name }${childElement}</div>`
             }
-        })
-    });
-    e.preventDefault();
-    $('#editDialog').dialog('close');
-}
+        }
 
+        return `<div style="z-index:${depth};margin-left:${20*depth}px"> ${returnVal}</div>`;
+    }
 
+    function addInput(name, type){
+        const index = $(`#${name}`).children().length;
+        const newName = `${name}-${index}`;
+        let newConfig = renderConfig({name:newName,type})
+        $(`#${name}`).append(newConfig);
+    }
+
+    function send(e,form) {
+        fetch(form.action, {method:'post', body: new URLSearchParams(new FormData(form))})
+        .then((res)=>{
+            if(res.status !== 200){
+                return;
+            }
+            res.json().then((resJSON)=>{
+                if(resJSON.type !== "reusable"){
+                    const row = $('#resourceCatalog').find((`#${resJSON.id}`))
+                    const editButton = row.find('.editButton');
+                    const addButton = row.find('.addButton');
+                    const regex = new RegExp(/(.*\(.*) ("[^"]*")(.*)/);
+                    editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
+                    addButton.attr('onclick', addButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
+                } else {
+                    const row = $('#resourceCatalog').find((`#p-${resJSON.id}`))
+                    const editButton = row.find('.editButton');
+                    const addButton = row.find('.addButton');
+                    const regex = new RegExp(/(.*\(.*)(config\":)(.*)(}\))/);
+                    const regexAdd = new RegExp(/(.*\(.*)(config: ")(.*)(,\s*mime.*)/);
+                    editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1$2"${JSON.stringify(resJSON.config).replaceAll("\"", "\\\"")}"$4`));
+                    addButton.attr('onclick', addButton.attr('onclick').replace(regexAdd, `$1$2${JSON.stringify(resJSON.config).replaceAll("\"", "\\\"")}"$4`));
+                }
+            })
+        });
+        e.preventDefault();
+        $('#editDialog').dialog('close');
+    }
+
+    window.onload = function() {
+        window.addEventListener('change', function(e) {
+            // Check if e.target is a child of .editDialog
+            if ($(e.target).closest('.editDialog').length > 0) {
+                const closestForm = $(e.target).closest('form')[0]
+                // e.target is inside .editDialog
+                const formData = new FormData(closestForm);
+                const newConfig = Object.fromEntries(formData.entries());
+                newConfig.solutionLength = $("#puzzleSol").val().length;
+                if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
+                    updateIframe(newConfig,1);
+                }
+            }
+        });
+    }
 </script>

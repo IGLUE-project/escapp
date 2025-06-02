@@ -71,7 +71,7 @@ window.i18n = <%-JSON.stringify(i18n.escapeRoom.steps.indications.front)%>
 window.getTheme = theme => "/stylesheets/vendor/bootswatch/"+theme+".bootstrap.min.css";
 window.theme = endPoint === "indications" ? "/stylesheets/style.css" : window.getTheme("<%=theme || 'litera' %>");
 <%var content =  (!escapeRoom[endPoint + "Instructions"] || (endPoint === "indications" && escapeRoom[endPoint + "Instructions"] === "[]")) ?
-[{"type":"text","payload":{"text": i18n.escapeRoom.steps[endPoint].placeholder }, "puzzles":puzzleArr}] : JSON.parse( escapeRoom[endPoint + "Instructions"]);%>
+[{"type":"text","payload":{"text": i18n.escapeRoom.steps[endPoint].placeholder }, "puzzles":puzzleArr, "endPoint": endPoint}] : JSON.parse( escapeRoom[endPoint + "Instructions"]);%>
 <% content =   JSON.stringify( content ).replaceAll('<\\\\/script>','</script>')%> <!--This tag does save properly on string, was replaced previously->
 window.content = <%- content%>
 window.puzzles = <%- JSON.stringify(escapeRoom.puzzles.map((puzzle) =>{ return {id: puzzle.id, validator:puzzle.validator, sol: puzzle.sol, title:puzzle.title, assignedReusablePuzzleInstance: puzzle.assignedReusablePuzzleInstance}}))%>

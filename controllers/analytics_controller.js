@@ -618,6 +618,8 @@ exports.downloadRaw = async (req, res) => {
                 "teamId": id,
                 "teamName": name,
                 "teamSize": teamMembers.length,
+                "userId": "",
+                // "username": "",
                 "turnoId": team.turno.id,
                 "turnoTag": team.turno.place,
                 "startTime": convertDate(startTime),
@@ -647,6 +649,8 @@ exports.downloadRaw = async (req, res) => {
                             "timestamp": convertDate(rns.when),
                             "minute": Math.round(100 * (rns.when - startTime) / 1000 / 60) / 100,
                             "event": "PUZZLE_FAILED_TO_SOLVE",
+                            "userId": rns.userId,
+                            // "username":rns.username,
                             "puzzleId": retos[r].order + 1,
                             "puzzleName": retos[r].title,
                             "puzzleSol": retos[r].sol,
@@ -660,6 +664,8 @@ exports.downloadRaw = async (req, res) => {
                     "event": "PUZZLE_SOLVED",
                     "timestamp": convertDate(retoTS),
                     "minute": Math.round(100 * (retoTS - startTime) / 1000 / 60) / 100,
+                    "userId": retos[r].retosSuperados.userId,
+                    // "username": retos[r].retosSuperados.user.username,
                     "puzzleId": retos[r].order + 1,
                     "puzzleName": retos[r].title,
                     "puzzleSol": retos[r].sol,
@@ -676,6 +682,8 @@ exports.downloadRaw = async (req, res) => {
                 logs.push({
                     ...logBase,
                     "event": h.success ? "HINT_OBTAINED" : "HINT_FAILED_TO_OBTAIN",
+                    "userId": h.userId,
+                    // "username": h.user.username,
                     "timestamp": convertDate(hintTS),
                     "minute": Math.round(100 * (hintTS - startTime) / 1000 / 60) / 100,
                     hintId,
@@ -688,7 +696,7 @@ exports.downloadRaw = async (req, res) => {
                 });
             }
         }
-
+        // Res.json(logs);
         createCsvFile(res, logs);
     } catch (e) {
         console.error(e);

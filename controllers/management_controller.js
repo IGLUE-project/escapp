@@ -24,7 +24,6 @@ exports.showReportForm = async (req, res) => {
 exports.showContact = async (req, res) => {
     const {escapeRoom} = req;
 
-    console.log(escapeRoom);
     res.render("management/contact", {"title": escapeRoom.title, "author": `${escapeRoom.author.name} ${escapeRoom.author.surname}`, "email": escapeRoom.author.username});
 };
 

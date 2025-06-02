@@ -8,9 +8,12 @@
     </p>
   	<form class="basicConfig" id="theform" method='POST' action='/escapeRooms/<%= escapeRoom.id %>/sharing'  >
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
-            <label for="license"  class="itemNarrow">1. <%=i18n.escapeRoom.steps.sharing.license%>:</label>
+            <label for="license"  class="itemNarrow">1. <%=i18n.escapeRoom.steps.sharing.license%>&nbsp;<a href="https://creativecommons.org/share-your-work/cclicenses/" target="_blank"><span class="material-icons">help</span></a>&nbsp;:</label>
+            <%if(escapeRoom.publishedOnce){%>
+            <p class="explanation"><%=i18n.escapeRoom.steps.sharing.licenseExplanationAlreadyPublished%></p>    
+            <%} else {%>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.licenseExplanation%></p>
-
+            <%}%>
             <select class="customInput itemWide" id="license" name="license" autocomplete="off" <%=escapeRoom.publishedOnce   ? "disabled" : "" %>
                 <option value="CC BY" <%=escapeRoom.license == "CC BY"   ? "selected" : "" %>> CC BY </option>
                 <option value="CC BY-NC" <%=escapeRoom.license == "CC BY-NC"   ? "selected" : "" %>> CC BY-NC </option>
@@ -19,6 +22,7 @@
                 <option value="CC BY-ND" <%=escapeRoom.license == "CC BY-ND"   ? "selected" : "" %>> CC BY-ND </option>
                 <option value="CC BY-NC-ND" <%=escapeRoom.license == "CC BY-NC-ND"   ? "selected" : "" %>> CC BY-NC-ND </option>
             </select>
+            
         </div>
 
         <!-- <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">

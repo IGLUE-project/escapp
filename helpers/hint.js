@@ -2,7 +2,7 @@ const sequelize = require("../models");
 const {models} = sequelize;
 const {getCurrentPuzzle} = require("./utils");
 
-exports.calculateNextHint = async (escapeRoom, team, status, score, category, messages) => {
+exports.calculateNextHint = async (escapeRoom, team, status, score, category, messages, userId) => {
     const success = status === "completed" || status === "passed";
 
     try {
@@ -87,14 +87,14 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                 hintOrder = allHints[currentHint].order + 1;
             }
             if (hintOrder || escapeRoom.allowCustomHints) {
-                const reqHint = models.requestedHint.build({hintId, teamId, success, score});
+                const reqHint = models.requestedHint.build({hintId, teamId, success, score, userId});
 
                 await reqHint.save();
                 return {"ok": true, msg, hintOrder, puzzleOrder, category};
             }
             return {"ok": false, "msg": messages.cantRequestMoreThis, hintOrder, puzzleOrder, category};
         }
-        const reqHint = models.requestedHint.build({"hintId": null, teamId, success, score});
+        const reqHint = models.requestedHint.build({"hintId": null, teamId, success, score, userId});
 
         await reqHint.save();
         return { "ok": false, "msg": messages.failed};

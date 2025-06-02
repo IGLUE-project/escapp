@@ -42,7 +42,6 @@
 
 <script>
     async function markAsRead(id) {
-        console.log('si')
         const result = await fetch(`/reports/${id}`, {
             method: 'POST',
             headers: {
@@ -61,7 +60,6 @@
     }
 
     async function markAsUnread(id) {
-        console.log('no')
         const result = await fetch(`/reports/${id}`, {
             method: 'POST',
             headers: {

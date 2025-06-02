@@ -226,7 +226,6 @@ exports.update = async (req, res) => {
     escapeRoom.level = body.level;
     escapeRoom.field = body.field;
     escapeRoom.format = body.format;
-    console.log({"level": body.level});
     escapeRoom.supportLink = body.supportLink;
 
     escapeRoom.teamSize = body.teamSize || 0;
@@ -375,7 +374,7 @@ exports.sharingUpdate = async (req, res) => {
         if (escapeRoom.scope) { // Only public rooms  can have a password
             escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
         } else {
-            escapeRoom.invitation = undefined;
+            escapeRoom.invitation = null;
         }
         if (!escapeRoom.publishedOnce) { // Cannot change the license of a published room
             escapeRoom.license = body.license;
@@ -430,30 +429,29 @@ exports.teamInterface = async (req, res, next) => {
 exports.classInterface = async (req, res) => {
     const {escapeRoom} = req;
 
-    const availableReusablePuzzles = await getReusablePuzzles();
     const assets = await getERAssets(escapeRoom.id);
 
-    res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "class", "endPoint": "class", assets, availableReusablePuzzles});
+    res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "class", "endPoint": "class", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
 };
 
 // GET /escapeRooms/:escapeRoomId/indications
 exports.indicationsInterface = async (req, res) => {
     const {escapeRoom} = req;
 
-    const availableReusablePuzzles = await getReusablePuzzles();
+
     const assets = await getERAssets(escapeRoom.id);
 
-    res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "indications", "endPoint": "indications", assets, availableReusablePuzzles});
+    res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "indications", "endPoint": "indications", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
 };
 
 // GET /escapeRooms/:escapeRoomId/after
 exports.afterInterface = async (req, res) => {
     const {escapeRoom} = req;
 
-    const availableReusablePuzzles = await getReusablePuzzles();
+
     const assets = await getERAssets(escapeRoom.id);
 
-    res.render("escapeRooms/steps/after", {escapeRoom, "progress": "after", "endPoint": "after", assets, availableReusablePuzzles});
+    res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "after", "endPoint": "after", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
 };
 
 

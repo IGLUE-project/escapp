@@ -7,6 +7,8 @@ const {nextStep, prevStep} = require("../helpers/progress");
 const {ckeditorResponse} = require("../helpers/utils");
 const queries = require("../queries");
 const path = require("path");
+const ejs = require("ejs");
+
 const fs = require("fs");
 const StreamZip = require("node-stream-zip");
 
@@ -338,16 +340,29 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
     const {puzzle_id, file_name } = req.params;
 
     try {
-        let name = undefined;
-        if(puzzle_id !== "forms") {
-            const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
-            name = reusablePuzzle ? reusablePuzzle.name : null;
-        }else{ //If they are asking for a hardcoded form
-            name = puzzle_id;
-        }
-        const filePath = path.join(__dirname, `/../reusablePuzzles/${name}/${file_name}`);
+        let name;
 
-        res.sendFile(filePath);
+        if (puzzle_id !== "forms") {
+            const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
+
+            name = reusablePuzzle ? reusablePuzzle.name : null;
+            const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${name}/${file_name}`);
+
+            res.sendFile(filePath);
+        } else { // If they are asking for a hardcoded form
+            name = puzzle_id;
+            const { i18n } = res.locals;
+            const filePath = path.join(__dirname, `/../reusablePuzzles/${name}/${file_name}`);
+            // Render the EJS file with i18n context
+
+            ejs.renderFile(filePath, {i18n}, {}, function (err, data) {
+                if (err) {
+                    throw new Error(err);
+                }
+                res.setHeader("Content-type", "text/html");
+                res.send(data);
+            });
+        }
     } catch (err) {
         console.error(err);
         next(err);
@@ -357,17 +372,24 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
 exports.getFormForInstance = async (req, res, next) => {
     const {puzzle_id} = req.params;
 
-    try{
-        const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id)
+    try {
+        const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id);
         const reusable = await models.reusablePuzzle.findByPk(instance.reusablePuzzleId);
-        const config = JSON.parse(reusable.config)
-        const regex = new RegExp(/\/reusablePuzzles\/[0-9]*\//) //Non hardcoded forms
-        config.url = config.url.replace(regex,"/reusablePuzzles/"+reusable.name+"/")
+        const config = JSON.parse(reusable.config);
+        const regex = new RegExp(/\/reusablePuzzles\/[0-9]*\//); // Non hardcoded forms
+
+        config.url = config.url.replace(regex, `/reusablePuzzles/installed/${reusable.name}/`);
         const filePath = path.join(__dirname, "/../", config.url);
 
-        res.sendFile(filePath);
+        ejs.renderFile(filePath, {"i18n": res.locals.i18n}, {}, function (err, data) {
+            if (err) {
+                throw new Error(err);
+            }
+            res.setHeader("Content-type", "text/html");
+            res.send(data);
+        });
     } catch (err) {
         console.error(err);
         next(err);
     }
-}
+};
