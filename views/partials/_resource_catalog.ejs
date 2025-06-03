@@ -39,17 +39,17 @@
             </p>
             <%}%>
             <div class="resources-group">
-                    <% 
+                    <%
                     availableReusablePuzzles.forEach(puzzle => {
-                
+
                         let goodConfig;
-                        try { 
+                        try {
                             goodConfig = JSON.parse(puzzle.config);
-                        } catch(e) { 
-                            console.error("Error parsing JSON:", puzzle.config); 
+                        } catch(e) {
+                            console.error("Error parsing JSON:", puzzle.config);
                         }
                     %>
-                    
+
                      <div class="resource-card">
                         <% if( goodConfig && goodConfig?.thumbnail) {%>
                             <img src="/reusablePuzzles/<%=puzzle.dataValues.reusablePuzzleId%>/<%=goodConfig?.thumbnail%>"/>
@@ -57,15 +57,15 @@
                             <img src="/images/keypad.png"/>
                         <%} %>
                         <%=puzzle.id%>
-                        <button 
-                            class="resourceCatalogBtn" 
+                        <button
+                            class="resourceCatalogBtn"
                             data-name = "<%=puzzle.name%>"
                             data-description = <%=puzzle.description%>
-                            <%if (escapeRoom.puzzles.length == 0) {%> 
-                                disabled 
+                            <%if (escapeRoom.puzzles.length == 0) {%>
+                                disabled
                                 title="<%=i18n.escapeRoom.steps.indications.front.catalog.interactiveResourcesNotAllowed%>"
                                 style = "cursor: help;"
-                            <%} else {%> 
+                            <%} else {%>
                                 onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.dataValues.reusablePuzzleId%> )"
                             <%}%>>
                             <span class="building-block-icon material-icons"> add </span>
@@ -90,7 +90,7 @@
         </section>-->
         <section id="configZone" hidden>
             <div class="configReusablePuzzle">
-                <form action="reusablePuzzleInstance" style="background-image:url('../images/background.png')" method="POST" id="configForm">
+                <form action="reusablePuzzleInstance" onsubmit="send(event,this)" style="background-image:url('../images/background.png')" method="POST" id="configForm">
                 </form>
                 <div class="previewReusablePuzzle">
                     <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
@@ -117,7 +117,7 @@
                             <p><%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
                         </a>
                     </button>
-                
+
 
         </div>
     </div>
@@ -137,12 +137,12 @@
             </tr>
             <% } %>
             <%if(endPoint==="team"){
-                reusablePuzzlesInstances.map(puzzle=> { 
-                let goodConfig={}; 
-                try{ 
+                reusablePuzzlesInstances.map(puzzle=> {
+                let goodConfig={};
+                try{
                     goodConfig = JSON.parse(puzzle.config)
-                } catch(e){ 
-                    console.error("Error parsing JSON:", puzzle.config); 
+                } catch(e){
+                    console.error("Error parsing JSON:", puzzle.config);
             }%>
                 <tr id="p-<%=puzzle.id%>" class="catalogItem">
                     <td>
@@ -182,8 +182,8 @@
                                 </div>
                             </button>
 
-                            <button class="rounded listButton addButton" 
-                                onclick='insertAndScrollContent(0,"catalog",{url:`/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/<%=puzzle.id%>/render`, puzzleId:"<%=puzzle.id%>",  config: <%=JSON.stringify(puzzle.config)%>,  mime:"application/reusable"}, [window.puzzles.findIndex(p=>p.id == <%=JSON.parse(puzzle.config).puzzle%>)])'>
+                            <button class="rounded listButton addButton"
+                                onclick='insertAndScrollContent(0,"reusable", "<%=puzzle.id%>", [window.puzzles.findIndex(p=>p.id == <%=JSON.parse(puzzle.config).puzzle%>)])'>
                                 <span class="building-block-icon material-icons" id="add"> add
                                 </span>
                                 <p>
@@ -231,7 +231,7 @@
                                             </span>
                                         </button>
                                         <button class="listButton iconButton editButton"
-                                            onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                            onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'>
                                             <span class="building-block-icon material-icons" id="edit"> edit
                                             </span>
                                         </button>
@@ -245,9 +245,9 @@
                                                 <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
                                             </div>
                                         </button>
-                                             
+
                                         <button class="rounded listButton addButton"
-                                            onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                            onclick='insertAndScrollContent(0,"asset", "<%=asset.id%>", puzzleList)'>
                                             <span class="building-block-icon material-icons" id="add"> add
                                             </span>
                                             <p>
@@ -262,8 +262,8 @@
                                     <td>
                                         <p class="title"><%=asset.filename%></p>
                                     </td>
-                                    <td> 
-                                        <span class="building-block-icon material-icons" id="red"> videocam </span> 
+                                    <td>
+                                        <span class="building-block-icon material-icons" id="red"> videocam </span>
                                     </td>
                                     <td>
                                         <div class=" button-group row-button">
@@ -281,7 +281,7 @@
                                                 <span class="building-block-icon material-icons" id="delete"> delete_outline </span>
                                             </button>
                                             <button class="listButton iconButton editButton"
-                                                onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'>
                                                 <span class="building-block-icon material-icons" id="edit"> edit  </span>
                                             </button>
                                             <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
@@ -291,7 +291,7 @@
                                                 <div class="tooltip-link" id="link-copied">  <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>  </div>
                                             </button>
                                             <button class="rounded listButton addButton"
-                                                onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                            onclick='insertAndScrollContent(0,"asset","<%=asset.id%>", puzzleList)'>
                                                 <span class="building-block-icon material-icons" id="add"> add </span>
                                                 <p><%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%></p>
                                             </button>
@@ -312,7 +312,7 @@
                                                 <div class=" overlay-trigger" data-id="<%=asset.id%>">
                                                     <p class="text-overlay">
                                                         <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
-                                                    </p> 
+                                                    </p>
                                                     <button class="deleteButton" type="button"
                                                         onclick='overlayTriggerCatalog("<%=asset.id%>", true)'><%=i18n.common.cancel%></button>
                                                     <button class="acceptButton" type="button"
@@ -324,7 +324,7 @@
                                                         delete_outline </span>
                                                 </button>
                                                 <button class="listButton iconButton editButton"
-                                                    onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                    onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'>
                                                     <span class="building-block-icon material-icons" id="edit">
                                                         edit
                                                     </span>
@@ -340,7 +340,7 @@
                                                     </div>
                                                 </button>
                                                 <button class="rounded listButton addButton"
-                                                    onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                    onclick='insertAndScrollContent(0,"asset","<%=asset.id%>", puzzleList)'>
                                                     <span class="building-block-icon material-icons" id="add">
                                                         add
                                                     </span>
@@ -377,7 +377,7 @@
                                                             delete_outline </span>
                                                     </button>
                                                     <button class="listButton iconButton editButton"
-                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'>
                                                         <span class="building-block-icon material-icons" id="edit"> edit
                                                         </span>
                                                     </button>
@@ -392,7 +392,7 @@
                                                     </button>
 
                                                     <button class="rounded listButton addButton"
-                                                        onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                        onclick='insertAndScrollContent(0,"asset","<%=asset.id%>", puzzleList)'>
                                                         <span class="building-block-icon material-icons" id="add"> add
                                                         </span>
                                                         <p>
@@ -428,7 +428,7 @@
                                                             delete_outline </span>
                                                     </button>
                                                     <button class="listButton iconButton editButton"
-                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'>
                                                         <span class="building-block-icon material-icons" id="edit"> edit
                                                         </span>
                                                     </button>
@@ -443,7 +443,7 @@
                                                     </button>
 
                                                     <button class="rounded listButton addButton"
-                                                        onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                        onclick='insertAndScrollContent(0,"asset", "<%=asset.id%>", puzzleList)'>
                                                         <span class="building-block-icon material-icons" id="add"> add
                                                         </span>
                                                         <p>
@@ -480,7 +480,7 @@
                                                             delete_outline </span>
                                                     </button>
                                                     <button disabled class="listButton iconButton editButton"
-                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>", "<%=asset.config%>")'>
+                                                        onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'>
                                                         <span class="building-block-icon material-icons" id="edit"> edit
                                                         </span>
                                                     </button>
@@ -495,7 +495,7 @@
                                                     </button>
 
                                                     <button disabled class="rounded listButton addButton"
-                                                        onclick='insertAndScrollContent(0,"catalog",{url:"<%=asset.url%>",config: "<%=asset.config%>",  mime:"<%=asset.mime%>"}, puzzleList)'>
+                                                        onclick='insertAndScrollContent(0,"asset", "<%=asset.id%>", puzzleList)'>
                                                         <span class="building-block-icon material-icons" id="add"> add
                                                         </span>
                                                         <p>
@@ -555,7 +555,7 @@
         resources.removeAttr('hidden');
 
         $(".sections").scrollTop(0);
-        const modal = $("#modalCatalogResource");
+        const modal = $(".modalCatalogResource");
         if(modal.hasClass("active")) {
             $('body').css("overflow", "scroll");
         } else {
@@ -563,7 +563,6 @@
             window.scrollTo(0, 0);
         }
         modal.toggleClass("active");
-
     }
 
     function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, puzzleDesc) {
@@ -572,7 +571,7 @@
             <h3 style="margin: 0;"> ${ puzzleName } </h3>
             <p> ${ puzzleDesc } </p>
             <h4 class="titleLabelEdit">
-                <%=i18n.escapeRoom.steps.indications.front.catalog.config.nameDescription%> 
+                <%=i18n.escapeRoom.steps.indications.front.catalog.config.nameDescription%>
             </h4>
             <div>
                 <label for="name">
@@ -617,9 +616,9 @@
                     <label for="puzzleSol">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
                     </label>
-                    
-                    <input id="puzzleSol" value=${window.puzzles ? window.puzzles[0].sol : ""} 
-                        onchange="updateIframe(config, ${puzzle.id})" 
+
+                    <input id="puzzleSol" value=${window.puzzles ? window.puzzles[0].sol : ""}
+                        onchange="updateIframe(config, ${puzzle.id})"
                         name="puzzleSol"/>
                     <span ${window.puzzles && window.puzzles[0]?.assignedReusablePuzzleInstance && window.puzzles[0]?.assignedReusablePuzzleInstance != puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
                     warning
@@ -644,9 +643,11 @@
                 <h4 class="titleLabelEdit"> Customization </h4>
             </div>
         `
-       
+
     }
-    function editPuzzle(id, mime, jsonPuzzle) {
+    function editPuzzle(id, mime) {
+        $('.previewReusablePuzzle').show();
+        const jsonPuzzle = window.reusablePuzzleInstances.find(p => p.id == id);
         toggleCatalogModal();
         openPuzzleConfiguration(jsonPuzzle, jsonPuzzle.reusablePuzzleId);
         return;
@@ -681,7 +682,8 @@
         updateIframe(config, reusablePuzzleId);
     }
 
-    function editAsset(id, mime, config) {
+    function editAsset(id, mime) {
+        const config = window.assets.find(a => a.id == id).config;
         const configJSON = parseAssetConfig(mime, config);
         const dialog = $('#editDialog');
         const form = dialog.find('form');
@@ -810,24 +812,27 @@
             return `<div>${item.name}</div>`;
         }
         form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
-        
+        $('.previewReusablePuzzle').hide();
+
         dialog.dialog({
             modal: true,
             resizable: false,
+            height: "auto",
             width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
             show: {
                 effect: "scale",
-                duration: 400
+                duration: 200
             },
             hide: {
                 effect: "scale",
-                duration: 400
+                duration: 200
             },
         }).show()
     }
 
     function parseAssetConfig(mime, config) {
         if (!config) return {};
+        if (typeof config === "object"){return config}
         let configJSON = {};
         if(mime.search(reusableRegex) !== -1){
             configJSON = JSON.parse(config)
@@ -875,23 +880,6 @@
         }
     }
 
-    function createPuzzle() {
-
-        dialog.dialog({
-            modal: true,
-            resizable: false,
-            width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
-            height: "auto",
-            show: {
-                effect: "scale",
-                duration: 400
-            },
-            hide: {
-                effect: "scale",
-                duration: 400
-            },
-        }).show()
-    }
 
     function deleteReusablePuzzleInstance(id) {
         fetch(`/escapeRooms/${escapeRoomId}/reusablePuzzleInstance/${id}`, {
@@ -917,11 +905,20 @@
         }
     }
 
-    function insertAndScrollContent(index, type, payload, puzzles) {
+    function insertAndScrollContent(index, type, id, puzzles) {
+        let payload = {};
+
+        if(type === "reusable") {
+            const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
+            payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
+        }else{
+            const asset = window.assets.find(p => p.id == id);
+            payload = { mime: asset.mime, config: asset.config, url: asset.url}
+        }
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
-        insertContent(index, type, payload, puzzles);
+        insertContent(index, "catalog", payload, puzzles);
         if($('.building-block').children().last().offset()) {
             window.scrollTo(0, $('.building-block').children().last().offset().top);
         }
@@ -957,7 +954,15 @@
 
     function openPuzzleConfiguration(puzzle, baseId){
         const configZone = $('#configZone');
-        const config = JSON.parse(puzzle.config);
+        let config = puzzle.config;
+        if(typeof config === 'string') {
+            try {
+                config = JSON.parse(config);
+            } catch (e) {
+                console.error("Error parsing puzzle config:", e);
+                config = {};
+            }
+        }
         const configForm = $('#configForm');
         const resources = $('.sectionAddResource');
         const puzzleName = puzzle.name;
@@ -965,7 +970,8 @@
         configForm.empty();
         configZone.removeAttr('hidden');
         resources.attr('hidden', true);
-        
+        window.currentOpenPuzzleConfig = config;
+
         if(config.url || puzzle.id){
             fetch(config.url ? config.url : `/reusablePuzzlesInstances/${puzzle.id}/form`)
             .then(response => response.text())
@@ -1078,26 +1084,31 @@
                 return;
             }
             res.json().then((resJSON)=>{
-                if(resJSON.type !== "reusable"){
-                    const row = $('#resourceCatalog').find((`#${resJSON.id}`))
-                    const editButton = row.find('.editButton');
-                    const addButton = row.find('.addButton');
-                    const regex = new RegExp(/(.*\(.*) ("[^"]*")(.*)/);
-                    editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
-                    addButton.attr('onclick', addButton.attr('onclick').replace(regex, `$1 "${resJSON.config}" $3`));
+                if(resJSON.type === "reusable"){
+                    window.reusablePuzzleInstances.forEach((puzzle) => {
+                        if(puzzle.id == resJSON.id) {
+                            puzzle.config = resJSON.config;
+                            puzzle.name = resJSON.name;
+                            puzzle.description = resJSON.description;
+                        }
+                    });
+                    toggleCatalogModal();
+                    const row = $(`#p-${resJSON.id}`);
+                    row.find('.title').text(resJSON.name);
                 } else {
-                    const row = $('#resourceCatalog').find((`#p-${resJSON.id}`))
-                    const editButton = row.find('.editButton');
-                    const addButton = row.find('.addButton');
-                    const regex = new RegExp(/(.*\(.*)(config\":)(.*)(}\))/);
-                    const regexAdd = new RegExp(/(.*\(.*)(config: ")(.*)(,\s*mime.*)/);
-                    editButton.attr('onclick', editButton.attr('onclick').replace(regex, `$1$2"${JSON.stringify(resJSON.config).replaceAll("\"", "\\\"")}"$4`));
-                    addButton.attr('onclick', addButton.attr('onclick').replace(regexAdd, `$1$2${JSON.stringify(resJSON.config).replaceAll("\"", "\\\"")}"$4`));
+                    window.assets.forEach((asset) => {
+                        if(asset.id == resJSON.id) {
+                            asset.config = resJSON.config;
+                        }
+                    });
+                    if($('#editDialog').hasClass("ui-dialog-content")) {
+                        $('#editDialog').dialog('close');
+                    }
                 }
             })
         });
         e.preventDefault();
-        $('#editDialog').dialog('close');
+
     }
 
     window.onload = function() {

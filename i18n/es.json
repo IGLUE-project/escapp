@@ -1304,6 +1304,25 @@
                 "other": "Otro"
             }
         }
+    },"reusablePuzzleApps": {
+        "keypad": {
+            "selectSkin": "Select Skin",
+            "Standard": "Standard",
+            "Retro": "Retro",
+            "Futuristic": "Futuristic",
+            "actionAfterSolve": "Action after solving",
+            "none": "None",
+            "sendMessage": "Send a message",
+            "Message": "Message",
+            "MessagePlaceholder": "Message to send after solving",
+            "BackgroundURL": "Background URL",
+            "BackgroundURLPlaceholder": "Background image URL. You can copy it from your resource catalog",
+            "KeyStyle": "Key style",
+            "Numbers": "Numbers",
+            "Letters": "Letters",
+            "Symbols": "Symbols",
+            "None": "Ninguna"
+        }
     }
 
 }

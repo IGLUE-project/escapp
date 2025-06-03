@@ -48,6 +48,11 @@ document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConf
 document.getElementById("messageInput").value =  window.currentOpenPuzzleConfig?.message || '';
 document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
 document.getElementById("actionValue").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'None';
+if( window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
+    document.getElementById("actionDiv").style.display = 'block';
+} else {
+    document.getElementById("actionDiv").style.display = 'none';
+}
 
 
 </script>
