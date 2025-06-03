@@ -258,6 +258,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             trimedConfig.validator = null;
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
+            reusablePuzzleInstance = reusablePuzzle;
             newInstanceId = reusablePuzzle.id;
         } else {
             reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
@@ -291,15 +292,8 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             }
             config.puzzleSol = undefined;
         }
-
         t.commit();
-        //if (newInstanceId === "") {
-        //    res.json({config, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
-        //} else {
-        
-            res.json({config, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
-        //}
-
+        res.json({config, "name": reusablePuzzleInstance.name, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -333,11 +327,14 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
+        const referrer = req.get("Referrer");
+        const preview = Boolean(referrer && referrer.match("/team$"));
         const config = {
             ...JSON.parse(reusablePuzzleInstance.config),
             solutionLength,
             "escappClientSettings": {
                 "endpoint": `${hostName}/api/escapeRooms/${reusablePuzzleInstance.escapeRoomId}`,
+                preview,
                 "linkedPuzzleIds": [linkedPuzzle ? linkedPuzzle.order + 1 : null],
                 "user": {
                     "email": req.session.user.username,

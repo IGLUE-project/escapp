@@ -147,7 +147,7 @@ exports.auth = async (req, res, next) => {
     const {teams, escapeRoom, user} = req;
     const authentication = true;
     const {token} = user;
-    
+
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
 
@@ -170,7 +170,6 @@ exports.auth = async (req, res, next) => {
 
 // First time a team clicks the start button
 exports.startPlaying = async (req, res, next) => {
-
     const {teams, escapeRoom, user} = req;
     const authentication = true;
     const {token} = user;

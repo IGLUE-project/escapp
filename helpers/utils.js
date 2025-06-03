@@ -172,7 +172,7 @@ exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escape
 
 exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({"attributes": ["name", "description", "config", ["id", "reusablePuzzleId"]]});
 
-exports.getReusablePuzzlesInstances = (id) => models.reusablePuzzleInstance.findAll({where:{"escapeRoomId":id}});
+exports.getReusablePuzzlesInstances = (id) => models.reusablePuzzleInstance.findAll({"where": {"escapeRoomId": id}});
 
 exports.getERPuzzlesAndHints = (escapeRoomId) => models.puzzle.findAll({
     "where": {escapeRoomId},
@@ -465,7 +465,6 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
 
 
 exports.validationError = ({instance, path, validatorKey}, i18n) => {
-
     try {
         if (i18n[instance.constructor.name] &&
             i18n[instance.constructor.name].attributes &&

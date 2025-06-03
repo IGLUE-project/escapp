@@ -129,13 +129,12 @@
                 <col span="1" style="width: 20%;">
                 <col span="1" style="width: 30%;">
             </colgroup>
-            <% if(assets.length != 0 || reusablePuzzlesInstances.length != 0) {%>
-            <tr class="tableTitles">
+             <tr class="tableTitles">
                 <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.name%></th>
                 <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
                 <th></th>
             </tr>
-            <% } %>
+             
             <%if(endPoint==="team"){
                 reusablePuzzlesInstances.map(puzzle=> {
                 let goodConfig={};
@@ -194,15 +193,18 @@
                     </td>
                 </tr>
                 <% })} %>
-                    <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
-                        <tr class="catalogItem">
-                            <td colspan="3" style="text-align: center; height:200px">
-                                <p class="title">
-                                    <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
-                                </p>
-                            </td>
-                        </tr>
-                    <% } %>
+                
+                    
+                    <tr class="catalogItem" id="noResources">
+                        <td colspan="3" style="text-align: center; height:200px
+                        <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
+                               <%}else{%>; display: none;<%}%>">
+                            <p class="title">
+                                <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
+                            </p>
+                        </td>
+                    </tr>
+                    
                     <% assets.map(asset=> {%>
                         <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
                             <tr class="catalogItem" id=<%=asset.id%> >
@@ -1094,6 +1096,61 @@
                     });
                     toggleCatalogModal();
                     const row = $(`#p-${resJSON.id}`);
+                    window.reusablePuzzleInstances.push(resJSON)
+                    console.log(row)
+                    if(!row.length) {
+
+                        $('#myTabContent tr:last').after(`<tr class="catalogItem" id=p-${resJSON.id}>
+                            <td>
+                                <p class="title">
+                                    ${resJSON.name}
+                                </p>
+                            </td>
+                            <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span>
+                            </td>
+                            <td>
+                                <div class=" button-group row-button">
+                                    <div class="overlay-trigger" data-id="${resJSON.id}">
+                                        <p class="text-overlay">
+                                            <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                        </p>
+                                        <button class="deleteButton" type="button"
+                                            onclick='overlayTriggerCatalog("${resJSON.id}", true)'><%=i18n.common.cancel%></button>
+                                        <button class="acceptButton" type="button"
+                                            onclick='deleteReusablePuzzleInstance("${resJSON.id}")'><%=i18n.common.accept%></button>
+                                    </div>
+                                    <button class="listButton iconButton delete-button"
+                                        onclick="overlayTriggerCatalog('${resJSON.id}', false)">
+                                        <span class="building-block-icon material-icons" id="delete">
+                                            delete_outline </span>
+                                    </button>
+                                    <button class="listButton iconButton editButton"
+                                        onclick="editPuzzle('${resJSON.id}', 'application/reusable', '${JSON.stringify({reusablePuzzleId: resJSON.reusablePuzzleId, name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config})})">
+                                        <span class="building-block-icon material-icons" id="edit"> edit
+                                        </span>
+                                    </button>
+                                    <button class="listButton linkButton" onclick='copyURl("${resJSON.url}")'>
+                                        <span class="building-block-icon material-icons" id="link"> link
+                                        </span>
+                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
+                                        <div class="tooltip-link" id="link-copied">
+                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                        </div>
+                                    </button>
+
+                                    <button class="rounded listButton addButton"
+                                        onclick='insertAndScrollContent(0,"reusable", "${resJSON.id}", [window.puzzles.findIndex(p=>p.id == ${resJSON.config.puzzle})])'>
+                                        <span class="building-block-icon material-icons" id="add"> add
+                                        </span>
+                                        <p>
+                                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                        </p>
+                                    </button>
+                                    </div>
+                            </td>
+                        </tr>`);
+                    }
+                    $('#noResources').hide();
                     row.find('.title').text(resJSON.name);
                 } else {
                     window.assets.forEach((asset) => {
@@ -1120,8 +1177,10 @@
                 const formData = new FormData(closestForm);
                 const newConfig = Object.fromEntries(formData.entries());
                 newConfig.solutionLength = $("#puzzleSol").val().length;
+                console.log(formData);
+                console.log(newConfig);
                 if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
-                    updateIframe(newConfig,1);
+                    updateIframe(newConfig,newConfig.reusablePuzzleId);
                 }
             }
         });
