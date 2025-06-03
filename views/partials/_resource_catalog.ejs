@@ -568,7 +568,7 @@
     }
 
     function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, puzzleDesc) {
-        return `
+         return `
         <div class="editDialog">
             <h3 style="margin: 0;"> ${ puzzleName } </h3>
             <p> ${ puzzleDesc } </p>
@@ -610,17 +610,15 @@
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.assignedPuzzle%>
                 </h4>
                     <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzle.id},config,${reusablePuzzleId})"  name="puzzle">
-                        ${window.puzzles.map((puzzle,index) => {
-                            return `<option value="${puzzle.id}">${puzzle.title}</option>`
+                        ${window.puzzles.map((puzzler,index) => {
+                            return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>`
                         }).join('')}
                     </select>
                     <div>
                     <label for="puzzleSol">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
                     </label>
-
-                    <input id="puzzleSol" value=${window.puzzles ? window.puzzles[0].sol : ""}
-                        onchange="updateIframe(config, ${puzzle.id})"
+                     <input id="puzzleSol" value="${(window.puzzles && (window.puzzles.find(p=> p.id == config.puzzle).sol !== undefined)) ? (window.puzzles.find(p=> p.id == config.puzzle).sol):""}" onchange="updateIframe(config, ${puzzle.id})"
                         name="puzzleSol"/>
                     <span ${window.puzzles && window.puzzles[0]?.assignedReusablePuzzleInstance && window.puzzles[0]?.assignedReusablePuzzleInstance != puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
                     warning
