@@ -24,12 +24,14 @@
                     <p><%=i18n.escapeRoom.steps.indications.front.ranking%></p>
                     <img class="building-block-img" src="/images/ranking.png" />
                 </button>
+                <%if(endPoint!=="class"){%>
                 <button onclick='insertGamification(0,"progress",{}, puzzleList)' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
                     <p><%=i18n.escapeRoom.steps.indications.front.progress%></p>
                     <span class="building-block-icon material-icons" style="color: var(--lightred);">
                         show_chart </span>
                 </button>
+                <%}%>
             </div>
         </section>
         <section class="sectionAddResource">
