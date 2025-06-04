@@ -913,14 +913,17 @@
         if(type === "reusable") {
             const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
             payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
-        }else{
+        }else if (type == "asset"){
             const asset = window.assets.find(p => p.id == id);
+            type = "catalog"
             payload = { mime: asset.mime, config: asset.config, url: asset.url}
-        }
+        }  
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
-        insertContent(index, "catalog", payload, puzzles);
+
+         insertContent(index, type, payload, puzzles);
+       
         if($('.building-block').children().last().offset()) {
             window.scrollTo(0, $('.building-block').children().last().offset().top);
         }
