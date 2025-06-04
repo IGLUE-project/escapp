@@ -618,7 +618,7 @@
                     <label for="puzzleSol">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
                     </label>
-                     <input id="puzzleSol" value="${(window.puzzles && (window.puzzles.find(p=> p.id == config.puzzle).sol !== undefined)) ? (window.puzzles.find(p=> p.id == config.puzzle).sol):""}" onchange="updateIframe(config, ${puzzle.id})"
+                     <input id="puzzleSol" value="${(window.puzzles && (window.puzzles.find(p=> p.id == config?.puzzle)?.sol !== undefined)) ? (window.puzzles.find(p=> p.id == config?.puzzle)?.sol):window.puzzles[0]?.sol || ""}" onchange="updateIframe(config, ${puzzle.id})"
                         name="puzzleSol"/>
                     <span ${window.puzzles && window.puzzles[0]?.assignedReusablePuzzleInstance && window.puzzles[0]?.assignedReusablePuzzleInstance != puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
                     warning

@@ -577,6 +577,7 @@ exports.clone = async (req, res, next) => {
 // GET /escapeRoomsAdmin
 
 exports.admin = async (req, res, next) => {
+    const {search} = req.query;
     const user = req.user || req.session.user;
     let page = parseInt(req.query.page || 1, 10);
 
@@ -596,7 +597,7 @@ exports.admin = async (req, res, next) => {
         } else {
             const pageArray = paginate(page, pages, 5);
 
-            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true});
+            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
         }
     } catch (error) {
         next(error);
