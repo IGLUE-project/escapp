@@ -6,7 +6,7 @@ const {nextStep, prevStep} = require("./progress");
 const cloudinary = require("cloudinary");
 const ejs = require("ejs");
 const queries = require("../queries");
-const {OK, NOT_A_PARTICIPANT, PARTICIPANT, NOK, NOT_ACTIVE, NOT_STARTED, TOO_LATE, AUTHOR, ERROR} = require("../helpers/apiCodes");
+const {OK, NOT_A_PARTICIPANT, AUTHOR, PARTICIPANT, NOK, NOT_ACTIVE, NOT_STARTED, TOO_LATE, ERROR} = require("../helpers/apiCodes");
 const {getRetosSuperados, byRanking, getPuzzleOrderSuperados} = require("./analytics");
 const {removeDiacritics} = require("./diacritics.js");
 const fs = require("fs");
@@ -46,6 +46,7 @@ exports.saveInterface = async (name, req, res, next) => {
 
 exports.playInterface = async (name, req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
+            isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
 
     req.escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPuzzles);
@@ -53,7 +54,7 @@ exports.playInterface = async (name, req, res, next) => {
 
     const {token} = await models.user.findByPk(req.session.user.id);
 
-    if (name === "class" && (isAdmin || isAuthor)) {
+    if (name === "class" && (isAdmin || isAuthor || isCoAuthor)) {
         res.render("escapeRooms/play/play", {
             "escapeRoom": req.escapeRoom,
             cloudinary,
@@ -227,10 +228,11 @@ exports.getScore = (puzzlesSolved, puzzleData, successHints, failHints, attendan
     return score;
 };
 
-exports.checkTurnoAccess = (teams, user, escapeRoom) => {
+exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     let participation = PARTICIPANT;
-
-    if (teams && teams.length > 0) {
+    if (preview && (user.isAdmin || (escapeRoom.authorId === user.id) ||  escapeRoom.userCoAuthor.some((co) => user.id === co.id))) {
+        participation = AUTHOR;
+    } else if (teams && teams.length > 0) {
         const [team] = teams;
 
         if (team.turno.status === "pending") {
@@ -242,8 +244,6 @@ exports.checkTurnoAccess = (teams, user, escapeRoom) => {
         } else {
             participation = PARTICIPANT;
         }
-    } else if (escapeRoom.authorId === user.id) {
-        participation = AUTHOR;
     } else {
         participation = NOT_A_PARTICIPANT;
     }
@@ -251,7 +251,7 @@ exports.checkTurnoAccess = (teams, user, escapeRoom) => {
     return participation;
 };
 
-exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, readOnly = false) => {
+exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, readOnly = false, preview = false) => {
     // eslint-disable-next-line no-undefined
     const answer = solution === undefined || solution === null ? "" : solution;
     // eslint-disable-next-line no-undefined
@@ -288,7 +288,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             correctAnswer = removeDiacritics(answer.toString().toLowerCase().trim()) === removeDiacritics(puzzleSol.toString().toLowerCase().trim());
             break;
         default:
-            throw new Error("Error during puzzle validatin");
+            throw new Error("Error during puzzle validation");
         }
         if (correctAnswer) {
             msg = puzzle.correct || i18n.escapeRoom.play.correct;
@@ -296,11 +296,11 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             status = 423;
             msg = puzzle.fail || i18n.escapeRoom.play.wrong;
         }
-        const participationCode = await exports.checkTurnoAccess(teams, user, escapeRoom);
+        const participationCode = await exports.checkTurnoAccess(teams, user, escapeRoom, preview);
 
         participation = participationCode;
         alreadySolved = Boolean(await models.retosSuperados.findOne({"where": {"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true}}, {transaction}));
-        if (participation === PARTICIPANT) {
+        if (participation === PARTICIPANT ) {
             try {
                 if (correctAnswer) {
                     code = OK;
@@ -319,21 +319,27 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
                 status = 500;
                 msg = e.message;
             }
+        } else if (participation === AUTHOR){
+            if (correctAnswer) {
+                code = OK;
+            }
+             status = correctAnswer ? 202 : 423;
         } else {
             status = correctAnswer ? 202 : 423;
         }
         await transaction.commit();
-        if (teams && teams.length) {
+        if (participation !== AUTHOR && (teams && teams.length)) {
             const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
 
             erState = await exports.getERState(escapeRoom.id, teams[0], escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed);
         }
     } catch (e) {
+        console.error(e)
         await transaction.rollback();
         status = 500;
         code = ERROR;
         msg = e;
-    }
+     }
     return {status, "body": {code, correctAnswer, alreadySolved, "authentication": true, "token": user.token, participation, msg, erState}};
 };
 

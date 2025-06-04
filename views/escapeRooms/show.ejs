@@ -223,9 +223,9 @@
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.puzzles%>:
                         <% const someAutomatic = escapeRoom.puzzles && escapeRoom.puzzles.length > 0 && escapeRoom.puzzles.some(p=>p.automatic); %>
-                        <% if (someAutomatic) { %>
-                            <br/><button id="api-button"><span class="material-icons">info</span></button>
-                        <% } %>
+                        <% // if (someAutomatic) { %>
+                            <!-- <br/><button id="api-button"><span class="material-icons">info</span></button> -->
+                        <% // } %>
                     </div>
                     <div class="flexShowRight previewPuzzles">
                         <%if (escapeRoom.puzzles && escapeRoom.puzzles.length > 0) {%>

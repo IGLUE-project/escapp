@@ -8,7 +8,7 @@
 
         </div>
         <div style="margin: 4rem"></div>
-        <div class="sections">
+        <div class="sections" <%if(endPoint=="class"){%> style="height: auto;"<%}%>> 
         <section class="sectionAddResource">
             <p class="title-section ">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.gamificationElements%>
@@ -24,18 +24,22 @@
                     <p><%=i18n.escapeRoom.steps.indications.front.ranking%></p>
                     <img class="building-block-img" src="/images/ranking.png" />
                 </button>
+                <%if(endPoint!=="class"){%>
                 <button onclick='insertGamification(0,"progress",{}, puzzleList)' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
                     <p><%=i18n.escapeRoom.steps.indications.front.progress%></p>
                     <span class="building-block-icon material-icons" style="color: var(--lightred);">
                         show_chart </span>
                 </button>
+                <%}%>
             </div>
         </section>
         <section class="sectionAddResource">
+            <%if(availableReusablePuzzles.length){%>
             <p class="title-section">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.interactiveResources%>
             </p>
+            <%}%>
             <div class="resources-group">
                     <%
                     availableReusablePuzzles.forEach(puzzle => {
@@ -127,13 +131,12 @@
                 <col span="1" style="width: 20%;">
                 <col span="1" style="width: 30%;">
             </colgroup>
-            <% if(assets.length != 0 || reusablePuzzlesInstances.length != 0) {%>
-            <tr class="tableTitles">
+             <tr class="tableTitles">
                 <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.name%></th>
                 <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
                 <th></th>
             </tr>
-            <% } %>
+             
             <%if(endPoint==="team"){
                 reusablePuzzlesInstances.map(puzzle=> {
                 let goodConfig={};
@@ -192,15 +195,18 @@
                     </td>
                 </tr>
                 <% })} %>
-                    <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
-                        <tr class="catalogItem">
-                            <td colspan="3" style="text-align: center; height:200px">
-                                <p class="title">
-                                    <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
-                                </p>
-                            </td>
-                        </tr>
-                    <% } %>
+                
+                    
+                    <tr class="catalogItem" id="noResources">
+                        <td colspan="3" style="text-align: center; height:200px
+                        <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
+                               <%}else{%>; display: none;<%}%>">
+                            <p class="title">
+                                <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
+                            </p>
+                        </td>
+                    </tr>
+                    
                     <% assets.map(asset=> {%>
                         <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
                             <tr class="catalogItem" id=<%=asset.id%> >
@@ -564,7 +570,7 @@
     }
 
     function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, puzzleDesc) {
-        return `
+         return `
         <div class="editDialog">
             <h3 style="margin: 0;"> ${ puzzleName } </h3>
             <p> ${ puzzleDesc } </p>
@@ -606,17 +612,15 @@
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.assignedPuzzle%>
                 </h4>
                     <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzle.id},config,${reusablePuzzleId})"  name="puzzle">
-                        ${window.puzzles.map((puzzle,index) => {
-                            return `<option value="${puzzle.id}">${puzzle.title}</option>`
+                        ${window.puzzles.map((puzzler,index) => {
+                            return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>`
                         }).join('')}
                     </select>
                     <div>
                     <label for="puzzleSol">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
                     </label>
-
-                    <input id="puzzleSol" value=${window.puzzles ? window.puzzles[0].sol : ""}
-                        onchange="updateIframe(config, ${puzzle.id})"
+                     <input id="puzzleSol" value="${(window.puzzles && (window.puzzles.find(p=> p.id == config?.puzzle)?.sol !== undefined)) ? (window.puzzles.find(p=> p.id == config?.puzzle)?.sol):window.puzzles[0]?.sol || ""}" onchange="updateIframe(config, ${puzzle.id})"
                         name="puzzleSol"/>
                     <span ${window.puzzles && window.puzzles[0]?.assignedReusablePuzzleInstance && window.puzzles[0]?.assignedReusablePuzzleInstance != puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
                     warning
@@ -647,6 +651,7 @@
         $('.previewReusablePuzzle').show();
         const jsonPuzzle = window.reusablePuzzleInstances.find(p => p.id == id);
         toggleCatalogModal();
+        console.log(jsonPuzzle)
         openPuzzleConfiguration(jsonPuzzle, jsonPuzzle.reusablePuzzleId);
         return;
     }
@@ -905,18 +910,26 @@
 
     function insertAndScrollContent(index, type, id, puzzles) {
         let payload = {};
+        let newType = type;
 
         if(type === "reusable") {
             const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
             payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
+            newType = "catalog"
+       } else if(type === "countdown" || type === "progress" || type === "ranking") {
+            payload = id;
         }else{
             const asset = window.assets.find(p => p.id == id);
+            type = "catalog"
             payload = { mime: asset.mime, config: asset.config, url: asset.url}
+            newType = "catalog"
         }
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
-        insertContent(index, "catalog", payload, puzzles);
+
+
+        insertContent(index, newType, payload, puzzles);
         if($('.building-block').children().last().offset()) {
             window.scrollTo(0, $('.building-block').children().last().offset().top);
         }
@@ -1092,6 +1105,63 @@
                     });
                     toggleCatalogModal();
                     const row = $(`#p-${resJSON.id}`);
+                    console.log(resJSON);
+                    window.reusablePuzzleInstances.push(resJSON)
+                    console.log(row)
+                    if(!row.length) {
+                        const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
+                        console.log(config)
+                        $('#myTabContent tr:last').after(`<tr class="catalogItem" id=p-${resJSON.id}>
+                            <td>
+                                <p class="title">
+                                    ${resJSON.name}
+                                </p>
+                            </td>
+                            <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span>
+                            </td>
+                            <td>
+                                <div class=" button-group row-button">
+                                    <div class="overlay-trigger" data-id="${resJSON.id}">
+                                        <p class="text-overlay">
+                                            <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                        </p>
+                                        <button class="deleteButton" type="button"
+                                            onclick='overlayTriggerCatalog("${resJSON.id}", true)'><%=i18n.common.cancel%></button>
+                                        <button class="acceptButton" type="button"
+                                            onclick='deleteReusablePuzzleInstance("${resJSON.id}")'><%=i18n.common.accept%></button>
+                                    </div>
+                                    <button class="listButton iconButton delete-button"
+                                        onclick="overlayTriggerCatalog('${resJSON.id}', false)">
+                                        <span class="building-block-icon material-icons" id="delete">
+                                            delete_outline </span>
+                                    </button>
+                                    <button class="listButton iconButton editButton"
+                                        onclick="editPuzzle('${resJSON.id}', 'application/reusable', ${config})">
+                                        <span class="building-block-icon material-icons" id="edit"> edit
+                                        </span>
+                                    </button>
+                                    <button class="listButton linkButton" onclick='copyURl("${resJSON.url}")'>
+                                        <span class="building-block-icon material-icons" id="link"> link
+                                        </span>
+                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
+                                        <div class="tooltip-link" id="link-copied">
+                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                        </div>
+                                    </button>
+
+                                    <button class="rounded listButton addButton"
+                                        onclick='insertAndScrollContent(0,"reusable", "${resJSON.id}", [window.puzzles.findIndex(p=>p.id == ${resJSON.config.puzzle})])'>
+                                        <span class="building-block-icon material-icons" id="add"> add
+                                        </span>
+                                        <p>
+                                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                        </p>
+                                    </button>
+                                    </div>
+                            </td>
+                        </tr>`);
+                    }
+                    $('#noResources').hide();
                     row.find('.title').text(resJSON.name);
                 } else {
                     window.assets.forEach((asset) => {
@@ -1118,7 +1188,6 @@
                 const formData = new FormData(closestForm);
                 const newConfig = Object.fromEntries(formData.entries());
                 newConfig.solutionLength = $("#puzzleSol").val().length;
-                console.log(formData);
                 console.log(newConfig);
                 if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
                     updateIframe(newConfig,newConfig.reusablePuzzleId);

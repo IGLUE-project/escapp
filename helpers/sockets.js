@@ -270,7 +270,7 @@ exports.checkAccess = async (user, escapeRoomId, i18n, waiting) => {
 
         if (escapeRoom) {
             const teams = await user.getTeamsAgregados(queries.user.erTeam(escapeRoomId));
-            const participation = await checkTurnoAccess(teams, user, escapeRoom, true);
+            const participation = await checkTurnoAccess(teams, user, escapeRoom, false);
 
             // TODO comprobar author turno está en ER
             if (teams && teams.length) {
@@ -411,7 +411,7 @@ exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n) => {
 
         if (escapeRoom) {
             const teams = await user.getTeamsAgregados(queries.user.erTeam(escapeRoomId));
-            const participation = await checkTurnoAccess(teams, user, escapeRoom, true);
+            const participation = await checkTurnoAccess(teams, user, escapeRoom, false);
             const {code, msg} = getAuthMessageAndCode(participation, i18n, true);
 
             // TODO comprobar author turno está en ER
