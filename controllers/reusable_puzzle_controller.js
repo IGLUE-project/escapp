@@ -294,7 +294,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
         t.commit();
         if (newInstanceId === "") {
-            res.json({config, name: reusablePuzzleInstance.name, description: reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+            res.json({config, "name": reusablePuzzleInstance.name, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
         } else {
             res.redirect("back");
         }

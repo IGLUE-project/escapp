@@ -10,6 +10,7 @@ const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationErro
 const es = require("../i18n/es");
 const en = require("../i18n/en");
 const fs = require("fs");
+const path = require("path");
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -162,13 +163,13 @@ exports.create = async (req, res) => {
         }
 
         try {
-            await attHelper.checksCloudinaryEnv();
-            const uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options);
+            // Await attHelper.checksCloudinaryEnv();
+            // Const uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options);
 
             try {
                 await models.attachment.create({
-                    "public_id": uploadResult.public_id,
-                    "url": uploadResult.url,
+                    "public_id": req.file.originalname,
+                    "url": `/uploads/thumbnails/${req.file.filename}`,
                     "filename": req.file.originalname,
                     "mime": req.file.mimetype,
                     "escapeRoomId": er.id
@@ -178,7 +179,8 @@ exports.create = async (req, res) => {
                 console.error(error);
                 await transaction.rollback();
                 req.flash("error", i18n.common.flash.errorImage);
-                attHelper.deleteResource(uploadResult.public_id, models.attachment);
+                fs.unlinkSync(req.file.path);
+                // AttHelper.deleteResource(uploadResult.public_id, models.attachment);
             }
         } catch (error) {
             console.error(error);
@@ -240,7 +242,8 @@ exports.update = async (req, res) => {
             // There is no attachment: Delete old attachment.
             if (!req.file) {
                 if (er.attachment) {
-                    attHelper.deleteResource(er.attachment.public_id, models.attachment);
+                    fs.unlinkSync(path.join(__dirname, "/../", er.attachment.url));
+                    // AttHelper.deleteResource(er.attachment.public_id, models.attachment);
                     er.attachment.destroy();
                 }
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
@@ -248,30 +251,37 @@ exports.update = async (req, res) => {
             }
             try {
                 // Save the new attachment into Cloudinary:
-                await attHelper.checksCloudinaryEnv();
-                const uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options);
+                // Await attHelper.checksCloudinaryEnv();
+                // Const uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options);
                 // Remember the public_id of the old image.
-                const old_public_id = er.attachment ? er.attachment.public_id : null;
+                const old_url = er.attachment ? er.attachment.url : null;
                 let attachment = await er.getAttachment();
 
                 if (!attachment) {
                     attachment = models.attachment.build({"escapeRoomId": er.id});
                 }
-                attachment.public_id = uploadResult.public_id;
-                attachment.url = uploadResult.url;
+                attachment.public_id = req.file.originalname;
+                attachment.url = `/uploads/thumbnails/${req.file.filename}`,
                 attachment.filename = req.file.originalname;
                 attachment.mime = req.file.mimetype;
                 try {
                     await attachment.save();
-                    if (old_public_id) {
-                        attHelper.deleteResource(old_public_id, models.attachment);
+                    if (old_url) {
+                        try {
+                            fs.unlinkSync(path.join(__dirname, "/../", old_url));
+                        } catch (e) {
+                            console.error("Error deleting old attachment file:", e);
+                        }
+                        // AttHelper.deleteResource(old_public_id, models.attachment);
                     }
                 } catch (error) { // Ignoring image validation errors
                     console.error(error);
                     req.flash("error", i18n.common.flash.errorFile);
-                    attHelper.deleteResource(uploadResult.public_id, models.attachment);
+                    fs.unlinkSync(req.file.path);
+                    // AttHelper.deleteResource(uploadResult.public_id, models.attachment);
                 }
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
+                return;
             } catch (error) {
                 console.error(error);
                 req.flash("error", i18n.common.flash.errorFile);
@@ -390,26 +400,31 @@ exports.sharingUpdate = async (req, res) => {
         escapeRoom.status = body.status;
 
         const instructionsFile = req.file;
-        console.log(body.keepInstructions);
 
         if (instructionsFile && instructionsFile.filename) {
-            if( escapeRoom.instructions) {
-                fs.unlinkSync(escapeRoom.instructions);
+            try {
+                fs.unlinkSync(path.join(__dirname, "/../uploads/instructions/", escapeRoom.instructions));
+            } catch (e) {
+                console.error("Error deleting old instructions file:", e);
             }
-            escapeRoom.instructions = instructionsFile.path;
-        } else if( body.keepInstructions === "0") {
-                fs.unlinkSync(escapeRoom.instructions);
-                escapeRoom.instructions = null;
+            escapeRoom.instructions = instructionsFile.filename;
+        } else if (body.keepInstructions === "0") {
+            try {
+                fs.unlinkSync(path.join(__dirname, "/../uploads/instructions/", escapeRoom.instructions));
+            } catch (e) {
+                console.error("Error deleting old instructions file:", e);
+            }
+            escapeRoom.instructions = null;
         }
 
 
-        await escapeRoom.save({"fields": ["invitation", "scope", "license","instructions", "status", "publishedOnce"], transaction});
+        await escapeRoom.save({"fields": ["invitation", "scope", "license", "instructions", "status", "publishedOnce"], transaction});
         await transaction.commit();
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("sharing") : progressBar || nextStep("sharing")}`);
     } catch (error) {
         await transaction.rollback();
         console.error(error);
-        if(req.file){
+        if (req.file) {
             fs.unlinkSync(req.file.path);
         }
         if (error instanceof Sequelize.ValidationError) {
@@ -494,8 +509,9 @@ exports.destroy = async (req, res, next) => {
     try {
         await req.escapeRoom.destroy({}, {transaction});
         if (req.escapeRoom.attachment) { // Delete the attachment at Cloudinary (result is ignored)
-            await attHelper.checksCloudinaryEnv();
-            await attHelper.deleteResource(req.escapeRoom.attachment.public_id, models.attachment);
+            fs.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
+            // Await attHelper.checksCloudinaryEnv();
+            // Await attHelper.deleteResource(req.escapeRoom.attachment.public_id, models.attachment);
         }
         await transaction.commit();
         req.flash("success", i18n.common.flash.successDeletingER);

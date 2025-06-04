@@ -393,3 +393,17 @@ exports.getFormForInstance = async (req, res, next) => {
         next(err);
     }
 };
+
+
+exports.returnThumbnail = async (req, res, next) => {
+    const {file_name} = req.params;
+
+    console.log(path.join(__dirname, `../uploads/thumbnails/${file_name}`));
+    res.sendFile(path.join(__dirname, `../uploads/thumbnails/${file_name}`));
+};
+
+exports.returnInstructions = async (req, res, next) => {
+    const {file_name} = req.params;
+
+    res.sendFile(path.join(__dirname, `../uploads/instructions/${file_name}`));
+};

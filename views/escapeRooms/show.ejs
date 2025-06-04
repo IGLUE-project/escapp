@@ -135,7 +135,11 @@
             <div class="flexShow">
                 <div class="attachmentShow" >
                     <% var attachment = escapeRoom.attachment; %>
-                    <%- include ("../attachments/_show",{attachment, id: escapeRoom.id}) %>
+                    <% if(attachment){ %>
+                        <img  alt="None" src="<%=attachment.url%>">
+                    <% }else{ %>
+                        <img  alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
+                    <% } %>
                     <%if (!escapeRoom.status || escapeRoom.status == "draft") {%>
                     <span class="status-ribbon"><a href="/escapeRooms/<%= escapeRoom.id %>/sharing"><%=i18n.escapeRoom.steps.sharing.status.draft%></a></span>
                     <% } %>
@@ -164,6 +168,17 @@
                         <%= escapeRoom.duration %> min.
                     </div>
                 </div>
+                <%if(escapeRoom.instructions){%>
+                    <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 150ms;">
+                        <div class="flexShowLeft">
+                            <%=i18n.escapeRoom.steps.sharing.instructions%>
+                        </div>
+                        <div class="flexShowRight">
+                            <a href="/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
+                                <button><%=i18n.common.see%> <span class="material-icons">picture_as_pdf</span> </button> </a>
+                        </div>
+                    </div>
+                <%}%>
                 <%var delay = 150%>
                 <% if (escapeRoom.description){ %>
                     <% delay += 50 %>
