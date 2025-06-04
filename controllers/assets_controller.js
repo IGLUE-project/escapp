@@ -131,12 +131,16 @@ exports.deleteAssets = async (req, res) => {
 
     try {
         const assets = await models.asset.findAll({"where": { "escapeRoomId": req.escapeRoom.id }});
+
         const asset = assets.find((a) => a.id.toString() === assetId.toString());
+        const areCopies = await models.asset.count({"where": {"public_id": asset.public_id}}) > 1
 
         if (asset) {
             if (!asset.url.includes("http")) {
                 try {
-                    fs.unlinkSync(path.join(__dirname, `uploads/${asset.public_id}`));
+                    if(!areCopies){
+                        fs.unlinkSync(path.join(__dirname, `../uploads/${asset.public_id}`));
+                    }
                 } catch (err) {
                     console.error("File does not exists, deleting from DB");
                 }
@@ -152,6 +156,7 @@ exports.deleteAssets = async (req, res) => {
             res.json({"msg": i18n.api.notFound});
         }
     } catch (err) {
+        console.error(err)
         res.status(500);
         res.json({"msg": i18n.api.error});
     }
