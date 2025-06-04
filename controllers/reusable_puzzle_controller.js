@@ -294,6 +294,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         }
         t.commit();
         res.json({config, "name": reusablePuzzleInstance.name, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+
     } catch (e) {
         console.error(e);
         t.rollback();

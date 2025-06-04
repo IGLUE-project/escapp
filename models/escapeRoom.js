@@ -145,7 +145,8 @@ module.exports = function (sequelize, DataTypes) {
             "publishedOnce": {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
-            }
+            },
+            "instructions": {"type": DataTypes.TEXT}
         }
     );
 };
