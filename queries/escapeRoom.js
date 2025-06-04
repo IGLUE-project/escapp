@@ -264,10 +264,16 @@ exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
     "order": [["id", "desc"]]
 });
 
-exports.forAll = (page = 1, limit = 10) => ({
+exports.forAll = (page = 1, limit = 10, search = "") => ({
     "attributes": ["id", "title", "invitation"],
     "include": [models.attachment],
     limit,
+    "where": {
+        [Op.or]: [
+            {"title": {[Op.iLike]: `%${search}%`}},
+            {"description": {[Op.iLike]: `%${search}%`}}
+    ]
+    },
     "offset": (page - 1) * limit,
     "order": [["id", "desc"]]
 });

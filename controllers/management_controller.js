@@ -4,7 +4,7 @@ exports.showReports = async (req, res) => {
     const reports = await models.report.findAll({
         "include": [
             {"model": models.user, "attributes": ["name", "surname"]},
-            {"model": models.escapeRoom, "attributes": ["title"]}
+            {"model": models.escapeRoom, "attributes": ["id","title"]}
         ],
         "order": [["readed", "ASC"], ["createdAt", "DESC"]]
 
