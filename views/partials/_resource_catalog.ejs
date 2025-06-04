@@ -920,6 +920,7 @@
             payload = id;
         }else{
             const asset = window.assets.find(p => p.id == id);
+            type = "catalog"
             payload = { mime: asset.mime, config: asset.config, url: asset.url}
             newType = "catalog"
         }
