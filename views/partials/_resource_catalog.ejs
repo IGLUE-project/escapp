@@ -8,7 +8,7 @@
 
         </div>
         <div style="margin: 4rem"></div>
-        <div class="sections" <%if(endPoint=="class"){%> style="height: auto;"<%}%>> 
+        <div class="sections" <%if(endPoint=="class"){%> style="height: auto;"<%}%>>
         <section class="sectionAddResource">
             <p class="title-section ">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.gamificationElements%>
@@ -136,7 +136,7 @@
                 <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
                 <th></th>
             </tr>
-             
+
             <%if(endPoint==="team"){
                 reusablePuzzlesInstances.map(puzzle=> {
                 let goodConfig={};
@@ -195,8 +195,8 @@
                     </td>
                 </tr>
                 <% })} %>
-                
-                    
+
+
                     <tr class="catalogItem" id="noResources">
                         <td colspan="3" style="text-align: center; height:200px
                         <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
@@ -206,7 +206,7 @@
                             </p>
                         </td>
                     </tr>
-                    
+
                     <% assets.map(asset=> {%>
                         <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
                             <tr class="catalogItem" id=<%=asset.id%> >
@@ -215,7 +215,7 @@
                                         <%=asset.filename%>
                                     </p>
                                 </td>
-                                <td> <span class="building-block-icon material-icons btn-purple"> image </span>
+                                <td> <span class="building-block-icon material-icons btn-blue"> image </span>
                                 </td>
                                 <td>
                                     <div class=" button-group row-button">
@@ -309,7 +309,7 @@
                                                 <%=asset.filename%>
                                             </p>
                                         </td>
-                                        <td> <span class="building-block-icon material-icons btn-purple">
+                                        <td> <span class="building-block-icon material-icons btn-yellow">
                                                 music_note </span> </td>
                                         <td>
                                             <div class=" button-group row-button">
@@ -465,7 +465,7 @@
                                                     <%=asset.filename%>
                                                 </p>
                                             </td>
-                                            <td> <span class="building-block-icon material-icons btn-purple">
+                                            <td> <span class="building-block-icon material-icons btn-gray">
                                                     question_mark </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">

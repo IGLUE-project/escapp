@@ -2747,6 +2747,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .catalogItem .btn-red {
   background: rgb(185, 62, 68);
 }
+#resourceCatalog .catalogItem .btn-yellow {
+  background: #F9D66A;
+}
 #resourceCatalog .catalogItem .btn-gray {
   background: rgb(75, 82, 87);
 }
