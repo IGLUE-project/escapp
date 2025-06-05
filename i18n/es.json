@@ -543,7 +543,9 @@
                             "controls": "Controles",
                             "download": "Descarga",
                             "nameDescription": "Nombre y descripción",
-                            "options": "Opciones"
+                            "options": "Opciones",
+                            "warningPuzzleChange": "Si has cambiado la solución del reto debes guardar este formulario primero para que los cambios estén disponibles en la vista previa"
+
                         }
                     }
                 }

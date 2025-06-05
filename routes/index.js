@@ -16,7 +16,7 @@ const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
 const managementController = require("../controllers/management_controller");
-const {instructions, thumbnails, hints, upload} = require("../controllers/multer_controller")
+const {instructions, thumbnails, hints, upload} = require("../controllers/multer_controller");
 
 
 router.all("*", sessionController.deleteExpiredUserSession);

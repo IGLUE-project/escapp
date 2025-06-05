@@ -8,7 +8,7 @@
 
         </div>
         <div style="margin: 4rem"></div>
-        <div class="sections" <%if(endPoint=="class"){%> style="height: auto;"<%}%>> 
+        <div class="sections" <%if(endPoint=="class"){%> style="height: auto;"<%}%>>
         <section class="sectionAddResource">
             <p class="title-section ">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.gamificationElements%>
@@ -136,7 +136,7 @@
                 <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
                 <th></th>
             </tr>
-             
+
             <%if(endPoint==="team"){
                 reusablePuzzlesInstances.map(puzzle=> {
                 let goodConfig={};
@@ -195,8 +195,8 @@
                     </td>
                 </tr>
                 <% })} %>
-                
-                    
+
+
                     <tr class="catalogItem" id="noResources">
                         <td colspan="3" style="text-align: center; height:200px
                         <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
@@ -206,7 +206,7 @@
                             </p>
                         </td>
                     </tr>
-                    
+
                     <% assets.map(asset=> {%>
                         <% if (asset.mime.search(new RegExp(/image\/.*/))!==-1){ %>
                             <tr class="catalogItem" id=<%=asset.id%> >
@@ -215,7 +215,7 @@
                                         <%=asset.filename%>
                                     </p>
                                 </td>
-                                <td> <span class="building-block-icon material-icons btn-purple"> image </span>
+                                <td> <span class="building-block-icon material-icons btn-blue"> image </span>
                                 </td>
                                 <td>
                                     <div class=" button-group row-button">
@@ -309,7 +309,7 @@
                                                 <%=asset.filename%>
                                             </p>
                                         </td>
-                                        <td> <span class="building-block-icon material-icons btn-purple">
+                                        <td> <span class="building-block-icon material-icons btn-yellow">
                                                 music_note </span> </td>
                                         <td>
                                             <div class=" button-group row-button">
@@ -465,7 +465,7 @@
                                                     <%=asset.filename%>
                                                 </p>
                                             </td>
-                                            <td> <span class="building-block-icon material-icons btn-purple">
+                                            <td> <span class="building-block-icon material-icons btn-gray">
                                                     question_mark </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
@@ -620,12 +620,12 @@
                     <label for="puzzleSol">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
                     </label>
-                     <input id="puzzleSol" value="${(window.puzzles && (window.puzzles.find(p=> p.id == config?.puzzle)?.sol !== undefined)) ? (window.puzzles.find(p=> p.id == config?.puzzle)?.sol):window.puzzles[0]?.sol || ""}" onchange="updateIframe(config, ${puzzle.id})"
+                     <input id="puzzleSol" value="${(window.puzzles && (window.puzzles.find(p=> p.id == config?.puzzle)?.sol !== undefined)) ? (window.puzzles.find(p=> p.id == config?.puzzle)?.sol):window.puzzles[0]?.sol || ""}" onchange="updateIframe(config, ${puzzle.id});$('#warningMessageForReusablePuzzleCreation').show()"
                         name="puzzleSol"/>
                     <span ${window.puzzles && window.puzzles[0]?.assignedReusablePuzzleInstance && window.puzzles[0]?.assignedReusablePuzzleInstance != puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
                     warning
                     </span>
-                    <select name="validator">
+                    <select name="validator"  id="inputValidator" onchange = "$('#warningMessageForReusablePuzzleCreation').show()">
                             <option value="exact" ${window.puzzles && window.puzzles[0]?.validator && window.puzzles[0].validator === 'exact' ? "selected" : null }>
                                 <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
                             </option>
@@ -640,6 +640,10 @@
                             </option>
                         </select>
                             </div>
+                    <span id="warningMessageForReusablePuzzleCreation" style="display:none;">
+                        <span class="material-icons">warning</span>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.config.warningPuzzleChange%>
+                    </span>        
             </div>
             <div class="editDialog" id="appendFormElementsHere">
                 <h4 class="titleLabelEdit"> Customization </h4>
@@ -657,6 +661,7 @@
     }
 
     function setPuzzleSol(id, config, reusablePuzzleId) {
+
         const puzzleSol = $('#puzzleSol');
         const puzzleId = $('#associatedPuzzle').val();
         const span = $('#warningSpan');
@@ -664,6 +669,7 @@
         const puzzleSelected = window.puzzles.find(p => p.id == puzzleId);
         const assignDiv = $('#assignPuzzDiv');
 
+        
         if(puzzleSelected) {
             puzzleSol.val(puzzleSelected.sol)
             if (puzzleSelected.assignedReusablePuzzleInstance && puzzleSelected.assignedReusablePuzzleInstance != id) {
@@ -674,7 +680,7 @@
             $(`#inputValidator option:selected`).attr("selected", "null");
             $(`#inputValidator option[value="${puzzleSelected.validator}"]`).attr("selected", "selected");
             assignDiv.show();
-            validator.show()
+            validator.show();
         } else {
             puzzleSol.val("");
             span.hide();
@@ -1177,6 +1183,10 @@
         });
         e.preventDefault();
 
+    }
+
+    function addChangeSolWarning() {
+        $('#warningMessageForReusablePuzzleCreation').show()
     }
 
     window.onload = function() {

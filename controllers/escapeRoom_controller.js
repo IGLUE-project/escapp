@@ -138,10 +138,10 @@ exports.new = (_req, res) => {
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, supportLink, forceLang, invitation} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
 
-    const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, authorId, forceLang}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, authorId, forceLang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
@@ -158,7 +158,7 @@ exports.create = async (req, res) => {
 
         if (!req.file) {
             await transaction.commit();
-            res.redirect(`/escapeRooms/${escapeRoom.id}/puzzles`);
+            res.redirect(`/escapeRooms/${escapeRoom.id}/${progress || nextStep("edit")}`);
             return;
         }
 
@@ -181,17 +181,20 @@ exports.create = async (req, res) => {
                 req.flash("error", i18n.common.flash.errorImage);
                 fs.unlinkSync(req.file.path);
                 // AttHelper.deleteResource(uploadResult.public_id, models.attachment);
+                res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
+                return;
             }
         } catch (error) {
             console.error(error);
             await transaction.rollback();
             req.flash("error", i18n.common.flash.errorFile);
+            res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
+            return;
         }
-        await transaction.commit();
-        res.redirect(`/escapeRooms/${er.id}/${nextStep("edit")}`);
+        res.redirect(`/escapeRooms/${escapeRoom.id}/${progress || nextStep("edit")}`);
     } catch (error) {
-        await transaction.rollback();
         console.error(error);
+        await transaction.rollback();
         if (error instanceof Sequelize.ValidationError) {
             console.error(error);
             error.errors.forEach((err) => {

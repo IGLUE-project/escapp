@@ -273,7 +273,7 @@ exports.forAll = (page = 1, limit = 10, search = "") => ({
         [Op.or]: [
             {"title": {[Op.iLike]: `%${search}%`}},
             {"description": {[Op.iLike]: `%${search}%`}}
-    ]
+        ]
     },
     "offset": (page - 1) * limit,
     "order": [["id", "desc"]]

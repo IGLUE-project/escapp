@@ -129,17 +129,18 @@ exports.checkPuzzleSolution = async (req, res, next) => {
 
         req.response = await checkPuzzle(solution, puzzle, escapeRoom, teams, user, i18n, true, req.body.preview);
         const {code, correctAnswer, participation, authentication, msg, erState} = req.response.body;
+
         if (participation === PARTICIPANT) {
             await automaticallySetAttendance(teams[0], user.id, escapeRoom.automaticAttendance);
             const [team] = teams;
 
             puzzleChecked(team.id, code, code === "OK" ? correctAnswer : null, solution, puzzle.order + 1, participation, authentication, erState, msg, i18n.escapeRoom.api.participation[participation]);
-        } else if (participation === AUTHOR){
+        } else if (participation === AUTHOR) {
             puzzleChecked(null, code, code === "OK" ? correctAnswer : null, solution, puzzle.order + 1, participation, authentication, erState, msg, i18n.escapeRoom.api.participation[participation]);
         }
         next();
     } catch (e) {
-        console.error(e)
+        console.error(e);
         next(e);
     }
 };
