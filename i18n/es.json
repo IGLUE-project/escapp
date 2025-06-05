@@ -605,6 +605,7 @@
                 "title": "Publicación",
                 "description": "Puedes compartir tu escape room con otros profesores para que la utilicen en sus clases. Puedes hacerlo público para que los alumnos puedan apuntarse a ella desde la página principal de escapp",
                 "license": "Licencia",
+                "instructions": "Teacher instructions",
                 "status": {
                     "name": "Estado",
                     "draft": "Borrador",

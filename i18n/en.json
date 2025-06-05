@@ -615,6 +615,7 @@
                 "title": "Publication",
                 "description": "You can publish your escape room so that other teachers can use it. You can also make it public so that students can see it in the home page and sign up for it",
                 "license": "License",
+                "instructions": "Instrucciones para profesores",
                 "status": {
                     "name": "Status",
                     "draft": "Draft",

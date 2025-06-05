@@ -1,16 +1,16 @@
 <%- include ("../../partials/_header.ejs") %>
- 
+
 <div role="main" class="main steps step-sharing">
 	<%- include ("../../partials/_breadcrumbStep") %>
-	<h1><%=i18n.escapeRoom.steps.sharing.title%></h1>  
+	<h1><%=i18n.escapeRoom.steps.sharing.title%></h1>
 	<p class="intro-paragraph">
     	<%=i18n.escapeRoom.steps.sharing.description%>
     </p>
-  	<form class="basicConfig" id="theform" method='POST' action='/escapeRooms/<%= escapeRoom.id %>/sharing'  >
+  	<form class="basicConfig" id="theform" enctype="multipart/form-data"  method='POST' action='/escapeRooms/<%= escapeRoom.id %>/sharing'  >
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
             <label for="license"  class="itemNarrow">1. <%=i18n.escapeRoom.steps.sharing.license%>&nbsp;<a href="https://creativecommons.org/share-your-work/cclicenses/" target="_blank"><span class="material-icons">help</span></a>&nbsp;:</label>
             <%if(escapeRoom.publishedOnce){%>
-            <p class="explanation"><%=i18n.escapeRoom.steps.sharing.licenseExplanationAlreadyPublished%></p>    
+            <p class="explanation"><%=i18n.escapeRoom.steps.sharing.licenseExplanationAlreadyPublished%></p>
             <%} else {%>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.licenseExplanation%></p>
             <%}%>
@@ -22,7 +22,37 @@
                 <option value="CC BY-ND" <%=escapeRoom.license == "CC BY-ND"   ? "selected" : "" %>> CC BY-ND </option>
                 <option value="CC BY-NC-ND" <%=escapeRoom.license == "CC BY-NC-ND"   ? "selected" : "" %>> CC BY-NC-ND </option>
             </select>
-            
+
+        </div>
+        <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
+            <label for="license"  class="itemNarrow">2. <%=i18n.escapeRoom.steps.sharing.instructions%></label>
+			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.publication%></p>
+            <input class="attach" type="file" id="instructions" name="instructions"/>
+            <label for="instructions" class="fileUpload customInput itemWide">
+              <span id="imgLabel" >
+                <% if (escapeRoom.id && escapeRoom.instructions) { %>
+                  <%=escapeRoom.instructions || "Default" %>
+                <% } else { %>
+                  <%=i18n.escapeRoom.steps.edit.noFileUploaded%>
+                <% } %>
+              </span>
+              <span id="upload"
+                <% if (escapeRoom.id && escapeRoom.instructions) { %>
+                  style="display: none;"
+                <% } %>
+                class="fileUploadButton">
+                  <span class="material-icons">file_upload</span>
+              </span>
+              <span id="delete"
+                <% if (!escapeRoom.id && !escapeRoom.instructions) { %>
+                  style="display: none;"
+                <% } %>
+                class="fileUploadButton">
+                  <span class="material-icons">delete</span>
+                </span>
+                <input type="text" class="inputFormField erFormField" style="opacity:0;" aria-label="Force focus"/>
+                <input type="hidden" name="keepInstructions" id="keepInstructions" value="<%= (escapeRoom.id && escapeRoom.instructions) ? "1" : "0" %>" >
+            </label>
         </div>
 
         <!-- <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
@@ -34,9 +64,9 @@
                 <option value="completed" <%=escapeRoom.status == "completed"  ? "selected" : "" %>><%=i18n.escapeRoom.steps.sharing.status.completed%></option>
             </select>
         </div> -->
-        
+
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
-            <label for="scope"  class="itemNarrow">2. <%=i18n.showTeacher.titles["scope"]%>:</label>
+            <label for="scope"  class="itemNarrow">3. <%=i18n.showTeacher.titles["scope"]%>:</label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.scopeExplanation%></p>
 
             <select class="customInput itemWide" id="scope" name="scope" autocomplete="off">
@@ -44,15 +74,15 @@
                 <option value="private" <%=Boolean(escapeRoom.scope) ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["private"]%></option>
             </select>
         </div>
-        
+
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms; <%=Boolean(escapeRoom.scope) ?  '' : 'display: none;'%>" id = "invitationBlock"   ">
             <label for="invitation"  class="itemNarrow">3. <%=i18n.showTeacher.titles.password%>:</label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.invitationExplanation%></p>
 
-            <input type="text" class="customInput itemWide" id="invitation" name="invitation" value="<%= escapeRoom.invitation %>"  
+            <input type="text" class="customInput itemWide" id="invitation" name="invitation" value="<%= escapeRoom.invitation %>"
                     placeholder="<%=i18n.escapeRoom.steps.edit.passwordPlaceHolder%>" autocomplete="off"/>
         </div>
-         
+
         <%var isDraft = (!escapeRoom.status || (escapeRoom.status == "draft"))%>
          <div class="toggle-container animated slideInUp <%if(isDraft){%>draft<%}%>" style="animation-delay:600ms;">
             <h2 class="escapeRoomStatusP">
@@ -79,11 +109,11 @@
                     <li><input type="checkbox" disabled <%if(completed[6]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step7%> <%if(!completed[6]){%> <input type="submit" class="hidden-submit" name="progress" value="after"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
                     <li><input type="checkbox" disabled <%if(completed[7]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step8%> <%if(!completed[7]){%> <input type="submit" class="hidden-submit" name="progress" value="evaluation"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
                 </ul>
- 
+
             <%}else{%>
-                <p><%=i18n.escapeRoom.steps.sharing.checklist.congrats%> 
+                <p><%=i18n.escapeRoom.steps.sharing.checklist.congrats%>
                 <%if(escapeRoom.scope){%>
-                    <%=i18n.escapeRoom.steps.sharing.checklist.congrats2%> 
+                    <%=i18n.escapeRoom.steps.sharing.checklist.congrats2%>
                     <a href="/escapeRooms/<%= escapeRoom.id %>/turnos" class="link-turnos-share">
                         <span class="material-icons">open_in_new</span>
                     </a>
@@ -122,7 +152,7 @@ $('#scope').on('change', function(e){
 				$('#invitationBlock').hide();
                 break;
             case 'private':
-				$('#invitationBlock').show(); 
+				$('#invitationBlock').show();
                 break;
             default:
                 break;
@@ -138,8 +168,42 @@ function confirmSubmit(e) {
     }else{
     return false ;
     }
-    
+
 }
 $('#theswitch').click(confirmSubmit)
+</script>
+<script type="text/javascript">
+
+$(function(){
+    $('#instructions').on("change", function(e){
+      let path = $(this).val();
+      try {
+        let fileNameArr = path.split("\\");
+        let fileName = fileNameArr[fileNameArr.length - 1];
+        if(fileName) {
+          $('#delete').show();
+          $('#upload').hide();
+          $('#imgLabel').html(fileName);
+        }
+      } catch (e) {
+          $('#delete').hide();
+          $('#upload').show();
+          $('#imgLabel').html("<%=i18n.escapeRoom.steps.edit.noImageUploaded%>");
+      }
+    });
+
+    $('#delete').on('click', function(e){
+        e.preventDefault();
+        $('#delete').hide();
+        $('#upload').show();
+        $('#imgLabel').html("<%=i18n.escapeRoom.steps.edit.noImageUploaded%>");
+        $('#keepInstructions').val("0");
+    })
+
+})
+
+
+
+
 </script>
 <%- include ("../../partials/_scrollListener") %>

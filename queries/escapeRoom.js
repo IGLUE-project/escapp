@@ -7,6 +7,7 @@ exports.load = {
             "model": models.user,
             "as": "author"
         },
+        {"model": models.attachment},
         {
             "model": models.user,
             "as": "userCoAuthor",
