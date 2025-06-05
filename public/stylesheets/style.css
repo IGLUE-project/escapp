@@ -1457,6 +1457,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border: transparent;
   color: white;
 }
+.escapeRooms .escapeRoomFilters .filter-button:hover {
+  transform: scale(1.5);
+}
 .escapeRooms .flexBoxEscapeRooms {
   padding: 1em;
   border: 2px solid white;
