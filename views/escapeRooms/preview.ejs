@@ -51,7 +51,7 @@
                 <%if(escapeRoom.duration){%>
                     <div>
                         <h3><%=i18n.showTeacher.titles.duration%></h3>
-                        <p><%=escapeRoom.duration%></p>
+                        <p><%=escapeRoom.duration%></p> min.
                     </div>
                 <%}%>
                 <%if(escapeRoom.format){%>
@@ -60,11 +60,14 @@
                         <p><%=i18n.escapeRoom.format[escapeRoom.format]%></p>
                     </div>
                 <%}%>
-                <%if(escapeRoom.instructions && user.isStudent === false){%>
+                <%if(escapeRoom.instructions && !user.isStudent){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.instructions%></h3>
                         <a href="/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
-                            <button><%=i18n.common.see%> <span class="material-icons">picture_as_pdf</span> </button> </a>
+                            <button class="rounded"><%=i18n.common.download%> 
+                                <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
+                            </button>
+                        </a>
                     </div>
                 <%}%>
                 <%if(escapeRoom.forceLang){%>

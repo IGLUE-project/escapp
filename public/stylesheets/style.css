@@ -2735,19 +2735,19 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   padding: 3px;
   border-radius: 3px;
 }
-#resourceCatalog .catalogItem #purple {
+#resourceCatalog .catalogItem .btn-purple {
   background: rgb(91, 50, 129);
 }
-#resourceCatalog .catalogItem #blue {
+#resourceCatalog .catalogItem .btn-blue {
   background: rgb(0, 116, 211);
 }
-#resourceCatalog .catalogItem #green {
+#resourceCatalog .catalogItem .btn-green {
   background: rgb(0, 105, 61);
 }
-#resourceCatalog .catalogItem #red {
+#resourceCatalog .catalogItem .btn-red {
   background: rgb(185, 62, 68);
 }
-#resourceCatalog .catalogItem #gray {
+#resourceCatalog .catalogItem .btn-gray {
   background: rgb(75, 82, 87);
 }
 #resourceCatalog .catalogItem .row-button {

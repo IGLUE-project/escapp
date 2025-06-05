@@ -144,7 +144,7 @@
                     <span class="status-ribbon"><a href="/escapeRooms/<%= escapeRoom.id %>/sharing"><%=i18n.escapeRoom.steps.sharing.status.draft%></a></span>
                     <% } %>
                 </div>
-                <div class="flexRow nextToPicture animated slideInUp" id="basic" style="animation-delay: 50ms;">
+                <div class="flexRow nextToPicture animated slideInUp" id="basic" style="animation-delay: 20ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.title%>:
                     </div>
@@ -152,7 +152,7 @@
                         <%= escapeRoom.title %>
                     </div>
                 </div>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 100ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 40ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.subject%>:
                     </div>
@@ -160,7 +160,7 @@
                         <%= escapeRoom.subject %>
                     </div>
                 </div>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 150ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 60ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.duration%>:
                     </div>
@@ -168,14 +168,47 @@
                         <%= escapeRoom.duration %> min.
                     </div>
                 </div>
+                <%if(escapeRoom.field) {%>
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 80ms;">
+                    <div class="flexShowLeft">
+                        <%=i18n.showTeacher.titles.field%>:
+                    </div>
+                    <div class="flexShowRight">
+                        <%= i18n.escapeRoom.isced[escapeRoom.field] %> 
+                    </div>
+                </div>
+                <%}%>
+                <%if(escapeRoom.level) {%>
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 100ms;">
+                    <div class="flexShowLeft">
+                        <%=i18n.showTeacher.titles.level%>:
+                    </div>
+                    <div class="flexShowRight">
+                        <%= i18n.user.eduLevel[escapeRoom.level] %> 
+                    </div>
+                </div>
+                <%}%>
+                <%if(escapeRoom.format) {%>
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 120ms;">
+                    <div class="flexShowLeft">
+                        <%=i18n.showTeacher.titles.format%>:
+                    </div>
+                    <div class="flexShowRight">
+                        <%= i18n.escapeRoom.format[escapeRoom.format] %> 
+                    </div>
+                </div>
+                <%}%>
                 <%if(escapeRoom.instructions){%>
-                    <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 150ms;">
+                    <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 140ms;">
                         <div class="flexShowLeft">
-                            <%=i18n.escapeRoom.steps.sharing.instructions%>
+                            <%=i18n.showTeacher.titles.instructions%>:
                         </div>
                         <div class="flexShowRight">
                             <a href="/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
-                                <button><%=i18n.common.see%> <span class="material-icons">picture_as_pdf</span> </button> </a>
+                                <button class="rounded small"><%=i18n.common.download%> 
+                                    <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span> 
+                                </button>
+                            </a>
                         </div>
                     </div>
                 <%}%>
