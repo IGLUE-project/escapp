@@ -293,7 +293,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             config.puzzleSol = undefined;
         }
         t.commit();
-        res.json({config, "name": reusablePuzzleInstance.name, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        res.json({config, "name": reusablePuzzleInstance.name, reusablePuzzleId, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
 
     } catch (e) {
         console.error(e);
