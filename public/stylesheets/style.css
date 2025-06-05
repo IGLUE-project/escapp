@@ -2841,7 +2841,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #resourceCatalog .addButton {
   display: flex;
-  padding: 8px 16px 8px 6px;
+  padding: 8px 16px 8px 6px !important;
   align-items: center;
   gap: 6px;
   background: rgb(0, 116, 211);
