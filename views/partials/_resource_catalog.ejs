@@ -104,7 +104,7 @@
 </div>
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
-        <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem">
+        <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem" >
                 <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
                     <button class="rounded building-block-bar-button uploadButton" onclick="toggleCatalogModal()">
                         <a href="#">
@@ -123,7 +123,7 @@
 
         </div>
     </div>
-    <div style="min-height:40px;height:auto; max-height: 240px; overflow-y:auto;width:100%;position:relative">
+    <div id ="thescrollable" style="min-height:40px;height:auto; max-height: 240px; overflow-y:auto;width:100%;position:relative">
         <table style="width:100%;table-layout:fixed; padding: 16px" class="tab-content catalog-container"
             id="myTabContent">
             <colgroup>
@@ -646,7 +646,7 @@
                     </span>        
             </div>
             <div class="editDialog" id="appendFormElementsHere">
-                <h4 class="titleLabelEdit"> Customization </h4>
+                <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.Customization%> </h4>
             </div>
         `
 
@@ -954,7 +954,7 @@
         if (!close) {
             overlay.css("transform", `translateY(${overlay.height() / 1.2}px`);
             overlay.show();
-
+            $('#thescrollable').animate({scrollTop: overlay.offset().top})
             // Borrar overlay con click afuera
             // Espera un momento antes de agregar el listener, para evitar cierre inmediato
             setTimeout(() => {
@@ -1113,11 +1113,9 @@
                     const row = $(`#p-${resJSON.id}`);
                     console.log(resJSON);
                     window.reusablePuzzleInstances.push(resJSON)
-                    console.log(row)
                     if(!row.length) {
                         const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
-                        console.log(config)
-                        $('#myTabContent tr:last').after(`<tr class="catalogItem" id=p-${resJSON.id}>
+                         $('#myTabContent tr:last').after(`<tr class="catalogItem" id=p-${resJSON.id}>
                             <td>
                                 <p class="title">
                                     ${resJSON.name}

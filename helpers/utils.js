@@ -472,6 +472,7 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
 
 
 exports.validationError = ({instance, path, validatorKey}, i18n) => {
+    console.log({instance, path, validatorKey})
     try {
         if (i18n[instance.constructor.name] &&
             i18n[instance.constructor.name].attributes &&

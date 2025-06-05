@@ -39,7 +39,6 @@ async function createAdmin () {
             "defaults": {
                 name,
                 surname,
-                "gender": "Femenino",
                 password,
                 "isAdmin": true,
                 "isStudent": false,

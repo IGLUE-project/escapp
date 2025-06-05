@@ -128,7 +128,6 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
             "id",
             "name",
             "surname",
-            "gender",
             "username",
             "anonymized"
         ],

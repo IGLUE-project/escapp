@@ -160,7 +160,7 @@ $('#scope').on('change', function(e){
 
 function confirmSubmit(e) {
     e.preventDefault();
-    var agree = confirm("Are you sure you wish to continue?");
+    var agree = confirm("<%=i18n.escapeRoom.steps.areYouSurePublish%>");
     if (agree) {
     $('#theform').append('<input type="hidden" name="progress" value="sharing" />');
     $('#theform').append('<input type="hidden" name="status" value="<%=isDraft ? 'completed':'draft'%>" />');
