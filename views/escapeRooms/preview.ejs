@@ -9,11 +9,14 @@
         </div>
 	</div>
     <div class="flex ">
-		
+
 		<div class="flex-thumb attachmentShow animated">
-			<% var attachment = escapeRoom.attachment; %>
-			<%- include ("../attachments/_show",{attachment, id: escapeRoom.id}) %>
-            
+            <% if(escapeRoom.attachment){ %>
+                <img  alt="None" src="<%=escapeRoom.attachment.url%>">
+            <% }else{ %>
+                <img  alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
+            <% } %>
+
 		</div>
 		<div class="flex-er-info animated fadeIn">
 			<h1><%=escapeRoom.title%></h1>
@@ -31,7 +34,7 @@
                 <%if(escapeRoom.license){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.license%></h3>
-                        <p> 
+                        <p>
                             <%var cc = escapeRoom.license.split(" ")[1].toLowerCase();%>
                             <a href="https://creativecommons.org/licenses/<%=cc%>/4.0/" target="_blank">
                                 <img style="height: 46px;" src="/images/cc/<%=cc%>.png" alt="">
@@ -48,13 +51,23 @@
                 <%if(escapeRoom.duration){%>
                     <div>
                         <h3><%=i18n.showTeacher.titles.duration%></h3>
-                        <p><%=escapeRoom.duration%></p>
+                        <p><%=escapeRoom.duration%></p> min.
                     </div>
                 <%}%>
                 <%if(escapeRoom.format){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.format%></h3>
                         <p><%=i18n.escapeRoom.format[escapeRoom.format]%></p>
+                    </div>
+                <%}%>
+                <%if(escapeRoom.instructions && !user.isStudent){%>
+                    <div>
+                        <h3><%=i18n.escapeRoom.steps.sharing.instructions%></h3>
+                        <a href="/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
+                            <button class="rounded"><%=i18n.common.download%> 
+                                <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
+                            </button>
+                        </a>
                     </div>
                 <%}%>
                 <%if(escapeRoom.forceLang){%>
@@ -72,7 +85,7 @@
                 <!--<%if(!user.isStudent){%><div><h3>Associated materials</h3><p><%=escapeRoom.duration%></p></div><%}%>-->
             </div>
         </div>
-        
+
     </div>
     <br/>
    <br/>
@@ -91,7 +104,7 @@
                 </div>
             </spa >
         <%}%>
-        
+
         <a href="/escapeRooms/<%=escapeRoom.id%>/join"><button class="rounded editButton acceptButton">join</button></a>
     </div>
    <br/>

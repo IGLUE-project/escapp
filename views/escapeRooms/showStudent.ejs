@@ -20,10 +20,14 @@
 	</div>
 	<div class="reporting"><a href="/escapeRooms/<%=escapeRoom.id%>/report"> Reportar </a> / <a href="/escapeRooms/<%=escapeRoom.id%>/contact"> Contactar </a></div>
 	<div class="flex ">
-		
+
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
-			<%- include ("../attachments/_show",{attachment, id: escapeRoom.id}) %>
+            <% if(attachment){ %>
+                <img  alt="None" src="<%=attachment.url%>">
+            <% }else{ %>
+                <img  alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
+            <% } %>
 		</div>
 		<div class="flex-er-info animated fadeIn">
 			<h1><%=escapeRoom.title%></h1>
@@ -137,7 +141,7 @@
 				<%}%>
 		</div>
 
-        
+
 	</div>
 	<br/><br/><br/><br/>
 

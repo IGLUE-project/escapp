@@ -151,7 +151,7 @@
                             <%=puzzle.name%>
                         </p>
                     </td>
-                    <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span>
+                    <td> <span class="building-block-icon material-icons btn-green" > videogame_asset </span>
                     </td>
                     <td>
                         <div class=" button-group row-button">
@@ -215,7 +215,7 @@
                                         <%=asset.filename%>
                                     </p>
                                 </td>
-                                <td> <span class="building-block-icon material-icons" id="green"> image </span>
+                                <td> <span class="building-block-icon material-icons btn-purple"> image </span>
                                 </td>
                                 <td>
                                     <div class=" button-group row-button">
@@ -267,7 +267,7 @@
                                         <p class="title"><%=asset.filename%></p>
                                     </td>
                                     <td>
-                                        <span class="building-block-icon material-icons" id="red"> videocam </span>
+                                        <span class="building-block-icon material-icons btn-red"> videocam </span>
                                     </td>
                                     <td>
                                         <div class=" button-group row-button">
@@ -309,7 +309,7 @@
                                                 <%=asset.filename%>
                                             </p>
                                         </td>
-                                        <td> <span class="building-block-icon material-icons " id="purple">
+                                        <td> <span class="building-block-icon material-icons btn-purple">
                                                 music_note </span> </td>
                                         <td>
                                             <div class=" button-group row-button">
@@ -362,8 +362,8 @@
                                                     <%=asset.filename%>
                                                 </p>
                                             </td>
-                                            <td> <span class="building-block-icon material-icons" id="blue">
-                                                    description </span> </td>
+                                            <td> <span class="building-block-icon material-icons btn-red">
+                                                    picture_as_pdf </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
                                                     <div class=" overlay-trigger" data-id="<%=asset.id%>">
@@ -413,7 +413,7 @@
                                                     <%=asset.filename%>
                                                 </p>
                                             </td>
-                                            <td> <span class="building-block-icon material-icons" id="purple">
+                                            <td> <span class="building-block-icon material-icons btn-purple">
                                                     terminal </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
@@ -465,7 +465,7 @@
                                                     <%=asset.filename%>
                                                 </p>
                                             </td>
-                                            <td> <span class="building-block-icon material-icons" id="purple">
+                                            <td> <span class="building-block-icon material-icons btn-purple">
                                                     question_mark </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
@@ -1117,7 +1117,7 @@
                                     ${resJSON.name}
                                 </p>
                             </td>
-                            <td> <span class="building-block-icon material-icons" id="green"> videogame_asset </span>
+                            <td> <span class="building-block-icon material-icons btn-green"> videogame_asset </span>
                             </td>
                             <td>
                                 <div class=" button-group row-button">
@@ -1188,7 +1188,6 @@
                 const formData = new FormData(closestForm);
                 const newConfig = Object.fromEntries(formData.entries());
                 newConfig.solutionLength = $("#puzzleSol").val().length;
-                console.log(newConfig);
                 if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
                     updateIframe(newConfig,newConfig.reusablePuzzleId);
                 }
