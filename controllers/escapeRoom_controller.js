@@ -74,8 +74,8 @@ exports.index = async (req, res, next) => {
             let erAll = [];
             const searchCondition = search ? ` AND (LOWER(title) LIKE '%${search.toLowerCase()}%' OR LOWER(description) LIKE '%${search.toLowerCase()}%')` : "";
 
-            count = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRooms"."status" = 'completed') AND  (scope = FALSE OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active')) OR ("participants"."userId" =  ${user.id} AND "turnos"."status" != 'test')) ${searchCondition}`, {"raw": true, "type": QueryTypes.SELECT});
-            erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRoom"."status" = 'completed') AND (scope = FALSE OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')) OR ("participants"."userId" =  ${user.id} AND "turnos"."status" != 'test')) ${searchCondition} ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(page - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
+            count = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRooms"."status" = 'completed') AND  (scope = FALSE OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active')) ) ${searchCondition}`, {"raw": true, "type": QueryTypes.SELECT});
+            erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRoom"."status" = 'completed') AND (scope = FALSE OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')) ) ${searchCondition} ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(page - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
             count = parseInt(count[0].count, 10);
 
             const orIds = erAll.map((e) => e.id);
@@ -138,10 +138,10 @@ exports.new = (_req, res) => {
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, supportLink, forceLang, invitation} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
 
-    const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, authorId, forceLang}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, authorId, forceLang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
@@ -158,7 +158,7 @@ exports.create = async (req, res) => {
 
         if (!req.file) {
             await transaction.commit();
-            res.redirect(`/escapeRooms/${escapeRoom.id}/puzzles`);
+            res.redirect(`/escapeRooms/${escapeRoom.id}/${progress || nextStep("edit")}`);
             return;
         }
 
@@ -181,17 +181,20 @@ exports.create = async (req, res) => {
                 req.flash("error", i18n.common.flash.errorImage);
                 fs.unlinkSync(req.file.path);
                 // AttHelper.deleteResource(uploadResult.public_id, models.attachment);
+                res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
+                return;
             }
         } catch (error) {
             console.error(error);
             await transaction.rollback();
             req.flash("error", i18n.common.flash.errorFile);
+            res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
+            return;
         }
-        await transaction.commit();
-        res.redirect(`/escapeRooms/${er.id}/${nextStep("edit")}`);
+        res.redirect(`/escapeRooms/${escapeRoom.id}/${progress || nextStep("edit")}`);
     } catch (error) {
-        await transaction.rollback();
         console.error(error);
+        await transaction.rollback();
         if (error instanceof Sequelize.ValidationError) {
             console.error(error);
             error.errors.forEach((err) => {

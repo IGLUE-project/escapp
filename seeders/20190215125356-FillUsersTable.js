@@ -8,7 +8,6 @@ module.exports = {
             {
                 "name": "Sonsoles",
                 "surname": "López Pernas",
-                "gender": "Femenino",
                 "username": "admin@upm.es",
                 "password": crypt.encryptPassword("1234", "aaaa"),
                 "salt": "aaaa",
@@ -22,7 +21,6 @@ module.exports = {
             {
                 "name": "Pepe",
                 "surname": "Lopez Garcia",
-                "gender": "Masculino",
                 "username": "pepe@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -36,7 +34,6 @@ module.exports = {
             {
                 "name": "Alfonso",
                 "surname": "Jiménez Martínez",
-                "gender": "Masculino",
                 "username": "al.jm@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -50,7 +47,6 @@ module.exports = {
             {
                 "name": "Alejandro",
                 "surname": "Pozo Huertas",
-                "gender": "Masculino",
                 "username": "aph@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -64,7 +60,6 @@ module.exports = {
             {
                 "name": "Nuria",
                 "surname": "Martínez Arias",
-                "gender": "Femenino",
                 "username": "nma@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -78,7 +73,6 @@ module.exports = {
             {
                 "name": "Clara",
                 "surname": "Rodríguez Vega",
-                "gender": "Femenino",
                 "username": "crv@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -92,7 +86,6 @@ module.exports = {
             {
                 "name": "Ana",
                 "surname": "de la Mata Martínez",
-                "gender": "Femenino",
                 "username": "amm@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -106,7 +99,6 @@ module.exports = {
             {
                 "name": "José",
                 "surname": "González Martín",
-                "gender": "Masculino",
                 "username": "jgm@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -120,7 +112,6 @@ module.exports = {
             {
                 "name": "Antonio",
                 "surname": "Lorenzo Álvarez",
-                "gender": "Masculino",
                 "username": "ala@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",

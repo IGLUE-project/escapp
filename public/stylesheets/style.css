@@ -1457,6 +1457,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border: transparent;
   color: white;
 }
+.escapeRooms .escapeRoomFilters .filter-button:hover {
+  transform: scale(1.5);
+}
 .escapeRooms .flexBoxEscapeRooms {
   padding: 1em;
   border: 2px solid white;
@@ -2633,6 +2636,16 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   height: 16px;
   margin: 0;
 }
+.editDialog #warningMessageForReusablePuzzleCreation, #editDialog #warningMessageForReusablePuzzleCreation {
+  color: white;
+  font-size: 0.75em;
+  max-width: 450px;
+  padding: 1em;
+  border: 2px solid #F47E84;
+}
+.editDialog #warningMessageForReusablePuzzleCreation .material-icons, #editDialog #warningMessageForReusablePuzzleCreation .material-icons {
+  color: #F47E84;
+}
 .editDialog .titleLabelEdit, #editDialog .titleLabelEdit {
   font-weight: bold;
   padding-bottom: 0.4rem;
@@ -2968,14 +2981,15 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 
 .tableTitles {
   font-size: 14px;
+  border-bottom: 1px solid rgba(101, 102, 131, 0.7);
   /*MODAL CATALOG RESOURCE*/
 }
 .tableTitles th {
   text-align: left;
-  padding: 18px 0 6px 0px;
+  padding: 18px 12px 18px 0px;
 }
 .tableTitles th:first-child {
-  padding: 18px 0 6px 18px;
+  padding-left: 20px;
 }
 
 #modalCatalogResource {

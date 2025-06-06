@@ -147,10 +147,10 @@
         "error": {
             "whoops": "Ups!",
             "notFound": "No hemos encontrado la página que buscas",
-            "notEmpty": "no puede estar vací@",
-            "len": "es demasiado larg@",
-            "min": "es demasiado bajo",
-            "max": "es demasiado elevado",
+            "notEmpty": "no puede ser un campo vacío",
+            "len": "tiene una longitud excesiva",
+            "min": "es una cifra demasiado baja",
+            "max": "es una cifra demasiado alta",
             "isIn": "debe tomar uno de los valores permitidos"
         },
         "exit": "salir",
@@ -538,12 +538,15 @@
                             "height": "Alto",
                             "measures": "Medidas",
                             "assignedPuzzle": "Reto asignado",
+                            "customization": "Personalización",
                             "puzzleSolution": "Solución",
                             "autoplay": "Autoplay",
                             "controls": "Controles",
                             "download": "Descarga",
                             "nameDescription": "Nombre y descripción",
-                            "options": "Opciones"
+                            "options": "Opciones",
+                            "warningPuzzleChange": "Si has cambiado la solución del reto debes guardar este formulario primero para que los cambios estén disponibles en la vista previa"
+
                         }
                     }
                 }
@@ -619,6 +622,7 @@
                 "invitationExplanation": "¿Quieres que los alumnos tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
                 "scopeExplanation": "¿Quieres que los alumnos puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos alumnos que tengan el enlace directo",
                 "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los alumnos no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia.",
+                "areYouSurePublish": "¿Seguro que deseas publicar la escape room? No podrás cambiar la licencia una vez publicada",
                 "checklist": {
                     "step1": "Información básica obligatoria proporcionada",
                     "step2": "Al menos un reto definido",
@@ -1162,12 +1166,11 @@
             "name": "El nombre",
             "username": "El e-mail",
             "password": "La contraseña",
-            "gender": "El género"
+            "eduLevel": "El nivel educativo"
         },
         "role": "Rol",
         "teacher": "Profesor",
         "student": "Alumno",
-        "gender": "Género",
         "lang": "Idioma",
         "eduLevelField": "Nivel educativo",
         "eduLevel": {
@@ -1182,7 +1185,6 @@
         "terms": "Al registrarme, confirmo que he leído y acepto los <a href='/terms' target='_blank'>Términos de Uso</a> y la <a href='/privacy' target='_blank'>Política de Privacidad</a>",
         "inputs": {
             "editUser": "Editar usuario",
-            "genderPlaceHolder": "Selecciona tu género",
             "namePlaceHolder": "Introduce tu nombre",
             "passwordConfirmPlaceHolder": "Introduce tu contraseña",
             "passwordPlaceHolder": "Introduce tu contraseña",
@@ -1224,9 +1226,6 @@
         "username": "E-mail",
         "wrongCredentials": "Error al iniciar sesión",
         "turno": "Turno",
-        "man": "Hombre",
-        "woman": "Mujer",
-        "other": "Otro",
         "delete": {
             "deleteYourAccount": "Elimina tu cuenta",
             "deleteYourAccountMsg1": "Si decides eliminar tu cuenta, toda la información personal asociada a ella será eliminada permanentemente de nuestro sistema.",
