@@ -105,8 +105,9 @@ const catalogItem = (item)=> {
      } else if (item.mime.search(webappRegex) !== -1) {
         configJSON.width = "100%";
         configJSON.height = "auto";
+        console.log(item.url)
          return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px;aspect-ratio:4/3;"  >
-             <iframe src="${item.url}" width="100%" height="100%" >
+             <iframe src="${item.url}"  style="border:none" width="100%" height="100%" >
              </iframe>
      </div>`;
      } else if (item.mime.search(reusableRegex) !== -1) {

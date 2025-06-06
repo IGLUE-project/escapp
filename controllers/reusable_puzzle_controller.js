@@ -256,6 +256,11 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
             trimedConfig.puzzleSol = null;
             trimedConfig.validator = null;
+            Object.keys(trimedConfig).forEach((key) => {
+                if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
+                    trimedConfig[key] = undefined;
+                }
+            });
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
             reusablePuzzleInstance = reusablePuzzle;
@@ -275,6 +280,11 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             reusablePuzzleInstance.reusablePuzzleId = reusablePuzzleId || reusablePuzzleInstance.reusablePuzzleId;
             reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
             reusablePuzzleInstance.description = description || reusablePuzzleInstance.description;
+            Object.keys(trimedConfig).forEach((key) => {
+                if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
+                    trimedConfig[key] = undefined;
+                }
+            });
             reusablePuzzleInstance.config = JSON.stringify(trimedConfig);
             await reusablePuzzleInstance.save({"transaction": t});
         }
@@ -369,6 +379,11 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
         const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
+        Object.keys(receivedConfig).forEach((key) => {
+            if (receivedConfig[key] === "" || receivedConfig[key] === "undefined") {
+                receivedConfig[key] = undefined;
+            }
+        });
         const config = {
             ...receivedConfig,
             "escappClientSettings": {
