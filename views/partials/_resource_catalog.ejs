@@ -672,7 +672,6 @@
         $('.previewReusablePuzzle').show();
         const jsonPuzzle = window.reusablePuzzleInstances.find(p => p.id == id);
         toggleCatalogModal();
-        console.log(jsonPuzzle)
         openPuzzleConfiguration(jsonPuzzle, jsonPuzzle.reusablePuzzleId);
         return;
     }
@@ -708,7 +707,6 @@
                 $('#rangeDiv').hide();
             }
             if (puzzleSelected.sol !== undefined) {
-                console.log("puzzleSelected.sol", puzzleSelected.sol);
                 if(puzzleSelected.validator === "range"){
                     puzzleSol.val(puzzleSelected.sol.split("+")[0]);
                     puzzleRangeInput.val(puzzleSelected.sol.split("+")[1]);
@@ -1160,7 +1158,6 @@
                     });
                     window.puzzles.forEach((puzzle,index) => {
                         if(puzzle.id == resJSON.puzzle.id) {
-                            console.log("puzzle", puzzle, resJSON.puzzle);
                             window.puzzles[index] = resJSON.puzzle;
                         }
                     });

@@ -347,7 +347,8 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleInstance.reusablePuzzleId);
         const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
-        const solutionLength = JSON.parse(reusablePuzzleInstance.config).solutionLength || linkedPuzzle.soloution.length || 0;
+        console.log("linkedPuzzle", linkedPuzzle);
+        const solutionLength = JSON.parse(reusablePuzzleInstance.config).solutionLength || linkedPuzzle.sol.length || 0;
 
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
         const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
@@ -395,7 +396,6 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
         const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
-        console.log("Received config:", receivedConfig);
 
         Object.keys(receivedConfig).forEach((key) => {
             if (receivedConfig[key] === "" || receivedConfig[key] === "undefined") {
