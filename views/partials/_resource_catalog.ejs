@@ -649,7 +649,7 @@
                     <label for="solutionLength">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.solutionLength%>
                     </label>
-                    <input id="solutionLength" name="solutionLength" value=${config.solutionLength ? config.solutionLength : 0} type="number"/>
+                    <input id="solutionLengthInput" name="solutionLength" value=${config.solutionLength ? config.solutionLength : 0} type="number"/>
                 </div>
                 <div style="${selectedPuzzle.validator === 'range' ? null :'display:none' }" id="rangeDiv">
                     <label for="rangeInput">
@@ -1051,8 +1051,15 @@
                 configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
 
                 $('#appendFormElementsHere').append(elements);
-                config.solutionLength = puzzles ? puzzles[0].sol?.length : 0;
                 config.puzzle =  puzzles ? puzzles[0].id : undefined;
+                config.puzzleObject = puzzles ? puzzles[0] : undefined;
+                if( config.puzzleObject.validator === "range") {
+                    config.solutionLength = config.puzzleObject.sol.split("+")[0].length;
+                } else if (config.puzzleObject.validator === "regex") {
+                    config.solutionLength = $('#solutionLengthInput').val();
+                } else {
+                    config.solutionLength = config.puzzleObject.sol.length;
+                }
                 updateIframe(config, puzzle.reusablePuzzleId);
 
                 $(".sections").scrollTop(0);
@@ -1070,6 +1077,7 @@
     }
 
     function updateIframe(config, reusablePuzzleId) {
+        console.log('updating')
         $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${config.puzzle}&config=${encodeURIComponent(JSON.stringify(config))}`);
     }
 
@@ -1247,7 +1255,19 @@
                 // e.target is inside .editDialog
                 const formData = new FormData(closestForm);
                 const newConfig = Object.fromEntries(formData.entries());
-                newConfig.solutionLength = $("#puzzleSol").val().length;
+                const sol = $("#puzzleSol").val();
+                const validator = $("#inputValidator").val();
+                const rangeInput = $("#rangeInput").val();
+                newConfig.puzzleSol = newConfig.validator=== "range" ? `${sol}+${rangeInput}` : sol;
+                let solutionLength = 0;
+                if(validator === "regex") {
+                    solutionLength = $("#solutionLengthInput").val();
+                } else {
+                    solutionLength = sol.length;
+                }
+
+                newConfig.solutionLength = solutionLength;
+
                 if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
                     updateIframe(newConfig,newConfig.reusablePuzzleId);
                 }

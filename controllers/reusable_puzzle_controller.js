@@ -403,6 +403,7 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
 
+        console.log("Received config:", receivedConfig);
         Object.keys(receivedConfig).forEach((key) => {
             if (receivedConfig[key] === "" || receivedConfig[key] === "undefined") {
                 receivedConfig[key] = undefined;
