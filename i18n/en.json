@@ -549,14 +549,15 @@
                             "measures": "Measures",
                             "assignedPuzzle": "Assigned puzzle",
                             "puzzleSolution": "Solution",
+                            "range": "Range",
                             "customization": "Customization",
                             "autoplay": "Autoplay",
                             "controls": "Controls",
                             "download": "Download",
                             "nameDescription": "Name and description",
                             "options": "Options",
-                            "warningPuzzleChange": "If you have changed your puzzle solution you must save this form first for your changes to be available in the preview"
-
+                            "warningPuzzleChange": "If you have changed your puzzle solution you must save this form first for your changes to be available in the preview",
+                            "solutionLength": "Solution length"
                         }
                     }
                 }

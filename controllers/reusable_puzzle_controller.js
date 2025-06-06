@@ -249,7 +249,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
     let newInstanceId = "";
     let reusablePuzzleInstance;
-
+    let puzzle = null;
     try {
         if (!reusablePuzzleInstanceId) {
             const trimedConfig = {...config};
@@ -271,6 +271,8 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
             trimedConfig.puzzleSol = null;
             trimedConfig.validator = null;
+            trimedConfig.range = trimedConfig.validator === "range" ? trimedConfig.range : undefined;
+
             const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
 
             if (linkedPuzzle) {
@@ -290,20 +292,34 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         }
 
         if (config.puzzle != "none") {
-            const puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}});
-
+            puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}});
             if (puzzle) {
+                await reusablePuzzleInstance.save({"transaction": t});
                 puzzle.sol = config.puzzleSol ? config.puzzleSol : puzzle.sol;
                 puzzle.automatic = true;
                 puzzle.validator = config.validator ? config.validator : puzzle.validator;
                 puzzle.assignedReusablePuzzleInstance = newInstanceId ? newInstanceId : reusablePuzzleInstanceId;
+
+                if(config.validator === "range") {
+                    puzzle.sol = config.puzzleSol + `+${config.rangeInput}`;
+                    reusablePuzzleInstance.config= JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), solutionLength:config.puzzleSol.length});
+                }else if(config.validator === "regex") {
+                    reusablePuzzleInstance.config= JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), solutionLength:config.solutionLength});
+                } else {
+                    reusablePuzzleInstance.config= JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), solutionLength:undefined});
+                }
+                await reusablePuzzleInstance.save({"transaction": t});
+
+
                 config.puzzleSol = undefined;
+
                 await puzzle.save({"transaction": t});
             }
             config.puzzleSol = undefined;
         }
         t.commit();
-        res.json({config, "name": reusablePuzzleInstance.name, reusablePuzzleId, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        const modifiedPuzzle = {assignedReusablePuzzleInstance: puzzle.assignedReusablePuzzleInstance, sol: puzzle.sol, validator: puzzle.validator, title: puzzle.title, id: puzzle.id, };
+        res.json({config, "name": reusablePuzzleInstance.name, puzzle, reusablePuzzleId: modifiedPuzzle, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -331,7 +347,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleInstance.reusablePuzzleId);
         const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
-        const solutionLength = linkedPuzzle ? linkedPuzzle.validator !== "regex" ? linkedPuzzle.sol.length : 0 : 0;
+        const solutionLength = JSON.parse(reusablePuzzleInstance.config).solutionLength || linkedPuzzle.soloution.length || 0;
 
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
         const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
@@ -379,6 +395,8 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
         const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
+        console.log("Received config:", receivedConfig);
+
         Object.keys(receivedConfig).forEach((key) => {
             if (receivedConfig[key] === "" || receivedConfig[key] === "undefined") {
                 receivedConfig[key] = undefined;
