@@ -495,7 +495,7 @@
                 "placeholder": "Add the information you want to project in the classroom",
                 "title": "Classroom interface"
             },
-             
+
             "indications": {
                 "explanation": "Here you can customize the information students will see prior to the start of the escape room since the moment the sign up. For instance, you can remind them to bring certain material, tell them to review the course content, or provide them a video to watch.",
                 "placeholder": "Add custom instructions",
@@ -556,7 +556,7 @@
                             "nameDescription": "Name and description",
                             "options": "Options",
                             "warningPuzzleChange": "If you have changed your puzzle solution you must save this form first for your changes to be available in the preview"
-                            
+
                         }
                     }
                 }
@@ -620,7 +620,7 @@
                 "title": "Publication",
                 "description": "You can publish your escape room so that other teachers can use it. You can also make it public so that students can see it in the home page and sign up for it",
                 "license": "License",
-                "instructions": "Instrucciones para profesores",
+                "instructions": "Instructions for teachers",
                 "status": {
                     "name": "Status",
                     "draft": "Draft",
