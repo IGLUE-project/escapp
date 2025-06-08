@@ -6,8 +6,6 @@
 <script src="/js/vendor/jquery.ui.touch-punch.min.js"></script>
 <!-- <script src="https://www.youtube.com/iframe_api"></script> -->
  
-
-
   <!-- Theme included stylesheets -->
    <%- include ("../../partials/_header.ejs") %>
   <div role="main" class="main steps step-instructions">
@@ -22,21 +20,17 @@
 	  </div>
 	  <br/>
 	  <form style="width:100%" method='POST' id="instructionsForm" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  >
-		<div id="custom-content">
-		</div>
-	  <br/>
-		<div class="align-right flex-buttons">
-			<button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
-			<button class="progress-buttons" type="submit" value="next" id="next" name="next"><%=i18n.common.next%></button>
-			<button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
-		</div>
-		<%- include('../../partials/_progress', {progress}) %>
-  
-	  </form>
-	  <br/>
-	  <br/>
-	  <br/>
-	  <br/>
+			<div id="custom-content">
+			</div>
+		  <br/>
+			<div class="align-right flex-buttons buttons_before_progressbar">
+				<button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
+				<button class="progress-buttons" type="submit" value="next" id="next" name="next"><%=i18n.common.next%></button>
+				<button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
+			</div>
+			<%- include('../../partials/_progress', {progress}) %>
+  	</form>
+
   <script>
 	window.escapeRoomId = <%=escapeRoom.id%>
 	window.uploadCallback = (file) => {

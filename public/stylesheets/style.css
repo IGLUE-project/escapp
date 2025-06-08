@@ -897,6 +897,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   opacity: 0.5;
 }
 
+#mainSection .buttons_before_progressbar {
+  margin-bottom: 30px;
+}
 #mainSection .main.steps-new .breadcrumbs-container .breadcrumbs .breadcrumb-select, #mainSection .main.steps-edit .breadcrumbs-container .breadcrumbs .breadcrumb-select {
   width: 330px;
 }
@@ -955,15 +958,20 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-color: transparent;
   color: white;
 }
+#mainSection .progressBarWrapper {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
 #mainSection .progressBar {
-  position: absolute;
+  position: relative;
   bottom: 0;
   width: 50%;
-  left: 25%;
+  margin-left: 25%;
   color: white;
   text-align: center;
   padding-bottom: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 60px;
 }
 #mainSection .progressBar .progressText {
   padding-bottom: 10px;
@@ -3768,11 +3776,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 12px;
   font-family: Lato;
 }
-
-.portada .contenedor .loginRight label[for="accept_terms"] {
+.portada .contenedor .loginRight label[for=accept_terms] {
   line-height: 1.3;
 }
-
 .portada .contenedor .loginRight label span {
   padding-bottom: 7px;
   text-align: left;
@@ -3815,6 +3821,10 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   bottom: 0px;
   color: #656683;
 }
+.portada .contenedor .loginRight .legal a:hover {
+  color: white;
+  font-weight: bold;
+}
 .portada .contenedor .loginRight .langs {
   position: absolute;
   top: 0px;
@@ -3824,7 +3834,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   padding-right: 2%;
   color: #656683;
 }
-.portada .contenedor .loginRight .langs a:hover, .portada .contenedor .loginRight .legal a:hover {
+.portada .contenedor .loginRight .langs a:hover {
   color: white;
   font-weight: bold;
 }
@@ -3849,6 +3859,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin: auto;
   margin-bottom: 20px;
   position: relative;
+}
+#mainSection .main .puzzle-card input {
+  color: #656683 !important;
+  -webkit-text-fill-color: #656683 !important;
+}
+#mainSection .main .puzzle-card input:focus, #mainSection .main .puzzle-card input:active {
+  color: #F47E84 !important;
+  -webkit-text-fill-color: #F47E84 !important;
 }
 #mainSection .main .puzzle-card .validatorInputs {
   height: auto;

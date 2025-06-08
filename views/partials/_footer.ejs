@@ -1,11 +1,5 @@
 <footer id="mainFooter">
     <img id="logoImg" alt="Logo" src="/images/escapp.png"   />
-    <% if (!locals.ignoreExtras) {%>
-    <!-- <ul class="langs">
-        <li><a class="<%=(lang=="en"?"active":"")%>" href="/?clang=en">en</a></li>&nbsp;/&nbsp;
-        <li><a class="<%=(lang=="es"?"active":"")%>" href="/?clang=es">es</a></li>
-    </ul> -->
-    
     <div>
     <ul class="legal">
         <li><a class="" href="/terms" target="_blank"><%=i18n.policies['terms']%></a> &nbsp;/&nbsp;</li>
@@ -13,7 +7,6 @@
         <li><a class="" href="/cookies" target="_blank"><%=i18n.policies['cookies']%></a></li>
     </ul>
     </div>
-    <% } %>
     <a id="logoEU" href="<%=i18n.logos_eu['link']%>" target="_blank">
         <img alt="<%=i18n.logos_eu.alt%>" src="/images/<%=i18n.logos_eu.img_url%>" />
     </a>

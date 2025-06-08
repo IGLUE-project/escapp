@@ -165,21 +165,21 @@
             "interestingInfo": "Información de interés",
             "success": "Tareas completadas con éxito",
             "errorActivatingTurno": "Error al activar/desactivar el turno",
-            "errorCreatingER": "Error al crear la Escape Room",
+            "errorCreatingER": "Error al crear la escape room",
             "errorCreatingHint": "Error al crear la pista",
             "errorCreatingPuzzle": "Error al crear el reto",
             "errorCreatingTeam": "Error al crear el equipo",
             "errorCreatingTeamAlreadyExists": "Ya existe un equipo con este nombre en esta escape room",
             "errorCreatingTurno": "Error al crear el turno",
             "errorCreatingUser": "Error al crear el usuario",
-            "errorDeletingER": "Error al borrar la Escape Room",
+            "errorDeletingER": "Error al borrar la escape room",
             "errorDeletingHint": "Error al borrar la pista",
             "errorDeletingPuzzle": "Error al borrar el reto",
             "errorDeletingTeam": "Error al borrar el equipo",
             "errorDeletingTurno": "Error al borrar el turno",
             "errorDeletingUser": "Error al borrar el usuario",
             "errorStudentLeave": "Error al desapuntarte. El turno está cerrado.",
-            "errorEditingER": "Error al editar la Escape Room",
+            "errorEditingER": "Error al editar la escape room",
             "errorEditingHint": "Error al editar la pista",
             "errorEditingPuzzle": "Error al editar el reto",
             "errorEditingTeam": "Error al editar el equipo",
@@ -349,7 +349,7 @@
         },
         "invitation": {
             "no": "no",
-            "wannaJoin": "¿Quieres unirte a la Escape Room de",
+            "wannaJoin": "¿Quieres unirte a la escape room de",
             "typePasscode": "Introduce la contraseña de acceso para",
             "yes": "sí",
             "scopes": {
@@ -358,12 +358,10 @@
             }
         },
         "format":{
-            "none": "No especificado",
-            "online": "Completamente en línea",
-            "hybrid": "Se necesitan algunos recursos físicos"
+            "online": "Virtual",
+            "hybrid": "Híbrido (se necesitan algunos recursos físicos)"
         },
-        "iscedNone": "Ninguno",
-        "isced": {
+        "fields": {
             "00":"Programas y cualificaciones genéricos",
             "01":"Educación",
             "02":"Artes y humanidades",
@@ -379,7 +377,7 @@
         "main": {
             "copyOf": "Copia de",
             "createER": "Crear nueva escape room",
-            "noERTeacher": "No has creado ninguna escape room, gestiónalas desde aquí...",
+            "noERTeacher": "No tienes ninguna escape room, para crear una pulsa el botón +.",
             "noERStudent": "No tienes ninguna escape room activa.",
             "noERPublic": "No hay ninguna escape room disponible.",
             "notFound": "No hay resultados para tu búsqueda. ¡Prueba otra vez!",
@@ -388,8 +386,8 @@
             "emptyER": "No hay colaboradores",
             "playingERs": "Participando",
             "yesERStudent": "Estas son las escape rooms disponibles",
-            "yesERTeacher": "Gestiona las escape rooms desde aquí...",
-            "notAvailable": "Escape Room no disponible"
+            "yesERTeacher": "Escape rooms",
+            "notAvailable": "Escape room no disponible"
         },
         "steps": {
             "appearance": {
@@ -410,24 +408,24 @@
             },
             "edit": {
                 "New": "Nueva",
-                "descriptionPlaceHolder": "Escribe la descripción de tu Escape Room. Esta será la información que se les presentará a los alumnos",
-                "durationPlaceHolder": "¿Cual es el tiempo máximo del que disponen los alumnos?",
-                "forbiddenLateSubmissionsPlaceHolder": "No permitir resolver retos al acabarse la cuenta atrás",
+                "descriptionPlaceHolder": "Escribe la descripción de tu escape room. Esta será la información que se les presentará a los participantes.",
+                "durationPlaceHolder": "¿De cuánto tiempo disponen los participantes para completar la escape room?",
+                "forbiddenLateSubmissionsPlaceHolder": "No permitir resolver retos cuando se acabe el tiempo",
                 "passwordPlaceHolder": "Proporciona una contraseña para restringir el acceso a la escape room",
                 "noFileUploaded": "No has subido ningún fichero",
                 "noImageUploaded": "No has subido ninguna imagen",
-                "subjectPlaceHolder": "¿A qué asignatura pertenece esta actividad?",
-                "teamSizePlaceHolder": "¿Cuántos alumnos puede haber en cada equipo? Déjalo en blanco si no quieres limitarlo",
-                "supportLinkPlaceHolder": "¿Adónde se dirigen los alumnos en caso de tener problemas?",
+                "subjectPlaceHolder": "¿Cúal es el tema abordado en la actividad?",
+                "teamSizePlaceHolder": "¿Cuántos miembros puede tener cada equipo? Déjalo en blanco si no quieres limitarlo.",
+                "supportLinkPlaceHolder": "Puedes proporcionar una URL para que sea empleada por los participantes en caso de tener problemas.",
                 "title": "Configuración básica de la escape room",
-                "titlePlaceHolder": "¿Cómo se llama tu Escape Room?",
-                "videoPlaceHolder": "URL del vídeo de presentación de la Escape Room"
+                "titlePlaceHolder": "¿Cómo se llama tu escape room?",
+                "videoPlaceHolder": "URL del vídeo de presentación de la escape room"
             },
             "evaluation": {
                 "eachHint": "Asigna una penalización o recompensa por solicitar una pista",
                 "eachHintObtain": "Asigna una penalización o recompensa por pista conseguida",
                 "eachPuzzle": "Asigna un porcentaje diferente a cada reto",
-                "gradingIntro": "Puedes configurar la rúbrica de evaluación para calificar a los alumnos",
+                "gradingIntro": "Puedes configurar la rúbrica de evaluación para calificar a los participantes",
                 "hintSuccess": "Puntos por solicitud de pista conseguida",
                 "hintFailed": "Puntos por solicitud de pista fallida",
                 "justParticipating": "Asigna un porcentaje de la nota sólo por participar",
@@ -453,21 +451,21 @@
                 "explanation": "En este apartado puedes configurar la estrategia de pistas a seguir durante la escape room. Hay tres estragias disponibles: no permitir pistas; permitir que el alumno obtenga una pista cuando la necesite sin proporcionar nada a cambio, y permitir que el alumno obtenga una pista tras responder correctamente a un cuestionario. Si habilitas las pistas, puedes configurar el límite de pistas que puede recibir cada equipo durante la escape room. Si eliges la última estrategia, sólo tienes que subir un fichero MoodleXML con una batería de preguntas e indicar cuántas se les muestran cada intento, cuántas deben acertar para lograr una pista y si se les muestra la respuesta correcta al finalizar cada intento.",
                 "correctNumber": "Número de aciertos",
                 "correctNumberPlaceHolder": "¿Cuántas preguntas hay que acertar para obtener una pista?",
-                "moodleXMLExplanation": "Si quieres que los alumnos tengan que responder a una serie de preguntas para obtener una pista, sube un fichero MoodleXML que incluya una batería de preguntas",
+                "moodleXMLExplanation": "Si quieres que los participantes tengan que responder a una serie de preguntas para obtener una pista, sube un fichero MoodleXML que incluya una batería de preguntas",
                 "feedback": "Retroalimentación",
-                "feedbackExplanation": "¿Deseas que se muestre a los alumnos la solución de las preguntas una vez respondidas?",
+                "feedbackExplanation": "¿Deseas que se muestre a los participantes la solución de las preguntas una vez respondidas?",
                 "hintFile": "Fichero de preguntas",
                 "allowCustomHints": "Permitir pistas manuales",
-                "allowCustomHintsExplanation": "Si se marca esta opción, cuando no queden más pistas automáticas se indicará a los alumnos que recurran al profesor. Sino, no se les permitirá seguir pidiendo pistas cuando se acaben las pistas automáticas.",
+                "allowCustomHintsExplanation": "Si se marca esta opción, cuando no queden más pistas automáticas se indicará a los participantes que recurran al profesor. En caso contrario, no se les permitirá seguir pidiendo pistas cuando se acaben las pistas automáticas.",
                 "hintInterval": "Frecuencia de pistas",
-                "hintIntervalExplanation": "¿Cada cuántos minutos pueden pedir una pista los alumnos?",
+                "hintIntervalExplanation": "¿Cada cuántos minutos pueden pedir una pista los participantes?",
                 "hintLimit": "Límite de pistas",
-                "hintLimitExplanation": "¿Cuántas pistas pueden obtener los alumnos como máximo?",
+                "hintLimitExplanation": "¿Cuántas pistas pueden obtener los participantes como máximo?",
                 "hintLimitPlaceholder": "No hay límite",
                 "hintStrategy": "Estrategia de pistas",
                 "noHintsStrategy": "Pistas no permitidas",
-                "freeHintsStrategy": "Los alumnos pueden obtener pistas gratuitamente",
-                "quizHintsStrategy": "Los alumnos pueden obtener pistas si aprueban un cuestionario",
+                "freeHintsStrategy": "Los participantes pueden obtener pistas gratuitamente",
+                "quizHintsStrategy": "Los participantes pueden obtener pistas si aprueban un cuestionario",
                 "MoodleXML": "MoodleXML",
                 "noFile": "No has subido ningún fichero",
                 "questionNumber": "Número de preguntas",
@@ -478,16 +476,16 @@
             },
             "team": {
                 "explanation": "En este apartado puedes personalizar la interfaz que los estudiantes verán en sus pantallas mientras jueguen a la escape room. Puedes añadir una pista inicial, enlaces, imágenes, etc.",
-                "placeholder": "Añade un mensaje personalizado, imágenes, links... No te olvides de configurar cuándo quieres que sea visible esta información haciendo click en el icono del ojo a la izquierda",
+                "placeholder": "Añade un mensaje personalizado, imágenes, links... No te olvides de configurar cuándo quieres que sea visible esta información haciendo click en el icono de configuración situado a la izquierda",
                 "title": "Interfaz de equipo"
             },
             "class": {
-                "explanation": "En este apartado puedes personalizar la interfaz que proyectarás en el aula. Puedes añadir elementos como la cuenta atrás, el video introductorio o el ranking. Si los alumnos van a participar en la escape room de forma remota nunca verán esta interfaz, por lo que puedes saltarte este paso.",
-                "placeholder": "Añade la información que quieras proyectar a los alumnos",
+                "explanation": "En este apartado puedes personalizar la interfaz que proyectarás en el aula. Puedes añadir elementos como la cuenta atrás, el video introductorio o el ranking. Si los participantes van a participar en la escape room de forma remota nunca verán esta interfaz, por lo que puedes saltarte este paso.",
+                "placeholder": "Añade la información que quieras proyectar en el aula",
                 "title": "Interfaz de clase"
             },
             "indications": {
-                "explanation": "En este apartado puedes personalizar las instrucciones que los alumnos recibirán antes de que comience la escape room desde el momento en el que se apunten. Por ejemplo, puedes recordarles que traigan algún material, indicarles que repasen parte del contenido de la asignatura o proporcionarles un vídeo para que visualicen.",
+                "explanation": "En este apartado puedes personalizar las instrucciones que los participantes recibirán antes de que comience la escape room desde el momento en el que se apunten. Por ejemplo, puedes recordarles que traigan algún material, indicarles que repasen parte del contenido de la asignatura o proporcionarles un vídeo.",
                 "placeholder": "Añade instrucciones previas personalizadas",
                 "title": "Instrucciones previas",
                 "front": {
@@ -502,7 +500,7 @@
                     "visualizationIntro": "¿Cuándo deseas mostrar este bloque de contenido?",
                     "visualizationStart": "Nada más empezar",
                     "visualizationFinish": "Cuando superen la escape room",
-                    "visualizationSucceed": "Cuando los alumnos estén trabajando en los siguientes retos",
+                    "visualizationSucceed": "Cuando los participantes estén trabajando en los siguientes retos",
                     "accept": "aceptar",
                     "cancel": "cancelar",
                     "dropHere": "Suelta para colocarlo aquí",
@@ -516,7 +514,7 @@
                     "catalog": {
                         "newPuzzle": "nuevo puzzle",
                         "uploadFile": "subir fichero",
-                        "addResource": "añadir nuevo recurso",
+                        "addResource": "añadir recurso",
                         "addBlock": "añadir bloque",
                         "addText": "añadir bloque de texto",
                         "table": {
@@ -566,7 +564,7 @@
             	"evaluation": "Evaluación"
             },
             "puzzles": {
-                "explanation": "En este apartado puedes configurar los distintos retos que componen la escape room. Ten en cuenta que deben seguir una estructura lineal, es decir, para resolver un reto es necesario haber resuelto el anterior. Debes especificar el nombre y descripción del reto, así como la solución del mismo. Si seleccionas la opción de monitorización automática para algún reto, en la interfaz de equipo no se permitirá resolver ese reto sino que debes hacerlo a través de la API de escapp. Adicionalmente puedes añadir pistas automáticas para cada reto, que se le proporcionaran a los alumnos cuando se queden atascados y pidan ayuda.",
+                "explanation": "En este apartado puedes configurar los distintos retos que componen la escape room. Ten en cuenta que deben seguir una estructura lineal, es decir, para resolver un reto es necesario haber resuelto el anterior. Debes especificar el nombre y descripción de cada reto, así como su solución. Si seleccionas la opción de monitorización automática para algún reto, en la interfaz de equipo no se permitirá resolver ese reto sino que se deberá hacer mediante una aplicación que use la API de escapp. Puedes añadir pistas para cada reto, las cuales serán proporcionadas a los participantes de acuerdo a la configuración de pistas que establezcas en la siguiente sección.",
                 "addNewHint": "añadir pista",
                 "addNewCategory": "añadir categoría",
                 "addNewPuzzles": "añadir reto",
@@ -591,10 +589,10 @@
                 "tracking": "Monitorización",
                 "validator": {
                    "msg": "Verificación",
-                    "exact": "Exacto",
+                    "exact": "Exacta",
                     "caseinsensitive": "Sin distinguir mayúsculas",
                     "regex": "Expresión regular",
-                    "range": "Rango"
+                    "range": "Numérica, con una tolerancia de ±"
                 },
                 "errors": {
                     "invalidSolution": "La solución tiene que ser un número",
@@ -604,11 +602,11 @@
             },
             "after": {
                 "title": "Finalización",
-                "explanation": "Aquí puedes añadir la información que quieres mostrar a los alumnos una vez terminen la escape room. Puedes incluir una encuesta, un cuestionario posterior o cualquier otra información que quieras compartir con ellos"
+                "explanation": "Aquí puedes añadir la información que quieres mostrar a los participantes una vez terminen la escape room. Puedes incluir una encuesta, un cuestionario posterior o cualquier otra información que quieras compartir con ellos"
             },
             "sharing": {
                 "title": "Publicación",
-                "description": "Puedes compartir tu escape room con otros profesores para que la utilicen en sus clases. Puedes hacerlo público para que los alumnos puedan apuntarse a ella desde la página principal de escapp",
+                "description": "Puedes compartir tu escape room con otros profesores para que la utilicen en sus clases. Puedes hacerla pública para que los participantes puedan apuntarse a ella desde la página principal de escapp",
                 "license": "Licencia",
                 "instructions": "Instrucciones para profesores",
                 "status": {
@@ -617,14 +615,14 @@
                     "completed": "Completado"
                 },
                 "level": "Nivel educativo",
-                "field": "Campo",
+                "field": "Área de conocimiento",
                 "format": "Formato",
                 "licenseExplanation": "¿Qué tipo de licencia quieres aplicar al contenido de tu escape room?. Esto afectará a la posibilidad de que otros profesores puedan utilizarla en sus clases",
                 "licenseExplanationAlreadyPublished": "Ya no puedes cambiar la licencia porque tu escape room ya ha sido publicada anteriormente.",
-                "invitationExplanation": "¿Quieres que los alumnos tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
+                "invitationExplanation": "¿Quieres que los participantes tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
                 "instructionsExplanation": "Comparte las instrucciones que quieras con los profesores que utilicen tu escape room. Sube un fichero en formato PDF. Puedes incluir información sobre cómo se juega, cómo se evalúa, etc.",
-                "scopeExplanation": "¿Quieres que los alumnos puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos alumnos que tengan el enlace directo",
-                "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los alumnos no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia.",
+                "scopeExplanation": "¿Quieres que los participantes puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos participantes que tengan el enlace directo",
+                "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los participantes no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia.",
                 "areYouSurePublish": "¿Seguro que deseas publicar la escape room? No podrás cambiar la licencia una vez publicada",
                 "checklist": {
                     "step1": "Información básica obligatoria proporcionada",
@@ -636,7 +634,7 @@
                     "step7": "Instrucciones posteriores a la actividad especificadas (o deshabilitadas)",
                     "step8": "Rúbrica de evaluación creada",
                     "congrats": "¡Enhorabuena! Has publicado tu escape room con éxito.",
-                    "congrats2":"Crea un turno para que los alumnos puedan apuntarse a la escape room.",
+                    "congrats2":"Crea un turno para que los participantes puedan apuntarse a la escape room.",
                     "backToDraft":"¿Quieres volver a estado borrador? Para hacerlo, haz click en el interruptor. ",
                     "erStatus": "Estado de la escape room ",
                     "areYouReady": "¿Has terminado de editar tu escape room? ¡Hazla pública haciendo click en el interruptor! Recuerda que no podrás cambiar la licencia del contenido una vez publicada. Recuerda que antes de hacer la escape room pública puedes hacer pruebas por tu cuenta o invitando a colaboradores.",
@@ -659,7 +657,7 @@
                 "date": "Fecha de celebración",
                 "datePlaceholder": "Fecha en la que tendrá lugar el turno",
                 "enrollmentPeriod": "Periodo de matriculación",
-                "enrollmentPeriodPlaceholder": "Periodo en el que los alumnos se podrán matricular en este turno",
+                "enrollmentPeriodPlaceholder": "Periodo en el que los participantes se podrán matricular en este turno",
                 "password": "Contraseña",
                 "passwordPlaceholder": "Contraseña para acceder al turno. Por defecto es la misma que para la escape room",
                 "passwordEmpty": "ninguna",
@@ -716,7 +714,7 @@
         "uploadNew": "sube un fichero nuevo",
         "selectGamificationElements": "Selecciona un elemento de gamificación",
         "countdown": "Cuenta atrás",
-        "countdownExplanation": "Muestra la cuenta atrás del tiempo que les queda a los alumnos",
+        "countdownExplanation": "Muestra la cuenta atrás del tiempo que les queda a los participantes",
         "ranking": "Ranking",
         "rankingExplanation": "Muestra una tabla con los equipos ordenados según su nivel de progreso",
         "progress": "Barra de progreso",
@@ -758,11 +756,11 @@
             },
             "second": {
                 "title": "Paso 2: Definir los objetivos de aprendizaje",
-                "intro": "Una vez definida la actividad en el contexto de la asignatura en la cual se va a desarrollar, es necesario delimitar qué contenidos específicos del temario va a cubrir la <em>escape room</em>, al igual que ocurre en cualquier otra actividad didáctica. Se recomienda establecer primero unos objetivos generales y a continuación desgranar éstos en objetivos más específicos que los alumnos deben lograr para superar la actividad."
+                "intro": "Una vez definida la actividad en el contexto de la asignatura en la cual se va a desarrollar, es necesario delimitar qué contenidos específicos del temario va a cubrir la <em>escape room</em>, al igual que ocurre en cualquier otra actividad didáctica. Se recomienda establecer primero unos objetivos generales y a continuación desgranar éstos en objetivos más específicos que los participantes deben lograr para superar la actividad."
             },
             "third": {
                 "title": "Paso 3: Escoger los retos",
-                "intro": "En base a los objetivos establecidos en el paso anterior, es necesario identificar la manera apropiada de poner a prueba los conocimientos de los alumnos, combinando tareas que involucren la aplicación práctica de las habilidades adquiridas en la asignatura con conocimientos teóricos. Los retos a los que los alumnos se enfrentan son altamente dependientes de la asignatura en la que se enmarca la actividad.<br/>Algunos ejemplos de estos recursos se muestran a continuación. Puedes acceder a un listado de recursos concretos pinchando sobre cada icono.",
+                "intro": "En base a los objetivos establecidos en el paso anterior, es necesario identificar la manera apropiada de poner a prueba los conocimientos de los participantes, combinando tareas que involucren la aplicación práctica de las habilidades adquiridas en la asignatura con conocimientos teóricos. Los retos a los que los participantes se enfrentan son altamente dependientes de la asignatura en la que se enmarca la actividad.<br/>Algunos ejemplos de estos recursos se muestran a continuación. Puedes acceder a un listado de recursos concretos pinchando sobre cada icono.",
                 "middle": "Estos retos pueden crearse fácilmente con plataformas web. Si decides añadir retos que involucren objetos físicos, piensa primero si estos se adaptan al planteamiento general de tu actividad. Algunos ejemplos son:",
                 "list": {
                     "search": "Búsqueda de objetos físicos escondidos",
@@ -777,7 +775,7 @@
             },
             "fourth": {
                 "title": "Paso 4: Seleccionar una temática apropiada",
-                "intro": "La temática es una de las piezas clave que diferencia una <em>escape room</em> de un ejercicio práctico en grupo. Se trata de la historia que envuelve toda la experiencia y que proporciona el carácter inmersivo del juego. Aporta sentido a las tareas que los alumnos deben realizar durante la <em>escape room</em> y cohesiona todas las pruebas de la actividad. Cuando desarrolles la temática has de tener en cuenta:",
+                "intro": "La temática es una de las piezas clave que diferencia una <em>escape room</em> de un ejercicio práctico en grupo. Se trata de la historia que envuelve toda la experiencia y que proporciona el carácter inmersivo del juego. Aporta sentido a las tareas que los participantes deben realizar durante la <em>escape room</em> y cohesiona todas las pruebas de la actividad. Cuando desarrolles la temática has de tener en cuenta:",
                 "list": {
                     "first": "<strong>La narrativa</strong>,  el contexto temporal y el espacial",
                     "second": "<strong>El perfil del alumno</strong> al que va dirigido",
@@ -788,7 +786,7 @@
                     "adventure": "Aventuras",
                     "history": "Historia"
                 },
-                "booksAndMovies": "Una buena fuente de inspiración para seleccionar una temática son los libros, los videojuegos, y las películas y series famosas, ya que es probable que los alumnos conozcan la trama o los personajes de antemano.  Por supuesto, la asignatura en la que se enmarque la <em>escape room</em> ejercerá una gran influencia en la selección de la temática, puesto que los retos a superar deben estar apoyados por la narrativa. Algunos ejemplos de temáticas son:"
+                "booksAndMovies": "Una buena fuente de inspiración para seleccionar una temática son los libros, los videojuegos, y las películas y series famosas, ya que es probable que los participantes conozcan la trama o los personajes de antemano.  Por supuesto, la asignatura en la que se enmarque la <em>escape room</em> ejercerá una gran influencia en la selección de la temática, puesto que los retos a superar deben estar apoyados por la narrativa. Algunos ejemplos de temáticas son:"
             },
             "fifth": {
                 "title": "Paso 5: Construir los retos, pistas y demás materiales",
@@ -799,11 +797,11 @@
                 },
                 "hints": {
                     "title": "Pistas",
-                    "content": "Una parte esencial en el diseño de toda <em>escape room</em> son las pistas y ayudas. Es esencial evitar que los alumnos pasen demasiado tiempo en un mismo reto ya que, si esto ocurre, se corre el riesgo de que pierdan la motivación. Además, esa situación puede ser contraproducente desde el punto de vista pedagógico, ya que los alumnos no se enfrentarán  a la totalidad de los retos. Para evitar que la petición de ayuda sea constante, una posibilidad es idear una batería de preguntas que los alumnos tengan que intentar responder cada vez que necesiten una pista. Si consiguen acertar más de un número determinado de preguntas, conseguirán una pista. De esta manera los alumnos se ganarán el derecho a obtener ayuda y se ponen a prueba sus conocimientos teóricos acerca de la asignatura para complementar el contenido práctico que se pone en práctica en la <em>escape room</em>."
+                    "content": "Una parte esencial en el diseño de toda <em>escape room</em> son las pistas y ayudas. Es esencial evitar que los participantes pasen demasiado tiempo en un mismo reto ya que, si esto ocurre, se corre el riesgo de que pierdan la motivación. Además, esa situación puede ser contraproducente desde el punto de vista pedagógico, ya que los participantes no se enfrentarán  a la totalidad de los retos. Para evitar que la petición de ayuda sea constante, una posibilidad es idear una batería de preguntas que los participantes tengan que intentar responder cada vez que necesiten una pista. Si consiguen acertar más de un número determinado de preguntas, conseguirán una pista. De esta manera los participantes se ganarán el derecho a obtener ayuda y se ponen a prueba sus conocimientos teóricos acerca de la asignatura para complementar el contenido práctico que se pone en práctica en la <em>escape room</em>."
                 },
                 "instructions": {
                     "title": "Instrucciones",
-                    "intro": "Antes de comenzar el desarrollo de la actividad, es importante presentar el juego a los alumnos. Es importante aclarar cuáles son los límites de la actividad, si pueden salir de la sala, si pueden hacer uso de sus dispositivos móviles, si pueden hablar con los demás equipos, etc. A continuación, se les introduce a la temática presentando el objetivo a lograr en la <em>escape room</em> y dando indicaciones de por donde empezar. Esto se puede hacer en forma de videomensaje en el que un personaje (ya sea el profesor o un “actor”) apela a los alumnos para que le ayuden a resolver un misterio, crimen, enigma, etc. También se puede aproximar desde la perspectiva contraria, mostrando un video en el que el personaje ejerce un papel de villano que amenaza a los alumnos."
+                    "intro": "Antes de comenzar el desarrollo de la actividad, es importante presentar el juego a los participantes. Es importante aclarar cuáles son los límites de la actividad, si pueden salir de la sala, si pueden hacer uso de sus dispositivos móviles, si pueden hablar con los demás equipos, etc. A continuación, se les introduce a la temática presentando el objetivo a lograr en la <em>escape room</em> y dando indicaciones de por donde empezar. Esto se puede hacer en forma de videomensaje en el que un personaje (ya sea el profesor o un “actor”) apela a los participantes para que le ayuden a resolver un misterio, crimen, enigma, etc. También se puede aproximar desde la perspectiva contraria, mostrando un video en el que el personaje ejerce un papel de villano que amenaza a los participantes."
                 }
             },
             "sixth": {
@@ -812,7 +810,7 @@
             },
             "seventh": {
                 "title": "Paso 7: Elaborar una forma de evaluar la experiencia",
-                "intro": "Existen varias maneras de evaluar si los alumnos han aprendido realizando la actividad. Una manera es mediante un grupo de control, comparando las notas de los alumnos que realizaron la escape room con los que no. Otra manera es realizando un test al principio de la escape room y al final, comprobando si ha habido un incremento significativo de los conocimientos de los alumnos. Por último, al final de la actividad es conveniente realizar una encuesta para conocer la opinión de los alumnos acerca de la escape room."
+                "intro": "Existen varias maneras de evaluar si los participantes han aprendido realizando la actividad. Una manera es mediante un grupo de control, comparando las notas de los alumnos que realizaron la escape room con los que no. Otra manera es realizando un test al principio de la escape room y al final, comprobando si ha habido un incremento significativo de los conocimientos de los participantes. Por último, al final de la actividad es conveniente realizar una encuesta para conocer la opinión de los participantes acerca de la escape room."
             }
         }
     },
@@ -974,7 +972,7 @@
             "copyAria": "Input invisible para permitir copiar el link de invitación",
             "freeHintsStrategy": "Esta escape room permite obtener pistas libremente",
             "noHintsStrategy": "Esta escape room no permite obtener pistas",
-            "noHintControl": "Esta Escape Room no utiliza ningún mecanismo de control de pistas",
+            "noHintControl": "Esta escape room no utiliza ningún mecanismo de control de pistas",
             "noVideo": "No hay vídeo",
             "copyTitle": "Copia el enlace",
             "qrTitle": "Genera un código QR para compartir",
@@ -994,7 +992,7 @@
         "titles": {
             "appearance": "Apariencia",
             "description": "Descripción",
-            "duration": "Duración",
+            "duration": "Duración (minutos)",
             "field": "Campo",
             "format": "Formato",
             "hints": "Pistas",
@@ -1007,7 +1005,7 @@
             "puzzles": "Retos",
             "subject": "Tema",
             "survey": "Encuesta",
-            "teamSize": "Tamaño máx. equipos",
+            "teamSize": "Tamaño máximo de los equipos",
             "scope": "Privacidad",
             "supportLink": "Enlace de ayuda durante la escape room",
             "thumbnail": "Miniatura",
@@ -1015,7 +1013,7 @@
             "turnos": "Turnos",
             "video": "Vídeo",
             "share": "Compartir",
-            "forceLang": "Forzar el idioma de escapp para los alumnos de esta escape room"
+            "forceLang": "Forzar el idioma de escapp para los participantes de esta escape room"
         },
         "cantManageUntilComplete": "No puedes gestionar la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación')."
 
@@ -1121,7 +1119,7 @@
         "notActive": "Esta escape room no está activa para tu usuario",
         "selectActivate": "Selecciona el turno que quieres activar/desactivar",
         "selectStudent": "Selecciona un turno",
-        "areYouSureReset": "¿Seguro que quieres reiniciar este turno? Todo el progreso de los alumnos se perderá",
+        "areYouSureReset": "¿Seguro que quieres reiniciar este turno? Todo el progreso de los participantes se perderá",
         "areYouSureDelete": "¿Seguro que deseas eliminar este turno?",
         "resetProgress": "Reinicia el turno",
         "noTurnAvailable": "No hay ningún turno disponible en esta escape room",
@@ -1132,7 +1130,7 @@
         "spot": "puesto libre",
         "spots": "puestos libres",
         "openSpots": "en este turno",
-        "todayEscapeRoom": "¡Este día se celebra la Escape Room!",
+        "todayEscapeRoom": "¡Este día se celebra la escape room!",
         "Turno": "Turno",
         "Links": "Enlaces",
         "statusMsg": {
@@ -1181,8 +1179,7 @@
             "secondary": "Educación secundaria",
             "vet": "Formación profesional",
             "higher": "Educación superior",
-            "other": "Otro",
-            "none": "Ninguno"
+            "other": "Otro"
         },
         "acceptTerms": "Condiciones de uso",
         "terms": "Confirmo que he leído y acepto los <a href='/terms' target='_blank'>Términos de Uso</a> y la <a href='/privacy' target='_blank'>Política de Privacidad</a>.",
@@ -1201,7 +1198,7 @@
             "welcome": "Bienvenido a Escapp ;)",
             "wrongLetterDNI": "DNI erroneo, la letra del NIF no se corresponde",
             "notFound": "Usuario no encontrado",
-            "ensureRegistered": "Ha ocurrido un error. Asegúrate de que te has registrado correctamente en la Escape Room.",
+            "ensureRegistered": "Ha ocurrido un error. Asegúrate de que te has registrado correctamente en la escape room.",
             "emailConfirm":"Por favor, confirma tu correo electrónico haciendo click en el botón de confirmar",
             "emailConfirmButton":"confirmar",
             "emailResetPassword1":" Si recibes este mensaje es porque has solicitado recuperar tu contraseña en escapp.",
@@ -1336,6 +1333,8 @@
             "Symbols": "Symbols",
             "None": "Ninguna"
         }
+    },
+    "general": {
+        "unespecified": "No especificado"
     }
-
 }

@@ -19,7 +19,7 @@
 	<form method='POST' id="form" action='/escapeRooms/<%= escapeRoom.id %>/turnos'  >
 		<br/>
 	
-		<div class="align-right flex-buttons">
+		<div class="align-right flex-buttons buttons_before_progressbar">
             <button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
     		<button class="progress-buttons" type="submit" value="next" id="next" name="next">
     			<%=i18n.common.next%>
@@ -29,7 +29,6 @@
 		    </button>
 		</div>
 		<%- include('../../partials/_progress', {progress}) %>
-		
 	</form>
 	<script>
 		var selectedDates = [
