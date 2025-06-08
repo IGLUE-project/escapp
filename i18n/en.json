@@ -227,7 +227,7 @@
             "successEditingUser": "User successfully edited",
             "successImage": "Picture successfully uploaded",
             "successSendingReport":    "Report successfully sent",
-            "youMustAcceptTerms": "Debes aceptar las condiciones para poder registrarte"
+            "youMustAcceptTerms": "You must accept the conditions in order to register"
         },
         "guide": "User guide",
         "ideas": "Puzzle ideas",
@@ -262,7 +262,7 @@
             "authenticationAPI": "Authentication",
             "authenticationAPIDesc": "This endpoint allows you to authenticate in escapp and verify whether you are allowed to participate in an escape room at a given time",
             "method": "Method",
-            "email": "User e-mail",
+            "email": "User email",
             "password": "User password",
             "tokenR": "Instead of the password you can provide the user token",
             "request": "Request",
@@ -902,7 +902,7 @@
     "collaborators": {
         "Collaborators": "Collaborators",
         "Name": "Name",
-        "Email": "E-mail",
+        "Email": "Email",
         "add": "add",
         "delete": "delete",
         "areYouSureDelete": "Are you sure you want to remove this collaborator?",
@@ -1065,7 +1065,7 @@
         "title": "Teams",
         "turnNotAvailable": "The selected shift is not available",
         "message": "Send a message",
-        "email": "Contact via e-mail"
+        "email": "Contact via email"
     },
     "turno": {
         "Actions": "Actions",
@@ -1180,7 +1180,7 @@
         "attributes": {
             "surname": "Surname",
             "name": "Name",
-            "username": "E-mail",
+            "username": "Email",
             "password": "Password",
             "eduLevel": "Educational level"
         },
@@ -1189,7 +1189,7 @@
         "student": "Student",
         "lang": "Language",
         "acceptTerms": "Terms and conditions",
-        "terms": "By signing up, I acknowledge that I have read and agree to the <a href='/terms' target='_blank'>Terms of Use</a> and <a href='/privacy' target='_blank'>Privacy Policy</a>",
+        "terms": "I confirm that I have read and accept the <a href='/terms' target='_blank'>Terms of Use</a> and the <a href='/privacy' target='_blank'>Privacy Policy</a>.",
         "eduLevelField": "Educational level you teach/study",
         "eduLevel": {
             "primary": "Primary education",
@@ -1205,19 +1205,19 @@
             "passwordConfirmPlaceHolder": "Enter your password",
             "passwordPlaceHolder": "Enter your password",
             "surnamePlaceHolder": "Enter your last name",
-            "usernamePlaceHolder": "Enter your E-mail"
+            "usernamePlaceHolder": "Enter your email"
         },
         "messages": {
             "doNotMatch": "Oops! passwords must match",
             "fillIn": "Both fields password and password confirmation must be filled in",
             "invalidDNI": "Invalid ID number. Wrong format",
-            "welcome": "Welcome to the Escape Room management platform ;)",
+            "welcome": "Welcome to Escapp ;)",
             "wrongLetterDNI": "Oops! Invalid ID number, letter must match the number combination",
             "notFound": "User not found",
             "ensureRegistered": "An error occurred. Please make sure you've correctly registered in the Escape Room",
-            "emailConfirm":"Please, confirm your e-mail address, by clicking the 'confirm' button below",
+            "emailConfirm":"Please, confirm your email address, by clicking the 'confirm' button below",
             "emailConfirmButton":"confirmar",
-            "emailResetPassword1":"If you are receiving this e-mail is because you reset your password in escapp.",
+            "emailResetPassword1":"If you are receiving this email is because you reset your password in escapp.",
             "emailResetPassword2":"This is the link to reset your password:",
             "notAllowedTeacherEmail": "You are not allowed to enroll as a teacher with this email",
             "notAllowedStudentEmail": "You are not allowed to enroll as a student with this email",
@@ -1241,7 +1241,7 @@
         "surname": "Last name",
         "title": "User",
         "user": "user",
-        "username": "E-mail",
+        "username": "Email",
         "wrongCredentials": "Login error. Please check your credentials",
         "turno": "Shift",
         "delete": {
@@ -1276,7 +1276,6 @@
         "waiting": "Include participants waiting to enter the escape room as well",
         "msgPlaceholder": "Write here your message",
         "msgPlaceholder2": "Write here your message. All the users in this list that are currently connected will receive it."
-
     },
     "cookies": {
         "cookie_message": "We use only essential cookies to ensure the proper functioning of this site. No tracking or third-party cookies.",
@@ -1294,6 +1293,11 @@
         "error_accepting": "Error updating terms and privacy policy acceptance"
 
     },
+    "policies": {
+        "terms": "Terms of use",
+        "privacy": "Privacy policy",
+        "cookies": "Cookie policy"
+    },
     "reusablePuzzles":{
         "name": "Reusable puzzles",
         "create": "Create reusable puzzle",
@@ -1307,7 +1311,7 @@
             "pageTitle": "Contact the author",
             "description": "",
             "author": "Author",
-            "email": "E-mail",
+            "email": "Email",
             "sendEmail": "Send an email",
             "subject": "Consulta sobre la escape room"
         },

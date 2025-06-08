@@ -223,7 +223,7 @@
             "successAddingCollaborator": "Colaborador añadido con éxito",
             "successImage": "Imagen subida con éxito",
             "successSendingReport": "Reporte enviado con éxito",
-            "youMustAcceptTerms": "You must accept the terms and conditions in order to register"
+            "youMustAcceptTerms": "Debes aceptar los términos y condiciones para poder registrarte."
         },
         "guide": "Manual de usuario",
         "ideas": "Ideas para retos",
@@ -1185,7 +1185,7 @@
             "none": "Ninguno"
         },
         "acceptTerms": "Condiciones de uso",
-        "terms": "Al registrarme, confirmo que he leído y acepto los <a href='/terms' target='_blank'>Términos de Uso</a> y la <a href='/privacy' target='_blank'>Política de Privacidad</a>",
+        "terms": "Confirmo que he leído y acepto los <a href='/terms' target='_blank'>Términos de Uso</a> y la <a href='/privacy' target='_blank'>Política de Privacidad</a>.",
         "inputs": {
             "editUser": "Editar usuario",
             "namePlaceHolder": "Introduce tu nombre",
@@ -1198,7 +1198,7 @@
             "doNotMatch": "Las contraseñas no coinciden",
             "fillIn": "Los campos de contraseña y confirmación de contraseña deben ser rellenados",
             "invalidDNI": "DNI erroneo, formato no válido",
-            "welcome": "Bienvenido a la plataforma de gestión de escape rooms ;)",
+            "welcome": "Bienvenido a Escapp ;)",
             "wrongLetterDNI": "DNI erroneo, la letra del NIF no se corresponde",
             "notFound": "Usuario no encontrado",
             "ensureRegistered": "Ha ocurrido un error. Asegúrate de que te has registrado correctamente en la Escape Room.",
@@ -1276,6 +1276,11 @@
           "view_cookies": "Leer Política de Cookies",
           "error_accepting": "Error al aceptar la nueva política de privacidad y términos de uso"
         },
+    "policies": {
+        "terms": "Términos de uso",
+        "privacy": "Política de privacidad",
+        "cookies": "Política de cookies"
+    },
     "reusablePuzzles": {
         "name": "Retos reutilizables",
         "create": "Crear reto reutilizable",

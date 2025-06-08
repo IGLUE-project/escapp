@@ -3768,6 +3768,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 12px;
   font-family: Lato;
 }
+
+.portada .contenedor .loginRight label[for="accept_terms"] {
+  line-height: 1.3;
+}
+
 .portada .contenedor .loginRight label span {
   padding-bottom: 7px;
   text-align: left;
@@ -3805,9 +3810,18 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: large;
   font-family: Gugi, sans-serif;
 }
-.portada .contenedor .loginRight .langs, .portada .contenedor .loginRight .legal {
+.portada .contenedor .loginRight .legal {
   position: absolute;
   bottom: 0px;
+  color: #656683;
+}
+.portada .contenedor .loginRight .langs {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  text-align: right;
+  justify-content: right;
+  padding-right: 2%;
   color: #656683;
 }
 .portada .contenedor .loginRight .langs a:hover, .portada .contenedor .loginRight .legal a:hover {
