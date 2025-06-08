@@ -547,7 +547,8 @@
                             "nameDescription": "Nombre y descripción",
                             "options": "Opciones",
                             "warningPuzzleChange": "Si has cambiado la solución del reto debes guardar este formulario primero para que los cambios estén disponibles en la vista previa",
-                            "solutionLength": "Longitud de la solución"
+                            "solutionLength": "Longitud de la solución",
+                            "reusablePuzzleInstructions": "instrucciones"
                         }
                     }
                 }

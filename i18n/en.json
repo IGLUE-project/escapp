@@ -557,7 +557,9 @@
                             "nameDescription": "Name and description",
                             "options": "Options",
                             "warningPuzzleChange": "If you have changed your puzzle solution you must save this form first for your changes to be available in the preview",
-                            "solutionLength": "Solution length"
+                            "solutionLength": "Solution length",
+                            "reusablePuzzleInstructions": "instructions"
+
                         }
                     }
                 }

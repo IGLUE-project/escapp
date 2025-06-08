@@ -270,7 +270,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
 };
 
 
-const appendParameterers = (...parameters) => {
+const appendParameters = (...parameters) => {
     let config = "";
 
     parameters.forEach((parameter) => {
@@ -293,9 +293,9 @@ exports.editAsset = async (req, res, next) => {
             let config = "";
 
             if (asset.mime.search(imageRegex) !== -1) {
-                config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
+                config = appendParameters({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else if (asset.mime.search(videoRegex) !== -1 || asset.mime.search(audioRegex) !== -1) {
-                config = appendParameterers(
+                config = appendParameters(
                     {"name": "width", "value": req.body.width},
                     {"name": "height", "value": req.body.height},
                     {"name": "controls", "value": req.body.controls},
@@ -303,7 +303,7 @@ exports.editAsset = async (req, res, next) => {
                     {"name": "download", "value": req.body.download}
                 );
             } else if (asset.mime.search(applicationRegex) !== -1) {
-                config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
+                config = appendParameters({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else {
                 return "";
             }
