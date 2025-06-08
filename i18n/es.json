@@ -608,7 +608,7 @@
                 "title": "Publicación",
                 "description": "Puedes compartir tu escape room con otros profesores para que la utilicen en sus clases. Puedes hacerlo público para que los alumnos puedan apuntarse a ella desde la página principal de escapp",
                 "license": "Licencia",
-                "instructions": "Teacher instructions",
+                "instructions": "Instrucciones para profesores",
                 "status": {
                     "name": "Estado",
                     "draft": "Borrador",
@@ -620,6 +620,7 @@
                 "licenseExplanation": "¿Qué tipo de licencia quieres aplicar al contenido de tu escape room?. Esto afectará a la posibilidad de que otros profesores puedan utilizarla en sus clases",
                 "licenseExplanationAlreadyPublished": "Ya no puedes cambiar la licencia porque tu escape room ya ha sido publicada anteriormente.",
                 "invitationExplanation": "¿Quieres que los alumnos tengan que introducir una contraseña para apuntarse a la escape room? Si es así, selecciona la opción privada. Si no, selecciona pública y podrán apuntarse sin necesidad de contraseña",
+                "instructionsExplanation": "Comparte las instrucciones que quieras con los profesores que utilicen tu escape room. Sube un fichero en formato PDF. Puedes incluir información sobre cómo se juega, cómo se evalúa, etc.",
                 "scopeExplanation": "¿Quieres que los alumnos puedan apuntarse a la escape room desde la página principal de escapp? Si es así, selecciona la opción pública. Si no, selecciona privada y sólo podrán acceder a ella aquellos alumnos que tengan el enlace directo",
                 "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los alumnos no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia.",
                 "areYouSurePublish": "¿Seguro que deseas publicar la escape room? No podrás cambiar la licencia una vez publicada",
@@ -1172,7 +1173,7 @@
         "teacher": "Profesor",
         "student": "Alumno",
         "lang": "Idioma",
-        "eduLevelField": "Nivel educativo",
+        "eduLevelField": "Nivel educativo que estudias/impartes",
         "eduLevel": {
             "primary": "Educación primaria",
             "secondary": "Educación secundaria",
@@ -1307,8 +1308,10 @@
                 "other": "Otro"
             }
         }
-    },"reusablePuzzleApps": {
-        "keypad": {
+    },
+    "reusablePuzzleApps": {
+        "Keypad": {
+            "name": "Teclado",
             "selectSkin": "Select Skin",
             "Standard": "Standard",
             "Retro": "Retro",

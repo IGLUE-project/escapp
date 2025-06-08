@@ -351,6 +351,7 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
             const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
 
             name = reusablePuzzle ? reusablePuzzle.name : null;
+            
             const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${name}/${file_name}`);
 
             res.sendFile(filePath);

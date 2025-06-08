@@ -2,7 +2,7 @@ const {reusablePuzzles} = require("./reusable_puzzle.js");
 
 const reusablePuzzlesList = [
     {
-        "name": "Keypad2",
+        "name": "Keypad",
         "description": "Keypad desc",
         "zip": "defaultReusablePuzzles/keypad/Keypad_Puzzle_Escapp_Preview.zip",
         "form": "keypad.ejs",

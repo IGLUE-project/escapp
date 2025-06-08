@@ -14,6 +14,8 @@
     "undo_last_migration_local": "node scripts/db_undo_last_migration.js",
     "seed_local": "node scripts/db_seed.js",
     "css": "sass public/stylesheets/style.sass public/stylesheets/style.css",
+    "default_reusable_puzzles": "node scripts/reusable_puzzles_default.js",
+    "add_reusable_puzzle": "node scripts/reusable_puzzles.js",
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix",
     "create-admin": "node scripts/admin.js",

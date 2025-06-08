@@ -71,7 +71,9 @@
                                 onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.dataValues.reusablePuzzleId%> )"
                             <%}%>>
                             <span class="building-block-icon material-icons"> add </span>
-                            <p><%=puzzle.name%></p>
+                            <p>  
+                                <%=i18n.reusablePuzzleApps[puzzle.name]?.name || puzzle.name%>
+                             </p>
                         </button>
                     </div>
                 <% })%>
