@@ -540,13 +540,14 @@
                             "assignedPuzzle": "Reto asignado",
                             "customization": "Personalización",
                             "puzzleSolution": "Solución",
+                            "range": "Rango",
                             "autoplay": "Autoplay",
                             "controls": "Controles",
                             "download": "Descarga",
                             "nameDescription": "Nombre y descripción",
                             "options": "Opciones",
-                            "warningPuzzleChange": "Si has cambiado la solución del reto debes guardar este formulario primero para que los cambios estén disponibles en la vista previa"
-
+                            "warningPuzzleChange": "Si has cambiado la solución del reto debes guardar este formulario primero para que los cambios estén disponibles en la vista previa",
+                            "solutionLength": "Longitud de la solución"
                         }
                     }
                 }

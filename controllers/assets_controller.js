@@ -109,7 +109,7 @@ exports.uploadAssets = async (req, res) => {
                 fs.mkdirSync(newPath);
                 await zip.extract(null, newPath);
                 await zip.close();
-                await asset.update({ "mime": "application/webapp", "url": `/uploads/webapps/${req.file.filename}/index.html` });
+                await asset.update({ "mime": "application/webapp", "url": `/${req.file.path}` });
             }
         }
 
@@ -242,7 +242,24 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 fs.createReadStream(filePath).pipe(res);
             }
         } else if (asset.mime.search(applicationRegex) !== -1) {
-            res.render("partials/_webappContainer", {"path": filePath, "layout": false});
+            const referrer = req.get("Referrer");
+            const preview = Boolean(referrer && referrer.match("/team$"));
+            const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+            const {token} = await models.user.findByPk(req.session.user.id);
+            const basePath = `/uploads/webapps/${asset.public_id}/index.html`
+            const file = path.join(__dirname, `/../uploads/webapps/${asset.public_id}/index.html`);
+            const config = {
+                "escappClientSettings": {
+                    "endpoint": `${hostName}/api/escapeRooms/${asset.escapeRoomId}`,
+                    preview,
+                    "user": {
+                        "email": req.session.user.username,
+                        token
+                    }
+                }
+            };
+
+            res.render("reusablePuzzles/reusablePuzzleContainer", {basePath, config, file, "layout": false});
         } else {
             res.sendFile(filePath);
         }

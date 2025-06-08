@@ -275,7 +275,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             correctAnswer = removeDiacritics(answer.toString().trim()) === removeDiacritics(puzzleSol.toString().trim());
             break;
         case "regex":
-            correctAnswer = removeDiacritics(answer.toString()).match(puzzleSol);
+            correctAnswer = new RegExp(puzzleSol).test(removeDiacritics(answer.toString()));
             break;
         case "range": {
             const splitArray = puzzleSol.toString().split("+");

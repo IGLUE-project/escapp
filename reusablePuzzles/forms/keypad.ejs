@@ -8,9 +8,10 @@
 </div>
 
 <div>
+
     <label for="actionAfterSolve"><%=i18n.reusablePuzzleApps.Keypad.actionAfterSolve%>:</label>
-    <select  id="actionValue" name="actionAfterSolve">
-        <option value="NONE"><%=i18n.reusablePuzzleApps.Keypad.None%></option>
+    <select id="actionValue" name="actionAfterSolve">
+        <option  value="NONE"><%=i18n.reusablePuzzleApps.Keypad.None%></option>
         <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Keypad.sendMessage%></option>
     </select>
 </div>
@@ -47,7 +48,7 @@ document.getElementById('actionValue').addEventListener('change', function() {
 document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.background || 'images/background.png';
 document.getElementById("messageInput").value =  window.currentOpenPuzzleConfig?.message || '';
 document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
-document.getElementById("actionValue").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'None';
+document.getElementById("actionValue").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
 if( window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
     document.getElementById("actionDiv").style.display = 'block';
 } else {
