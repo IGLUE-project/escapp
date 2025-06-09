@@ -1,6 +1,8 @@
 @use "common/colors"
 
 #mainSection
+  .buttons_before_progressbar
+      margin-bottom: 30px
   .main
     &.steps-new, &.steps-edit
       .breadcrumbs-container
@@ -51,15 +53,19 @@
         border: 2px solid white
         background-color: transparent
         color: white
+  .progressBarWrapper
+    position: relative
+    width: 100%
+    text-align: center
   .progressBar
-    position: absolute
+    position: relative
     bottom: 0
     width: 50%
-    left: 25%
+    margin-left: 25%
     color: white
     text-align: center
     padding-bottom: 10px
-    margin-bottom: 25px
+    margin-bottom: 60px
     .progressText
       padding-bottom: 10px
       font-size: 14px

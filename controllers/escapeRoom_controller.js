@@ -7,8 +7,8 @@ const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
-const es = require("../i18n/es");
-const en = require("../i18n/en");
+const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
+
 const fs = require("fs");
 const path = require("path");
 
@@ -16,23 +16,16 @@ const path = require("path");
 exports.load = async (req, res, next, escapeRoomId) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(escapeRoomId, query.escapeRoom.load);
-
-        if (escapeRoom) {
-            if (res.locals) {
-                if (!req.session || req.session && req.session.user && req.session.user.isStudent) {
-                    if (escapeRoom.forceLang && req.cookies && req.cookies.locale !== escapeRoom.forceLang) {
-                        res.locals.i18n_texts = escapeRoom.forceLang === "es" ? es : en;
-                        res.locals.i18n_lang = escapeRoom.forceLang === "es" ? "es" : "en";
-                        res.locals.i18n = res.locals.i18n_texts;
-                    }
-                }
-            }
+        if (escapeRoom && res.locals) {
             req.escapeRoom = escapeRoom;
+            var editing = (req.session && req.session.user && !req.session.user.isStudent);
+            res.locals.i18n_lang = getLocaleForEscapeRoom(req, escapeRoom, editing);
+            res.locals.i18n_texts = getTextsForLocale(res.locals.i18n_lang);
+            res.locals.i18n = res.locals.i18n_texts;
             next();
         } else {
             res.status(404);
             const {i18n} = res.locals;
-
             next(new Error(i18n.api.notFound));
         }
     } catch (error) {
@@ -145,7 +138,7 @@ exports.create = async (req, res) => {
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
-    escapeRoom.forceLang = forceLang === "en" || forceLang === "es" ? forceLang : null;
+    escapeRoom.forceLang = isValidLocale(forceLang) ? forceLang : null;
 
     try {
         const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang", "format", "level", "field"], transaction});
@@ -235,7 +228,8 @@ exports.update = async (req, res) => {
     escapeRoom.supportLink = body.supportLink;
 
     escapeRoom.teamSize = body.teamSize || 0;
-    escapeRoom.forceLang = body.forceLang === "en" || body.forceLang === "es" ? body.forceLang : null;
+    escapeRoom.forceLang = isValidLocale(body.forceLang) ? body.forceLang : null;
+
     const progressBar = body.progress;
 
     try {

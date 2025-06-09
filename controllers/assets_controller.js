@@ -242,6 +242,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 fs.createReadStream(filePath).pipe(res);
             }
         } else if (asset.mime.search(applicationRegex) !== -1) {
+            
             const referrer = req.get("Referrer");
             const preview = Boolean(referrer && referrer.match("/team$"));
             const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
@@ -270,7 +271,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
 };
 
 
-const appendParameterers = (...parameters) => {
+const appendParameters = (...parameters) => {
     let config = "";
 
     parameters.forEach((parameter) => {
@@ -293,9 +294,9 @@ exports.editAsset = async (req, res, next) => {
             let config = "";
 
             if (asset.mime.search(imageRegex) !== -1) {
-                config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
+                config = appendParameters({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else if (asset.mime.search(videoRegex) !== -1 || asset.mime.search(audioRegex) !== -1) {
-                config = appendParameterers(
+                config = appendParameters(
                     {"name": "width", "value": req.body.width},
                     {"name": "height", "value": req.body.height},
                     {"name": "controls", "value": req.body.controls},
@@ -303,7 +304,7 @@ exports.editAsset = async (req, res, next) => {
                     {"name": "download", "value": req.body.download}
                 );
             } else if (asset.mime.search(applicationRegex) !== -1) {
-                config = appendParameterers({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
+                config = appendParameters({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else {
                 return "";
             }
@@ -368,6 +369,7 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
             const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
 
             name = reusablePuzzle ? reusablePuzzle.name : null;
+            
             const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${name}/${file_name}`);
 
             res.sendFile(filePath);

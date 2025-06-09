@@ -22,40 +22,42 @@
             <input type="text" class="light" name="puzzles[<%=reto%>][sol]" maxlength="10000" autocomplete="off" required value="<%=puzzle.validator === "range" ? puzzle.sol.split("+")[0] : puzzle.sol%>" id="puzzles[<%=reto%>][sol]"/>
         </div>
         <div>
-            <h3>
-                <span class="material-icons">search</span>
-                <label for="puzzles[<%=reto%>][sol]"><%=i18n.escapeRoom.steps.puzzles.validator.msg%></label>
-            </h3>
             <div>
-                <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="exact" <%= puzzle.validator ? (puzzle.validator === 'exact' ? 'checked' : null) : 'checked' %> id="puzzles[<%=reto%>][exa]"/>
-                <label for="puzzles[<%=reto%>][exa]"><%=i18n.escapeRoom.steps.puzzles.validator.exact%></label>
+                <h3>
+                    <span class="material-icons">search</span>
+                    <label for="puzzles[<%=reto%>][sol]"><%=i18n.escapeRoom.steps.puzzles.validator.msg%></label>
+                </h3>
+                <div>
+                    <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="exact" <%= puzzle.validator ? (puzzle.validator === 'exact' ? 'checked' : null) : 'checked' %> id="puzzles[<%=reto%>][exa]"/>
+                    <label for="puzzles[<%=reto%>][exa]"><%=i18n.escapeRoom.steps.puzzles.validator.exact%></label>
+                </div>
+                <div>
+                    <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="caseinsensitive" <%= puzzle.validator === 'caseinsensitive' ? 'checked' : null %> id="puzzles[<%=reto%>][cas]"/>
+                    <label for="puzzles[<%=reto%>][cas]"><%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%></label>
+                </div>
+                <div>
+                    <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="range" <%= puzzle.validator === 'range' ? 'checked' : null %> id="puzzles[<%=reto%>][ran]"/>
+                    <span>
+                        <label for="puzzles[<%=reto%>][ran]"><%=i18n.escapeRoom.steps.puzzles.validator.range%></label>
+                        <input class="validatorInputs numberInput" min="0" name="puzzles[<%=reto%>][rang]-range" step="0.01" value="<%=puzzle.validator === "range" ? puzzle.sol.split("+")[1] : 0%>" id="puzzles[<%=reto%>][rang]-range"" type="number"/>
+                    </span>
+                </div>
+                <div>
+                    <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="regex" <%= puzzle.validator === 'regex' ? 'checked' : null %> id="puzzles[<%=reto%>][reg]"/>
+                    <label for="puzzles[<%=reto%>][reg]"><%=i18n.escapeRoom.steps.puzzles.validator.regex%></label>
+                </div>
             </div>
             <div>
-                <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="caseinsensitive" <%= puzzle.validator === 'caseinsensitive' ? 'checked' : null %> id="puzzles[<%=reto%>][cas]"/>
-                <label for="puzzles[<%=reto%>][cas]"><%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%></label>
+                <h3> <span class="material-icons">track_changes</span>
+                    <label for="puzzles[<%=reto%>][automatic]">
+                           <%=i18n.escapeRoom.steps.puzzles.tracking%>
+                    </label>
+                </h3>
+                <select class="light" required  id="puzzles[<%=reto%>][automatic]" name="puzzles[<%=reto%>][automatic]" value="<%= puzzle.automatic %>" placeholder="<%i18n.escapeRoom.steps.puzzles.placeholder%>" autocomplete="off">
+                    <option value="0" <%= puzzle.automatic ? "" : "selected"%>><%=i18n.escapeRoom.steps.puzzles.manual%></option>
+                    <option value="1" <%= puzzle.automatic ? "selected" : ""%>><%=i18n.escapeRoom.steps.puzzles.automatic%></option>
+                </select>
             </div>
-            <div>
-                <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="range" <%= puzzle.validator === 'range' ? 'checked' : null %> id="puzzles[<%=reto%>][ran]"/>
-                <span>
-                    <label for="puzzles[<%=reto%>][ran]"><%=i18n.escapeRoom.steps.puzzles.validator.range%></label>
-                    <input class="validatorInputs numberInput" min="0" name="puzzles[<%=reto%>][rang]-range" step="0.01" value="<%=puzzle.validator === "range" ? puzzle.sol.split("+")[1] : 0%>" id="puzzles[<%=reto%>][rang]-range"" type="number"/>
-                </span>
-            </div>
-            <div>
-                <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="regex" <%= puzzle.validator === 'regex' ? 'checked' : null %> id="puzzles[<%=reto%>][reg]"/>
-                <label for="puzzles[<%=reto%>][reg]"><%=i18n.escapeRoom.steps.puzzles.validator.regex%></label>
-            </div>
-        </div>
-        <div>
-            <h3> <span class="material-icons">track_changes</span>
-                <label for="puzzles[<%=reto%>][automatic]">
-                       <%=i18n.escapeRoom.steps.puzzles.tracking%>
-                </label>
-            </h3>
-            <select class="light" required  id="puzzles[<%=reto%>][automatic]" name="puzzles[<%=reto%>][automatic]" value="<%= puzzle.automatic %>" placeholder="<%i18n.escapeRoom.steps.puzzles.placeholder%>" autocomplete="off">
-                <option value="0" <%= puzzle.automatic ? "" : "selected"%>><%=i18n.escapeRoom.steps.puzzles.manual%></option>
-                <option value="1" <%= puzzle.automatic ? "selected" : ""%>><%=i18n.escapeRoom.steps.puzzles.automatic%></option>
-            </select>
         </div>
     </div>
     <h3>
