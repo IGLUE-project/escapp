@@ -1172,6 +1172,7 @@
             "eduLevel": "El nivel educativo"
         },
         "role": "Rol",
+        "roleField":"Perfil en Escapp",
         "teacher": "Profesor",
         "student": "Alumno",
         "lang": "Idioma",

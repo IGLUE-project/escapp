@@ -94,7 +94,7 @@
         </section>-->
         <section id="configZone" hidden>
             <div class="configReusablePuzzle">
-                <form action="reusablePuzzleInstance" onsubmit="send(event,this)" style="background-image:url('../images/background.png')" method="POST" id="configForm">
+                <form action="reusablePuzzleInstance" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
                 </form>
                 <div class="previewReusablePuzzle">
                     <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
@@ -578,7 +578,7 @@
         }
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
          return `
-         <div style="float:right; margin-top: 10px;">
+         <div style="position:absolute; right: 0; margin-top: 10px;">
                  <a href="/instructions" target="_blank">
                     <button class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.reusablePuzzleInstructions%>
@@ -586,7 +586,7 @@
                     </button>
                 </a>
             </div>
-        <div class="editDialog">
+        <div class="editDialog" id = "appendFormElementsHere">
             <h3 style="margin: 0;"> ${ puzzleName } </h3>
             <p> ${ puzzleDesc } </p>
             <h4 class="titleLabelEdit">
@@ -605,79 +605,8 @@
                 </label>
                 <input id="descOfReusablePuzzle" type="text" name="description" value="${puzzle.description || ''}"/>
             </div>
-
             
-                <!--<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.measures%> </h4>
-                <div >
-                <div>
-                    <label for="height"><%=i18n.escapeRoom.steps.indications.front.catalog.config.height%></label>
-                    <span class="editUnit">
-                        <input   type="number" name="height"/>
-                        <p> px </p>
-                    </span>
-                </div>
-                <div>
-                    <label for="width"><%=i18n.escapeRoom.steps.indications.front.catalog.config.width%></label>
-                    <span class="editUnit">
-                        <input  type="number" name="width"/>
-                        <p> px </p>
-                    </span>
-                </div>
-                </div>-->
-            </div>
-            <div class="editDialog">
-                <h4 class="titleLabelEdit">
-                    <%=i18n.escapeRoom.steps.indications.front.catalog.config.assignedPuzzle%>
-                </h4>
-                    <select id="associatedPuzzle" onchange="setPuzzleSol(${puzzle.id},config,${reusablePuzzleId})"  name="puzzle">
-                        ${window.puzzles.map((puzzler,index) => {
-                            return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>`
-                        }).join('')}
-                    </select>
-                    <div>
-                    <label for="puzzleSol">
-                        <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
-                    </label>
-                     <input id="puzzleSol" value="${value}" onchange="updateIframe(config, ${puzzle.id});$('#warningMessageForReusablePuzzleCreation').show()"
-                        name="puzzleSol"/>
-                    <span ${selectedPuzzle.assignedReusablePuzzleInstance === puzzle.id ? null : 'style="display: none"' }  id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
-                    warning
-                    </span>
-                    <select name="validator"  id="inputValidator" onchange = "validatorOnchange()">
-                            <option value="exact" ${ selectedPuzzle.validator === 'exact' ? "selected" : null }>
-                                <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
-                            </option>
-                            <option value="caseinsensitive" ${selectedPuzzle.validator === "caseinsensitive" ?  "selected" : null } >
-                                <%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%>
-                            </option>
-                            <option value="range" ${selectedPuzzle.validator === 'range' ? "selected"  : null } >
-                                <%=i18n.escapeRoom.steps.puzzles.validator.range%>
-                            </option>
-                            <option value="regex" ${selectedPuzzle.validator === 'regex' ? "selected"  : null } >
-                                <%=i18n.escapeRoom.steps.puzzles.validator.regex%>
-                            </option>
-                    </select>
-                </div>
-                <div style="${selectedPuzzle.validator === 'regex' ? null :'display:none' }" id="solutionLength">
-                    <label for="solutionLength">
-                        <%=i18n.escapeRoom.steps.indications.front.catalog.config.solutionLength%>
-                    </label>
-                    <input id="solutionLengthInput" name="solutionLength" value=${config.solutionLength ? config.solutionLength : 0} type="number"/>
-                </div>
-                <div style="${selectedPuzzle.validator === 'range' ? null :'display:none' }" id="rangeDiv">
-                    <label for="rangeInput">
-                        <%=i18n.escapeRoom.steps.indications.front.catalog.config.range%>
-                    </label>
-                    <input id="rangeInput" step="0.01" value="${selectedPuzzle.sol.split('+')[1]}" min="0" name="rangeInput" type="number"/>
-                </div>
-                <span id="warningMessageForReusablePuzzleCreation" style="display:none;">
-                    <span class="material-icons">warning</span>
-                        <%=i18n.escapeRoom.steps.indications.front.catalog.config.warningPuzzleChange%>
-                </span>
-            </div>
-            <div class="editDialog" id="appendFormElementsHere">
-                <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
-            </div>
+        </div>
         `
 
     }
@@ -1062,10 +991,12 @@
                 elements += `</div>`;
                 configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzleDesc));
                 configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
+                
 
                 $('#appendFormElementsHere').append(elements);
                 config.puzzle =  puzzles ? puzzles[0].id : undefined;
                 config.puzzleObject = puzzles ? puzzles[0] : undefined;
+                 setPuzzleSol(puzzle.id, config, baseId);
                 if( config.puzzleObject.validator === "range") {
                     config.solutionLength = config.puzzleObject.sol.split("+")[0].length;
                 } else if (config.puzzleObject.validator === "regex") {
@@ -1073,6 +1004,8 @@
                 } else {
                     config.solutionLength = config.puzzleObject.sol.length;
                 }
+                
+               
                 updateIframe(config, puzzle.reusablePuzzleId);
 
                 $(".sections").scrollTop(0);

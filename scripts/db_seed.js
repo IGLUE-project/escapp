@@ -7,7 +7,7 @@ dotenv.config();
 if (!process.env.DATABASE_URL) {
     console.error("Please define DATABASE_URL in .env file");
 } else {
-    exec(`./node_modules/.bin/sequelize db:seed:all --url ${process.env.DATABASE_URL}`, function (err, stdout, stderr) {
+    exec(`npx sequelize db:seed:all --url ${process.env.DATABASE_URL}`, function (err, stdout, stderr) {
         // Node.js will invoke this callback when process terminates.
         if (err) {
             console.error(err);

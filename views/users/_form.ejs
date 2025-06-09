@@ -20,13 +20,19 @@
     <label for="surname"><span><%=i18n.user.surname%></span>
     <input type="text" class="customInput" id="surname" name="surname" value="<%= user.surname %>" required placeholder="<%=i18n.user.inputs.surnamePlaceHolder %>" autocomplete="off"/></label>
 </div>
- 
-
 <br />
+<%if (!user.id || locals.admin) {%>
+<div class="userField">
+    <label for="username"><span><%=i18n.user.username%></span>
+    <input type="email" <%=user.id?"disabled":""%> class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
+</div>
+<br />
+<%}%>
+
 <div class="userField">
     <label for="eduLevel"><span><%=i18n.user.eduLevelField%></span>
     <select  class="customInput" id="eduLevel" name="eduLevel" value="<%= user.eduLevel %>" placeholder="<%=i18n.user.inputs.eduLevelPlaceHolder %>" autocomplete="off">
-        <option value <%= user.eduLevel ? "" : "selected" %> <%= !user.id ? "selected" : ""%>/>
+        <option disabled value <%= user.eduLevel ? "" : "selected" %> <%= !user.id ? "selected" : ""%>/>
         <option value="primary" <%= user.eduLevel === "primary" ? "selected" : ""%>><%=i18n.user.eduLevel.primary%></option>
         <option value="secondary" <%= user.eduLevel === "secondary" ? "selected" : ""%>><%=i18n.user.eduLevel.secondary%></option>
         <option value="vet" <%= user.eduLevel === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
@@ -37,29 +43,21 @@
 </div>
 <br />
 <%if (!user.id || locals.admin) {%>
-<div class="userField">
-    <label for="username"><span><%=i18n.user.username%></span>
-    <input type="email" <%=user.id?"disabled":""%> class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
     <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || locals.admin) {%>
-        <div class="roleField">
-            <label for="teacher" class="roleLabel">
-                <input class="chooseRole" type="radio" name="role" id="teacher" value="teacher" <%if (locals.admin && !user.isStudent)  {%> checked <%}%> />
-                <span><%=i18n.user.roles.teacher%></span>
-            </label>
-            <label for="student" class="roleLabel">
-                <input class="chooseRole" type="radio" name="role" id="student" value="student" <%if (!user.id) {%> checked <%}%>  <%if (locals.admin && user.isStudent)  {%> checked  <%}%>  />
-                <span><%=i18n.user.roles.student%></span>
-            </label>
-            <%if (locals.admin) {%>
-            <label for="admin" class="roleLabel">
-                <input class="chooseRole" type="radio" name="role" id="admin" value="admin" <%if (locals.admin && user.isAdmin)  {%> checked <%}%>  />
-                <span><%=i18n.user.roles.admin%></span>
-            </label>
-            <%}%>
+        <div class="userField">
+            <label for="eduLevel"><span><%=i18n.user.roleField%></span>
+            <select  class="customInput" id="role" name="role"  autocomplete="off" >
+                <option value <%if (!user.id) {%> selected <%}%> disabled > </option>
+                <option value="student" <%if (user.id && user.isStudent) {%> selected <%}%>> <%=i18n.user.roles.student%></option>
+                <option value="teacher" <%if (user.id && !user.isStudent)  {%> selected <%}%>> <%=i18n.user.roles.teacher%></option>
+                <%if (locals.admin) {%>
+                    <option value="admin" <%if (locals.admin && user.isAdmin)  {%> selected <%}%>> <%=i18n.user.roles.admin%></option>
+                <%}%>
+            </select>
         </div>
-        <%}%>
-    </div>
     <br />
+<%}%>
+
 <%}%>
 
 <%if (user.id) {%>
