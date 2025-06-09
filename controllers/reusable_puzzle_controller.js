@@ -105,6 +105,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
             throw new Error("No file uploaded");
         }
 
+
         const zipPath = path.join(__dirname, "/../", req.files.file[0].path);
         let hasForm = false;
 
@@ -131,6 +132,12 @@ exports.createReusablePuzzle = async (req, res, next) => {
 
         if (thumbnailPath) {
             fs.renameSync(thumbnailPath, path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/thumbnail.${thumbnailExtension}`));
+        }
+
+        if(req.files.instructions) {
+            req.files.instructions.forEach((instruction) => {
+                fs.renameSync(path.join(__dirname, "/../", req.files.instructions[0].path), path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/${instruction.originalname}`));
+            })
         }
 
         await zip.extract(null, newPath);
@@ -323,7 +330,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         }
         t.commit();
         const modifiedPuzzle = {assignedReusablePuzzleInstance: puzzle.assignedReusablePuzzleInstance, sol: puzzle.sol, validator: puzzle.validator, title: puzzle.title, id: puzzle.id, };
-        res.json({config, "name": reusablePuzzleInstance.name, puzzle, reusablePuzzleId: modifiedPuzzle, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        res.json({config, "name": reusablePuzzleInstance.name, puzzle, reusablePuzzleId: modifiedPuzzle.id, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -353,7 +360,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleInstance.reusablePuzzleId);
         const escapeRoom = await models.escapeRoom.findByPk(reusablePuzzleInstance.escapeRoomId);
         const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
-        
+
         const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
         if(!linkedPuzzle) {
             res.status(404).send("Puzzle not assigned to this instance");

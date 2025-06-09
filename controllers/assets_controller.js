@@ -87,10 +87,10 @@ exports.uploadAssets = async (req, res) => {
         if (!isSupported) {
             req.file.mimetype = "unsupported";
         }
-        const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.file.originalname, "mime": req.file.mimetype, userId }).save();
+        const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.body.filename, "mime": req.file.mimetype, userId }).save();
 
         // Res.json({"id": saved.id, "url": uploadResult.url});
-        const html = ckeditorResponse(req.query.CKEditorFuncNum, req.file.url);
+        //const html = ckeditorResponse(req.query.CKEditorFuncNum, req.file.url);
 
         if (mime === "application/zip") {
             let isWebapp = false;
@@ -112,8 +112,7 @@ exports.uploadAssets = async (req, res) => {
                 await asset.update({ "mime": "application/webapp", "url": `/${req.file.path}` });
             }
         }
-
-        res.send(html);
+        res.json({asset});
     } catch (error) {
         console.error(error);
         if (error instanceof Sequelize.ValidationError) {
@@ -242,7 +241,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 fs.createReadStream(filePath).pipe(res);
             }
         } else if (asset.mime.search(applicationRegex) !== -1) {
-            
+
             const referrer = req.get("Referrer");
             const preview = Boolean(referrer && referrer.match("/team$"));
             const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
@@ -286,11 +285,15 @@ const appendParameters = (...parameters) => {
 // PUT /escapeRooms/:escapeRoomId/assets/:assetId
 exports.editAsset = async (req, res, next) => {
     const {assetId} = req.params;
+    const filename = req.body.filename;
 
     try {
         const asset = await models.asset.findByPk(assetId);
-
+        console.log(asset);
         if (asset) {
+            asset.filename = filename;
+            console.log(filename)
+            /*
             let config = "";
 
             if (asset.mime.search(imageRegex) !== -1) {
@@ -309,7 +312,11 @@ exports.editAsset = async (req, res, next) => {
                 return "";
             }
             await asset.update({config});
-            res.json({config, "id": asset.id});
+            */
+            await asset.save();
+
+            res.json({config:{},filename, "id": asset.id});
+
         } else {
             res.status(404);
             res.send("Asset not found, did you remove it?");
@@ -369,7 +376,7 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
             const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
 
             name = reusablePuzzle ? reusablePuzzle.name : null;
-            
+
             const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${name}/${file_name}`);
 
             res.sendFile(filePath);

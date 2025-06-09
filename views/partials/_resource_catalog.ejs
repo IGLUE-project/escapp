@@ -1,3 +1,40 @@
+
+<div id="uploadFileDialog" class="modalCatalogResource" >
+    <div class="modalContainer"  style="height:45vh;width:50vw">
+        <div class="modalTitle" style="width:50vw;color:white">
+            <h5 style="font-size: 1em; margin-top: 0px">
+                <%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%>
+            </h5>
+        <span class="building-block-icon material-icons" onclick="toggleUploadModal()"> close </span>
+        </div>
+        <div style="margin: 4rem"></div>
+        <div class="sections"  style="height: calc(45vh - 4rem)">
+            <section class="sectionAddResource" style="color:white important;width:100%;height:100%">
+                <form action="uploadAssets" method="POST" enctype="multipart/form-data" id="uploadFileForm" style="width:100%;height:100%">
+                <button type="submit" disabled style="display: none" aria-hidden="true"></button>
+                <div style="display:flex; flex-direction:column; justify-content:space-around; align-items:center;width:100%;height:100%">
+                    <input type="hidden" name="escapeRoomId" value="<%=escapeRoom.id%>">
+                    <div class="resource-group">
+                    <button type="button" onclick="triggerClick()">
+                        <label for="fileInput" style="color:black;">  <%=i18n.escapeRoom.steps.indications.front.catalog.selectFile%></label>
+                    </button>
+                        <input onchange="changeName(event)" hidden style="color:white; "type="file" id="fileInput" name="asset" required>
+                    </div>
+                    <div class="resource-group">
+                        <label style="color:white;"> <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%> </label>
+                        <input style="color:white;"type="text" id="filename" name="filename" required>
+                    </div>
+                    <div>
+                        <button type="button" class="btn rounded acceptButton" onclick="submitFile(event)">  <%=i18n.common.save%></button>
+                        <button type="button" class="btn rounded deleteButton" onclick="toggleUploadModal()"><%=i18n.common.back%></button>
+                    </div>
+                </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
 <div id="modalCatalogResource" class="modalCatalogResource">
     <div class="modalContainer">
         <div class="modalTitle">
@@ -115,13 +152,12 @@
                         </a>
                     </button>
                 <% } %>
-                    <button class="rounded building-block-bar-button uploadButton">
-                        <a href="assets?mode=catalogView">
-                            <span class="building-block-icon material-icons"> upload </span>
-                            <p><%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
-                        </a>
+                    <button class="rounded building-block-bar-button uploadButton" onclick="toggleUploadModal()">
+                        <div style="display:flex">
+                        <span class="building-block-icon material-icons"> upload </span>
+                        <p><%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
+                        </div>
                     </button>
-
 
         </div>
     </div>
@@ -198,8 +234,6 @@
                     </td>
                 </tr>
                 <% })} %>
-
-
                     <tr class="catalogItem" id="noResources">
                         <td colspan="3" style="text-align: center; height:200px
                         <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
@@ -550,6 +584,8 @@
         <form method="POST" action="../reusablePuzzleInstance">
         </form>
     </dialog>
+    <dialog id="previewContainer" style="overflow:auto">
+    </dialog>
 </div>
 
 <script>
@@ -562,7 +598,21 @@
         resources.removeAttr('hidden');
 
         $(".sections").scrollTop(0);
-        const modal = $(".modalCatalogResource");
+        const modal = $("#modalCatalogResource");
+        if(modal.hasClass("active")) {
+            $('body').css("overflow", "scroll");
+        } else {
+            $('body').css("overflow", "hidden");
+            window.scrollTo(0, 0);
+        }
+        modal.toggleClass("active");
+    }
+
+    function toggleUploadModal() {
+        console.log("toggleUploadModal called");
+        $(".sections").scrollTop(0);
+        const modal = $("#uploadFileDialog");
+        modal.find('form')[0].reset();
         if(modal.hasClass("active")) {
             $('body').css("overflow", "scroll");
         } else {
@@ -578,10 +628,11 @@
             selectedPuzzle = window.puzzles[0] || {};
         }
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
-        console.log(config, puzzle)
+        console.log(reusablePuzzleId)
+        const url =  `/reusablePuzzles/${reusablePuzzleId}/${window.lang}.pdf`
          return `
          <div style="float:right; margin-top: 10px;">
-                 <a href="/instructions" target="_blank">
+                 <a href=${url} target="_blank">
                     <button class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.reusablePuzzleInstructions%>
                         <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
@@ -755,134 +806,13 @@
     }
 
     function editAsset(id, mime) {
-        const config = window.assets.find(a => a.id == id).config;
-        const configJSON = parseAssetConfig(mime, config);
+        const asset = window.assets.find(a => a.id == id);
         const dialog = $('#editDialog');
         const form = dialog.find('form');
         form.attr('action', `./asset/${id}`);
         form.empty();
-        if (mime.search(imageRegex) !== -1) {
-            form.append(`
-                    <div class="containerBlocksEdit">
-                        <div>
-                            <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
-                            <div class="editDialogForm">
-
-                            <div>
-                                <label for="height">${i18n.catalog.config.height}</label>
-                                <span class="editUnit">
-                                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
-                                    <p> px </p>
-                                </span>
-                            </div>
-                            <div>
-                                <label for="width">${i18n.catalog.config.width}</label>
-                                <span class="editUnit">
-                                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
-                                    <p> px </p>
-                                </span>
-                            </div>
-                        </div>
-                    </div>`
-
-                    );
-
-
-        } else if (mime.search(videoRegex) !== -1) {
-            form.append(`
-            <div class="containerBlocksEdit">
-            <div >
-                <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
-                <div class="editDialogForm">
-                <div>
-                    <label for="height">${i18n.catalog.config.height}</label>
-                    <span class="editUnit">
-                        <input class="light" type="number" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
-                        <p> px </p>
-                    </span>
-                 </div>
-                <div>
-                    <label for="width">${i18n.catalog.config.width}</label>
-                    <span class="editUnit">
-                        <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
-                        <p> px </p>
-                    </span>
-                </div>
-                </div>
-                </div>
-                <div>
-                    <h4 class="titleLabelEdit"> ${i18n.catalog.config.options} </h4>
-                <div class="checkBoxEditContainer">
-                    <div><label for="autoplay">${i18n.catalog.config.autoplay}</label><input ${configJSON.autoplay !== "undefined" ? "checked" : ""} type="checkbox" name="autoplay"/></div>
-                    <div><label for="download">${i18n.catalog.config.download}</label><input ${configJSON.download !== "undefined" ? "checked" : ""} type="checkbox" name="download"/></div>
-                    <div><label for="controls">${i18n.catalog.config.controls}</label><input ${configJSON.controls !== "undefined" ? "checked" : ""} type="checkbox" name="controls"/></div>
-                </div>
-                </div>
-                </div>
-                `);
-        } else if (mime.search(audioRegex) !== -1) {
-            form.append(`
-            <div class="containerBlocksEdit">
-                <div>
-                    <h4 class="titleLabelEdit"> Opciones </h4>
-                    <div>
-                    <label for="controls">Controls</label>
-                    <input type="checkbox" ${configJSON.controls ? "checked" : ""} name="controls"/>
-                </div>
-            </div>`);
-        } else if (mime.search(pdfRegex) !== -1) {
-            form.append(`
-                    <div class="containerBlocksEdit">
-                        <div>
-                            <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
-                            <div class="editDialogForm">
-
-                            <div>
-                                <label for="height">${i18n.catalog.config.height}</label>
-                                <span class="editUnit">
-                                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
-                                    <p> px </p>
-                                </span>
-                            </div>
-                            <div>
-                                <label for="width">${i18n.catalog.config.width}</label>
-                                <span class="editUnit">
-                                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
-                                    <p> px </p>
-                                </span>
-                            </div>
-                        </div>
-                    </div>`
-
-                    );
-        } else if (mime.search(webappRegex) !== -1) {
-            form.append(`
-                    <div class="containerBlocksEdit">
-                        <div>
-                            <h4 class="titleLabelEdit"> ${i18n.catalog.config.measures} </h4>
-                            <div class="editDialogForm">
-
-                            <div>
-                                <label for="height">${i18n.catalog.config.height}</label>
-                                <span class="editUnit">
-                                    <input class="light" value="${configJSON.height ? configJSON.height : 0}" name="height"/>
-                                    <p> px </p>
-                                </span>
-                            </div>
-                            <div>
-                                <label for="width">${i18n.catalog.config.height}</label>
-                                <span class="editUnit">
-                                    <input class="light" type="number" value="${configJSON.width ? configJSON.width : 0}"  name="width"/>
-                                    <p> px </p>
-                                </span>
-                            </div>
-                        </div>
-                    </div>`
-
-                    );
-        } else {
-            return `<div>${item.name}</div>`;
-        }
+        form.append('<label> <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%> </label>');
+        form.append(`<input type="text" name="filename" value=${asset.filename} required>`);
         form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
         $('.previewReusablePuzzle').hide();
 
@@ -1243,9 +1173,12 @@
                     $('#noResources').hide();
                     row.find('.title').text(resJSON.name);
                 } else {
+                    console.log(resJSON)
                     window.assets.forEach((asset) => {
                         if(asset.id == resJSON.id) {
-                            asset.config = resJSON.config;
+                            asset.filename = resJSON.filename;
+                            const title = $(`#${asset.id} .title`);
+                            title.text(resJSON.filename);
                         }
                     });
                     if($('#editDialog').hasClass("ui-dialog-content")) {
@@ -1260,6 +1193,63 @@
 
     function addChangeSolWarning() {
         $('#warningMessageForReusablePuzzleCreation').show()
+    }
+
+    const items = document.querySelectorAll('.catalogItem .title')
+    const container = $('#previewContainer')
+
+
+    function addListenerForHover(el){
+          id = el.closest('tr').getAttribute('id')
+          const asset = window.assets.find(a => a.id == id);
+
+          el.addEventListener('click', (e) => {
+            container.empty();
+            let openContainer = true;
+            if(asset && asset.mime.search(imageRegex) !== -1) {
+                container.append('<img id="imagePreview" style="position:relative; width:100%"/>')
+                const image = document.getElementById('imagePreview')
+                image.setAttribute('src', asset.url)
+            } else if(asset && asset.mime.search(audioRegex) !== -1) {
+                container.append('<audio controls id="audioPreview"></audio>')
+                const audio = document.getElementById('audioPreview')
+                audio.setAttribute('src', asset.url)
+                audio.play()
+            } else if(asset && asset.mime.search(videoRegex) !== -1) {
+                container.append('<video controls id="videoPreview" style="position:relative;width:100%"></video>')
+                const video = document.getElementById('videoPreview')
+                video.setAttribute('src', asset.url)
+                video.play()
+            } else if(asset && asset.mime.search(webappRegex) !== -1) {
+                container.append('<iframe id="iframePreview"></iframe>')
+                const iframe = document.getElementById('iframePreview')
+                iframe.setAttribute('src', asset.url)
+            } else if(asset && asset.mime.search(pdfRegex) !== -1) {
+                container.append('<object src="" id="pdfPreview" type="application/pdf" > <iframe id="pdfIframe" style="border:none" src="" width="100%" height="100%" > </iframe> </object>')
+                const pdf = document.getElementById('pdfPreview')
+                pdf.setAttribute('src', asset.url)
+                pdfIframe.setAttribute('src', asset.url)
+            }else{
+                openContainer = false;
+            }
+
+          if(openContainer) {
+              container.dialog({
+                resizable: false,
+                width: window.innerWidth * 0.5,
+                height: window.innerHeight * 0.3,
+                position: { my: "center center", at: "center center", of: window },
+                show: {
+                    effect: "scale",
+                    duration: 200
+                },
+                hide: {
+                    effect: "scale",
+                    duration: 200
+                },
+              }).show();
+          }
+          })
     }
 
     window.onload = function() {
@@ -1288,6 +1278,12 @@
                 }
             }
         });
+        //hover
+
+        items.forEach((el) => {
+            addListenerForHover(el);
+        })
+
     }
 
     validatorOnchange = function(){
@@ -1304,4 +1300,118 @@
             $('#rangeDiv').hide();
         }
     }
+
+    function submitFile(e){
+        const data = new FormData($('#uploadFileForm')[0]);
+        if (!data.get('asset')) {
+            alert('<%=i18n.escapeRoom.steps.indications.front.catalog.uploadFileError%>');
+            return;
+        }
+
+        fetch('uploadAssets', {
+            method: 'POST',
+            body: data
+        }).then(response => {
+            if (response.ok) {
+                response.json().then((resJSON) => {
+                    const asset = resJSON.asset;
+                    window.assets.push(asset);
+
+                    $('#noResources').hide();
+                    $('#myTabContent').append(returnTableRow(asset, window.puzzles));
+                    const tr = document.getElementById(asset.id);
+                    const title = tr.querySelector('.title');
+                    addListenerForHover(title);
+
+                })
+                }
+        })
+        toggleUploadModal()
+        }
+
+const returnTableRow = (asset, puzzleList)=> {
+    let icon, color;
+    let disabled = false;
+    if (asset.mime.search(new RegExp(/image\/.*/))!==-1){
+        icon = "image";
+        color = "btn-blue";
+    }else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){
+        icon = "videocam";
+        color = "btn-red";
+    }else if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){
+        icon = "music_note";
+        color = "btn-yellow";
+    }else if (asset.mime.search(new RegExp(/application\/pdf/))!==-1){
+        icon = "picture_as_pdf";
+        color = "btn-red";
+    }else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1){
+        icon = "terminal"
+        color = "btn-purple";
+    }else{
+        icon = "question_mark";
+        color = "btn-gray";
+        disabled = true;
+    }
+
+    return `<tr class="catalogItem" id=${asset.id}>
+                                    <td>
+                                        <p class="title">
+                                             ${asset.filename}
+                                        </p>
+                                    </td>
+                                    <td> <span class="building-block-icon material-icons ${color}" > ${icon} </span>
+                                    </td>
+                                    <td>
+                                    <div class=" button-group row-button">
+                                        <div class="overlay-trigger" data-id=${asset.id}>
+                                            <p class="text-overlay">
+                                                <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                                            </p>
+                                            <button class="deleteButton" type="button"
+                                                onclick='overlayTriggerCatalog(${asset.id}, true)'><%=i18n.common.cancel%></button>
+                                            <button class="acceptButton" type="button"
+                                                onclick='deleteAsset(${asset.id})'><%=i18n.common.accept%></button>
+                                        </div>
+                                        <button class="listButton iconButton delete-button"
+                                            onclick="overlayTriggerCatalog(${asset.id}, false)">
+                                            <span class="building-block-icon material-icons" id="delete">
+                                                delete_outline
+                                        </button>
+                                        <button ${disabled ? 'disabled': null} class="listButton iconButton editButton"
+                                            onclick='editAsset(${asset.id}, "${asset.mime}")'>
+                                            <span class="building-block-icon material-icons" id="edit"> edit
+                                            </span>
+                                        </button>
+                                        <button class="listButton linkButton" onclick='copyURl(${asset.url})'>
+                                            <span class="building-block-icon material-icons" id="link"> link
+                                            </span>
+                                            <div class="tooltip-link">
+                                                <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>
+                                            </div>
+                                            <div class="tooltip-link" id="link-copied">
+                                                <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                                            </div>
+                                        </button>
+
+                                        <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
+                                            onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify(puzzleList)})'>
+                                            <span class="building-block-icon material-icons" id="add"> add
+                                            </span>
+                                            <p>
+                                                <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                            </p>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>`
+}
+
+function triggerClick() {
+    $("#inputFile").click();
+}
+function changeName(e){
+    const nameField = $('#filename')
+    nameField.val(e.target.files[0].name);
+}
+
 </script>
