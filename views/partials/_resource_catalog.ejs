@@ -71,7 +71,7 @@
                                 onclick="openPuzzleConfiguration(<%=JSON.stringify(puzzle)%>,<%= puzzle.dataValues.reusablePuzzleId%> )"
                             <%}%>>
                             <span class="building-block-icon material-icons"> add </span>
-                            <p>  
+                            <p>
                                 <%=i18n.reusablePuzzleApps[puzzle.name]?.name || puzzle.name%>
                              </p>
                         </button>
@@ -142,6 +142,7 @@
             <%if(endPoint==="team"){
                 reusablePuzzlesInstances.map(puzzle=> {
                 let goodConfig={};
+                puzzle.url = `/escapeRooms/${escapeRoom.id}/reusablePuzzleInstances/${puzzle.id}/render`;
                 try{
                     goodConfig = JSON.parse(puzzle.config)
                 } catch(e){
@@ -577,12 +578,13 @@
             selectedPuzzle = window.puzzles[0] || {};
         }
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
+        console.log(config, puzzle)
          return `
          <div style="float:right; margin-top: 10px;">
                  <a href="/instructions" target="_blank">
                     <button class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.reusablePuzzleInstructions%>
-                        <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span> 
+                        <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
                     </button>
                 </a>
             </div>
@@ -592,7 +594,7 @@
             <h4 class="titleLabelEdit">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.config.nameDescription%>
             </h4>
-            
+
             <div>
                 <label for="name">
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%>
@@ -606,7 +608,7 @@
                 <input id="descOfReusablePuzzle" type="text" name="description" value="${puzzle.description || ''}"/>
             </div>
 
-            
+
                 <!--<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.measures%> </h4>
                 <div >
                 <div>
