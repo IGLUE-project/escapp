@@ -15,6 +15,12 @@ $card-background: colors.$textpurple
       margin: auto
       margin-bottom: 20px
       position: relative
+      input
+        color: $card-background !important
+        -webkit-text-fill-color: $card-background !important
+        &:focus, &:active
+            color: colors.$lightred !important
+            -webkit-text-fill-color: colors.$lightred !important
       .validatorInputs
         height: auto
         margin-left: 1em

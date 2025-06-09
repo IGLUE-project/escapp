@@ -1,3 +1,6 @@
+<style>Add commentMore actions
+    body{height: 100vh;}
+</style>
 <script src="/js/vendor/jquery-ui.min.js"></script>
 <%if (!user.id) {%>
     <h1 class="loginWelcomeMessage">
@@ -89,7 +92,7 @@
 <%if (!user.id) {%>
 <br/>
 <div class="userField">
-    <label for="accept_terms" ><span><%=i18n.user.acceptTerms%></span>
+    <label for="accept_terms" >
      <p>
         <input type="checkbox" class="" id="accept_terms" name="accept_terms" required/>
         <%-i18n.user.terms%><br/>
@@ -102,6 +105,9 @@
     <br />
     <br />
     <a class="login" href="/"><%=i18n.user.actions.alreadyRegistered %></a>
+        <br/><br/><br/><br/>
+
+
 </form>
 <%} else {%>
     
@@ -158,5 +164,3 @@
     }   
     
 </script>
-
-<style>body{height: 100vh;}</style>

@@ -125,20 +125,14 @@
         </div>
 		<br/>
 		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
 
-	  	<div class="align-right flex-buttons" style="margin-bottom: 60px;">
+	  	<div class="align-right flex-buttons buttons_before_progressbar">
             <button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
 			<button class="progress-buttons" type="submit" value="next" id="next" name="next"><%=i18n.common.finish%></button>
 			<button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
 		</div>
         <%- include('../../partials/_progress', {progress}) %>
 	</form>
-	<br/><br/>
 </div>
 <%- include('../../partials/_footer', {ignoreExtras: true}) %>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

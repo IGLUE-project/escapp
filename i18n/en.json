@@ -96,7 +96,7 @@
             "title": "Timeline",
             "showLegend": "Show legend",
             "time": "Time",
-            "puzzleExplanation": "The timeline shows the puzzles each team of students were working on at every instant of the escape room. For each solved puzzle, the number of minutes it took each team to solve it is displayed. If a puzzle does not have a number on top, it means that students did not manage to solve it.",
+            "puzzleExplanation": "The timeline shows the puzzles each team of participants were working on at every instant of the escape room. For each solved puzzle, the number of minutes it took each team to solve it is displayed. If a puzzle does not have a number on top, it means that participants did not manage to solve it.",
             "unsolved": "Not solved",
             "now": "Current moment",
             "end": "End of the escape room",
@@ -169,21 +169,21 @@
             "interestingInfo": "Relevant information",
             "success": "Successfully completed tasks",
             "errorActivatingTurno": "An error occurred while activating/deactivating turns.",
-            "errorCreatingER": "An error occurred while setting up the Escape Room.",
+            "errorCreatingER": "An error occurred while setting up the escape room.",
             "errorCreatingHint": "An error occurred while creating the hint.",
             "errorCreatingPuzzle": "An error occurred while creating the puzzle.",
             "errorCreatingTeam": "An error occurred while creating the team.",
             "errorCreatingTeamAlreadyExists": "A team with this name already exists in this escape room",
             "errorCreatingTurno": "An error occurred while creating the shift",
             "errorCreatingUser": "An error occurred while creating a new user",
-            "errorDeletingER": "An error occurred while deleting the Escape Room",
+            "errorDeletingER": "An error occurred while deleting the escape room",
             "errorDeletingHint": "An error occurred while deleting the hint",
             "errorDeletingPuzzle": "An error occurred while deleting the puzzle",
             "errorDeletingTeam": "An error occurred while deleting the team",
             "errorDeletingTurno": "An error occurred while deleting the shift",
             "errorDeletingUser": "An error occurred while deleting the user",
             "errorStudentLeave": "An error occurred while leaving. Your shift is closed.",
-            "errorEditingER": "An error occurred while editing the Escape Room",
+            "errorEditingER": "An error occurred while editing the escape room",
             "errorEditingHint": "An error occurred while editing the hint",
             "errorEditingPuzzle": "An error occurred while editing the puzzle",
             "errorEditingTeam": "An error occurred while editing the team",
@@ -204,21 +204,21 @@
             "resetPasswordUserNotFound": "Sorry, you are not registered in escapp",
             "successActivatingTurno": "Shift successfully activated/deactivated",
             "successAddingCollaborator": "Successfully added collaborator",
-            "successCreatingER": "Escape Room successfully set up",
+            "successCreatingER": "Escape room successfully set up",
             "successCreatingHint": "Hint successfully created",
             "successCreatingPuzzle": "Puzzle successfully created",
             "successCreatingTeam": "Team successfully created",
             "successCreatingTeamSingle": "You have successfully joined the escape room",
             "successCreatingTurno": "Shift successfully created",
             "successCreatingUser": "User successfully created",
-            "successDeletingER": "Escape Room successfully deleted",
+            "successDeletingER": "Escape room successfully deleted",
             "successDeletingHint": "Hint successfully deleted",
             "successDeletingPuzzle": "Puzzle successfully deleted",
             "successDeletingTeam": "Team successfully deleted",
             "successDeletingTurno": "Shift successfully deleted",
             "successResetingTurno": "Shift successfully reset",
             "successDeletingUser": "User successfully deleted",
-            "successEditingER": "Escape Room successfully edited",
+            "successEditingER": "Escape room successfully edited",
             "successEditingHint": "Hint successfully edited",
             "successEditingHintApproach": "Hint configuration successfully edited",
             "successEditingPuzzle": "Puzzle successfully edited",
@@ -227,7 +227,7 @@
             "successEditingUser": "User successfully edited",
             "successImage": "Picture successfully uploaded",
             "successSendingReport":    "Report successfully sent",
-            "youMustAcceptTerms": "Debes aceptar las condiciones para poder registrarte"
+            "youMustAcceptTerms": "You must accept the conditions in order to register"
         },
         "guide": "User guide",
         "ideas": "Puzzle ideas",
@@ -262,7 +262,7 @@
             "authenticationAPI": "Authentication",
             "authenticationAPIDesc": "This endpoint allows you to authenticate in escapp and verify whether you are allowed to participate in an escape room at a given time",
             "method": "Method",
-            "email": "User e-mail",
+            "email": "User email",
             "password": "User password",
             "tokenR": "Instead of the password you can provide the user token",
             "request": "Request",
@@ -314,7 +314,7 @@
             "autoPlayButton": "Play",
             "writeSol": "Write here the solution",
             "currentPuzzle": "Current puzzle",
-            "finish": "Congratulations! You've exited the Escape Room.",
+            "finish": "Congratulations! You've exited the escape room.",
             "failed": "Too bad! Please try again",
             "failMessage": "Too bad! Please keep trying",
             "dontClose": "There aren't any hints left. You may ask your teacher for help now. Don't close this message until they come",
@@ -351,16 +351,11 @@
             "confirmSupport" : "Are you sure you need tech support?",
             "Exit": "Exit"
         },
-        "fields": {
-
-        },
         "format":{
-            "none": "Not specified",
-            "online": "Completely online",
-            "hybrid": "Some physical resources are needed"
+            "online": "Virtual",
+            "hybrid": "Híbrido (some physical resources are needed)"
         },
-        "iscedNone": "None",
-        "isced": {
+        "fields": {
             "00":"Generic programmes and qualifications",
             "01":"Education",
             "02":"Arts and humanities",
@@ -375,7 +370,7 @@
         },
         "invitation": {
             "no": "no",
-            "wannaJoin": "Would you like to join this Escape Room?",
+            "wannaJoin": "Would you like to join this escape room?",
             "typePasscode": "Type the access passcode for",
             "yes": "yes",
             "scopes": {
@@ -386,7 +381,7 @@
         "main": {
             "copyOf": "Copy of",
             "createER": "Create new escape room",
-            "noERTeacher": "You haven't created any Escape Rooms yet",
+            "noERTeacher": "You don't have any escape rooms. To create one, click the + button.",
             "noERStudent": "You are not enrolled in any escape room yet.",
             "noERPublic": "There are no escape rooms currently available.",
             "notFound": "There are no results for your search. Try a different search!",
@@ -394,9 +389,9 @@
             "otherERs":"Public",
             "emptyER": "No collaborators yet",
             "playingERs":"Participating",
-            "yesERStudent": "These are your Escape Rooms",
-            "yesERTeacher": "Manage your Escape Rooms from here",
-            "notAvailable": "Escape Room not available"
+            "yesERStudent": "These are your escape rooms",
+            "yesERTeacher": "Escape rooms",
+            "notAvailable": "Escape room not available"
         },
         "steps": {
             "appearance": {
@@ -417,26 +412,26 @@
             },
             "edit": {
                 "New": "New",
-                "descriptionPlaceHolder": "Write the Escape Room's description here. This information will be given to your students",
-                "durationPlaceHolder": "¿What time do students have to complete de Escape Room?",
-                "forbiddenLateSubmissionsPlaceHolder": "Do not allow to solve puzzles once the time is up",
+                "descriptionPlaceHolder": "Write the escape room's description here. This information will be given to the participants.",
+                "durationPlaceHolder": "How much time do participants have to complete the escape room?",
+                "forbiddenLateSubmissionsPlaceHolder": "Do not allow to solve puzzles after time runs out.",
                 "passwordPlaceHolder": "Provide a password to restrict access to the escape room",
                 "invitationPlaceHolder": "Provide a password to restrict access to the escape room",
                 "noFileUploaded": "No files have been uploaded yet",
                 "noImageUploaded": "No pictures have been uploaded yet",
-                "subjectPlaceHolder": "What subject does this activity belong to?",
-                "teamSizePlaceHolder": "How many participants will have each team? Leave it blank if you do not want to limit it",
-                "supportLinkPlaceHolder": "Where should students go if they face any problems?",
+                "subjectPlaceHolder": "What topic is covered in the activity?",
+                "teamSizePlaceHolder": "How many members can each team have? Leave it blank if you don't want to limit it.",
+                "supportLinkPlaceHolder": "You can provide a URL for participants to use in case they encounter problems.",
                 "title": "Escape Room basic configuration",
-                "titlePlaceHolder": "What is the Escape Room's name?",
-                "videoPlaceHolder": "An URL dor the Escape Room's introduction video"
+                "titlePlaceHolder": "What is the escape room's name?",
+                "videoPlaceHolder": "An URL dor the escape room's introduction video"
 
             },
             "evaluation": {
                 "eachHint": "Assign a penalty or reward for requesting a hint",
                 "eachHintObtain": "Assign a penalty or reward for each hint obtained",
                 "eachPuzzle": "Assign a different percentage to each puzzle",
-                "forSurveys": "create surveys and quizes for your Escape Room",
+                "forSurveys": "create surveys and quizes for your escape room",
                 "hintSuccess": "Points for each hint request succeeded",
                 "hintFailed": "Points for each hint request failed",
                 "justParticipating": "Assign a percentage of the grade just for participating",
@@ -460,18 +455,18 @@
             },
             "hints": {
                 "correctNumber": "Number of correct answers",
-                "correctNumberPlaceHolder": "How many correct answers do students need to obtain a hint?",
-                "explanation": "In this step you can select the hint strategy of your escape room. There are three strategies available: not allowing hints, allowing free hints, and requiring students to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that students can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt",
-                "moodleExplanation": "If you want students to answer a quiz in order to get a hint, please upload a MoodleXML with a battery of questions",
+                "correctNumberPlaceHolder": "How many correct answers do participants need to obtain a hint?",
+                "explanation": "In this step you can select the hint strategy of your escape room. There are three strategies available: not allowing hints, allowing free hints, and requiring participants to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that participants can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt",
+                "moodleExplanation": "If you want participants to answer a quiz in order to get a hint, please upload a MoodleXML with a battery of questions",
                 "feedback": "Feedback",
-                "feedbackExplanation": "Do you want to show students the correct answers once the quiz is completed?",
+                "feedbackExplanation": "Do you want to show participants the correct answers once the quiz is completed?",
                 "hintFile": "Battery of questions file",
                 "allowCustomHints": "Allow manual hints",
-                "allowCustomHintsExplanation": "If you check this option, when a team runs out of automatic hints, they will be told to ask the teacher for help instead. If not checked, students will not be able to request hints when they run out.",
+                "allowCustomHintsExplanation": "If you check this option, when a team runs out of automatic hints, they will be told to ask the teacher for help instead. If not checked, participants will not be able to request hints when they run out.",
                 "hintInterval": "Hint frequency",
-                "hintIntervalExplanation": "How much time (in minutes) do students need to wait before asking for a new hint?",
+                "hintIntervalExplanation": "How much time (in minutes) do participants need to wait before asking for a new hint?",
                 "hintLimit": "Hint limit",
-                "hintLimitExplanation": "What is the maximum number of hints students can get?",
+                "hintLimitExplanation": "What is the maximum number of hints participants can get?",
                 "hintLimitPlaceholder": "No limit",
                 "hintStrategy": "Hint strategy",
                 "noHintsStrategy": "No hints allowed",
@@ -486,18 +481,18 @@
                 "uploadFile": "Please upload a MoodleXML file"
             },
             "team": {
-                "explanation": "Here you can customize the interface that students will see on their computers when they are playing. You can add any information they need in order to participate: links, images, messages, the first clue, etc.",
-                "placeholder": "You can add a custom message, images, links... Do not forget to set up when you want to display this information by clicking in the eye icon on the left.",
+                "explanation": "Here you can customize the interface that participants will see on their computers when they are playing. You can add any information they need in order to participate: links, images, messages, the first clue, etc.",
+                "placeholder": "You can add a custom message, images, links... Do not forget to set up when you want to display this information by clicking in the configuration icon on the left.",
                 "title": "Team interface"
             },
             "class": {
-                "explanation": "Here you can customize the interface that you'll be able to screen in the classroom for all students to see. It can include the introductory video, the countdown, the leaderboard, etc. If students are participating in the escape room remotely, they will never see the class interface, so you can skip this step.",
+                "explanation": "Here you can customize the interface that you'll be able to screen in the classroom for all participants to see. It can include the introductory video, the countdown, the leaderboard, etc. If participants are participating in the escape room remotely, they will never see the class interface, so you can skip this step.",
                 "placeholder": "Add the information you want to project in the classroom",
                 "title": "Classroom interface"
             },
 
             "indications": {
-                "explanation": "Here you can customize the information students will see prior to the start of the escape room since the moment the sign up. For instance, you can remind them to bring certain material, tell them to review the course content, or provide them a video to watch.",
+                "explanation": "Here you can customize the information participants will see prior to the start of the escape room since the moment the sign up. For instance, you can remind them to bring certain material, tell them to review the course content, or provide them a video to watch.",
                 "placeholder": "Add custom instructions",
                 "title": "Pre-activity instructions",
                 "front": {
@@ -512,7 +507,7 @@
                     "visualizationIntro": "When do you wish to display this content block?",
                     "visualizationStart": "Right at the beginning",
                     "visualizationFinish": "When they finish the escape room",
-                    "visualizationSucceed": "When students are working on the following puzzles",
+                    "visualizationSucceed": "When participants are working on the following puzzles",
                     "accept": "accept",
                     "cancel": "cancel",
                     "dropHere": "Drop now to place the content here",
@@ -526,7 +521,7 @@
                     "catalog": {
                         "newPuzzle": "new puzzle",
                         "uploadFile": "upload file",
-                        "addResource": "add new resource",
+                        "addResource": "add resource",
                         "addBlock": "add block",
                         "addText": "add text block",
                         "table": {
@@ -577,7 +572,7 @@
                 "turnos": "Shifts"
             },
             "puzzles": {
-                "explanation": "In this step, you can specify the different puzzles that make up the escape room. Bear in mind that they must follow a linear structure, which means that in order to solve a puzzle, students need to have solved the previous one before. You need to specify the name and description of each puzzle, as well as its solution. If you check the automatic monitorization option for any puzzle, it will not be displayed in the team interface for students to solve. Instead, you need to use escapp's API in order to solve it. In addition, you may add automatic hints for each puzzle, which will be handed to students when they get stuck and ask for help.",
+                "explanation": "In this step, you can specify the different puzzles that make up the escape room. Keep in mind that they must follow a linear structure, which means that, in order to solve a puzzle, participants need to have solved the previous one. You need to specify the name and description of each puzzle, as well as its solution. If you enable the automatic monitoring option for a puzzle, it won't be possible to solve it in the team interface. Instead, it must be completed through an application that uses the Escapp API. You can add hints for each puzzle and these hints will be provided to participants based on the hint configuration you set in the next step",
                 "addNewHint": "add hint",
                 "addNewCategory": "add category",
                 "addNewPuzzles": "add puzzle",
@@ -601,11 +596,11 @@
                 "title": "Puzzles",
                 "tracking": "Tracking",
                 "validator": {
-                   "msg": "Validation Method",
-                    "exact": "Exact match",
+                   "msg": "Verification",
+                    "exact": "Exact",
                     "caseinsensitive": "Case-insensitive",
                     "regex": "Regular expression",
-                    "range": "Range"
+                    "range": "Numeric, with a tolerance of ±"
                 },
                 "errors": {
                     "invalidSolution": "Range must be a number",
@@ -615,13 +610,13 @@
             },
             "after": {
                 "title": "Post-activity instructions",
-                "explanation": "Here you can add the information you want to show students once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them",
+                "explanation": "Here you can add the information you want to show participants once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them",
                 "placeholder": "Add custom instructions"
 
             },
             "sharing": {
                 "title": "Publication",
-                "description": "You can publish your escape room so that other teachers can use it. You can also make it public so that students can see it in the home page and sign up for it",
+                "description": "You can publish your escape room so that other teachers can use it. You can also make it public so that participants can see it in the home page and sign up for it",
                 "license": "License",
                 "instructions": "Instructions for teachers",
                 "status": {
@@ -630,14 +625,14 @@
                     "completed": "Completed"
                 },
                 "level": "Educational level",
-                "field": "Field",
+                "field": "Knowledge area",
                 "format": "Format",
                 "licenseExplanation": "What type of license do you want to apply to your escape room content? This will affect whether other teachers can use it in their classes.",
                 "licenseExplanationAlreadyPublished": "You cannot change the license anymore since your escape room has already been published before.",
-                "invitationExplanation": "Do you want students to enter a password to join the escape room? If so, select the private option. Otherwise, select public, and they can join without a password.",
+                "invitationExplanation": "Do you want participants to enter a password to join the escape room? If so, select the private option. Otherwise, select public, and they can join without a password.",
                 "instructionsExplanation": "Share any instructions you want with teachers who use your escape room. Upload a PDF file. You can include information about how to play, how to evaluate, etc.",
-                "scopeExplanation": "Do you want students to be able to join the escape room from the main page of escapp? If so, select the public option. Otherwise, select private, and only students with the direct link will be able to access it.",
-                "statusExplanation": "Have you finished creating the escape room? If so, select the completed option. Otherwise, select draft, and you can continue editing it later. Keep in mind that until you publish it, students will not be able to join. Once published, you will not be able to change the license.",
+                "scopeExplanation": "Do you want participants to be able to join the escape room from the main page of escapp? If so, select the public option. Otherwise, select private, and only participants with the direct link will be able to access it.",
+                "statusExplanation": "Have you finished creating the escape room? If so, select the completed option. Otherwise, select draft, and you can continue editing it later. Keep in mind that until you publish it, participants will not be able to join. Once published, you will not be able to change the license.",
                 "areYouSurePublish": "Are you sure you want to publish the escape room? Your license cannot be changed once published",
                 "checklist": {
                     "step1": "Basic mandatory information provided",
@@ -649,7 +644,7 @@
                     "step7": "Specified post-activity instructions (or disabled)",
                     "step8": "Created grading rubric",
                     "congrats": "Congratulations! You've successfully published your escape room.",
-                    "congrats2":"Create a shift so students can sign up for the escape room.",
+                    "congrats2":"Create a shift so participants can sign up for the escape room.",
                     "backToDraft":"Do you want to go back to draft? To do so, click on the switch. ",
                     "erStatus": "Escape room status",
                     "areYouReady": "Are you done editing your escape room? Make it public by clicking on the switch! Remember that you will not be able to change the content license once published. You can still test the escape room before going public by yourself or by inviting some of your colleagues.",
@@ -671,7 +666,7 @@
                 "date": "Celebration date",
                 "datePlaceholder": "Date in which the escape room will take place",
                 "enrollmentPeriod": "Enrollment period",
-                "enrollmentPeriodPlaceholder": "Period in which students can sign up for this shift",
+                "enrollmentPeriodPlaceholder": "Period in which participants can sign up for this shift",
                 "password": "Password",
                 "passwordPlaceholder": "Password to access the shift. By default it is the same you provided for the escape room",
                 "passwordEmpty": "none",
@@ -728,7 +723,7 @@
         "uploadNew": "upload a new one",
         "selectGamificationElements": "Insert gamification element",
         "countdown": "Countdown",
-        "countdownExplanation": "It shows the countdown of the time students have left to complete the escape room",
+        "countdownExplanation": "It shows the countdown of the time participants have left to complete the escape room",
         "ranking": "Leaderboard",
         "rankingExplanation": "It shows the teams ordered by their level of performance",
         "progress": "Progress bar",
@@ -736,8 +731,8 @@
     },
     "inspiration": {
         "downloadText": "download",
-        "intro": "You don't know how to start creating the Escape Room? <br/> Follow these steps",
-        "title": "Escape Room setting up guide",
+        "intro": "You don't know how to start creating the escape room? <br/> Follow these steps",
+        "title": "Escape room setting up guide",
         "banner": {
             "design": "Design",
             "approach": "General <br> approach",
@@ -758,7 +753,7 @@
         "steps": {
             "first": {
                 "title": "Step 1: Establish the general approach",
-                "intro": "A good way to start designing an educational Escape Room is to establish how the activity will fit within the subject and thus be able to correctly size the activity.",
+                "intro": "A good way to start designing an educational escape room is to establish how the activity will fit within the subject and thus be able to correctly size the activity.",
                 "list": {
                     "first": "Optional or mandatory",
                     "second": "Evaluable or extra",
@@ -770,11 +765,11 @@
             },
             "second": {
                 "title": "Paso 2: >Step 3: Choose the puzzles",
-                "intro": "Once the activity is defined in the context of the subject in which it will be developed, it is necessary to define what specific contents will cover the Escape Room. As it happens in any other didactic activity. It is recommended to first establish some general objectives and then break them down into more specific objectives that students must achieve to overcome the activity."
+                "intro": "Once the activity is defined in the context of the subject in which it will be developed, it is necessary to define what specific contents will cover the escape room. As it happens in any other didactic activity. It is recommended to first establish some general objectives and then break them down into more specific objectives that participants must achieve to overcome the activity."
             },
             "third": {
                 "title": "Paso 3: Escoger los retos",
-                "intro": "Based on the objectives established in the previous step, it is necessary to identify the appropriate way to test students' knowledge, combining tasks that involve the practical application of the skills acquired in the subject with theoretical knowledge. The challenges that students face are highly dependent on the subject in which the activity is framed.",
+                "intro": "Based on the objectives established in the previous step, it is necessary to identify the appropriate way to test participants' knowledge, combining tasks that involve the practical application of the skills acquired in the subject with theoretical knowledge. The challenges that participants face are highly dependent on the subject in which the activity is framed.",
                 "middle": "Some examples of these resources are shown below.",
                 "list": {
                     "coded": "Encoded messages",
@@ -789,7 +784,7 @@
             },
             "fourth": {
                 "title": "Step 4: Select an appropriate theme",
-                "intro": "The theme is one of the key pieces that differentiates an Escape Room from a common practical exercise. It is about the story that surrounds the whole experience and that provides the immersive character of the game. It gives meaning to the tasks that students must perform during the Escape Room and cohesion all the tests of the activity. When you develop the theme you have to take into account: ",
+                "intro": "The theme is one of the key pieces that differentiates an escape room from a common practical exercise. It is about the story that surrounds the whole experience and that provides the immersive character of the game. It gives meaning to the tasks that participants must perform during the escape room and cohesion all the tests of the activity. When you develop the theme you have to take into account: ",
                 "list": {
                     "first": "<strong> The narrative</strong>, the temporal and spatial context",
                     "second": "<strong> The student profile </strong> to which it is addressed",
@@ -800,32 +795,32 @@
                     "adventure": "Adventures",
                     "history": "History"
                 },
-                "booksAndMovies": "A good source of inspiration for selecting a theme is books, video games, famous movies or series, since it is likely that students know the plot or the characters beforehand. Of course, the subject in which the Escape Room is framed will have a great influence on the selection of the theme, since the challenges to overcome must be supported by the narrative. Some examples of themes are:"
+                "booksAndMovies": "A good source of inspiration for selecting a theme is books, video games, famous movies or series, since it is likely that participants know the plot or the characters beforehand. Of course, the subject in which the escape room is framed will have a great influence on the selection of the theme, since the challenges to overcome must be supported by the narrative. Some examples of themes are:"
             },
             "fifth": {
                 "title": "Step 5: Build challenges, tracks and other materials",
-                "intro" : "Finally, with the design of the Escape Room and the available resources in mind, it is time to start building all the pieces.",
+                "intro" : "Finally, with the design of the escape room and the available resources in mind, it is time to start building all the pieces.",
                 "puzzles": {
                     "title": "Puzzles",
-                    "content": "To build challenges it is common to use physical resources such as locks, keys, boxes, laboratory equipment, puzzles, etc. However, an Escape Room in which many students participate simultaneously, these types of resources can greatly increase the budget required for the activity. One solution is to combine simple physical resources (paper, for example) with free digital resources: mobile applications, sounds, virtual puzzles, etc. You will find examples and resources in step 3."
+                    "content": "To build challenges it is common to use physical resources such as locks, keys, boxes, laboratory equipment, puzzles, etc. However, an escape room in which many students participate simultaneously, these types of resources can greatly increase the budget required for the activity. One solution is to combine simple physical resources (paper, for example) with free digital resources: mobile applications, sounds, virtual puzzles, etc. You will find examples and resources in step 3."
                 },
                 "hints": {
                     "title": "Hints",
-                    "content": "An essential part in the design of all Escape Rooms are the clues and aids It is essential to avoid that students spend too much time in the same challenge because, if this happens, there is a risk that In addition, this situation can be counterproductive from a pedagogical point of view, since students will not face all the challenges.To prevent the request for help from being constant, one possibility is to devise a battery of questions Students have to try to answer each time they need a clue, and if they can guess more than a certain number of questions, they will get a clue, in this way students will earn the right to get help and their theoretical knowledge is tested. of the subject to complement the practical content that is put into practice in the Escape Room."
+                    "content": "An essential part in the design of all escape rooms are the clues and aids It is essential to avoid that participants spend too much time in the same challenge because, if this happens, there is a risk that In addition, this situation can be counterproductive from a pedagogical point of view, since participants will not face all the challenges.To prevent the request for help from being constant, one possibility is to devise a battery of questions Students have to try to answer each time they need a clue, and if they can guess more than a certain number of questions, they will get a clue, in this way participants will earn the right to get help and their theoretical knowledge is tested. of the subject to complement the practical content that is put into practice in the escape room."
                 },
                 "instructions": {
                     "title": "Instructions",
-                    "intro": "Before starting the development of the activity, it is important to present the game to the students, it is important to clarify what the limits of the activity are, if they can leave the room, if they can use their mobile devices, if they can talk with the other teams, etc. Then, they are introduced to the theme presenting the goal to be achieved in the Escape Room and giving indications of where to start, this can be done in the form of video message in which a character (either the teacher or an “actor”) appeals to students to help solve a mystery, crime, enigma, etc. You can also approach from the opposite perspective, showing a video in the that the character plays a villain role that threatens the students. "
+                    "intro": "Before starting the development of the activity, it is important to present the game to the participants, it is important to clarify what the limits of the activity are, if they can leave the room, if they can use their mobile devices, if they can talk with the other teams, etc. Then, they are introduced to the theme presenting the goal to be achieved in the escape room and giving indications of where to start, this can be done in the form of video message in which a character (either the teacher or an “actor”) appeals to participants to help solve a mystery, crime, enigma, etc. You can also approach from the opposite perspective, showing a video in the that the character plays a villain role that threatens the participants. "
                 }
             },
             "sixth": {
                 "title": "Step 6: Test the escape room",
-                "intro": "Detecting and fixing errors is crucial to the success of an educational Escape Room, since the presence of a failure could have catastrophic consequences in the development of the activity. It is necessary to test the challenges first individually and then perform a complete simulation."
+                "intro": "Detecting and fixing errors is crucial to the success of an educational escape room, since the presence of a failure could have catastrophic consequences in the development of the activity. It is necessary to test the challenges first individually and then perform a complete simulation."
             },
 
             "seventh": {
                 "title": "Step 7: Develop a way to evaluate the experience",
-                "intro": "There are several ways to evaluate if the students have learned doing the activity, one way is through a control group, comparing the notes of the students who made the escape room with those who did not. at the beginning of the escape room and at the end, checking if there has been a significant increase in the knowledge of the students Finally, at the end of the activity it is convenient to conduct a survey to know the opinion of the students about the escape room."
+                "intro": "There are several ways to evaluate if the participants have learned doing the activity, one way is through a control group, comparing the notes of the students who made the escape room with those who did not. at the beginning of the escape room and at the end, checking if there has been a significant increase in the knowledge of the participants Finally, at the end of the activity it is convenient to conduct a survey to know the opinion of the participants about the escape room."
                 }
         }
     },
@@ -885,7 +880,7 @@
         "confirm": "confirm attendance",
         "delete": "Delete this participant from the escape room",
         "download": "download",
-        "emptyER": "There aren't any participants in this Escape Room yet",
+        "emptyER": "There aren't any participants in this escape room yet",
         "emptyTurno": "There aren't any participants in this shift yet",
         "errorSaving": "An error occurred",
         "participantS": "attendants",
@@ -902,7 +897,7 @@
     "collaborators": {
         "Collaborators": "Collaborators",
         "Name": "Name",
-        "Email": "E-mail",
+        "Email": "Email",
         "add": "add",
         "delete": "delete",
         "areYouSureDelete": "Are you sure you want to remove this collaborator?",
@@ -942,8 +937,8 @@
         "start": "The escape room has just started!",
         "join": "join",
         "supportLink": "Support",
-        "sureUnjoin": "Are you sure you want to leave the Escape Room?",
-        "congrats": "Congratulations! You've successfully exited the Escape Room.",
+        "sureUnjoin": "Are you sure you want to leave the escape room?",
+        "congrats": "Congratulations! You've successfully exited the escape room.",
         "resultsTitle": "This is the escape room's leaderboard",
         "unjoin": "leave",
         "reset": "reset",
@@ -985,10 +980,10 @@
             "resourceCatalog": "Resource catalog"
         },
         "messages": {
-            "noHintControl": "This Escape Room does not have any hint system yet",
+            "noHintControl": "This escape room does not have any hint system yet",
             "freeHintsStrategy": "This escape room allows obtaining free hints",
             "noHintsStrategy": "This escape room does not allow to obtain hints",
-            "noVideo": "This Escape Room does not have any video yet",
+            "noVideo": "This escape room does not have any video yet",
             "copyAria": "Invisible input to enable copying invitation link",
             "copyTitle": "Copy the link",
             "qrTitle": "Generate a QR code to share",
@@ -996,7 +991,7 @@
             "noShiftsShareDraft": "You cannot share the escape room until you have changed its status to completed in the last stp of the Setup ('Publication').",
             "noShiftsStart": "You cannot start the escape room until you have created at least one shift",
             "join": {
-                "intro": "Share the following link with yout students so they can access the escape room:",
+                "intro": "Share the following link with your students so they can access the escape room:",
                 "also": "They can also access ",
                 "register": " and, after signing up and login in, they can select the escape room entitled ",
                 "password": " and introduce the following password ",
@@ -1006,7 +1001,7 @@
         "titles": {
             "appearance": "Appearance",
             "description": "Description",
-            "duration": "Duration (min.)",
+            "duration": "Duration (minutes)",
             "field": "Field",
             "format": "Format",
             "hints": "Hints",
@@ -1019,7 +1014,7 @@
             "puzzles": "Puzzles",
             "subject": "Subject",
             "survey": "Survey",
-            "teamSize": "Team capacity",
+            "teamSize": "Maximum team size",
             "scope": "Privacy",
             "supportLink": "Link to get support during the escape room",
             "thumbnail": "Thumbnail",
@@ -1034,7 +1029,7 @@
     },
     "team": {
         "add": "Add a team",
-        "addMsg": "Your friends can add to this team when they join the Escape Room",
+        "addMsg": "Your friends can add to this team when they join the escape room",
         "addPlaceHolder": "Write your team's name",
         "areYouSureDelete": "Are you sure you want to remove this team from the escape room?",
         "areYouSureReset": "Are you sure you want to reset this team's progress?",
@@ -1065,7 +1060,7 @@
         "title": "Teams",
         "turnNotAvailable": "The selected shift is not available",
         "message": "Send a message",
-        "email": "Contact via e-mail"
+        "email": "Contact via email"
     },
     "turno": {
         "Actions": "Actions",
@@ -1118,12 +1113,12 @@
         "PUBLIC": "Public",
         "noPlace": "Place not specified",
         "fullTurno": "The shift you selected is full. Select another one",
-        "notActive": "This Escape Room isn't available for you right now",
+        "notActive": "This escape room isn't available for you right now",
         "selectActivate": "Select the shift you want to activate/deactivate",
         "selectStudent": "Select a shift",
-        "areYouSureReset": "Are you sure you want to reset this shift? All of the students' progress will be lost",
+        "areYouSureReset": "Are you sure you want to reset this shift? All of the participants' progress will be lost",
         "areYouSureDelete": "Are you sure you want to delete this shift?",
-        "todayEscapeRoom": "The Escape Room will be celebrated this day",
+        "todayEscapeRoom": "The escape room will be celebrated this day",
         "Turno": "Shift",
         "Links": "Links",
         "activateTurnos": "Manage the escape room shifts",
@@ -1180,7 +1175,7 @@
         "attributes": {
             "surname": "Surname",
             "name": "Name",
-            "username": "E-mail",
+            "username": "Email",
             "password": "Password",
             "eduLevel": "Educational level"
         },
@@ -1190,15 +1185,14 @@
         "student": "Student",
         "lang": "Language",
         "acceptTerms": "Terms and conditions",
-        "terms": "By signing up, I acknowledge that I have read and agree to the <a href='/terms' target='_blank'>Terms of Use</a> and <a href='/privacy' target='_blank'>Privacy Policy</a>",
+        "terms": "I confirm that I have read and accept the <a href='/terms' target='_blank'>Terms of Use</a> and the <a href='/privacy' target='_blank'>Privacy Policy</a>.",
         "eduLevelField": "Educational level you teach/study",
         "eduLevel": {
             "primary": "Primary education",
             "secondary": "Secondary education",
             "vet": "Vocational education and training",
             "higher": "Higher education",
-            "other": "Other",
-            "none": "None"
+            "other": "Other"
         },
         "inputs": {
             "editUser": "Edit profile",
@@ -1206,19 +1200,19 @@
             "passwordConfirmPlaceHolder": "Enter your password",
             "passwordPlaceHolder": "Enter your password",
             "surnamePlaceHolder": "Enter your last name",
-            "usernamePlaceHolder": "Enter your E-mail"
+            "usernamePlaceHolder": "Enter your email"
         },
         "messages": {
             "doNotMatch": "Oops! passwords must match",
             "fillIn": "Both fields password and password confirmation must be filled in",
             "invalidDNI": "Invalid ID number. Wrong format",
-            "welcome": "Welcome to the Escape Room management platform ;)",
+            "welcome": "Welcome to Escapp ;)",
             "wrongLetterDNI": "Oops! Invalid ID number, letter must match the number combination",
             "notFound": "User not found",
-            "ensureRegistered": "An error occurred. Please make sure you've correctly registered in the Escape Room",
-            "emailConfirm":"Please, confirm your e-mail address, by clicking the 'confirm' button below",
+            "ensureRegistered": "An error occurred. Please make sure you've correctly registered in the escape room",
+            "emailConfirm":"Please, confirm your email address, by clicking the 'confirm' button below",
             "emailConfirmButton":"confirmar",
-            "emailResetPassword1":"If you are receiving this e-mail is because you reset your password in escapp.",
+            "emailResetPassword1":"If you are receiving this email is because you reset your password in escapp.",
             "emailResetPassword2":"This is the link to reset your password:",
             "notAllowedTeacherEmail": "You are not allowed to enroll as a teacher with this email",
             "notAllowedStudentEmail": "You are not allowed to enroll as a student with this email",
@@ -1232,7 +1226,7 @@
         "anonymizedCantLogin": "This account has been anonymized and you cannot log in with it anymore.",
         "password": "Password",
         "passwordConfirm": "Confirm password",
-        "passLeaveBlank": "If you would like to change your password fill in the following fields. Otherwise, leave them blank",
+        "passLeaveBlank": "If you would like to change your password fill in the following fields. Otherwise, leave them blank.",
         "roles": {
             "admin": "Admin",
             "student": "Student",
@@ -1242,7 +1236,7 @@
         "surname": "Last name",
         "title": "User",
         "user": "user",
-        "username": "E-mail",
+        "username": "Email",
         "wrongCredentials": "Login error. Please check your credentials",
         "turno": "Shift",
         "delete": {
@@ -1277,7 +1271,6 @@
         "waiting": "Include participants waiting to enter the escape room as well",
         "msgPlaceholder": "Write here your message",
         "msgPlaceholder2": "Write here your message. All the users in this list that are currently connected will receive it."
-
     },
     "cookies": {
         "cookie_message": "We use only essential cookies to ensure the proper functioning of this site. No tracking or third-party cookies.",
@@ -1295,6 +1288,11 @@
         "error_accepting": "Error updating terms and privacy policy acceptance"
 
     },
+    "policies": {
+        "terms": "Terms of use",
+        "privacy": "Privacy policy",
+        "cookies": "Cookie policy"
+    },
     "reusablePuzzles":{
         "name": "Reusable puzzles",
         "create": "Create reusable puzzle",
@@ -1308,7 +1306,7 @@
             "pageTitle": "Contact the author",
             "description": "",
             "author": "Author",
-            "email": "E-mail",
+            "email": "Email",
             "sendEmail": "Send an email",
             "subject": "Consulta sobre la escape room"
         },
@@ -1347,5 +1345,8 @@
             "Symbols": "Symbols",
             "None": "None"
         }
+    },
+    "general": {
+        "unespecified": "Unespecified"
     }
 }

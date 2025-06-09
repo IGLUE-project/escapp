@@ -1,5 +1,5 @@
 
-<%- include ("./_validator.ejs") %>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact","regex","range"]}) %>
 
 
     <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>

@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const StreamZip = require("node-stream-zip");
 const sequelize = require("../models");
+const {getLocaleForEscapeRoom} = require("../helpers/I18n");
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {
@@ -348,23 +349,29 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
 
     try {
         const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);
+        const reusablePuzzleInstanceConfig = JSON.parse(reusablePuzzleInstance.config);
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleInstance.reusablePuzzleId);
+        const escapeRoom = await models.escapeRoom.findByPk(reusablePuzzleInstance.escapeRoomId);
+        const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
+        
         const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
         if(!linkedPuzzle) {
             res.status(404).send("Puzzle not assigned to this instance");
             return;
         }
-        const solutionLength = JSON.parse(reusablePuzzleInstance.config).solutionLength || linkedPuzzle.sol.length || 0;
+        const solutionLength = reusablePuzzleInstanceConfig.solutionLength || linkedPuzzle.sol.length || 0;
 
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
-        const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+
+        const hostName = process.env.APP_NAME ? `${req.protocol}://${process.env.APP_NAME}` : "http://localhost:3000";
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
         const referrer = req.get("Referrer");
         const preview = Boolean(referrer && referrer.match("/team$"));
         const config = {
-            ...JSON.parse(reusablePuzzleInstance.config),
+            ...reusablePuzzleInstanceConfig,
             solutionLength,
+            "locale": localeForReusablePuzzle,
             "escappClientSettings": {
                 "endpoint": `${hostName}/api/escapeRooms/${reusablePuzzleInstance.escapeRoomId}`,
                 preview,
@@ -372,6 +379,9 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
                 "user": {
                     "email": req.session.user.username,
                     token
+                },
+                "I18n": {
+                    locale: localeForReusablePuzzle
                 }
             }
         };
@@ -398,8 +408,10 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
     try {
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleId);
         const linkedPuzzle = await models.puzzle.findByPk(req.query.puzzleId);
+        const escapeRoom = await models.escapeRoom.findByPk(escapeRoomId);
+        const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
-        const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+        const hostName = process.env.APP_NAME ? `${req.protocol}://${process.env.APP_NAME}` : "http://localhost:3000";
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
 
@@ -411,6 +423,7 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
         });
         const config = {
             ...receivedConfig,
+            "locale": localeForReusablePuzzle,
             "escappClientSettings": {
                 "endpoint": `${hostName}/api/escapeRooms/${escapeRoomId}`,
                 "linkedPuzzleIds": [linkedPuzzle ? linkedPuzzle.order + 1 : null],
@@ -418,6 +431,9 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
                 "user": {
                     "email": req.session.user.username,
                     token
+                },
+                "I18n": {
+                    locale: localeForReusablePuzzle
                 }
             }
         };

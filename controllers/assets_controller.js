@@ -242,6 +242,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 fs.createReadStream(filePath).pipe(res);
             }
         } else if (asset.mime.search(applicationRegex) !== -1) {
+            
             const referrer = req.get("Referrer");
             const preview = Boolean(referrer && referrer.match("/team$"));
             const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
