@@ -135,11 +135,12 @@ exports.createReusablePuzzle = async (req, res, next) => {
         }
 
         let instructions = "";
-        if(req.files.instructions) {
-            req.files.instructions.forEach((instruction,index) => {
+
+        if (req.files.instructions) {
+            req.files.instructions.forEach((instruction, index) => {
                 fs.renameSync(path.join(__dirname, "/../", req.files.instructions[index].path), path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/${instruction.originalname}`));
-                instructions += instruction.originalname.split(".")[0] + ",";
-            })
+                instructions += `${instruction.originalname.split(".")[0]},`;
+            });
         }
         puzzle.instructions = instructions;
 
@@ -227,11 +228,12 @@ exports.editReusablePuzzle = async (req, res, next) => {
         }
 
         let instructions = "";
-        if(req.files.instructions) {
+
+        if (req.files.instructions) {
             req.files.instructions.forEach((instruction) => {
                 fs.renameSync(path.join(__dirname, "/../", req.files.instructions[0].path), path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/${instruction.originalname}`));
-                instructions += instruction.originalname.split(".")[0] + ", ";
-            })
+                instructions += `${instruction.originalname.split(".")[0]}, `;
+            });
         }
         puzzle.instructions = instructions;
 
@@ -271,6 +273,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     let newInstanceId = "";
     let reusablePuzzleInstance;
     let puzzle = null;
+
     try {
         if (!reusablePuzzleInstanceId) {
             const trimedConfig = {...config};
@@ -285,6 +288,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 }
             });
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
+
             reusablePuzzleInstance = reusablePuzzle;
             newInstanceId = reusablePuzzle.id;
         } else {
@@ -311,7 +315,8 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             await reusablePuzzleInstance.save({"transaction": t});
         }
 
-        const linkedPuzzle =  reusablePuzzleInstanceId ? await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}}, {"transaction": t}) : null;;
+        const linkedPuzzle = reusablePuzzleInstanceId ? await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}}, {"transaction": t}) : null;
+
         if (config.puzzle != "none") {
             puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}}, {"transaction": t});
             if (puzzle) {
@@ -325,27 +330,27 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 puzzle.validator = config.validator ? config.validator : puzzle.validator;
                 puzzle.assignedReusablePuzzleInstance = newInstanceId ? newInstanceId : reusablePuzzleInstanceId;
 
-                if(config.validator === "range") {
-                    puzzle.sol = config.puzzleSol + `+${config.rangeInput}`;
-                    reusablePuzzleInstance.config= JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), solutionLength:config.puzzleSol.length});
-                }else if(config.validator === "regex") {
-                    reusablePuzzleInstance.config= JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), solutionLength:config.solutionLength});
+                if (config.validator === "range") {
+                    puzzle.sol = `${config.puzzleSol}+${config.rangeInput}`;
+                    reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": config.puzzleSol.length});
+                } else if (config.validator === "regex") {
+                    reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": config.solutionLength});
                 } else {
-                    reusablePuzzleInstance.config= JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), solutionLength:undefined});
+                    reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": undefined});
                 }
                 await puzzle.save({"transaction": t});
                 await reusablePuzzleInstance.save({"transaction": t});
-
             }
             config.puzzleSol = undefined;
-        }else {
-                linkedPuzzle.assignedReusablePuzzleInstance = null;
-                await linkedPuzzle.save({"transaction": t});
-            }
+        } else {
+            linkedPuzzle.assignedReusablePuzzleInstance = null;
+            await linkedPuzzle.save({"transaction": t});
+        }
 
         t.commit();
-        const modifiedPuzzle = {assignedReusablePuzzleInstance: puzzle.assignedReusablePuzzleInstance, sol: puzzle.sol, validator: puzzle.validator, title: puzzle.title, id: puzzle.id, };
-        res.json({config, "name": reusablePuzzleInstance.name, puzzle, reusablePuzzleId: modifiedPuzzle.id, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        const modifiedPuzzle = {"assignedReusablePuzzleInstance": puzzle.assignedReusablePuzzleInstance, "sol": puzzle.sol, "validator": puzzle.validator, "title": puzzle.title, "id": puzzle.id };
+
+        res.json({config, "name": reusablePuzzleInstance.name, puzzle, "reusablePuzzleId": modifiedPuzzle.id, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -377,7 +382,8 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
 
         const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
-        if(!linkedPuzzle) {
+
+        if (!linkedPuzzle) {
             res.status(404).send("Puzzle not assigned to this instance");
             return;
         }
@@ -402,9 +408,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
                     "email": req.session.user.username,
                     token
                 },
-                "I18n": {
-                    locale: localeForReusablePuzzle
-                }
+                "I18n": {"locale": localeForReusablePuzzle}
             }
         };
 
@@ -453,9 +457,7 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
                     "email": req.session.user.username,
                     token
                 },
-                "I18n": {
-                    locale: localeForReusablePuzzle
-                }
+                "I18n": {"locale": localeForReusablePuzzle}
             }
         };
 

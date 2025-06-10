@@ -16,9 +16,11 @@ const path = require("path");
 exports.load = async (req, res, next, escapeRoomId) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(escapeRoomId, query.escapeRoom.load);
+
         if (escapeRoom && res.locals) {
             req.escapeRoom = escapeRoom;
-            var editing = (req.session && req.session.user && !req.session.user.isStudent);
+            const editing = req.session && req.session.user && !req.session.user.isStudent;
+
             res.locals.i18n_lang = getLocaleForEscapeRoom(req, escapeRoom, editing);
             res.locals.i18n_texts = getTextsForLocale(res.locals.i18n_lang);
             res.locals.i18n = res.locals.i18n_texts;
@@ -26,6 +28,7 @@ exports.load = async (req, res, next, escapeRoomId) => {
         } else {
             res.status(404);
             const {i18n} = res.locals;
+
             next(new Error(i18n.api.notFound));
         }
     } catch (error) {

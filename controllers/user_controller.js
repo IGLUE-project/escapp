@@ -30,7 +30,7 @@ exports.show = (req, res) => {
 
 // GET /register
 exports.new = (req, res) => {
-    const user = {"name": "", "surname": "",  "username": "", "password": ""};
+    const user = {"name": "", "surname": "", "username": "", "password": ""};
 
     res.render("index", {
         user,

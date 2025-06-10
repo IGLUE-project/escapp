@@ -630,7 +630,6 @@
         const instructions = (reusablePuzzle && reusablePuzzle.instructions) ? reusablePuzzle.instructions.split(",") : [];
         const url =  `/reusablePuzzles/${reusablePuzzleId}/${window.lang}.pdf`
         const hasInstructions = instructions.includes(window.lang) ? true : false;
-        console.log(hasInstructions, instructions, window.lang, url);
 
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
         return `
@@ -679,7 +678,7 @@
         const assignDiv = $('#assignPuzzDiv');
         const puzzleRangeInput = $('#rangeInput');
         const rangeDiv = $('#rangeDiv');
-        const solutionLength = $('#solutionLength');
+        const solutionLength = $('#solutionLengthInput');
 
         if(puzzleSelected) {
             if (puzzleSelected.assignedReusablePuzzleInstance && puzzleSelected.assignedReusablePuzzleInstance != id) {
@@ -711,6 +710,7 @@
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
                     solutionLength.show();
+                    solutionLength.val(config.solutionLength || 1);
                 } else {
                     puzzleSol.val(puzzleSelected.sol);
                     puzzleRangeInput.val(null);
@@ -728,7 +728,6 @@
             validator.hide()
             assignDiv.hide();
         }
-        config.solutionLength = puzzleSol.val().length;
         updateIframe(config, reusablePuzzleId);
     }
 
@@ -890,7 +889,6 @@
     }
 
     function openPuzzleConfiguration(puzzle, baseId, reusablePuzzleName){
-        console.log(reusablePuzzleName)
         const configZone = $('#configZone');
         let config = puzzle.config;
         if(typeof config === 'string') {
@@ -905,9 +903,6 @@
         const resources = $('.sectionAddResource');
         const puzzleName = puzzle.id ? puzzle.name : reusablePuzzleName;
         const puzzleDesc = puzzle.description ;
-        console.log("PUZZLE", puzzle, reusablePuzzleName);
-        //console.log("PUZZZZZZLE", puzzle);
-        console.log("PUZZZZZZLEid", puzzle.id);
         configForm.empty();
         configZone.removeAttr('hidden');
         resources.attr('hidden', true);
@@ -927,18 +922,14 @@
                 configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzleDesc, puzzle.id));
                 configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
 
-
                 $('#appendFormElementsHere').append(elements);
-                config.puzzle =  puzzles ? puzzles[0].id : undefined;
-                config.puzzleObject = puzzles ? puzzles[0] : undefined;
 
-
-
+                const selectedPuzzle = window.puzzles.find(p => p.assignedReusablePuzzleInstance == puzzle.id);
+                config.puzzle =  selectedPuzzle ? selectedPuzzle.id : undefined;
+                config.puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
 
                 if( config.puzzleObject.validator === "range") {
                     config.solutionLength = config.puzzleObject.sol.split("+")[0].length;
-                } else if (config.puzzleObject.validator === "regex") {
-                    config.solutionLength = $('#solutionLengthInput').val();
                 } else {
                     config.solutionLength = config.puzzleObject.sol.length;
                 }
@@ -956,7 +947,8 @@
                     validatorOnchange(e);
                     $('#warningMessageForReusablePuzzleCreation').show()
                 });
-               setPuzzleSol(puzzle.id, config, baseId);
+
+                $('#associatedPuzzle').val(config.puzzleObject.id).change();
                 updateIframe(config, puzzle.reusablePuzzleId);
 
                 $(".sections").scrollTop(0);
@@ -1064,6 +1056,8 @@
                     window.puzzles.forEach((puzzle,index) => {
                         if(puzzle.id == resJSON.puzzle.id) {
                             window.puzzles[index] = resJSON.puzzle;
+                        }else{
+                            window.puzzles[index].assignedReusablePuzzleInstance = null;
                         }
                     });
                     toggleCatalogModal();

@@ -90,7 +90,7 @@ exports.uploadAssets = async (req, res) => {
         const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "public_id": req.file.filename, "url": `/${req.file.path}`, "filename": req.body.filename, "mime": req.file.mimetype, userId }).save();
 
         // Res.json({"id": saved.id, "url": uploadResult.url});
-        //const html = ckeditorResponse(req.query.CKEditorFuncNum, req.file.url);
+        // Const html = ckeditorResponse(req.query.CKEditorFuncNum, req.file.url);
 
         if (mime === "application/zip") {
             let isWebapp = false;
@@ -241,12 +241,11 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 fs.createReadStream(filePath).pipe(res);
             }
         } else if (asset.mime.search(applicationRegex) !== -1) {
-
             const referrer = req.get("Referrer");
             const preview = Boolean(referrer && referrer.match("/team$"));
             const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
             const {token} = await models.user.findByPk(req.session.user.id);
-            const basePath = `/uploads/webapps/${asset.public_id}/index.html`
+            const basePath = `/uploads/webapps/${asset.public_id}/index.html`;
             const file = path.join(__dirname, `/../uploads/webapps/${asset.public_id}/index.html`);
             const config = {
                 "escappClientSettings": {
@@ -285,16 +284,17 @@ const appendParameters = (...parameters) => {
 // PUT /escapeRooms/:escapeRoomId/assets/:assetId
 exports.editAsset = async (req, res, next) => {
     const {assetId} = req.params;
-    const filename = req.body.filename;
+    const {filename} = req.body;
 
     try {
         const asset = await models.asset.findByPk(assetId);
+
         console.log(asset);
         if (asset) {
             asset.filename = filename;
-            console.log(filename)
+            console.log(filename);
             /*
-            let config = "";
+            Let config = "";
 
             if (asset.mime.search(imageRegex) !== -1) {
                 config = appendParameters({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
@@ -315,8 +315,7 @@ exports.editAsset = async (req, res, next) => {
             */
             await asset.save();
 
-            res.json({config:{},filename, "id": asset.id});
-
+            res.json({"config": {}, filename, "id": asset.id});
         } else {
             res.status(404);
             res.send("Asset not found, did you remove it?");
@@ -402,7 +401,8 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
 
 exports.getFormForInstance = async (req, res, next) => {
     const {puzzle_id} = req.params;
-    console.log(puzzle_id)
+
+    console.log(puzzle_id);
 
     try {
         const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id);
