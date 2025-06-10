@@ -842,7 +842,7 @@
             const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
             payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
             newType = "catalog"
-       } else if(type === "countdown" || type === "progress" || type === "ranking" || "text") {
+       } else if(type === "countdown" || type === "progress" || type === "ranking" || type === "text") {
             payload = id;
         }else{
             const asset = window.assets.find(p => p.id == id);
