@@ -58,7 +58,7 @@ exports.deleteReusablePuzzleInstance = async (req, res, next) => {
         res.status(200);
         res.send();
     } catch (e) {
-        console.erorr(e);
+        console.error(e);
         next(e);
     }
 };
@@ -134,11 +134,14 @@ exports.createReusablePuzzle = async (req, res, next) => {
             fs.renameSync(thumbnailPath, path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/thumbnail.${thumbnailExtension}`));
         }
 
+        let instructions = "";
         if(req.files.instructions) {
-            req.files.instructions.forEach((instruction) => {
-                fs.renameSync(path.join(__dirname, "/../", req.files.instructions[0].path), path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/${instruction.originalname}`));
+            req.files.instructions.forEach((instruction,index) => {
+                fs.renameSync(path.join(__dirname, "/../", req.files.instructions[index].path), path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/${instruction.originalname}`));
+                instructions += instruction.originalname.split(".")[0] + ",";
             })
         }
+        puzzle.instructions = instructions;
 
         await zip.extract(null, newPath);
         await zip.close();
@@ -151,6 +154,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
             puzzle.config = JSON.stringify({"url": `/reusablePuzzles/forms/${form}`, "thumbnail": thumbnailName});
         }
 
+        console.log(puzzle);
         await puzzle.save({"transaction": t});
         await t.commit();
         res.redirect("back");
@@ -222,6 +226,15 @@ exports.editReusablePuzzle = async (req, res, next) => {
             await zip.close();
         }
 
+        let instructions = "";
+        if(req.files.instructions) {
+            req.files.instructions.forEach((instruction) => {
+                fs.renameSync(path.join(__dirname, "/../", req.files.instructions[0].path), path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/${instruction.originalname}`));
+                instructions += instruction.originalname.split(".")[0] + ", ";
+            })
+        }
+        puzzle.instructions = instructions;
+
         if (hasForm) {
             puzzle.config = JSON.stringify({"url": `/reusablePuzzles/installed/${puzzle.name}/form.ejs`, "thumbnail": thumbnailName});
         } else {
@@ -272,7 +285,6 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 }
             });
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
-
             reusablePuzzleInstance = reusablePuzzle;
             newInstanceId = reusablePuzzle.id;
         } else {
@@ -299,7 +311,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             await reusablePuzzleInstance.save({"transaction": t});
         }
 
-        const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}}, {"transaction": t});
+        const linkedPuzzle =  reusablePuzzleInstanceId ? await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}}, {"transaction": t}) : null;;
         if (config.puzzle != "none") {
             puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}}, {"transaction": t});
             if (puzzle) {
@@ -324,7 +336,8 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 await puzzle.save({"transaction": t});
                 await reusablePuzzleInstance.save({"transaction": t});
 
-            }            config.puzzleSol = undefined;
+            }
+            config.puzzleSol = undefined;
         }else {
                 linkedPuzzle.assignedReusablePuzzleInstance = null;
                 await linkedPuzzle.save({"transaction": t});
@@ -424,7 +437,6 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
 
-        console.log("Received config:", receivedConfig);
         Object.keys(receivedConfig).forEach((key) => {
             if (receivedConfig[key] === "" || receivedConfig[key] === "undefined") {
                 receivedConfig[key] = undefined;

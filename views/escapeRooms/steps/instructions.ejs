@@ -72,6 +72,7 @@ window.theme = ((endPoint === "indications") || (endPoint === "after")) ? "/styl
 window.content = <%- content%>
 window.puzzles = <%- JSON.stringify(escapeRoom.puzzles.map((puzzle) =>{ return {id: puzzle.id, validator:puzzle.validator, sol: puzzle.sol, title:puzzle.title, assignedReusablePuzzleInstance: puzzle.assignedReusablePuzzleInstance}}))%>
 window.reusablePuzzleInstances = <%- JSON.stringify(reusablePuzzlesInstances || [])%>
+window.reusablePuzzles = <%- JSON.stringify(availableReusablePuzzles || [])%>
 window.assets = <%- JSON.stringify(assets || [])%>
 </script>
   <div id="dialog-themes" title="<%=i18n.escapeRoom.steps.indications.front.theme%>" style="display: none;">

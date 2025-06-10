@@ -626,12 +626,17 @@
         if(!selectedPuzzle){
             selectedPuzzle = window.puzzles[0] || {};
         }
-        const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
+        const reusablePuzzle = window.reusablePuzzles.find(p => p.reusablePuzzleId == reusablePuzzleId);
+        const instructions = (reusablePuzzle && reusablePuzzle.instructions) ? reusablePuzzle.instructions.split(",") : [];
         const url =  `/reusablePuzzles/${reusablePuzzleId}/${window.lang}.pdf`
+        const hasInstructions = instructions.includes(window.lang) ? true : false;
+        console.log(hasInstructions, instructions, window.lang, url);
+
+        const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
         return `
          <div style="position:absolute; right: 0; margin-top: 10px;">
-                 <a href="=${url}" target="_blank">
-                    <button class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
+                 <a href="${url}" target="_blank">
+                    <button ${!hasInstructions ? "disabled" : null} class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.reusablePuzzleInstructions%>
                         <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
                     </button>

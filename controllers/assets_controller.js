@@ -402,6 +402,7 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
 
 exports.getFormForInstance = async (req, res, next) => {
     const {puzzle_id} = req.params;
+    console.log(puzzle_id)
 
     try {
         const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id);
