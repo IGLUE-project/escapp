@@ -286,13 +286,6 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
             trimedConfig.range = trimedConfig.validator === "range" ? trimedConfig.range : undefined;
 
-            const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}}, {"transaction": t});
-
-            if (linkedPuzzle) {
-                linkedPuzzle.assignedReusablePuzzleInstance = null;
-                await linkedPuzzle.save({"transaction": t});
-            }
-
             reusablePuzzleInstance.reusablePuzzleId = reusablePuzzleId || reusablePuzzleInstance.reusablePuzzleId;
             reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
             reusablePuzzleInstance.description = description || reusablePuzzleInstance.description;
@@ -306,9 +299,15 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             await reusablePuzzleInstance.save({"transaction": t});
         }
 
+        const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}}, {"transaction": t});
         if (config.puzzle != "none") {
             puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}}, {"transaction": t});
             if (puzzle) {
+                if (linkedPuzzle && linkedPuzzle.id !== puzzle.id) {
+                    linkedPuzzle.assignedReusablePuzzleInstance = null;
+                    await linkedPuzzle.save({"transaction": t});
+                }
+
                 puzzle.sol = config.puzzleSol ? config.puzzleSol : puzzle.sol;
                 puzzle.automatic = true;
                 puzzle.validator = config.validator ? config.validator : puzzle.validator;
@@ -325,9 +324,12 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 await puzzle.save({"transaction": t});
                 await reusablePuzzleInstance.save({"transaction": t});
 
+            }            config.puzzleSol = undefined;
+        }else {
+                linkedPuzzle.assignedReusablePuzzleInstance = null;
+                await linkedPuzzle.save({"transaction": t});
             }
-            config.puzzleSol = undefined;
-        }
+
         t.commit();
         const modifiedPuzzle = {assignedReusablePuzzleInstance: puzzle.assignedReusablePuzzleInstance, sol: puzzle.sol, validator: puzzle.validator, title: puzzle.title, id: puzzle.id, };
         res.json({config, "name": reusablePuzzleInstance.name, puzzle, reusablePuzzleId: modifiedPuzzle.id, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
