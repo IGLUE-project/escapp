@@ -651,7 +651,7 @@
                 </label>
                 <input id="descOfReusablePuzzle" type="text" name="description" value="${instanceId ? puzzleDesc:''}"/>
             </div>
-            
+
         </div>
 
         `
@@ -837,7 +837,7 @@
             const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
             payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
             newType = "catalog"
-       } else if(type === "countdown" || type === "progress" || type === "ranking") {
+       } else if(type === "countdown" || type === "progress" || type === "ranking" || "text") {
             payload = id;
         }else{
             const asset = window.assets.find(p => p.id == id);
@@ -921,15 +921,15 @@
                 elements += `</div>`;
                 configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzleDesc, puzzle.id));
                 configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
-                
+
 
                 $('#appendFormElementsHere').append(elements);
                 config.puzzle =  puzzles ? puzzles[0].id : undefined;
                 config.puzzleObject = puzzles ? puzzles[0] : undefined;
-                    
-                
 
-               
+
+
+
                 if( config.puzzleObject.validator === "range") {
                     config.solutionLength = config.puzzleObject.sol.split("+")[0].length;
                 } else if (config.puzzleObject.validator === "regex") {
@@ -937,7 +937,7 @@
                 } else {
                     config.solutionLength = config.puzzleObject.sol.length;
                 }
-                
+
                 $('#puzzleSol').change(function(e) {
                     updateIframe(config, puzzle.id);
                     $('#warningMessageForReusablePuzzleCreation').show()
