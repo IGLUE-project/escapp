@@ -679,6 +679,8 @@
         const puzzleRangeInput = $('#rangeInput');
         const rangeDiv = $('#rangeDiv');
         const solutionLength = $('#solutionLengthInput');
+        const solutionLengthDiv = $('#solutionLength');
+        console.log(solutionLengthDiv)
 
         if(puzzleSelected) {
             if (puzzleSelected.assignedReusablePuzzleInstance && puzzleSelected.assignedReusablePuzzleInstance != id) {
@@ -704,18 +706,18 @@
                     puzzleSol.val(puzzleSelected.sol.split("+")[0]);
                     puzzleRangeInput.val(puzzleSelected.sol.split("+")[1]);
                     rangeDiv.show();
-                    solutionLength.hide();
+                    solutionLengthDiv.hide();
                 }else if (puzzleSelected.validator === "regex") {
                     puzzleSol.val(puzzleSelected.sol);
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
-                    solutionLength.show();
+                    solutionLengthDiv.show();
                     solutionLength.val(config.solutionLength || 1);
                 } else {
                     puzzleSol.val(puzzleSelected.sol);
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
-                    solutionLength.hide()
+                    solutionLengthDiv.hide()
                 }
             } else {
                 puzzleSol.val("");
