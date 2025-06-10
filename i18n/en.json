@@ -1181,6 +1181,7 @@
             "eduLevel": "Educational level"
         },
         "role": "Role",
+        "roleField":"Role in Escapp",
         "teacher": "Teacher",
         "student": "Student",
         "lang": "Language",
