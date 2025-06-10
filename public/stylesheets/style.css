@@ -3000,7 +3000,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   padding-left: 20px;
 }
 
-#modalCatalogResource {
+.modalCatalogResource {
   z-index: 999;
   position: absolute;
   background: rgba(0, 0, 0, 0.4666666667);
@@ -3011,7 +3011,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   z-index: 999;
 }
 
-#modalCatalogResource.active {
+.modalCatalogResource.active {
   display: flex;
   border-radius: 0px 0px 6px 6px;
 }

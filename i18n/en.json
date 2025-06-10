@@ -521,6 +521,7 @@
                     "catalog": {
                         "newPuzzle": "new puzzle",
                         "uploadFile": "upload file",
+                        "selectFile": "select file",
                         "addResource": "add resource",
                         "addBlock": "add block",
                         "addText": "add text block",

@@ -108,7 +108,7 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginReq
 router.post("/escapeRooms/:escapeRoomId(\\d+)/asset/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.editAsset);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/fetchAssets", sessionController.loginRequired, assetsController.fetchAssets);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("upload"), assetsController.assetsUpdate);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/uploadAssets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("upload"), assetsController.uploadAssets);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/uploadAssets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("asset"), assetsController.uploadAssets);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/deleteAssets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.deleteAssets);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluation);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluationUpdate);
@@ -203,7 +203,7 @@ router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionControlle
 router.get("/inspiration", escapeRoomController.showGuide);
 
 // Routes for reusablePuzzles
-router.post("/reusablePuzzles", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{"name": "thumbnail", "maxCount": 1}, {"name": "file", "maxCount": 1}]), reusablePuzzleController.createReusablePuzzle);
+router.post("/reusablePuzzles", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{"name": "thumbnail", "maxCount": 1}, {"name": "file", "maxCount": 1}, {"name": "instructions", "maxCount": 10}]), reusablePuzzleController.createReusablePuzzle);
 router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);
 router.put("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{"name": "thumbnail", "maxCount": 1}, {"name": "file", "maxCount": 1}]), reusablePuzzleController.editReusablePuzzle);
 router.get("/reusablePuzzles/new", sessionController.loginRequired, reusablePuzzleController.renderCreatePuzzle);
