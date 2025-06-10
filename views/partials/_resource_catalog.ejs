@@ -930,9 +930,9 @@
                 config.puzzle =  selectedPuzzle ? selectedPuzzle.id : undefined;
                 config.puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
 
-                if( config.puzzleObject.validator === "range") {
+                if( config.puzzleObject?.validator === "range") {
                     config.solutionLength = config.puzzleObject.sol.split("+")[0].length;
-                } else {
+                } else if(config.puzzleObject && config.puzzleObject.sol) {
                     config.solutionLength = config.puzzleObject.sol.length;
                 }
 
