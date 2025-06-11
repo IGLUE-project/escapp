@@ -1014,7 +1014,8 @@
             "turnos": "Turnos",
             "video": "Vídeo",
             "share": "Compartir",
-            "forceLang": "Forzar el idioma de escapp para los participantes de esta escape room"
+            "forceLang": "Forzar el idioma de escapp para los participantes de esta escape room",
+            "forceLang2": "Idioma"
         },
         "cantManageUntilComplete": "No puedes gestionar la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación')."
 
@@ -1172,16 +1173,19 @@
         },
         "role": "Rol",
         "roleField":"Perfil en Escapp",
+        "roleFieldStudy":" que estudias",
+        "roleFieldTeach":" que impartes",
         "teacher": "Profesor",
         "student": "Alumno",
         "lang": "Idioma",
-        "eduLevelField": "Nivel educativo que estudias/impartes",
+        "eduLevelField": "Nivel educativo",
         "eduLevel": {
             "primary": "Educación primaria",
             "secondary": "Educación secundaria",
             "vet": "Formación profesional",
             "higher": "Educación superior",
-            "other": "Otro"
+            "other": "Otro",
+            "none": "Ninguno"
         },
         "acceptTerms": "Condiciones de uso",
         "terms": "Confirmo que he leído y acepto los <a href='/terms' target='_blank'>Términos de Uso</a> y la <a href='/privacy' target='_blank'>Política de Privacidad</a>.",

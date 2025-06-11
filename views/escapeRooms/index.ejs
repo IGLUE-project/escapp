@@ -41,7 +41,7 @@
                 <% } else if (user && (whichMenu == "created")) { %>
                     <p class="notFound"><%=search ? i18n.escapeRoom.main.notFound : i18n.escapeRoom.main.noERTeacher%></p>
                 <% } else if (user && (whichMenu == "playing")) { %>
-                    <p class="notFound"><%=search ? i18n.escapeRoom.main.notFound : i18n.escapeRoom.main.noERsPlaying%></p>
+                    <p class="notFound"><%=search ? i18n.escapeRoom.main.notFound : i18n.escapeRoom.main.noERStudent%></p>
                 <% } %>
             <% } %>
             <% for (var i in escapeRooms) { %>
@@ -84,7 +84,7 @@
                     </div>
                 </a>
             <% } %>
-            <% if (user && (whichMenu == "created" || whichMenu == "playing" && (escapeRooms.length == 0)) || whichMenu == "public" && (escapeRooms.length == 0)) { %>
+            <% if (user && !user.isStudent && ((whichMenu == "created" || whichMenu == "playing" && (escapeRooms.length == 0)) || whichMenu == "public" && (escapeRooms.length == 0))) { %>
             <a href="/escapeRooms/new" class="escapeRoomItemWrapper animated bounceIn" title="<%=i18n.escapeRoom.main.createER%>" style="animation-delay: <%=escapeRooms ? (escapeRooms.length * 100 + 100): 0 %>ms;">
                 <div class="escapeRoomItem addItem addEscapeRoom gugi" >
                         <span>+</span>

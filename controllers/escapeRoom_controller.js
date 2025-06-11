@@ -63,9 +63,6 @@ exports.index = async (req, res, next) => {
             ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, page, limit, search)));
         } else if (whichMenu === "playing") {
             ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, page, limit, search)));
-            if (count === 0) {
-                res.redirect("/escapeRooms?public=1");
-            }
         } else {
             let erAll = [];
             const searchCondition = search ? ` AND (LOWER(title) LIKE '%${search.toLowerCase()}%' OR LOWER(description) LIKE '%${search.toLowerCase()}%')` : "";

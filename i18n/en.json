@@ -1023,7 +1023,8 @@
             "turnos": "Shifts",
             "video": "Video",
             "share": "Share",
-            "forceLang": "Force specific language in escapp for the participants of this escape room"
+            "forceLang": "Force specific language in escapp for the participants of this escape room",
+            "forceLang2": "Language"
 
         },
         "cantManageUntilComplete": "You cannot manage the escape room until you have changed its status to completed in the last step of the Setup ('Publication')."
@@ -1182,18 +1183,21 @@
         },
         "role": "Role",
         "roleField":"Role in Escapp",
+        "roleFieldStudy":" that you study",
+        "roleFieldTeach":" that you teach",
         "teacher": "Teacher",
         "student": "Student",
         "lang": "Language",
         "acceptTerms": "Terms and conditions",
         "terms": "I confirm that I have read and accept the <a href='/terms' target='_blank'>Terms of Use</a> and the <a href='/privacy' target='_blank'>Privacy Policy</a>.",
-        "eduLevelField": "Educational level you teach/study",
+        "eduLevelField": "Educational level",
         "eduLevel": {
             "primary": "Primary education",
             "secondary": "Secondary education",
             "vet": "Vocational education and training",
             "higher": "Higher education",
-            "other": "Other"
+            "other": "Other",
+            "none": "None"
         },
         "inputs": {
             "editUser": "Edit profile",

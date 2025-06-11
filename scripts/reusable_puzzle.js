@@ -34,10 +34,10 @@ exports.reusablePuzzles = async function (name, description, form, zipPath, thum
         }
 
         if (await models.reusablePuzzle.findOne({ "where": { name } }) !== null) {
-            throw new Error("Puzzle with that name already exists");
+            console.warn(`⚠️ Puzzle with name "${name}" already exists. It will be overwritten.`);
         }
 
-        const puzzle = await models.reusablePuzzle.create({ name, description }, { "transaction": t });
+        const [puzzle] = await models.reusablePuzzle.upsert({ name, description }, { "transaction": t });
         const puzzleDir = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
 
         if (!fs.existsSync(puzzleDir)) {
@@ -66,7 +66,9 @@ exports.reusablePuzzles = async function (name, description, form, zipPath, thum
     } catch (e) {
         await t.rollback();
         console.error("❌ Failed to create puzzle:", e.message);
-        process.exit(1);
+        if (require.main === module) {
+            process.exit(1);
+        }
     }
 };
 

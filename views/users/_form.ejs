@@ -24,28 +24,23 @@
     <input type="text" class="customInput" id="surname" name="surname" value="<%= user.surname %>" required placeholder="<%=i18n.user.inputs.surnamePlaceHolder %>" autocomplete="off"/></label>
 </div>
 <br />
+<%if (user.id) {%>
+    <div class="userField">
+        <label for="user_confirm_password"><span><%=i18n.user.lang%></span>
+        <select  class="customInput" id="lang" name="lang" required autocomplete="off">
+            <option value="en" <%=(user.lang == "en" || (!user.lang && (i18n.lang === "en"))) ? "selected" :""%>><%=i18n.langs.en%></option>
+            <option value="es" <%=(user.lang == "es" || (!user.lang && (i18n.lang === "es"))) ? "selected" :""%>><%=i18n.langs.es%></option>
+        </select>
+        </label>
+    </div>
+    <br/>
+<%}%>
 <%if (!user.id || locals.admin) {%>
 <div class="userField">
     <label for="username"><span><%=i18n.user.username%></span>
     <input type="email" <%=user.id?"disabled":""%> class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
 </div>
 <br />
-<%}%>
-
-<div class="userField">
-    <label for="eduLevel"><span><%=i18n.user.eduLevelField%></span>
-    <select  class="customInput" id="eduLevel" name="eduLevel" value="<%= user.eduLevel %>" placeholder="<%=i18n.user.inputs.eduLevelPlaceHolder %>" autocomplete="off">
-        <option disabled value <%= user.eduLevel ? "" : "selected" %> <%= !user.id ? "selected" : ""%>/>
-        <option value="primary" <%= user.eduLevel === "primary" ? "selected" : ""%>><%=i18n.user.eduLevel.primary%></option>
-        <option value="secondary" <%= user.eduLevel === "secondary" ? "selected" : ""%>><%=i18n.user.eduLevel.secondary%></option>
-        <option value="vet" <%= user.eduLevel === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
-        <option value="higher" <%= user.eduLevel === "higher" ? "selected" : ""%>><%=i18n.user.eduLevel.higher%></option>
-        <option value="other" <%= user.eduLevel === "other" ? "selected" : ""%>><%=i18n.user.eduLevel.other%></option>
-        <option value="none" <%= user.eduLevel === "none" ? "selected" : ""%>><%=i18n.user.eduLevel.none%></option>
-    </select></label>
-</div>
-<br />
-<%if (!user.id || locals.admin) {%>
     <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || locals.admin) {%>
         <div class="userField">
             <label for="eduLevel"><span><%=i18n.user.roleField%></span>
@@ -59,20 +54,33 @@
             </select>
         </div>
     <br />
+    <%}%>
+<%} else if (user.id && !locals.admin) {%>
+    <div class="userField">
+        <label for="eduLevel"><span><%=i18n.user.roleField%> : </span> <span><%=user.isStudent ? i18n.user.roles.student : i18n.user.roles.teacher %></span>
+        <br/>
+        <br/>
+    </div>
 <%}%>
 
-<%}%>
+
+<div class="userField">
+    <label for="eduLevel"><span><%=i18n.user.eduLevelField%><span id="roleFieldStudy"><%=i18n.user.roleFieldStudy%></span> <span id="roleFieldTeach"><%=i18n.user.roleFieldTeach%></span></span>
+    <select  class="customInput" id="eduLevel" name="eduLevel" value="<%= user.eduLevel %>" placeholder="<%=i18n.user.inputs.eduLevelPlaceHolder %>" autocomplete="off">
+        <option disabled value <%= user.eduLevel ? "" : "selected" %> <%= !user.id ? "selected" : ""%>/>
+        <option value="primary" <%= user.eduLevel === "primary" ? "selected" : ""%>><%=i18n.user.eduLevel.primary%></option>
+        <option value="secondary" <%= user.eduLevel === "secondary" ? "selected" : ""%>><%=i18n.user.eduLevel.secondary%></option>
+        <option value="vet" <%= user.eduLevel === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
+        <option value="higher" <%= user.eduLevel === "higher" ? "selected" : ""%>><%=i18n.user.eduLevel.higher%></option>
+        <option value="other" <%= user.eduLevel === "other" ? "selected" : ""%>><%=i18n.user.eduLevel.other%></option>
+        <option value="none" <%= user.eduLevel === "none" ? "selected" : ""%>><%=i18n.user.eduLevel.none%></option>
+    </select></label>
+</div>
+<br />
+ 
 
 <%if (user.id) {%>
-    <div class="userField">
-        <label for="user_confirm_password"><span><%=i18n.user.lang%></span>
-        <select  class="customInput" id="lang" name="lang" required autocomplete="off">
-            <option value="en" <%=(user.lang == "en" || (!user.lang && (i18n.lang === "en"))) ? "selected" :""%>><%=i18n.langs.en%></option>
-            <option value="es" <%=(user.lang == "es" || (!user.lang && (i18n.lang === "es"))) ? "selected" :""%>><%=i18n.langs.es%></option>
-        </select>
-        </label>
-    </div>
-    <br/>
+
 <p><%=i18n.user.passLeaveBlank%></p>
 <%}%>
 <div class="userField">
@@ -162,5 +170,23 @@
             return false;
         }
     }   
+
+    $(document).ready(function() {
+        // Show the correct role field based on the selected role
+        $('#role').change(function() {
+            if ($(this).val() === 'student') {
+                $('#roleFieldStudy').css('display', 'inline');
+                $('#roleFieldTeach').hide();
+            } else if ($(this).val() === 'teacher') {
+                $('#roleFieldStudy').hide();
+                $('#roleFieldTeach').css('display', 'inline');
+            } else {
+                $('#roleFieldStudy').hide();
+                $('#roleFieldTeach').hide();
+            }
+        });
+
+         
+    });
     
 </script>
