@@ -154,13 +154,13 @@ $('#scope').on('change', function(e){
 
 function confirmSubmit(e) {
     e.preventDefault();
-    var agree = confirm("<%=i18n.escapeRoom.steps.areYouSurePublish%>");
+    var agree = confirm("<%=i18n.escapeRoom.steps.sharing.areYouSurePublish%>");
     if (agree) {
-    $('#theform').append('<input type="hidden" name="progress" value="sharing" />');
-    $('#theform').append('<input type="hidden" name="status" value="<%=isDraft ? 'completed':'draft'%>" />');
-    return $('#theform').submit(); ;
-    }else{
-    return false ;
+        $('#theform').append('<input type="hidden" name="progress" value="sharing" />');
+        $('#theform').append('<input type="hidden" name="status" value="<%=isDraft ? 'completed' : 'draft'%>" />');
+        return $('#theform').submit(); ;
+    } else {
+        return false ;
     }
 
 }

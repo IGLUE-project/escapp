@@ -99,7 +99,7 @@ if (require.main === module) {
         } else if (args[i] === "--thumbnailPath") {
             thumbnailPath = args[i + 1];
             i++;
-        }
+        } 
     }
 
     if (!name || !description || !zipPath) {

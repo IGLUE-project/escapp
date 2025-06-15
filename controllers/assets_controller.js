@@ -289,10 +289,8 @@ exports.editAsset = async (req, res, next) => {
     try {
         const asset = await models.asset.findByPk(assetId);
 
-        console.log(asset);
         if (asset) {
             asset.filename = filename;
-            console.log(filename);
             /*
             Let config = "";
 
@@ -402,7 +400,6 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
 exports.getFormForInstance = async (req, res, next) => {
     const {puzzle_id} = req.params;
 
-    console.log(puzzle_id);
 
     try {
         const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id);
@@ -430,7 +427,6 @@ exports.getFormForInstance = async (req, res, next) => {
 exports.returnThumbnail = async (req, res, next) => {
     const {file_name} = req.params;
 
-    console.log(path.join(__dirname, `../uploads/thumbnails/${file_name}`));
     res.sendFile(path.join(__dirname, `../uploads/thumbnails/${file_name}`));
 };
 

@@ -25,7 +25,6 @@
   const params = new URLSearchParams(window.location.search);
   const lang = params.get('lang');
 
-  console.log(lang)
   $('.sample-container div').FlipBook({
     pdf: `/pdf/BestPracticesEER_${lang}.pdf`,
     propertiesCallback: function(props) {

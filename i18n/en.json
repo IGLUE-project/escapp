@@ -612,7 +612,7 @@
             "after": {
                 "title": "Post-activity instructions",
                 "explanation": "Here you can add the information you want to show participants once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them",
-                "placeholder": "Add custom instructions"
+                "placeholder": "Add custom instructions for after the escape room"
 
             },
             "sharing": {
@@ -651,7 +651,8 @@
                     "areYouReady": "Are you done editing your escape room? Make it public by clicking on the switch! Remember that you will not be able to change the content license once published. You can still test the escape room before going public by yourself or by inviting some of your colleagues.",
                     "stillInfoNeeded": "You still have some mandatory information that you need to complete before making your escape room public.",
                     "warningAboutLicense": "Once you publish your escape room, you will not be able to change the license. Once you are ready, click on the switch."
-                }
+                },
+                "warningOldEscapeRooms": "<b>We have a new version of Escapp!</b></br/> In this version, you need to change the status from draft to published in order to make your escape room accessible to the students."
             },
             "turnos": {
                 "title": "Shifts",
@@ -1333,6 +1334,7 @@
     "reusablePuzzleApps": {
         "Keypad": {
             "name": "Keypad",
+            "description": "A keypad puzzle where participants must enter a code to solve it.",
             "selectSkin": "Select Skin",
             "Standard": "Standard",
             "Retro": "Retro",

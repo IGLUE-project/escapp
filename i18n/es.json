@@ -603,7 +603,8 @@
             },
             "after": {
                 "title": "Finalización",
-                "explanation": "Aquí puedes añadir la información que quieres mostrar a los participantes una vez terminen la escape room. Puedes incluir una encuesta, un cuestionario posterior o cualquier otra información que quieras compartir con ellos"
+                "explanation": "Aquí puedes añadir la información que quieres mostrar a los participantes una vez terminen la escape room. Puedes incluir una encuesta, un cuestionario posterior o cualquier otra información que quieras compartir con ellos",
+                "placeholder": "Añade instrucciones personalizadas para después de la escape room"
             },
             "sharing": {
                 "title": "Publicación",
@@ -641,8 +642,9 @@
                     "areYouReady": "¿Has terminado de editar tu escape room? ¡Hazla pública haciendo click en el interruptor! Recuerda que no podrás cambiar la licencia del contenido una vez publicada. Recuerda que antes de hacer la escape room pública puedes hacer pruebas por tu cuenta o invitando a colaboradores.",
                     "stillInfoNeeded": "Aún tienes información obligatoria que debes completar antes de hacer pública tu escape room",
                     "warningAboutLicense": "Una vez publiques tu escape room, no podrás cambiar la licencia. Cuando estés listo, haz clic en el interruptor."
+                },
+                "warningOldEscapeRooms": "<b>¡Tenemos una nueva versión de Escapp!</b></br/> En esta versión, necesitas cambiar el estado de la escape room de borrador a publicado para que tu escape room sea accesible para los estudiantes."
 
-                }
             },
             "turnos": {
                 "title": "Turnos",
@@ -1322,6 +1324,7 @@
     "reusablePuzzleApps": {
         "Keypad": {
             "name": "Teclado",
+            "description": "Teclado interactivo para introducir un código",
             "selectSkin": "Select Skin",
             "Standard": "Standard",
             "Retro": "Retro",

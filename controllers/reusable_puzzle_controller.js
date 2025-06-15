@@ -5,6 +5,7 @@ const path = require("path");
 const StreamZip = require("node-stream-zip");
 const sequelize = require("../models");
 const {getLocaleForEscapeRoom} = require("../helpers/I18n");
+const {solutionSeparatorLength} = require("../helpers/utils");
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {
@@ -155,7 +156,6 @@ exports.createReusablePuzzle = async (req, res, next) => {
             puzzle.config = JSON.stringify({"url": `/reusablePuzzles/forms/${form}`, "thumbnail": thumbnailName});
         }
 
-        console.log(puzzle);
         await puzzle.save({"transaction": t});
         await t.commit();
         res.redirect("back");
@@ -336,7 +336,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 } else if (config.validator === "regex") {
                     reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": config.solutionLength});
                 } else {
-                    reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": undefined});
+                    reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": solutionSeparatorLength(config.puzzleSol)});
                 }
                 await puzzle.save({"transaction": t});
                 await reusablePuzzleInstance.save({"transaction": t});

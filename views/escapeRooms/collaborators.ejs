@@ -29,7 +29,7 @@
             </div>
             <div class="flex-row">
                 <div class="flex-cell flex-name">
-                    <% if (escapeRoom.author.anonymized) {%>
+                    <% if (!escapeRoom.author.anonymized) {%>
                         <%=escapeRoom.author.name%> <%=escapeRoom.author.surname%> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
                        <%}else{%>
                         <i><%=i18n.user.anonymous%> </i> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>

@@ -1,0 +1,16 @@
+
+<%if(!escapeRoom.status && escapeRoom.turnos && escapeRoom.turnos.length){%>
+<div class="cookie-container" id="warning-published">
+    <p><%- i18n.escapeRoom.steps.sharing.warningOldEscapeRooms%></p>
+    <button id="accept-cookies" class="btn btn-info"><%= i18n.common.ok %></button>
+</div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("warning-published")?.addEventListener("click", function () {
+                document.getElementById("warning-published").style.display = "none";
+            });
+        });
+    </script>
+</div>
+<%}%>

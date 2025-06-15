@@ -175,15 +175,15 @@
                 <th></th>
             </tr>
 
-            <%if(endPoint==="team"){
+            <% if(endPoint==="team"){
                 reusablePuzzlesInstances.map(puzzle=> {
                 let goodConfig={};
                 puzzle.url = `/escapeRooms/${escapeRoom.id}/reusablePuzzleInstances/${puzzle.id}/render`;
-                try{
-                    goodConfig = JSON.parse(puzzle.config)
+                try {
+                    goodConfig = JSON.parse(puzzle.config);
                 } catch(e){
                     console.error("Error parsing JSON:", puzzle.config);
-            }%>
+            } %>
                 <tr id="p-<%=puzzle.id%>" class="catalogItem">
                     <td>
                         <p class="title">
@@ -627,10 +627,12 @@
             selectedPuzzle = window.puzzles[0] || {};
         }
         const reusablePuzzle = window.reusablePuzzles.find(p => p.reusablePuzzleId == reusablePuzzleId);
+        console.log('reusablePuzzle', reusablePuzzle);
         const instructions = (reusablePuzzle && reusablePuzzle.instructions) ? reusablePuzzle.instructions.split(",") : [];
         const url =  `/reusablePuzzles/${reusablePuzzleId}/${window.lang}.pdf`
         const hasInstructions = instructions.includes(window.lang) ? true : false;
-
+        console.log(url)
+        console.log(hasInstructions)
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
         return `
          <div style="position:absolute; right: 0; margin-top: 10px;">
@@ -680,7 +682,6 @@
         const rangeDiv = $('#rangeDiv');
         const solutionLength = $('#solutionLengthInput');
         const solutionLengthDiv = $('#solutionLength');
-        console.log(solutionLengthDiv)
 
         if(puzzleSelected) {
             if (puzzleSelected.assignedReusablePuzzleInstance && puzzleSelected.assignedReusablePuzzleInstance != id) {
@@ -890,6 +891,15 @@
         }
     }
 
+    function solutionSeparatorLength(sol, sep = ";") {
+        if (sol && sol.length > 0) {
+            if (sol.includes(sep)) {
+                return sol.split(sep).length;
+            } 
+            return sol.length
+        }
+        return 0;
+    }
     function openPuzzleConfiguration(puzzle, baseId, reusablePuzzleName){
         const configZone = $('#configZone');
         let config = puzzle.config;
@@ -926,14 +936,21 @@
 
                 $('#appendFormElementsHere').append(elements);
 
-                const selectedPuzzle = window.puzzles.find(p => p.assignedReusablePuzzleInstance == puzzle.id);
+                let selectedPuzzle = window.puzzles.find(p => p.assignedReusablePuzzleInstance == puzzle.id);
+                try {
+                    if(!selectedPuzzle && window.puzzles.length > 0) {
+                        selectedPuzzle = window.puzzles[0];
+                    }
+                } catch (e) {
+                    console.error("Error setting default puzzle:", e);
+                }
                 config.puzzle =  selectedPuzzle ? selectedPuzzle.id : undefined;
                 config.puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
 
                 if( config.puzzleObject?.validator === "range") {
                     config.solutionLength = config.puzzleObject.sol.split("+")[0].length;
                 } else if(config.puzzleObject && config.puzzleObject.sol) {
-                    config.solutionLength = config.puzzleObject.sol.length;
+                    config.solutionLength = solutionSeparatorLength(config.puzzleObject.sol);
                 }
 
                 $('#puzzleSol').change(function(e) {
@@ -949,8 +966,9 @@
                     validatorOnchange(e);
                     $('#warningMessageForReusablePuzzleCreation').show()
                 });
-
+                
                 $('#associatedPuzzle').val(config.puzzleObject.id).change();
+                
                 updateIframe(config, puzzle.reusablePuzzleId);
 
                 $(".sections").scrollTop(0);
@@ -1241,6 +1259,8 @@
                 let solutionLength = 0;
                 if(validator === "regex") {
                     solutionLength = $("#solutionLengthInput").val();
+                } else if (validator !== "range") {
+                    solutionLength = solutionSeparatorLength(sol);
                 } else {
                     solutionLength = sol.length;
                 }
