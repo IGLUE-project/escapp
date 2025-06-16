@@ -627,12 +627,9 @@
             selectedPuzzle = window.puzzles[0] || {};
         }
         const reusablePuzzle = window.reusablePuzzles.find(p => p.reusablePuzzleId == reusablePuzzleId);
-        console.log('reusablePuzzle', reusablePuzzle);
         const instructions = (reusablePuzzle && reusablePuzzle.instructions) ? reusablePuzzle.instructions.split(",") : [];
         const url =  `/reusablePuzzles/${reusablePuzzleId}/${window.lang}.pdf`
         const hasInstructions = instructions.includes(window.lang) ? true : false;
-        console.log(url)
-        console.log(hasInstructions)
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
         return `
          <div style="position:absolute; right: 0; margin-top: 10px;">
@@ -762,17 +759,31 @@
     }
 
     function parseAssetConfig(mime, config) {
-        if (!config) return {};
-        if (typeof config === "object"){return config}
         let configJSON = {};
-        if(mime.search(reusableRegex) !== -1){
-            configJSON = JSON.parse(config)
+
+        if(typeof config === "string"){
+            if(mime.search(reusableRegex) !== -1){
+                configJSON = JSON.parse(config);
+                let texts = config.split(';');
+                texts.forEach(text => {
+                    const data = text.split(':');
+                    configJSON[data[0]] = data[1];
+                });
+            }
+        } else if ((typeof config === "undefined")||(config === null)){
+            configJSON = {};
+        } else if (typeof config === "object"){
+            return config;
         }
-        let texts = config.split(';');
-        texts.forEach(text => {
-            const data = text.split(':');
-            configJSON[data[0]] = data[1];
-        })
+
+        //Default width and height
+        if(typeof configJSON.width === "undefined"){
+            configJSON.width = "";
+        }
+        if(typeof configJSON.height === "undefined"){
+            configJSON.height = "600";
+        }
+
         if (mime.search(imageRegex) !== -1) {
             return {
                 width: configJSON.width,
@@ -855,7 +866,6 @@
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
-
 
         insertContent(index, newType, payload, puzzles);
         if($('.building-block').children().last().offset()) {

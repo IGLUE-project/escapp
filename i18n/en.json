@@ -382,7 +382,7 @@
             "copyOf": "Copy of",
             "createER": "Create new escape room",
             "noERTeacher": "You don't have any escape rooms. To create one, click the + button.",
-            "noERStudent": "You are not enrolled in any escape room yet.",
+            "noERStudent": "You are not currently participating in any escape room.",
             "noERPublic": "There are no escape rooms currently available.",
             "notFound": "There are no results for your search. Try a different search!",
             "myERs": "My escape rooms",
@@ -481,8 +481,8 @@
                 "uploadFile": "Please upload a MoodleXML file"
             },
             "team": {
-                "explanation": "Here you can customize the interface that participants will see on their computers when they are playing. You can add any information they need in order to participate: links, images, messages, the first clue, etc.",
-                "placeholder": "You can add a custom message, images, links... Do not forget to set up when you want to display this information by clicking in the configuration icon on the left.",
+                "explanation": "In this section, you must create the content that participants will see on their screens while playing the escape room. You can use the resource catalog located below this text to upload files and create interactive elements.",
+                "placeholder": "In this content block, you can add text, images, links, and other types of resources. You can configure when this content block will be visible during the escape room by clicking the settings icon located on the left.",
                 "title": "Team interface"
             },
             "class": {

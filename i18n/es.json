@@ -378,7 +378,7 @@
             "copyOf": "Copia de",
             "createER": "Crear nueva escape room",
             "noERTeacher": "No tienes ninguna escape room, para crear una pulsa el botón +.",
-            "noERStudent": "No tienes ninguna escape room activa.",
+            "noERStudent": "Actualmente no estás participando en ninguna escape room.",
             "noERPublic": "No hay ninguna escape room disponible.",
             "notFound": "No hay resultados para tu búsqueda. ¡Prueba otra vez!",
             "myERs": "Mis escape rooms",
@@ -475,8 +475,8 @@
                 "uploadFile": "Sube un fichero MoodleXML"
             },
             "team": {
-                "explanation": "En este apartado puedes personalizar la interfaz que los estudiantes verán en sus pantallas mientras jueguen a la escape room. Puedes añadir una pista inicial, enlaces, imágenes, etc.",
-                "placeholder": "Añade un mensaje personalizado, imágenes, links... No te olvides de configurar cuándo quieres que sea visible esta información haciendo click en el icono de configuración situado a la izquierda",
+                "explanation": "En este apartado debes crear los contenidos que los participantes verán en sus pantallas cuando jueguen a la escape room. Puedes utilizar el catálogo de recursos situado debajo de este texto para subir archivos y crear elementos interactivos.",
+                "placeholder": "En este bloque de contenido puedes añadir texto, imágenes, enlaces y otro tipo de recursos. Puedes configurar en qué momentos de la escape room será visible este bloque de contenido haciendo clic en el icono de configuración situado a la izquierda.",
                 "title": "Interfaz de equipo"
             },
             "class": {
@@ -643,7 +643,7 @@
                     "stillInfoNeeded": "Aún tienes información obligatoria que debes completar antes de hacer pública tu escape room",
                     "warningAboutLicense": "Una vez publiques tu escape room, no podrás cambiar la licencia. Cuando estés listo, haz clic en el interruptor."
                 },
-                "warningOldEscapeRooms": "<b>¡Tenemos una nueva versión de Escapp!</b></br/> En esta versión, necesitas cambiar el estado de la escape room de borrador a publicado para que tu escape room sea accesible para los estudiantes."
+                "warningOldEscapeRooms": "<b>¡Tenemos una nueva versión de Escapp!</b></br/> En esta versión, necesitas cambiar el estado de la escape room de borrador a publicado para que tu escape room sea accesible para los participantes."
 
             },
             "turnos": {
