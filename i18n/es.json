@@ -1236,10 +1236,8 @@
         "turno": "Turno",
         "delete": {
             "deleteYourAccount": "Elimina tu cuenta",
-            "deleteYourAccountMsg1": "Si decides eliminar tu cuenta, toda la información personal asociada a ella será eliminada permanentemente de nuestro sistema.",
-            "deleteYourAccountMsg2": "Ten en cuenta:",
-            "deleteYourAccountMsg3": "Tus datos de participación anteriores permanecerán de forma anonimizada para fines de investigación y desarrollo, conforme a nuestra política de datos. Esto significa que tus contribuciones seguirán ayudando a mejorar la plataforma, pero ya no estarán vinculadas contigo de ninguna manera. De todas formas, lamentaríamos verte partir.",
-            "deleteYourAccountMsg5": "¿Estás seguro de que deseas eliminar tu cuenta?",
+            "deleteYourAccountMsg": "Si decides eliminar tu cuenta, toda la información personal asociada a ella será eliminada permanentemente de nuestro sistema. No obstante, tus datos de participación anteriores permanecerán de forma anonimizada para ser empleados con los fines indicados en nuestra <a href='/privacy' target='_blank'>política de privacidad</a>. Esto significa que tus contribuciones seguirán ayudando a mejorar la plataforma, pero ya no estarán vinculadas contigo de ninguna manera. De todas formas, lamentaríamos verte partir.",
+            "deleteYourAccountMsgConfirmation": "¿Estás seguro de que deseas eliminar tu cuenta?",
             "deleteAccount": "confirmar borrado"
         }
     },
