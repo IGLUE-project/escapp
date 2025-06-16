@@ -95,8 +95,8 @@ window.assets = <%- JSON.stringify(assets || [])%>
     <%for (var p in escapeRoom.puzzles) {
       var puzzle= escapeRoom.puzzles[p];%>
       <label class="puzzle-preview-select">
-        <input type="checkbox" id="puzzle-<%=p%>"><%=puzzle.title%> <%if (p == 0){%>
-        <span style="opacity: 0.5;">(<%=i18n.escapeRoom.steps.indications.front.visualizationStart%>)</span><%}%>
+        <input type="checkbox" id="puzzle-<%=p%>">&nbsp;<%=puzzle.title%>. <%if (p == 0){%>
+        <span style="opacity: 0.5;">&nbsp;(<%=i18n.escapeRoom.steps.indications.front.visualizationStart%>)</span><%}%>
       </label>
     <%}%>
     <label class="puzzle-preview-select">
