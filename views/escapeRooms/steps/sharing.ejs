@@ -107,8 +107,7 @@
                     <li><input type="checkbox" disabled <%if(completed[4]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step5%> <%if(!completed[4]){%> <input type="submit" class="hidden-submit" name="progress" value="team"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
                     <li><input type="checkbox" disabled <%if(completed[5]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step6%> <%if(!completed[5]){%> <input type="submit" class="hidden-submit" name="progress" value="class"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
                     <li><input type="checkbox" disabled <%if(completed[6]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step7%> <%if(!completed[6]){%> <input type="submit" class="hidden-submit" name="progress" value="after"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
-                    <li><input type="checkbox" disabled <%if(completed[7]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step8%> <%if(!completed[7]){%> <input type="submit" class="hidden-submit" name="progress" value="evaluation"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
-                </ul>
+                 </ul>
 
             <%}else{%>
                 <p><%=i18n.escapeRoom.steps.sharing.checklist.congrats%>
@@ -154,7 +153,16 @@ $('#scope').on('change', function(e){
 
 function confirmSubmit(e) {
     e.preventDefault();
-    var agree = confirm("<%=i18n.escapeRoom.steps.sharing.areYouSurePublish%>");
+    <%if(isDraft){%>
+        <%if (escapeRoom.publishedOnce){%>
+            var agree = confirm("<%=i18n.escapeRoom.steps.sharing.areYouSurePublishBefore%>");
+        <%} else {%>
+            var agree = confirm("<%=i18n.escapeRoom.steps.sharing.areYouSurePublish%>");
+        <%}%>
+    <%}else{%>
+        var agree = confirm("<%=i18n.escapeRoom.steps.sharing.areYouSureUnpublish%>");    
+    <%}%>
+
     if (agree) {
         $('#theform').append('<input type="hidden" name="progress" value="sharing" />');
         $('#theform').append('<input type="hidden" name="status" value="<%=isDraft ? 'completed' : 'draft'%>" />');

@@ -2610,14 +2610,74 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   height: auto;
 }
 
+.preview-asset-dialog, .clipboard-dialog {
+  z-index: 9999;
+}
+.preview-asset-dialog .preview-asset-titlebar, .preview-asset-dialog .clipboard-titlebar, .clipboard-dialog .preview-asset-titlebar, .clipboard-dialog .clipboard-titlebar {
+  background: #232951;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
+  padding: 1.3rem 1rem 1rem 1rem;
+  z-index: 999;
+  border-radius: 6px 6px 0 0;
+}
+.preview-asset-dialog .ui-dialog-title, .clipboard-dialog .ui-dialog-title {
+  color: white;
+}
+.preview-asset-dialog .ui-dialog-content, .clipboard-dialog .ui-dialog-content {
+  background: #232951;
+  border: transparent;
+}
+.preview-asset-dialog .ui-dialog-titlebar-close, .preview-asset-dialog .ui-dialog-clipboard-close, .clipboard-dialog .ui-dialog-titlebar-close, .clipboard-dialog .ui-dialog-clipboard-close {
+  font-family: "Material Icons";
+  background: none;
+  border: none;
+  color: white !important;
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+}
+.preview-asset-dialog h3, .clipboard-dialog h3 {
+  color: white;
+}
+.preview-asset-dialog #embedContainerCopyDiv, .preview-asset-dialog #linkContainerCopyDiv, .clipboard-dialog #embedContainerCopyDiv, .clipboard-dialog #linkContainerCopyDiv {
+  display: flex;
+  position: relative;
+}
+.preview-asset-dialog #embedContainerCopyDiv #embedInput, .preview-asset-dialog #embedContainerCopyDiv #linkInput, .preview-asset-dialog #linkContainerCopyDiv #embedInput, .preview-asset-dialog #linkContainerCopyDiv #linkInput, .clipboard-dialog #embedContainerCopyDiv #embedInput, .clipboard-dialog #embedContainerCopyDiv #linkInput, .clipboard-dialog #linkContainerCopyDiv #embedInput, .clipboard-dialog #linkContainerCopyDiv #linkInput {
+  flex: 1;
+  width: 100%;
+  height: 42px;
+  text-align: left;
+}
+.preview-asset-dialog #embedContainerCopyDiv #copyEmbedButton, .preview-asset-dialog #embedContainerCopyDiv #copyLinkButton, .preview-asset-dialog #linkContainerCopyDiv #copyEmbedButton, .preview-asset-dialog #linkContainerCopyDiv #copyLinkButton, .clipboard-dialog #embedContainerCopyDiv #copyEmbedButton, .clipboard-dialog #embedContainerCopyDiv #copyLinkButton, .clipboard-dialog #linkContainerCopyDiv #copyEmbedButton, .clipboard-dialog #linkContainerCopyDiv #copyLinkButton {
+  padding: 0px 8px !important;
+  margin-left: 10px;
+}
+
+.ui-widget-overlay {
+  opacity: 0.3;
+  position: absolute;
+  background: black;
+  width: 100vw;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
 .editDialog, #editDialog {
   background: #232951;
-  z-index: 999;
+  z-index: 9999;
 }
 .editDialog label, .editDialog p, .editDialog textarea, .editDialog select, .editDialog span, #editDialog label, #editDialog p, #editDialog textarea, #editDialog select, #editDialog span {
   color: #eeeeee;
 }
-.editDialog input, .editDialog select, #editDialog input, #editDialog select {
+.editDialog input, #editDialog input {
+  -webkit-text-fill-color: initial;
+}
+.editDialog input[type=text], .editDialog select, #editDialog input[type=text], #editDialog select {
   border-color: #eeeeee;
   color: #eeeeee;
   padding-left: 10px;
@@ -2755,6 +2815,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   white-space: nowrap;
   font-size: 18px;
 }
+#resourceCatalog .catalogItem .title:hover {
+  color: white;
+}
 #resourceCatalog .catalogItem .material-icons {
   padding: 3px;
   border-radius: 3px;
@@ -2859,11 +2922,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-radius: 3px;
   padding: 4px 9px;
   color: #dadada;
+  z-index: 99999;
+  right: 60px;
+  bottom: 24px;
 }
-#resourceCatalog .linkButton:hover #link-copied {
+#resourceCatalog .linkButton:hover #link-copied, #resourceCatalog .linkButton:hover #embed-copied {
   display: none;
 }
-#resourceCatalog .linkButton:hover:focus-within #link-copied {
+#resourceCatalog .linkButton:hover:focus-within #link-copied, #resourceCatalog .linkButton:hover:focus-within #embed-copied {
   display: flex;
 }
 #resourceCatalog .addButton {
@@ -2991,7 +3057,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 
 .tableTitles {
-  font-size: 14px;
+  font-size: 16px;
   border-bottom: 1px solid rgba(101, 102, 131, 0.7);
   /*MODAL CATALOG RESOURCE*/
 }
@@ -3148,6 +3214,28 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   width: 100%;
 }
 
+#iframePreview {
+  border: none;
+}
+
+#pdfPreviewDiv {
+  width: 70vw;
+  height: 80vh;
+  overflow: hidden;
+}
+#pdfPreviewDiv #pdfPreview {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+#imagePreview {
+  border: none;
+  width: 100% !important;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
 #warningSpan {
   color: #F3945E;
   display: inline-block;
@@ -3160,6 +3248,30 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
     font-size: 300px;
   }
 }
+#copyLinkButton:hover, #copyEmbedButton:hover {
+  background: rgb(35, 40, 92);
+}
+#copyLinkButton:hover #link, #copyEmbedButton:hover #link {
+  color: rgb(163, 218, 255);
+}
+#copyLinkButton:hover .tooltip-link, #copyEmbedButton:hover .tooltip-link {
+  display: flex;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.57);
+  border-radius: 3px;
+  padding: 4px 9px;
+  color: #dadada;
+  right: 50px;
+  top: 5px;
+}
+#copyLinkButton:hover:focus-within#link-copied, #copyLinkButton:hover:focus-within#embed-copied, #copyEmbedButton:hover:focus-within#link-copied, #copyEmbedButton:hover:focus-within#embed-copied {
+  display: flex !important;
+}
+
+.tooltip-link {
+  display: none;
+}
+
 #mainSection .main.student {
   background-image: url("../images/puzzle_bg.png");
   font-size: xx-large;
@@ -3489,6 +3601,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-style: solid;
   margin-top: 0px;
   border-color: transparent transparent white transparent;
+}
+#mainSection .main .overlay-trigger.right::after {
+  top: 37px;
+  left: initial;
+  right: -16px;
+  border-color: transparent transparent transparent white;
 }
 #mainSection .main .overlay-trigger .text-overlay {
   font-size: 15px;
