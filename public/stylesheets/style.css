@@ -2675,7 +2675,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: #eeeeee;
 }
 .editDialog input, #editDialog input {
-  -webkit-text-fill-color: initial;
+  -webkit-text-fill-color: initial !important;
 }
 .editDialog input[type=text], .editDialog select, #editDialog input[type=text], #editDialog select {
   border-color: #eeeeee;
@@ -3154,6 +3154,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .modalCatalogResource #configZone .configReusablePuzzle form.configForm input[type=submit], .modalCatalogResource #configZone .configReusablePuzzle .editDialog input[type=submit], .modalCatalogResource #configZone #editDialog form.configForm input[type=submit], .modalCatalogResource #configZone #editDialog .editDialog input[type=submit] {
   color: #161938;
   -webkit-text-fill-color: #161938 !important;
+}
+.modalCatalogResource #configZone .configReusablePuzzle h3.reusablePuzzleInstanceTitle, .modalCatalogResource #configZone #editDialog h3.reusablePuzzleInstanceTitle {
+  margin: 0px 0px 20px 0px;
 }
 .modalCatalogResource .btn-group {
   display: flex;

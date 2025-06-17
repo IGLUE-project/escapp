@@ -3,15 +3,21 @@ const {reusablePuzzles} = require("./reusable_puzzle.js");
 const reusablePuzzlesList = [
     {
         "name": "Keypad",
-        "zip": "defaultReusablePuzzles/keypad/Keypad_Puzzle_Escapp_Preview.zip",
+        "zip": "defaultReusablePuzzles/keypad/Keypad_Puzzle.zip",
         "form": "keypad.ejs",
-        "thumbnail": "defaultReusablePuzzles/keypad/keypad.png"
-    }/*,
+        "thumbnail": "defaultReusablePuzzles/keypad/Keypad_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/keypad/Keypad_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/keypad/Keypad_Instructions_ES.pdf"
+        }
+    }
+    /*,
     {
         "name": "Wires",
         "zip": "defaultReusablePuzzles/wires/Wires.zip",
         "form": "wires.ejs"
-    }*/
+    }
+    */
 ];
 
 for (i in reusablePuzzlesList) {

@@ -254,7 +254,7 @@
                                 </td>
                                 <td>
                                     <div class=" button-group row-button">
-                                        <div class="overlay-trigger" data-id="<%=asset.id%>">
+                                        <div class="overlay-trigger right" data-id="<%=asset.id%>">
                                             <p class="text-overlay">
                                                 <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                             </p>
@@ -300,7 +300,7 @@
                                     </td>
                                     <td>
                                         <div class=" button-group row-button">
-                                            <div class="overlay-trigger" data-id="<%=asset.id%>">
+                                            <div class="overlay-trigger right" data-id="<%=asset.id%>">
                                                 <p class="text-overlay">
                                                     <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                 </p>
@@ -340,7 +340,7 @@
                                                 music_note </span> </td>
                                         <td>
                                             <div class=" button-group row-button">
-                                                <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                <div class=" overlay-trigger right" data-id="<%=asset.id%>">
                                                     <p class="text-overlay">
                                                         <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                     </p>
@@ -389,7 +389,7 @@
                                                     picture_as_pdf </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
-                                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                    <div class=" overlay-trigger right" data-id="<%=asset.id%>">
                                                         <p class="text-overlay">
                                                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                         </p>
@@ -437,7 +437,7 @@
                                                     terminal </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
-                                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                    <div class=" overlay-trigger right" data-id="<%=asset.id%>">
                                                         <p class="text-overlay">
                                                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                         </p>
@@ -486,7 +486,7 @@
                                                     question_mark </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
-                                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                    <div class=" overlay-trigger right" data-id="<%=asset.id%>">
                                                         <p class="text-overlay">
                                                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                         </p>
@@ -643,8 +643,8 @@
                     </button>
                 </a>`:''}
             </div>
-        <div class="editDialog" id = "appendFormElementsHere">
-            <h3 style="margin: 0;"> ${ puzzleName } </h3>
+        <div class="editDialog" id="appendFormElementsHere">
+            <h3 class="reusablePuzzleInstanceTitle"> ${ puzzleName } </h3>
             <div>
                 <label for="name">
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%>
@@ -768,20 +768,35 @@
                 duration: 200
             },
         }).show()
+        $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
     }
 
     function parseAssetConfig(mime, config) {
-        if (!config) return {};
-        if (typeof config === "object"){return config}
         let configJSON = {};
-        if(mime.search(reusableRegex) !== -1){
-            configJSON = JSON.parse(config)
+
+        if(typeof config === "string"){
+            if(mime.search(reusableRegex) !== -1){
+                configJSON = JSON.parse(config);
+                let texts = config.split(';');
+                texts.forEach(text => {
+                    const data = text.split(':');
+                    configJSON[data[0]] = data[1];
+                });
+            }
+        } else if ((typeof config === "undefined")||(config === null)){
+            configJSON = {};
+        } else if (typeof config === "object"){
+            return config;
         }
-        let texts = config.split(';');
-        texts.forEach(text => {
-            const data = text.split(':');
-            configJSON[data[0]] = data[1];
-        })
+
+        //Default width and height
+        if(typeof configJSON.width === "undefined"){
+            configJSON.width = "";
+        }
+        if(typeof configJSON.height === "undefined"){
+            configJSON.height = "600";
+        }
+
         if (mime.search(imageRegex) !== -1) {
             return {
                 width: configJSON.width,
@@ -877,6 +892,8 @@
                 duration: 200
             },
             }).show();
+
+        $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
     }
 
     function insertContentBlock() {
@@ -906,7 +923,6 @@
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
-
 
         insertContent(index, newType, payload, puzzles);
         if($('.building-block').children().last().offset()) {
@@ -1174,7 +1190,7 @@
                             </td>
                             <td>
                                 <div class=" button-group row-button">
-                                    <div class="overlay-trigger" data-id="${resJSON.id}">
+                                    <div class="overlay-trigger right" data-id="${resJSON.id}">
                                         <p class="text-overlay">
                                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                         </p>
@@ -1317,6 +1333,7 @@
                     duration: 200
                 },
               }).show();
+              $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
           } else {
             try {
                 container.dialog( "close" )
@@ -1441,7 +1458,7 @@ const returnTableRow = (asset, puzzleList)=> {
                 </td>
                 <td>
                 <div class=" button-group row-button">
-                    <div class="overlay-trigger" data-id=${asset.id}>
+                    <div class="overlay-trigger right" data-id=${asset.id}>
                         <p class="text-overlay">
                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                         </p>

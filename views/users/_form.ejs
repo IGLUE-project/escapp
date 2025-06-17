@@ -68,10 +68,10 @@
     <label for="eduLevel"><span><%=i18n.user.eduLevelField%><span id="roleFieldStudy"><%=i18n.user.roleFieldStudy%></span> <span id="roleFieldTeach"><%=i18n.user.roleFieldTeach%></span></span>
     <select required class="customInput" id="eduLevel" name="eduLevel" value="<%= user.eduLevel %>" placeholder="<%=i18n.user.inputs.eduLevelPlaceHolder %>" autocomplete="off">
         <option disabled value <%= user.eduLevel ? "" : "selected" %> <%= !user.id ? "selected" : ""%>/>
-        <option value="primary" <%= user.eduLevel === "primary" ? "selected" : ""%>><%=i18n.user.eduLevel.primary%></option>
-        <option value="secondary" <%= user.eduLevel === "secondary" ? "selected" : ""%>><%=i18n.user.eduLevel.secondary%></option>
-        <option value="vet" <%= user.eduLevel === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
         <option value="higher" <%= user.eduLevel === "higher" ? "selected" : ""%>><%=i18n.user.eduLevel.higher%></option>
+        <option value="secondary" <%= user.eduLevel === "secondary" ? "selected" : ""%>><%=i18n.user.eduLevel.secondary%></option>
+        <option value="primary" <%= user.eduLevel === "primary" ? "selected" : ""%>><%=i18n.user.eduLevel.primary%></option>
+        <option value="vet" <%= user.eduLevel === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
         <option value="other" <%= user.eduLevel === "other" ? "selected" : ""%>><%=i18n.user.eduLevel.other%></option>
         <option value="none" <%= user.eduLevel === "none" ? "selected" : ""%>><%=i18n.user.eduLevel.none%></option>
     </select></label>
@@ -133,11 +133,8 @@
     <div class="deleteUser">
         <form action="/users/<%=user.id%>?_method=delete" method="POST">
             <h3><%=i18n.user.delete.deleteYourAccount%></h3>
-            <p><%=i18n.user.delete.deleteYourAccountMsg1%></p>
-            <p><%=i18n.user.delete.deleteYourAccountMsg2%></p>
-            <p><%=i18n.user.delete.deleteYourAccountMsg3%></p>
-            <p><%=i18n.user.delete.deleteYourAccountMsg4%></p>
-            <p><%=i18n.user.delete.deleteYourAccountMsg5%></p>
+            <p><%-i18n.user.delete.deleteYourAccountMsg%></p>
+            <p><%=i18n.user.delete.deleteYourAccountMsgConfirmation%></p>
             <button class="save deleteButton rounded" type="submit"><%=i18n.user.delete.deleteAccount%></button>
         </form>
        

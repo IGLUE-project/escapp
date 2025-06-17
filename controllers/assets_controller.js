@@ -5,6 +5,7 @@ const {models} = sequelize;
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {ckeditorResponse} = require("../helpers/utils");
+const {getLocaleForEscapeRoom} = require("../helpers/I18n");
 const queries = require("../queries");
 const path = require("path");
 const ejs = require("ejs");
@@ -243,21 +244,24 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
         } else if (asset.mime.search(applicationRegex) !== -1) {
             const referrer = req.get("Referrer");
             const preview = Boolean(referrer && referrer.match("/team$"));
-            const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+            const hostName = process.env.APP_NAME ? `${req.protocol}://${process.env.APP_NAME}` : "http://localhost:3000";
             const {token} = await models.user.findByPk(req.session.user.id);
             const basePath = `/uploads/webapps/${asset.public_id}/index.html`;
+            const escapeRoom = await models.escapeRoom.findByPk(asset.escapeRoomId);
+            const localeForAsset = getLocaleForEscapeRoom(req, escapeRoom, false);
             const file = path.join(__dirname, `/../uploads/webapps/${asset.public_id}/index.html`);
             const config = {
+                "locale": localeForAsset,
                 "escappClientSettings": {
                     "endpoint": `${hostName}/api/escapeRooms/${asset.escapeRoomId}`,
                     preview,
                     "user": {
                         "email": req.session.user.username,
                         token
-                    }
+                    },
+                    "I18n": {"locale": localeForAsset}
                 }
             };
-
             res.render("reusablePuzzles/reusablePuzzleContainer", {basePath, config, file, "layout": false});
         } else {
             res.sendFile(filePath);

@@ -84,7 +84,7 @@
                     </div>
                 </a>
             <% } %>
-            <% if (user && !user.isStudent && ((whichMenu == "created" || whichMenu == "playing" && (escapeRooms.length == 0)) || whichMenu == "public" && (escapeRooms.length == 0))) { %>
+            <% if (user && !user.isStudent && ((whichMenu == "created"))) { %>
             <a href="/escapeRooms/new" class="escapeRoomItemWrapper animated bounceIn" title="<%=i18n.escapeRoom.main.createER%>" style="animation-delay: <%=escapeRooms ? (escapeRooms.length * 100 + 100): 0 %>ms;">
                 <div class="escapeRoomItem addItem addEscapeRoom gugi" >
                         <span>+</span>
