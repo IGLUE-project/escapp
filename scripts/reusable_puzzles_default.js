@@ -23,5 +23,5 @@ const reusablePuzzlesList = [
 for (i in reusablePuzzlesList) {
     const puz = reusablePuzzlesList[i];
 
-    reusablePuzzles(puz.name, puz.description, puz.form, puz.zip, puz.thumbnail);
+    reusablePuzzles(puz.name, puz.description, puz.form, puz.zip, puz.thumbnail, puz.instructions);
 }

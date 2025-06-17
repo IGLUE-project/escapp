@@ -7,7 +7,7 @@ const StreamZip = require("node-stream-zip");
 const sequelize = require("../models"); // Adjust as needed
 const {models} = sequelize;
 
-exports.reusablePuzzles = async function (name, description, form, zipPath, thumbnailPath) {
+exports.reusablePuzzles = async function (name, description, form, zipPath, thumbnailPath, instructions = {}) {
     const t = await sequelize.transaction();
 
     try {
@@ -51,6 +51,18 @@ exports.reusablePuzzles = async function (name, description, form, zipPath, thum
         await zip.extract(null, puzzleDir);
         await zip.close();
 
+        let instructionsText = "";
+        console.log({instructions})
+        if (Object.keys(instructions).length > 0) {
+            for (const [lang, instruction] of Object.entries(instructions)) {
+                fs.copyFileSync(instruction, path.join(puzzleDir, `${lang}.pdf`));
+                instructionsText += `${lang},`;
+
+            }
+            puzzle.instructions = instructionsText;;
+        }
+        console.log(instructionsText)
+        
         const config = {
             "url": hasForm
                 ? `/reusablePuzzles/installed/${puzzle.id}/form.ejs`
@@ -81,6 +93,7 @@ if (require.main === module) {
     let form = null;
     let zipPath = null;
     let thumbnailPath = null;
+    let instructions = {};
 
     // Simple argument parser
     for (let i = 0; i < args.length; i++) {
@@ -99,14 +112,27 @@ if (require.main === module) {
         } else if (args[i] === "--thumbnailPath") {
             thumbnailPath = args[i + 1];
             i++;
-        } 
+        } else if (args[i].startsWith("--instructions:")) {
+            const lang = args[i].split(":")[1];
+            if (lang && args[i + 1]) {
+                instructions[lang] = args[i + 1];
+                i++;
+            }
+        }
     }
 
     if (!name || !description || !zipPath) {
-        console.error("❌ Usage: npm run create-reusable-puzzle -- --name \"Puzzle name\" --description \"Puzzle description\" --form path/file.ejs --path path/path.zip --");
+        console.error(`❌ Usage: npm run create-reusable-puzzle -- 
+            --name \"Puzzle name\" 
+            --description \"Puzzle description\" 
+            --form path/file.ejs
+            --path path/zipfile.zip
+            --thumbnailPath path/thumbnail.png
+            --instructions:en \"Instructions for en\"
+            --instructions:es \"Instructions for es\"`);
         process.exit(1);
     }
-    exports.reusablePuzzles(name, description, form, zipPath, thumbnailPath);
+    exports.reusablePuzzles(name, description, form, zipPath, thumbnailPath, instructions);
 }
 
 
