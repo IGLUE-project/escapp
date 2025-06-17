@@ -353,7 +353,7 @@
         },
         "format":{
             "online": "Virtual",
-            "hybrid": "Híbrido (some physical resources are needed)"
+            "hybrid": "Hybrid (some physical resources are needed)"
         },
         "fields": {
             "00":"Generic programmes and qualifications",
@@ -374,8 +374,8 @@
             "typePasscode": "Type the access passcode for",
             "yes": "yes",
             "scopes": {
-                "public": "Visible to all users in the home page",
-                "private": "Only accessable through direct link"
+                "public": "Public",
+                "private": "Unlisted"
             }
         },
         "main": {
@@ -428,14 +428,14 @@
 
             },
             "evaluation": {
-                "eachHint": "Assign a penalty or reward for requesting a hint",
-                "eachHintObtain": "Assign a penalty or reward for each hint obtained",
-                "eachPuzzle": "Assign a different percentage to each puzzle",
+                "eachHint": "Penalty or reward for requesting a hint",
+                "eachHintObtain": "Penalty or reward for each hint obtained",
+                "eachPuzzle": "Percentage of the grade assigned to each puzzle",
                 "forSurveys": "create surveys and quizes for your escape room",
                 "hintSuccess": "Points for each hint request succeeded",
                 "hintFailed": "Points for each hint request failed",
-                "justParticipating": "Assign a percentage of the grade just for participating",
-                "gradingIntro": "You can customize a grading scheme to grade the activity",
+                "justParticipating": "Percentage of the grade assigned solely for participating",
+                "gradingIntro": "Here you can set up the rubric to grade participants and choose how their participation will be recorded.",
                 "or": "or",
                 "posttestField": "Post-quiz",
                 "posttestPlaceHolder": "Write here your post-quiz link",
@@ -448,15 +448,15 @@
                 "puzzle": "Puzzle",
                 "weight": "Weight",
                 "youCanUse": "You can use",
-                "automaticAttendance": "Take attendance automatically when a student accesses an escape room during his/her shift",
-                "automaticAttendanceNone": "Do not take attendance automatically whatsoever",
-                "automaticAttendanceParticipant": "Take attendance automatically only for that student",
-                "automaticAttendanceTeam": "Take attendance automatically for the whole team"
+                "automaticAttendance": "Participation record. When a participant accesses the escape room during their turn",
+                "automaticAttendanceNone": "Participation is not recorded automatically",
+                "automaticAttendanceParticipant": "Participation is recorded automatically for the participant",
+                "automaticAttendanceTeam": "Participation is recorded automatically for the participant and their teammates"
             },
             "hints": {
                 "correctNumber": "Number of correct answers",
                 "correctNumberPlaceHolder": "How many correct answers do participants need to obtain a hint?",
-                "explanation": "In this step you can select the hint strategy of your escape room. There are three strategies available: not allowing hints, allowing free hints, and requiring participants to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that participants can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt",
+                "explanation": "In this step you can select the hint strategy of your escape room. There are three strategies available: not allowing hints, allowing free hints, and requiring participants to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that participants can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt.",
                 "moodleExplanation": "If you want participants to answer a quiz in order to get a hint, please upload a MoodleXML with a battery of questions",
                 "feedback": "Feedback",
                 "feedbackExplanation": "Do you want to show participants the correct answers once the quiz is completed?",
@@ -486,7 +486,7 @@
                 "title": "Team interface"
             },
             "class": {
-                "explanation": "Here you can customize the interface that you'll be able to screen in the classroom for all participants to see. It can include the introductory video, the countdown, the leaderboard, etc. If participants are participating in the escape room remotely, they will never see the class interface, so you can skip this step.",
+                "explanation": "Here you can customize the interface that you'll be able to screen in the classroom for all participants to see. It can include a countdown, an introductory video, a leaderboard, etc. If the escape room is conducted remotely, the participants will never see the class interface, so you can skip this step.",
                 "placeholder": "Add the information you want to project in the classroom",
                 "title": "Classroom interface"
             },
@@ -573,7 +573,7 @@
                 "turnos": "Shifts"
             },
             "puzzles": {
-                "explanation": "In this step, you can specify the different puzzles that make up the escape room. Keep in mind that they must follow a linear structure, which means that, in order to solve a puzzle, participants need to have solved the previous one. You need to specify the name and description of each puzzle, as well as its solution. If you enable the automatic monitoring option for a puzzle, it won't be possible to solve it in the team interface. Instead, it must be completed through an application that uses the Escapp API. You can add hints for each puzzle and these hints will be provided to participants based on the hint configuration you set in the next step",
+                "explanation": "In this step, you can specify the different puzzles that make up the escape room. Keep in mind that they must follow a linear structure, which means that, in order to solve a puzzle, participants need to have solved the previous one. You need to specify the name and description of each puzzle, as well as its solution. If you enable the automatic monitoring option for a puzzle, it won't be possible to solve it in the team interface. Instead, it must be completed through an application that uses the Escapp API. You can add hints for each puzzle and these hints will be provided to participants based on the hint configuration you set in the next step.",
                 "addNewHint": "add hint",
                 "addNewCategory": "add category",
                 "addNewPuzzles": "add puzzle",
@@ -611,13 +611,13 @@
             },
             "after": {
                 "title": "Post-activity instructions",
-                "explanation": "Here you can add the information you want to show participants once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them",
+                "explanation": "Here you can add the information you want to show participants once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them.",
                 "placeholder": "Add custom instructions for after the escape room"
 
             },
             "sharing": {
                 "title": "Publication",
-                "description": "You can publish your escape room so that other teachers can use it. You can also make it public so that participants can see it in the home page and sign up for it",
+                "description": "You need to publish the escape room so participants can sign up and play. To publish it, you must choose a license and set its visibility (public or unlisted).",
                 "license": "License",
                 "instructions": "Instructions for teachers",
                 "status": {
@@ -628,12 +628,11 @@
                 "level": "Educational level",
                 "field": "Knowledge area",
                 "format": "Format",
-                "licenseExplanation": "What type of license do you want to apply to your escape room content? This will affect whether other teachers can use it in their classes.",
+                "licenseExplanation": "Under which license do you want to publish your escape room?",
                 "licenseExplanationAlreadyPublished": "You cannot change the license anymore since your escape room has already been published before.",
-                "invitationExplanation": "Do you want participants to enter a password to join the escape room? If so, select the private option. Otherwise, select public, and they can join without a password.",
+                "invitationExplanation": "Do you want participants to enter a password to join the escape room? If so, enter it in the text field below.",
                 "instructionsExplanation": "Share any instructions you want with teachers who use your escape room. Upload a PDF file. You can include information about how to play, how to evaluate, etc.",
-                "scopeExplanation": "Do you want participants to be able to join the escape room from the main page of escapp? If so, select the public option. Otherwise, select private, and only participants with the direct link will be able to access it.",
-                "statusExplanation": "Have you finished creating the escape room? If so, select the completed option. Otherwise, select draft, and you can continue editing it later. Keep in mind that until you publish it, participants will not be able to join. Once published, you will not be able to change the license.",
+                "scopeExplanation": "You can choose between two visibility options for your escape room: public and unlisted. Escape rooms with public visibility may appear on the platform’s homepage, and any user can join and play them at any time. Escape rooms with unlisted visibility do not appear on the homepage and can only be joined by students through a direct link. In these escape rooms, you can also set a password for access. All escape rooms, regardless of their visibility setting, can be accessed by platform administrators and used according to their license.",
                 "areYouSurePublish": "Are you sure you want to publish the escape room? Your license cannot be changed once published",
                 "checklist": {
                     "step1": "Basic mandatory information provided",
@@ -647,8 +646,8 @@
                     "congrats": "Congratulations! You've successfully published your escape room.",
                     "congrats2":"Create a shift so participants can sign up for the escape room.",
                     "backToDraft":"Do you want to go back to draft? To do so, click on the switch. ",
-                    "erStatus": "Escape room status",
-                    "areYouReady": "Are you done editing your escape room? Make it public by clicking on the switch! Remember that you will not be able to change the content license once published. You can still test the escape room before going public by yourself or by inviting some of your colleagues.",
+                    "erStatus": "Current escape room status",
+                    "areYouReady": "Have you finished creating your escape room? Make it public by flipping the switch! Keep in mind that once it's published, you won’t be able to change its license. Before publishing, you can test it on your own or invite collaborators to try it out as a group.",
                     "stillInfoNeeded": "You still have some mandatory information that you need to complete before making your escape room public.",
                     "warningAboutLicense": "Once you publish your escape room, you will not be able to change the license. Once you are ready, click on the switch."
                 },
@@ -1017,7 +1016,7 @@
             "subject": "Subject",
             "survey": "Survey",
             "teamSize": "Maximum team size",
-            "scope": "Privacy",
+            "scope": "Visibility",
             "supportLink": "Link to get support during the escape room",
             "thumbnail": "Thumbnail",
             "title": "Title",
@@ -1073,6 +1072,7 @@
         "always": "always",
         "tooLate": "It is too late to join this team",
         "alwaysOpen": "Always open",
+        "participants": "Participants",
         "arrows": {
         	"closeText": "Close",
         	"currentText": "Today",
