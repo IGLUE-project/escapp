@@ -792,10 +792,10 @@
 
         //Default width and height
         if(typeof configJSON.width === "undefined"){
-            configJSON.width = "";
+            configJSON.width = "100%";
         }
         if(typeof configJSON.height === "undefined"){
-            configJSON.height = "600";
+            configJSON.height = "auto";
         }
 
         if (mime.search(imageRegex) !== -1) {
