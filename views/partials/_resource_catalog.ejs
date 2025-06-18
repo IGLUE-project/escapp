@@ -631,7 +631,6 @@
         }
         const reusablePuzzle = window.reusablePuzzles.find(p => p.reusablePuzzleId == reusablePuzzleId);
         const instructions = (reusablePuzzle && reusablePuzzle.instructions) ? reusablePuzzle.instructions.split(",") : [];
-        console.log(instructions)
         const url =  `/reusablePuzzles/${reusablePuzzleId}/${window.lang}.pdf`
         const hasInstructions = instructions.includes(window.lang) ? true : false;
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
@@ -1417,7 +1416,6 @@
                     $('#thescrollable').animate({scrollTop: 100000000});
                     const tr = document.getElementById(asset.id);
                     const title = tr.querySelector('.title');
-                    console.log(title)
                     addListenerForHover(title);
 
                 })
