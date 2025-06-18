@@ -506,7 +506,7 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     return acc;
 }, {});
 
-exports.getERAssets = (escapeRoomId) => models.asset.findAll({"where": {escapeRoomId}});
+exports.getERAssets = (escapeRoomId) => models.asset.findAll({"where": {escapeRoomId}, "order": [["createdAt", "ASC NULLS LAST"]]});
 
 exports.isValidEmail = (email, whitelist = []) => {
     // Basic email format validation regex

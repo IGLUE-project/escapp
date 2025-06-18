@@ -1339,7 +1339,7 @@
             try {
                 container.dialog( "close" )
             } catch (e) {
-                // console.error("Error closing dialog:", e);
+                console.error("Error closing dialog:", e);
             }
           }
         });
@@ -1414,12 +1414,14 @@
 
                     $('#noResources').hide();
                     $('#myTabContent').append(returnTableRow(asset, window.puzzles));
+                    $('#thescrollable').animate({scrollTop: 100000000});
                     const tr = document.getElementById(asset.id);
                     const title = tr.querySelector('.title');
+                    console.log(title)
                     addListenerForHover(title);
 
                 })
-                }
+            }
         })
         toggleUploadModal()
         }
@@ -1427,26 +1429,32 @@
 const returnTableRow = (asset, puzzleList)=> {
     let icon, color;
     let disabled = false;
-    console.log(asset)
+    let regexType = null;
     if (asset.mime.search(new RegExp(/image\/.*/))!==-1){
         icon = "image";
         color = "btn-blue";
+        regexType = "image";
     }else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){
         icon = "videocam";
         color = "btn-red";
+        regexType = "video";
     }else if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){
         icon = "music_note";
         color = "btn-yellow";
+        regexType = "audio";
     }else if (asset.mime.search(new RegExp(/application\/pdf/))!==-1){
         icon = "picture_as_pdf";
         color = "btn-red";
+        regexType = "pdf";
     }else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1){
         icon = "terminal"
         color = "btn-purple";
-    }else{
+        regexType = "webapp";
+    } else {
         icon = "question_mark";
         color = "btn-gray";
         disabled = true;
+
     }
 
     return `<tr class="catalogItem" id=${asset.id}>
@@ -1478,10 +1486,9 @@ const returnTableRow = (asset, puzzleList)=> {
                         <span class="building-block-icon material-icons" id="edit"> edit
                         </span>
                     </button>
-                    <button class="listButton linkButton" onclick='openClipboardModal(${asset.url})'>
+                    <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")''>
                         <span class="building-block-icon material-icons" id="link"> link
                         </span>
-                        
                     </button>
 
                     <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
