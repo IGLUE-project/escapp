@@ -1352,6 +1352,7 @@
             "Letters": "Letters",
             "Colors": "Colors",
             "Symbols": "Symbols",
+            "SymbolsColored": "Colored symbols",
             "None": "None",
             "NoneF": "None"
         },
@@ -1363,7 +1364,10 @@
         "Wheel": {
             "name": "Decoder disk",
             "description": "This resource allows you to create a decoder disk and link it to an escape room puzzle and its solution. The disk can have multiple wheels, and each wheel can contain numbers, letters, colors, or symbols.",
-            "numberOfWheels": "Number of wheels"
+            "numberOfWheels": "Number of wheels",
+            "wheel": "Wheel",
+            "wheelType": "Wheel type",
+            "wheelLength": "Number of elements"
         }
     },
     "general": {

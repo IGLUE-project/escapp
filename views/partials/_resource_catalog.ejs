@@ -133,7 +133,7 @@
         </section>-->
         <section id="configZone" hidden>
             <div class="configReusablePuzzle">
-                <form action="reusablePuzzleInstance" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
+                <form action="reusablePuzzleInstance" class="reusablePuzzleInstanceForm" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
                 </form>
                 <div class="previewReusablePuzzle">
                     <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
@@ -1355,7 +1355,7 @@
     }
 
     generateReusablePuzzleInstanceConfigFromForm = function(rawConfig){
-        const form = document.querySelector('form[action="reusablePuzzleInstance"]');
+        const form = document.querySelector('form[class="reusablePuzzleInstanceForm"]');
         const formData = new FormData(form);
         let reusablePuzzleInstanceConfig = Object.fromEntries(formData.entries());
         if(typeof rawConfig === "object"){

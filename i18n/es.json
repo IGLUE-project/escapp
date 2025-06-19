@@ -1342,6 +1342,7 @@
             "Letters": "Letras",
             "Colors": "Colores",
             "Symbols": "Símbolos",
+            "SymbolsColored": "Símbolos de colores",
             "None": "Ninguno",
             "NoneF": "Ninguna"
         },
@@ -1353,7 +1354,10 @@
         "Wheel": {
             "name": "Disco decodificador",
             "description": "Este recurso permite crear un disco decodificador y vincularlo a un reto de la escape room y a la solución de dicho reto. El disco puede tener múltiples ruedas y cada rueda puede contener números, letras, colores o símbolos.",
-            "numberOfWheels": "Número de ruedas"
+            "numberOfWheels": "Número de ruedas",
+            "wheel": "Rueda",
+            "wheelType": "Tipo de rueda",
+            "wheelLength": "Número de elementos"
         }
     },
     "general": {

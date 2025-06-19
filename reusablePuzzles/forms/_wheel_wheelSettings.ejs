@@ -1,0 +1,22 @@
+<div class="wheelSettings" wheelNumber="<%=wheelNumber%>" style="display: none; flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px;">
+    <div><p><%=i18n.reusablePuzzleApps.Wheel.wheel%> <%= wheelNumber%></p></div>
+    <div>
+        <label><%=i18n.reusablePuzzleApps.Wheel.wheelType%>:</label>
+        <select class="selectWheelType">
+          <option value="NUMBERS"><%=i18n.reusablePuzzleApps.Common.Numbers%></option>
+          <option value="LETTERS"><%=i18n.reusablePuzzleApps.Common.Letters%></option>
+          <option value="COLORS"><%=i18n.reusablePuzzleApps.Common.Colors%></option>
+          <option value="SHAPES"><%=i18n.reusablePuzzleApps.Common.Symbols%></option>
+          <option value="COLORED SHAPES"><%=i18n.reusablePuzzleApps.Common.SymbolsColored%></option>
+        </select>
+    </div>
+    <div style="margin: 10px 0px 10px 0px;">
+        <label><%=i18n.reusablePuzzleApps.Wheel.wheelLength%>:</label>
+        <select class="selectWheelLength">
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+    </div>
+</div>
