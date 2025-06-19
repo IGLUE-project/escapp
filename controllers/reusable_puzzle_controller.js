@@ -350,7 +350,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         t.commit();
         const modifiedPuzzle = {"assignedReusablePuzzleInstance": puzzle.assignedReusablePuzzleInstance, "sol": puzzle.sol, "validator": puzzle.validator, "title": puzzle.title, "id": puzzle.id };
 
-        res.json({config, "name": reusablePuzzleInstance.name, puzzle, "reusablePuzzleId": modifiedPuzzle.id, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        res.json({config, "name": reusablePuzzleInstance.name, puzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();
