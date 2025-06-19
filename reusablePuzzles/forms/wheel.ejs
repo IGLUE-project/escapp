@@ -18,17 +18,16 @@
       <option value="3">3</option>
       <option value="4">4</option>
       <option value="5">5</option>
-      <option value="6">6</option>
     </select>
 </div>
 
-<% for (let i = 1; i <= 6; i++) { %>
+<% for (let i = 1; i <= 5; i++) { %>
   <%- include("_wheel_wheelSettings", { wheelNumber: i }) %>
 <% } %>
 
 <div>
     <label for="background"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundInput" name="background" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <input type="text" id="backgroundInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
 </div>
 <br>
 
@@ -74,7 +73,9 @@
     document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
     document.getElementById("numberOfWheels").value =  window.currentOpenPuzzleConfig?.numberOfWheels || 3;
     updateWheelSettings();
-    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.background || '';
+
+    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.
+backgroundImg || '';
 
     if(window.currentOpenPuzzleConfig?.wheelsType){
         let wheelsType;
