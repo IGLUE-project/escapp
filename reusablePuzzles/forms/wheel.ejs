@@ -1,0 +1,70 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"]}) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+            
+<div>
+    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelect" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
+    </select>
+</div>
+
+<div>
+    <label for=""><%=i18n.reusablePuzzleApps.Wheel.numberOfWheels%>:</label>
+    <select name="numberOfWheels" id="numberOfWheels">
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
+</div>
+
+<div>
+    <label for="background"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundInput" name="background" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<input type="hidden" class="reusablePuzzleJSONSetting" id="wheelsType" name="wheelsType"/>
+
+<script>
+    //Events
+    document.getElementById('numberOfWheels').addEventListener('change', function() {
+        console.log("Number of whells", this.value);
+    });
+
+
+
+    document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById("numberOfWheels").value =  window.currentOpenPuzzleConfig?.numberOfWheels || 3;
+    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.background || '';
+
+
+    var wheelsType = [
+        {
+          type: "SHAPES",
+          length: 6,
+        },
+        {
+          type: "SHAPES",
+          length: 6,
+        },
+        {
+          type: "SHAPES",
+          length: 6,
+        },
+        {
+          type: "SHAPES",
+          length: 6,
+        },
+    ];
+    console.log("wheelsType", wheelsType);
+    document.getElementById("wheelsType").value = JSON.stringify(wheelsType);
+
+    document.getElementById("numberOfWheels").value = 3;
+
+
+</script>

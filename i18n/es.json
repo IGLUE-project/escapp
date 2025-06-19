@@ -1325,25 +1325,35 @@
         }
     },
     "reusablePuzzleApps": {
-        "Keypad": {
-            "name": "Panel de botones",
-            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes introduzcan una secuencia determinada de números, letras, colores o símbolos mediante un panel de botones.",
+        "Common": {
             "skin": "Apariencia",
-            "Standard": "Estándar",
-            "Retro": "Retro",
-            "Futuristic": "Futurista",
+            "skins": {
+                "Standard": "Estándar",
+                "Retro": "Retro",
+                "Futuristic": "Futurista"
+            },
             "actionAfterSolve": "Acción tras resolver",
             "showMessage": "Mostrar mensaje",
             "Message": "Mensaje",
             "MessagePlaceholder": "Mensaje a mostrar tras resolver el reto",
             "BackgroundURL": "Fondo",
             "BackgroundURLPlaceholder": "Puedes introducir la URL de cualquier imagen que tengas en tu catálogo de recursos",
-            "KeyType": "Tipo de botones",
             "Numbers": "Números",
             "Letters": "Letras",
             "Colors": "Colores",
             "Symbols": "Símbolos",
-            "None": "Ninguna"
+            "None": "Ninguno",
+            "NoneF": "Ninguna"
+        },
+        "Keypad": {
+            "name": "Panel de botones",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes introduzcan una secuencia determinada de números, letras, colores o símbolos mediante un panel de botones.",
+            "KeyType": "Tipo de botones"
+        },
+        "Wheel": {
+            "name": "Disco decodificador",
+            "description": "Este recurso permite crear un disco decodificador y vincularlo a un reto de la escape room y a la solución de dicho reto. El disco puede tener múltiples ruedas y cada rueda puede contener números, letras, colores o símbolos.",
+            "numberOfWheels": "Número de ruedas"
         }
     },
     "general": {

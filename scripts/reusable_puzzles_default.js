@@ -10,18 +10,20 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/keypad/Keypad_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/keypad/Keypad_Instructions_ES.pdf"
         }
-    }
-    /*,
+    },
     {
-        "name": "Wires",
-        "zip": "defaultReusablePuzzles/wires/Wires.zip",
-        "form": "wires.ejs"
+        "name": "Wheel",
+        "zip": "defaultReusablePuzzles/wheel/Wheel_Puzzle.zip",
+        "form": "wheel.ejs",
+        "thumbnail": "defaultReusablePuzzles/wheel/Wheel_Thumbnail.jpg",
+        "instructions": {
+            "en": "defaultReusablePuzzles/wheel/Wheel_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/wheel/Wheel_Instructions_ES.pdf"
+        }
     }
-    */
 ];
 
 for (i in reusablePuzzlesList) {
     const puz = reusablePuzzlesList[i];
-
-    reusablePuzzles(puz.name, puz.description, puz.form, puz.zip, puz.thumbnail, puz.instructions);
+    reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
 }

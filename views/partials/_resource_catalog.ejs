@@ -651,7 +651,7 @@
                 </label>
                 <input id="nameOfReusablePuzzle" type="text" required name="name" value="${puzzleName}"/>
             </div>
-            <div>
+            <div style="display:none">
                 <label for="description">
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.description%>
                 </label>
@@ -671,7 +671,7 @@
         return;
     }
 
-    function setPuzzleSol(id, config, reusablePuzzleId) {
+    function setPuzzleSol(id, reusablePuzzleInstanceConfig, reusablePuzzleId) {
         const puzzleSol = $('#puzzleSol');
         const puzzleId = $('#associatedPuzzle').val();
         const span = $('#warningSpan');
@@ -713,7 +713,7 @@
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
                     solutionLengthDiv.show();
-                    solutionLength.val(config.solutionLength || 1);
+                    solutionLength.val(reusablePuzzleInstanceConfig.solutionLength || 1);
                 } else {
                     puzzleSol.val(puzzleSelected.sol);
                     puzzleRangeInput.val(null);
@@ -731,7 +731,8 @@
             validator.hide()
             assignDiv.hide();
         }
-        updateIframe(config, reusablePuzzleId);
+
+        updateIframe();
     }
 
     function editAsset(id, mime) {
@@ -959,15 +960,6 @@
         }
     }
 
-    function solutionSeparatorLength(sol, sep = ";") {
-        if (sol && sol.length > 0) {
-            if (sol.includes(sep)) {
-                return sol.split(sep).length;
-            } 
-            return sol.length
-        }
-        return 0;
-    }
     function openPuzzleConfiguration(puzzle, baseId, reusablePuzzleName){
         const configZone = $('#configZone');
         let config = puzzle.config;
@@ -1013,16 +1005,16 @@
                     console.error("Error setting default puzzle:", e);
                 }
                 config.puzzle =  selectedPuzzle ? selectedPuzzle.id : undefined;
-                config.puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
+                const puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
 
-                if( config.puzzleObject?.validator === "range") {
-                    config.solutionLength = config.puzzleObject.sol.split("+")[0].length;
-                } else if(config.puzzleObject && config.puzzleObject.sol) {
-                    config.solutionLength = solutionSeparatorLength(config.puzzleObject.sol);
+                if( puzzleObject?.validator === "range") {
+                    config.solutionLength = puzzleObject.sol.split("+")[0].length;
+                } else if(puzzleObject && puzzleObject.sol) {
+                    config.solutionLength = calculateSolutionLength(puzzleObject.sol);
                 }
 
                 $('#puzzleSol').change(function(e) {
-                    updateIframe(config, puzzle.id);
+                    updateIframe();
                     $('#warningMessageForReusablePuzzleCreation').show()
                 });
 
@@ -1035,9 +1027,9 @@
                     $('#warningMessageForReusablePuzzleCreation').show()
                 });
 
-                $('#associatedPuzzle').val(config.puzzleObject.id).change();
-                
-                updateIframe(config, puzzle.reusablePuzzleId);
+                $('#associatedPuzzle').val(puzzleObject.id).change();
+                     
+                updateIframe();
 
                 $(".sections").scrollTop(0);
             });
@@ -1054,8 +1046,12 @@
        
     }
 
-    function updateIframe(config, reusablePuzzleId) {
-        $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${config.puzzle}&config=${encodeURIComponent(JSON.stringify(config))}`);
+    function updateIframe() {
+        let reusablePuzzleInstanceConfig = generateReusablePuzzleInstanceConfigFromForm();
+        let reusablePuzzleId = reusablePuzzleInstanceConfig.reusablePuzzleId;
+        let puzzleId = reusablePuzzleInstanceConfig.puzzle;
+        //console.log("Update iframe", reusablePuzzleInstanceConfig);
+        $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${puzzleId}&config=${encodeURIComponent(JSON.stringify(reusablePuzzleInstanceConfig))}`);
     }
 
     function refreshCKEditor() {
@@ -1348,36 +1344,63 @@
         window.addEventListener('change', function(e) {
             // Check if e.target is a child of .editDialog
             if ($(e.target).closest('.editDialog').length > 0) {
-                const closestForm = $(e.target).closest('form')[0]
-                // e.target is inside .editDialog
-                const formData = new FormData(closestForm);
-                const newConfig = Object.fromEntries(formData.entries());
-                const sol = $("#puzzleSol").val();
-                const validator = $("#inputValidator").val();
-                const rangeInput = $("#rangeInput").val();
-                newConfig.puzzleSol = newConfig.validator=== "range" ? `${sol}+${rangeInput}` : sol;
-                let solutionLength = 0;
-                if(validator === "regex") {
-                    solutionLength = $("#solutionLengthInput").val();
-                } else if (validator !== "range") {
-                    solutionLength = solutionSeparatorLength(sol);
-                } else {
-                    solutionLength = sol.length;
-                }
-
-                newConfig.solutionLength = solutionLength;
-
                 if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
-                    updateIframe(newConfig,newConfig.reusablePuzzleId);
+                    updateIframe();
                 }
             }
         });
-        //hover
-
         items.forEach((el) => {
             addListenerForHover(el);
         })
+    }
 
+    generateReusablePuzzleInstanceConfigFromForm = function(rawConfig){
+        const form = document.querySelector('form[action="reusablePuzzleInstance"]');
+        const formData = new FormData(form);
+        let reusablePuzzleInstanceConfig = Object.fromEntries(formData.entries());
+        if(typeof rawConfig === "object"){
+            reusablePuzzleInstanceConfig = rawConfig;
+        }
+
+        const sol = $("#puzzleSol").val();
+        const validator = $("#inputValidator").val();
+        let solutionLength;
+        if(validator === "regex") {
+            solutionLength = $("#solutionLengthInput").val();
+        } else if (validator !== "range") {
+            solutionLength = calculateSolutionLength(sol);
+        } else {
+            solutionLength = sol.length;
+        }
+        if(typeof solutionLength === "number"){
+            reusablePuzzleInstanceConfig.solutionLength = solutionLength;
+        }
+        
+        //Parse JSON settings
+        const reusablePuzzleJSONsettings = document.querySelectorAll('input[type="hidden"].reusablePuzzleJSONSetting');
+        reusablePuzzleJSONsettings.forEach(input => {
+            if((typeof input.name === "string")&&(typeof input.value === "string")){
+                reusablePuzzleInstanceConfig[input.name] = JSON.parse(input.value);
+            }
+        });
+
+        Object.keys(reusablePuzzleInstanceConfig).forEach((key) => {
+            if ((reusablePuzzleInstanceConfig[key] === "") || (typeof reusablePuzzleInstanceConfig[key] === "undefined") || (reusablePuzzleInstanceConfig[key] === null)) {
+                delete reusablePuzzleInstanceConfig[key];
+            }
+        });
+
+        return reusablePuzzleInstanceConfig;
+    };
+
+    function calculateSolutionLength(sol, sep = ";") {
+        if (sol && sol.length > 0) {
+            if (sol.includes(sep)) {
+                return sol.split(sep).length;
+            } 
+            return sol.length
+        }
+        return 0;
     }
 
     validatorOnchange = function(){
