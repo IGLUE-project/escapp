@@ -44,7 +44,7 @@
     <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || locals.admin) {%>
         <div class="userField">
             <label for="eduLevel"><span><%=i18n.user.roleField%></span>
-            <select  class="customInput" id="role" name="role"  autocomplete="off" >
+            <select  class="customInput" id="role" name="role"  autocomplete="off" required>
                 <option value <%if (!user.id) {%> selected <%}%> disabled > </option>
                 <option value="student" <%if (user.id && user.isStudent) {%> selected <%}%>> <%=i18n.user.roles.student%></option>
                 <option value="teacher" <%if (user.id && !user.isStudent)  {%> selected <%}%>> <%=i18n.user.roles.teacher%></option>

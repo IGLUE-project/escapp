@@ -1174,7 +1174,7 @@
                     toggleCatalogModal();
                     const row = $(`#p-${resJSON.id}`);
                     window.reusablePuzzleInstances.push(resJSON)
-                    if(!row.length) {
+                     if(!row.length) {
                         const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
                          $('#myTabContent tr:last').after(`<tr class="catalogItem" id=p-${resJSON.id}>
                             <td>
@@ -1205,7 +1205,7 @@
                                         <span class="building-block-icon material-icons" id="edit"> edit
                                         </span>
                                     </button>
-                                    <button class="listButton linkButton" onclick='openClipboardModal("${resJSON.url}")'>
+                                    <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/reusablePuzzleInstances/${resJSON.id}/render","reusablePuzzle")'>
                                         <span class="building-block-icon material-icons" id="link">link</span>
                                     </button>
 
