@@ -1150,12 +1150,29 @@
     }
 
     function send(e,form) {
-        fetch(form.action, {method:'post', body: new URLSearchParams(new FormData(form))})
-        .then((res)=>{
+        let fetchOptions = {
+            method:'post'
+        };
+        if(form.classList.contains("reusablePuzzleInstanceForm")){
+            fetchOptions.body = JSON.stringify(generateReusablePuzzleInstanceConfigFromForm(form));
+            fetchOptions.headers = {
+                'Content-Type': 'application/json',
+            };
+        } else {
+            fetchOptions.body = new URLSearchParams(new FormData(form));
+        }
+
+        fetch(form.action, fetchOptions).then((res)=>{
             if(res.status !== 200){
                 return;
             }
             res.json().then((resJSON)=>{
+
+
+                console.log("RESPONSE");
+                console.log(resJSON);
+
+
                 if(resJSON.type === "reusable"){
                     window.reusablePuzzleInstances.forEach((puzzle) => {
                         if(puzzle.id == resJSON.id) {
@@ -1354,13 +1371,12 @@
         })
     }
 
-    generateReusablePuzzleInstanceConfigFromForm = function(rawConfig){
-        const form = document.querySelector('form[class="reusablePuzzleInstanceForm"]');
+    generateReusablePuzzleInstanceConfigFromForm = function(form){
+        if((typeof form === "undefined")||(form === null)){
+            form = document.querySelector('form[class="reusablePuzzleInstanceForm"]');
+        }
         const formData = new FormData(form);
         let reusablePuzzleInstanceConfig = Object.fromEntries(formData.entries());
-        if(typeof rawConfig === "object"){
-            reusablePuzzleInstanceConfig = rawConfig;
-        }
 
         const sol = $("#puzzleSol").val();
         const validator = $("#inputValidator").val();
@@ -1377,7 +1393,7 @@
         }
         
         //Parse JSON settings
-        const reusablePuzzleJSONsettings = document.querySelectorAll('input[type="hidden"].reusablePuzzleJSONSetting');
+        const reusablePuzzleJSONsettings = form.querySelectorAll('input[type="hidden"].reusablePuzzleJSONSetting');
         reusablePuzzleJSONsettings.forEach(input => {
             if((typeof input.name === "string")&&(typeof input.value === "string")){
                 reusablePuzzleInstanceConfig[input.name] = JSON.parse(input.value);

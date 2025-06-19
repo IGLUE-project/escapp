@@ -1344,7 +1344,8 @@
             "Symbols": "Símbolos",
             "SymbolsColored": "Símbolos de colores",
             "None": "Ninguno",
-            "NoneF": "Ninguna"
+            "NoneF": "Ninguna",
+            "warningPuzzleLink": "Este reto está actualmente vinculado con otro recurso."
         },
         "Keypad": {
             "name": "Panel de botones",

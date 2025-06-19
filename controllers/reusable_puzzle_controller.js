@@ -265,9 +265,7 @@ exports.editReusablePuzzle = async (req, res, next) => {
 // INSTANCES
 exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId, reusablePuzzleInstanceId} = req.params;
-
     const {name, description, reusablePuzzleId, ...config} = req.body;
-
     const t = await sequelize.transaction();
 
     let newInstanceId = "";
@@ -287,6 +285,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                     trimedConfig[key] = undefined;
                 }
             });
+
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
             reusablePuzzleInstance = reusablePuzzle;
@@ -373,6 +372,7 @@ exports.getReusablePuzzleInstances = async (req, res, next) => {
 // GET /escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstances/:reusablePuzzleInstanceId/render
 exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-line  no-unused-vars
     const {reusablePuzzleInstanceId} = req.params;
+
 
     try {
         const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);

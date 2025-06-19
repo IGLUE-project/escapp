@@ -1354,7 +1354,8 @@
             "Symbols": "Symbols",
             "SymbolsColored": "Colored symbols",
             "None": "None",
-            "NoneF": "None"
+            "NoneF": "None",
+            "warningPuzzleLink": "This puzzle is currently linked to another resource"
         },
         "Keypad": {
             "name": "Keypad",

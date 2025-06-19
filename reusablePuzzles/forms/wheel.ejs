@@ -78,12 +78,9 @@
 backgroundImg || '';
 
     if(window.currentOpenPuzzleConfig?.wheelsType){
-        let wheelsType;
-        try {
-            wheelsType = JSON.parse(window.currentOpenPuzzleConfig.wheelsType);
-        } catch (e){}
+        let wheelsType = window.currentOpenPuzzleConfig?.wheelsType;
         if(typeof wheelsType !== "undefined"){
-            document.getElementById("wheelsType").value = window.currentOpenPuzzleConfig.wheelsType;
+            document.getElementById("wheelsType").value = JSON.stringify(wheelsType);
             for(let i=0; i<wheelsType.length; i++){
                 const wheelDiv = document.querySelector(`div.wheelSettings[wheelNumber="${i+1}"]`);
                 if (wheelDiv) {
