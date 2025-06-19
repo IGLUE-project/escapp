@@ -1335,25 +1335,35 @@
         }
     },
     "reusablePuzzleApps": {
-        "Keypad": {
-            "name": "Keypad",
-            "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of numbers, letters, colors, or symbols using a keypad.",
+        "Common": {
             "skin": "Skin",
-            "Standard": "Standard",
-            "Retro": "Retro",
-            "Futuristic": "Futuristic",
+            "skins": {
+                "Standard": "Standard",
+                "Retro": "Retro",
+                "Futuristic": "Futuristic"
+            },
             "actionAfterSolve": "Action after solving",
             "showMessage": "Show message",
             "Message": "Message",
             "MessagePlaceholder": "Message to show after solving",
             "BackgroundURL": "Background",
             "BackgroundURLPlaceholder": "You can enter the URL of any image from your resource catalog.",
-            "KeyType": "Type of buttons",
             "Numbers": "Numbers",
             "Letters": "Letters",
             "Colors": "Colors",
             "Symbols": "Symbols",
-            "None": "None"
+            "None": "None",
+            "NoneF": "None"
+        },
+        "Keypad": {
+            "name": "Keypad",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of numbers, letters, colors, or symbols using a keypad.",
+            "KeyType": "Type of buttons"
+        },
+        "Wheel": {
+            "name": "Decoder disk",
+            "description": "This resource allows you to create a decoder disk and link it to an escape room puzzle and its solution. The disk can have multiple wheels, and each wheel can contain numbers, letters, colors, or symbols.",
+            "numberOfWheels": "Number of wheels"
         }
     },
     "general": {
