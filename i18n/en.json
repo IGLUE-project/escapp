@@ -588,7 +588,7 @@
                 "hints": "Hints",
                 "manual": "Manual",
                 "newCat": "New category",
-                "noCluesYet": "You haven't defined any puzzles yet",
+                "noHints": "You haven't defined any hints",
                 "noPuzzlesYet": "You haven't defined any puzzles yet",
                 "notYet": "Please create a new puzzle before assigning it any hints",
                 "placeholder": "Select tracking mode",
@@ -637,7 +637,7 @@
                 "instructionsExplanation": "Share any instructions you want with teachers who use your escape room. Upload a PDF file. You can include information about how to play, how to evaluate, etc.",
                 "scopeExplanation": "You can choose between two visibility options for your escape room: public and unlisted. Escape rooms with public visibility may appear on the platform’s homepage, and any user can join and play them at any time. Escape rooms with unlisted visibility do not appear on the homepage and can only be joined by students through a direct link. In these escape rooms, you can also set a password for access. All escape rooms, regardless of their visibility setting, can be accessed by platform administrators and used according to their license.",
                 "statusExplanation": "Have you finished creating the escape room? If so, select the completed option. Otherwise, select draft, and you can continue editing it later. Keep in mind that until you publish it, participants will not be able to join. Once published, you will not be able to change the license.",
-                "areYouSureUnpublish": "Are you sure you want to unpublish the escape room? New players will not be able to access it anymore",
+                "areYouSureUnpublish": "Are you sure you want to unpublish the escape room and revert it to draft status? If you do, new participants will no longer be able to access it.",
                 "areYouSurePublish": "Are you sure you want to publish the escape room? Your license cannot be changed once published",
                 "areYouSurePublishBefore": "Are you sure you want to publish the escape room?",
                 "checklist": {

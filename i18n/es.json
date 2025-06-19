@@ -579,7 +579,7 @@
                 "hints": "Pistas",
                 "manual": "Manual",
                 "newCat": "Categoría nueva",
-                "noCluesYet": "No has definido ninguna pista todavía",
+                "noHints": "No has definido ninguna pista",
                 "noPuzzlesYet": "No has definido ningún reto todavía",
                 "notYet": "Hasta que crees el reto no puedes asignarle pistas",
                 "placeholder": "Selecciona la monitorización",
@@ -627,7 +627,7 @@
                 "instructionsExplanation": "Comparte las instrucciones que quieras con los profesores que utilicen tu escape room. Sube un fichero en formato PDF. Puedes incluir información sobre cómo se juega, cómo se evalúa, etc.",
                 "scopeExplanation": "Puedes elegir entre dos tipos de visibilidad para tu escape room: pública y oculta. Las escape rooms con visibilidad pública pueden aparecer en la página principal de la plataforma y cualquier usuario puede apuntarse y jugar a ellas en cualquier momento. Las escape rooms con visibilidad oculta no aparecen en la página principal y los estudiantes sólo pueden apuntarse a ellas mediante un enlace directo. En estas escape rooms también puedes definir una contraseña de acceso. Todas las escape rooms, independientemente de su tipo de visibilidad, pueden ser accedidas por los administradores de la plataforma y empleadas de acuerdo a su licencia.",
                 "statusExplanation": "¿Has terminado de crear la escape room? Si es así, selecciona la opción completada. Si no, selecciona borrador y podrás seguir editándola más adelante. Ten en cuenta que hasta que no la publiques, los participantes no podrán apuntarse a ella. Una vez publicada, no podrás volver a cambiar la licencia.",
-                "areYouSureUnpublish": "¿Seguro que deseas despublicar la escape room? No podrán acceder nuevos participantes.",
+                "areYouSureUnpublish": "¿Estás seguro de que quieres retirar la escape room y devolverla al estado de borrador? Si lo haces, no podrán acceder nuevos participantes.",
                 "areYouSurePublish": "¿Seguro que deseas publicar la escape room? No podrás cambiar la licencia una vez publicada",
                 "areYouSurePublishBefore": "¿Seguro que deseas publicar la escape room?",
                 "checklist": {
