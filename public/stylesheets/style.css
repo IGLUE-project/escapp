@@ -3224,6 +3224,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #pdfPreviewDiv {
   width: 70vw;
   height: 80vh;
+  display: block;
   overflow: hidden;
 }
 #pdfPreviewDiv #pdfPreview {
