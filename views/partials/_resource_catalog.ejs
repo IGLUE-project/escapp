@@ -684,7 +684,7 @@
         const solutionLengthDiv = $('#solutionLength');
 
         if(puzzleSelected) {
-            if (puzzleSelected.assignedReusablePuzzleInstance && puzzleSelected.assignedReusablePuzzleInstance != id) {
+            if (puzzleSelected.assignedReusablePuzzleInstances.length > 0 && puzzleSelected.assignedReusablePuzzleInstance != id) {
                 span.show();
             } else {
                 span.hide();
@@ -940,7 +940,6 @@
         const overlay = $('.overlay-trigger[data-id="' + id + '"]');
         overlay.hide();
 
-
         if (!close) {
             overlay.css("transform", `translateX(${-320}px`);
             overlay.css("width", '350px');
@@ -969,6 +968,7 @@
             } catch (e) {
                 console.error("Error parsing puzzle config:", e);
                 config = {};
+
             }
         }
         const configForm = $('#configForm');
@@ -996,7 +996,8 @@
 
                 $('#appendFormElementsHere').append(elements);
 
-                let selectedPuzzle = window.puzzles.find(p => p.assignedReusablePuzzleInstance == puzzle.id);
+                let selectedPuzzle = window.puzzles.find(p => p.assignedReusablePuzzleInstances.includes(Number(puzzle.id)));
+
                 try {
                     if(!selectedPuzzle && window.puzzles.length > 0) {
                         selectedPuzzle = window.puzzles[0];
@@ -1050,7 +1051,6 @@
         let reusablePuzzleInstanceConfig = generateReusablePuzzleInstanceConfigFromForm();
         let reusablePuzzleId = reusablePuzzleInstanceConfig.reusablePuzzleId;
         let puzzleId = reusablePuzzleInstanceConfig.puzzle;
-        //console.log("Update iframe", reusablePuzzleInstanceConfig);
         $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${puzzleId}&config=${encodeURIComponent(JSON.stringify(reusablePuzzleInstanceConfig))}`);
     }
 
@@ -1155,7 +1155,6 @@
         };
         if(form.classList.contains("reusablePuzzleInstanceForm")){
             fetchOptions.body = JSON.stringify(generateReusablePuzzleInstanceConfigFromForm(form));
-            console.log(fetchOptions.body);
             fetchOptions.headers = {
                 'Content-Type': 'application/json',
             };
@@ -1169,23 +1168,28 @@
             }
             res.json().then((resJSON)=>{
                 if(resJSON.type === "reusable"){
+                    let found = false;
                     window.reusablePuzzleInstances.forEach((puzzle) => {
                         if(puzzle.id == resJSON.id) {
                             puzzle.config = resJSON.config;
                             puzzle.name = resJSON.name;
                             puzzle.description = resJSON.description;
+                            found = true;
                         }
                     });
+                    if(!found){
+                        window.reusablePuzzleInstances.push(resJSON)
+                    }
                     window.puzzles.forEach((puzzle,index) => {
                         if(puzzle.id == resJSON.puzzle.id) {
                             window.puzzles[index] = resJSON.puzzle;
-                        } else {
-                            window.puzzles[index].assignedReusablePuzzleInstance = null;
+                            window.puzzles[index].assignedReusablePuzzleInstances.push(Number(resJSON.id)); //Puzzle in server doesnt have updated instances as where looking for the puzzle before the update
+                        } else if(window.puzzles[index].assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
+                            window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {p != resJSON.id});
                         }
                     });
                     toggleCatalogModal();
                     const row = $(`#p-${resJSON.id}`);
-                    window.reusablePuzzleInstances.push(resJSON)
                      if(!row.length) {
                         const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
                          $('#myTabContent tr:last').after(`<tr class="catalogItem" id=p-${resJSON.id}>

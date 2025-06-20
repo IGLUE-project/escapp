@@ -315,13 +315,9 @@ user.hasMany(report, {
 });
 
 
-reusablePuzzleInstance.hasMany(puzzle, {
-    "foreignKey": "assignedReusablePuzzleInstance",
-    "onDelete": "SET NULL",
-    "hooks": true
-});
+reusablePuzzleInstance.belongsToMany(puzzle, {through: "reusablePuzzleInstancePuzzle"});
 
-puzzle.belongsTo(reusablePuzzleInstance, {"foreignKey": "assignedReusablePuzzleInstance"});
+puzzle.belongsToMany(reusablePuzzleInstance, {through: "reusablePuzzleInstancePuzzle"});
 
 report.belongsTo(user, {"foreignKey": "reportAuthor"});
 module.exports = sequelize;

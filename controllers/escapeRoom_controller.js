@@ -446,9 +446,30 @@ exports.teamInterface = async (req, res, next) => {
 
         const availableReusablePuzzles = await getReusablePuzzles();
         const assets = await getERAssets(escapeRoom.id);
-        const reusablePuzzlesInstances = await getReusablePuzzlesInstances(escapeRoom.id);
+        let reusablePuzzlesInstances = await getReusablePuzzlesInstances(escapeRoom.id);
+        console.log(reusablePuzzlesInstances)
+        reusablePuzzlesInstances = reusablePuzzlesInstances.map((puzzleInstance) => {
+            return {
+                id: puzzleInstance.id,
+                name: puzzleInstance.name,
+                description: puzzleInstance.description,
+                reusablePuzzleId: puzzleInstance.reusablePuzzleId,
+                config: puzzleInstance.config,
+                puzzles: puzzleInstance.puzzles.map((p) => { return p.id; })
+            }})
 
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
+        escapeRoom.puzzles = escapeRoom.puzzles.map((puzzle) => { return {
+            id:puzzle.id,
+            validator: puzzle.validator,
+            sol: puzzle.sol,
+            title: puzzle.title,
+            reusablePuzzleInstances: puzzle.reusablePuzzleInstances.map((p) => p.id)
+        }
+        });
+
+        console.log(escapeRoom.puzzles);
+
         res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "team", "endPoint": "team", assets, reusablePuzzlesInstances, availableReusablePuzzles});
     } catch (e) {
         req.flash("error", res.locals.i18n.common.flash.errorEditingER);

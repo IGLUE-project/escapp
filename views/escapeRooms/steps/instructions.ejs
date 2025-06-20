@@ -70,7 +70,7 @@ window.theme = ((endPoint === "indications") || (endPoint === "after")) ? "/styl
 [{"type":"text","payload":{"text": i18n.escapeRoom.steps[endPoint].placeholder }, "puzzles":puzzleArr, "endPoint": endPoint}] : JSON.parse( escapeRoom[endPoint + "Instructions"]);%>
 <% content =   JSON.stringify( content ).replaceAll('<\\\\/script>','</script>')%> <!--This tag does save properly on string, was replaced previously->
 window.content = <%- content%>
-window.puzzles = <%- JSON.stringify(escapeRoom.puzzles.map((puzzle) =>{ return {id: puzzle.id, validator:puzzle.validator, sol: puzzle.sol, title:puzzle.title, assignedReusablePuzzleInstance: puzzle.assignedReusablePuzzleInstance}}))%>
+window.puzzles = <%- JSON.stringify(escapeRoom.puzzles.map((puzzle) =>{ return {id: puzzle.id, validator:puzzle.validator, sol: puzzle.sol, title:puzzle.title, assignedReusablePuzzleInstances: puzzle.reusablePuzzleInstances}}))%>
 window.reusablePuzzleInstances = <%- JSON.stringify(reusablePuzzlesInstances || [])%>
 window.reusablePuzzles = <%- JSON.stringify(availableReusablePuzzles || [])%>
 window.assets = <%- JSON.stringify(assets || [])%>

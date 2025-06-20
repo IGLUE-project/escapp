@@ -291,7 +291,6 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             reusablePuzzleInstance = reusablePuzzle;
             newInstanceId = reusablePuzzle.id;
         } else {
-            console.log(reusablePuzzleInstanceId);
             reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}}, {"transaction": t});
             const trimedConfig = {...config};
 
@@ -302,7 +301,6 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
             trimedConfig.range = trimedConfig.validator === "range" ? trimedConfig.range : undefined;
 
-            reusablePuzzleInstance.reusablePuzzleId = reusablePuzzleId || reusablePuzzleInstance.reusablePuzzleId;
             reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
             reusablePuzzleInstance.description = description || reusablePuzzleInstance.description;
 
@@ -315,20 +313,16 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             await reusablePuzzleInstance.save({"transaction": t});
         }
 
-        const linkedPuzzle = reusablePuzzleInstanceId ? await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}}, {"transaction": t}) : null;
 
+        const puzzles = await reusablePuzzleInstance.getPuzzles({"transaction": t});
+        await reusablePuzzleInstance.removePuzzles(puzzles, {"transaction": t});
         if (config.puzzle != "none") {
-            puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}}, {"transaction": t});
+            puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}, include:[{model: models.reusablePuzzleInstance}]}, {"transaction": t});
             if (puzzle) {
-                if (linkedPuzzle && linkedPuzzle.id !== puzzle.id) {
-                    linkedPuzzle.assignedReusablePuzzleInstance = null;
-                    await linkedPuzzle.save({"transaction": t});
-                }
-
                 puzzle.sol = config.puzzleSol ? config.puzzleSol : puzzle.sol;
                 puzzle.automatic = true;
                 puzzle.validator = config.validator ? config.validator : puzzle.validator;
-                puzzle.assignedReusablePuzzleInstance = newInstanceId ? newInstanceId : reusablePuzzleInstanceId;
+                await reusablePuzzleInstance.addPuzzle(puzzle.id, {"transaction": t});
 
                 if (config.validator === "range") {
                     puzzle.sol = `${config.puzzleSol}+${config.rangeInput}`;
@@ -342,14 +336,12 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 await reusablePuzzleInstance.save({"transaction": t});
             }
             config.puzzleSol = undefined;
-        } else {
-            linkedPuzzle.assignedReusablePuzzleInstance = null;
-            await linkedPuzzle.save({"transaction": t});
         }
 
         t.commit();
 
-        res.json({config, "name": reusablePuzzleInstance.name, puzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        const newPuzzle = {id: puzzle.id, validator: puzzle.validator, title: puzzle.title, sol: puzzle.sol, assignedReusablePuzzleInstances: puzzle.reusablePuzzleInstances.map((instance) => {return instance.id})};
+        res.json({config, "name": reusablePuzzleInstance.name, puzzle:newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -381,7 +373,8 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const escapeRoom = await models.escapeRoom.findByPk(reusablePuzzleInstance.escapeRoomId);
         const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
 
-        const linkedPuzzle = await models.puzzle.findOne({"where": {"assignedReusablePuzzleInstance": reusablePuzzleInstanceId}});
+        const linkedPuzzle = await reusablePuzzleInstance.getPuzzles();
+        console.log(linkedPuzzle)
 
         if (!linkedPuzzle) {
             res.status(404).send("Puzzle not assigned to this instance");
@@ -403,7 +396,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
             "escappClientSettings": {
                 "endpoint": `${hostName}/api/escapeRooms/${reusablePuzzleInstance.escapeRoomId}`,
                 preview,
-                "linkedPuzzleIds": [linkedPuzzle ? linkedPuzzle.order + 1 : null],
+                "linkedPuzzleIds": [linkedPuzzle[0] ? linkedPuzzle[0].order + 1 : null],  //TODO: Enviar todos cuando soportemos N-M
                 "user": {
                     "email": req.session.user.username,
                     token
