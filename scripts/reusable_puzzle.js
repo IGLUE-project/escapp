@@ -52,14 +52,15 @@ exports.reusablePuzzles = async function (name, form, zipPath, thumbnailPath, in
         await zip.close();
 
         let instructionsText = "";
+
         if (Object.keys(instructions).length > 0) {
             for (const [lang, instruction] of Object.entries(instructions)) {
                 fs.copyFileSync(instruction, path.join(puzzleDir, `${lang}.pdf`));
                 instructionsText += `${lang},`;
             }
-            puzzle.instructions = instructionsText;;
+            puzzle.instructions = instructionsText;
         }
- 
+
         const config = {
             "url": hasForm
                 ? `/reusablePuzzles/installed/${puzzle.id}/form.ejs`
@@ -89,7 +90,7 @@ if (require.main === module) {
     let form = null;
     let zipPath = null;
     let thumbnailPath = null;
-    let instructions = {};
+    const instructions = {};
 
     // Simple argument parser
     for (let i = 0; i < args.length; i++) {
@@ -107,6 +108,7 @@ if (require.main === module) {
             i++;
         } else if (args[i].startsWith("--instructions:")) {
             const lang = args[i].split(":")[1];
+
             if (lang && args[i + 1]) {
                 instructions[lang] = args[i + 1];
                 i++;

@@ -262,6 +262,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                     "I18n": {"locale": localeForAsset}
                 }
             };
+
             res.render("reusablePuzzles/reusablePuzzleContainer", {basePath, config, file, "layout": false});
         } else {
             res.sendFile(filePath);

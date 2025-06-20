@@ -196,7 +196,7 @@ exports.destroy = async (req, res, next) => {
         }
     } else {
         try {
-            const hostName = (process.env.APP_NAME && process.env.APP_NAME !== "localhost") ? `${process.env.APP_NAME}` : "anonymized.org";
+            const hostName = process.env.APP_NAME && process.env.APP_NAME !== "localhost" ? `${process.env.APP_NAME}` : "anonymized.org";
             // Await req.user.destroy({}, {transaction}); // Deleting logged user
 
             req.user.name = "Anonymous";

@@ -169,11 +169,11 @@ exports.renderEJS = (view, query = {}, options = {}) => new Promise((resolve, re
 
 exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId, "status": {[Op.not]: "test"}}});
 
-exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]], include: [{model: models.reusablePuzzleInstance}]});
+exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]], "include": [{"model": models.reusablePuzzleInstance}]});
 
 exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({"attributes": ["name", "description", "instructions", "config", ["id", "reusablePuzzleId"]]});
 
-exports.getReusablePuzzlesInstances = (id) => models.reusablePuzzleInstance.findAll({"where": {"escapeRoomId": id}, include: [{"model": models.puzzle, attributes:['id']}]});
+exports.getReusablePuzzlesInstances = (id) => models.reusablePuzzleInstance.findAll({"where": {"escapeRoomId": id}, "include": [{"model": models.puzzle, "attributes": ["id"]}]});
 
 exports.getERPuzzlesAndHints = (escapeRoomId) => models.puzzle.findAll({
     "where": {escapeRoomId},
@@ -623,10 +623,10 @@ exports.solutionSeparatorLength = (sol, sep = ";", oneIsSplit = false) => {
     if (sol && sol.length > 0) {
         if (sol.includes(sep)) {
             return sol.split(sep).length;
-        }  else if (oneIsSplit) {
+        } else if (oneIsSplit) {
             return 1;
         }
-        return sol.length
+        return sol.length;
     }
     return 0;
-}
+};
