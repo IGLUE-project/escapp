@@ -1155,6 +1155,7 @@
         };
         if(form.classList.contains("reusablePuzzleInstanceForm")){
             fetchOptions.body = JSON.stringify(generateReusablePuzzleInstanceConfigFromForm(form));
+            console.log(fetchOptions.body);
             fetchOptions.headers = {
                 'Content-Type': 'application/json',
             };
@@ -1167,12 +1168,6 @@
                 return;
             }
             res.json().then((resJSON)=>{
-
-
-                console.log("RESPONSE");
-                console.log(resJSON);
-
-
                 if(resJSON.type === "reusable"){
                     window.reusablePuzzleInstances.forEach((puzzle) => {
                         if(puzzle.id == resJSON.id) {
@@ -1294,10 +1289,9 @@
     }
 
     function addListenerForHover(el){
-
           id = el.closest('tr').getAttribute('id')
           const asset = window.assets.find(a => a.id == id);
-          const puzzle = window.puzzles.find(p => ("p-" + p.assignedReusablePuzzleInstance) == id);
+          const puzzle = window.reusablePuzzleInstances.find(p => ("p-" + p.id) == id);
            el.addEventListener('click', (e) => {
             container.empty();
             let openContainer = true;
@@ -1317,7 +1311,7 @@
             } else if(asset && asset.mime.search(pdfRegex) !== -1) {
                 container.append(getTemplate("pdf", asset.url));
             } else if (puzzle) {
-                const puzzleUrl = `reusablePuzzleInstances/${puzzle.assignedReusablePuzzleInstance}/render`
+                const puzzleUrl = `reusablePuzzleInstances/${puzzle.id}/render`
                 container.append(getTemplate("reusablePuzzle", puzzleUrl));
             } else {
                  openContainer = false;

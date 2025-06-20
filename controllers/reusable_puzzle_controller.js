@@ -291,6 +291,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             reusablePuzzleInstance = reusablePuzzle;
             newInstanceId = reusablePuzzle.id;
         } else {
+            console.log(reusablePuzzleInstanceId);
             reusablePuzzleInstance = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}}, {"transaction": t});
             const trimedConfig = {...config};
 
@@ -347,7 +348,6 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         }
 
         t.commit();
-        const modifiedPuzzle = {"assignedReusablePuzzleInstance": puzzle.assignedReusablePuzzleInstance, "sol": puzzle.sol, "validator": puzzle.validator, "title": puzzle.title, "id": puzzle.id };
 
         res.json({config, "name": reusablePuzzleInstance.name, puzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
