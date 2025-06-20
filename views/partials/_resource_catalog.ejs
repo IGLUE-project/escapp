@@ -16,7 +16,7 @@
                     <input type="hidden" name="escapeRoomId" value="<%=escapeRoom.id%>">
                     <div class="resource-group">
                     <button type="button" onclick="triggerClick()">
-                        <label for="fileInput" style="color:black;"> 
+                        <label for="fileInput" style="color:black;">
                             <span class="material-icons">upload</span>
                              <%=i18n.escapeRoom.steps.indications.front.catalog.selectFile%></label>
                     </button>
@@ -101,7 +101,7 @@
                         <button
                             class="resourceCatalogBtn"
                             data-name = "<%=puzzle.name%>"
-                            data-description = <%=puzzle.description%>
+                            data-description = "<%=puzzle.description%>"
                             <%if (escapeRoom.puzzles.length == 0) {%>
                                 disabled
                                 title="<%=i18n.escapeRoom.steps.indications.front.catalog.interactiveResourcesNotAllowed%>"
@@ -412,7 +412,7 @@
                                                         onclick='openClipboardModal("<%=asset.url%>", "pdf")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        
+
                                                     </button>
 
                                                     <button class="rounded listButton addButton"
@@ -460,7 +460,7 @@
                                                         onclick='openClipboardModal("<%=asset.url%>", "webapp")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        
+
                                                     </button>
 
                                                     <button class="rounded listButton addButton"
@@ -509,7 +509,7 @@
                                                         onclick='openClipboardModal("<%=asset.url%>")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        
+
                                                     </button>
 
                                                     <button disabled class="rounded listButton addButton"
@@ -566,7 +566,7 @@
     <dialog id="linkContainer" style="overflow:auto">
         <h3><%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%></h3>
         <div id="linkContainerCopyDiv">
-         
+
             <input type="text" id="linkInput" readonly>
             <button class="btn editButton rounded" id="copyLinkButton" onclick="copyURL()" title="<%=i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>">
                 <span class="material-icons">content_copy</span>
@@ -578,7 +578,7 @@
         </div>
         <h3><%= i18n.escapeRoom.steps.indications.front.catalog.copyEmbed%></h3>
         <div id="embedContainerCopyDiv">
-            <input  type="text" id="embedInput" readonly> 
+            <input  type="text" id="embedInput" readonly>
             <button class="btn editButton rounded" id="copyEmbedButton" onclick="copyEmbed()" title="<%=i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>">
                 <span class="material-icons">content_copy</span>
                 <!--<div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
@@ -758,7 +758,7 @@
                 closeText: "close",
                 classes: {
                     "ui-dialog": "ui-corner-all clipboard-dialog",
-                    "ui-dialog-titlebar": "ui-corner-all clipboard-titlebar" 
+                    "ui-dialog-titlebar": "ui-corner-all clipboard-titlebar"
                 },
             show: {
                 effect: "scale",
@@ -856,7 +856,7 @@
         } catch(e) {
             console.error("Error copying URL to clipboard:", e);
         }
-        
+
     }
     function copyEmbed() {
         try {
@@ -865,7 +865,7 @@
         } catch(e) {
             console.error("Error copying embed to clipboard:", e);
         }
-        
+
     }
 
     function openClipboardModal(url, asset) {
@@ -882,7 +882,7 @@
                 closeText: "close",
                 classes: {
                     "ui-dialog": "ui-corner-all clipboard-dialog",
-                    "ui-dialog-titlebar": "ui-corner-all clipboard-titlebar" 
+                    "ui-dialog-titlebar": "ui-corner-all clipboard-titlebar"
                 },
             show: {
                 effect: "scale",
@@ -1028,7 +1028,7 @@
                 });
 
                 $('#associatedPuzzle').val(puzzleObject.id).change();
-                     
+
                 updateIframe();
 
                 $(".sections").scrollTop(0);
@@ -1043,7 +1043,7 @@
             $(".sections").scrollTop(0);
             configForm.attr("action",  "reusablePuzzleInstance");
         }
-       
+
     }
 
     function updateIframe() {
@@ -1259,7 +1259,7 @@
             })
         });
         e.preventDefault();
-       
+
     }
 
     function addChangeSolWarning() {
@@ -1294,7 +1294,7 @@
     }
 
     function addListenerForHover(el){
-          
+
           id = el.closest('tr').getAttribute('id')
           const asset = window.assets.find(a => a.id == id);
           const puzzle = window.puzzles.find(p => ("p-" + p.assignedReusablePuzzleInstance) == id);
@@ -1313,7 +1313,7 @@
                 const video = document.getElementById('videoPreview')
                 video.play()
             } else if(asset && asset.mime.search(webappRegex) !== -1) {
-                container.append(getTemplate("webapp", asset.url)) 
+                container.append(getTemplate("webapp", asset.url))
             } else if(asset && asset.mime.search(pdfRegex) !== -1) {
                 container.append(getTemplate("pdf", asset.url));
             } else if (puzzle) {
@@ -1335,7 +1335,7 @@
                 closeText: "close",
                 classes: {
                     "ui-dialog": "ui-corner-all preview-asset-dialog",
-                    "ui-dialog-titlebar": "ui-corner-all preview-asset-titlebar" 
+                    "ui-dialog-titlebar": "ui-corner-all preview-asset-titlebar"
                 },
                 show: {
                     effect: "scale",
@@ -1391,7 +1391,7 @@
         if(typeof solutionLength === "number"){
             reusablePuzzleInstanceConfig.solutionLength = solutionLength;
         }
-        
+
         //Parse JSON settings
         const reusablePuzzleJSONsettings = form.querySelectorAll('input[type="hidden"].reusablePuzzleJSONSetting');
         reusablePuzzleJSONsettings.forEach(input => {
@@ -1413,7 +1413,7 @@
         if (sol && sol.length > 0) {
             if (sol.includes(sep)) {
                 return sol.split(sep).length;
-            } 
+            }
             return sol.length
         }
         return 0;
