@@ -3,21 +3,27 @@ const {reusablePuzzles} = require("./reusable_puzzle.js");
 const reusablePuzzlesList = [
     {
         "name": "Keypad",
-        "description": "Keypad desc",
-        "zip": "defaultReusablePuzzles/keypad/Keypad_Puzzle_Escapp_Preview.zip",
+        "zip": "defaultReusablePuzzles/keypad/Keypad_Puzzle.zip",
         "form": "keypad.ejs",
-        "thumbnail": "defaultReusablePuzzles/keypad/keypad.png"
+        "thumbnail": "defaultReusablePuzzles/keypad/Keypad_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/keypad/Keypad_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/keypad/Keypad_Instructions_ES.pdf"
+        }
     },
     {
-        "name": "AnotherPuzzle",
-        "description": "Keypad desc",
-        "zip": "defaultReusablePuzzles/keypad/Keypad_Puzzle_Escapp_Preview.zip",
-        "form": "keypad.ejs"
+        "name": "Wheel",
+        "zip": "defaultReusablePuzzles/wheel/Wheel_Puzzle.zip",
+        "form": "wheel.ejs",
+        "thumbnail": "defaultReusablePuzzles/wheel/Wheel_Thumbnail.jpg",
+        "instructions": {
+            "en": "defaultReusablePuzzles/wheel/Wheel_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/wheel/Wheel_Instructions_ES.pdf"
+        }
     }
 ];
 
 for (i in reusablePuzzlesList) {
     const puz = reusablePuzzlesList[i];
-
-    reusablePuzzles(puz.name, puz.description, puz.form, puz.zip, puz.thumbnail);
+    reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
 }

@@ -695,9 +695,7 @@ const autoPlay = (newBlocks = []) => {
 
     for (let b in newBlocks) {
       let block = newBlocks[b].toString();
-       console.log(ER.erState.startTime.toString(), erSt, previousBlocks.indexOf(block))
       if (erSt !== ER.erState.startTime.toString() || (previousBlocks.indexOf(block) === -1)) { // First time
-        console.log("First time")
         let auto = $( `#block-${block} [autoplay]` );
         let youtube = false;
 
@@ -708,7 +706,6 @@ const autoPlay = (newBlocks = []) => {
           });
         }
         if (!auto.length) { // Video
-          console.log("Video")
           auto = $(`#block-${block} video`).filter(function() {
             return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
           });

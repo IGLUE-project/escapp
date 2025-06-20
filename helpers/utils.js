@@ -472,7 +472,6 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
 
 
 exports.validationError = ({instance, path, validatorKey}, i18n) => {
-    console.log({instance, path, validatorKey});
     try {
         if (i18n[instance.constructor.name] &&
             i18n[instance.constructor.name].attributes &&
@@ -507,7 +506,7 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     return acc;
 }, {});
 
-exports.getERAssets = (escapeRoomId) => models.asset.findAll({"where": {escapeRoomId}});
+exports.getERAssets = (escapeRoomId) => models.asset.findAll({"where": {escapeRoomId}, "order": [["createdAt", "ASC NULLS LAST"]]});
 
 exports.isValidEmail = (email, whitelist = []) => {
     // Basic email format validation regex
@@ -619,3 +618,15 @@ exports.stepsCompleted = (escapeRoom) => {
 
     return [step1, step2, step3, step4, step5, step6, step7, step8, step9];
 };
+
+exports.solutionSeparatorLength = (sol, sep = ";", oneIsSplit = false) => {
+    if (sol && sol.length > 0) {
+        if (sol.includes(sep)) {
+            return sol.split(sep).length;
+        }  else if (oneIsSplit) {
+            return 1;
+        }
+        return sol.length
+    }
+    return 0;
+}

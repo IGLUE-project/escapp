@@ -21,7 +21,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         "eduLevel": {
             "type": DataTypes.STRING,
-            "allowNull": true,
+            "allowNull": false,
             "validate": {"isIn": [["primary", "secondary", "vet", "higher", "other", "none"]]}
         },
         "username": {

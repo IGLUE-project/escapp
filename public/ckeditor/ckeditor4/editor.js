@@ -90,7 +90,7 @@ const reusableRegex = new RegExp(/application\/reusable/);
 const catalogItem = (item)=> {
     const configJSON = parseAssetConfig( item.mime, item.config);
     if(item.mime.search(imageRegex) !== -1) {
-        return `<img src="${item.url}" style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%">`;
+        return `<img src="${item.url}" style="width:${configJSON.width};height:${configJSON.height};max-width:100%">`;
     }else if (item.mime.search(videoRegex) !== -1) {
             return `<div class="ckeditor-html5-video" style="text-align: center;max-width:100%"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" download=${configJSON.download!=="undefined"?"download":null}/></div>`;
     } else if (item.mime.search(audioRegex) !== -1) {
@@ -113,7 +113,7 @@ const catalogItem = (item)=> {
      } else if (item.mime.search(reusableRegex) !== -1) {
         configJSON.width = "100%";
         configJSON.height = "auto";
-         return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:1500px;aspect-ratio:4/3"  >
+         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px;aspect-ratio:4/3"  >
              <iframe src="${item.url}" style="border:none" width="100%" height="100%" id="${item.id}" >
                 <script>
                 </script>

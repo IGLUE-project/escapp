@@ -5,6 +5,7 @@ const path = require("path");
 const StreamZip = require("node-stream-zip");
 const sequelize = require("../models");
 const {getLocaleForEscapeRoom} = require("../helpers/I18n");
+const {solutionSeparatorLength} = require("../helpers/utils");
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {
@@ -155,7 +156,6 @@ exports.createReusablePuzzle = async (req, res, next) => {
             puzzle.config = JSON.stringify({"url": `/reusablePuzzles/forms/${form}`, "thumbnail": thumbnailName});
         }
 
-        console.log(puzzle);
         await puzzle.save({"transaction": t});
         await t.commit();
         res.redirect("back");
@@ -265,9 +265,7 @@ exports.editReusablePuzzle = async (req, res, next) => {
 // INSTANCES
 exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId, reusablePuzzleInstanceId} = req.params;
-
     const {name, description, reusablePuzzleId, ...config} = req.body;
-
     const t = await sequelize.transaction();
 
     let newInstanceId = "";
@@ -287,6 +285,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                     trimedConfig[key] = undefined;
                 }
             });
+
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
             reusablePuzzleInstance = reusablePuzzle;
@@ -336,7 +335,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 } else if (config.validator === "regex") {
                     reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": config.solutionLength});
                 } else {
-                    reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": undefined});
+                    reusablePuzzleInstance.config = JSON.stringify({...JSON.parse(reusablePuzzleInstance.config), "solutionLength": solutionSeparatorLength(config.puzzleSol)});
                 }
                 await puzzle.save({"transaction": t});
                 await reusablePuzzleInstance.save({"transaction": t});
@@ -350,7 +349,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         t.commit();
         const modifiedPuzzle = {"assignedReusablePuzzleInstance": puzzle.assignedReusablePuzzleInstance, "sol": puzzle.sol, "validator": puzzle.validator, "title": puzzle.title, "id": puzzle.id };
 
-        res.json({config, "name": reusablePuzzleInstance.name, puzzle, "reusablePuzzleId": modifiedPuzzle.id, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        res.json({config, "name": reusablePuzzleInstance.name, puzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -373,6 +372,7 @@ exports.getReusablePuzzleInstances = async (req, res, next) => {
 // GET /escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstances/:reusablePuzzleInstanceId/render
 exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-line  no-unused-vars
     const {reusablePuzzleInstanceId} = req.params;
+
 
     try {
         const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);

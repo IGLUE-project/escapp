@@ -8,24 +8,22 @@
     </p>
   	<form class="basicConfig" id="theform" enctype="multipart/form-data"  method='POST' action='/escapeRooms/<%= escapeRoom.id %>/sharing'  >
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
-            <label for="license"  class="itemNarrow">1. <%=i18n.escapeRoom.steps.sharing.license%>&nbsp;<a href="https://creativecommons.org/share-your-work/cclicenses/" target="_blank"><span class="material-icons">help</span></a>&nbsp;:</label>
+            <label for="license"  class="itemNarrow">1. <%=i18n.escapeRoom.steps.sharing.license%>&nbsp;<a href="https://creativecommons.org/share-your-work/cclicenses/" target="_blank"><span class="material-icons">help</span></a>&nbsp;</label>
             <%if(escapeRoom.publishedOnce){%>
             <p class="explanation"><%=i18n.escapeRoom.steps.sharing.licenseExplanationAlreadyPublished%></p>
             <%} else {%>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.licenseExplanation%></p>
             <%}%>
-            <select class="customInput itemWide" id="license" name="license" autocomplete="off" <%=escapeRoom.publishedOnce   ? "disabled" : "" %>
+            <select class="customInput itemWide" id="license" name="license" autocomplete="off" <%= escapeRoom.publishedOnce ? "disabled" : "" %>>
                 <option value="CC BY" <%=escapeRoom.license == "CC BY"   ? "selected" : "" %>> CC BY </option>
-                <option value="CC BY-NC" <%=escapeRoom.license == "CC BY-NC"   ? "selected" : "" %>> CC BY-NC </option>
                 <option value="CC BY-SA" <%=escapeRoom.license == "CC BY-SA"   ? "selected" : "" %>> CC BY-SA </option>
+                <option value="CC BY-NC" <%=escapeRoom.license == "CC BY-NC"   ? "selected" : "" %>> CC BY-NC </option>
                 <option value="CC BY-NC-SA" <%=escapeRoom.license == "CC BY-NC-SA"   ? "selected" : "" %>> CC BY-NC-SA </option>
-                <option value="CC BY-ND" <%=escapeRoom.license == "CC BY-ND"   ? "selected" : "" %>> CC BY-ND </option>
-                <option value="CC BY-NC-ND" <%=escapeRoom.license == "CC BY-NC-ND"   ? "selected" : "" %>> CC BY-NC-ND </option>
+                <option value="CC0" <%=escapeRoom.license == "CC0"   ? "selected" : "" %>> CC0 </option>
             </select>
-
         </div>
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
-            <label for="license"  class="itemNarrow">2. <%=i18n.escapeRoom.steps.sharing.instructions%></label>
+            <label for="instructionsTitle"  class="itemNarrow">2. <%=i18n.escapeRoom.steps.sharing.instructions%></label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.publication%></p>
             <input class="attach" type="file" id="instructions" name="instructions"/>
             <label for="instructions" class="fileUpload customInput itemWide">
@@ -55,18 +53,8 @@
             </label>
         </div>
 
-        <!-- <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
-            <label for="status"  class="itemNarrow">2. <%=i18n.escapeRoom.steps.sharing.status.name%>:</label>
-			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.statusExplanation%></p>
-
-            <select class="customInput itemWide" id="status" name="status" autocomplete="off">
-                <option value="draft" <%=escapeRoom.status == "draft"  ? "selected" : "" %>><%=i18n.escapeRoom.steps.sharing.status.draft%> </option>
-                <option value="completed" <%=escapeRoom.status == "completed"  ? "selected" : "" %>><%=i18n.escapeRoom.steps.sharing.status.completed%></option>
-            </select>
-        </div> -->
-
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 600ms;">
-            <label for="scope"  class="itemNarrow">3. <%=i18n.showTeacher.titles["scope"]%>:</label>
+            <label for="scope"  class="itemNarrow">3. <%=i18n.showTeacher.titles["scope"]%></label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.scopeExplanation%></p>
 
             <select class="customInput itemWide" id="scope" name="scope" autocomplete="off">
@@ -76,7 +64,7 @@
         </div>
 
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms; <%=Boolean(escapeRoom.scope) ?  '' : 'display: none;'%>" id = "invitationBlock"   ">
-            <label for="invitation"  class="itemNarrow">4. <%=i18n.showTeacher.titles.password%>:</label>
+            <label for="invitation"  class="itemNarrow">4. <%=i18n.showTeacher.titles.password%></label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.invitationExplanation%></p>
 
             <input type="text" class="customInput itemWide" id="invitation" name="invitation" value="<%= escapeRoom.invitation %>"
@@ -100,14 +88,14 @@
                     <p><%=i18n.escapeRoom.steps.sharing.checklist.stillInfoNeeded%></p>
                 <%}%>
                 <ul class="checklist-publishing">
-                    <li><input type="checkbox" disabled <%if(completed[0]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step1%> <%if(!completed[0]){%> <input type="submit" class="hidden-submit" name="progress" value="edit"/> <span class="material-icons">arrow_forward</span><%}%> </li>
-                    <li><input type="checkbox" disabled <%if(completed[1]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step2%> <%if(!completed[1]){%> <input type="submit" class="hidden-submit" name="progress" value="puzzles"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
-                    <li><input type="checkbox" disabled <%if(completed[2]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step3%> <%if(!completed[2]){%> <input type="submit" class="hidden-submit" name="progress" value="hints"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
-                    <li><input type="checkbox" disabled <%if(completed[3]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step4%> <%if(!completed[3]){%> <input type="submit" class="hidden-submit" name="progress" value="indications"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
-                    <li><input type="checkbox" disabled <%if(completed[4]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step5%> <%if(!completed[4]){%> <input type="submit" class="hidden-submit" name="progress" value="team"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
-                    <li><input type="checkbox" disabled <%if(completed[5]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step6%> <%if(!completed[5]){%> <input type="submit" class="hidden-submit" name="progress" value="class"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
-                    <li><input type="checkbox" disabled <%if(completed[6]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step7%> <%if(!completed[6]){%> <input type="submit" class="hidden-submit" name="progress" value="after"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
-                    <li><input type="checkbox" disabled <%if(completed[7]){%> checked <%}%>><%=i18n.escapeRoom.steps.sharing.checklist.step8%> <%if(!completed[7]){%> <input type="submit" class="hidden-submit" name="progress" value="evaluation"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
+ 
+                    <li><input type="checkbox" disabled <%if(completed[0]){%> checked <%}%>>&nbsp;<%=i18n.escapeRoom.steps.sharing.checklist.step1%> <%if(!completed[0]){%> <input type="submit" class="hidden-submit" name="progress" value="edit"/> <span class="material-icons">arrow_forward</span><%}%> </li>
+                    <li><input type="checkbox" disabled <%if(completed[1]){%> checked <%}%>>&nbsp;<%=i18n.escapeRoom.steps.sharing.checklist.step2%> <%if(!completed[1]){%> <input type="submit" class="hidden-submit" name="progress" value="puzzles"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
+                    <li><input type="checkbox" disabled <%if(completed[2]){%> checked <%}%>>&nbsp;<%=i18n.escapeRoom.steps.sharing.checklist.step3%> <%if(!completed[2]){%> <input type="submit" class="hidden-submit" name="progress" value="hints"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
+                    <li><input type="checkbox" disabled <%if(completed[3]){%> checked <%}%>>&nbsp;<%=i18n.escapeRoom.steps.sharing.checklist.step4%> <%if(!completed[3]){%> <input type="submit" class="hidden-submit" name="progress" value="indications"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
+                    <li><input type="checkbox" disabled <%if(completed[4]){%> checked <%}%>>&nbsp;<%=i18n.escapeRoom.steps.sharing.checklist.step5%> <%if(!completed[4]){%> <input type="submit" class="hidden-submit" name="progress" value="team"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
+                    <li><input type="checkbox" disabled <%if(completed[5]){%> checked <%}%>>&nbsp;<%=i18n.escapeRoom.steps.sharing.checklist.step6%> <%if(!completed[5]){%> <input type="submit" class="hidden-submit" name="progress" value="class"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
+                    <li><input type="checkbox" disabled <%if(completed[6]){%> checked <%}%>>&nbsp;<%=i18n.escapeRoom.steps.sharing.checklist.step7%> <%if(!completed[6]){%> <input type="submit" class="hidden-submit" name="progress" value="after"/> <span class="material-icons">arrow_forward</span> <%}%> </li>
                 </ul>
 
             <%}else{%>
@@ -154,13 +142,22 @@ $('#scope').on('change', function(e){
 
 function confirmSubmit(e) {
     e.preventDefault();
-    var agree = confirm("<%=i18n.escapeRoom.steps.areYouSurePublish%>");
+    <%if(isDraft){%>
+        <%if (escapeRoom.publishedOnce){%>
+            var agree = confirm("<%=i18n.escapeRoom.steps.sharing.areYouSurePublishBefore%>");
+        <%} else {%>
+            var agree = confirm("<%=i18n.escapeRoom.steps.sharing.areYouSurePublish%>");
+        <%}%>
+    <%}else{%>
+        var agree = confirm("<%=i18n.escapeRoom.steps.sharing.areYouSureUnpublish%>");    
+    <%}%>
+
     if (agree) {
-    $('#theform').append('<input type="hidden" name="progress" value="sharing" />');
-    $('#theform').append('<input type="hidden" name="status" value="<%=isDraft ? 'completed':'draft'%>" />');
-    return $('#theform').submit(); ;
-    }else{
-    return false ;
+        $('#theform').append('<input type="hidden" name="progress" value="sharing" />');
+        $('#theform').append('<input type="hidden" name="status" value="<%=isDraft ? 'completed' : 'draft'%>" />');
+        return $('#theform').submit(); ;
+    } else {
+        return false ;
     }
 
 }

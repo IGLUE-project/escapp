@@ -16,17 +16,19 @@
                     <input type="hidden" name="escapeRoomId" value="<%=escapeRoom.id%>">
                     <div class="resource-group">
                     <button type="button" onclick="triggerClick()">
-                        <label for="fileInput" style="color:black;">  <%=i18n.escapeRoom.steps.indications.front.catalog.selectFile%></label>
+                        <label for="fileInput" style="color:black;"> 
+                            <span class="material-icons">upload</span>
+                             <%=i18n.escapeRoom.steps.indications.front.catalog.selectFile%></label>
                     </button>
                         <input onchange="changeName(event)" hidden style="color:white; "type="file" id="fileInput" name="asset" required>
                     </div>
                     <div class="resource-group">
-                        <label style="color:white;"> <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%> </label>
+                        <label for="filename" style="color:white;"> <%=i18n.escapeRoom.steps.indications.front.catalog.table.name%> </label>
                         <input style="color:white;"type="text" id="filename" name="filename" required>
                     </div>
                     <div>
-                        <button type="button" class="btn rounded acceptButton" onclick="submitFile(event)">  <%=i18n.common.save%></button>
-                        <button type="button" class="btn rounded deleteButton" onclick="toggleUploadModal()"><%=i18n.common.back%></button>
+                        <button type="button" class="rounded acceptButton" onclick="submitFile(event)">  <%=i18n.common.save%></button>
+                        <button type="button" class="rounded deleteButton" onclick="toggleUploadModal()"><%=i18n.common.back%></button>
                     </div>
                 </div>
                 </form>
@@ -131,7 +133,7 @@
         </section>-->
         <section id="configZone" hidden>
             <div class="configReusablePuzzle">
-                <form action="reusablePuzzleInstance" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
+                <form action="reusablePuzzleInstance" class="reusablePuzzleInstanceForm" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
                 </form>
                 <div class="previewReusablePuzzle">
                     <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
@@ -175,15 +177,15 @@
                 <th></th>
             </tr>
 
-            <%if(endPoint==="team"){
+            <% if(endPoint==="team"){
                 reusablePuzzlesInstances.map(puzzle=> {
                 let goodConfig={};
                 puzzle.url = `/escapeRooms/${escapeRoom.id}/reusablePuzzleInstances/${puzzle.id}/render`;
-                try{
-                    goodConfig = JSON.parse(puzzle.config)
+                try {
+                    goodConfig = JSON.parse(puzzle.config);
                 } catch(e){
                     console.error("Error parsing JSON:", puzzle.config);
-            }%>
+            } %>
                 <tr id="p-<%=puzzle.id%>" class="catalogItem">
                     <td>
                         <p class="title">
@@ -194,7 +196,7 @@
                     </td>
                     <td>
                         <div class=" button-group row-button">
-                            <div class="overlay-trigger" data-id="<%=puzzle.id%>">
+                            <div class="overlay-trigger right" data-id="<%=puzzle.id%>">
                                 <p class="text-overlay">
                                     <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                 </p>
@@ -213,13 +215,9 @@
                                 <span class="building-block-icon material-icons" id="edit"> edit
                                 </span>
                             </button>
-                            <button class="listButton linkButton" onclick='copyURl("<%=puzzle.url%>")'>
+                            <button class="listButton linkButton" onclick='openClipboardModal("<%=puzzle.url%>","reusablePuzzle")'>
                                 <span class="building-block-icon material-icons" id="link"> link
                                 </span>
-                                <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                                <div class="tooltip-link" id="link-copied">
-                                    <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                </div>
                             </button>
 
                             <button class="rounded listButton addButton"
@@ -256,7 +254,7 @@
                                 </td>
                                 <td>
                                     <div class=" button-group row-button">
-                                        <div class="overlay-trigger" data-id="<%=asset.id%>">
+                                        <div class="overlay-trigger right" data-id="<%=asset.id%>">
                                             <p class="text-overlay">
                                                 <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                             </p>
@@ -276,15 +274,9 @@
                                             <span class="building-block-icon material-icons" id="edit"> edit
                                             </span>
                                         </button>
-                                        <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
+                                        <button class="listButton linkButton" onclick='openClipboardModal("<%=asset.url%>", "image")'>
                                             <span class="building-block-icon material-icons" id="link"> link
                                             </span>
-                                            <div class="tooltip-link">
-                                                <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>
-                                            </div>
-                                            <div class="tooltip-link" id="link-copied">
-                                                <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                            </div>
                                         </button>
 
                                         <button class="rounded listButton addButton"
@@ -308,7 +300,7 @@
                                     </td>
                                     <td>
                                         <div class=" button-group row-button">
-                                            <div class="overlay-trigger" data-id="<%=asset.id%>">
+                                            <div class="overlay-trigger right" data-id="<%=asset.id%>">
                                                 <p class="text-overlay">
                                                     <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                 </p>
@@ -325,11 +317,9 @@
                                                 onclick='editAsset("<%=asset.id%>", "<%=asset.mime%>")'>
                                                 <span class="building-block-icon material-icons" id="edit"> edit  </span>
                                             </button>
-                                            <button class="listButton linkButton" onclick='copyURl("<%=asset.url%>")'>
+                                            <button class="listButton linkButton" onclick='openClipboardModal("<%=asset.url%>", "video")'>
                                                 <span class="building-block-icon material-icons" id="link"> link
                                                 </span>
-                                                <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                                                <div class="tooltip-link" id="link-copied">  <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>  </div>
                                             </button>
                                             <button class="rounded listButton addButton"
                                             onclick='insertAndScrollContent(0,"asset","<%=asset.id%>", puzzleList)'>
@@ -350,7 +340,7 @@
                                                 music_note </span> </td>
                                         <td>
                                             <div class=" button-group row-button">
-                                                <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                <div class=" overlay-trigger right" data-id="<%=asset.id%>">
                                                     <p class="text-overlay">
                                                         <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                     </p>
@@ -371,14 +361,10 @@
                                                     </span>
                                                 </button>
                                                 <button class="listButton linkButton"
-                                                    onclick='copyURl("<%=asset.url%>")'>
+                                                    onclick='openClipboardModal("<%=asset.url%>", "audio")'>
                                                     <span class="building-block-icon material-icons" id="link">
                                                         link
                                                     </span>
-                                                    <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                                                    <div class="tooltip-link" id="link-copied">
-                                                        <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                                    </div>
                                                 </button>
                                                 <button class="rounded listButton addButton"
                                                     onclick='insertAndScrollContent(0,"asset","<%=asset.id%>", puzzleList)'>
@@ -403,7 +389,7 @@
                                                     picture_as_pdf </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
-                                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                    <div class=" overlay-trigger right" data-id="<%=asset.id%>">
                                                         <p class="text-overlay">
                                                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                         </p>
@@ -423,13 +409,10 @@
                                                         </span>
                                                     </button>
                                                     <button class="listButton linkButton"
-                                                        onclick='copyURl("<%=asset.url%>")'>
+                                                        onclick='openClipboardModal("<%=asset.url%>", "pdf")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                                                        <div class="tooltip-link" id="link-copied">
-                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                                        </div>
+                                                        
                                                     </button>
 
                                                     <button class="rounded listButton addButton"
@@ -454,7 +437,7 @@
                                                     terminal </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
-                                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                    <div class=" overlay-trigger right" data-id="<%=asset.id%>">
                                                         <p class="text-overlay">
                                                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                         </p>
@@ -474,13 +457,10 @@
                                                         </span>
                                                     </button>
                                                     <button class="listButton linkButton"
-                                                        onclick='copyURl("<%=asset.url%>")'>
+                                                        onclick='openClipboardModal("<%=asset.url%>", "webapp")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                                                        <div class="tooltip-link" id="link-copied">
-                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                                        </div>
+                                                        
                                                     </button>
 
                                                     <button class="rounded listButton addButton"
@@ -506,7 +486,7 @@
                                                     question_mark </span> </td>
                                             <td>
                                                 <div class=" button-group row-button">
-                                                    <div class=" overlay-trigger" data-id="<%=asset.id%>">
+                                                    <div class=" overlay-trigger right" data-id="<%=asset.id%>">
                                                         <p class="text-overlay">
                                                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                                         </p>
@@ -526,13 +506,10 @@
                                                         </span>
                                                     </button>
                                                     <button class="listButton linkButton"
-                                                        onclick='copyURl("<%=asset.url%>")'>
+                                                        onclick='openClipboardModal("<%=asset.url%>")'>
                                                         <span class="building-block-icon material-icons" id="link"> link
                                                         </span>
-                                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                                                        <div class="tooltip-link" id="link-copied">
-                                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                                        </div>
+                                                        
                                                     </button>
 
                                                     <button disabled class="rounded listButton addButton"
@@ -577,14 +554,40 @@
         <form onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
         <div class="previewReusablePuzzle">
-                    <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
-                </div>
+            <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
+        </div>
     </dialog>
     <dialog id="reusablePuzzleDialog">
         <form method="POST" action="../reusablePuzzleInstance">
         </form>
     </dialog>
     <dialog id="previewContainer" style="overflow:auto">
+    </dialog>
+    <dialog id="linkContainer" style="overflow:auto">
+        <h3><%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%></h3>
+        <div id="linkContainerCopyDiv">
+         
+            <input type="text" id="linkInput" readonly>
+            <button class="btn editButton rounded" id="copyLinkButton" onclick="copyURL()" title="<%=i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>">
+                <span class="material-icons">content_copy</span>
+                <!--<div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
+                <div class="tooltip-link" id="link-copied">
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                </div>-->
+            </button>
+        </div>
+        <h3><%= i18n.escapeRoom.steps.indications.front.catalog.copyEmbed%></h3>
+        <div id="embedContainerCopyDiv">
+            <input  type="text" id="embedInput" readonly> 
+            <button class="btn editButton rounded" id="copyEmbedButton" onclick="copyEmbed()" title="<%=i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>">
+                <span class="material-icons">content_copy</span>
+                <!--<div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
+                <div class="tooltip-link" id="embed-copied">
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
+                </div>-->
+            </button>
+        </div>
+
     </dialog>
 </div>
 
@@ -630,26 +633,25 @@
         const instructions = (reusablePuzzle && reusablePuzzle.instructions) ? reusablePuzzle.instructions.split(",") : [];
         const url =  `/reusablePuzzles/${reusablePuzzleId}/${window.lang}.pdf`
         const hasInstructions = instructions.includes(window.lang) ? true : false;
-
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
         return `
          <div style="position:absolute; right: 0; margin-top: 10px;">
-                 <a href="${url}" target="_blank">
-                    <button ${!hasInstructions ? "disabled" : null} class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
+                  ${hasInstructions ? `<a href="${url}" target="_blank">
+                    <button "disabled" : null} class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.config.reusablePuzzleInstructions%>
                         <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
                     </button>
-                </a>
+                </a>`:''}
             </div>
-        <div class="editDialog" id = "appendFormElementsHere">
-            <h3 style="margin: 0;"> ${ puzzleName } </h3>
+        <div class="editDialog" id="appendFormElementsHere">
+            <h3 class="reusablePuzzleInstanceTitle"> ${ puzzleName } </h3>
             <div>
                 <label for="name">
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%>
                 </label>
                 <input id="nameOfReusablePuzzle" type="text" required name="name" value="${puzzleName}"/>
             </div>
-            <div>
+            <div style="display:none">
                 <label for="description">
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.description%>
                 </label>
@@ -669,7 +671,7 @@
         return;
     }
 
-    function setPuzzleSol(id, config, reusablePuzzleId) {
+    function setPuzzleSol(id, reusablePuzzleInstanceConfig, reusablePuzzleId) {
         const puzzleSol = $('#puzzleSol');
         const puzzleId = $('#associatedPuzzle').val();
         const span = $('#warningSpan');
@@ -680,7 +682,6 @@
         const rangeDiv = $('#rangeDiv');
         const solutionLength = $('#solutionLengthInput');
         const solutionLengthDiv = $('#solutionLength');
-        console.log(solutionLengthDiv)
 
         if(puzzleSelected) {
             if (puzzleSelected.assignedReusablePuzzleInstance && puzzleSelected.assignedReusablePuzzleInstance != id) {
@@ -712,7 +713,7 @@
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
                     solutionLengthDiv.show();
-                    solutionLength.val(config.solutionLength || 1);
+                    solutionLength.val(reusablePuzzleInstanceConfig.solutionLength || 1);
                 } else {
                     puzzleSol.val(puzzleSelected.sol);
                     puzzleRangeInput.val(null);
@@ -730,7 +731,8 @@
             validator.hide()
             assignDiv.hide();
         }
-        updateIframe(config, reusablePuzzleId);
+
+        updateIframe();
     }
 
     function editAsset(id, mime) {
@@ -741,7 +743,7 @@
         form.empty();
         form.append('<label> <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%> </label>');
         form.append(`<input type="text" name="filename" value=${asset.filename} required>`);
-        form.append(`<input class="editButton submit" type="submit" value="<%=i18n.common.save%>">`);
+        form.append(`<input class="rounded acceptButton" type="submit" value="<%=i18n.common.save%>">`);
         $('.previewReusablePuzzle').hide();
 
         dialog.dialog({
@@ -749,6 +751,15 @@
             resizable: false,
             height: "auto",
             width: window.innerWidth > 900 ? 860 : window.innerWidth * 0.8,
+            title: "<%=i18n.common.edit%>",
+            resizable: false,
+            maxWidth: window.innerWidth * 0.7,
+            position:  { my: "center top", at: "top+30%", of: window },
+                closeText: "close",
+                classes: {
+                    "ui-dialog": "ui-corner-all clipboard-dialog",
+                    "ui-dialog-titlebar": "ui-corner-all clipboard-titlebar" 
+                },
             show: {
                 effect: "scale",
                 duration: 200
@@ -758,20 +769,35 @@
                 duration: 200
             },
         }).show()
+        $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
     }
 
     function parseAssetConfig(mime, config) {
-        if (!config) return {};
-        if (typeof config === "object"){return config}
         let configJSON = {};
-        if(mime.search(reusableRegex) !== -1){
-            configJSON = JSON.parse(config)
+
+        if(typeof config === "string"){
+            if(mime.search(reusableRegex) !== -1){
+                configJSON = JSON.parse(config);
+                let texts = config.split(';');
+                texts.forEach(text => {
+                    const data = text.split(':');
+                    configJSON[data[0]] = data[1];
+                });
+            }
+        } else if ((typeof config === "undefined")||(config === null)){
+            configJSON = {};
+        } else if (typeof config === "object"){
+            return config;
         }
-        let texts = config.split(';');
-        texts.forEach(text => {
-            const data = text.split(':');
-            configJSON[data[0]] = data[1];
-        })
+
+        //Default width and height
+        if(typeof configJSON.width === "undefined"){
+            configJSON.width = "100%";
+        }
+        if(typeof configJSON.height === "undefined"){
+            configJSON.height = "auto";
+        }
+
         if (mime.search(imageRegex) !== -1) {
             return {
                 width: configJSON.width,
@@ -823,8 +849,52 @@
         });
     }
 
-    function copyURl(url) {
-        navigator.clipboard.writeText(window.location.origin + url);
+    function copyURL() {
+        try {
+            const url = $('#linkInput').val();
+            navigator.clipboard.writeText(url);
+        } catch(e) {
+            console.error("Error copying URL to clipboard:", e);
+        }
+        
+    }
+    function copyEmbed() {
+        try {
+            const url = $('#embedInput').val();
+            navigator.clipboard.writeText(url);
+        } catch(e) {
+            console.error("Error copying embed to clipboard:", e);
+        }
+        
+    }
+
+    function openClipboardModal(url, asset) {
+        const container = $('#linkContainer')
+        $('#linkInput').val(window.location.origin + url);
+        $('#embedInput').val(getTemplate(asset, window.location.origin + url, true));
+        container.dialog({
+            title: "<%=i18n.common.copyembed%>",
+            resizable: false,
+            width: 700,
+            modal: true,
+            maxWidth: window.innerWidth * 0.7,
+            position:  { my: "center top", at: "top+30%", of: window },
+                closeText: "close",
+                classes: {
+                    "ui-dialog": "ui-corner-all clipboard-dialog",
+                    "ui-dialog-titlebar": "ui-corner-all clipboard-titlebar" 
+                },
+            show: {
+                effect: "scale",
+                duration: 200
+            },
+            hide: {
+                effect: "scale",
+                duration: 200
+            },
+            }).show();
+
+        $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
     }
 
     function insertContentBlock() {
@@ -855,7 +925,6 @@
             payload.url = encodeURI(payload.url);
         }
 
-
         insertContent(index, newType, payload, puzzles);
         if($('.building-block').children().last().offset()) {
             window.scrollTo(0, $('.building-block').children().last().offset().top);
@@ -873,9 +942,10 @@
 
 
         if (!close) {
-            overlay.css("transform", `translateY(${overlay.height() / 1.2}px`);
+            overlay.css("transform", `translateX(${-320}px`);
+            overlay.css("width", '350px');
             overlay.show();
-            $('#thescrollable').animate({scrollTop: overlay.offset().top})
+            $('#thescrollable').animate({scrollTop: overlay.offset().top-10})
             // Borrar overlay con click afuera
             // Espera un momento antes de agregar el listener, para evitar cierre inmediato
             setTimeout(() => {
@@ -918,26 +988,33 @@
                 let elements = textString;
                 elements += '<div class="editDialogButtons">';
                 elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
-                elements += `<input type="submit" class="btn rounded acceptButton" value="<%=i18n.common.save%>"/>`;
-                elements += `<button type="button" class="btn rounded deleteButton" onclick="goBack()"><%=i18n.common.back%></button>`;
+                elements += `<input type="submit" class="rounded acceptButton" value="<%=i18n.common.save%>"/>`;
+                elements += `<button type="button" class="rounded deleteButton" onclick="goBack()"><%=i18n.common.back%></button>`;
                 elements += `</div>`;
                 configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzleDesc, puzzle.id));
                 configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
 
                 $('#appendFormElementsHere').append(elements);
 
-                const selectedPuzzle = window.puzzles.find(p => p.assignedReusablePuzzleInstance == puzzle.id);
+                let selectedPuzzle = window.puzzles.find(p => p.assignedReusablePuzzleInstance == puzzle.id);
+                try {
+                    if(!selectedPuzzle && window.puzzles.length > 0) {
+                        selectedPuzzle = window.puzzles[0];
+                    }
+                } catch (e) {
+                    console.error("Error setting default puzzle:", e);
+                }
                 config.puzzle =  selectedPuzzle ? selectedPuzzle.id : undefined;
-                config.puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
+                const puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
 
-                if( config.puzzleObject?.validator === "range") {
-                    config.solutionLength = config.puzzleObject.sol.split("+")[0].length;
-                } else if(config.puzzleObject && config.puzzleObject.sol) {
-                    config.solutionLength = config.puzzleObject.sol.length;
+                if( puzzleObject?.validator === "range") {
+                    config.solutionLength = puzzleObject.sol.split("+")[0].length;
+                } else if(puzzleObject && puzzleObject.sol) {
+                    config.solutionLength = calculateSolutionLength(puzzleObject.sol);
                 }
 
                 $('#puzzleSol').change(function(e) {
-                    updateIframe(config, puzzle.id);
+                    updateIframe();
                     $('#warningMessageForReusablePuzzleCreation').show()
                 });
 
@@ -950,8 +1027,9 @@
                     $('#warningMessageForReusablePuzzleCreation').show()
                 });
 
-                $('#associatedPuzzle').val(config.puzzleObject.id).change();
-                updateIframe(config, puzzle.reusablePuzzleId);
+                $('#associatedPuzzle').val(puzzleObject.id).change();
+                     
+                updateIframe();
 
                 $(".sections").scrollTop(0);
             });
@@ -965,12 +1043,43 @@
             $(".sections").scrollTop(0);
             configForm.attr("action",  "reusablePuzzleInstance");
         }
+       
     }
 
-    function updateIframe(config, reusablePuzzleId) {
-        $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${config.puzzle}&config=${encodeURIComponent(JSON.stringify(config))}`);
+    function updateIframe() {
+        let reusablePuzzleInstanceConfig = generateReusablePuzzleInstanceConfigFromForm();
+        let reusablePuzzleId = reusablePuzzleInstanceConfig.reusablePuzzleId;
+        let puzzleId = reusablePuzzleInstanceConfig.puzzle;
+        //console.log("Update iframe", reusablePuzzleInstanceConfig);
+        $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${puzzleId}&config=${encodeURIComponent(JSON.stringify(reusablePuzzleInstanceConfig))}`);
     }
 
+    function refreshCKEditor() {
+        try {
+            for (var instanceName in CKEDITOR.instances) {
+                var editor = CKEDITOR.instances[instanceName];
+
+                // Get the iframe that contains the editor's content
+                var iframe = editor.container.$.querySelector('iframe');
+                if (!iframe) continue;
+
+                // Access the editor's inner document
+                var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+                if (!innerDoc) continue;
+
+                // Loop through embedded iframes inside the editor content and refresh them
+                innerDoc.querySelectorAll('iframe').forEach(function(embeddedIframe) {
+                    var src = embeddedIframe.getAttribute('src');
+                    if (src) {
+                    embeddedIframe.setAttribute('src', src);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error refreshing CKEditor instances:", error);
+        }
+
+    }
     function goBack(){
         const configZone = $('#configZone');
         const configForm = $('#configForm');
@@ -1041,12 +1150,29 @@
     }
 
     function send(e,form) {
-        fetch(form.action, {method:'post', body: new URLSearchParams(new FormData(form))})
-        .then((res)=>{
+        let fetchOptions = {
+            method:'post'
+        };
+        if(form.classList.contains("reusablePuzzleInstanceForm")){
+            fetchOptions.body = JSON.stringify(generateReusablePuzzleInstanceConfigFromForm(form));
+            fetchOptions.headers = {
+                'Content-Type': 'application/json',
+            };
+        } else {
+            fetchOptions.body = new URLSearchParams(new FormData(form));
+        }
+
+        fetch(form.action, fetchOptions).then((res)=>{
             if(res.status !== 200){
                 return;
             }
             res.json().then((resJSON)=>{
+
+
+                console.log("RESPONSE");
+                console.log(resJSON);
+
+
                 if(resJSON.type === "reusable"){
                     window.reusablePuzzleInstances.forEach((puzzle) => {
                         if(puzzle.id == resJSON.id) {
@@ -1058,14 +1184,14 @@
                     window.puzzles.forEach((puzzle,index) => {
                         if(puzzle.id == resJSON.puzzle.id) {
                             window.puzzles[index] = resJSON.puzzle;
-                        }else{
+                        } else {
                             window.puzzles[index].assignedReusablePuzzleInstance = null;
                         }
                     });
                     toggleCatalogModal();
                     const row = $(`#p-${resJSON.id}`);
                     window.reusablePuzzleInstances.push(resJSON)
-                    if(!row.length) {
+                     if(!row.length) {
                         const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
                          $('#myTabContent tr:last').after(`<tr class="catalogItem" id=p-${resJSON.id}>
                             <td>
@@ -1077,7 +1203,7 @@
                             </td>
                             <td>
                                 <div class=" button-group row-button">
-                                    <div class="overlay-trigger" data-id="${resJSON.id}">
+                                    <div class="overlay-trigger right" data-id="${resJSON.id}">
                                         <p class="text-overlay">
                                             <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
                                         </p>
@@ -1096,13 +1222,8 @@
                                         <span class="building-block-icon material-icons" id="edit"> edit
                                         </span>
                                     </button>
-                                    <button class="listButton linkButton" onclick='copyURl("${resJSON.url}")'>
-                                        <span class="building-block-icon material-icons" id="link"> link
-                                        </span>
-                                        <div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                                        <div class="tooltip-link" id="link-copied">
-                                            <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                        </div>
+                                    <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/reusablePuzzleInstances/${resJSON.id}/render","reusablePuzzle")'>
+                                        <span class="building-block-icon material-icons" id="link">link</span>
                                     </button>
 
                                     <button class="rounded listButton addButton"
@@ -1119,6 +1240,10 @@
                     }
                     $('#noResources').hide();
                     row.find('.title').text(resJSON.name);
+                    refreshCKEditor();
+                    const tr = document.getElementById(`p-${resJSON.id}`);
+                    const title = tr.querySelector('.title');
+                    addListenerForHover(title);
                 } else {
                     window.assets.forEach((asset) => {
                         if(asset.id == resJSON.id) {
@@ -1134,7 +1259,7 @@
             })
         });
         e.preventDefault();
-
+       
     }
 
     function addChangeSolWarning() {
@@ -1144,47 +1269,74 @@
     const items = document.querySelectorAll('.catalogItem .title')
     const container = $('#previewContainer')
 
+    function getTemplate(asset, url, removeIds = false) {
+        switch(asset) {
+            case "image":
+                return `<img src="${url}" ${removeIds ? '' : 'id="imagePreview" style="position:relative; width:100%"'} />`;
+            case "audio":
+                return `<audio src="${url}" controls ${removeIds ? '' : 'id="audioPreview"'}></audio>`;
+            case "video":
+                return `<video src="${url}" controls ${removeIds ? '' : 'id="videoPreview" style="position:relative;width:100%"'}></video>`;
+            case "webapp":
+            case "reusablePuzzle":
+                return `<iframe  src="${url}" ${removeIds ? 'style="width:100%;aspect-ratio:4/3;"' : 'id="iframePreview" style="width:100%;aspect-ratio:4/3;"'} ></iframe>`;
+            case "pdf":
+                if (removeIds) {
+                    return `<iframe src="${url}" style="width:100%;height:100%;border:none;"></iframe>`;
+                } else {
+                    return `<div id="pdfPreviewDiv" style="height:700px;width:100%;"><iframe src="${url}" id="pdfPreview" style="border:none"></iframe></div>`;
+
+                }
+            default:
+                return "";
+
+        }
+    }
 
     function addListenerForHover(el){
+          
           id = el.closest('tr').getAttribute('id')
           const asset = window.assets.find(a => a.id == id);
-
-          el.addEventListener('click', (e) => {
+          const puzzle = window.puzzles.find(p => ("p-" + p.assignedReusablePuzzleInstance) == id);
+           el.addEventListener('click', (e) => {
             container.empty();
             let openContainer = true;
             if(asset && asset.mime.search(imageRegex) !== -1) {
-                container.append('<img id="imagePreview" style="position:relative; width:100%"/>')
+                container.append(getTemplate("image", asset.url))
                 const image = document.getElementById('imagePreview')
-                image.setAttribute('src', asset.url)
             } else if(asset && asset.mime.search(audioRegex) !== -1) {
-                container.append('<audio controls id="audioPreview"></audio>')
+                container.append(getTemplate("audio", asset.url))
                 const audio = document.getElementById('audioPreview')
-                audio.setAttribute('src', asset.url)
-                audio.play()
+                 audio.play()
             } else if(asset && asset.mime.search(videoRegex) !== -1) {
-                container.append('<video controls id="videoPreview" style="position:relative;width:100%"></video>')
+                container.append(getTemplate("video", asset.url))
                 const video = document.getElementById('videoPreview')
-                video.setAttribute('src', asset.url)
                 video.play()
             } else if(asset && asset.mime.search(webappRegex) !== -1) {
-                container.append('<iframe id="iframePreview"></iframe>')
-                const iframe = document.getElementById('iframePreview')
-                iframe.setAttribute('src', asset.url)
+                container.append(getTemplate("webapp", asset.url)) 
             } else if(asset && asset.mime.search(pdfRegex) !== -1) {
-                container.append('<object src="" id="pdfPreview" type="application/pdf" > <iframe id="pdfIframe" style="border:none" src="" width="100%" height="100%" > </iframe> </object>')
-                const pdf = document.getElementById('pdfPreview')
-                pdf.setAttribute('src', asset.url)
-                pdfIframe.setAttribute('src', asset.url)
-            }else{
-                openContainer = false;
+                container.append(getTemplate("pdf", asset.url));
+            } else if (puzzle) {
+                const puzzleUrl = `reusablePuzzleInstances/${puzzle.assignedReusablePuzzleInstance}/render`
+                container.append(getTemplate("reusablePuzzle", puzzleUrl));
+            } else {
+                 openContainer = false;
             }
 
           if(openContainer) {
               container.dialog({
+                title: "<%= i18n.escapeRoom.steps.indications.front.catalog.previewAsset%>",
+                modal: true,
                 resizable: false,
-                width: window.innerWidth * 0.5,
-                height: window.innerHeight * 0.3,
-                position: { my: "center center", at: "center center", of: window },
+                 maxWidth: window.innerWidth * 0.7,
+                minWidth: 700,
+                maxHeight: window.innerHeight * 0.8,
+                 position:  { my: "center top", at: "top+10%", of: window },
+                closeText: "close",
+                classes: {
+                    "ui-dialog": "ui-corner-all preview-asset-dialog",
+                    "ui-dialog-titlebar": "ui-corner-all preview-asset-titlebar" 
+                },
                 show: {
                     effect: "scale",
                     duration: 200
@@ -1194,42 +1346,77 @@
                     duration: 200
                 },
               }).show();
+              $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
+          } else {
+            try {
+                container.dialog( "close" )
+            } catch (e) {
+                console.error("Error closing dialog:", e);
+            }
           }
-          })
+        });
     }
 
     window.onload = function() {
         window.addEventListener('change', function(e) {
             // Check if e.target is a child of .editDialog
             if ($(e.target).closest('.editDialog').length > 0) {
-                const closestForm = $(e.target).closest('form')[0]
-                // e.target is inside .editDialog
-                const formData = new FormData(closestForm);
-                const newConfig = Object.fromEntries(formData.entries());
-                const sol = $("#puzzleSol").val();
-                const validator = $("#inputValidator").val();
-                const rangeInput = $("#rangeInput").val();
-                newConfig.puzzleSol = newConfig.validator=== "range" ? `${sol}+${rangeInput}` : sol;
-                let solutionLength = 0;
-                if(validator === "regex") {
-                    solutionLength = $("#solutionLengthInput").val();
-                } else {
-                    solutionLength = sol.length;
-                }
-
-                newConfig.solutionLength = solutionLength;
-
                 if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
-                    updateIframe(newConfig,newConfig.reusablePuzzleId);
+                    updateIframe();
                 }
             }
         });
-        //hover
-
         items.forEach((el) => {
             addListenerForHover(el);
         })
+    }
 
+    generateReusablePuzzleInstanceConfigFromForm = function(form){
+        if((typeof form === "undefined")||(form === null)){
+            form = document.querySelector('form[class="reusablePuzzleInstanceForm"]');
+        }
+        const formData = new FormData(form);
+        let reusablePuzzleInstanceConfig = Object.fromEntries(formData.entries());
+
+        const sol = $("#puzzleSol").val();
+        const validator = $("#inputValidator").val();
+        let solutionLength;
+        if(validator === "regex") {
+            solutionLength = $("#solutionLengthInput").val();
+        } else if (validator !== "range") {
+            solutionLength = calculateSolutionLength(sol);
+        } else {
+            solutionLength = sol.length;
+        }
+        if(typeof solutionLength === "number"){
+            reusablePuzzleInstanceConfig.solutionLength = solutionLength;
+        }
+        
+        //Parse JSON settings
+        const reusablePuzzleJSONsettings = form.querySelectorAll('input[type="hidden"].reusablePuzzleJSONSetting');
+        reusablePuzzleJSONsettings.forEach(input => {
+            if((typeof input.name === "string")&&(typeof input.value === "string")){
+                reusablePuzzleInstanceConfig[input.name] = JSON.parse(input.value);
+            }
+        });
+
+        Object.keys(reusablePuzzleInstanceConfig).forEach((key) => {
+            if ((reusablePuzzleInstanceConfig[key] === "") || (typeof reusablePuzzleInstanceConfig[key] === "undefined") || (reusablePuzzleInstanceConfig[key] === null)) {
+                delete reusablePuzzleInstanceConfig[key];
+            }
+        });
+
+        return reusablePuzzleInstanceConfig;
+    };
+
+    function calculateSolutionLength(sol, sep = ";") {
+        if (sol && sol.length > 0) {
+            if (sol.includes(sep)) {
+                return sol.split(sep).length;
+            } 
+            return sol.length
+        }
+        return 0;
     }
 
     validatorOnchange = function(){
@@ -1265,12 +1452,13 @@
 
                     $('#noResources').hide();
                     $('#myTabContent').append(returnTableRow(asset, window.puzzles));
+                    $('#thescrollable').animate({scrollTop: 100000000});
                     const tr = document.getElementById(asset.id);
                     const title = tr.querySelector('.title');
                     addListenerForHover(title);
 
                 })
-                }
+            }
         })
         toggleUploadModal()
         }
@@ -1278,78 +1466,79 @@
 const returnTableRow = (asset, puzzleList)=> {
     let icon, color;
     let disabled = false;
+    let regexType = null;
     if (asset.mime.search(new RegExp(/image\/.*/))!==-1){
         icon = "image";
         color = "btn-blue";
+        regexType = "image";
     }else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){
         icon = "videocam";
         color = "btn-red";
+        regexType = "video";
     }else if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){
         icon = "music_note";
         color = "btn-yellow";
+        regexType = "audio";
     }else if (asset.mime.search(new RegExp(/application\/pdf/))!==-1){
         icon = "picture_as_pdf";
         color = "btn-red";
+        regexType = "pdf";
     }else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1){
         icon = "terminal"
         color = "btn-purple";
-    }else{
+        regexType = "webapp";
+    } else {
         icon = "question_mark";
         color = "btn-gray";
         disabled = true;
+
     }
 
     return `<tr class="catalogItem" id=${asset.id}>
-                                    <td>
-                                        <p class="title">
-                                             ${asset.filename}
-                                        </p>
-                                    </td>
-                                    <td> <span class="building-block-icon material-icons ${color}" > ${icon} </span>
-                                    </td>
-                                    <td>
-                                    <div class=" button-group row-button">
-                                        <div class="overlay-trigger" data-id=${asset.id}>
-                                            <p class="text-overlay">
-                                                <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
-                                            </p>
-                                            <button class="deleteButton" type="button"
-                                                onclick='overlayTriggerCatalog(${asset.id}, true)'><%=i18n.common.cancel%></button>
-                                            <button class="acceptButton" type="button"
-                                                onclick='deleteAsset(${asset.id})'><%=i18n.common.accept%></button>
-                                        </div>
-                                        <button class="listButton iconButton delete-button"
-                                            onclick="overlayTriggerCatalog(${asset.id}, false)">
-                                            <span class="building-block-icon material-icons" id="delete">
-                                                delete_outline
-                                        </button>
-                                        <button ${disabled ? 'disabled': null} class="listButton iconButton editButton"
-                                            onclick='editAsset(${asset.id}, "${asset.mime}")'>
-                                            <span class="building-block-icon material-icons" id="edit"> edit
-                                            </span>
-                                        </button>
-                                        <button class="listButton linkButton" onclick='copyURl(${asset.url})'>
-                                            <span class="building-block-icon material-icons" id="link"> link
-                                            </span>
-                                            <div class="tooltip-link">
-                                                <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>
-                                            </div>
-                                            <div class="tooltip-link" id="link-copied">
-                                                <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                                            </div>
-                                        </button>
+                <td>
+                    <p class="title">
+                            ${asset.filename}
+                    </p>
+                </td>
+                <td> <span class="building-block-icon material-icons ${color}" > ${icon} </span>
+                </td>
+                <td>
+                <div class=" button-group row-button">
+                    <div class="overlay-trigger right" data-id=${asset.id}>
+                        <p class="text-overlay">
+                            <%= i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>
+                        </p>
+                        <button class="deleteButton" type="button"
+                            onclick='overlayTriggerCatalog(${asset.id}, true)'><%=i18n.common.cancel%></button>
+                        <button class="acceptButton" type="button"
+                            onclick='deleteAsset(${asset.id})'><%=i18n.common.accept%></button>
+                    </div>
+                    <button class="listButton iconButton delete-button"
+                        onclick="overlayTriggerCatalog(${asset.id}, false)">
+                        <span class="building-block-icon material-icons" id="delete">
+                            delete_outline
+                    </button>
+                    <button ${disabled ? 'disabled': null} class="listButton iconButton editButton"
+                        onclick='editAsset(${asset.id}, "${asset.mime}")'>
+                        <span class="building-block-icon material-icons" id="edit"> edit
+                        </span>
+                    </button>
+                    <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")''>
+                        <span class="building-block-icon material-icons" id="link"> link
+                        </span>
+                    </button>
 
-                                        <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
-                                            onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify(puzzleList)})'>
-                                            <span class="building-block-icon material-icons" id="add"> add
-                                            </span>
-                                            <p>
-                                                <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
-                                            </p>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>`
+                    <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
+                        onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify(puzzleList)})'>
+                        <span class="building-block-icon material-icons" id="add"> add
+                        </span>
+                        <p>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                        </p>
+                    </button>
+                </div>
+            </td>
+        </tr>`
 }
 
 function triggerClick() {

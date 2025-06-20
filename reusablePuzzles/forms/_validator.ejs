@@ -10,9 +10,7 @@
         <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
     </label>
         <input id="puzzleSol" value="" name="puzzleSol"/>
-    <span id="warningSpan" title="Puzzle assigned to another instance" class="material-icons">
-    warning
-    </span>
+    <span id="warningSpan" title="<%=i18n.reusablePuzzleApps.Common.warningPuzzleLink%>" class="material-icons">warning</span>
     <select name="validator"  id="inputValidator" >
         <%if (typeof allowedValidators == "object" && allowedValidators.includes("exact")) {%>
             <option value="exact">
