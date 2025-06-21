@@ -589,7 +589,7 @@
                 window.scrollTo(0, $('.building-block').children().last().offset().top);
             }
         }, 1);
-        
+
     }
 
     function insertGamification(index, type, payload, puzzles) {
@@ -694,7 +694,7 @@
 
     function refreshCKEditor() {
         try {
-            
+
             // for (var instanceName in CKEDITOR.instances) {
             //     var editor = CKEDITOR.instances[instanceName];
 
@@ -829,9 +829,11 @@
                     window.puzzles.forEach((puzzle,index) => {
                         if(puzzle.id == resJSON.puzzle.id) {
                             window.puzzles[index] = resJSON.puzzle;
-                            window.puzzles[index].assignedReusablePuzzleInstances.push(Number(resJSON.id)); //Puzzle in server doesnt have updated instances as where looking for the puzzle before the update
+                            if(!window.puzzles[index].assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
+                                window.puzzles[index].assignedReusablePuzzleInstances.push(Number(resJSON.id)); //Puzzle in server doesnt have updated instances as where looking for the puzzle before the update
+                            }
                         } else if(window.puzzles[index].assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
-                            window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {p != resJSON.id});
+                            window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {return p !== Number(resJSON.id)});
                         }
                     });
                     toggleCatalogModal();
@@ -982,7 +984,7 @@
             const title = tr.querySelector('.title');
             addListenerForHover(title);
         }
-        
+
     }
 
     generateReusablePuzzleInstanceConfigFromForm = function(form){
@@ -1156,7 +1158,7 @@ const returnTableRow = (asset, puzzleList)=> {
                 </td>
                 <td>
                 <div class=" button-group row-button">
-                     
+
                     <button class="listButton iconButton delete-button"
                         onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteAsset(${asset.id})" >
                         <span class="building-block-icon material-icons" id="delete">
