@@ -130,4 +130,4 @@ exports.cloudinary_upload_options_zip = {
     "tags": ["escapeRoom"]
 };
 
-exports.getFields = (el) => ({"public_id": el.public_id, "url": el.url, "filename": el.filename, "mime": el.mime});
+exports.getFields = (el) => ({"public_id": el.public_id, "config": el.config, "url": el.url, "filename": el.filename, "mime": el.mime});

@@ -1,3 +1,6 @@
+@use "common/colors"
+@use 'common/mixins'
+
 #mainSection
   min-height: 100%
   background: none
@@ -26,11 +29,11 @@
       min-width: 175px
       img
         width: 100%
-    .langs
+    .langs, .legal
       width: auto
       position: relative
       margin: 0
-      color: $textpurple
+      color: colors.$textpurple
       margin-bottom: 5px
 
     
@@ -39,7 +42,7 @@
     display: flex
     justify-content: space-between
     align-items: center
-    background-color: $darkerpurple
+    background-color: colors.$darkerpurple
     width: 100%
     z-index: 1
     position: absolute
@@ -72,7 +75,6 @@
     padding: 35px
     padding-top: 70px !important
     position: relative
-    
     .breadcrumbs-container
       text-align: left
       margin-bottom: 30px
@@ -84,7 +86,7 @@
           &:hover
             text-decoration: underline
         .material-icons
-          color: $brightgreen
+          color: colors.$brightgreen
         .select-wrapper
           position: relative
           .breadcrumb-select
@@ -113,7 +115,7 @@
               font-family: Lato !important
             option
               background: white
-              color: $darkerpurple
+              color: colors.$darkerpurple
       align-self: left
     footer
       margin-left: -35px
@@ -133,11 +135,12 @@
       width: 300px
       z-index: 9999
       padding: 10px
-      box-shadow: 0px 0px 5px white
+      box-shadow: 0px 0px 5px rgba(54, 54, 54, 0.55) !important
+      border-radius: 6px
       p
         margin: 0
         margin-bottom: 10px
-        color: $darkerpurple
+        color: colors.$darkerpurple
       &::after
         background: transparent
         width: 0px
@@ -150,7 +153,13 @@
         border-style: solid
         margin-top: 0px
         border-color: transparent transparent white transparent
-
+      &.right::after
+        top: 37px
+        left: initial
+        right: -16px
+        border-color: transparent transparent transparent white
+      .text-overlay
+        font-size: 15px
       button
         outline: 0
         cursor: pointer
@@ -160,7 +169,7 @@
         font-size: 16px
         border-width: 2px
         border-style: solid
-        color: $darkerpurple
+        color: colors.$darkerpurple
         @extend %scale-animation-down
     .addItem
       background-color: #8994A7
@@ -176,11 +185,11 @@
       width: 20px
       font-size: 16px
       &.connected
-        color: $brightgreen
+        color: colors.$brightgreen
       &.disconnected
-        color: $lightred
+        color: colors.$lightred
       &.waiting
-        color: $brightyellow
+        color: colors.$brightyellow
 
 @media (min-width: 1200px)
   #mainSection

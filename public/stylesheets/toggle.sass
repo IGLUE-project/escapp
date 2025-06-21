@@ -1,0 +1,95 @@
+@use "common/colors"
+.toggle-container
+    position: relative
+    padding: 0.9em
+    border: 2px solid white
+    background-color: white
+    color: colors.$darkestpurple 
+    width: 80%
+    font-size: 0.7em
+    margin: auto
+    margin-top: 1em
+    border-radius: 10px
+    border: 4px solid colors.$brightgreen
+    &.draft
+        border: 4px solid colors.$lightred
+    .escapeRoomStatusP
+        margin-block-start: 0em
+        text-align: left
+        .escapeRoomStatus
+            vertical-align: bottom
+            .escapeRoomStatusTitle
+                color: colors.$darkestpurple 
+            .escapeRoomStatusActual
+                color: colors.$brightgreen 
+                &.draft
+                    color: colors.$lightred 
+            i,.material-icons 
+                font-size: 32px
+                color: colors.$brightblue
+    .checklist-publishing
+        text-align: left
+        list-style: none
+        padding-left: 5px
+        li
+            input
+                height: auto
+            .hidden-submit
+                opacity: 0
+                position: absolute
+                width: 18px
+                height: 18px
+            span.material-icons
+                display: inline-block
+                width: 18px
+                height: 18px
+                font-size: 18px !important
+                font-family: 'Material Icons'
+                vertical-align: bottom
+                color: colors.$lightred
+    .link-turnos-share
+        .material-icons
+            color: colors.$brightblue
+    .toggle
+        appearance: none
+        margin: 0
+        min-width: 84px
+        min-height: 48px
+        max-width: 84px
+        max-height: 48px
+        border-radius: 24px
+        position: relative
+        background-color: colors.$lightred
+        border: 2px solid #b14147
+        cursor: pointer
+        transition: background-color .2s, border-color .2s
+        &.dark
+            background-color: #1a1a1a
+            border-color: #979797
+            &:after
+                background-color: #1a1a1a
+                border-color: #979797
+        &:checked
+            background-color: colors.$brightgreen
+            border-color: #106128
+
+            &.dark
+                background-color: #219b44
+            &:after
+                left: calc(100% - 40px - 2px)
+                border-color: #106128
+        &:after
+            content: ' '
+            min-height: 40px
+            min-width: 40px
+            border: 2px solid #b14147
+            background-color: white
+            box-sizing: border-box
+            border-radius: 50%
+            position: absolute
+            left: 0px
+            pointer-events: none
+            top: 2px
+            transition: left .2s, border-color .2s
+
+            

@@ -6,6 +6,12 @@ exports.load = {
         {
             "model": models.user,
             "as": "author"
+        },
+        {"model": models.attachment},
+        {
+            "model": models.user,
+            "as": "userCoAuthor",
+            "required": false
         }
     ]
 };
@@ -13,7 +19,11 @@ exports.load = {
 
 exports.loadShow = {
     "include": [
-        {"model": models.turno},
+        {
+            "model": models.turno,
+            "required": false,
+            "where": {"status": {[Op.not]: "test"}}
+        },
         {
             "model": models.puzzle,
             "include": [{"model": models.hint}]
@@ -69,6 +79,8 @@ exports.loadComplete = {
     "include": [
         {
             "model": models.turno,
+            "required": false,
+            "where": {"status": {[Op.not]: "test"}},
             "include": {
                 "model": models.team,
                 "attributes": ["id"]
@@ -81,9 +93,15 @@ exports.loadComplete = {
         models.attachment,
         models.asset,
         models.hintApp,
+        models.reusablePuzzleInstance,
         {
             "model": models.user,
             "as": "author"
+        },
+        {
+            "model": models.user,
+            "as": "userCoAuthor",
+            "required": false
         }
     ],
     "order": [
@@ -130,7 +148,18 @@ exports.ids = (ids) => {
                     }
                 ]
             },
-            models.attachment
+            models.attachment,
+            {
+                "model": models.user,
+                "as": "author",
+                "required": false
+            },
+            {
+                "model": models.user,
+                "as": "userCoAuthor",
+                "duplicating": false,
+                "required": false
+            }
         ],
         "order": [["id", "desc"]]
     };
@@ -138,7 +167,7 @@ exports.ids = (ids) => {
     return findOptions;
 };
 
-exports.all = (user, page = 1, limit = 10) => {
+exports.all = (user, page = 1, limit = 10, search) => {
     const findOptions = {
         "attributes": [
             "id",
@@ -153,6 +182,7 @@ exports.all = (user, page = 1, limit = 10) => {
                 "model": models.turno,
                 "attributes": ["status", "capacity", "from", "to"],
                 "required": true,
+                "where": {"status": {[Op.not]: "test"}},
                 "include": [
                     {
                         "model": models.user,
@@ -162,42 +192,99 @@ exports.all = (user, page = 1, limit = 10) => {
                     }
                 ]
             },
-            models.attachment
+
+            {
+                "model": models.attachment,
+                "required": false
+            },
+            {
+                "model": models.asset,
+                "required": false
+            },
+            {
+                "model": models.reusablePuzzleInstance,
+                "required": false
+            }
         ]
     };
 
     if (user) {
         findOptions.include[0].include[0].where = {"id": user};
         findOptions.include[0].include[0].required = true;
-        findOptions.attributes = ["id"];
+        findOptions.attributes = ["id", "title"];
         findOptions.distinct = false;
     }
     if (page !== null) {
         findOptions.limit = limit;
         findOptions.offset = (page - 1) * limit;
     }
+    if (search) {
+        findOptions.where = {
+            [Op.and]: [
+                {
+                    [Op.or]: [
+                        {"title": {[Op.iLike]: `%${search}%`}},
+                        {"description": {[Op.iLike]: `%${search}%`}}
+                    ]
+                }
+            ]
+        };
+    }
     return findOptions;
 };
 
-exports.forTeacher = (id, page = 1, limit = 10) => ({
+exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
     "attributes": ["id", "title", "invitation"],
+    "distinct": true,
     "include": [
         models.attachment,
         {
             "model": models.user,
             "as": "author",
-            "where": {id}
+            "attributes": [],
+
+            "required": false
+        },
+        {
+            "model": models.user,
+            "as": "userCoAuthor",
+            "attributes": [],
+            "duplicating": false,
+            "required": false
         }
     ],
+    "where": {
+        [Op.and]: [
+            {
+                [Op.or]: [
+                    {"title": {[Op.iLike]: `%${search}%`}},
+                    {"description": {[Op.iLike]: `%${search}%`}}
+                ]
+            },
+            {
+                [Op.or]: [
+                    { "authorId": id },
+                    { "$userCoAuthor.id$": id }
+                ]
+            }
+        ]
+
+    },
     limit,
     "offset": (page - 1) * limit,
     "order": [["id", "desc"]]
 });
 
-exports.forAll = (page = 1, limit = 10) => ({
+exports.forAll = (page = 1, limit = 10, search = "") => ({
     "attributes": ["id", "title", "invitation"],
     "include": [models.attachment],
     limit,
+    "where": {
+        [Op.or]: [
+            {"title": {[Op.iLike]: `%${search}%`}},
+            {"description": {[Op.iLike]: `%${search}%`}}
+        ]
+    },
     "offset": (page - 1) * limit,
     "order": [["id", "desc"]]
 });

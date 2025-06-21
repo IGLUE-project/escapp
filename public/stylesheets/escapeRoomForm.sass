@@ -1,3 +1,5 @@
+@use "common/colors"
+
 #mainSection
   .main
     .basicConfig
@@ -23,7 +25,7 @@
           margin-left: 26px
           width: 100%
           background-color: transparent
-          color: $textpurple
+          color: colors.$textpurple
           font-size: 0.8em
           height: 42px
           padding-top: 10px
@@ -32,7 +34,7 @@
           padding-left: 5px
           option
             background: white
-            color: $darkerpurple
+            color: colors.$darkerpurple
             font-family: Lato, sans-serif
           &:active, &:focus
             font-family: Lato, sans-serif !important
@@ -41,12 +43,21 @@
             color: white
             border: none
             padding: 0px
-          #imgLabel, #hintsLabel
+          #imgLabel, #hintsLabel, .fileTitle
             font-size: 1em
             margin-top: 0.4em
             font-family: Lato, sans-serif
             &:focus
               color: white
+            
+          span#roleFieldStudy, span#roleFieldTeach
+            display: none
+        .fileTitle
+          overflow: hidden
+          text-overflow: ellipsis
+          white-space: nowrap
+          max-width: 500px
+          display: inline-block
         input[type=file]
           font-family: Lato, sans-serif
           width: 0.1px
@@ -58,13 +69,13 @@
         label.itemNarrow
           display: block
         .explanation
-          color: $textpurple
+          color: colors.$textpurple
           font-size: 0.6em
           padding-left: 30px
           font-family: 'Lato', sans-serif
     .note
         font-size: 16px
-        color: $textpurple
+        color: colors.$textpurple
         font-family: 'Lato', sans-serif
         padding-left: 68px
         text-align: left

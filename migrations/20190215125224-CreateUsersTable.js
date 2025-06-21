@@ -20,10 +20,6 @@ module.exports = {
                     "type": Sequelize.STRING,
                     "validate": {"notEmpty": {"msg": "Surname must not be empty."}}
                 },
-                "gender": {
-                    "type": Sequelize.STRING,
-                    "validate": {"notEmpty": {"msg": "Gender must not be empty."}}
-                },
                 "username": {
                     "type": Sequelize.STRING,
                     "unique": true,

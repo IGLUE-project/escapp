@@ -1,7 +1,7 @@
 
     Dropzone.options.assetsForm = {
         "paramName": "upload", // The name that will be used to transfer the file
-        "maxFilesize": 10, // MB
+        "maxFilesize": 30, // MB
         "clickable": "#uploadNew, .dropzone",
         "addRemoveLinks": true,
         "accept": function(file, done) {
@@ -32,7 +32,7 @@
             } else {
                 file.previewElement.remove();
             }
-           
+
         },
         "dictDefaultMessage": i18nMsg.dictDefaultMessage,
         "dictFallbackMessage": i18nMsg.dictFallbackMessage,
@@ -52,7 +52,7 @@ $(function(){
         dropzone.files.push(mockFile)
         dropzone.options.addedfile.call(dropzone, mockFile);
         if (a.mime.match("image")) {
-            dropzone.options.thumbnail.call(dropzone, mockFile, a.url);           
+            dropzone.options.thumbnail.call(dropzone, mockFile, a.url);
         }
         mockFile.previewElement.classList.add('dz-complete');
     }

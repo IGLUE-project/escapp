@@ -1,0 +1,92 @@
+<%- include ("../partials/_header.ejs") %>
+
+<div role="main" class="main reportList">
+
+<table class="mainTable">
+    <tr>
+        <th>Author</th>
+        <th>Escape Room</th>
+        <th>Reason</th>
+        <th>Comments</th>
+        <th>Actions</th>
+    </tr>
+    <%reports.forEach(report => {%>
+           <tr id=<%=report.id%> class="info <%=report.readed ? "readed":"noreaded"%>">
+                <td><%= report.user.name%></td>
+                <td><a href="/escapeRooms/<%=report.escapeRoom.id%>"><%= report.escapeRoom.title%></a></td>
+                <td><%- i18n.management.report.reasons[report.reason]%></td>
+                <td id="<%=report.id%>-c" class="<%=report.readed ? "readed":"noreaded"%> comments">
+                    <%= report.comments%>
+                </td>
+                <td>
+                    <button class="report-btn  Bnoreaded" onclick="markAsUnread('<%= report.id%>')"
+                        title="<%=i18n.management.report.markAsUnread%>">
+                        <span class="material-icons">mark_email_unread</span>
+                    </button>
+                    <button class="report-btn  Breaded" onclick="markAsRead('<%= report.id%>')"
+                        title="<%=i18n.management.report.markAsRead%>"> 
+                        <span class="material-icons">mark_email_read</span>
+                    </button>
+                    <button class="report-btn delete" onclick="deleteReport('<%= report.id%>')"
+                        title="<%=i18n.management.report.delete%>">
+                        <span class="material-icons">delete</span>
+                    </button>
+                </td>
+           </tr>
+           
+    <% })%>
+</table>
+</div>
+
+
+
+<script>
+    async function markAsRead(id) {
+        const result = await fetch(`/reports/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ readed: true })
+        })
+        if(result.ok) {
+            const row = document.getElementById(id);
+            const rowC = document.getElementById(id + '-c');
+            row.classList.remove('noreaded');
+            row.classList.add('readed');
+            rowC.classList.remove('noreaded');
+            rowC.classList.add('readed');
+        }
+    }
+
+    async function markAsUnread(id) {
+        const result = await fetch(`/reports/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ readed: false })
+        })
+        if(result.ok) {
+            const row = document.getElementById(id);
+            const rowC = document.getElementById(id + '-c');
+            row.classList.remove('readed');
+            row.classList.add('noreaded');
+            rowC.classList.remove('readed');
+            rowC.classList.add('noreaded');
+        }
+    }
+
+    async function deleteReport(id) {
+        const result = await fetch(`/reports/${id}`, {
+            method: 'DELETE',
+        })
+        if(result.ok) {
+            const row = document.getElementById(id);
+            const rowC = document.getElementById(id + '-c');
+            row.remove();
+            rowC.remove();
+        }
+
+    }
+</script>

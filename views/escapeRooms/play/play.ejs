@@ -32,7 +32,7 @@
     <% var finish = false; %>
     
     <% var content = JSON.parse(escapeRoom[endPoint + "Instructions"] || "[]").map((block, index) => ({...block, index}))  %>
-    <% if (isStudent) { %>
+
         <% var hintConditional  = (!escapeRoom.hintLimit && escapeRoom.hintLimit !== 0 ) || escapeRoom.hintLimit > 0; // Hints allowed %>
         <% var hintAppConditional = hintConditional && Boolean(escapeRoom.hintApp); // Hint app methodology %>
         <% retosSuperados = team.retos.map(a=>a.order);%>
@@ -52,7 +52,7 @@
         <% currentlyWorkingOn = retosSuperados.length ? (Math.max(...retosSuperados) + 1) : 0 %>
         <% if (finish) { currentlyWorkingOn = null;} %>
         <% content = getContentForPuzzle(escapeRoom[endPoint + "Instructions"], currentlyWorkingOn === null ? "all": currentlyWorkingOn)%>
-    <% } %>
+
 
         <% var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, hints })=>{ 
             reqHints[order] = [];
@@ -84,11 +84,11 @@
     <nav class="navbar fixed-top navbar-expand-md justify-content-between navbar-fixed-top navbar-dark bg-primary">
         <a class="navbar-brand" href="#" > 
             <%=escapeRoom.title%></a>
-        <%if (isStudent && (!escapeRoom.teamSize || escapeRoom.teamSize > 1)) {%>
+        <%if ((!escapeRoom.teamSize || escapeRoom.teamSize > 1)) {%>
             <span class="navbar-text  navbar-team-name" title="<%= session.user.username %>">
                 <b><%=i18n.team.Team%>: </b><%=team.name%>
             </span>
-        <%} else if (isStudent) {%>
+        <%} else {%>
             <span class="navbar-text">
                 <b><%=session.user.username%></b>
             </span>
@@ -98,7 +98,7 @@
         </button>
       
         <div class="collapse navbar-collapse" id="navbar-collapse-div">
-          <%if (isStudent && currentlyWorkingOn !== null) {%> 
+          <%if ( currentlyWorkingOn !== null) {%> 
             <% const puzzle = puzzles[currentlyWorkingOn] %>
             <div class="form-inline mmy-2 my-lg-0 ms-auto" style="margin-bottom: 0 !important; <%=puzzle.automatic ? 'display: none;' : ''%>" id="puzzle-form" > 
               <label class="puzzle-label">
@@ -170,7 +170,7 @@
                 </li>
                 <%}%>
                 <% if (endPoint === "class") {%>
-                    <% if (status === "active") {%>
+                    <% if (status === "active" ) {%>
                     <li class="nav-item active">
                         <a class="nav-link" href="#" id="stop-tooltip" data-toggle="tooltip" title="<%=i18n.escapeRoom.play.stop%>">
                             <button class="btn btn-warning stop-turno" data-container="body" data-placement="bottom" onclick="$('#stop-tooltip').tooltip('hide')" data-toggle="popover" title="<%=i18n.escapeRoom.play.stop%>">

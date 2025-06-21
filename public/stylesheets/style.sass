@@ -1,69 +1,72 @@
-@import 'common/fonts'
-@import 'common/colors'
-@import 'common/buttons'
-@import 'common/mixins'
-@import 'analytics'
-@import 'appearance'
-@import 'apps'
-@import 'calendar'
-@import 'charts'
-@import 'cookies'
-@import 'daterange'
-@import 'dialogs'
-@import 'escapeRoomCustomization'
-@import 'escapeRoomForm'
-@import 'escapeRoomShow'
-@import 'escapeRooms'
-@import 'error'
-@import 'evaluation'
-@import 'filters'
-@import 'flash'
-@import 'hints'
-@import 'inspiration'
-@import 'instructions'
-@import 'join'
-@import 'main'
-@import 'messages'
-@import 'participants'
-@import 'portada'
-@import 'puzzles'
-@import 'ranking'
-@import 'showStudent'
-@import 'table'
-@import 'timeline'
-@import 'resources'
-@import 'teams'
-@import 'turnos'
-@import 'turnos.manager'
-@import 'userForm'
-@import 'user'
+@use 'common/fonts'
+@use 'common/colors'
+@use 'common/buttons'
+@use 'common/mixins'
+@use 'analytics'
+@use 'appearance'
+@use 'apps'
+@use 'calendar'
+@use 'charts'
+@use 'cookies'
+@use 'daterange'
+@use 'dialogs'
+@use 'escapeRoomCustomization'
+@use 'escapeRoomForm'
+@use 'escapeRoomShow'
+@use 'escapeRooms'
+@use 'error'
+@use 'evaluation'
+@use 'filters'
+@use 'collaborators'
+@use 'flash'
+@use 'hints'
+@use 'inspiration'
+@use 'instructions'
+@use 'join'
+@use 'main'
+@use 'messages'
+@use 'participants'
+@use 'portada'
+@use 'puzzles'
+@use 'ranking'
+@use 'report'
+@use 'showStudent'
+@use 'table'
+@use 'toggle'
+@use 'timeline'
+@use 'resources'
+@use 'teams'
+@use 'turnos'
+@use 'turnos.manager' as turnos2
+@use 'userForm'
+@use 'user'
 
 \:root
-  --mainpurple: #{$mainpurple}
-  --darkerpurple: #{$darkerpurple}
-  --textpurple: #{$textpurple}
-  --bckg: #{$bckg}
-  --brightgreen: #{$brightgreen}
-  --brightyellow: #{$brightyellow}
-  --brightblue: #{$brightblue}
-  --brightorange: #{$brightorange}
-  --lightred: #{$lightred}
-  --textgrey: #{$textgrey}
-  --purpleedit: #{$purpleedit}
-  --primary: #{$white}
-  --secondary: #{$brightblue}
-  --success: #{$brightgreen}
-  --info: #{$brightyellow}
-  --warning: #{$brightorange}
-  --danger: #{$lightred}
-  --light: #{$purpleedit}
-  --dark: #{$darkerpurple}
+  --mainpurple: #{colors.$mainpurple}
+  --darkerpurple: #{colors.$darkerpurple}
+  --textpurple: #{colors.$textpurple}
+  --bckg: #{colors.$bckg}
+  --brightgreen: #{colors.$brightgreen}
+  --brightyellow: #{colors.$brightyellow}
+  --brightblue: #{colors.$brightblue}
+  --brightorange: #{colors.$brightorange}
+  --lightred: #{colors.$lightred}
+  --textgrey: #{colors.$textgrey}
+  --purpleedit: #{colors.$purpleedit}
+  --primary: #{error.$white}
+  --secondary: #{colors.$brightblue}
+  --success: #{colors.$brightgreen}
+  --info: #{colors.$brightyellow}
+  --warning: #{colors.$brightorange}
+  --danger: #{colors.$lightred}
+  --light: #{colors.$purpleedit}
+  --dark: #{colors.$darkerpurple}
 
 *
   box-sizing: border-box
 html
   min-height: 100%
-  background-color: $bckg
+  background-color: colors.$bckg
   font-family: Lato, "Lucida Grande", Helvetica, Arial, sans-serif
   body
     min-height: 100%
@@ -91,18 +94,18 @@ html
       font-family: Gugi, sans-serif
       text-align: center
     label
-      color: $textpurple //TODO Generalize
+      color: colors.$textpurple //TODO Generalize
     option
-      color: $darkerpurple
+      color: colors.$darkerpurple
       background-color: white
-    input, select
+    input, select, .textarea
       // background-color: $bckg
       background: transparent
-      -webkit-text-fill-color: $textpurple !important
-      color: $textpurple
+      -webkit-text-fill-color: colors.$textpurple !important
+      color: colors.$textpurple
       font-size: large
       text-align: center
-      border-color: $textpurple
+      border-color: colors.$textpurple
       border-radius: 20px
       border-style: solid
       border-width: 2px
@@ -121,7 +124,7 @@ html
         border-color: white !important
       &:-webkit-autofill
         // -webkit-box-shadow: 0 0 0 30px transparent inset !important
-        -webkit-text-fill-color: $textpurple !important
+        -webkit-text-fill-color: colors.$textpurple !important
         transition: background-color 5000000s step-end 0s
         font-family: Gugi !important
         &:active, &:focus
@@ -176,7 +179,7 @@ html
       // margin-left: -15px
       padding: 18px
       font-family: Gugi, Lato, sans-serif
-    .langs
+    .langs, .legal
       list-style: none
       display: flex
       flex-direction: row
@@ -185,11 +188,11 @@ html
       right: 0
       padding: 0
       font-size: 12px
-      color: $textpurple
+      color: colors.$textpurple
       li a
         padding-left: 5px
         padding-right: 5px
-        color: $textpurple
+        color: colors.$textpurple
         &:hover
           font-weight: bold
           color: white
@@ -215,7 +218,7 @@ input.light[type='checkbox']
 input.light:not([type='checkbox'])
   width: 90%
   width: calc(100% - 30px)
-  caret-color: $textpurple !important
+  caret-color: colors.$textpurple !important
   font-family: Lato !important
   &::placeholder
     opacity: 0.5
@@ -234,19 +237,27 @@ select.light, input.light:not([type='checkbox'])
   margin-left: 30px
   &:-webkit-autofill
     -webkit-box-shadow: 0 0 0 30px white inset !important
-    -webkit-text-fill-color: $textpurple !important
+    -webkit-text-fill-color: colors.$textpurple !important
     font-family: Lato !important
   &:focus, &:active
     font-family: Lato !important
     background-color: white
-    color: $lightred
-    -webkit-text-fill-color: $lightred !important
-    border-color: $lightred !important
+    color: colors.$lightred
+    -webkit-text-fill-color: colors.$lightred !important
+    border-color: colors.$lightred !important
     &:-webkit-autofill
       -webkit-box-shadow: 0 0 0 30px white inset !important
-      -webkit-text-fill-color: $lightred !important
+      -webkit-text-fill-color: colors.$lightred !important
       font-family: Lato !important
   option
     font-family: Lato !important
     background: white
-    color: $darkerpurple
+    color: colors.$darkerpurple
+.legal
+  li 
+    display: flex !important
+    flex-direction: row !important
+@media (max-width: 567px)
+  .legal
+    flex-direction: column !important
+    font-size: 10px !important

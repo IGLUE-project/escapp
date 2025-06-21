@@ -8,7 +8,7 @@
             <% if (!session.user.isStudent) { %>
                 <a title="<%=i18n.common.guide%>" href="/inspiration"><span class="navBarIcon material-icons">help_outline</span></a>
                 <span style="display:inline-block;width:10px;"></span>
-                <a title="<%=i18n.common.ideas%>" href="/resources/"><span class="navBarIcon material-icons">widgets</span></a>
+                <!-- <a title="<%=i18n.common.ideas%>" href="/resources/"><span class="navBarIcon material-icons">widgets</span></a> -->
             <% } %>
             <% if (session.user.isAdmin) { %>
                 <span style="display:inline-block;width:10px;"></span>
@@ -17,7 +17,10 @@
                 <a title="<%=i18n.common.users%>" href="/users/index/"><span class="navBarIcon material-icons">people</span></a>
                 <span style="display:inline-block;width:10px;"></span>
                 <a title="<%=i18n.common.mainPage%>" href="/escapeRoomsAdmin"><span class="navBarIcon material-icons">games</span></a>
-            
+                <span style="display:inline-block;width:10px;"></span>
+                <a title="<%=i18n.common.reports%>" href="/reports"><span class="navBarIcon material-icons">report</span></a>
+                <span style="display:inline-block;width:10px;"></span>
+                <a title="<%=i18n.common.reports%>" href="/reusablePuzzles"><span class="navBarIcon material-icons">extension</span></a>
             <% } %>
         <% } %>
     </div>

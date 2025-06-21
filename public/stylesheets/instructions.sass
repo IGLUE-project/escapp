@@ -1,13 +1,18 @@
+@use "common/buttons"
+@use "common/colors"
+
 #mainSection
   .main
     &.step-instructions
       video, iframe
         max-width: 100%
+      .building-block-img
+        height: 25px
+        vertical-align: middle
       .building-block-bar
         // background-color: white
         display: inline-block
         padding: 0px
-        width: 100%
         .building-block-bar-button
           background: none
           border: none
@@ -19,21 +24,21 @@
           font-size: 16px
           &:hover
             background: white
-            color: $darkerpurple
+            color: colors.$darkerpurple
           .building-block-img
             height: 25px
             vertical-align: middle
           .building-block-icon.material-icons
             font-size: 28px
             width: 24px
-            color: $darkerpurple
+            color: colors.$darkerpurple
             vertical-align: middle
             line-height: 25px
           &.theme-btn
             background: white
-            color: $darkerpurple
+            color: colors.$darkerpurple
             .theme-text
-              color: $darkerpurple
+              color: colors.$darkerpurple
         .building-block-bar-separator
           height: 40px
           width: 0px
@@ -43,7 +48,7 @@
           vertical-align: middle
           margin-right: 0px
           margin-left: 0px
-      
+
       .building-block
         position: relative
         border: 5px solid white
@@ -52,7 +57,7 @@
         background-color: white
         .block-config
           width: 30px
-          background-color: $brightyellow
+          background-color: colors.$brightyellow
           top: 5px
           left: -35px
           position: absolute
@@ -69,14 +74,14 @@
             position: relative
             .material-icons
               font-size: 18px
-              color: $darkerpurple
+              color: colors.$darkerpurple
               display: inline-block
 
       .editor-wrapper
         background-color: var(--bckg)
         color: black
-        &.indications .editor
-          background-color: $bckg
+        &.indications .editor, &.after .editor
+          background-color: colors.$bckg
         #editor
           min-height: 300px
       .editor
@@ -129,9 +134,9 @@
       .ui-dialog .ui-dialog-titlebar
         background: white !important
         border-color: white !important
-        color: $lightred
+        color: colors.$lightred
       .gallery-msg
-        color: $textpurple
+        color: colors.$textpurple
         font-family: Lato, sans-serif !important
         font-size: 0.8em
         padding: 25px
@@ -145,36 +150,36 @@
         .fileUrlInput
           background: none
           border: none
-          color: $textpurple !important
+          color: colors.$textpurple !important
           font-family: Lato, sans-serif !important
           font-size: 0.8em
-          -webkit-text-fill-color: $textpurple !important
+          -webkit-text-fill-color: colors.$textpurple !important
           padding-left: 0px
           margin-left: 25px
           text-align: left
           width: 70%
-          border-bottom: 2px solid $lightred
+          border-bottom: 2px solid colors.$lightred
           border-radius: 0px
           padding-bottom: 0px
           height: 2em
           margin-bottom: 1em
-          caret-color: $textpurple
+          caret-color: colors.$textpurple
           &:hover, &:active, &:focus
-            color: $lightred !important
-            -webkit-text-fill-color: $lightred !important
+            color: colors.$lightred !important
+            -webkit-text-fill-color: colors.$lightred !important
       #uploadNew
-        @include common-button
+        @include buttons.common-button
         border-radius: 25px !important
         padding: 8px 20px !important
         font-size: 15px
-        background-color: $brightyellow
+        background-color: colors.$brightyellow
       #assetsForm
         margin-left: 50px
         margin-right: 20px
-        border: 2px dashed $brightyellow
+        border: 2px dashed colors.$brightyellow
         padding: 0px
         .dz-preview
-          * 
+          *
             cursor: pointer
           .dz-image
               border: 2px solid #fff
@@ -191,19 +196,19 @@
               font-family: Lato, sans-serif
           &.file-selected
             .dz-image
-              border: 2px solid $brightgreen
+              border: 2px solid colors.$brightgreen
       .ui-dialog-buttonset
         text-align: right
         padding: 5px
         .ui-button
-          @include common-button
+          @include buttons.common-button
           border-radius: 25px !important
           padding: 8px 25px !important
           font-size: 18px
           &:first-child
-            background-color: $brightgreen
+            background-color: colors.$brightgreen
           &:last-child
-            background-color: $lightred
+            background-color: colors.$lightred
       .gamification-elements
         padding: 20px
         padding-left: 50px
@@ -228,11 +233,11 @@
           flex-direction: column
           justify-content: space-between
           &.gamification-element-selected
-            border: 2px solid $brightgreen
+            border: 2px solid colors.$brightgreen
           .gamification-element-title
             text-align: center
             font-family: 'Lato', sans-serif
-            color: $textpurple
+            color: colors.$textpurple
             height: 25%
             font-size: 11px
             margin: 0
@@ -243,7 +248,7 @@
             object-fit: contain
             vertical-align: middle
             text-align: center
-            
+
       countdown
           font-family: 'Digital', monospace
           font-size: 17vw
@@ -274,7 +279,7 @@
             width: 100%
             height: 75px
             border: 2px solid var(--primary)
-            
+
             &.ranking-header
               font-weight: bolder
             &.myTeam
@@ -299,12 +304,17 @@
               width: 15%
             .ranking-pos
               transform: scale(1.5)
+      #catalog
+        div
+          display: flex
+          flex-direction: row
+          flex-wrap: wrap
       #dialog-config
-        display: none  
+        display: none
         .config-list
           padding: 15px
           .config-paragraph
-            color: $brightgreen
+            color: colors.$brightgreen
           .puzzle-preview-select
             font-family: Lato !important
             font-size: 18px
@@ -338,13 +348,331 @@
             padding: 5px
             padding-bottom: 0px
             &.selected-theme
-              border-color: $brightgreen
+              border-color: colors.$brightgreen
             img
               width: 100%
               height: auto
-   
+
+.preview-asset-dialog, .clipboard-dialog
+  z-index: 9999
+  .preview-asset-titlebar, .clipboard-titlebar
+    background: colors.$purplebg
+    display: flex
+    justify-content: space-between
+    border-bottom: 1px rgba(101, 102, 131, 0.7) solid;
+    padding: 1.3rem 1rem 1rem 1rem;
+    z-index: 999;
+    border-radius: 6px 6px 0 0;
+  .ui-dialog-title
+      color: white
+  .ui-dialog-content
+    background: colors.$purplebg
+    border: transparent
+  .ui-dialog-titlebar-close, .ui-dialog-clipboard-close
+    font-family: 'Material Icons'
+    background: none
+    border: none
+    color: white !important
+    padding: 0
+    margin: 0
+    font-size: 20px
+  h3
+    color: white
  
-.indications
+  #embedContainerCopyDiv, #linkContainerCopyDiv
+    display: flex
+    position: relative
+    #embedInput,  #linkInput
+      flex: 1
+      width: 100%
+      height: 42px
+      text-align: left
+    #copyEmbedButton, #copyLinkButton
+      padding: 0px 8px !important;
+      margin-left: 10px;
+.ui-widget-overlay
+  opacity: 0.3
+  position: absolute
+  background: black
+  width: 100vw
+  height: 100%
+  top: 0
+  left: 0
+  bottom: 0
+.editDialog, #editDialog
+  background: colors.$purplebg
+  z-index: 9999
+  label, p, textarea, select, span
+    color: #eeeeee
+  input
+    -webkit-text-fill-color: initial !important
+  input[type="text"], select
+    border-color: #eeeeee
+    color: #eeeeee
+    padding-left: 10px
+    padding-right: 26px
+  .editDialogButtons
+    justify-content: right
+    button, input[type="submit"]
+      margin: 2px
+  form
+    align-items: center
+    display: flex
+    flex-direction: column
+    padding: 20px
+    justify-content: center
+    gap: 1rem
+  label
+    padding: 10px 10px 0 0
+  .submit
+    height: 50px
+  input[type="checkbox"]
+    height: 16px
+    margin: 0
+  #warningMessageForReusablePuzzleCreation
+    color: white
+    font-size: 0.75em
+    max-width: 450px
+    padding: 1em
+    border: 2px solid colors.$lightred
+    .material-icons
+      color: colors.$lightred
+  .titleLabelEdit
+    font-weight: bold
+    padding-bottom: 0.4rem
+    margin: 0 0 0.8rem  0
+    border-bottom: 1px solid rgb(219, 219, 219)
+    color: colors.$brightyellow
+  .containerBlocksEdit
+    max-width: 400px
+    min-width: 300px
+    display: flex
+    flex-direction: column
+    gap: 2rem
+    margin-bottom: 1rem
+.editDialogForm
+    display: flex
+    flex-direction: row
+    gap: 3rem
+
+.editUnit
+    display: flex
+    flex-direction: row
+    gap: 0.8rem
+    align-items: center
+    input.light:not([type='checkbox'])
+      margin-left: 0
+      width: 100px
+
+
+.checkBoxEditContainer
+  display: flex
+  padding-top: 1rem
+  flex-direction: row
+  gap: 3rem
+
+
+
+
+#resourceCatalog
+  .text-block-add
+    padding: 3px 18px 3px 10px
+    // margin-bottom: 6px
+    display: flex
+    align-items: center
+    gap: 4px
+    height:40px
+    p
+      margin: 0
+      // font-size: 18px
+  .catalog-container
+    cursor: pointer
+    margin-top: 0px
+    border-collapse: collapse
+  a
+    color: black
+  scrollbar-width: thin
+  scrollbar-color: var(--secondary) var(--bckg)
+  overflow-y: auto
+
+  .catalogItem
+    margin: 0 18px
+    border-bottom: 1px colors.$textpurplelessop solid
+    gap: 12px
+    padding: 0px 0px
+    max-height: 46px
+    &:last-child
+      border-bottom:0px
+      margin-bottom: 54px
+
+    .icon-text-container
+      display: flex
+      gap: 12px
+      align-items: center
+      overflow: hidden
+      text-overflow: ellipsis
+      max-height: 45px
+      white-space: nowrap
+      -webkit-line-clamp: 1
+    .title
+      margin: 12px 18px
+      display: inline-block
+      max-width: 50ch
+      width: 94%
+      overflow: hidden
+      text-overflow: ellipsis
+      max-height: 27px
+      color: rgb(193, 198, 209)
+      line-clamp:1
+      -webkit-line-clamp: 1
+      white-space: nowrap
+      font-size: 18px
+      &:hover
+        color: white
+    .material-icons
+      padding: 3px
+      border-radius: 3px
+    .btn-purple
+      background: rgb(91, 50, 129)
+    .btn-blue
+      background: colors.$blue
+    .btn-green
+      background: colors.$darkergreen
+    .btn-red
+      background: colors.$red
+    .btn-yellow
+      background: colors.$yellow
+    .btn-gray
+      background: rgb(75, 82, 87)
+
+    /*celda botón*/
+    .row-button
+      margin-right: 24px
+      display: flex
+      justify-content: end
+      height: 52px
+      align-items: center
+
+  #myTabContent
+    background: colors.$darkerpurple
+    border-radius: 0px 0px 8px 8px
+    border: colors.$textpurplelessop 1px solid
+    padding: 8px
+
+  .button-group
+    display: flex
+    gap: 9px
+    align-items: center
+
+  .listButton
+    font-size: 16px
+    p
+      color: white
+  .iconButton
+    background: none
+    border: 0px
+    border-radius: 24px
+  .editButton
+    padding: 5px
+    &:hover
+      background: colors.$purple
+      #edit
+        color: white
+    &:disabled
+      padding: 5px
+  .delete-button
+    padding: 5px
+    &:hover
+      background: colors.$darkerred
+      #delete
+        color: colors.$lightred
+
+
+  //BUTTONS
+  .uploadButton
+    height: 52px
+    a
+      display: flex
+      margin-bottom: 0.2rem
+      align-items: center
+      gap: 0.3rem
+      color: colors.$mainpurple
+    p
+      margin: 0
+  .linkButton 
+    background: none
+    border: 0px
+    border-radius: 24px
+    padding: 5px
+    &:hover
+      background: colors.$purple
+      #link
+        color: colors.$brighterblue
+      .tooltip-link
+        display: flex
+        position: absolute
+        background: colors.$tooltipbg
+        border-radius: 3px
+        padding: 4px 9px
+        color: #dadada
+        z-index: 99999
+        right: 60px
+        bottom: 24px
+      #link-copied, #embed-copied
+        display: none
+      &:focus-within
+        #link-copied, #embed-copied
+          display: flex
+  .addButton
+    display: flex
+    padding: 8px 16px 8px 6px !important
+    align-items: center
+    gap: 6px
+    background: colors.$blue
+    color: white
+    border: 0px
+    height: 36px
+    &:hover
+      background: colors.$darkerbluelessop
+    a
+      display: flex
+      color: white
+      span
+        padding-right: 6px
+    p
+      margin: 0
+      display: ruby
+    span
+      color: white
+  #buttonMain
+    height: 52px
+    font-size: 1em
+  .newItemButton
+    box-shadow: 0px 0px 40px 12px colors.$darkerpurple
+  .tooltip-link
+    display: none
+    color: rgb(221, 221, 221)
+    font-size: 13px
+  #link-copied
+    background: colors.$darkergreen
+  #delete
+    color: colors.$red
+  #edit
+    color: colors.$textgrey
+  #link
+    color: colors.$brightblue
+  #add
+    color: white
+
+  .addItem
+    left: 1000px
+    bottom: 10px
+    right: 10px
+    margin-right: 16px
+    font-size: 18px
+
+
+.indications, .after
   #editor
     color: white
     font-size: 22px
@@ -383,3 +711,193 @@
 .ql-video
   margin: auto
   display: block
+
+  /*titulo tabla*/
+.tableTitles
+  font-size: 16px
+  border-bottom: 1px solid colors.$textpurplelessop
+  th
+    text-align: left
+    padding: 18px 12px 18px 0px
+  th:first-child
+    padding-left: 20px
+
+  /*MODAL CATALOG RESOURCE*/
+
+.modalCatalogResource
+  z-index: 999
+  position: absolute
+  background: #00000077
+  height: 100vh
+  width:100vw
+  top: 0px
+  right: 0px
+  z-index: 999
+
+.modalCatalogResource.active
+  display: flex
+  border-radius: 0px 0px 6px 6px
+
+
+.modalCatalogResource
+  display: none
+  .modalTitle
+    border-bottom: 1px colors.$textpurplelessop solid
+    padding: 1.3rem 2rem 1rem 2rem
+    display: flex
+    justify-content: space-between
+    position: fixed
+    background: colors.$purplebg
+    width: 90vw
+    max-width: 1600px
+    z-index: 999
+    border-radius: 6px 6px 0 0
+    
+    h5
+      margin: 0px
+    span
+      cursor: pointer
+  .modalContainer
+    background-color: colors.$purplebg
+    border-radius: 8px
+    width: 90vw
+    max-width: 1600px
+    margin: auto
+    .sections
+      overflow: scroll
+      height: 80vh
+      max-height: 1000px
+    section
+      padding: 1.2rem 2rem
+      .title-section
+        margin: 0 0 1rem 0
+        font-size: 20px
+  #configZone
+    .configReusablePuzzle, #editDialog
+      display: flex
+      .previewReusablePuzzle
+        flex: 3
+        margin: 0.5em 4em
+        iframe
+          height: auto
+          width: 100%
+          aspect-ratio: 4 / 3
+          border: 2px solid white
+      form.configForm,  .editDialog
+        display: flex
+        flex: 2
+        flex-direction: column
+        gap: 1rem
+        padding: 1.2rem 2rem
+        div
+          display: flex
+        label, input:not([type='submit']), select
+          font-family: 'Lato' !important
+        input[type='submit']
+          color: colors.$darkerpurple
+          -webkit-text-fill-color: colors.$darkerpurple !important
+      h3.reusablePuzzleInstanceTitle
+        margin: 0px 0px 20px 0px;
+
+  // RESOURCES GAMIFICATION ELEMENTS
+  .btn-group
+    display: flex
+    gap: 0.6rem
+  // RESOURCE CATALOG BUTTON
+  .resourceCatalogBtn
+    display: flex
+    align-items: center
+    background-color: #161938
+    color: #eeeeee
+    border: 1px solid colors.$textpurplelessop
+    border-radius: 12px
+    gap: 1rem
+    padding: 0.5rem 1.5rem 0.5rem 1rem
+    font-family: Lato
+    &:hover
+      background-color: colors.$darkestpurple
+    p
+      margin: 0 0 6px 0
+
+  // RESOURCES INTERACTIVE RESOURCE
+  .resources-group
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr 1fr
+    grid-gap: 1rem
+    .resource-card
+      display: flex
+      flex-direction: column
+      border-radius: 6px
+      border: 1px colors.$textpurplelessop solid
+
+      img
+        object-fit: cover
+        height: 150px
+        aspect-ratio: 4 / 3
+        border-radius: 5px 5px 0px 0
+      .resourceCatalogBtn
+        border-radius: 0px 0px 6px 6px
+        border: 0px
+  #scenery
+    width: 400px
+    border-radius: 6px
+    border: 1px colors.$textpurplelessop solid
+    img
+      height: 120px
+      object-fit: cover
+      width: 100%
+      border-radius: 5px 5px 0px 0
+    .resourceCatalogBtn
+      border-radius: 0px 0px 6px 6px
+      border: 0px
+      width: 100%
+#iframePreview
+  border: none
+#pdfPreviewDiv
+  width: 70vw
+  height: 80vh
+  display: block
+  overflow: hidden
+  #pdfPreview
+    width: 100%
+    height: 100%
+    border: none
+
+#imagePreview
+  border: none
+  width: 100% !important;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+#warningSpan
+  color: colors.$brightorange
+  display: inline-block
+  margin: 5px
+  cursor: help
+
+@media(min-width: 1800px)
+  #mainSection
+    .main.step-instructions
+      countdown
+        font-size: 300px
+
+
+#copyLinkButton, #copyEmbedButton
+  &:hover
+    background: colors.$purple
+    #link
+      color: colors.$brighterblue
+      
+    .tooltip-link
+      display: flex
+      position: absolute
+      background: colors.$tooltipbg
+      border-radius: 3px
+      padding: 4px 9px
+      color: #dadada
+      right: 50px
+      top: 5px
+    &:focus-within
+      &#link-copied,&#embed-copied
+        display: flex !important
+.tooltip-link
+  display: none

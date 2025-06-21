@@ -43,18 +43,19 @@ require(path.join(__dirname, "requestedHint"))(sequelize, Sequelize.DataTypes);
 // Import the definition of the Asset Table from attachment.js
 require(path.join(__dirname, "asset"))(sequelize, Sequelize.DataTypes);
 
-// Import the definition of the App Table from app.js
-require(path.join(__dirname, "app"))(sequelize, Sequelize.DataTypes);
-
-// Import the definition of the Resource Table from app.js
-require(path.join(__dirname, "resource"))(sequelize, Sequelize.DataTypes);
-
 // Import the definition of the RetosSuperados Table from retosSuperados.js
 require(path.join(__dirname, "retosSuperados"))(sequelize, Sequelize.DataTypes);
 
+// Import the definition of the RetosSuperados Table from retosSuperados.js
+require(path.join(__dirname, "reusablePuzzleInstance"))(sequelize, Sequelize.DataTypes);
+
+// Import the definition of the RetosSuperados Table from retosSuperados.js
+require(path.join(__dirname, "reusablePuzzle"))(sequelize, Sequelize.DataTypes);
+
+require(path.join(__dirname, "report"))(sequelize, Sequelize.DataTypes);
 
 // Relation between models
-const {escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, app, resource} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
+const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
 
 // Relation 1-to-N between Escape Room and Turno:
 
@@ -96,6 +97,32 @@ user.hasMany(escapeRoom, {
 escapeRoom.belongsTo(user, {
     "as": "author",
     "foreignKey": "authorId"
+});
+
+
+escapeRoom.belongsToMany(user, {
+    "as": "userCoAuthor",
+    "through": "coAuthors",
+    "foreignKey": {
+        "name": "escapeRoomId",
+        "allowNull": false
+    },
+    "onDelete": "CASCADE",
+    "otherKey": "userId",
+    "constraints": true
+
+});
+
+user.belongsToMany(escapeRoom, {
+    "as": "escapeRoomCoAuthored",
+    "through": "coAuthors",
+    "foreignKey": {
+        "name": "userId",
+        "allowNull": false
+    },
+    "onDelete": "CASCADE",
+    "otherKey": "escapeRoomId",
+    "constraints": true
 });
 
 
@@ -199,8 +226,9 @@ puzzle.belongsToMany(team, {
 });
 
 // Relation N-to-M between Team and Puzzle:
-retosSuperados.belongsTo(team, {"unique": false, "foreignKey": "teamId"});
-retosSuperados.belongsTo(puzzle, {"unique": false, "foreignKey": "puzzleId"});
+retosSuperados.belongsTo(user, { "unique": false, "foreignKey": "userId" });
+retosSuperados.belongsTo(team, { "unique": false, "foreignKey": "teamId" });
+retosSuperados.belongsTo(puzzle, { "unique": false, "foreignKey": "puzzleId" });
 
 team.hasMany(retosSuperados, {
     "as": "puzzlesSolved",
@@ -211,10 +239,19 @@ team.hasMany(retosSuperados, {
     }
 });
 
+user.hasMany(retosSuperados, {
+    "as": "personSolved",
+    "foreignKey": {
+        "name": "userId",
+        "unique": false,
+        "allowNull": false
+    }
+});
+
 // Relation N-to-M between Team and Hint:
 requestedHint.belongsTo(hint, {});
 requestedHint.belongsTo(team, {});
-
+requestedHint.belongsTo(user, {});
 
 team.hasMany(requestedHint, {
     "onDelete": "CASCADE",
@@ -226,6 +263,11 @@ hint.hasMany(requestedHint, {
     "hooks": true
 });
 
+user.hasMany(requestedHint, {
+    "onDelete": "CASCADE",
+    "hooks": true
+});
+
 escapeRoom.hasMany(asset, {
     "onDelete": "CASCADE",
     "hooks": true
@@ -233,24 +275,49 @@ escapeRoom.hasMany(asset, {
 
 asset.belongsTo(escapeRoom);
 
+user.hasMany(asset, {
+    "onDelete": "CASCADE",
+    "hooks": true
+});
 
-resource.belongsTo(app);
-resource.belongsTo(puzzle);
+asset.belongsTo(user);
 
-user.hasMany(resource, {
+// Relation 1-to-N between EscapeRoom and reusablePuzzleInstance:
+escapeRoom.hasMany(reusablePuzzleInstance, {
+    "foreignKey": "escapeRoomId",
+    "onDelete": "CASCADE",
+    "hooks": true
+});
+
+reusablePuzzleInstance.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
+
+// Relation 1-to-N between reusablePuzzle and reusablePuzzleInstance:
+reusablePuzzle.hasMany(reusablePuzzleInstance, {
+    "foreignKey": "escapeRoomId",
+    "onDelete": "CASCADE",
+    "hooks": true
+});
+
+reusablePuzzleInstance.belongsTo(reusablePuzzle, {"foreignKey": "reusablePuzzleId"});
+
+escapeRoom.hasMany(report, {
     "onDelete": "CASCADE",
     "hooks": true,
-    "foreignKey": "authorId"
+    "foreignKey": "escapeRoomId"
 });
 
-app.hasMany(resource, {
+report.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
+
+user.hasMany(report, {
     "onDelete": "CASCADE",
-    "hooks": true
+    "hooks": true,
+    "foreignKey": "reportAuthor"
 });
 
-puzzle.hasMany(resource, {
-    "onDelete": "CASCADE",
-    "hooks": true
-});
 
+reusablePuzzleInstance.belongsToMany(puzzle, {"through": "reusablePuzzleInstancePuzzle"});
+
+puzzle.belongsToMany(reusablePuzzleInstance, {"through": "reusablePuzzleInstancePuzzle"});
+
+report.belongsTo(user, {"foreignKey": "reportAuthor"});
 module.exports = sequelize;

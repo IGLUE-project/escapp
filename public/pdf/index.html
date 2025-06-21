@@ -22,15 +22,18 @@
 <script src="/pdf/js/3dflipbook.min.js"></script>
 
 <script type="text/javascript">
+  const params = new URLSearchParams(window.location.search);
+  const lang = params.get('lang');
+
   $('.sample-container div').FlipBook({
-    pdf: '/pdf/escapp.pdf',
+    pdf: `/pdf/BestPracticesEER_${lang}.pdf`,
     propertiesCallback: function(props) {
       props.page.depth *= 0.7;
       props.cover.padding = 0.002;
       return props;
     },
     controlsProps: {
-      downloadURL: '/pdf/escapp.pdf'
+      downloadURL: `/pdf/BestPracticesEER_${lang}.pdf`
     }
   });
 </script>

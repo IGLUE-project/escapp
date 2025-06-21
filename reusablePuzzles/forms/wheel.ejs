@@ -1,0 +1,105 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"]}) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+            
+<div>
+    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelect" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
+    </select>
+</div>
+
+<div>
+    <label for="numberOfWheels"><%=i18n.reusablePuzzleApps.Wheel.numberOfWheels%>:</label>
+    <select name="numberOfWheels" id="numberOfWheels">
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+</div>
+
+<% for (let i = 1; i <= 5; i++) { %>
+  <%- include("_wheel_wheelSettings", { wheelNumber: i }) %>
+<% } %>
+
+<div>
+    <label for="background"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<input type="hidden" class="reusablePuzzleJSONSetting" id="wheelsType" name="wheelsType"/>
+
+<script>
+    function updateWheelSettings(){
+        let nWheels = parseInt(document.getElementById("numberOfWheels").value);
+        if((typeof nWheels === "number")&&(!Number.isNaN(nWheels))){
+            document.querySelectorAll('div.wheelSettings').forEach(div => {
+              const number = parseInt(div.getAttribute('wheelNumber'), 10);
+              if (!isNaN(number) && number <= nWheels) {
+                div.style.display = 'block';
+              } else {
+                div.style.display = 'none';
+              }
+            });
+        }
+        updateWheelsType();
+    };
+
+    function updateWheelsType(){
+        let wheelsType = [];
+        let nWheels = parseInt(document.getElementById("numberOfWheels").value);
+        if((typeof nWheels === "number")&&(!Number.isNaN(nWheels))){
+            document.querySelectorAll('div.wheelSettings').forEach(div => {
+              const number = parseInt(div.getAttribute('wheelNumber'), 10);
+              if (!isNaN(number) && number <= nWheels) {
+                let wheel = {};
+                const selectWheelType = div.querySelector('select.selectWheelType');
+                const selectWheelLength = div.querySelector('select.selectWheelLength');
+                if((selectWheelType)&&(selectWheelLength)){
+                    wheel.type = selectWheelType.value;
+                    wheel.length = selectWheelLength.value;
+                    wheelsType.push(wheel);
+                }
+              }
+            });
+        };
+        document.getElementById("wheelsType").value = JSON.stringify(wheelsType);
+    };
+
+    document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById("numberOfWheels").value =  window.currentOpenPuzzleConfig?.numberOfWheels || 3;
+    updateWheelSettings();
+
+    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.
+backgroundImg || '';
+
+    if(window.currentOpenPuzzleConfig?.wheelsType){
+        let wheelsType = window.currentOpenPuzzleConfig?.wheelsType;
+        if(typeof wheelsType !== "undefined"){
+            document.getElementById("wheelsType").value = JSON.stringify(wheelsType);
+            for(let i=0; i<wheelsType.length; i++){
+                const wheelDiv = document.querySelector(`div.wheelSettings[wheelNumber="${i+1}"]`);
+                if (wheelDiv) {
+                  const selectType = wheelDiv.querySelector('select.selectWheelType');
+                  const selectLength = wheelDiv.querySelector('select.selectWheelLength');
+                  if (selectType) {
+                    selectType.value = wheelsType[i].type;
+                  }
+                  if (selectLength) {
+                    selectLength.value = wheelsType[i].length;
+                  }
+                }
+            }
+        }
+    };
+
+    //Events
+    document.getElementById('numberOfWheels').addEventListener('change', updateWheelSettings);
+    document.querySelectorAll('select.selectWheelType, select.selectWheelLength').forEach(elem => {
+        elem.addEventListener('change', updateWheelsType);
+    });
+</script>

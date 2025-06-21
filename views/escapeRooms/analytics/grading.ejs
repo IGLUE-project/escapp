@@ -12,8 +12,7 @@
                     <% for (t in turnos) { %>
                     <% var turno = turnos[t] %>
                     <option value="<%=turno.id%>" <%= turnId == turno.id ? "selected" : "" %> >
-
-                        <%if (turno.place) {%> <%=turno.place %> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
+                        <%if (turno.place) {%> <%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
                     </option>
                     <% } %>
                 </select>
@@ -49,7 +48,9 @@
         </tr>
         <%for (var p in results) { var result = results[p];%>
         <tr class="animated fadeInRight" style="animation-delay: <%=0.02*(p)+(0.3)%>s;">
-            <td class="align-left"><%=result.name%> <%= result.surname%></td>
+            <td class="align-left">
+                <%=result.anonymized ? i18n.user.anonymous : (result.name + " " + result.surname)%>
+            </td>
             <td><%= result.turno ? getFullDate(result.turno) : i18n.turno.alwaysOpen%></td>
             <td><%=result.attendance%></td>
             <% for (var r in result.grades) {

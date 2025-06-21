@@ -1,0 +1,61 @@
+<h4 class="titleLabelEdit">
+    <%=i18n.escapeRoom.steps.indications.front.catalog.config.assignedPuzzle%>
+</h4>
+
+<select id="associatedPuzzle" name="puzzle">   
+</select>
+
+<div>
+    <label for="puzzleSol">
+        <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
+    </label>
+        <input id="puzzleSol" value="" name="puzzleSol"/>
+    <span id="warningSpan" title="<%=i18n.reusablePuzzleApps.Common.warningPuzzleLink%>" class="material-icons">warning</span>
+    <select name="validator"  id="inputValidator" >
+        <%if (typeof allowedValidators == "object" && allowedValidators.includes("exact")) {%>
+            <option value="exact">
+                <%=i18n.escapeRoom.steps.puzzles.validator.exact%>
+            </option>
+        <%}%>
+        <%if (typeof allowedValidators == "object" && allowedValidators.includes("caseinsensitive")) {%>
+            <option value="caseinsensitive" >
+                <%=i18n.escapeRoom.steps.puzzles.validator.caseinsensitive%>
+            </option>
+        <%}%>
+        <%if (typeof allowedValidators == "object" && allowedValidators.includes("range")) {%>
+            <option value="range" >
+                <%=i18n.escapeRoom.steps.puzzles.validator.range%>
+            </option>
+        <%}%>
+        <%if (typeof allowedValidators == "object" && allowedValidators.includes("regex")) {%>
+            <option value="regex" >
+                <%=i18n.escapeRoom.steps.puzzles.validator.regex%>
+            </option>
+        <%}%>
+    </select>
+</div>
+<div  id="solutionLength">
+    <label for="solutionLength">
+        <%=i18n.escapeRoom.steps.indications.front.catalog.config.solutionLength%>
+    </label>
+    <input id="solutionLengthInput" name="solutionLength" type="number"/>
+</div>
+<div  id="rangeDiv">
+    <label for="rangeInput">
+        <%=i18n.escapeRoom.steps.indications.front.catalog.config.range%>
+    </label>
+    <input id="rangeInput" step="0.01"  min="0" name="rangeInput" type="number"/>
+</div>
+<span id="warningMessageForReusablePuzzleCreation" style="display:none;">
+    <span class="material-icons">warning</span>
+        <%=i18n.escapeRoom.steps.indications.front.catalog.config.warningPuzzleChange%>
+</span>
+<script>
+    
+    var optionsPuzzle = window.puzzles.map((puzzler,index) => {
+    return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>`
+}).join('') 
+    $("#associatedPuzzle").append(optionsPuzzle);
+
+    
+</script>

@@ -125,6 +125,7 @@ exports.puzzlesByParticipants = async (req, res, next) => {
 exports.puzzlesByTeams = async (req, res, next) => {
     const {escapeRoom, query} = req;
     const {turnId, csv} = query;
+    const {i18n} = res.locals;
 
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
@@ -140,7 +141,7 @@ exports.puzzlesByTeams = async (req, res, next) => {
             const {id, name} = team;
             const {retosSuperados, retosSuperadosMin} = retosSuperadosByWho(team, puzzles, true, team.turno.startTime || team.startTime);
             const total = pctgRetosSuperados(retosSuperados);
-            const members = team.teamMembers.map((member) => `${member.name} ${member.surname}`);
+            const members = team.teamMembers.map((member) => member.anonymized ? i18n.user.anonymous : `${member.name} ${member.surname}`);
             const teamAttendance = Boolean(team.startTime);
 
             return {id, name, members, teamAttendance, retosSuperados, retosSuperadosMin, turnId, total};
@@ -172,12 +173,13 @@ exports.puzzlesByTeams = async (req, res, next) => {
 exports.ranking = async (req, res, next) => {
     const {escapeRoom, query} = req;
     const {turnId} = query;
+    const {i18n} = res.locals;
 
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
         escapeRoom.turnos = await getERTurnos(escapeRoom.id);
         const teamsRanked = await models.team.findAll(queries.team.ranking(escapeRoom.id, turnId));
-        const teams = getRetosSuperados(teamsRanked, escapeRoom.puzzles.length).sort(byRanking);
+        const teams = getRetosSuperados(teamsRanked, escapeRoom.puzzles.length, false, i18n).sort(byRanking);
 
         res.render("escapeRooms/analytics/ranking", {teams, escapeRoom, turnId});
     } catch (e) {
@@ -350,6 +352,7 @@ exports.puzzleStats = async (req, res, next) => {
         if (teamList) {
             teamList.map((team) => {
                 const {turno, startTime} = team;
+
                 const actualStartTime = turno.startTime || startTime;
                 const retosSuperados = getRetosSuperadosIdTime(team.retos, actualStartTime);
                 let lastTime = 0;
@@ -479,7 +482,7 @@ exports.grading = async (req, res, next) => {
         const users = await models.user.findAll(queries.user.puzzlesByParticipant(escapeRoom.id, turnId, orderBy, true, true));
         const turnos = await getERTurnos(escapeRoom.id);
         const results = users.map((user) => {
-            const {name, surname, username} = user;
+            const {name, surname, username, anonymized} = user;
             const turno = user.turnosAgregados[0].date || user.teamsAgregados[0].startTime;
             const startDate = user.turnosAgregados[0].startTime || user.teamsAgregados[0].startTime;
 
@@ -492,7 +495,7 @@ exports.grading = async (req, res, next) => {
             const attendance = hasAttended ? escapeRoom.scoreParticipation || 0 : 0;
 
             let total = attendance + gradeScore;
-            const result = {name, surname, username, turno, grades, turnId, attendance, total, "hintsSucceeded": 0, "hintsFailed": 0};
+            const result = {name, surname, username, anonymized, turno, grades, turnId, attendance, total, "hintsSucceeded": 0, "hintsFailed": 0};
 
             if (hasAttended) {
                 if (hintConditional) {
@@ -615,6 +618,8 @@ exports.downloadRaw = async (req, res) => {
                 "teamId": id,
                 "teamName": name,
                 "teamSize": teamMembers.length,
+                "userId": "",
+                // "username": "",
                 "turnoId": team.turno.id,
                 "turnoTag": team.turno.place,
                 "startTime": convertDate(startTime),
@@ -644,6 +649,8 @@ exports.downloadRaw = async (req, res) => {
                             "timestamp": convertDate(rns.when),
                             "minute": Math.round(100 * (rns.when - startTime) / 1000 / 60) / 100,
                             "event": "PUZZLE_FAILED_TO_SOLVE",
+                            "userId": rns.userId,
+                            // "username":rns.username,
                             "puzzleId": retos[r].order + 1,
                             "puzzleName": retos[r].title,
                             "puzzleSol": retos[r].sol,
@@ -657,6 +664,8 @@ exports.downloadRaw = async (req, res) => {
                     "event": "PUZZLE_SOLVED",
                     "timestamp": convertDate(retoTS),
                     "minute": Math.round(100 * (retoTS - startTime) / 1000 / 60) / 100,
+                    "userId": retos[r].retosSuperados.userId,
+                    // "username": retos[r].retosSuperados.user.username,
                     "puzzleId": retos[r].order + 1,
                     "puzzleName": retos[r].title,
                     "puzzleSol": retos[r].sol,
@@ -673,6 +682,8 @@ exports.downloadRaw = async (req, res) => {
                 logs.push({
                     ...logBase,
                     "event": h.success ? "HINT_OBTAINED" : "HINT_FAILED_TO_OBTAIN",
+                    "userId": h.userId,
+                    // "username": h.user.username,
                     "timestamp": convertDate(hintTS),
                     "minute": Math.round(100 * (hintTS - startTime) / 1000 / 60) / 100,
                     hintId,
@@ -685,7 +696,7 @@ exports.downloadRaw = async (req, res) => {
                 });
             }
         }
-
+        // Res.json(logs);
         createCsvFile(res, logs);
     } catch (e) {
         console.error(e);

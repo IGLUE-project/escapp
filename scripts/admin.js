@@ -2,10 +2,6 @@
 require("dotenv").config(); // Load environment variables from .env
 
 const sequelize = require("../models");
-
-const crypt = require("../helpers/crypt");
-
-
 const args = process.argv.slice(2);
 let name = null;
 let surname = null;
@@ -43,7 +39,6 @@ async function createAdmin () {
             "defaults": {
                 name,
                 surname,
-                "gender": "Femenino",
                 password,
                 "isAdmin": true,
                 "isStudent": false,

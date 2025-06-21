@@ -80,10 +80,12 @@
 		  <p class="explanation"><%=i18n.escapeRoom.steps.hints.questionNumberExplanation%></p>
 		  <input type="number" min="0" max="10000" class="customInput itemWide" id="numQuestions" name="numQuestions" value="<%= escapeRoom.numQuestions %>" placeholder="<%=i18n.escapeRoom.steps.hints.questionNumberPlaceHolder%>" autocomplete="off"/>
 		</div>
+
 		<div class="inputFormField erFormField animated slideInUp hintConditional hintAppConditional" style="<%=hintAppConditional ? '':'display: none;'%> animation-delay:800ms;">
 		    <label for="numRight"  class="itemNarrow">7. <%=i18n.escapeRoom.steps.hints.correctNumber%>:</label>
 		    <input type="number" min="0" max="10000" class="customInput itemWide" id="numRight" name="numRight" value="<%= Math.round(escapeRoom.numRight/100*escapeRoom.numQuestions)  %>" placeholder="<%=i18n.escapeRoom.steps.hints.correctNumberPlaceHolder%>" autocomplete="off"/>
 		</div>
+		
 		<div class="inputFormField erFormField animated slideInUp hintConditional hintAppConditional" style="<%=hintAppConditional ? '':'display: none;'%> animation-delay:900ms;">
 		    <label for="feedback"  class="itemNarrow">8. <%=i18n.escapeRoom.steps.hints.feedback%>:
 		    <input type="checkbox" class="customCheckbox" id="feedback" name="feedback" <%= escapeRoom.feedback ? "checked" : "" %> autocomplete="off"/></label>
@@ -97,14 +99,13 @@
 		<br/>
 		<br/>
 
-	  	<div class="align-right flex-buttons" style="margin-bottom: 60px;">
+	  	<div class="align-right flex-buttons buttons_before_progressbar">
             <button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
 			<button class="progress-buttons" type="submit" value="next" id="next" name="next"><%=i18n.common.next%></button>
 			<button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
 		</div>
         <%- include('../../partials/_progress', {progress}) %>
 	</form>
-	<br/><br/>
 </div>
 <%- include('../../partials/_footer', {ignoreExtras: true}) %>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

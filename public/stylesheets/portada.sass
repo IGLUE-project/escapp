@@ -1,3 +1,5 @@
+@use "common/colors"
+
 .portada + #mainHeader
     position: absolute
     padding: 15px
@@ -9,14 +11,14 @@
 .portada
     flex: 1 100%
     height: 100%
-    background-color: $mainpurple
+    background-color: colors.$mainpurple
     font: 18px 'Gugi', "Lucida Grande", Helvetica, Arial, sans-serif
     color: white
     .contenedor
         display: flex
         min-height: 100%
         min-height: 100vh
-        background-color: $darkerpurple
+        background-color: colors.$darkerpurple
         .loginLeft
             // background-color: $bckg
             width: 50%
@@ -33,7 +35,7 @@
                 align-self: center
         .loginRight
             color: white
-            background-color: $bckg
+            background-color: colors.$bckg
             text-align: center
             width: 50%
             flex: 3
@@ -53,6 +55,8 @@
                 margin: 0px
                 font-size: 12px
                 font-family: Lato
+            label[for="accept_terms"]
+                line-height: 1.3;
             label
                 span
                     padding-bottom: 7px
@@ -61,7 +65,7 @@
                 &:focus-within
                     color: white
             .loginWelcomeMessage
-                color: $textpurple
+                color: colors.$textpurple
                 text-align: left
                 padding-top: 15px
                 font-size: 18px
@@ -84,13 +88,25 @@
             input:-webkit-autofill::first-line // Fixes problem with small font in Chrome autofill
                 font-size: large
                 font-family: Gugi, sans-serif
-            .langs
+            .legal
                 position: absolute
                 bottom: 0px
-                color: $textpurple
+                color: colors.$textpurple
                 a:hover
                     color: white
                     font-weight: bold
+            .langs
+                position: absolute
+                top: 0px
+                right: 0px
+                text-align: right
+                justify-content: right
+                padding-right: 2%
+                color: #656683
+                a:hover
+                    color: white
+                    font-weight: bold
+
         #imagenPortada
             width: auto
 @media (max-width: 768px)

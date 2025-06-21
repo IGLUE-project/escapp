@@ -1,0 +1,32 @@
+<%- include ("../partials/_header.ejs") %>
+
+<div role="main" class="main">
+    <h1>
+    <%=i18n.reusablePuzzles.name%>
+    </h1>
+    <a  href="/reusablePuzzles/new">
+        <button style="margin-bottom:1em" type="button" class="rounded addButton"><%=i18n.reusablePuzzles.create%></button>
+    </a>
+    <table class="mainTable">
+        <tr>
+            <th><%=i18n.reusablePuzzles.name%></th><th><%=i18n.reusablePuzzles.description%></th><th><%=i18n.reusablePuzzles.config%></th><th><%=i18n.common.edit%></th><th><%=i18n.common.delete%></th>
+        </tr>
+<% reusablePuzzles.forEach((puzzle)=>{%>
+        <tr class="puzzle">
+            <td><h2><%=puzzle.name%></h2></td>
+            <td><p><%=puzzle.description%></p></td>
+            <td><p><%=JSON.stringify(puzzle.config)%></p></td>
+            <td> <button class="acceptButton" type="button"><a href="reusablePuzzles/<%=puzzle.id%>">Edit</></button> </td>
+            <td>
+            <form method="POST" action="reusablePuzzles/<%=puzzle.id%>?_method=DELETE">
+                <button class="deleteButton" >Delete</button>
+            </form>
+            </td>
+            <div class="overlay-trigger" data-id="<%=puzzle.id%>">
+                <div class="overlay-trigger" data-id="<%=puzzle.id%>">
+                </div>
+            </div>
+            </td>
+        </tr>
+<%    })%>
+</div>

@@ -1,3 +1,5 @@
+@use "common/colors"
+
 #mainSection > .main.timeline
   overflow: hidden
   background-image: none
@@ -59,7 +61,7 @@
           top: 0
           position: absolute
           margin-top: 3px
-          box-shadow: 0px 0px 10px $darkerpurple
+          box-shadow: 0px 0px 10px colors.$darkerpurple
           .tooltip
             left: -140px
           &:hover 
@@ -79,15 +81,15 @@
             width: 0px
           &.now-mark-end
             &::before
-              border-top-color: $textpurple
+              border-top-color: colors.$textpurple
             &.now-mark-long
-              border-right: 2px solid $textpurple
+              border-right: 2px solid colors.$textpurple
           &.now-mark-now
             .tooltip
               left: auto
           
         .step
-          border: 1px solid $bckg
+          border: 1px solid colors.$bckg
           display: inline-block
           text-align: center
           text-overflow: ellipsis
@@ -131,9 +133,9 @@
         cursor: crosshair
         transform: translateX(-6px)
         &.success
-          background-color: $brightgreen
+          background-color: colors.$brightgreen
         &.fail
-          background-color: $lightred
+          background-color: colors.$lightred
         &:hover 
           .tooltip
             visibility: visible
@@ -205,9 +207,9 @@
         border-radius: 7px
         border: 2px solid white
         &.hint-legend-success
-          background-color: $brightgreen
+          background-color: colors.$brightgreen
         &.hint-legend-failed
-          background-color: $lightred
+          background-color: colors.$lightred
     .door-legend
       height: 55px
       margin-bottom: 10px
@@ -222,7 +224,7 @@
     top: 10px
     left: 10px
     background-color: white
-    color: $textpurple
+    color: colors.$textpurple
     font-size: 12px
     width: auto
     min-width: 150px
@@ -239,7 +241,7 @@
       white-space: nowrap
     b
       font-weight: 700
-      color: $darkerpurple
+      color: colors.$darkerpurple
     *
       font-family: 'Lato'
 
@@ -275,8 +277,8 @@
     width: 10px
     height: 5px
   ::-webkit-scrollbar-track
-    background: $textpurple
+    background: colors.$textpurple
   ::-webkit-scrollbar-thumb
-    background: $darkerpurple
+    background: colors.$darkerpurple
   ::-webkit-scrollbar-thumb:hover
-    background: $darkerpurple
+    background: colors.$darkerpurple

@@ -2,7 +2,7 @@ const {models} = require("../models");
 const { authenticate, checkPuzzle, checkTurnoAccess, getERState, automaticallySetAttendance, getRanking, getCurrentPuzzle, getContentForPuzzle, getERPuzzles} = require("../helpers/utils");
 const {puzzleResponse, puzzleChecked, broadcastRanking, sendJoinTeam, sendStartTeam} = require("../helpers/sockets");
 const queries = require("../queries");
-const {OK, PARTICIPANT, NOK, NOT_STARTED, TOO_LATE, getAuthMessageAndCode} = require("../helpers/apiCodes");
+const {OK, PARTICIPANT, NOK, NOT_STARTED, AUTHOR, TOO_LATE, getAuthMessageAndCode} = require("../helpers/apiCodes");
 
 
 exports.checkParticipant = async (req, res, next) => {
@@ -127,7 +127,7 @@ exports.checkPuzzleSolution = async (req, res, next) => {
             escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
         }
 
-        req.response = await checkPuzzle(solution, puzzle, escapeRoom, teams, user, i18n, true);
+        req.response = await checkPuzzle(solution, puzzle, escapeRoom, teams, user, i18n, true, req.body.preview);
         const {code, correctAnswer, participation, authentication, msg, erState} = req.response.body;
 
         if (participation === PARTICIPANT) {
@@ -135,9 +135,12 @@ exports.checkPuzzleSolution = async (req, res, next) => {
             const [team] = teams;
 
             puzzleChecked(team.id, code, code === "OK" ? correctAnswer : null, solution, puzzle.order + 1, participation, authentication, erState, msg, i18n.escapeRoom.api.participation[participation]);
+        } else if (participation === AUTHOR) {
+            puzzleChecked(null, code, code === "OK" ? correctAnswer : null, solution, puzzle.order + 1, participation, authentication, erState, msg, i18n.escapeRoom.api.participation[participation]);
         }
         next();
     } catch (e) {
+        console.error(e);
         next(e);
     }
 };
@@ -152,7 +155,7 @@ exports.auth = async (req, res, next) => {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
 
         const {i18n} = res.locals || req.app.locals;
-        const participation = await checkTurnoAccess(teams, user, escapeRoom, true);
+        const participation = await checkTurnoAccess(teams, user, escapeRoom, req.body.preview);
         const attendance = participation === PARTICIPANT || participation === TOO_LATE;
         const erState = teams && teams.length ? await getERState(escapeRoom.id, teams[0], escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, attendance, true) : undefined;
 
@@ -177,7 +180,7 @@ exports.startPlaying = async (req, res, next) => {
     const {i18n} = res.locals || req.app.locals;
 
     try {
-        let participation = await checkTurnoAccess(teams, user, escapeRoom, true);
+        let participation = await checkTurnoAccess(teams, user, escapeRoom, false);
         const {status, code, msg} = getAuthMessageAndCode(participation, i18n, true);
         const attendance = participation === PARTICIPANT || participation === TOO_LATE || participation === NOT_STARTED;
         // eslint-disable-next-line init-declarations

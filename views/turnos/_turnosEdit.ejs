@@ -12,7 +12,7 @@
 			<div class="turno-form-group">
 				<span class="material-icons">label</span>
 				<label class="light" for="place"> <%= i18n.escapeRoom.steps.turnos.name %></label>
-				<input name="place" type="text" value="<%=turno.place%>" class="light" placeholder="<%= i18n.escapeRoom.steps.turnos.namePlaceholder %>">
+				<input name="place" type="text" value="<%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%>" class="light" placeholder="<%= i18n.escapeRoom.steps.turnos.namePlaceholder %>">
 				<br/><br/>
 			</div>
 			<div class="turno-form-group">
@@ -115,7 +115,8 @@
 		}); 
 
         $( ".addTurno" ).on( "click", function() {
-            const d = new Date($("#datepicker").datepicker("getDate"));
+            let d = new Date($("#datepicker").datepicker("getDate"));
+            d = isValidDate(d) ? d : new Date();
             d.setHours(9,0,0,0);
             const fullDate = getFullDate(d);
             $( "#turno-date-new input" ).val(fullDate);

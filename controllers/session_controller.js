@@ -1,7 +1,6 @@
-const {authenticate} = require("../helpers/utils");
+const {authenticate, findFirstAvailableFile} = require("../helpers/utils");
 const {models} = require("../models");
 const query = require("../queries");
-const fs = require("fs");
 const path = require("path");
 /*
  * This variable contains the maximum inactivity time allowed without
@@ -143,6 +142,7 @@ exports.adminOrMyselfRequired = (req, res, next) => {
 exports.adminOrAuthorRequired = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
+
     const {i18n} = res.locals;
 
     if (isAdmin || isAuthor) {
@@ -153,13 +153,29 @@ exports.adminOrAuthorRequired = (req, res, next) => {
     }
 };
 
-// MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
-exports.adminOrAuthorOrParticipantRequired = async (req, res, next) => {
+exports.adminOrCoAuthorRequired = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
-        isAuthor = req.escapeRoom.authorId === req.session.user.id;
+        isAuthor = req.escapeRoom.authorId === req.session.user.id,
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
+
+    const {i18n} = res.locals;
+
+    if (isAdmin || isAuthor || isCoAuthor) {
+        next();
+    } else {
+        res.status(403);
+        next(new Error(i18n.api.forbidden));
+    }
+};
+
+// MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
+exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) => {
+    const isAdmin = Boolean(req.session.user.isAdmin),
+        isAuthor = req.escapeRoom.authorId === req.session.user.id,
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
 
     try {
-        if (isAdmin || isAuthor) {
+        if (isAdmin || isAuthor || isCoAuthor) {
             next();
             return;
         }
@@ -168,8 +184,11 @@ exports.adminOrAuthorOrParticipantRequired = async (req, res, next) => {
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
             next();
+        } else if (req.escapeRoom.status === "completed") {
+            res.render("escapeRooms/preview", {"escapeRoom": req.escapeRoom, "user": req.session.user});
         } else {
-            res.redirect("back");
+            res.status(404);
+            next(new Error(404));
         }
     } catch (error) {
         next(error);
@@ -178,15 +197,14 @@ exports.adminOrAuthorOrParticipantRequired = async (req, res, next) => {
 
 // MW that allows actions only if the user logged in is a participant of the escape room.
 exports.participantRequired = async (req, res, next) => {
-    const isAdmin = Boolean(req.session.user.isAdmin),
-        isAuthor = req.escapeRoom.authorId === req.session.user.id;
+    const isAdmin = Boolean(req.session.user.isAdmin);
 
     try {
-        if (isAdmin || isAuthor) {
+        if (isAdmin) {
             res.status(403);
             throw new Error("Forbidden");
         }
-        const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id));
+        const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
 
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
@@ -221,6 +239,11 @@ exports.create = async (req, res, next) => {
         const user = await authenticate((login || "").toLowerCase(), password);
 
         if (user) {
+            if (user.anonymized) {
+                req.flash("error", i18n.user.anonymizedCantLogin);
+                res.render("index", {redir});
+                return;
+            }
             req.session.user = {
                 "id": user.id,
                 "name": `${user.name} ${user.surname}`,
@@ -272,61 +295,64 @@ exports.cookieAccept = (req, res) => {
 };
 
 
-exports.terms = (req, res, next) => {
-    const {i18n} = res.locals;
+exports.terms = async (req, res, next) => {
+    const { i18n } = res.locals;
     const currentLang = i18n.lang;
-    const op = {"root": path.join("public")};
+    const section = "terms";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { "root": rootPath };
 
-    if (fs.existsSync(`../public/terms/terms_${currentLang}.html`)) {
-        res.sendFile(`terms/terms_${currentLang}.html`, op);
-    } else if (fs.existsSync(`../public/terms/terms_${currentLang}.pdf`)) {
-        res.sendFile(`terms/terms_${currentLang}.pdf`, op);
-    } else if (fs.existsSync("../public/terms/terms.html")) {
-        res.sendFile("terms/terms.html", op);
-    } else if (fs.existsSync("../public/terms/terms.pdf")) {
-        res.sendFile("terms/terms.pdf", op);
-    } else if (fs.existsSync("../public/terms/terms_en.html")) {
-        res.sendFile("terms/terms_en.html", op);
-    } else if (fs.existsSync("../public/terms/terms_en.pdf")) {
-        res.sendFile("terms/terms_en.pdf", op);
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
     } else {
-        res.sendFile(
-            "default_terms/default.html", op,
-            function (error) {
-                if (error) {
-                    next(error);
-                }
+        res.sendFile("default_terms/default.html", op, (err) => {
+            if (err) {
+                next(err);
             }
-        );
+        });
     }
 };
 
-exports.privacy = (req, res, next) => {
-    const {i18n} = res.locals;
+exports.privacy = async (req, res, next) => {
+    const { i18n } = res.locals;
     const currentLang = i18n.lang;
-    const op = {"root": path.join("public")};
+    const section = "privacy";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { "root": rootPath };
 
-    if (fs.existsSync(`../public/privacy/privacy_${currentLang}.html`)) {
-        res.sendFile(`privacy/privacy_${currentLang}.html`, op);
-    } else if (fs.existsSync(`../public/privacy/privacy_${currentLang}.pdf`)) {
-        res.sendFile(`privacy/privacy_${currentLang}.pdf`, op);
-    } else if (fs.existsSync("../public/privacy/privacy.html")) {
-        res.sendFile("privacy/privacy.html", op);
-    } else if (fs.existsSync("../public/privacy/privacy.pdf")) {
-        res.sendFile("privacy/privacy.pdf", op);
-    } else if (fs.existsSync("../public/privacy/privacy_en.html")) {
-        res.sendFile("privacy/privacy_en.html", op);
-    } else if (fs.existsSync("../public/privacy/privacy_en.pdf")) {
-        res.sendFile("privacy/privacy_en.pdf", op);
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
     } else {
-        res.sendFile(
-            "default_privacy/default.html", op,
-            function (error) {
-                if (error) {
-                    next(error);
-                }
+        res.sendFile("default_privacy/default.html", op, (err) => {
+            if (err) {
+                next(err);
             }
-        );
+        });
+    }
+};
+
+
+exports.cookiePolicy = async (req, res, next) => {
+    const { i18n } = res.locals;
+    const currentLang = i18n.lang;
+    const section = "cookies";
+    const rootPath = path.join(__dirname, "../public");
+    const op = { "root": rootPath };
+
+    const fileToServe = await findFirstAvailableFile(section, currentLang);
+
+    if (fileToServe) {
+        res.sendFile(fileToServe, op);
+    } else {
+        res.sendFile("default_cookies/default.html", op, (err) => {
+            if (err) {
+                next(err);
+            }
+        });
     }
 };
 

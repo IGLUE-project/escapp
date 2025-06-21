@@ -28,83 +28,68 @@ let authenticatedSession = null;
 let testSession = null;
 
 beforeAll(() => {
-    try {
-        execSync(`npx sequelize db:drop --url ${dbName}`);
-    } catch (e) {
-        console.log("Test db could not be deleted");
-    }
-    try {
-        execSync(`npx sequelize db:create --url ${dbName}`);
-    } catch (e) {
-        console.log("Test db could not be created");
-    }
-    execSync(`npx sequelize db:migrate --url ${dbName}`);
-    execSync(`npx sequelize db:seed:all --url ${dbName}`);
+    // Try {
+    //     ExecSync(`npx sequelize db:drop --url ${dbName}`);
+    // } catch (e) {
+    //     Console.log("Test db could not be deleted");
+    // }
+    // Try {
+    //     ExecSync(`npx sequelize db:create --url ${dbName}`);
+    // } catch (e) {
+    //     Console.log("Test db could not be created");
+    // }
+    // ExecSync(`npx sequelize db:migrate --url ${dbName}`);
+    // ExecSync(`npx sequelize db:seed:all --url ${dbName}`);
 });
 
-beforeEach(async function () {
+beforeEach(async () => {
     testSession = await session(app);
 });
 
-describe("Unauthenticated routes", async () => {
-    for (const r in publicRoutes) {
-        const {route, statusCode} = publicRoutes[r];
-
-        it(`should display route ${route} correctly`, async (done) => {
+describe("Unauthenticated routes", () => {
+    for (const { route, statusCode } of publicRoutes) {
+        it(`should return ${statusCode} for unauthenticated route ${route}`, async () => {
             const res = await request(app).get(route);
 
-            expect(res.statusCode).toEqual(statusCode);
-            done();
+            expect(res.statusCode).toBe(statusCode);
         });
     }
 });
 
-describe("Teacher routes", async () => {
-    beforeAll((done) => {
-        testSession.post("/").
-            send({"login": "admin@upm.es", "password": "1234"}).
-            expect(302).
-            end((err) => {
-                if (err) {
-                    return done(err);
-                }
-                authenticatedSession = testSession;
-                return done();
-            });
-    });
-    for (const r in teacherRoutes) {
-        const {route, statusCode} = teacherRoutes[r];
+describe("Teacher routes", () => {
+    beforeAll(async () => {
+        const res = await testSession.
+            post("/").
+            send({ "login": "admin@upm.es", "password": "1234" });
 
-        it(`should display route ${route} correctly`, async (done) => {
+        expect(res.statusCode).toBe(302);
+        authenticatedSession = testSession;
+    });
+
+    for (const { route, statusCode } of teacherRoutes) {
+        it(`should return ${statusCode} for teacher route ${route}`, async () => {
             const res = await authenticatedSession.get(route);
 
-            expect(res.statusCode).toEqual(statusCode);
-            done();
+            expect(res.statusCode).toBe(statusCode);
         });
     }
 });
 
-describe("Student routes", async () => {
-    beforeAll((done) => {
-        testSession.post("/").
-            send({"login": "pepe@alumnos.upm.es", "password": "5678"}).
-            expect(302).
-            end((err) => {
-                if (err) {
-                    return done(err);
-                }
-                authenticatedSession = testSession;
-                return done();
-            });
-    });
-    for (const r in studentRoutes) {
-        const {route, statusCode} = studentRoutes[r];
+describe("Student routes", () => {
+    beforeAll(async () => {
+        const res = await testSession.
+            post("/").
+            send({ "login": "pepe@alumnos.upm.es", "password": "5678" });
 
-        it(`should display route ${route} correctly`, async (done) => {
+        expect(res.statusCode).toBe(302);
+        authenticatedSession = testSession;
+    });
+
+    for (const { route, statusCode } of studentRoutes) {
+        it(`should return ${statusCode} for student route ${route}`, async () => {
             const res = await authenticatedSession.get(route);
 
-            expect(res.statusCode).toEqual(statusCode);
-            done();
+            expect(res.statusCode).toBe(statusCode);
         });
     }
 });

@@ -20,7 +20,7 @@
                         <% for (t in turnos) { %>
                         <% var turno = turnos[t] %>
                         <option value="<%=turno.id%>" <%= turnId == turno.id ? "selected" : "" %> >
-                        <%if (turno.place) {%> <%=turno.place %> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
+                        <%if (turno.place) {%> <%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
                         </option>
                         <% } %>
                     </select>
@@ -38,7 +38,7 @@
             <button type="submit" id="csv-button" class="participants-button download-button" name="csv" value="csv"><%=i18n.participant.download%></button>
             <button type="button" id="attendance-all-button" class="participants-button attendance-all-button"  ><%=i18n.participant.select%></button>
             <button type="button" id="attendance-button" class="participants-button attendance-button" name="attendance"><%=i18n.participant.confirm%></button>
-            <a href="teams?turnId=<%=turnId%>"> 
+            <a href="teams?turnId=<%=turnId%>">
                 <button type="button" id="teams-button" class="participants-button see-button" name="see-as-team"><%=i18n.participant.seeByTeam%></button>
             </a>
             </div>
@@ -55,8 +55,8 @@
                 <% for (var p in participants) {
                     var participant = participants[p]; %>
                 <div class="flex-row">
-                    <div class="flex-cell flex-name"><span><%- include("../partials/_connected",{participant})%> <%= participant.name %> <%= participant.surname %> </span></div>
-                    <div class="flex-cell flex-username"><span><a href="mailto:<%=participant.username%>"><%= participant.username %></a></span></div>
+                    <div class="flex-cell flex-name"><span><%- include("../partials/_connected",{participant})%> <%if(participant.anonymized) {%> <i><%=i18n.user.anonymous%> </i> <%} else {%> <%= participant.name %> <%= participant.surname %> <%}%></span></div>
+                    <div class="flex-cell flex-username"><span><%if(participant.anonymized) {%><i><%=i18n.user.anonymous%></i><%} else {%><a href="mailto:<%=participant.username%>"><%= participant.username %></a><%}%></span></div>
                     <div class="flex-cell flex-turno"><span><%= participant.turnDate ? getFullDate(participant.turnDate) : i18n.turno.alwaysOpen  %></span></div>
                     <div class="flex-cell flex-team"><span><%= participant.teamName%></span></div>
                     <div class="flex-cell flex-attendance">
@@ -66,7 +66,7 @@
                                 <%= participant.attendance ? "checked":"" %> />
                     </div>
                     <div class="operations-participant">
-                
+
                         <button class="delete-participant" title="<%=i18n.participant.delete%>" onclick="overlayTrigger(<%=participant.id%>)">
                             <span class="material-icons">delete </span>
                         </button>
@@ -95,7 +95,7 @@
             <b><%=i18n.common.Total%>:</b> <%= participants.length %> <%=i18n.participant.participantS%>
         </div>
         <div class="align-right">
-            
+
         </div>
     <br/>
     <br/>

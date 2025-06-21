@@ -1,0 +1,91 @@
+
+<link rel="stylesheet" href="/stylesheets/vendor/dropzone.css">
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="/js/vendor/jquery.ui.sortable.min.js"></script>
+<script src="/js/vendor/jquery.ui.touch-punch.min.js"></script>
+<!-- <script src="https://www.youtube.com/iframe_api"></script> -->
+ 
+  <!-- Theme included stylesheets -->
+   <%- include ("../../partials/_header.ejs") %>
+  <div role="main" class="main steps step-instructions">
+	  <dialog id="catalog"></dialog>
+	  <%- include ("../../partials/_breadcrumbStep") %>
+	<h1><%=i18n.escapeRoom.steps[endPoint].title%></h1>
+	  <p class="intro-paragraph">
+		<%=i18n.escapeRoom.steps[endPoint].explanation%>
+	  </p>
+	  <%var theme = escapeRoom[endPoint + "Appearance"] || "litera" %>
+	  <%- include ("../../partials/_resource_catalog", {theme, endPoint, escapeRoom}) %>
+	  </div>
+	  <br/>
+	  <form style="width:100%" method='POST' id="instructionsForm" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  >
+			<div id="custom-content">
+			</div>
+		  <br/>
+			<div class="align-right flex-buttons buttons_before_progressbar">
+				<button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
+				<button class="progress-buttons" type="submit" value="next" id="next" name="next"><%=i18n.common.next%></button>
+				<button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
+			</div>
+			<%- include('../../partials/_progress', {progress}) %>
+  	</form>
+
+  <script>
+	window.escapeRoomId = <%=escapeRoom.id%>
+	window.uploadCallback = (file) => {
+	  $(".file-selected").removeClass("file-selected");
+	  $(".gamification-element-selected").removeClass("gamification-element-selected");
+	  let parent = $(file.previewElement);
+	  fileSelected = file;
+	  parent.addClass("file-selected");
+	  $('#sourceUrl').prop('checked', false);
+	  $('#sourceGamificationElement').prop('checked', false);
+	  $('#sourceFile').prop('checked', true);
+	}
+  </script>
+
+<%escapeRoom.puzzles = escapeRoom.puzzles||[];%>
+<% var puzzleArr = Array(escapeRoom.puzzles.length).fill(0).map((_i,e)=>e);
+puzzleArr.push("all")%>
+<%escapeRoom.puzzles = escapeRoom.puzzles||[];%>
+<% var puzzleArr = Array(escapeRoom.puzzles.length).fill(0).map((_i,e)=>e);
+puzzleArr.push("all")%>
+<script>
+window.puzzleList =<%- JSON.stringify(puzzleArr)%>;
+window.endPoint = "<%=endPoint%>"
+window.placeholder = "<%=i18n.escapeRoom.steps[endPoint].placeholder%>"
+window.insert = "<%=i18n.gallery.insert%>";
+window.cancel = "<%=i18n.gallery.cancel%>";
+window.accept = "<%=i18n.common.accept%>";
+window.lang = "<%=i18n.lang%>";
+window.puzzleLength = <%=escapeRoom.puzzles.length + 1%>;
+window.i18n = <%-JSON.stringify(i18n.escapeRoom.steps.indications.front)%>
+window.getTheme = theme => "/stylesheets/vendor/bootswatch/"+theme+".bootstrap.min.css";
+window.theme = endPoint === "after" ? "/stylesheets/style.css" : window.getTheme("<%=theme || 'litera' %>");
+<%var content =  (!escapeRoom[endPoint + "Instructions"] || (endPoint === "after" && escapeRoom[endPoint + "Instructions"] === "[]")) ?
+[{"type":"text","payload":{"text": i18n.escapeRoom.steps[endPoint].placeholder }, "puzzles":puzzleArr}] : JSON.parse( escapeRoom[endPoint + "Instructions"]);%>
+window.content = <%- JSON.stringify( content )%>
+</script> 
+  
+  
+  <%- include('../../partials/_footer', {ignoreExtras: true}) %>
+  </div>
+  <script src="/ckeditor/ckeditor4/ckeditor.js"></script>
+  <script src="/ckeditor/ckeditor4/editor.js"></script>
+  
+  <script>
+  $(document).ready(function() {
+	  $('.nav-link').on('click', function() {
+		  const targetTab = $(this).attr('data-bs-target');
+		  $('.nav-link').removeClass('active');
+		  $('.tab-pane').removeClass('active');
+  
+		  $(this).addClass('active');
+		  const queryTargetTab = $(targetTab)
+		  queryTargetTab.addClass('active');
+		  queryTargetTab.addClass('show');
+	  });
+  });
+  </script>
+  

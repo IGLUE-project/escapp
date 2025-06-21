@@ -9,7 +9,9 @@ seed.sh
 .vscode
 .DS_Store
 *.code-workspace
+catalog
 public/terms/*
 !public/terms/.gitkeep
 public/privacy/*
 !public/privacy/.gitkeep
+reusablePuzzles/installed/*

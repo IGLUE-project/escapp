@@ -1,13 +1,15 @@
+@use "common/colors"
+
 #mainSection
   .main
     &.step-evaluation
       h2
         text-align: left
       .scorePuzzles
-        *
-          font-family: Lato, sans-serif
         margin: 36px
         margin-bottom: 0px
+        *
+          font-family: Lato, sans-serif
         th
           color: inherit
         td, th
@@ -18,8 +20,8 @@
             padding-top: 0px
       // .erFormField .customInput, label, input
       .erFormField
-        color: $textpurple
-        -webkit-text-fill-color: $textpurple !important
+        color: colors.$textpurple
+        -webkit-text-fill-color: colors.$textpurple !important
         &:focus-within
           color: white
           -webkit-text-fill-color: white !important
@@ -29,8 +31,8 @@
           tr
             td
               label
-                color: $textpurple
-                -webkit-text-fill-color: $textpurple !important
+                color: colors.$textpurple
+                -webkit-text-fill-color: colors.$textpurple !important
             &:focus-within
               td
                 label

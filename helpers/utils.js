@@ -6,9 +6,11 @@ const {nextStep, prevStep} = require("./progress");
 const cloudinary = require("cloudinary");
 const ejs = require("ejs");
 const queries = require("../queries");
-const {OK, NOT_A_PARTICIPANT, PARTICIPANT, NOK, NOT_ACTIVE, NOT_STARTED, TOO_LATE, AUTHOR, ERROR} = require("../helpers/apiCodes");
+const {OK, NOT_A_PARTICIPANT, AUTHOR, PARTICIPANT, NOK, NOT_ACTIVE, NOT_STARTED, TOO_LATE, ERROR} = require("../helpers/apiCodes");
 const {getRetosSuperados, byRanking, getPuzzleOrderSuperados} = require("./analytics");
 const {removeDiacritics} = require("./diacritics.js");
+const fs = require("fs");
+const path = require("path");
 
 exports.flattenObject = (obj, labels, min = false) => {
     const rs = {};
@@ -44,6 +46,7 @@ exports.saveInterface = async (name, req, res, next) => {
 
 exports.playInterface = async (name, req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
 
     req.escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPuzzles);
@@ -51,7 +54,7 @@ exports.playInterface = async (name, req, res, next) => {
 
     const {token} = await models.user.findByPk(req.session.user.id);
 
-    if (isAdmin || isAuthor) {
+    if (name === "class" && (isAdmin || isAuthor || isCoAuthor)) {
         res.render("escapeRooms/play/play", {
             "escapeRoom": req.escapeRoom,
             cloudinary,
@@ -106,7 +109,7 @@ exports.playInterface = async (name, req, res, next) => {
 
             const team = teams && teams[0] ? teams[0] : {};
 
-            if (!team.startTime || team.turno.status !== "active" || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
+            if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
                 return;
             }
@@ -164,9 +167,13 @@ exports.renderEJS = (view, query = {}, options = {}) => new Promise((resolve, re
     });
 });
 
-exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId}});
+exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId, "status": {[Op.not]: "test"}}});
 
-exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]]});
+exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]], "include": [{"model": models.reusablePuzzleInstance}]});
+
+exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({"attributes": ["name", "description", "instructions", "config", ["id", "reusablePuzzleId"]]});
+
+exports.getReusablePuzzlesInstances = (id) => models.reusablePuzzleInstance.findAll({"where": {"escapeRoomId": id}, "include": [{"model": models.puzzle, "attributes": ["id"]}]});
 
 exports.getERPuzzlesAndHints = (escapeRoomId) => models.puzzle.findAll({
     "where": {escapeRoomId},
@@ -200,7 +207,7 @@ exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, a
 exports.getRanking = async (escapeRoomId, turnoId) => {
     const teamsRaw = await models.team.findAll(queries.team.rankingShort(escapeRoomId, turnoId));
     const nPuzzles = await models.puzzle.count({"where": { escapeRoomId }});
-    const ranking = getRetosSuperados(teamsRaw, nPuzzles, true).sort(byRanking);
+    const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {"user": { "anonymous": "Anonymous"}}).sort(byRanking);
 
     return ranking;
 };
@@ -221,10 +228,12 @@ exports.getScore = (puzzlesSolved, puzzleData, successHints, failHints, attendan
     return score;
 };
 
-exports.checkTurnoAccess = (teams, user, escapeRoom) => {
+exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     let participation = PARTICIPANT;
 
-    if (teams && teams.length > 0) {
+    if (preview && (user.isAdmin || escapeRoom.authorId === user.id || escapeRoom.userCoAuthor.some((co) => user.id === co.id))) {
+        participation = AUTHOR;
+    } else if (teams && teams.length > 0) {
         const [team] = teams;
 
         if (team.turno.status === "pending") {
@@ -236,8 +245,6 @@ exports.checkTurnoAccess = (teams, user, escapeRoom) => {
         } else {
             participation = PARTICIPANT;
         }
-    } else if (escapeRoom.authorId === user.id) {
-        participation = AUTHOR;
     } else {
         participation = NOT_A_PARTICIPANT;
     }
@@ -245,7 +252,7 @@ exports.checkTurnoAccess = (teams, user, escapeRoom) => {
     return participation;
 };
 
-exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, readOnly = false) => {
+exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, readOnly = false, preview = false) => {
     // eslint-disable-next-line no-undefined
     const answer = solution === undefined || solution === null ? "" : solution;
     // eslint-disable-next-line no-undefined
@@ -268,7 +275,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             correctAnswer = removeDiacritics(answer.toString().trim()) === removeDiacritics(puzzleSol.toString().trim());
             break;
         case "regex":
-            correctAnswer = removeDiacritics(answer.toString()).match(puzzleSol);
+            correctAnswer = new RegExp(puzzleSol).test(removeDiacritics(answer.toString()));
             break;
         case "range": {
             const splitArray = puzzleSol.toString().split("+");
@@ -282,7 +289,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             correctAnswer = removeDiacritics(answer.toString().toLowerCase().trim()) === removeDiacritics(puzzleSol.toString().toLowerCase().trim());
             break;
         default:
-            throw new Error("Error during puzzle validatin");
+            throw new Error("Error during puzzle validation");
         }
         if (correctAnswer) {
             msg = puzzle.correct || i18n.escapeRoom.play.correct;
@@ -290,7 +297,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             status = 423;
             msg = puzzle.fail || i18n.escapeRoom.play.wrong;
         }
-        const participationCode = await exports.checkTurnoAccess(teams, user, escapeRoom);
+        const participationCode = await exports.checkTurnoAccess(teams, user, escapeRoom, preview);
 
         participation = participationCode;
         alreadySolved = Boolean(await models.retosSuperados.findOne({"where": {"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true}}, {transaction}));
@@ -299,11 +306,11 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
                 if (correctAnswer) {
                     code = OK;
                     if (!alreadySolved && !readOnly) {
-                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true, answer}, {transaction});
+                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "userId": user.id, "success": true, answer}, {transaction});
                     }
                 } else {
                     if (!alreadySolved && !readOnly) {
-                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "success": false, answer}, {transaction});
+                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "userId": user.id, "success": false, answer}, {transaction});
                     }
                     status = 423;
                 }
@@ -313,16 +320,22 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
                 status = 500;
                 msg = e.message;
             }
+        } else if (participation === AUTHOR) {
+            if (correctAnswer) {
+                code = OK;
+            }
+            status = correctAnswer ? 202 : 423;
         } else {
             status = correctAnswer ? 202 : 423;
         }
         await transaction.commit();
-        if (teams && teams.length) {
+        if (participation !== AUTHOR && (teams && teams.length)) {
             const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
 
             erState = await exports.getERState(escapeRoom.id, teams[0], escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed);
         }
     } catch (e) {
+        console.error(e);
         await transaction.rollback();
         status = 500;
         code = ERROR;
@@ -466,6 +479,7 @@ exports.validationError = ({instance, path, validatorKey}, i18n) => {
             i18n.common.error[validatorKey]) {
             return `${i18n[instance.constructor.name].attributes[path]} ${i18n.common.error[validatorKey]}`;
         }
+        throw new Error("Error during validation");
     } catch (e) {
         return i18n.common.validationError;
     }
@@ -477,18 +491,22 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     const {id} = val;
     const success = val["puzzlesSolved.success"];
     const when = val["puzzlesSolved.createdAt"];
+    const userId = val["puzzlesSolved.user.id"];
+    const username = val["puzzlesSolved.user.username"];
     const answer = val["puzzlesSolved.answer"];
     const order = useIdInsteadOfOrder ? val["puzzlesSolved.puzzle.id"] : val["puzzlesSolved.puzzle.order"];
 
     if (!acc[id]) {
-        acc[id] = {[order]: [{success, when, answer}] };
+        acc[id] = {[order]: [{success, when, answer, userId, username}] };
     } else if (!acc[id][order]) {
-        acc[id][order] = [{success, when, answer}];
+        acc[id][order] = [{success, when, answer, userId, username}];
     } else {
-        acc[id][order].push({success, when, answer});
+        acc[id][order].push({success, when, answer, userId, username});
     }
     return acc;
 }, {});
+
+exports.getERAssets = (escapeRoomId) => models.asset.findAll({"where": {escapeRoomId}, "order": [["createdAt", "ASC NULLS LAST"]]});
 
 exports.isValidEmail = (email, whitelist = []) => {
     // Basic email format validation regex
@@ -508,7 +526,7 @@ exports.isValidEmail = (email, whitelist = []) => {
     const domain = parts[1].trim();
 
     // Ensure whitelist is properly formatted (trim spaces)
-    const cleanedWhitelist = whitelist.map((domain) => domain.trim());
+    const cleanedWhitelist = whitelist.map((dom) => dom.trim());
 
     // Check if domain is in the whitelist
     return cleanedWhitelist.includes(domain);
@@ -542,9 +560,73 @@ exports.getRole = (role, username = "", i18n) => {
         return "student";
     } else if (disableChoosingRole && whitelist && whitelist.length > 0) {
         throw new Error(i18n.user.messages.notAllowedEmail);
-    } else if (role == "student" || role == "teacher") {
+    } else if (role === "student" || role === "teacher") {
         return role; // Allow any role if role selection is enabled
     } else {
         throw new Error(i18n.api.unauthorized);
     }
+};
+
+exports.generatePassword = () => {
+    const length = 8,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let retVal = "";
+
+    for (let i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+};
+
+exports.findFirstAvailableFile = async (section, lang) => {
+    const rootPath = path.join(__dirname, "../public");
+    const candidates = [
+        `${section}/${section}_${lang}.html`,
+        `${section}/${section}_${lang}.pdf`,
+        `${section}/${section}.html`,
+        `${section}/${section}.pdf`,
+        `${section}/${section}_en.html`,
+        `${section}/${section}_en.pdf`
+    ];
+
+    for (const relativeFile of candidates) {
+        const absolutePath = path.join(rootPath, relativeFile);
+
+        try {
+            await fs.access(absolutePath);
+            return relativeFile;
+        } catch (error) {
+            // Skip and continue
+            console.error(error);
+        }
+    }
+
+    return null;
+};
+
+
+exports.stepsCompleted = (escapeRoom) => {
+    const step1 = Boolean(escapeRoom.title);
+    const step2 = escapeRoom.puzzles && escapeRoom.puzzles.length > 0;
+    const step3 = escapeRoom.hintLimit === 0 || escapeRoom.puzzles.map((p) => p.hints ? p.hints.length : 0).reduce((a, b) => a + b, 0) > 0;
+    const step4 = Boolean(escapeRoom.indicationsInstructions);
+    const step5 = Boolean(escapeRoom.teamInstructions);
+    const step6 = Boolean(escapeRoom.classInstructions);
+    const step7 = Boolean(escapeRoom.afterInstructions);
+    const step8 = (escapeRoom.scoreParticipation || 0) + escapeRoom.puzzles.map((p) => p.score ? p.score : 0).reduce((a, b) => a + b, 0) > 0;
+    const step9 = escapeRoom.status == "completed";
+
+    return [step1, step2, step3, step4, step5, step6, step7, step8, step9];
+};
+
+exports.solutionSeparatorLength = (sol, sep = ";", oneIsSplit = false) => {
+    if (sol && sol.length > 0) {
+        if (sol.includes(sep)) {
+            return sol.split(sep).length;
+        } else if (oneIsSplit) {
+            return 1;
+        }
+        return sol.length;
+    }
+    return 0;
 };

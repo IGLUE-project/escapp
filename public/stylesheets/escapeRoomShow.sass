@@ -1,3 +1,8 @@
+@use "common/colors"
+$line-color: #ffffff
+$dot-color: #aab2bd
+$text-color: #1a1a1a
+
 #mainSection
   .main.escapeRoomShow
     background: none
@@ -36,17 +41,22 @@
           li
             margin-bottom: 16px
             position: relative
+            padding-left: 1.5rem
             .overlay-trigger
               top: 40px
             &.actionTitle
               font-size: 20px
               margin-bottom: 20px
               margin-top: 30px
-              color: $brightyellow
+              color: colors.$brightyellow
             a
               line-height: 24px
               &:hover
-                color: $brightgreen
+                color: colors.$brightgreen
+              &.disabled-action
+                cursor: not-allowed
+                &:hover
+                  color: white
 
             .showMenuButton
               font-size: 16px
@@ -56,10 +66,40 @@
               transition: 0.1s all ease-in
               &:hover
                 transform: scale(0.9)
+        .timeline-er
+          position: relative
+          margin: 2rem 0
+          padding-left: 0.4rem
+          list-style: none
+          border-left: 2px solid $line-color
+          .timeline-step
+            position: relative
+            padding-left: 1.5rem
+
+            &::before
+              content: ''
+              position: absolute
+              left: -.95rem
+              top: 0.25rem
+              width: 0.75rem
+              height: 0.75rem
+              background-color: $dot-color
+              border-radius: 50%
+              border: 2px solid white
+            &.completed::before
+              background-color: colors.$brightgreen
+            a
+              display: inline-block
+              text-decoration: none
+              .material-icons
+                vertical-align: middle
+                margin-left: 0.25rem
+
+
     .flexShow
       .flexRow
         .flexShowLeft
-          width: 170px
+          width: 180px
           line-height: 37px
           font-family: Gugi, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
         .flexShowRight
@@ -83,11 +123,11 @@
     #dialog-preview-api, #dialog-share
       padding: 15px
       h4
-        color: $mainpurple
+        color: colors.$mainpurple
         font-size: 20px
         margin-bottom: -4px
       h5, h6
-        color: $mainpurple
+        color: colors.$mainpurple
       h6
         margin-bottom: 0px
       
@@ -98,41 +138,41 @@
         td, th
           font-size: 14px
           font-family: 'Lato', sans-serif
-          color: $textpurple
+          color: colors.$textpurple
           code
             font-family: monospace
-            color: $lightred
+            color: colors.$lightred
 
             &>*
               font-family: monospace
             &.api-method
-              color: $brightblue
+              color: colors.$brightblue
           &.api-key
             padding-right: 10px
             code
-              color: $brightgreen
+              color: colors.$brightgreen
           &.api-value
             padding-right: 10px
             code
-              color: $brightblue
+              color: colors.$brightblue
         th
-          color: $mainpurple
+          color: colors.$mainpurple
           font-weight: 600
           text-align: left
       pre.sample-fetch
-        color: $mainpurple
+        color: colors.$mainpurple
         padding: 15px
         font-size: 14px
         font-family: monospace
         background-color: white
-        border: 1px solid $brightorange
+        border: 1px solid colors.$brightorange
         span 
           font-family: monospace
         .code-highlighted
-          color: $lightred
+          color: colors.$lightred
       .show_link
         font-family: 'Lato', sans-serif
-        color: $darkerpurple
+        color: colors.$darkerpurple
         text-decoration: underline
         text-underline-position: under
       .joinUrl
@@ -145,35 +185,35 @@
         background: transparent
         border: none
         font-size: 1px
-        color: $brightorange
+        color: colors.$brightorange
         vertical-align: middle
       .qr
-        color: $lightred
+        color: colors.$lightred
       .join-turno-list
-        color: $darkerpurple
+        color: colors.$darkerpurple
         font-size: 18px
         list-style: none
         padding-left: 10px
         b
-          color: $brightgreen
+          color: colors.$brightgreen
       .join-instructions
         font-family: 'Lato', sans-serif
         font-size: 18px
-        color: $darkerpurple
+        color: colors.$darkerpurple
         &.join-instructions-turno
           margin-bottom: 0px
         a
-          color: $brightgreen
+          color: colors.$brightgreen
           font-family: inherit
         .hl
-          color: $brightblue
+          color: colors.$brightblue
           font-family: inherit
       .api-description
         font-family: 'Lato', sans-serif
         font-size: 14px
-        color: $darkerpurple
+        color: colors.$darkerpurple
         code
-          color: $brightgreen
+          color: colors.$brightgreen
           font-family: monospace
     .ui-dialog
       outline: none !important
@@ -192,7 +232,7 @@
     .ui-dialog .ui-dialog-titlebar, h3
       background: white !important
       border-color: white !important
-      color: $lightred
+      color: colors.$lightred
 
 
 @media (max-width: 900px)
@@ -224,3 +264,20 @@
 @media (max-width: 992px)
   .smallHidden
     display: none !important
+
+.status-ribbon
+  width: 80px
+  font-size: .71em
+  padding: 4px
+  position: absolute
+  right: -10px
+  top: -5px
+  text-align: center
+  border-radius: 25px
+  transform: rotate(20deg)
+  background-color: colors.$lightred
+  text-transform: lowercase
+  border: 2px solid white
+  a
+    color: colors.$darkerpurple
+    font-weight: bolder

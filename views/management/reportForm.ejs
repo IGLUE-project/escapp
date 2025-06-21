@@ -1,0 +1,32 @@
+<%- include ("../partials/_header.ejs") %>
+<div role="main" class="main">
+    <div class="breadcrumbs-container">
+        <div class="breadcrumbs">
+			<a href="/escapeRooms"><%=i18n.common.my%></a>
+				<span class="material-icons">chevron_right</span>
+					<a href="/escapeRooms/<%=escapeRoom.id%>">
+						 <%=escapeRoom.title%>
+					</a>
+                    <span class="material-icons">chevron_right</span>
+					<span>Report</span>
+					
+        </div>
+	</div>
+    <h1> <%=i18n.management.report.title%></h1>
+    <form class="report" method="POST" >
+            <p><%=i18n.management.report.description%></p>
+            <div class ="report-body"">
+                <label for="reason"><%=i18n.management.report.reason%></label>
+                <div id="reason"> 
+                    <label><input type="radio" name="reason" value="inappropriateContent"> <%=i18n.management.report.reasons["inappropriateContent"]%></label><br>
+                    <label><input type="radio" name="reason" value="copyrightViolation"> <%=i18n.management.report.reasons["copyrightViolation"]%></label><br>
+                    <label><input type="radio" name="reason" value="policyViolation"> <%- i18n.management.report.reasons["policyViolation"]%></label><br>
+                    <label><input type="radio" name="reason" value="other"> <%=i18n.management.report.reasons["other"]%></label><br>
+                </div>
+                <label for="comments" ><%=i18n.management.report.additionalComments%></label>
+                <textarea class="textarea" id="comments" name="comments" ></textarea>
+                <button class="rounded editButton" type="submit"> <%=i18n.management.report.send%> </button>
+            </div>
+    </form>
+</div>
+<%- include ("../partials/_footer.ejs") %>

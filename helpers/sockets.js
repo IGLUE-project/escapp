@@ -3,7 +3,7 @@ const queries = require("../queries");
 const {models} = sequelize;
 const {calculateNextHint} = require("./hint");
 const {checkPuzzle, getRanking, authenticate, checkTurnoAccess, getERState, automaticallySetAttendance, getCurrentPuzzle, getContentForPuzzle, getERPuzzles} = require("./utils");
-const {getAuthMessageAndCode, OK, NOK, AUTHOR, PARTICIPANT, TOO_LATE, NOT_STARTED, ERROR, HINT_RESPONSE, TEAM_STARTED, PUZZLE_RESPONSE, TEAM_PROGRESS, INITIAL_INFO, START_PLAYING, REQUEST_HINT, CHECK_PUZZLE, SOLVE_PUZZLE, PUZZLE_CHECKED, START, STOP, JOIN, JOIN_TEAM, JOIN_PARTICIPANT, LEAVE, LEAVE_TEAM, LEAVE_PARTICIPANT} = require("./apiCodes");
+const {getAuthMessageAndCode, OK, NOK, PARTICIPANT, TOO_LATE, NOT_STARTED, ERROR, HINT_RESPONSE, TEAM_STARTED, PUZZLE_RESPONSE, TEAM_PROGRESS, INITIAL_INFO, START_PLAYING, REQUEST_HINT, CHECK_PUZZLE, SOLVE_PUZZLE, PUZZLE_CHECKED, START, STOP, JOIN, JOIN_TEAM, JOIN_PARTICIPANT, LEAVE, LEAVE_TEAM, LEAVE_PARTICIPANT} = require("./apiCodes");
 
 /**
  * Send message to the whole team
@@ -270,10 +270,10 @@ exports.checkAccess = async (user, escapeRoomId, i18n, waiting) => {
 
         if (escapeRoom) {
             const teams = await user.getTeamsAgregados(queries.user.erTeam(escapeRoomId));
-            const participation = await checkTurnoAccess(teams, user, escapeRoom, true);
+            const participation = await checkTurnoAccess(teams, user, escapeRoom, false);
 
             // TODO comprobar author turno está en ER
-            if (participation !== "AUTHOR" && teams && teams.length) {
+            if (teams && teams.length) {
                 const [team] = teams;
                 const teamId = team.id;
                 const turnId = team.turno.id;
@@ -411,12 +411,12 @@ exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n) => {
 
         if (escapeRoom) {
             const teams = await user.getTeamsAgregados(queries.user.erTeam(escapeRoomId));
-            const participation = await checkTurnoAccess(teams, user, escapeRoom, true);
+            const participation = await checkTurnoAccess(teams, user, escapeRoom, false);
             const {code, msg} = getAuthMessageAndCode(participation, i18n, true);
 
             // TODO comprobar author turno está en ER
 
-            if (participation !== AUTHOR && teams && teams.length) {
+            if (teams && teams.length) {
                 const [team] = teams;
                 const attendance = participation === PARTICIPANT || participation === TOO_LATE;
                 // eslint-disable-next-line init-declarations
@@ -492,7 +492,7 @@ const requestHint = async (escapeRoomId, teamId, userId, status, score, category
     const team = await models.team.findByPk(teamId, queries.team.puzzlesAndHints(teamId));
 
     if (team && team.turno && team.turno.escapeRoom) {
-        const result = await calculateNextHint(team.turno.escapeRoom, team, status, score, category, i18n.escapeRoom.play);
+        const result = await calculateNextHint(team.turno.escapeRoom, team, status, score, category, i18n.escapeRoom.play, userId);
 
         if (result) { // TODO participation, auth...
             const {msg, ok, hintOrder, puzzleOrder, "category": newCat} = result;

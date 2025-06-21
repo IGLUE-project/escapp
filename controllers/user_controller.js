@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const mailer = require("../helpers/mailer");
-const {renderEJS, validationError, getRole} = require("../helpers/utils");
+const {renderEJS, validationError, getRole, generatePassword} = require("../helpers/utils");
 
 // Autoload the user with id equals to :userId
 exports.load = (req, res, next, userId) => {
@@ -30,7 +30,7 @@ exports.show = (req, res) => {
 
 // GET /register
 exports.new = (req, res) => {
-    const user = {"name": "", "surname": "", "gender": "", "username": "", "password": ""};
+    const user = {"name": "", "surname": "", "username": "", "password": ""};
 
     res.render("index", {
         user,
@@ -42,7 +42,7 @@ exports.new = (req, res) => {
 
 // POST /users
 exports.create = (req, res, next) => {
-    const {name, surname, gender, username, password, confirm_password, role, eduLevel} = req.body;
+    const {name, surname, username, password, confirm_password, role, eduLevel} = req.body;
     const {redir} = req.query;
     const {i18n} = res.locals;
 
@@ -61,7 +61,6 @@ exports.create = (req, res, next) => {
     const user = models.user.build({
         name,
         surname,
-        gender,
         eduLevel,
         "username": (username || "").toLowerCase(),
         password,
@@ -88,7 +87,7 @@ exports.create = (req, res, next) => {
     user.isStudent = Boolean(isStudent);
 
     // Save into the data base
-    user.save({"fields": ["name", "surname", "gender", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate"]}).
+    user.save({"fields": ["name", "surname", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate"]}).
         then(() => { // Render the users page
             req.flash("success", i18n.common.flash.successCreatingUser);
             req.body.login = username;
@@ -104,10 +103,7 @@ exports.create = (req, res, next) => {
                 error.errors.forEach((err) => {
                     req.flash("error", validationError(err, i18n));
                 });
-                // Console.log(error.errors[0])
-                // Console.log(error.errors[0].validatorArgs)
-                // Console.log(error.errors[0].path)
-                // Console.log(error.errors[0].validatorKey)
+
                 res.render("index", {user, "register": true, redir});
             } else {
                 next(error);
@@ -129,18 +125,17 @@ exports.update = (req, res, next) => {
     // User.username  = body.user.username; // edition not allowed
     const {i18n} = res.locals;
     const updateFromAdmin = Boolean(req.session.user.isAdmin);
-    const fields = ["password", "salt", "name", "surname", "gender", "eduLevel", "lang"];
+    const fields = ["password", "salt", "name", "surname", "eduLevel", "lang"];
 
     if (updateFromAdmin) {
         fields.push("isStudent", "isAdmin");
         if (body.role === "student" || body.role === "teacher" || body.role === "admin") {
             user.isStudent = body.role === "student";
         }
-        user.isAdmin = body.role == "admin";
+        user.isAdmin = body.role === "admin";
     }
     user.name = body.name;
     user.surname = body.surname;
-    user.gender = body.gender;
     user.eduLevel = body.eduLevel;
     let scs = i18n.common.flash.successEditingUser;
 
@@ -157,7 +152,7 @@ exports.update = (req, res, next) => {
         if (body.password === body.confirm_password) {
             user.password = body.password;
         } else {
-            req.flash("error", i18n2.common.flash.passwordsDoNotMatch);
+            req.flash("error", i18n.common.flash.passwordsDoNotMatch);
             res.redirect("back");
             return;
         }
@@ -170,7 +165,7 @@ exports.update = (req, res, next) => {
         }).
         catch((error) => {
             if (error instanceof Sequelize.ValidationError) {
-                error.errors.forEach(({message}) => req.flash("error", message));
+                error.errors.forEach((error) => req.flash("error", validationError(error, i18n)));
                 res.render("users/edit", {user});
             } else {
                 next(error);
@@ -184,18 +179,64 @@ exports.destroy = async (req, res, next) => {
     const transaction = await sequelize.transaction();
     const {i18n} = res.locals;
 
-    try {
-        await req.user.destroy({}, {transaction});// Deleting logged user.
-        if (req.session.user && req.session.user.id === req.user.id) {
-            // Close the user session
-            delete req.session.user;
+    if (req.session.user.isAdmin && req.query.total) {
+        try {
+            await req.user.destroy({}, {transaction});// Deleting logged user.
+            transaction.commit();
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // Close the user session
+                delete req.session.user;
+            }
+
+            req.flash("success", i18n.common.flash.successDeletingUser);
+            res.redirect("/goback");
+        } catch (error) {
+            transaction.rollback();
+            next(error);
         }
-        transaction.commit();
-        req.flash("success", i18n.common.flash.successDeletingUser);
-        res.redirect("/goback");
-    } catch (error) {
-        transaction.rollback();
-        next(error);
+    } else {
+        try {
+            const hostName = process.env.APP_NAME && process.env.APP_NAME !== "localhost" ? `${process.env.APP_NAME}` : "anonymized.org";
+            // Await req.user.destroy({}, {transaction}); // Deleting logged user
+
+            req.user.name = "Anonymous";
+            req.user.surname = "Anonymous";
+            req.user.dni = "00000000X";
+            req.user.anonymized = true;
+            req.user.username = `anonymized_${req.user.id}@${hostName}`;
+            req.user.password = generatePassword();
+
+            await req.user.save({transaction});
+            const teams = await models.team.findAll({
+                "include": [
+                    {
+                        "model": models.user,
+                        "as": "teamMembers",
+                        "attributes": [],
+                        "through": { "attributes": [] }
+                    }
+                ],
+                "attributes": ["id"],
+                "group": ["team.id"],
+                "having": Sequelize.literal("COUNT(\"teamMembers\".\"id\") = 1"),
+                "where": Sequelize.literal(`${req.user.id} IN (
+                  SELECT "userId" FROM "members" WHERE "members"."teamId" = "team"."id"
+                )`)
+            }, {transaction});
+
+            await Promise.all(teams.map((team) => team.update({ "name": `Anonymous ${team.id}`}, { transaction })));
+            transaction.commit();
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // Close the user session
+                delete req.session.user;
+            }
+
+            req.flash("success", i18n.common.flash.successDeletingUser);
+            res.redirect("/goback");
+        } catch (error) {
+            transaction.rollback();
+            next(error);
+        }
     }
 };
 exports.index = (req, res, next) => {
@@ -286,4 +327,3 @@ exports.newResetPasswordHash = async (req, res) => {
         res.redirect("back");
     }
 };
-

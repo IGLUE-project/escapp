@@ -19,13 +19,9 @@ module.exports = function (sequelize, DataTypes) {
                 "notEmpty": {"msg": "Surname must not be empty."}
             }
         },
-        "gender": {
-            "type": DataTypes.STRING,
-            "validate": {"len": [0, 200]}
-        },
         "eduLevel": {
             "type": DataTypes.STRING,
-            "allowNull": true,
+            "allowNull": false,
             "validate": {"isIn": [["primary", "secondary", "vet", "higher", "other", "none"]]}
         },
         "username": {
@@ -52,6 +48,10 @@ module.exports = function (sequelize, DataTypes) {
             "defaultValue" () {
                 return crypt.generateToken();
             }
+        },
+        "anonymized": {
+            "type": DataTypes.BOOLEAN,
+            "defaultValue": false
         },
         "isAdmin": {
             "type": DataTypes.BOOLEAN,
