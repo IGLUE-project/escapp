@@ -733,11 +733,11 @@ exports.deleteCollaborators = async (req, res, next) => {
 exports.isStatusCompleted = async (req, res, next) => {
     if (req.escapeRoom.status === "completed") {
         next();
-    }  else {
+    } else {
         res.status(404);
         next(new Error(404));
     }
-}
+};
 exports.test = async (req, res) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
     const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));

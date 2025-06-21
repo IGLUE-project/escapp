@@ -184,14 +184,11 @@ exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) =>
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
             next();
+        } else if (req.escapeRoom.status === "completed") {
+            res.render("escapeRooms/preview", {"escapeRoom": req.escapeRoom, "user": req.session.user});
         } else {
-            if (req.escapeRoom.status === "completed") {
-                res.render("escapeRooms/preview", {"escapeRoom": req.escapeRoom, "user": req.session.user});
-
-            }  else {
-                res.status(404);
-                next(new Error(404));
-            }
+            res.status(404);
+            next(new Error(404));
         }
     } catch (error) {
         next(error);

@@ -192,7 +192,7 @@ exports.all = (user, page = 1, limit = 10, search) => {
                     }
                 ]
             },
-           
+
             {
                 "model": models.attachment,
                 "required": false
