@@ -27,7 +27,7 @@
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.publication%></p>
             <input class="attach" type="file" id="instructions" name="instructions"/>
             <label for="instructions" class="fileUpload customInput itemWide">
-              <span id="imgLabel" >
+              <span id="imgLabel" class="fileTitle">
                 <% if (escapeRoom.id && escapeRoom.instructions) { %>
                   <%=escapeRoom.instructions || "Default" %>
                 <% } else { %>

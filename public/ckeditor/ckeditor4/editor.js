@@ -67,6 +67,7 @@ var rankingTemplate = ()=>`<div class="editor">
         </div>
     </ranking>
 </div>`
+var reusablePuzzleTemplate = (url) => `<div style="width:100%;height:auto;max-width:1500px;aspect-ratio:4/3"><iframe class="reusablePuzzleIframe" height="100%"  src="${url}" style="border:none" width="100%"></iframe></div>`;
 var countdownTemplate = ()=> `<div class="editor" ><countdown/></div>`;
 var progressBarTemplate = ()=> `<div class="editor" >
 <progressbar>
@@ -105,7 +106,6 @@ const catalogItem = (item)=> {
      } else if (item.mime.search(webappRegex) !== -1) {
         configJSON.width = "100%";
         configJSON.height = "auto";
-        console.log(item.url)
          return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px;aspect-ratio:4/3;"  >
              <iframe src="${item.url}"  style="border:none" width="100%" height="100%" >
              </iframe>
@@ -157,6 +157,9 @@ var insertContent = async (index, type, payload, puzzles) => {
         case "progress":
             content = progressBarTemplate();
             break;
+        case "reusable":
+            content = reusablePuzzleTemplate(payload.url);
+            break;
         case "catalog":
             type = "text"; //Reorder is not working otherwise
             content = await catalogTemplate(id, payload);
@@ -165,7 +168,7 @@ var insertContent = async (index, type, payload, puzzles) => {
     }
     var htmlContent = $(blockTemplate(index, content, type, puzzles));
     $('#custom-content').append(htmlContent);
-    if (type === "text"|| (type === "catalog" && payload.url )) {
+    if ((type === "text") || (type === "catalog" && payload.url )) {
         let editor = CKEDITOR.replace(id);
         //When replacing there is a hidden div with the content that is latter
         //read to save the content and an iframe that is the editor
@@ -325,6 +328,10 @@ $(()=>{
                 //Por algun motivo el tag de script da problemas y hay que cambiarlo por este
                 obj.payload = {text: CKEDITOR.instances[id].getData().replaceAll("</script>", "<\\/script>")};
                 obj.type = "text";
+            } else if (type == "reusable") {
+                const src = $(e).find(".reusablePuzzleIframe").attr("src");
+                obj.payload = {url: src}
+                obj.type = "reusable";
             }
             results.push(obj);
         });

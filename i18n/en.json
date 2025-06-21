@@ -384,7 +384,7 @@
             "createER": "Create new escape room",
             "noERTeacher": "You don't have any escape rooms. To create one, click the + button.",
             "noERStudent": "You are not currently participating in any escape room.",
-            "noERPublic": "There are no escape rooms currently available.",
+            "noERsPublic": "There are no escape rooms currently available.",
             "notFound": "There are no results for your search. Try a different search!",
             "myERs": "My escape rooms",
             "otherERs":"Public",

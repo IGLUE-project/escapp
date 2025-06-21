@@ -56,6 +56,7 @@ const retoMsg = (puzzle, sol) => {
       ${puzzle.automatic ? '':`<p><b>${escapeHtml(i18n.sol)}:</b> <span class="hidden-sol">${escapeHtml(sol)}</span></p>`}
   </li>`;
 }
+const reusablePuzzleTemplate = (url) => `<div style="width:100%;height:auto;max-width:1500px;aspect-ratio:4/3;margin: auto;max-height:95vh;"><iframe class="reusablePuzzleIframe" height="100%"  src="${url}" style="border:none" width="100%"></iframe></div>`;
 
 const blockTemplate = (content, index) => `<div class="content-block" data-id="${index}" id="content-${index}">${content}</div>`;
 const rankingEmptyTemplate = ()=>`
@@ -483,6 +484,7 @@ const updateSuperados = (puzzleOrder) => {
 }
 
 var insertContent =async (type, payload, puzzles, index, prevIndex) => {
+  console.log(`Inserting content of type ${type} with index ${index} after ${prevIndex}`,payload);
   var content = "";
   switch(type){
     case "countdown":
@@ -491,7 +493,11 @@ var insertContent =async (type, payload, puzzles, index, prevIndex) => {
     case "ranking":
       content = rankingEmptyTemplate();
       break;
-    case "text":
+    case "reusable":
+      const replacedURL = (payload.url || "").toString().replaceAll("__ESCAPP_USER__",encodeURIComponent(username)).replaceAll("__ESCAPP_TOKEN__",token).replaceAll("__ESCAPP_LOCALE__",ER.locale).replaceAll("__ESCAPP_ENDPOINT__",encodeURIComponent(ER.escappEndpoint))
+      content = reusablePuzzleTemplate(escapeUnsafeHtml(replacedURL));
+      break;
+    case "text":   
       const replacedText = (payload.text || "").toString().replaceAll("__ESCAPP_USER__",encodeURIComponent(username)).replaceAll("__ESCAPP_TOKEN__",token).replaceAll("__ESCAPP_LOCALE__",ER.locale).replaceAll("__ESCAPP_ENDPOINT__",encodeURIComponent(ER.escappEndpoint))
       content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(replacedText)}</div>`;
       break;

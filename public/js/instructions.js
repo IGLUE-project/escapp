@@ -197,8 +197,8 @@ $(function(){
         [{ 'direction': 'rtl' }],                         // text direction
 
         [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        window.endPoint === "indications" ?  [{ 'header': [2, 3, 4, 5, 6, false] }]:[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        window.endPoint === "indications" ? [] : [{ 'appearance': [
+        ((window.endPoint === "indications") || (window.endPoint === "after")) ?  [{ 'header': [2, 3, 4, 5, 6, false] }]:[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ((window.endPoint === "indications") || (window.endPoint === "after")) ? [] : [{ 'appearance': [
             "litera", "cerulean", "journal", "sketchy", "darkly", "cyborg", "cosmo", "flatly", "lumen", "lux", "materia", "minty", "pulse", "sandstone", "simplex", "slate", "solar", "spacelab", "united", "yeti", "superhero"
         ] }],
         [{ 'color': [

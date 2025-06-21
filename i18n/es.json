@@ -380,7 +380,7 @@
             "createER": "Crear nueva escape room",
             "noERTeacher": "No tienes ninguna escape room, para crear una pulsa el botón +.",
             "noERStudent": "Actualmente no estás participando en ninguna escape room.",
-            "noERPublic": "No hay ninguna escape room disponible.",
+            "noERsPublic": "No hay ninguna escape room disponible.",
             "notFound": "No hay resultados para tu búsqueda. ¡Prueba otra vez!",
             "myERs": "Mis escape rooms",
             "otherERs": "Públicas",

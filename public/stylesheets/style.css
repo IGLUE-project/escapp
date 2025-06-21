@@ -1068,16 +1068,23 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border: none;
   padding: 0px;
 }
-#mainSection .main .basicConfig .erFormField .customInput #imgLabel, #mainSection .main .basicConfig .erFormField .customInput #hintsLabel {
+#mainSection .main .basicConfig .erFormField .customInput #imgLabel, #mainSection .main .basicConfig .erFormField .customInput #hintsLabel, #mainSection .main .basicConfig .erFormField .customInput .fileTitle {
   font-size: 1em;
   margin-top: 0.4em;
   font-family: Lato, sans-serif;
 }
-#mainSection .main .basicConfig .erFormField .customInput #imgLabel:focus, #mainSection .main .basicConfig .erFormField .customInput #hintsLabel:focus {
+#mainSection .main .basicConfig .erFormField .customInput #imgLabel:focus, #mainSection .main .basicConfig .erFormField .customInput #hintsLabel:focus, #mainSection .main .basicConfig .erFormField .customInput .fileTitle:focus {
   color: white;
 }
 #mainSection .main .basicConfig .erFormField .customInput span#roleFieldStudy, #mainSection .main .basicConfig .erFormField .customInput span#roleFieldTeach {
   display: none;
+}
+#mainSection .main .basicConfig .erFormField .fileTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 500px;
+  display: inline-block;
 }
 #mainSection .main .basicConfig .erFormField input[type=file] {
   font-family: Lato, sans-serif;
@@ -2797,7 +2804,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   gap: 12px;
   align-items: center;
   overflow: hidden;
-  text-overflow: "...";
+  text-overflow: ellipsis;
   max-height: 45px;
   white-space: nowrap;
   -webkit-line-clamp: 1;
@@ -2806,8 +2813,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin: 12px 18px;
   display: inline-block;
   max-width: 50ch;
+  width: 94%;
   overflow: hidden;
-  text-overflow: "...";
+  text-overflow: ellipsis;
   max-height: 27px;
   color: rgb(193, 198, 209);
   line-clamp: 1;

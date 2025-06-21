@@ -177,7 +177,7 @@
                         <td colspan="3" style="text-align: center; height:200px
                         <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
                                <%}else{%>; display: none;<%}%>">
-                            <p class="title">
+                            <p class="title" style="text-align: center;">
                                 <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
                             </p>
                         </td>
@@ -567,14 +567,13 @@
     function insertAndScrollContent(index, type, id, puzzles) {
         let payload = {};
         let newType = type;
-
         if(type === "reusable") {
             const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
             payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
-            newType = "catalog"
-       } else if(type === "countdown" || type === "progress" || type === "ranking" || type === "text") {
+            // newType = "catalog"
+        } else if(type === "countdown" || type === "progress" || type === "ranking" || type === "text") {
             payload = id;
-        }else{
+        } else {
             const asset = window.assets.find(p => p.id == id);
             type = "catalog"
             payload = { mime: asset.mime, config: asset.config, url: asset.url}
@@ -585,37 +584,17 @@
         }
 
         insertContent(index, newType, payload, puzzles);
-        if($('.building-block').children().last().offset()) {
-            window.scrollTo(0, $('.building-block').children().last().offset().top);
-        }
+        setTimeout(() => {
+           if($('.building-block').children().last().offset()) {
+                window.scrollTo(0, $('.building-block').children().last().offset().top);
+            }
+        }, 1);
+        
     }
 
     function insertGamification(index, type, payload, puzzles) {
         toggleCatalogModal();
         insertAndScrollContent(index, type, payload, puzzles);
-    }
-
-    function overlayTriggerCatalog(id, close) {
-        const overlay = $('.overlay-trigger[data-id="' + id + '"]');
-        overlay.hide();
-
-        if (!close) {
-            overlay.css("transform", `translateX(${-320}px`);
-            overlay.css("width", '350px');
-            overlay.show();
-            $('#thescrollable').animate({scrollTop: overlay.offset().top-10})
-            // Borrar overlay con click afuera
-            // Espera un momento antes de agregar el listener, para evitar cierre inmediato
-            setTimeout(() => {
-                $(document).on('click.overlay', function (event) {
-                    // 1. Verifica si el clic NO fue directamente sobre el overlay.
-                    if (!overlay.is(event.target) && overlay.has(event.target).length === 0) { //2. Verifica si el clic NO fue en un hijo del overlay.
-                        overlay.hide();
-                        $(document).off('click.overlay'); // Elimina el evento después de ocultar el overlay
-                    }
-                });
-            }, 50);
-        }
     }
 
     function openPuzzleConfiguration(puzzle, baseId, reusablePuzzleName){
@@ -715,25 +694,33 @@
 
     function refreshCKEditor() {
         try {
-            for (var instanceName in CKEDITOR.instances) {
-                var editor = CKEDITOR.instances[instanceName];
+            
+            // for (var instanceName in CKEDITOR.instances) {
+            //     var editor = CKEDITOR.instances[instanceName];
 
-                // Get the iframe that contains the editor's content
-                var iframe = editor.container.$.querySelector('iframe');
-                if (!iframe) continue;
+            //     // Get the iframe that contains the editor's content
+            //     var iframe = editor.container.$.querySelector('iframe');
+            //     if (!iframe) continue;
 
-                // Access the editor's inner document
-                var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-                if (!innerDoc) continue;
+            //     // Access the editor's inner document
+            //     var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+            //     if (!innerDoc) continue;
 
-                // Loop through embedded iframes inside the editor content and refresh them
-                innerDoc.querySelectorAll('iframe').forEach(function(embeddedIframe) {
-                    var src = embeddedIframe.getAttribute('src');
-                    if (src) {
-                    embeddedIframe.setAttribute('src', src);
-                    }
-                });
-            }
+            //     // Loop through embedded iframes inside the editor content and refresh them
+            //     innerDoc.querySelectorAll('iframe').forEach(function(embeddedIframe) {
+            //         var src = embeddedIframe.getAttribute('src');
+            //         if (src) {
+            //         embeddedIframe.setAttribute('src', src);
+            //         }
+            //     });
+            // }
+
+            reusablePuzzleIframes = document.querySelectorAll('.reusablePuzzleIframe').forEach(function(embeddedIframe) {
+                var src = embeddedIframe.getAttribute('src');
+                if (src) {
+                embeddedIframe.setAttribute('src', src);
+                }
+            });
         } catch (error) {
             console.error("Error refreshing CKEditor instances:", error);
         }
@@ -772,9 +759,9 @@
         let inputNameN = inputName.length !==0 ? `${inputName}-${item.name}` : item.name;
         let returnVal = "";
 
-        if(type === "text" || type === "number" || type === "checkbox"){
+        if (type === "text" || type === "number" || type === "checkbox") {
             returnVal = `<div>${item.name}<input type=${item.type} name="${inputNameN}"/>  </div>`;
-        }else {
+        } else {
             let depthN = depth + 1;
             if(isArray){
                 inputNameIndex = `${inputNameN}-0`;
@@ -981,7 +968,7 @@
                 }
             }
         });
-        
+
         for (const asset of window.assets) {
             $('#myTabContent').append(returnTableRow(asset, window.puzzles));
             const tr = document.getElementById(asset.id);
@@ -1116,7 +1103,7 @@ const returnTableRowPuzzle = (resJSON, config) => {
                 </button>
 
                 <button class="rounded listButton addButton"
-                    onclick='insertAndScrollContent(0,"reusable", "${resJSON.id}", [window.puzzles.findIndex(p=>p.id == ${resJSON.config.puzzle})])'>
+                    onclick='insertAndScrollContent(0,"reusable", "${resJSON.id}", [window.puzzles.findIndex(p=> ${resJSON.puzzles} == (p.id))])'>
                     <span class="building-block-icon material-icons" id="add"> add
                     </span>
                     <p>

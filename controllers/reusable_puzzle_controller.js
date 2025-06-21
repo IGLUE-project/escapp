@@ -377,8 +377,6 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
 
         const linkedPuzzle = await reusablePuzzleInstance.getPuzzles();
 
-        console.log(linkedPuzzle);
-
         if (!linkedPuzzle) {
             res.status(404).send("Puzzle not assigned to this instance");
             return;

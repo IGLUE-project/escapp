@@ -192,9 +192,19 @@ exports.all = (user, page = 1, limit = 10, search) => {
                     }
                 ]
             },
-            models.attachment,
-            models.asset,
-            models.reusablePuzzleInstance
+           
+            {
+                "model": models.attachment,
+                "required": false
+            },
+            {
+                "model": models.asset,
+                "required": false
+            },
+            {
+                "model": models.reusablePuzzleInstance,
+                "required": false
+            }
         ]
     };
 

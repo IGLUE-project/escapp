@@ -43,15 +43,21 @@
             color: white
             border: none
             padding: 0px
-          #imgLabel, #hintsLabel
+          #imgLabel, #hintsLabel, .fileTitle
             font-size: 1em
             margin-top: 0.4em
             font-family: Lato, sans-serif
             &:focus
               color: white
+            
           span#roleFieldStudy, span#roleFieldTeach
             display: none
-
+        .fileTitle
+          overflow: hidden
+          text-overflow: ellipsis
+          white-space: nowrap
+          max-width: 500px
+          display: inline-block
         input[type=file]
           font-family: Lato, sans-serif
           width: 0.1px
