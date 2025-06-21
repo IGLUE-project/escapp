@@ -51,12 +51,39 @@ Escapp has been used to host several educational escape rooms both in-class and 
 
 ## 👥 Escapp Contributors
 
-| Username |
-|----------------- |
-| Sonsoles López Pernas [@sonsoleslp](https://github.com/sonsoleslp) |
-| Carlos Arriaga Prieto [@Arri98](https://github.com/Arri98) |
-| Ana Marín Estañ [@anamarine](https://github.com/anamarine) |
-| Aldo Gordillo Méndez [@agordillo](https://github.com/agordillo) |
-| Enrique Barra [@ebarra](https://github.com/ebarra) |
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/sonsoleslp">
+        <img src="https://github.com/sonsoleslp.png" width="80px;" alt="Sonsoles López-Pernas"/>
+        <br /><sub><b>sonsoleslp</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/anamarine">
+        <img src="https://github.com/anamarine.png" width="80px;" alt="anamarine"/>
+        <br /><sub><b>anamarine</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/agordillo">
+        <img src="https://github.com/agordillo.png" width="80px;" alt="agordillo"/>
+        <br /><sub><b>agordillo</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Arri98">
+        <img src="https://github.com/Arri98.png" width="80px;" alt="Arri98"/>
+        <br /><sub><b>Arri98</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/ebarra">
+        <img src="https://github.com/ebarra.png" width="80px;" alt="ebarra"/>
+        <br /><sub><b>ebarra</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
 We welcome new contributors! Feel free to open an issue or submit a pull request. 🙌
