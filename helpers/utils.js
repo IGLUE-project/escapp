@@ -591,9 +591,8 @@ exports.findFirstAvailableFile = async (section, lang) => {
 
     for (const relativeFile of candidates) {
         const absolutePath = path.join(rootPath, relativeFile);
-
         try {
-            await fs.access(absolutePath);
+            await fs.accessSync(absolutePath);
             return relativeFile;
         } catch (error) {
             // Skip and continue

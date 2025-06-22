@@ -5,7 +5,6 @@ var alertMsg;
 
 /** TEMPLATES **/
 const hintTemplate = (hint ="", category) => {
-
   return `<li class="animated zoomInUp">
       <div class="card border-info mb-3">
           <div class="card-body">
@@ -57,7 +56,6 @@ const retoMsg = (puzzle, sol) => {
   </li>`;
 }
 const reusablePuzzleTemplate = (url) => `<div style="width:100%;height:auto;max-width:1500px;aspect-ratio:4/3;margin: auto;max-height:95vh;"><iframe class="reusablePuzzleIframe" height="100%"  src="${url}" style="border:none" width="100%"></iframe></div>`;
-
 const blockTemplate = (content, index) => `<div class="content-block" data-id="${index}" id="content-${index}">${content}</div>`;
 const rankingEmptyTemplate = ()=>`
     <ranking>
@@ -69,14 +67,14 @@ const rankingEmptyTemplate = ()=>`
                 <div class="ranking-res">Progress</div>
                 <div class="ranking-time">Time</div>
             </div>
-            <div class="ranking-row " style="top: 75px;">
+            <div class="ranking-row" style="top: 75px;">
                 <div class="ranking-pos">1</div>
                 <div class="ranking-team">Team 1</div>
                 <div class="ranking-members">Student A, Student B</div>
                 <div class="ranking-res">3/3</div>
                 <div class="ranking-time">1h 2min</div>
             </div>
-            <div class="ranking-row " style="top: 150px;">
+            <div class="ranking-row" style="top: 150px;">
                 <div class="ranking-pos">2</div>
                 <div class="ranking-members">Student C, Student D</div>
                 <div class="ranking-res">2/3</div>
