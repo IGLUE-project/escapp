@@ -511,6 +511,12 @@
                     "Progress": "Progreso",
                     "Time": "Tiempo",
                     "Student": "Alumno",
+                    "width": "Ancho",
+                    "height": "Alto",
+                    "setSize": "aplicar",
+                    "Left": "Izquierda",
+                    "Center": "Centro",
+                    "Right": "Derecha",
                     "resourceCatalog": "Catálogo de recursos",
                     "catalog": {
                         "newPuzzle": "nuevo puzzle",

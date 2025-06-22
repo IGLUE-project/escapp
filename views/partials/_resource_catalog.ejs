@@ -1193,11 +1193,32 @@ const returnTableRow = (asset, puzzleList)=> {
 function triggerClick() {
     $("#inputFile").click();
 }
+
 function changeName(e){
     const nameField = $('#filename')
     nameField.val(e.target.files[0].name);
 }
 
+function alignReusablePuzzle(el){
+    const reusablePuzzleBlock = $(el).parents('.reusable-puzzle-block')
+    reusablePuzzleBlock.css("text-align", el.value)
+}
+
+function resizeReusablePuzzleWidth(el){
+    const reusablePuzzleBlockIframe = $(el).parents('.reusable-puzzle-block').children("iframe");
+    reusablePuzzleBlockIframe.css("width", el.value+"%")
+}
+
+function resizeReusablePuzzleHeight(el){
+    const reusablePuzzleBlockIframe = $(el).parents('.reusable-puzzle-block').children("iframe");
+    reusablePuzzleBlockIframe.css("height", el.value)
+}
 
 
+$(document).on('keydown', function (e) {
+  // Prevent Enter key globally, except in textareas and submit buttons
+  if (e.key === 'Enter' && $(e.target).is('[type=text],[type=number]')) {
+    e.preventDefault();
+  }
+});
 </script>

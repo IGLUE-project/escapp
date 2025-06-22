@@ -519,6 +519,12 @@
                     "Time": "Time",
                     "Student": "Student",
                     "resources": "Resource catalog",
+                    "width": "Width",
+                    "height": "Height",
+                    "setSize": "apply",
+                    "Left": "Left",
+                    "Center": "Center",
+                    "Right": "Right",
                     "catalog": {
                         "newPuzzle": "new puzzle",
                         "uploadFile": "upload file",

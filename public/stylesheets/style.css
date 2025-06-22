@@ -3284,6 +3284,66 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   display: none;
 }
 
+.config-size-reusable-puzzle {
+  font-family: Lato;
+  font-size: 70%;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  padding-bottom: 5px;
+  text-align: right;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #eee !important;
+}
+.config-size-reusable-puzzle label {
+  font-family: Lato !important;
+  display: inline-block;
+  height: 27px;
+  font-weight: lighter;
+}
+.config-size-reusable-puzzle span.units {
+  color: #161938;
+  margin-right: 10px;
+}
+.config-size-reusable-puzzle .alignment-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-right: 20px;
+}
+.config-size-reusable-puzzle .alignment-group .alignment-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.config-size-reusable-puzzle .alignment-group label {
+  cursor: pointer;
+}
+.config-size-reusable-puzzle .alignment-group input[type=radio] {
+  display: none;
+}
+.config-size-reusable-puzzle .alignment-group input[type=radio]:checked + label {
+  color: #007bff;
+}
+.config-size-reusable-puzzle .alignment-group .material-icons {
+  font-size: 27px;
+}
+.config-size-reusable-puzzle .reusablePuzzleWidth, .config-size-reusable-puzzle .reusablePuzzleHeight {
+  width: 60px;
+  height: auto;
+  font-family: Lato;
+  font-size: 15px;
+}
+.config-size-reusable-puzzle .reusablePuzzleWidth:active, .config-size-reusable-puzzle .reusablePuzzleWidth:focus, .config-size-reusable-puzzle .reusablePuzzleHeight:active, .config-size-reusable-puzzle .reusablePuzzleHeight:focus {
+  font-family: Lato !important;
+  color: #007bff;
+  -webkit-text-fill-color: #007bff !important;
+  border-color: #007bff !important;
+}
+
 #mainSection .main.student {
   background-image: url("../images/puzzle_bg.png");
   font-size: xx-large;

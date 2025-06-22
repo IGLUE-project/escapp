@@ -901,3 +901,54 @@
         display: flex !important
 .tooltip-link
   display: none
+
+.config-size-reusable-puzzle
+  font-family: Lato 
+  font-size: 70%
+  position: relative;
+  display: flex
+  justify-content: flex-start;
+  align-items: center
+  padding: 10px
+  padding-bottom: 5px
+  
+  text-align: right;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #eee !important;
+  label
+    font-family: Lato !important
+    display: inline-block;
+    height: 27px;
+    font-weight: lighter
+  span.units
+    color:  colors.$darkerpurple
+    margin-right: 10px
+  .alignment-group
+    display: flex
+    gap: 20px
+    align-items: center
+    margin-right: 20px
+    .alignment-option
+      display: flex
+      flex-direction: column
+      align-items: center
+      cursor: pointer
+    label 
+      cursor: pointer
+    input[type="radio"]
+      display: none
+      &:checked + label
+        color: #007bff // blue when selected
+    .material-icons
+      font-size: 27px
+  .reusablePuzzleWidth, .reusablePuzzleHeight
+    
+    width: 60px
+    height: auto
+    font-family: Lato 
+    font-size: 15px
+    &:active, &:focus
+      font-family: Lato !important
+      color: #007bff
+      -webkit-text-fill-color: #007bff !important
+      border-color: #007bff !important
