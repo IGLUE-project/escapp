@@ -840,7 +840,8 @@
                     const row = $(`#p-${resJSON.id}`);
                      if(!row.length) {
                         const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
-                         $('#myTabContent tr:last').after(returnTableRowPuzzle(resJSON));
+                        resJSON.puzzles = [resJSON.puzzle.id]; // Gets puzzle that will be assigned in the block config
+                        $('#myTabContent tr:last').after(returnTableRowPuzzle(resJSON));
                     }
                     $('#noResources').hide();
                     row.find('.title').text(resJSON.name);
@@ -962,14 +963,6 @@
 
     window.onload = function() {
 
-        window.addEventListener('change', function(e) {
-            // Check if e.target is a child of .editDialog
-            if ($(e.target).closest('.editDialog').length > 0) {
-                if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
-                    updateIframe();
-                }
-            }
-        });
 
         for (const asset of window.assets) {
             $('#myTabContent').append(returnTableRow(asset, window.puzzles));
@@ -979,11 +972,20 @@
         }
 
         for (const rpi of window.reusablePuzzleInstances) {
-            $('#myTabContent').append(returnTableRowPuzzle(rpi, rpi.config));
+            $('#myTabContent').append(returnTableRowPuzzle(rpi));
             const tr = document.getElementById(`p-${rpi.id}`);
             const title = tr.querySelector('.title');
             addListenerForHover(title);
         }
+
+        window.addEventListener('change', function(e) {
+            // Check if e.target is a child of .editDialog
+            if ($(e.target).closest('.editDialog').length > 0) {
+                if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
+                    updateIframe();
+                }
+            }
+        });
 
     }
 
@@ -1079,7 +1081,7 @@
         toggleUploadModal()
         }
 
-const returnTableRowPuzzle = (resJSON, config) => {
+const returnTableRowPuzzle = (resJSON) => {
     return `<tr class="catalogItem" id=p-${resJSON.id}>
         <td>
             <p class="title">
@@ -1105,7 +1107,7 @@ const returnTableRowPuzzle = (resJSON, config) => {
                 </button>
 
                 <button class="rounded listButton addButton"
-                    onclick='insertAndScrollContent(0,"reusable", "${resJSON.id}", [window.puzzles.findIndex(p=> ${resJSON.puzzles} == (p.id))])'>
+                    onclick='insertAndScrollContent(0, "reusable", "${resJSON.id}", [window.puzzles.findIndex(p=> ${resJSON.puzzles} == (p.id))])'>
                     <span class="building-block-icon material-icons" id="add"> add
                     </span>
                     <p>
