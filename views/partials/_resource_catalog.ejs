@@ -1178,7 +1178,7 @@ const returnTableRow = (asset, puzzleList)=> {
                     </button>
 
                     <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
-                        onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify(puzzleList)})'>
+                        onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify([...Array(puzzleList.length + 1).keys()])})'>
                         <span class="building-block-icon material-icons" id="add"> add
                         </span>
                         <p>
