@@ -23,7 +23,7 @@ var blockTemplate = (index, content, type, puzzles) => {
 <div class="building-block" data-content-type="${type}" id="${id}" data-puzzles="${puzzles.join(",")}">
     ${content}
     <div class="block-config">
-    ${((window.endPoint !== "indications") && (window.endPoint !== "after")) ? `<button type="button" class="block-config-button config-btn" title="${window.i18n.setupVisualization}"><span class="material-icons">settings</span></button>`: ''}
+    ${((window.endPoint == "team")) ? `<button type="button" class="block-config-button config-btn" title="${window.i18n.setupVisualization}"><span class="material-icons">settings</span></button>`: ''}
     <button type="button" class="block-config-button reorder-btn" title="${window.i18n.reorder}"><span class="material-icons">swap_vert</span></button>
     <button type="button" class="block-config-button delete-btn" title="${window.i18n.delete}"><span class="material-icons">delete</span></button>
         <div class="overlay-trigger" data-id="${id}">
