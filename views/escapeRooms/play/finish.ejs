@@ -18,7 +18,7 @@
 		<br/><br/>
 		<% if (teams.length > 0) { %>
 			<ranking/>
-			<%- include("../../partials/_ranking") %>
+			<%- include("../../partials/_ranking", {anonymize: true, members: true}) %>
 		<% } %>
 	</div>
 <br/>

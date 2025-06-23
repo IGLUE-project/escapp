@@ -40,9 +40,9 @@ exports.add = async (req, res, next) => {
                 teamMembers.push({"name": member.name, "surname": member.surname});
                 teamMembersNames.push(`${member.name} ${member.surname}`);
             }
-            const teams = await getRanking(escapeRoom.id, turn.id);
+            const teams = await getRanking(escapeRoom.id, turn.id, true);
 
-            sendJoinParticipant(user.username, team.id, turn.id, teams);
+            // sendJoinParticipant(user.username, team.id, turn.id, teams);
             res.redirect(direccion);
         } catch (error) {
             next(error);

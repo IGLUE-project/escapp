@@ -148,7 +148,7 @@ exports.resetProgress = async (req, res) => {
         await models.retosSuperados.destroy({"where": {"teamId": req.team.id}});
         await models.participants.update({"attendance": false}, {"where": {"userId": {[Op.in]: userIds}, "turnId": req.turn.id}});
         await req.team.save({"fields": ["startTime"]});
-        const teams = await getRanking(req.escapeRoom.id, req.turn.id);
+        const teams = await getRanking(req.escapeRoom.id, req.turn.id, true);
 
         sendLeaveTeam(req.team.id, req.turn.id, teams);
         req.flash("success", i18n.team.resetSuccess);
@@ -174,7 +174,7 @@ exports.delete = async (req, res) => {
 
         await req.team.destroy();
 
-        const teams = await getRanking(req.escapeRoom.id, req.turn.id);
+        const teams = await getRanking(req.escapeRoom.id, req.turn.id, true);
 
         sendLeaveTeam(req.team.id, req.turn.id, teams);
         req.flash("success", i18n.team.deleteSuccess);

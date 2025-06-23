@@ -168,11 +168,11 @@ exports.studentLeave = async (req, res, next) => {
 
         if (req.team.teamMembers.length <= 1) {
             await req.team.destroy();
-            const teams = await getRanking(req.escapeRoom.id, turnId);
+            const teams = await getRanking(req.escapeRoom.id, turnId, true);
 
             sendLeaveTeam(teamId, turnId, teams);
         } else {
-            const teams = await getRanking(req.escapeRoom.id, turnId);
+            const teams = await getRanking(req.escapeRoom.id, turnId, true);
 
             sendLeaveParticipant(user.username, req.team.id, turnId, teams);
         }

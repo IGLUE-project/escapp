@@ -82,8 +82,8 @@
             teamViews += `<div class="ranking-row ${className}" id="team-${currentTeam.id}" 
                     style="top: ${top}px">
                 <div class="ranking-pos"><span>${idx + 1}</span></div>
-                <div class="ranking-team"><b>${currentTeam.name}</b></div>
-                <div class="ranking-members"><span>${currentTeam.participants}</span></div>
+                <div class="ranking-team"><b>${(currentTeam.id === myTeamId) ? ("<%=locals.team ? team.name : ''%>" || currentTeam.name || "<%=i18n.user.anonymous%>") : (currentTeam.name || "<%=i18n.user.anonymous%>")}</b></div>
+                <%if(locals.members){%><div class="ranking-members"><span>${currentTeam.participants}</span></div><%}%>
                 <div class="ranking-res"><span>${currentTeam.result}</span></div>
                 <div class="ranking-time"><span>${currentTeam.finishTime ? secondsToDhms(currentTeam.finishTime) : "---"}</span></div>
             </div>`;
@@ -98,7 +98,7 @@
             <div class="ranking-row ranking-header table-primary" >
                 <div class="ranking-pos">#</div>
                 <div class="ranking-team"><%=(escapeRoom.teamSize == 1)?i18n.analytics.ranking.user:i18n.analytics.ranking.team%></div>
-                <div class="ranking-members"><%=i18n.analytics.ranking.members%></div>
+                <%if(locals.members){%><div class="ranking-members"><%=i18n.analytics.ranking.members%></div><%}%>
                 <div class="ranking-res"><%=i18n.analytics.ranking.res%></div>
                 <div class="ranking-time"><%=i18n.analytics.ranking.time%></div>
             </div>
@@ -107,7 +107,23 @@
         return view;
     }
 
-   var teams = JSON.parse("<%-JSON.stringify(teams).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")%>");
+    <%
+    var theTeams = []
+    for (var i in teams ){
+        var team = {
+            id: teams[i].id,
+            name: (locals.anonymize && (teamId != teams[i].id)) ? i18n.user.anonymous : teams[i].name,
+            participants: teams[i].teamMembers.map(member => {
+                return (locals.anonymize && (teamId != teams[i].id)) ? i18n.user.anonymous : member.name + " " + member.surname;
+            }).join(", "),
+            result: teams[i].result,
+            finishTime: teams[i].finishTime,
+            startTime: teams[i].startTime
+        }
+        theTeams.push(team);
+    }
+   %>
+   var teams = JSON.parse("<%-JSON.stringify(theTeams).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")%>");
    
    $(()=>{
        $('ranking').html(rankingTemplate(teams, teamId));

@@ -195,7 +195,7 @@ exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, a
     const {hintsAllowed, successHints, failHints} = await exports.areHintsAllowedForTeam(team.id, hintLimit);
     const progress = exports.getProgress(puzzlesSolved, nPuzzles);
     const score = exports.getScore(puzzlesSolved, puzzleData, successHints, failHints, attendance, attendanceScore, scoreHintSuccess, scoreHintFail);
-    const ranking = includeRanking ? await exports.getRanking(escapeRoomId, team.turno.id) : undefined;
+    const ranking = includeRanking ? await exports.getRanking(escapeRoomId, team.turno.id, true) : undefined;
     const startTime = team.turno.startTime || team.startTime;
     const timeLeft = duration * 60 - Math.round((new Date() - startTime) / 1000);
     const remainingTime = !timeLeft || timeLeft < 0 ? 0 : timeLeft;
@@ -204,12 +204,27 @@ exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, a
     return {teamId, startTime, remainingTime, puzzlesSolved, puzzleData, nPuzzles, hintsAllowed, progress, score, teamMembers, ranking, "duration": duration * 60};
 };
 
-exports.getRanking = async (escapeRoomId, turnoId) => {
+exports.getRanking = async (escapeRoomId, turnoId, anonymized = false) => {
     const teamsRaw = await models.team.findAll(queries.team.rankingShort(escapeRoomId, turnoId));
     const nPuzzles = await models.puzzle.count({"where": { escapeRoomId }});
     const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {"user": { "anonymous": "Anonymous"}}).sort(byRanking);
-
-    return ranking;
+    const newRanking = [];
+    for (var i in ranking ){
+        var team = {
+            id: ranking[i].id,
+            name: (anonymized && (anonymized != ranking[i].id)) ? "" : ranking[i].name,
+            participants: (anonymized && (anonymized != ranking[i].id)) ? "" : ranking[i].teamMembers.map(member => {
+                return  member.name + " " + member.surname;
+            }).join(", "),
+            result: ranking[i].result,
+            count: ranking[i].count,
+            latestRetoSuperado: ranking[i].latestRetoSuperado,
+            finishTime: ranking[i].finishTime,
+            startTime: ranking[i].startTime
+        }
+        newRanking.push(team);
+    }
+    return newRanking;
 };
 exports.getProgress = (puzzlesSolved, totalNumberOfPuzzles) => totalNumberOfPuzzles ? Math.round(puzzlesSolved.length / totalNumberOfPuzzles * 10000) / 100 : 0;
 

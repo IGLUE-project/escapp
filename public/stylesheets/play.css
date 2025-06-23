@@ -434,6 +434,7 @@ ranking {
   width: 100%;
   position: relative;
   border: 2px solid var(--primary);
+  font-size: 1.2rem;
 }
 .ranking-table .ranking-row {
   display: flex;
@@ -465,16 +466,16 @@ ranking {
   white-space: nowrap;
 }
 .ranking-table .ranking-row .ranking-team {
-  width: 20%;
+  flex:1
 }
 .ranking-table .ranking-row .ranking-members {
   flex: 1;
 }
 .ranking-table .ranking-row .ranking-res {
-  width: 10%;
+  width: 20%;
 }
 .ranking-table .ranking-row .ranking-time {
-  width: 15%;
+  width: 25%;
 }
 .ranking-table .ranking-row .ranking-pos {
   transform: scale(1.5);

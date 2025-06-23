@@ -486,7 +486,6 @@ const updateSuperados = (puzzleOrder) => {
 }
 
 var insertContent =async (type, payload, puzzles, index, prevIndex) => {
-  console.log(`Inserting content of type ${type} with index ${index} after ${prevIndex}`,payload);
   var content = "";
   switch(type){
     case "countdown":

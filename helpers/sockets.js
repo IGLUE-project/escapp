@@ -350,7 +350,7 @@ exports.solvePuzzle = async (escapeRoomId, teamId, userId, puzzleOrderMinus, sol
 
         puzzleResponse(teamId, code, correctAnswer, solution, puzzleOrderMinus, participation, authentication, erState, msg, i18n.escapeRoom.api.participation[participation], content);
         if (code === OK && !alreadySolved) {
-            const teams = await getRanking(escapeRoomId, team.turno.id);
+            const teams = await getRanking(escapeRoomId, team.turno.id, true);
 
             sendRanking(team.turno.id, teams, teamId, puzzleOrderMinus);
         }

@@ -102,7 +102,7 @@ exports.solvePuzzle = async (req, res, next) => {
 
                 puzzleResponse(team.id, code, correctAnswer, solution, puzzle.order + 1, participation, authentication, erState, msg, i18n.escapeRoom.api.participation[participation], content);
                 if (!alreadySolved) {
-                    const updatedTeams = await getRanking(escapeRoom.id, team.turno.id);
+                    const updatedTeams = await getRanking(escapeRoom.id, team.turno.id, true);
 
                     broadcastRanking(team.turno.id, updatedTeams, team.id, puzzle.order + 1);
                 }
