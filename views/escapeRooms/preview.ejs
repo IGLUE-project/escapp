@@ -19,8 +19,9 @@
 
 		</div>
 		<div class="flex-er-info animated fadeIn">
-			<h1><%=escapeRoom.title%></h1>
-			<p>by <%=user.name%></p>
+            <h1><%=escapeRoom.title%></h1>
+            <p>by <%=escapeRoom.author.name%> <%=escapeRoom.author.surname%></p>
+			
             <br/>
             <h3><%=i18n.showTeacher.titles.description%></h3>
             <p><%=escapeRoom.description%></p>
