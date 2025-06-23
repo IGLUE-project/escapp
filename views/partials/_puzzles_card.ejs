@@ -19,7 +19,7 @@
                 <span class="material-icons">search</span>
                 <label for="puzzles[<%=reto%>][sol]"><%=i18n.escapeRoom.steps.puzzles.solution%></label>
             </h3>
-            <input type="text" class="light" name="puzzles[<%=reto%>][sol]" maxlength="10000" autocomplete="off" required value="<%=puzzle.validator === "range" ? puzzle.sol.split("+")[0] : puzzle.sol%>" id="puzzles[<%=reto%>][sol]"/>
+            <input type="<%=puzzle.validator === 'range' ? 'number' : 'text'%>"  class="light theinput" name="puzzles[<%=reto%>][sol]" maxlength="10000" step="0.01" autocomplete="off" required value="<%=puzzle.validator === "range" ? puzzle.sol.split("+")[0] : puzzle.sol%>" id="puzzles[<%=reto%>][sol]"/>
         </div>
         <div>
             <div>

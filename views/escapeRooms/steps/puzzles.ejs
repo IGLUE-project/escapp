@@ -65,17 +65,20 @@
             if(isRange){
                 const rangeElement = $(`#puzzles\\[${i}\\]\\[rang\\]\\-range`);
                 const range =  rangeElement.val();
-                if(isNaN(solution)){
+                 
+                if(isNaN(solution)) {
                     solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidSolution%>");
                     solutionElement.get(0).reportValidity();
                     return false;
-                }else if(isNaN(range) || range === "" || range === 0){
+                } else if(isNaN(range) || range === "" || range === 0) {
                     rangeElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRange%>");
                     rangeElement.get(0).reportValidity();
                     return false;
                 } else {
+                    const numericVal = Number(solutionElement.val())
+                    solutionElement.get(0).type = "text";
                     rangeElement.get(0).setCustomValidity("");
-                    solutionElement.val(solutionElement.val() + "+" + range);
+                    solutionElement.val(numericVal + "+" + range);
                 }
             }
         }; }
@@ -261,6 +264,21 @@
             $(e).val(i);
         });
     })
+
+     $(document).on('click', '.numberInput', (e) => {
+        e.stopPropagation();
+     });
+     
+     $(document).on('change', '.validatorInputs', (e) => {
+        const ancestor = e.target.parentNode.parentNode.parentNode.parentNode;
+        const rangeInput = $(ancestor).find(".theinput");
+        if (e.target.value === "range") {
+            rangeInput.get(0).type = "number";
+        } else {
+            rangeInput.get(0).type = "text";
+        }
+        
+     })
 
     $(window).keydown(function(event){
         if(event.keyCode == 13) {

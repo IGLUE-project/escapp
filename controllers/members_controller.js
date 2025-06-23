@@ -42,7 +42,7 @@ exports.add = async (req, res, next) => {
             }
             const teams = await getRanking(escapeRoom.id, turn.id, true);
 
-            // sendJoinParticipant(user.username, team.id, turn.id, teams);
+            // SendJoinParticipant(user.username, team.id, turn.id, teams);
             res.redirect(direccion);
         } catch (error) {
             next(error);

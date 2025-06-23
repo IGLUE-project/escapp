@@ -425,6 +425,7 @@ const updatePuzzle = (order, currentPuzzle, prevPuzzleOrder) => {
     $('#puzzle-title').text(currentPuzzle.title);
     // Update input
     $('#puzzle-input').val("");
+    try {$('#puzzle-input').get(0).type = currentPuzzle.validator == 'range' ? 'number':'text';}catch(e){}
     $('#puzzle-input').focus();
     $('#puzzle-input').data("puzzleOrder", order);
     $('#puzzle-input').removeClass('is-invalid');

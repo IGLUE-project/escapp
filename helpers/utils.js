@@ -209,19 +209,19 @@ exports.getRanking = async (escapeRoomId, turnoId, anonymized = false) => {
     const nPuzzles = await models.puzzle.count({"where": { escapeRoomId }});
     const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {"user": { "anonymous": "Anonymous"}}).sort(byRanking);
     const newRanking = [];
-    for (var i in ranking ){
-        var team = {
-            id: ranking[i].id,
-            name: (anonymized && (anonymized != ranking[i].id)) ? "" : ranking[i].name,
-            participants: (anonymized && (anonymized != ranking[i].id)) ? "" : ranking[i].teamMembers.map(member => {
-                return  member.name + " " + member.surname;
-            }).join(", "),
-            result: ranking[i].result,
-            count: ranking[i].count,
-            latestRetoSuperado: ranking[i].latestRetoSuperado,
-            finishTime: ranking[i].finishTime,
-            startTime: ranking[i].startTime
-        }
+
+    for (const i in ranking) {
+        const team = {
+            "id": ranking[i].id,
+            "name": anonymized && anonymized != ranking[i].id ? "" : ranking[i].name,
+            "participants": anonymized && anonymized != ranking[i].id ? "" : ranking[i].teamMembers.map((member) => `${member.name} ${member.surname}`).join(", "),
+            "result": ranking[i].result,
+            "count": ranking[i].count,
+            "latestRetoSuperado": ranking[i].latestRetoSuperado,
+            "finishTime": ranking[i].finishTime,
+            "startTime": ranking[i].startTime
+        };
+
         newRanking.push(team);
     }
     return newRanking;
@@ -606,6 +606,7 @@ exports.findFirstAvailableFile = async (section, lang) => {
 
     for (const relativeFile of candidates) {
         const absolutePath = path.join(rootPath, relativeFile);
+
         try {
             await fs.accessSync(absolutePath);
             return relativeFile;

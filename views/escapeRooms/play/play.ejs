@@ -54,14 +54,14 @@
         <% content = getContentForPuzzle(escapeRoom[endPoint + "Instructions"], currentlyWorkingOn === null ? "all": currentlyWorkingOn)%>
 
 
-        <% var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, hints })=>{ 
+        <% var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, hints, validator })=>{ 
             reqHints[order] = [];
             var noSuperado = retosSuperados.indexOf(order) === -1;
             if (noSuperado) {
                 pending.push(order)
             }
             const categories = Array.from(new Set(hints.map(h=>h.category)));
-            return { id, title, order, score, correct, automatic, categories, hints: hints.reduce((a,b) => {
+            return { id, title, order, score, correct, automatic, validator, categories, hints: hints.reduce((a,b) => {
                 if (reqHintsList.indexOf(b.id) === -1){
                     if ( a[b.category]) {
                         a[b.category].push(b.order)
@@ -105,7 +105,7 @@
                 <span class="navbar-text puzzle-title" id="puzzle-title" data-puzzle-order="<%= puzzle.order %>"><%=puzzle.title%>
                 </span>&nbsp;
                 </label>
-            <input class="form-control mr-sm-2 puzzle-input" id="puzzle-input" type="text" autocomplete="off" placeholder="<%=i18n.escapeRoom.play.writeSol%>" data-puzzle-order="<%= puzzle.order %>">
+            <input class="form-control mr-sm-2 puzzle-input" id="puzzle-input" type="<%=puzzle.validator == 'range' ? 'number':'text'%>" autocomplete="off" step="0.01" placeholder="<%=i18n.escapeRoom.play.writeSol%>" data-puzzle-order="<%= puzzle.order %>">
             <button class="btn btn-success my-2 my-sm-0" id="puzzle-check-btn" data-toggle="tooltip" type="button" data-puzzle-order="<%= puzzle.order %>" title="<%=i18n.escapeRoom.play.check%>"><span class="material-icons ">check</span></button>
           </div>
           <%}%>
