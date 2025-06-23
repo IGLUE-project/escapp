@@ -937,6 +937,10 @@
                 maxHeight: window.innerHeight * 0.8,
                  position:  { my: "center top", at: "top+10%", of: window },
                 closeText: "close",
+                close: ()=>{
+                    try {container.find("video")[0].pause();}catch(e) {}
+                    try {container.find("audio")[0].pause();}catch(e) {}
+                },
                 classes: {
                     "ui-dialog": "ui-corner-all preview-asset-dialog",
                     "ui-dialog-titlebar": "ui-corner-all preview-asset-titlebar"
