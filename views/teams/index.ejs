@@ -40,8 +40,8 @@
                             <%= team.name %>
                             <%for (var m in team.teamMembers) {%>
                                 <%nParticipants++;%>
-                            <p><%=team.teamMembers[m].name %> <%=team.teamMembers[m].surname %></p>
                             <%}%>
+                            <p><%=nParticipants%> participants</p>
                         </div>
                     <% } %>
                 </div>
