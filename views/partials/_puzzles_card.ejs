@@ -1,4 +1,4 @@
-<div class="puzzle-card" id="puzzle-<%=puzzle.id%>">
+<div class="puzzle-card puzzle-card-template" id="puzzle-<%=puzzle.id%>">
     <span title="<%=i18n.escapeRoom.steps.puzzles.reorder%>" maxlength="10000" class="material-icons handle showAlways">
         swap_vert
     </span>
@@ -19,7 +19,7 @@
                 <span class="material-icons">search</span>
                 <label for="puzzles[<%=reto%>][sol]"><%=i18n.escapeRoom.steps.puzzles.solution%></label>
             </h3>
-            <input type="<%=puzzle.validator === 'range' ? 'number' : 'text'%>"  class="light theinput" name="puzzles[<%=reto%>][sol]" maxlength="10000" step="0.01" autocomplete="off" required value="<%=puzzle.validator === "range" ? puzzle.sol.split("+")[0] : puzzle.sol%>" id="puzzles[<%=reto%>][sol]"/>
+            <input type="text"  class="light theinput" name="puzzles[<%=reto%>][sol]" autocomplete="off" required value="<%=puzzle.validator === "range" ? puzzle.sol.split("+")[0] : puzzle.sol%>" id="puzzles[<%=reto%>][sol]"/>
         </div>
         <div>
             <div>
@@ -39,7 +39,7 @@
                     <input type="radio" class="validatorInputs" name="puzzles[<%=reto%>][validator]"  value="range" <%= puzzle.validator === 'range' ? 'checked' : null %> id="puzzles[<%=reto%>][ran]"/>
                     <span>
                         <label for="puzzles[<%=reto%>][ran]"><%=i18n.escapeRoom.steps.puzzles.validator.range%></label>
-                        <input class="validatorInputs numberInput" min="0" name="puzzles[<%=reto%>][rang]-range" step="0.01" value="<%=puzzle.validator === "range" ? puzzle.sol.split("+")[1] : 0%>" id="puzzles[<%=reto%>][rang]-range"" type="number"/>
+                        <input class="validatorInputs numberInput"   name="puzzles[<%=reto%>][rang]"   value="<%=puzzle.validator === "range" ? parseFloat(puzzle.sol.split("+")[1]) : 0%>" id="puzzles[<%=reto%>][rang]" type="text"/>
                     </span>
                 </div>
                 <div>

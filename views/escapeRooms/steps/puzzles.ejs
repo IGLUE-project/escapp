@@ -44,14 +44,15 @@
         const arr = Array.from(document.getElementsByClassName('puzzle-card'));
         for (let i in arr){
             const element = arr[i];
-            const id = element.getAttribute('id').toString().split('-')[1];
-            if (isNaN(id)) {
+            const id = $(element).children(".order").val()
+            if ((id === "") || (id === undefined) || (id == 'new')) {
                 continue;
             }
-            const solutionElement = $(`#puzzles\\[${i}\\]\\[sol\\]`);
+            const solutionElement = $(`#puzzles\\[${id}\\]\\[sol\\]`);
+
             const solution = solutionElement.val();
-            const isRange = $(`#puzzles\\[${i}\\]\\[ran\\]`).prop('checked');
-            const isRegex = $(`#puzzles\\[${i}\\]\\[reg\\]`).prop('checked');
+            const isRange = $(`#puzzles\\[${id}\\]\\[ran\\]`).prop('checked');
+            const isRegex = $(`#puzzles\\[${id}\\]\\[reg\\]`).prop('checked');
             solutionElement.get(0).setCustomValidity("");
             if(isRegex){
                 try {
@@ -62,24 +63,27 @@
                     return false;
                 }
             }
+
             if(isRange){
-                const rangeElement = $(`#puzzles\\[${i}\\]\\[rang\\]\\-range`);
-                const range =  rangeElement.val();
-                 
-                if(isNaN(solution)) {
-                    solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidSolution%>");
-                    solutionElement.get(0).reportValidity();
-                    return false;
-                } else if(isNaN(range) || range === "" || range === 0) {
+                const rangeElement = $(`#puzzles\\[${id}\\]\\[rang\\]`);
+                rangeElement && rangeElement.get(0) && rangeElement.get(0).setCustomValidity("");
+
+                const range =  parseFloat(rangeElement.val().replace(",", "."));
+
+                if(isNaN(range) || range === "" || range === 0) {
                     rangeElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRange%>");
                     rangeElement.get(0).reportValidity();
                     return false;
-                } else {
-                    const numericVal = Number(solutionElement.val())
-                    solutionElement.get(0).type = "text";
-                    rangeElement.get(0).setCustomValidity("");
-                    solutionElement.val(numericVal + "+" + range);
-                }
+                } 
+
+                const numericVal = parseFloat(solution.replace(",", "."));
+
+                 if(isNaN(numericVal)) {
+                    solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidSolution%>");
+                    solutionElement.get(0).reportValidity();
+                    return false;
+                } 
+                solutionElement.val(numericVal + "+" + range);
             }
         }; }
 
@@ -180,11 +184,14 @@
         const order = $('.puzzle-card').length - 1;
         newCard.find('.order').val(order);
         newCard.find('.hint-list').data("number", order);
-        newCard.find( "input[name^='puzzles[new]'],select[name^='puzzles[new]']" ).each((i,e)=>{
-            e.name = e.name.replace('puzzles[new]','puzzles['+order+']');
+        newCard.find( "input[name^='puzzles[new]'],select[name^='puzzles[new]'],label[for^='puzzles[new]']" ).each((i,e)=>{
+            if (e.getAttribute("name")) e.name = e.name.replace('puzzles[new]','puzzles['+order+']');
+            if (e.getAttribute("for")) e.setAttribute("for", e.getAttribute("for").replace('puzzles[new]','puzzles['+order+']'));
+            if (e.getAttribute("id")) e.id = e.id.replace('puzzles[new]','puzzles['+order+']');
         });
-
+        newCard.removeClass('puzzle-card-template');
         newCard.appendTo('#sortable');
+        newCard.attr('id', `puzzle-new_${order}`);
         $('html, body').animate({
             scrollTop: $(newCard).offset().top
         }, 100);
@@ -268,17 +275,10 @@
      $(document).on('click', '.numberInput', (e) => {
         e.stopPropagation();
      });
-     
-     $(document).on('change', '.validatorInputs', (e) => {
-        const ancestor = e.target.parentNode.parentNode.parentNode.parentNode;
-        const rangeInput = $(ancestor).find(".theinput");
-        if (e.target.value === "range") {
-            rangeInput.get(0).type = "number";
-        } else {
-            rangeInput.get(0).type = "text";
-        }
-        
-     })
+
+    $(document).on('change', '.validatorInputs, .theinput', (e) => {
+        $(e.target).get(0).setCustomValidity("");
+    })
 
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
