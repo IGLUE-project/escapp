@@ -32,7 +32,6 @@
     <% var finish = false; %>
     
     <% var content = JSON.parse(escapeRoom[endPoint + "Instructions"] || "[]").map((block, index) => ({...block, index}))  %>
-
         <% var hintConditional  = (!escapeRoom.hintLimit && escapeRoom.hintLimit !== 0 ) || escapeRoom.hintLimit > 0; // Hints allowed %>
         <% var hintAppConditional = hintConditional && Boolean(escapeRoom.hintApp); // Hint app methodology %>
         <% retosSuperados = team.retos.map(a=>a.order);%>
@@ -51,8 +50,8 @@
         <% latestRetoSuperado = retosSuperados.length ? Math.max(...retosSuperados) : null %>
         <% currentlyWorkingOn = retosSuperados.length ? (Math.max(...retosSuperados) + 1) : 0 %>
         <% if (finish) { currentlyWorkingOn = null;} %>
+        <% if (endPoint == "class") { currentlyWorkingOn = null;} %>
         <% content = getContentForPuzzle(escapeRoom[endPoint + "Instructions"], currentlyWorkingOn === null ? "all": currentlyWorkingOn)%>
-
 
         <% var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, hints, validator })=>{ 
             reqHints[order] = [];
@@ -84,21 +83,22 @@
     <nav class="navbar fixed-top navbar-expand-md justify-content-between navbar-fixed-top navbar-dark bg-primary">
         <a class="navbar-brand" href="#" > 
             <%=escapeRoom.title%></a>
-        <%if ((!escapeRoom.teamSize || escapeRoom.teamSize > 1)) {%>
-            <span class="navbar-text  navbar-team-name" title="<%= session.user.username %>">
-                <b><%=i18n.team.Team%>: </b><%=team.name%>
-            </span>
-        <%} else {%>
-            <span class="navbar-text">
-                <b><%=session.user.username%></b>
-            </span>
+        <%if  (endPoint == "team"){%>
+            <%if  (!escapeRoom.teamSize || (escapeRoom.teamSize > 1)) {%>
+                <span class="navbar-text  navbar-team-name" title="<%= session.user.username %>">
+                    <b><%=i18n.team.Team%>: </b><%=team.name%>
+                </span>
+            <%} else {%>
+                <span class="navbar-text">
+                    <b><%=session.user.username%></b>
+                </span>
+            <%}%>
         <%}%>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse-div" aria-controls="navbar-collapse-div" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-      
         <div class="collapse navbar-collapse" id="navbar-collapse-div">
-          <%if ( currentlyWorkingOn !== null) {%> 
+          <%if ((endPoint !== "class") && (currentlyWorkingOn !== null)) {%> 
             <% const puzzle = puzzles[currentlyWorkingOn] %>
             <div class="form-inline mmy-2 my-lg-0 ms-auto" style="margin-bottom: 0 !important; <%=puzzle.automatic ? 'display: none;' : ''%>" id="puzzle-form" > 
               <label class="puzzle-label">

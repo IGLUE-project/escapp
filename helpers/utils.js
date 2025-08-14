@@ -51,7 +51,6 @@ exports.playInterface = async (name, req, res, next) => {
 
     req.escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPuzzles);
     req.escapeRoom.hintApp = await models.hintApp.findOne({"where": { "escapeRoomId": req.escapeRoom.id }});
-
     const {token} = await models.user.findByPk(req.session.user.id);
 
     if (name === "class" && (isAdmin || isAuthor || isCoAuthor)) {
@@ -64,6 +63,7 @@ exports.playInterface = async (name, req, res, next) => {
             },
             "teams": req.teams,
             "hints": [],
+            teamId: null,
             "turnoId": req.params.turnoId,
             "isStudent": false,
             "status": req.turn.status,
