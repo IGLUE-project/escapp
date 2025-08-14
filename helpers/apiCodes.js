@@ -82,6 +82,7 @@ exports.getAuthMessageAndCode = (participation, i18n, start) => {
         msg = start ? i18n.api.participant : i18n.api.notStarted;
         break;
     case AUTHOR:
+        code = OK; ////////
         status = 202;
         msg = i18n.api.isAuthor;
         break;

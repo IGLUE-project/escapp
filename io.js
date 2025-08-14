@@ -16,7 +16,7 @@ exports.createServer = (server, sessionMiddleware) => {
     io.on("connection", async (socket) => {
         try {
             const user = await socketAuthenticate(socket);
-            const {escapeRoomId, lang, waiting, "turnId": teacherTurnId} = getInfoFromSocket(socket);
+            const {escapeRoomId, lang, waiting, "turnId": teacherTurnId, preview} = getInfoFromSocket(socket);
             let forceLanguage = "en";
 
             if (lang && (lang === "es" || lang === "en")) {
@@ -29,8 +29,7 @@ exports.createServer = (server, sessionMiddleware) => {
                     i18n = require(`./i18n/${user.lang}`);
                 }
                 const {token, username} = user;
-                const {"turnId": studentTurnId, teamId, participation, erState, errorMsg, language, teamInstructions} = await checkAccess(user, escapeRoomId, i18n, waiting);
-
+                const {"turnId": studentTurnId, teamId, participation, erState, errorMsg, language, teamInstructions} = await checkAccess(user, escapeRoomId, teacherTurnId, i18n, waiting, preview);
                 if (language && (language === "es" || language === "en")) {
                     i18n = require(`./i18n/${language}`);
                 }
@@ -44,9 +43,9 @@ exports.createServer = (server, sessionMiddleware) => {
                 const {code, msg} = getAuthMessageAndCode(participation, i18n);
 
                 const response = {code, "authentication": true, token, participation, msg, erState};
-                const turnId = studentTurnId || teacherTurnId;
+                const turnId =  teacherTurnId  || studentTurnId;
 
-                if (user.isAdmin || participation && participation !== NOT_A_PARTICIPANT) {
+                if (user.isAdmin || (participation &&( participation !== NOT_A_PARTICIPANT))) {
                     initializeListeners(escapeRoomId, turnId, teamId, user, waiting, i18n, teamInstructions, socket);
                     if (turnId) {
                         sendInitialInfo(socket, response);

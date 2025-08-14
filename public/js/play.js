@@ -288,7 +288,6 @@ const onInitialInfo = ({code, erState, participation}) => {
   if (participation != "AUTHOR" && (code && code === "NOK")) {
     window.location = `/escapeRooms/${escapeRoomId}/`;
   }
-
   if (erState && erState.ranking) {
     onRanking({ranking: erState.ranking})
   }
@@ -801,7 +800,8 @@ const autoPlay = (newBlocks = []) => {
 const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket = io('/', {query: {
     escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId,
-    turn: turnId == "undefined" ? undefined : turnId
+    turn: turnId == "undefined" ? undefined : turnId,
+    preview: Boolean(endPoint)
   }});
   myTeamId = teamId;
   myUsername = username;

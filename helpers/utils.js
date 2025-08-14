@@ -245,9 +245,11 @@ exports.getScore = (puzzlesSolved, puzzleData, successHints, failHints, attendan
 
 exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     let participation = PARTICIPANT;
-
-    if (preview || (user.isAdmin || escapeRoom.authorId == user.id || escapeRoom.userCoAuthor.some((co) => user.id == co.id))) {
+    const privileged = user.isAdmin || (escapeRoom.authorId === user.id) || ((escapeRoom.userCoAuthor || []).some((e) => e.id === user.id));
+    if (preview && privileged) {
         participation = AUTHOR;
+    } else if (!preview && privileged) {
+        participation = PARTICIPANT;
     } else if (teams && teams.length > 0) {
         const [team] = teams;
 
@@ -263,7 +265,6 @@ exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     } else {
         participation = NOT_A_PARTICIPANT;
     }
-
     return participation;
 };
 

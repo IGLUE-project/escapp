@@ -264,6 +264,7 @@
     var username = "<%= session.user.username %>";
     var teamId = <%= team.id || "undefined"%>; 
     var token = "<%= token%>";
+    var endPoint = "<%=endPoint%>";
     var ER = {
         "locale": "<%=i18n.lang%>",
         "escappEndpoint": "<%=hostName + "/api/escapeRooms/" + escapeRoom.id %>",

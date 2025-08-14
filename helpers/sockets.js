@@ -84,9 +84,9 @@ exports.getInfoFromSocket = ({handshake}) => {
     const lang = (handshake.headers["accept-language"] && handshake.headers["accept-language"].substring(0, 2)) === "es" ? "es" : "en";
     const escapeRoomId = parseInt(handshake.query.escapeRoom, 10) || undefined;
     const turnId = parseInt(handshake.query.turn, 10) || undefined;
-    const {waiting} = handshake.query;
+    const {waiting, preview} = handshake.query;
 
-    return {escapeRoomId, turnId, lang, waiting};
+    return {escapeRoomId, turnId, lang, waiting, preview};
 };
 
 /**
@@ -264,32 +264,38 @@ exports.getConnectedMembers = (teamId) => {
 /**
  * Check if user has the rights to access ER
  */
-exports.checkAccess = async (user, escapeRoomId, i18n, waiting) => {
+exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview = false) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(escapeRoomId, queries.escapeRoom.load);
 
         if (escapeRoom) {
             const teams = await user.getTeamsAgregados(queries.user.erTeam(escapeRoomId));
-            const participation = await checkTurnoAccess(teams, user, escapeRoom, false);
+            const participation = await checkTurnoAccess(teams, user, escapeRoom, preview);
+            const privileged = user.isAdmin || (escapeRoom.authorId === user.id) || ((escapeRoom.userCoAuthor || []).some((e) => e.id === user.id));
 
             // TODO comprobar author turno está en ER
             if (teams && teams.length) {
                 const [team] = teams;
                 const teamId = team.id;
-                const turnId = team.turno.id;
+                const turnIdFound = team.turno.id;
+
+                if (!privileged && (turnId != turnIdFound)) {
+                    return {"errorMsg": i18n.api.notFound};
+                }
                 const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
 
                 if (!waiting) {
                     escapeRoom.puzzles = await getERPuzzles(escapeRoomId);
                 }
-                const erState = waiting ? {} : await getERState(escapeRoomId, team, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, attendance, true);
+                const erState = waiting ? {} : await getERState(escapeRoomId, team, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
 
                 // If (participation === "PARTICIPANT") {
                 //     Await automaticallySetAttendance(team, user.id, escapeRoom.automaticAttendance);
                 // }
                 return {participation, teamId, turnId, erState, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
             }
-            return {participation, "language": escapeRoom.forceLang};
+
+            return {participation, "language": escapeRoom.forceLang, turnId, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
         }
         return {"errorMsg": i18n.api.notFound};
     } catch (err) {
@@ -398,20 +404,19 @@ exports.broadcastRanking = (turnoId, teams, teamId, puzzleOrder) => {
  */
 exports.sendInitialInfo = (socket, {code, authentication, token, participation, msg, erState}) => {
     const connectedMembers = erState && erState.teamId ? exports.getConnectedMembers(erState.teamId) : [];
-
     initialInfo(socket.id, code, authentication, token, participation, msg, erState, connectedMembers);
 };
 
 /**
  * Start "button"
  */
-exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n) => {
+exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n, preview = false) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(escapeRoomId, queries.escapeRoom.load);
 
         if (escapeRoom) {
             const teams = await user.getTeamsAgregados(queries.user.erTeam(escapeRoomId));
-            const participation = await checkTurnoAccess(teams, user, escapeRoom, false);
+            const participation = await checkTurnoAccess(teams, user, escapeRoom, preview);
             const {code, msg} = getAuthMessageAndCode(participation, i18n, true);
 
             // TODO comprobar author turno está en ER
@@ -421,7 +426,6 @@ exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n) => {
                 const attendance = participation === PARTICIPANT || participation === TOO_LATE;
                 // eslint-disable-next-line init-declarations
                 let erState;
-
                 if (participation === PARTICIPANT || participation === NOT_STARTED) {
                     const firstTimer = await automaticallySetAttendance(team, user.id, escapeRoom.automaticAttendance);
 
