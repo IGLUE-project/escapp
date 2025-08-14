@@ -19,15 +19,17 @@ exports.ranking = async (req, res, next) => {
     const {i18n} = res.locals;
 
     try {
-        const turno = await models.turno.findOne(queries.turno.myTurno(req.escapeRoom.id, req.session.user.id));
+        const isAuthorOrCoAuthor = req.escapeRoom.authorId ===  req.session.user.id || req.escapeRoom.userCoAuthor.some((e) => e.id ===  req.session.user.id);
+        if(!isAuthorOrCoAuthor){
+            const turno = await models.turno.findOne(queries.turno.myTurno(req.escapeRoom.id, req.session.user.id));
 
-        if (turno) {
-            turnoId = turno.id;
-            if (turno.teams && turno.teams.length) {
-                req.teamId = turno.teams[0].id;
+            if (turno) {
+                turnoId = turno.id;
+                if (turno.teams && turno.teams.length) {
+                    req.teamId = turno.teams[0].id;
+                }
             }
         }
-
         const teams = await models.team.findAll(queries.team.ranking(req.escapeRoom.id, turnoId));
         const puzzles = await getERPuzzles(req.escapeRoom.id);
 

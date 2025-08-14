@@ -82,7 +82,7 @@ exports.index = async (req, res, next) => {
             escapeRooms = erAll.map((er) => {
                 const {id, title, invitation, attachment} = er;
                 const isSignedUp = ids.indexOf(er.id) !== -1;
-                const isAuthorOrCoAuthor = er.author.id === user.id || er.userCoAuthor.some((e) => e.id === user.id);
+                const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
                 const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
 
                 return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor };
