@@ -1313,7 +1313,9 @@
         "create": "Create reusable puzzle",
         "edit": "Edit puzzle",
         "config": "Configuration",
-        "description": "Descritpion"
+        "description": "Description",
+        "fullscreen":"fullscreen",
+        "reset":"reset"
     },
     "management":{
         "contact": {
@@ -1375,6 +1377,49 @@
             "wheel": "Wheel",
             "wheelType": "Wheel type",
             "wheelLength": "Number of elements"
+        },
+        "Codeeditor": {
+            "name": "Code Editor",
+            "skins": {
+                "auto" :  "Auto",
+                "dark" : "Dark",
+                "light" : "Light",
+                "amethyst" : "Amethyst",
+                "aquaBlue" : "Aqua Blue",
+                "atomDark" : "Atom Dark",
+                "cobalt2" : "Cobalt2",
+                "cyberpunk" : "Cyberpunk",
+                "dracula" : "Dracula",
+                "ecoLight" : "Eco Light",
+                "freeCodeCampDark" : "FreeCodeCamp Dark",
+                "githubLight" : "Github Light",
+                "gruvboxDark" : "Gruvbox Dark",
+                "gruvboxLight" : "Gruvbox Light",
+                "levelUp" : "Level Up",
+                "monokaiPro" : "Monokai Pro",
+                "neoCyan" : "Neo Cyan",
+                "nightOwl" : "Night Owl",
+                "sandpackDark" : "Sandpack Dark"
+            },
+            "mainTitleText": "Title",
+            "mainTitleTextPlaceholder": "What will be seen on the top left corner",
+            "runButtonText": "'Run Tests' button",
+            "runButtonTextPlaceholder": "Run Tests",
+            "resetAppText": "'Reset App' button",
+            "resetAppTextPlaceholder": "Reset App",
+            "showTests": "Show test results", 
+            "allCorrectMessage": "Success message",
+            "allCorrectMessagePlaceholder": "Congratulations! All tests passed.",
+            "someWrongMessage":  "Fail message",
+            "someWrongMessagePlaceholder": "Something is not quite right!",
+            "continueButtonText": "'Continue' button after success",
+            "continueButtonTextPlaceholder": "Continue",
+            "tryAgainButtonText": "'Try again' button after failure",
+            "tryAgainButtonTextPlaceholder": "Try again",
+            "content": "Content of",
+            "readOnly": "Read only",
+            "hidden": "Hide file",
+            "Tests": "Tests"
         }
     },
     "general": {

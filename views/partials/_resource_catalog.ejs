@@ -131,6 +131,10 @@
                 <form action="reusablePuzzleInstance" class="reusablePuzzleInstanceForm" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
                 </form>
                 <div class="previewReusablePuzzle">
+                    <div style="display:flex;justify-content:end;align-items:center;gap:0.2em; margin-bottom: 1em; font-size: smaller;">
+                        <button class="rounded small" onclick="updateIframe();"><span class="material-icons">replay</span> <%=i18n.reusablePuzzles.reset%></button> 
+                        <button class="rounded small" onclick="fullscreenIframe('previewReusablePuzzleIframe')"><span class="material-icons">fullscreen</span> <%=i18n.reusablePuzzles.fullscreen%></button><br/> 
+                    </div> 
                     <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
                 </div>
             </div>
@@ -1219,6 +1223,18 @@ function resizeReusablePuzzleHeight(el){
 }
 
 
+function fullscreenIframe(iframeId) {
+  const iframe = document.getElementById(iframeId);
+  if (iframe.requestFullscreen) {
+    iframe.requestFullscreen();
+  } else if (iframe.mozRequestFullScreen) { // Firefox
+    iframe.mozRequestFullScreen();
+  } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
+    iframe.webkitRequestFullscreen();
+  } else if (iframe.msRequestFullscreen) { // IE/Edge
+    iframe.msRequestFullscreen();
+  }
+}
 $(document).on('keydown', function (e) {
   // Prevent Enter key globally, except in textareas and submit buttons
   if (e.key === 'Enter' && $(e.target).is('[type=text],[type=number]')) {

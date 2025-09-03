@@ -20,6 +20,16 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/wheel/Wheel_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/wheel/Wheel_Instructions_ES.pdf"
         }
+    },
+    {
+        "name": "CodeEditor",
+        "zip": "defaultReusablePuzzles/codeeditor/CodeEditor_Escapp.zip",
+        "form": "codeeditor.ejs",
+        "thumbnail": "defaultReusablePuzzles/codeeditor/CodeEditor_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/wheel/Wheel_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/wheel/Wheel_Instructions_ES.pdf"
+        }
     }
 ];
 

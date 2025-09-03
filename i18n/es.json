@@ -1300,7 +1300,9 @@
         "create": "Crear reto reutilizable",
         "edit": "Editar reto",
         "config": "Configuración",
-        "description": "Descripción"
+        "description": "Descripción",
+        "fullscreen":"pantalla completa",
+        "reset":"reiniciar"
     },
     "management":{
         "contact": {
@@ -1365,6 +1367,49 @@
             "wheel": "Rueda",
             "wheelType": "Tipo de rueda",
             "wheelLength": "Número de elementos"
+        },
+        "Codeeditor": {
+            "name": "Editor HTML/CSS/JS",
+            "skins": {
+                "auto" :  "Auto",
+                "dark" : "Oscuro",
+                "light" : "Claro",
+                "amethyst" : "Amethyst",
+                "aquaBlue" : "Aqua Azul",
+                "atomDark" : "Atom Oscuro",
+                "cobalt2" : "Cobalt2",
+                "cyberpunk" : "Cyberpunk",
+                "dracula" : "Dracula",
+                "ecoLight" : "Eco Claro",
+                "freeCodeCampDark" : "FreeCodeCamp Oscuro",
+                "githubLight" : "Github Claro",
+                "gruvboxDark" : "Gruvbox Oscuro",
+                "gruvboxLight" : "Gruvbox Claro",
+                "levelUp" : "Level Up",
+                "monokaiPro" : "Monokai Pro",
+                "neoCyan" : "Neo Cyan",
+                "nightOwl" : "Night Owl",
+                "sandpackDark" : "Sandpack Oscuro"
+            },
+            "mainTitleText": "Título",
+            "mainTitleTextPlaceholder": "Lo que se verá en la esquina superior izquierda",
+            "runButtonText": "Botón de 'Ejecutar pruebas'",
+            "runButtonTextPlaceholder": "Ejecutar pruebas",
+            "resetAppText": "Botón de 'Reiniciar App'",
+            "resetAppTextPlaceholder": "Reiniciar App",
+            "showTests": "Mostrar resultados de las pruebas", 
+            "allCorrectMessage": "Mensaje de éxito",
+            "allCorrectMessagePlaceholder": "¡Enhorabuena! Todas las pruebas han pasado correctamente.",
+            "someWrongMessage":  "Mensaje de fallo",
+            "someWrongMessagePlaceholder": "Algo no ha salido como esperábamos. Revisa las pruebas que no han pasado correctamente.",
+            "continueButtonText": "Botón de 'Continuar' tras superar el reto",
+            "continueButtonTextPlaceholder": "Continuar",
+            "tryAgainButtonText": "Botón de 'Reintentar' tras no superar el reto",
+            "tryAgainButtonTextPlaceholder": "Reintentar",
+            "content": "Contenido de",
+            "readOnly": "Sólo lectura",
+            "hidden": "Ocultar fichero",
+            "Tests": "Pruebas"
         }
     },
     "general": {
