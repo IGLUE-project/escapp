@@ -25,7 +25,7 @@ exports.getReusablePuzzle = async (req, res, next) => {
         const config = JSON.parse(reusablePuzzle.config);
         const form = config.url.includes("reusablePuzzles/forms/") ? config.url.split("/").pop() : "";
 
-        res.render("reusablePuzzles/details", {"id": reusablePuzzle.id, "name": reusablePuzzle.name, "description": reusablePuzzle.description, "thumbnail": reusablePuzzle.config.thumbnail, form});
+        res.render("reusablePuzzles/details", {"id": reusablePuzzle.id, "name": reusablePuzzle.name, "expectedDuration": reusablePuzzle.expectedDuration, "thumbnail": reusablePuzzle.config.thumbnail, form});
     } catch (e) {
         next(e);
     }
@@ -75,9 +75,9 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
     const {reusablePuzzleInstanceId} = req.params;
 
     try {
-        const {config, name, description} = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
+        const {config, name, expectedDuration} = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
 
-        res.render("reusablePuzzles/reusablePuzzleConfiguration", {config, name, description});
+        res.render("reusablePuzzles/reusablePuzzleConfiguration", {config, name, expectedDuration});
     } catch (e) {
         next(e);
     }
@@ -90,7 +90,7 @@ exports.renderCreatePuzzle = (req, res) => {
 
 
 exports.createReusablePuzzle = async (req, res, next) => {
-    const {name, description, form } = req.body;
+    const {name, expectedDuration, form } = req.body;
     const t = await sequelize.transaction();
 
     try {
@@ -123,7 +123,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
         if (await models.reusablePuzzle.findOne({"where": {name}}) !== null) {
             throw new Error("Puzzle with that name already exists");
         }
-        const puzzle = await models.reusablePuzzle.create({name, description}, {"transaction": t});
+        const puzzle = await models.reusablePuzzle.create({name, expectedDuration}, {"transaction": t});
 
         const newPath = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
 
@@ -177,7 +177,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
 
 
 exports.editReusablePuzzle = async (req, res, next) => {
-    const {name, description, form } = req.body;
+    const {name, expectedDuration, form } = req.body;
     const t = await sequelize.transaction();
 
     try {
@@ -212,7 +212,7 @@ exports.editReusablePuzzle = async (req, res, next) => {
             throw new Error("Puzzle doesnt exist");
         }
 
-        puzzle.description = description;
+        puzzle.expectedDuration = expectedDuration;
 
         const newPath = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
 
@@ -265,7 +265,7 @@ exports.editReusablePuzzle = async (req, res, next) => {
 // INSTANCES
 exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId, reusablePuzzleInstanceId} = req.params;
-    const {name, description, reusablePuzzleId, ...config} = req.body;
+    const {name, expectedDuration, reusablePuzzleId, ...config} = req.body;
     const t = await sequelize.transaction();
 
     let newInstanceId = "";
@@ -286,7 +286,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
                 }
             });
 
-            const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, description, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
+            const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, expectedDuration, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
             reusablePuzzleInstance = reusablePuzzle;
             newInstanceId = reusablePuzzle.id;
@@ -302,7 +302,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             trimedConfig.range = trimedConfig.validator === "range" ? trimedConfig.range : undefined;
 
             reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
-            reusablePuzzleInstance.description = description || reusablePuzzleInstance.description;
+            reusablePuzzleInstance.expectedDuration = expectedDuration || reusablePuzzleInstance.expectedDuration;
 
             Object.keys(trimedConfig).forEach((key) => {
                 if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
@@ -343,7 +343,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
         const newPuzzle = {"id": puzzle.id, "validator": puzzle.validator, "title": puzzle.title, "sol": puzzle.sol, "assignedReusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((instance) => instance.id)};
 
-        res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "description": reusablePuzzleInstance.description, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "expectedDuration": reusablePuzzleInstance.expectedDuration, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
     } catch (e) {
         console.error(e);
         t.rollback();

@@ -1313,7 +1313,7 @@
         "create": "Create reusable puzzle",
         "edit": "Edit puzzle",
         "config": "Configuration",
-        "description": "Description",
+        "expectedDuration": "Expected duration",
         "fullscreen":"fullscreen",
         "reset":"reset"
     },
@@ -1407,7 +1407,7 @@
             "runButtonTextPlaceholder": "Run Tests",
             "resetAppText": "'Reset App' button",
             "resetAppTextPlaceholder": "Reset App",
-            "showTests": "Show test results", 
+            "showTests": "Show test results",
             "allCorrectMessage": "Success message",
             "allCorrectMessagePlaceholder": "Congratulations! All tests passed.",
             "someWrongMessage":  "Fail message",

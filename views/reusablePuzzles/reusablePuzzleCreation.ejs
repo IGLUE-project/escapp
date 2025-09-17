@@ -9,8 +9,8 @@
         <div style='display:flex;flex-direction:column;justify-content:start'>
             <label> Nombre del puzzle</label>
             <input type='text' name='name' placeholder='Puzzle Name' required/>
-            <label> Descripción del puzzle</label>
-            <input type='text' name='description' placeholder='Puzzle description' required/>
+            <label> Duration esperada</label>
+            <input type='text' name='expectedDuration' placeholder='Duracion esperada' required/>
             <label> Zip</label>
             <input type='file' required name='file'/>
             <label> Formulario si no esta en el zip</label>
@@ -19,49 +19,6 @@
             <input type='file' name='thumbnail' placeholder="Thumbnail file"/>
             <label> Instrucciones</label>
             <input type='file' name='instructions' multiple placeholder="Instructions files"/>
-            <!--
-            <input type='text' id="formConfigInput" name='config' hidden/>
-            <div>
-                <h3>Config</h3>
-                <div style="border:solid 1px;" >
-                   <h2>Crear configuracion</h2>
-                    <input type='text' id='nameTypeConfig' placeholder='Property name'/>
-                    <select id='typeSelectorConfig'>
-                        <option value='number'>Number</option>
-                        <option value='text'>String</option>
-                        <option value='checkbox'>Boolean</option>
-                        <option value='array'>Array</option>
-                    </select>
-                    <select id='arrayTypeConfig' hidden>
-                        <option value='number'>Number</option>
-                        <option value='text'>String</option>
-                        <option value='checkbox'>Boolean</option>
-                    </select>
-                    <button type="button" onclick='appendToConfig()'> + </button>
-                    <div id="configForm"></div>
-                </div>
-                <div>
-                    <h4>Creador de tipos</h4>
-                    <input type='text' id='type' placeholder='Type name'/>
-                    <br/>
-                    <input type='text' id='nameType' placeholder='Property name'/>
-                    <select id='typeSelector'>
-                        <option value='number'>Number</option>
-                        <option value='text'>String</option>
-                        <option value='checkbox'>Boolean</option>
-                        <option value='array'>Array</option>
-                    </select>
-                    <select id='arrayType' hidden>
-                        <option value='number'>Number</option>
-                        <option value='text'>String</option>
-                        <option value='checkbox'>Boolean</option>
-                    </select>
-                    <button type="button" onclick='addElementToType()'> Añadir </button>
-                    <div id='typeDisplay'> </div>
-                    <button  type="button" onclick='addType()'> Crear tipo </button>
-                </div>
-            </div>
-            -->
             <input type='submit'/>
             <br>
         </div>
@@ -77,114 +34,3 @@
 
 </style>
 
-
-<!--
-<script>
-    let currentType = [];
-    let index = 0;
-    const types = [{type: "text"},{type: "number"},{type: "checkbox"},{type: "array"}]
-
-    function addType(){
-        const name = $('#type').val();
-        $('#typeSelector').append(`<option value="${name}">${name}</option>`)
-        $('#typeSelectorConfig').append(`<option value="${name}">${name}</option>`)
-        $('#arrayType').append(`<option value="${name}">${name}</option>`)
-        $('#arrayTypeConfig').append(`<option value="${name}">${name}</option>`)
-        types.push({type:name, config: currentType});
-        $('#typeDisplay').empty();
-        currentType = [];
-        index = 0;
-    }
-
-    function addElementToType(){
-        type = document.getElementById('typeSelector').value;
-        const name = $('#nameType').val();
-
-        if( type === "array"){
-            type = `${$('#arrayType').val()}-array`;
-        }
-
-        currentType = [
-            ...currentType,
-            {name, type},
-        ];
-
-        $('#typeDisplay').append(`<div><label style="margin-right:10px">${name}</label><label>${type}</label></div>`);
-        index++;
-    }
-
-    function renderConfig(item, depth=0){
-        const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF"];
-        const color = colors[depth%5];
-
-        const type = item.type;
-        let config;
-        const isArray = type.substring(type.length-6) === '-array';
-        const arraySubtype = isArray ? type.substring(0,type.length-6) : null;
-
-        if(isArray){
-            types.map(t=>{if(t.type === arraySubtype){config = t.config; return;}})
-        } else {
-            types.map(t=>{if(t.type === type){config = t.config; return;}})
-        }
-
-        let returnVal = "";
-
-        if(type === "text" || type === "number" || type === "checkbox"){
-            returnVal = `<div>${item.name}  ${item.type}</div>`;
-        }else {
-            let depthN = depth + 1;
-            if(isArray){
-                if(arraySubtype === "text" || arraySubtype === "number" || arraySubtype === "checkbox"){
-                    returnVal = `<div>${item.name} Array ${arraySubtype} </div>`;
-                }else{
-                    const childElement = config.map((el) => { return renderConfig(el, depthN); }).join('');
-                    returnVal = `<div>${item.name + item.type}${childElement}</div>`
-                }
-            } else {
-                const childElement = config.map((el) => { return renderConfig(el, depthN); }).join('');
-                returnVal = `<div>${item.name + item.type}${childElement}</div>`
-            }
-        }
-
-        return `<div style="background-color:${color};z-index:${depth};margin-left:${20*depth}px"> ${returnVal}</div>`;
-    }
-
-    const globalConfig = [];
-
-    function appendToConfig(){
-        type = $('#typeSelectorConfig').val();
-        const form = $('#configForm')
-        const name = $('#nameTypeConfig').val();
-        if( type === "array"){
-            type = `${$('#arrayTypeConfig').val()}-array`;
-        }
-        globalConfig.push({type, name});
-        const configToRender = globalConfig.map((confItem)=>{return renderConfig(confItem)}).join('');
-        form.html(configToRender)
-        $('#formConfigInput').val(JSON.stringify({confg:globalConfig, types:types}));
-    }
-
-    $(document).ready(function() {
-        $('#typeSelector').change(function() {
-            const selectedValue = $(this).val();
-            if (selectedValue === 'array') {
-                $('#arrayType').show();
-            } else {
-                $('#arrayType').hide();
-            }
-        });
-
-        $('#typeSelectorConfig').change(function() {
-            const selectedValue = $(this).val();
-            if (selectedValue === 'array') {
-                $('#arrayTypeConfig').show();
-            } else {
-                $('#arrayTypeConfig').hide();
-            }
-        });
-    });
-
-
-</script>
--->

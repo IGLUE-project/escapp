@@ -1300,7 +1300,7 @@
         "create": "Crear reto reutilizable",
         "edit": "Editar reto",
         "config": "Configuración",
-        "description": "Descripción",
+        "expectedDuration": "Duración aproximada",
         "fullscreen":"pantalla completa",
         "reset":"reiniciar"
     },
@@ -1397,7 +1397,7 @@
             "runButtonTextPlaceholder": "Ejecutar pruebas",
             "resetAppText": "Botón de 'Reiniciar App'",
             "resetAppTextPlaceholder": "Reiniciar App",
-            "showTests": "Mostrar resultados de las pruebas", 
+            "showTests": "Mostrar resultados de las pruebas",
             "allCorrectMessage": "Mensaje de éxito",
             "allCorrectMessagePlaceholder": "¡Enhorabuena! Todas las pruebas han pasado correctamente.",
             "someWrongMessage":  "Mensaje de fallo",
