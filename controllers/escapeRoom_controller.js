@@ -237,7 +237,6 @@ exports.update = async (req, res) => {
 
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
-            console.log(er);
             const old_url_used = er.attchment && await models.attachment.count({where: {url: er.attachment.url}}) > 1;
             if (!req.file && !old_url_used) {
                 if (er.attachment) {
