@@ -132,9 +132,9 @@
                 </form>
                 <div class="previewReusablePuzzle">
                     <div style="display:flex;justify-content:end;align-items:center;gap:0.2em; margin-bottom: 1em; font-size: smaller;">
-                        <button class="rounded small" onclick="updateIframe();"><span class="material-icons">replay</span> <%=i18n.reusablePuzzles.reset%></button> 
-                        <button class="rounded small" onclick="fullscreenIframe('previewReusablePuzzleIframe')"><span class="material-icons">fullscreen</span> <%=i18n.reusablePuzzles.fullscreen%></button><br/> 
-                    </div> 
+                        <button class="rounded small" onclick="updateIframe();"><span class="material-icons">replay</span> <%=i18n.reusablePuzzles.reset%></button>
+                        <button class="rounded small" onclick="fullscreenIframe('previewReusablePuzzleIframe')"><span class="material-icons">fullscreen</span> <%=i18n.reusablePuzzles.fullscreen%></button><br/>
+                    </div>
                     <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
                 </div>
             </div>
@@ -817,6 +817,8 @@
                 return;
             }
             res.json().then((resJSON)=>{
+                console.log('Hola soy yo')
+                console.log(resJSON);
                 if(resJSON.type === "reusable"){
                     let found = false;
                     window.reusablePuzzleInstances.forEach((puzzle) => {
@@ -830,21 +832,23 @@
                     if(!found){
                         window.reusablePuzzleInstances.push(resJSON)
                     }
-                    window.puzzles.forEach((puzzle,index) => {
-                        if(puzzle.id == resJSON.puzzle.id) {
-                            window.puzzles[index] = resJSON.puzzle;
-                            if(!window.puzzles[index].assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
-                                window.puzzles[index].assignedReusablePuzzleInstances.push(Number(resJSON.id)); //Puzzle in server doesnt have updated instances as where looking for the puzzle before the update
+                    if(resJSON.puzzle){
+                        window.puzzles.forEach((puzzle,index) => {
+                            if(puzzle.id == resJSON.puzzle.id) {
+                                window.puzzles[index] = resJSON.puzzle;
+                                if(!window.puzzles[index].assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
+                                    window.puzzles[index].assignedReusablePuzzleInstances.push(Number(resJSON.id)); //Puzzle in server doesnt have updated instances as where looking for the puzzle before the update
+                                }
+                            } else if(window.puzzles[index].assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
+                                window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {return p !== Number(resJSON.id)});
                             }
-                        } else if(window.puzzles[index].assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
-                            window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {return p !== Number(resJSON.id)});
-                        }
-                    });
+                        });
+                    }
                     toggleCatalogModal();
                     const row = $(`#p-${resJSON.id}`);
                      if(!row.length) {
                         const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
-                        resJSON.puzzles = [resJSON.puzzle.id]; // Gets puzzle that will be assigned in the block config
+                        resJSON.puzzles = [resJSON.puzzle.id] ; // Gets puzzle that will be assigned in the block config
                         $('#myTabContent tr:last').after(returnTableRowPuzzle(resJSON));
                     }
                     $('#noResources').hide();
@@ -1090,6 +1094,9 @@
         }
 
 const returnTableRowPuzzle = (resJSON) => {
+    if(resJSON.puzzles.length === 0 || (resJSON.puzzles.length === 1 && resJSON.puzzles[0] === undefined)){
+        resJSON.puzzles = null;
+    }
     return `<tr class="catalogItem" id=p-${resJSON.id}>
         <td>
             <p class="title">

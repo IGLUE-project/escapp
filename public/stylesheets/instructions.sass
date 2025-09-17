@@ -378,7 +378,7 @@
     font-size: 20px
   h3
     color: white
- 
+
   #embedContainerCopyDiv, #linkContainerCopyDiv
     display: flex
     position: relative
@@ -437,7 +437,7 @@
     border: 2px solid colors.$lightred
     .material-icons
       color: colors.$lightred
-  .titleLabelEdit
+  .titleLabelEdit, div .titleLabelEdit
     font-weight: bold
     padding-bottom: 0.4rem
     margin: 0 0 0.8rem  0
@@ -599,7 +599,7 @@
       color: colors.$mainpurple
     p
       margin: 0
-  .linkButton 
+  .linkButton
     background: none
     border: 0px
     border-radius: 24px
@@ -752,7 +752,7 @@
     max-width: 1600px
     z-index: 999
     border-radius: 6px 6px 0 0
-    
+
     h5
       margin: 0px
     span
@@ -783,7 +783,7 @@
           width: 100%
           aspect-ratio: 4 / 3
           border: 2px solid white
-      form.configForm,  .editDialog
+      form.configForm,  .editDialog, .editDialog .associatedPuzzle
         display: flex
         flex: 2
         flex-direction: column
@@ -886,7 +886,7 @@
     background: colors.$purple
     #link
       color: colors.$brighterblue
-      
+
     .tooltip-link
       display: flex
       position: absolute
@@ -903,7 +903,7 @@
   display: none
 
 .config-size-reusable-puzzle
-  font-family: Lato 
+  font-family: Lato
   font-size: 70%
   position: relative;
   display: flex
@@ -911,7 +911,7 @@
   align-items: center
   padding: 10px
   padding-bottom: 5px
-  
+
   text-align: right;
   margin-bottom: 5px;
   border-bottom: 1px solid #eee !important;
@@ -933,7 +933,7 @@
       flex-direction: column
       align-items: center
       cursor: pointer
-    label 
+    label
       cursor: pointer
     input[type="radio"]
       display: none
@@ -942,10 +942,10 @@
     .material-icons
       font-size: 27px
   .reusablePuzzleWidth, .reusablePuzzleHeight
-    
+
     width: 60px
     height: auto
-    font-family: Lato 
+    font-family: Lato
     font-size: 15px
     &:active, &:focus
       font-family: Lato !important
