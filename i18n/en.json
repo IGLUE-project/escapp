@@ -1313,7 +1313,7 @@
         "create": "Create reusable puzzle",
         "edit": "Edit puzzle",
         "config": "Configuration",
-        "expectedDuration": "Expected duration",
+        "expectedDuration": "Expected duration (mins)",
         "fullscreen":"fullscreen",
         "reset":"reset"
     },

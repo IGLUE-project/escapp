@@ -1300,7 +1300,7 @@
         "create": "Crear reto reutilizable",
         "edit": "Editar reto",
         "config": "Configuración",
-        "expectedDuration": "Duración aproximada",
+        "expectedDuration": "Duración aproximada (minutos)",
         "fullscreen":"pantalla completa",
         "reset":"reiniciar"
     },
