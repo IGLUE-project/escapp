@@ -528,7 +528,6 @@ exports.destroy = async (req, res, next) => {
 
     try {
         await req.escapeRoom.destroy({}, {transaction});
-        console.log(await models.attachment.count({where: {url: req.escapeRoom.attachment.url}}) );
         if (req.escapeRoom.attachment && await models.attachment.count({where: {url: req.escapeRoom.attachment.url}}) === 0) {
             try{
                 fs.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
