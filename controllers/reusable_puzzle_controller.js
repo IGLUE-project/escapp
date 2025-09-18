@@ -25,7 +25,7 @@ exports.getReusablePuzzle = async (req, res, next) => {
         const config = JSON.parse(reusablePuzzle.config);
         const form = config.url.includes("reusablePuzzles/forms/") ? config.url.split("/").pop() : "";
 
-        res.render("reusablePuzzles/details", {"id": reusablePuzzle.id, "name": reusablePuzzle.name, "thumbnail": reusablePuzzle.config.thumbnail, form});
+        res.render("reusablePuzzles/details", {"id": reusablePuzzle.id, "name": reusablePuzzle.name, "description": reusablePuzzle.description, "thumbnail": reusablePuzzle.config.thumbnail, form});
     } catch (e) {
         next(e);
     }
@@ -90,7 +90,7 @@ exports.renderCreatePuzzle = (req, res) => {
 
 
 exports.createReusablePuzzle = async (req, res, next) => {
-    const {name, form } = req.body;
+    const {name, description, form } = req.body;
     const t = await sequelize.transaction();
 
     try {
@@ -123,7 +123,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
         if (await models.reusablePuzzle.findOne({"where": {name}}) !== null) {
             throw new Error("Puzzle with that name already exists");
         }
-        const puzzle = await models.reusablePuzzle.create({name}, {"transaction": t});
+        const puzzle = await models.reusablePuzzle.create({name, description}, {"transaction": t});
 
         const newPath = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
 
@@ -177,7 +177,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
 
 
 exports.editReusablePuzzle = async (req, res, next) => {
-    const {name, form } = req.body;
+    const {name, description, form } = req.body;
     const t = await sequelize.transaction();
 
     try {
@@ -211,6 +211,8 @@ exports.editReusablePuzzle = async (req, res, next) => {
         if (puzzle === null) {
             throw new Error("Puzzle doesnt exist");
         }
+
+        puzzle.descriptionm = description;
 
         const newPath = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
 

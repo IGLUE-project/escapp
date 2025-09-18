@@ -548,6 +548,7 @@
                         "scenarios2D": "2D scenarios",
                         "config": {
                             "description": "Description",
+                            "expectedDuration": "Expected Duration (mins)",
                             "name": "Name",
                             "width": "Width",
                             "height": "Height",
@@ -1310,6 +1311,7 @@
     },
     "reusablePuzzles":{
         "name": "Reusable puzzles",
+        "description": "Description",
         "create": "Create reusable puzzle",
         "edit": "Edit puzzle",
         "config": "Configuration",
