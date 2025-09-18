@@ -212,7 +212,7 @@ exports.editReusablePuzzle = async (req, res, next) => {
             throw new Error("Puzzle doesnt exist");
         }
 
-        puzzle.descriptionm = description;
+        puzzle.description = description;
 
         const newPath = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
 
