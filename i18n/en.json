@@ -531,7 +531,7 @@
                         "selectFile": "select file",
                         "addResource": "add resource",
                         "addBlock": "add block",
-                        "downloadZip": "download zip",
+                        "downloadZip": "download",
                         "addText": "add text block",
                         "table": {
                             "name": "Name",
