@@ -8,6 +8,9 @@ module.exports = {
     },
 
     async down (queryInterface, _) {
-        await queryInterface.changeColumn("reusablePuzzleInstances", "reusablePuzzleId", { "allowNull": false, type:"INTEGER"});
+        return queryInterface.sequelize.transaction(async (t) => {
+            await queryInterface.bulkUpdate("reusablePuzzleInstances", { reusablePuzzleId: 0 }, { reusablePuzzleId: null }, { transaction: t });
+            await queryInterface.changeColumn("reusablePuzzleInstances", "reusablePuzzleId", { "allowNull": false, type:"INTEGER", defaultValue: 0}, { transaction: t });
+        })
     }
 };
