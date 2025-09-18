@@ -531,6 +531,7 @@
                         "selectFile": "select file",
                         "addResource": "add resource",
                         "addBlock": "add block",
+                        "downloadZip": "download zip",
                         "addText": "add text block",
                         "table": {
                             "name": "Name",
@@ -1407,7 +1408,7 @@
             "runButtonTextPlaceholder": "Run Tests",
             "resetAppText": "'Reset App' button",
             "resetAppTextPlaceholder": "Reset App",
-            "showTests": "Show test results", 
+            "showTests": "Show test results",
             "allCorrectMessage": "Success message",
             "allCorrectMessagePlaceholder": "Congratulations! All tests passed.",
             "someWrongMessage":  "Fail message",

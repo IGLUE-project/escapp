@@ -524,6 +524,7 @@
                         "selectFile": "Selecciona un fichero",
                         "addResource": "añadir recurso",
                         "addBlock": "añadir bloque",
+                        "downloadZip": "descargar zip",
                         "addText": "añadir bloque de texto",
                         "table": {
                             "name": "Nombre",
@@ -1397,7 +1398,7 @@
             "runButtonTextPlaceholder": "Ejecutar pruebas",
             "resetAppText": "Botón de 'Reiniciar App'",
             "resetAppTextPlaceholder": "Reiniciar App",
-            "showTests": "Mostrar resultados de las pruebas", 
+            "showTests": "Mostrar resultados de las pruebas",
             "allCorrectMessage": "Mensaje de éxito",
             "allCorrectMessagePlaceholder": "¡Enhorabuena! Todas las pruebas han pasado correctamente.",
             "someWrongMessage":  "Mensaje de fallo",

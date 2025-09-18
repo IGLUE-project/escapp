@@ -16,7 +16,7 @@ const StreamZip = require("node-stream-zip");
 const imageRegex = new RegExp(/image\/.*/);
 const videoRegex = new RegExp(/video\/.*/);
 const audioRegex = new RegExp(/audio\/.*/);
-const applicationRegex = new RegExp(/application\/.*/);
+const applicationRegex = new RegExp(/application\/webapp/);
 
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
@@ -241,7 +241,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 res.writeHead(200, head);
                 fs.createReadStream(filePath).pipe(res);
             }
-        } else if (asset.mime.search(applicationRegex) !== -1) {
+        } else if (asset.mime.search(applicationRegex) !== -1 ) {
             const referrer = req.get("Referrer");
             const preview = Boolean(referrer && referrer.match("/team$"));
             const hostName = process.env.APP_NAME ? `${req.protocol}://${process.env.APP_NAME}` : "http://localhost:3000";
