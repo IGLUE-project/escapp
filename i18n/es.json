@@ -542,6 +542,7 @@
                         "scenarios2D": "Escenarios 2D",
                         "config": {
                             "description": "Descripción",
+                            "expectedDuration": "Duración aproximada (mins)",
                             "name": "Nombre",
                             "width": "Ancho",
                             "height": "Alto",
@@ -1298,10 +1299,11 @@
     },
     "reusablePuzzles": {
         "name": "Retos reutilizables",
+        "description": "Descripción",
         "create": "Crear reto reutilizable",
         "edit": "Editar reto",
         "config": "Configuración",
-        "description": "Descripción",
+        "expectedDuration": "Duración aproximada (minutos)",
         "fullscreen":"pantalla completa",
         "reset":"reiniciar"
     },

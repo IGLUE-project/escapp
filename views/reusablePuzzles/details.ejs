@@ -6,7 +6,7 @@
     <form method='POST' style='width:30%' enctype='multipart/form-data' action='/reusablePuzzles/<%=id%>?_method=PUT'>
         <div style='display:flex;flex-direction:column;justify-content:start'>
             <input type='text' value='<%=name%>'  name='name' placeholder='Puzzle Name' required/>
-            <input type='text' value='<%=description%>' name='description' placeholder='Puzzle description' required/>
+            <input type='description' value='<%=description%>'  name='description' placeholder='Puzzle Description'/>
             <input type='file' name='file'/>
             <input type='text' value='<%=form%>' name='form' placeholder="Form name if zip has no form"/>
             <input type='file' name='thumbnail' placeholder="Thumbnail file"/>

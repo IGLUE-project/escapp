@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.STRING,
                 "validate": {"notEmpty": {"msg": "name must not be empty"}}
             },
-            "description": {"type": DataTypes.STRING},
+            "expectedDuration": {"type": DataTypes.STRING},
             "reusablePuzzleId": {"type": DataTypes.INTEGER}
         }
     );

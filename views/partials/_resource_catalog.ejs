@@ -98,7 +98,7 @@
                             <img src="/images/keypad.png"/>
                         <%} %>
                         <%=puzzle.id%>
-                        <button class="resourceCatalogBtn" data-name = "<%=puzzle.name%>" data-description = "<%=puzzle.description%>"
+                        <button class="resourceCatalogBtn" data-name = "<%=puzzle.name%>" data-description = "<%=puzzle.expectedDuration%>"
                             <%if (escapeRoom.puzzles.length == 0) {%>
                                 disabled title="<%=i18n.escapeRoom.steps.indications.front.catalog.interactiveResourcesNotAllowed%>" style = "cursor: help;"
                             <%} else {%>
@@ -287,7 +287,7 @@
         modal.toggleClass("active");
     }
 
-    function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, puzzleDesc, instanceId) {
+    function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, expectedDuration, instanceId) {
         let selectedPuzzle = window.puzzles.find(p => p.id == config.puzzle);
         if(!selectedPuzzle){
             selectedPuzzle = window.puzzles[0] || {};
@@ -314,11 +314,11 @@
                 </label>
                 <input id="nameOfReusablePuzzle" type="text" required name="name" value="${puzzleName}"/>
             </div>
-            <div style="display:none">
-                <label for="description">
-                    <%=i18n.escapeRoom.steps.indications.front.catalog.config.description%>
+            <div>
+                <label for="expectedDuration">
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.config.expectedDuration%>
                 </label>
-                <input id="descOfReusablePuzzle" type="text" name="description" value="${instanceId ? puzzleDesc:''}"/>
+                <input id="descOfReusablePuzzle" type="text" name="expectedDuration" value="${instanceId ? expectedDuration:''}"/>
             </div>
 
         </div>
@@ -616,7 +616,7 @@
         const configForm = $('#configForm');
         const resources = $('.sectionAddResource');
         const puzzleName = puzzle.id ? puzzle.name : reusablePuzzleName;
-        const puzzleDesc = puzzle.description ;
+        const expectedDuration = puzzle.expectedDuration ;
         configForm.empty();
         configZone.removeAttr('hidden');
         resources.attr('hidden', true);
@@ -633,7 +633,7 @@
                 elements += `<input type="submit" class="rounded acceptButton" value="<%=i18n.common.save%>"/>`;
                 elements += `<button type="button" class="rounded deleteButton" onclick="goBack()"><%=i18n.common.back%></button>`;
                 elements += `</div>`;
-                configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzleDesc, puzzle.id));
+                configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, expectedDuration, puzzle.id));
                 configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
 
                 $('#appendFormElementsHere').append(elements);
@@ -825,7 +825,7 @@
                         if(puzzle.id == resJSON.id) {
                             puzzle.config = JSON.stringify(resJSON.config);
                             puzzle.name = resJSON.name;
-                            puzzle.description = resJSON.description;
+                            puzzle.expectedDuration = resJSON.expectedDuration;
                             found = true;
                         }
                     });
