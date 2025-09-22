@@ -357,15 +357,6 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             "sol": puzzle.sol,
             "assignedReusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((instance) => instance.id)} : {};
 
-        res.json({config,
-            "name": reusablePuzzleInstance.name,
-            "puzzle": newPuzzle,
-            "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId,
-            "description": reusablePuzzleInstance.description,
-            "id": newInstanceId || reusablePuzzleInstanceId,
-            "type": "reusable"}
-        );
-
         res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "expectedDuration": reusablePuzzleInstance.expectedDuration, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
 
     } catch (e) {

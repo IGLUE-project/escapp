@@ -817,8 +817,6 @@
                 return;
             }
             res.json().then((resJSON)=>{
-                console.log('Hola soy yo')
-                console.log(resJSON);
                 if(resJSON.type === "reusable"){
                     let found = false;
                     window.reusablePuzzleInstances.forEach((puzzle) => {
@@ -1168,7 +1166,6 @@ const returnTableRow = (asset, puzzleList)=> {
         disabled = true;
 
     }
-    console.log(regexType)
 
     const insertButton = `<button ${disabled ? 'disabled': null} class="rounded listButton addButton"
                             onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify([...Array(puzzleList.length + 1).keys()])})'>
