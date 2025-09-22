@@ -237,7 +237,8 @@ exports.update = async (req, res) => {
 
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
-            if (!req.file) {
+            const old_url_used = er.attchment && await models.attachment.count({where: {url: er.attachment.url}}) > 1;
+            if (!req.file && !old_url_used) {
                 if (er.attachment) {
                     fs.unlinkSync(path.join(__dirname, "/../", er.attachment.url));
                     // AttHelper.deleteResource(er.attachment.public_id, models.attachment);
@@ -263,7 +264,8 @@ exports.update = async (req, res) => {
                 attachment.mime = req.file.mimetype;
                 try {
                     await attachment.save();
-                    if (old_url) {
+                    const old_url_used = await models.attachment.count({where: {url: old_url}}) > 0;
+                    if (old_url && !old_url_used) {
                         try {
                             fs.unlinkSync(path.join(__dirname, "/../", old_url));
                         } catch (e) {
@@ -291,6 +293,9 @@ exports.update = async (req, res) => {
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));
             });
+            if(req.file){
+                fs.unlinkSync(req.file.path);
+            }
         } else {
             req.flash("error", i18n.common.flash.errorEditingER);
         }
@@ -522,8 +527,12 @@ exports.destroy = async (req, res, next) => {
 
     try {
         await req.escapeRoom.destroy({}, {transaction});
-        if (req.escapeRoom.attachment) { // Delete the attachment at Cloudinary (result is ignored)
-            fs.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
+        if (req.escapeRoom.attachment && await models.attachment.count({where: {url: req.escapeRoom.attachment.url}}) === 0) {
+            try{
+                fs.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
+            } catch(e){
+                log.warning("Error deleting attachment file:", e);
+            }
             // Await attHelper.checksCloudinaryEnv();
             // Await attHelper.deleteResource(req.escapeRoom.attachment.public_id, models.attachment);
         }
