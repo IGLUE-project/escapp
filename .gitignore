@@ -27,6 +27,4 @@ public/privacy/*
 public/cookies/*
 !public/cookies/.gitkeep
 reusablePuzzles/installed/*
-!catalog/example.pd
-reusablePuzzles/installed/*
-
+!reusablePuzzles/installed/.gitkeep
