@@ -1154,6 +1154,10 @@ const returnTableRow = (asset, puzzleList)=> {
         icon = "picture_as_pdf";
         color = "btn-red";
         regexType = "pdf";
+    }else if (asset.mime.search(new RegExp(/application\/zip/))!==-1){
+        icon = "folder_zip";
+        color = "btn-orange";
+        regexType = "zip";
     }else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1){
         icon = "terminal"
         color = "btn-purple";
@@ -1164,6 +1168,26 @@ const returnTableRow = (asset, puzzleList)=> {
         disabled = true;
 
     }
+    console.log(regexType)
+
+    const insertButton = `<button ${disabled ? 'disabled': null} class="rounded listButton addButton"
+                            onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify([...Array(puzzleList.length + 1).keys()])})'>
+                            <span class="building-block-icon material-icons" id="add"> add
+                            </span>
+                            <p>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                            </p>
+                            </button>`;
+    const downloadButton = ` <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
+                            onclick='downloadZip(${asset.id})'>
+                            <span class="building-block-icon material-icons" id="download"> download
+                            </span>
+                            <p>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.downloadZip%>
+                            </p>
+                            </button> `
+
+    const button = regexType === "zip" ? downloadButton : insertButton;
 
     return `<tr class="catalogItem" id=${asset.id}>
                 <td>
@@ -1192,14 +1216,9 @@ const returnTableRow = (asset, puzzleList)=> {
                         </span>
                     </button>
 
-                    <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
-                        onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify([...Array(puzzleList.length + 1).keys()])})'>
-                        <span class="building-block-icon material-icons" id="add"> add
-                        </span>
-                        <p>
-                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
-                        </p>
-                    </button>
+                    ${button}
+
+
                 </div>
             </td>
         </tr>`
@@ -1227,6 +1246,30 @@ function resizeReusablePuzzleWidth(el){
 function resizeReusablePuzzleHeight(el){
     const reusablePuzzleBlockIframe = $(el).parents('.reusable-puzzle-block').children("iframe");
     reusablePuzzleBlockIframe.css("height", el.value)
+}
+
+function downloadZip(id) {
+    const asset = window.assets.find(a => a.id == id);
+    fetch(asset.url).then(response => {
+        if (response.ok) {
+            return response.blob();
+        }
+        console.error('Error downloading')
+    }).then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = asset.filename;
+        if(asset.filename.length < 4 || asset.filename.slice(-4).toLowerCase() !== '.zip'){
+            a.download = asset.filename + '.zip';
+        }
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }).catch(error => {
+        console.error('Error fetching', error);
+    });
 }
 
 
