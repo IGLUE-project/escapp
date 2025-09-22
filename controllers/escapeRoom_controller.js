@@ -207,6 +207,7 @@ exports.edit = async (req, res, next) => {
         req.escapeRoom.attachment = await models.attachment.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
         res.render("escapeRooms/edit", {"escapeRoom": req.escapeRoom, "progress": "edit"});
     } catch (error) {
+        console.error(error);
         next(error);
     }
 };
@@ -237,21 +238,18 @@ exports.update = async (req, res) => {
 
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
-            const old_url_used = er.attchment && await models.attachment.count({where: {url: er.attachment.url}}) > 1;
-            if (!req.file && !old_url_used) {
+            if (!req.file) {
                 if (er.attachment) {
-                    fs.unlinkSync(path.join(__dirname, "/../", er.attachment.url));
-                    // AttHelper.deleteResource(er.attachment.public_id, models.attachment);
+                    const old_url_used = await models.attachment.count({where: {url: er.attachment.url}}) > 1;
+                    if (!old_url_used){
+                        fs.unlinkSync(path.join(__dirname, "/../", er.attachment.url));
+                    }
                     er.attachment.destroy();
                 }
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
                 return;
             }
             try {
-                // Save the new attachment into Cloudinary:
-                // Await attHelper.checksCloudinaryEnv();
-                // Const uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options);
-                // Remember the public_id of the old image.
                 const old_url = er.attachment ? er.attachment.url : null;
                 let attachment = await er.getAttachment();
 
@@ -263,8 +261,7 @@ exports.update = async (req, res) => {
                 attachment.filename = req.file.originalname;
                 attachment.mime = req.file.mimetype;
                 try {
-                    await attachment.save();
-                    const old_url_used = await models.attachment.count({where: {url: old_url}}) > 0;
+                    const old_url_used = await models.attachment.count({where: {url: old_url}}) > 1;
                     if (old_url && !old_url_used) {
                         try {
                             fs.unlinkSync(path.join(__dirname, "/../", old_url));
@@ -273,6 +270,7 @@ exports.update = async (req, res) => {
                         }
                         // AttHelper.deleteResource(old_public_id, models.attachment);
                     }
+                    await attachment.save();
                 } catch (error) { // Ignoring image validation errors
                     console.error(error);
                     req.flash("error", i18n.common.flash.errorFile);
@@ -531,10 +529,8 @@ exports.destroy = async (req, res, next) => {
             try{
                 fs.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
             } catch(e){
-                log.warning("Error deleting attachment file:", e);
+                console.error("Error deleting attachment file:", e);
             }
-            // Await attHelper.checksCloudinaryEnv();
-            // Await attHelper.deleteResource(req.escapeRoom.attachment.public_id, models.attachment);
         }
         await transaction.commit();
         req.flash("success", i18n.common.flash.successDeletingER);
