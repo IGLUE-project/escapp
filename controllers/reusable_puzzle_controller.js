@@ -266,7 +266,11 @@ exports.editReusablePuzzle = async (req, res, next) => {
 exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId, reusablePuzzleInstanceId} = req.params;
     const {name, expectedDuration, reusablePuzzleId, ...config} = req.body;
+    let {isPuzzleAssigned} = req.body;
+
     const t = await sequelize.transaction();
+
+    isPuzzleAssigned =  isPuzzleAssigned ? true : false;
 
     let newInstanceId = "";
     let reusablePuzzleInstance;
@@ -280,11 +284,14 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             trimedConfig.validator = null;
             trimedConfig.rangeInput = null;
             trimedConfig.solutionLength = null;
-            Object.keys(trimedConfig).forEach((key) => {
-                if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
-                    trimedConfig[key] = undefined;
-                }
-            });
+            if(reusablePuzzleId){
+                Object.keys(trimedConfig).forEach((key) => {
+                    if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
+                        trimedConfig[key] = undefined;
+                    }
+                });
+            }
+
 
             const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, expectedDuration, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
@@ -304,11 +311,14 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
             reusablePuzzleInstance.expectedDuration = expectedDuration || reusablePuzzleInstance.expectedDuration;
 
-            Object.keys(trimedConfig).forEach((key) => {
-                if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
-                    trimedConfig[key] = undefined;
-                }
-            });
+            if(reusablePuzzleId){
+                Object.keys(trimedConfig).forEach((key) => {
+                    if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
+                        trimedConfig[key] = undefined;
+                    }
+                });
+            }
+            reusablePuzzleInstance.reusablePuzzleId = reusablePuzzleId;
             reusablePuzzleInstance.config = JSON.stringify(trimedConfig);
             await reusablePuzzleInstance.save({"transaction": t});
         }
@@ -317,7 +327,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         const puzzles = await reusablePuzzleInstance.getPuzzles({"transaction": t});
 
         await reusablePuzzleInstance.removePuzzles(puzzles, {"transaction": t});
-        if (config.puzzle != "none") {
+        if (config.puzzle != "none" && isPuzzleAssigned) {
             puzzle = await models.puzzle.findOne({"where": {"id": config.puzzle}, "include": [{"model": models.reusablePuzzleInstance}]}, {"transaction": t});
             if (puzzle) {
                 puzzle.sol = config.puzzleSol ? config.puzzleSol : puzzle.sol;
@@ -341,9 +351,23 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
         t.commit();
 
-        const newPuzzle = {"id": puzzle.id, "validator": puzzle.validator, "title": puzzle.title, "sol": puzzle.sol, "assignedReusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((instance) => instance.id)};
+        const newPuzzle = isPuzzleAssigned ? {"id": puzzle.id,
+            "validator": puzzle.validator,
+            "title": puzzle.title,
+            "sol": puzzle.sol,
+            "assignedReusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((instance) => instance.id)} : {};
+
+        res.json({config,
+            "name": reusablePuzzleInstance.name,
+            "puzzle": newPuzzle,
+            "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId,
+            "description": reusablePuzzleInstance.description,
+            "id": newInstanceId || reusablePuzzleInstanceId,
+            "type": "reusable"}
+        );
 
         res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "expectedDuration": reusablePuzzleInstance.expectedDuration, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -364,9 +388,8 @@ exports.getReusablePuzzleInstances = async (req, res, next) => {
 };
 
 // GET /escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstances/:reusablePuzzleInstanceId/render
-exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-line  no-unused-vars
+exports.renderReusablePuzzle = async (req, res, _) => { // eslint-disable-line  no-unused-vars
     const {reusablePuzzleInstanceId} = req.params;
-
 
     try {
         const reusablePuzzleInstance = await models.reusablePuzzleInstance.findByPk(reusablePuzzleInstanceId);
@@ -374,17 +397,9 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleInstance.reusablePuzzleId);
         const escapeRoom = await models.escapeRoom.findByPk(reusablePuzzleInstance.escapeRoomId);
         const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
-
         const linkedPuzzle = await reusablePuzzleInstance.getPuzzles();
-
-        if (!linkedPuzzle) {
-            res.status(404).send("Puzzle not assigned to this instance");
-            return;
-        }
-        const solutionLength = reusablePuzzleInstanceConfig.solutionLength || linkedPuzzle.sol.length || 0;
-
+        const solutionLength = linkedPuzzle.length > 0 ? (reusablePuzzleInstanceConfig.solutionLength || linkedPuzzle.sol.length || 0) : 0;
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
-
         const hostName = process.env.APP_NAME ? `${req.protocol}://${process.env.APP_NAME}` : "http://localhost:3000";
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
@@ -397,7 +412,7 @@ exports.renderReusablePuzzle = async (req, res, next) => { // eslint-disable-lin
             "escappClientSettings": {
                 "endpoint": `${hostName}/api/escapeRooms/${reusablePuzzleInstance.escapeRoomId}`,
                 preview,
-                "linkedPuzzleIds": [linkedPuzzle[0] ? linkedPuzzle[0].order + 1 : null], // TODO: Enviar todos cuando soportemos N-M
+                "linkedPuzzleIds": linkedPuzzle ? [linkedPuzzle[0] ? linkedPuzzle[0].order + 1 : null] : null, // TODO: Enviar todos cuando soportemos N-M
                 "user": {
                     "email": req.session.user.username,
                     token

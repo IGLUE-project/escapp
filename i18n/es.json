@@ -524,6 +524,7 @@
                         "selectFile": "Selecciona un fichero",
                         "addResource": "añadir recurso",
                         "addBlock": "añadir bloque",
+                        "downloadZip": "descargar zip",
                         "addText": "añadir bloque de texto",
                         "table": {
                             "name": "Nombre",

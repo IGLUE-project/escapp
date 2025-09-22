@@ -1,11 +1,17 @@
+<div class="associatedPuzzle" style="padding:0px">
 <h4 class="titleLabelEdit">
     <%=i18n.escapeRoom.steps.indications.front.catalog.config.assignedPuzzle%>
 </h4>
 
-<select id="associatedPuzzle" name="puzzle">   
+<div>
+    <label for="isPuzzleAssigned">Assign puzzle</label>
+    <input type="checkbox" id="isPuzzleAssigned" name="isPuzzleAssigned">
+</div>
+
+<select id="associatedPuzzle" style="display:none" name="puzzle">
 </select>
 
-<div>
+<div id="selectePuzzle" style="display:none">
     <label for="puzzleSol">
         <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
     </label>
@@ -34,6 +40,7 @@
         <%}%>
     </select>
 </div>
+</div>
 <div  id="solutionLength">
     <label for="solutionLength">
         <%=i18n.escapeRoom.steps.indications.front.catalog.config.solutionLength%>
@@ -51,11 +58,21 @@
         <%=i18n.escapeRoom.steps.indications.front.catalog.config.warningPuzzleChange%>
 </span>
 <script>
-    
+
     var optionsPuzzle = window.puzzles.map((puzzler,index) => {
     return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>`
-}).join('') 
+}).join('')
     $("#associatedPuzzle").append(optionsPuzzle);
 
-    
+    $('#isPuzzleAssigned').on("change", function(){
+        if(this.checked){
+            $('#selectePuzzle').show();
+            $('#associatedPuzzle').show();
+        }else{
+            $('#selectePuzzle').hide();
+            $('#associatedPuzzle').hide();
+        }
+    });
+
+
 </script>
