@@ -3,15 +3,11 @@
     <%=i18n.escapeRoom.steps.indications.front.catalog.config.assignedPuzzle%>
 </h4>
 
-<div>
-    <label for="isPuzzleAssigned">Assign puzzle</label>
-    <input type="checkbox" id="isPuzzleAssigned" name="isPuzzleAssigned">
-</div>
 
-<select id="associatedPuzzle" style="display:none" name="puzzle">
+<select id="associatedPuzzle" name="puzzle">
 </select>
 
-<div id="selectePuzzle" style="display:none">
+<div id="selectePuzzle">
     <label for="puzzleSol">
         <%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzleSolution%>
     </label>
@@ -53,6 +49,14 @@
     </label>
     <input id="rangeInput" step="0.01"  min="0" name="rangeInput" type="number"/>
 </div>
+
+
+<div style="display:flex;align-items:center">
+    <label style="padding-top:0px" for="isPuzzleAssigned"><%=i18n.escapeRoom.steps.indications.front.catalog.config.independentPuzzle%></label>
+    <input type="checkbox" id="isPuzzleAssigned" name="isPuzzleAssigned" style="">
+</div>
+
+
 <span id="warningMessageForReusablePuzzleCreation" style="display:none;">
     <span class="material-icons">warning</span>
         <%=i18n.escapeRoom.steps.indications.front.catalog.config.warningPuzzleChange%>
@@ -65,12 +69,23 @@
     $("#associatedPuzzle").append(optionsPuzzle);
 
     $('#isPuzzleAssigned').on("change", function(){
-        if(this.checked){
-            $('#selectePuzzle').show();
-            $('#associatedPuzzle').show();
+        if(!this.checked){
+            $('#associatedPuzzle').prop('disabled', false);
+            $('#puzzleSol').prop('disabled', false);
+            $('#inputValidator').prop('disabled', false);
+            $('#solutionLengthInput').prop('disabled', false);
+            if($('#inputValidator').val() == "range"){
+                $('#rangeInput').prop('disabled', false);
+            }
         }else{
-            $('#selectePuzzle').hide();
-            $('#associatedPuzzle').hide();
+            $('#associatedPuzzle').prop('disabled', true);
+            $('#puzzleSol').prop('disabled', true);
+            $('#inputValidator').prop('disabled', true);
+            $('#solutionLengthInput').prop('disabled', true);
+            $('#rangeInput').prop('disabled', true);
+            if($('#inputValidator').val() == "range"){
+                $('#rangeInput').prop('disabled', true);
+            }
         }
     });
 

@@ -3306,21 +3306,24 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   height: 27px;
   font-weight: lighter;
 }
+.config-size-reusable-puzzle .aspectRatioLabel {
+  margin-right: 10px;
+}
 .config-size-reusable-puzzle span.units {
   color: #161938;
   margin-right: 10px;
+}
+.config-size-reusable-puzzle span.px {
+  color: #161938;
+  font-family: Lato !important;
 }
 .config-size-reusable-puzzle .alignment-group {
   display: flex;
   gap: 20px;
   align-items: center;
   margin-right: 20px;
-}
-.config-size-reusable-puzzle .alignment-group .alignment-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
+  margin-right-align-items: center;
+  margin-right-cursor: pointer;
 }
 .config-size-reusable-puzzle .alignment-group label {
   cursor: pointer;
@@ -3333,6 +3336,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 .config-size-reusable-puzzle .alignment-group .material-icons {
   font-size: 27px;
+}
+.config-size-reusable-puzzle .dark:hover, .config-size-reusable-puzzle .dark:focus, .config-size-reusable-puzzle .dark:active {
+  font-family: Gugi !important;
+  color: black !important;
+  -webkit-text-fill-color: black !important;
+  border-color: black !important;
 }
 .config-size-reusable-puzzle .reusablePuzzleWidth, .config-size-reusable-puzzle .reusablePuzzleHeight {
   width: 60px;

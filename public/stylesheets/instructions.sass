@@ -922,17 +922,19 @@
     display: inline-block;
     height: 27px;
     font-weight: lighter
+  .aspectRatioLabel
+    margin-right: 10px
   span.units
     color:  colors.$darkerpurple
     margin-right: 10px
+  span.px
+    color: colors.$darkerpurple
+    font-family: Lato !important
   .alignment-group
     display: flex
     gap: 20px
     align-items: center
     margin-right: 20px
-    .alignment-option
-      display: flex
-      flex-direction: column
       align-items: center
       cursor: pointer
     label
@@ -943,8 +945,14 @@
         color: #007bff // blue when selected
     .material-icons
       font-size: 27px
-  .reusablePuzzleWidth, .reusablePuzzleHeight
+  .dark
+    &:hover, &:focus, &:active
+      font-family: Gugi !important
+      color: black !important
+      -webkit-text-fill-color: black !important
+      border-color: black !important
 
+  .reusablePuzzleWidth, .reusablePuzzleHeight
     width: 60px
     height: auto
     font-family: Lato

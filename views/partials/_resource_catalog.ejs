@@ -1235,6 +1235,27 @@ function alignReusablePuzzle(el){
     reusablePuzzleBlock.css("text-align", el.value)
 }
 
+function ratioReusablePuzzle(el){
+    const reusablePuzzleBlock = $(el).parents('.reusable-puzzle-block')
+    reusablePuzzleBlock.css("aspect-ratio", el.value)
+    reusablePuzzleBlock.children("iframe").css("aspect-ratio", el.value)
+    if (el.value === ""){
+        $("#hightSelector").show()
+        $(".px").show()
+        const selector = $("#hightSelector").val()
+        reusablePuzzleBlock.children('iframe').css("height", selector)
+    } else {
+        reusablePuzzleBlock.children("iframe").css("height", "100%")
+        $("#hightSelector").hide()
+        $(".px").hide()
+    }
+}
+
+function changeReusablePuzzleHeight(el){
+    const reusablePuzzleBlock = $(el).parents('.reusable-puzzle-block')
+    reusablePuzzleBlock.children('iframe').css("height", el.value)
+}
+
 function resizeReusablePuzzleWidth(el){
     const reusablePuzzleBlockIframe = $(el).parents('.reusable-puzzle-block').children("iframe");
     reusablePuzzleBlockIframe.css("width", el.value+"%")

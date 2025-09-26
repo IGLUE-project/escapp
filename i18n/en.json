@@ -525,6 +525,7 @@
                     "Left": "Left",
                     "Center": "Center",
                     "Right": "Right",
+                    "aspectRatio": "Aspect ratio",
                     "catalog": {
                         "newPuzzle": "new puzzle",
                         "uploadFile": "upload file",
@@ -565,8 +566,8 @@
                             "options": "Options",
                             "warningPuzzleChange": "If you have changed your puzzle solution you must save this form first for your changes to be available in the preview",
                             "solutionLength": "Solution length",
-                            "reusablePuzzleInstructions": "instructions"
-
+                            "reusablePuzzleInstructions": "instructions",
+                            "independentPuzzle": "Resource without puzzle"
                         }
                     }
                 }

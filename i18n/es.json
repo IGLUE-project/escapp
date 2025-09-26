@@ -517,6 +517,7 @@
                     "Left": "Izquierda",
                     "Center": "Centro",
                     "Right": "Derecha",
+                    "aspectRatio": "Relación de aspecto",
                     "resourceCatalog": "Catálogo de recursos",
                     "catalog": {
                         "newPuzzle": "nuevo puzzle",
@@ -557,6 +558,7 @@
                             "nameDescription": "Nombre y descripción",
                             "options": "Opciones",
                             "warningPuzzleChange": "Si has cambiado la solución del reto debes guardar este formulario primero para que los cambios estén disponibles en la vista previa",
+                            "independentPuzzle": "Puzzle sin reto",
                             "solutionLength": "Longitud de la solución",
                             "reusablePuzzleInstructions": "instrucciones"
                         }

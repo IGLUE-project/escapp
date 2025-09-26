@@ -67,7 +67,7 @@ var rankingTemplate = ()=>`<div class="editor">
         </div>
     </ranking>
 </div>`
-var reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center") => `<div class="reusable-puzzle-block" style="width:100%;height:auto;text-align:${align};">
+var reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio = "4/3", heightIframe = "300") => `<div class="reusable-puzzle-block" style="width:100%;height:auto;text-align:${align};aspect-ratio:${ratio};">
 <div class="config-size-reusable-puzzle">
     <div>
         <label>${window.i18n.width}</label>
@@ -100,9 +100,26 @@ var reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center
         </label>
       </div>
     </div>
-    
+
+    <label class="aspectRatioLabel">${window.i18n.aspectRatio}</label>
+    <select class="dark" id="classReusableRatio" onchange="ratioReusablePuzzle(this)">
+      <option class="ratio-option" value="4/3" ${ratio === "4/3" ? "selected=selected" : null}>
+          4/3
+      </option>
+      <option class="ratio-option" value="16/9"  ${ratio === "16/9" ? "selected=selected" : null}>
+          16/9
+      </option>
+
+      <option class="ratio-option" value="" ${ratio === "" ? "selected=selected" : null} >
+        Auto
+      </option>
+    </select>
+    <span class="px" style="${ratio !== "" ? "display:none" : "display:block"};padding:0px 10px">${window.i18n.height}</span>
+    <input class="dark" type="number" style="${ratio !== "" ? "display:none" : "display:block"}" id="hightSelector" class="reusable-ratio hightSelector" onchange="changeReusablePuzzleHeight(this)" min="100" max="3000" value="${heightIframe ? heightIframe : 300 }"/>
+    <span class="px" style="display:none;padding:0px 10px">px</span>
+
 </div>
-<iframe class="reusablePuzzleIframe" src="${url}" style="width:${width}%;height:${height};border:none;max-width:1500px;aspect-ratio:4/3" >
+<iframe class="reusablePuzzleIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px; aspect-ratio:${ratio}" >
 </iframe>
 </div>`;
 var countdownTemplate = ()=> `<div class="editor" ><countdown/></div>`;
@@ -143,14 +160,14 @@ const catalogItem = (item)=> {
      } else if (item.mime.search(webappRegex) !== -1) {
         configJSON.width = "100%";
         configJSON.height = "auto";
-         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px;aspect-ratio:4/3;"  >
+         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px"  >
              <iframe src="${item.url}"  style="border:none" width="100%" height="100%" >
              </iframe>
      </div>`;
      } else if (item.mime.search(reusableRegex) !== -1) {
         configJSON.width = "100%";
         configJSON.height = "auto";
-         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px;aspect-ratio:4/3"  >
+         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px"  >
              <iframe src="${item.url}" style="border:none" width="100%" height="100%" id="${item.id}" >
                 <script>
                 </script>
@@ -195,7 +212,7 @@ var insertContent = async (index, type, payload, puzzles) => {
             content = progressBarTemplate();
             break;
         case "reusable":
-            content = reusablePuzzleTemplate(payload.url, payload.width, payload.height, payload.align);
+            content = reusablePuzzleTemplate(payload.url, payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
             break;
         case "catalog":
             type = "text"; //Reorder is not working otherwise
@@ -367,7 +384,15 @@ $(()=>{
                 obj.type = "text";
             } else if (type == "reusable") {
                 const src = $(e).find(".reusablePuzzleIframe").attr("src");
-                obj.payload = {url: src, width: $(e).find(".reusablePuzzleWidth").val(), height: $(e).find(".reusablePuzzleHeight").val(), align: $(e).find(".reusable-align:checked").val()};
+                console.log(
+                    $(e).find("#classReusableRatio"),
+                    $(e).find("#hightSelector")
+                )
+                obj.payload = {url: src, width: $(e).find(".reusablePuzzleWidth").val(),
+                    height: $(e).find(".reusablePuzzleHeight").val(),
+                    align: $(e).find(".reusable-align:checked").val(),
+                    ratio: $(e).find("#classReusableRatio").val(),
+                    heightIframe: $(e).find("#hightSelector").val()};
                 obj.type = "reusable";
             }
             results.push(obj);
