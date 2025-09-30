@@ -1237,7 +1237,6 @@ function alignReusablePuzzle(el){
 
 function ratioReusablePuzzle(el){
     const reusablePuzzleBlock = $(el).parents('.reusable-puzzle-block')
-    reusablePuzzleBlock.css("aspect-ratio", el.value)
     reusablePuzzleBlock.children("iframe").css("aspect-ratio", el.value)
     if (el.value === ""){
         $("#hightSelector").show()

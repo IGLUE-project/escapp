@@ -67,7 +67,7 @@ var rankingTemplate = ()=>`<div class="editor">
         </div>
     </ranking>
 </div>`
-var reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio = "4/3", heightIframe = "300") => `<div class="reusable-puzzle-block" style="width:100%;height:auto;text-align:${align};aspect-ratio:${ratio};">
+var reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio = "4/3", heightIframe = "300") => `<div class="reusable-puzzle-block" style="width:100%;height:auto;text-align:${align};">
 <div class="config-size-reusable-puzzle">
     <div>
         <label>${window.i18n.width}</label>

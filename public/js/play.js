@@ -57,7 +57,7 @@ const retoMsg = (puzzle, sol) => {
 }
 
 
-const reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio="16/9") => `<div style="width:100%;height:auto;max-width:1500px;aspect-ratio:4/3;margin: auto;max-height:95vh;text-align:${align};">
+const reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio="16/9") => `<div style="width:100%;height:auto;max-width:1500px;margin: auto;max-height:95vh;text-align:${align};">
   <iframe class="reusablePuzzleIframe"   src="${url}" style="width:${width}%;height:${height};border:none;max-width:1500px;aspect-ratio:${ratio}" >
 </div>`;
 const blockTemplate = (content, index) => `<div class="content-block" data-id="${index}" id="content-${index}">${content}</div>`;
