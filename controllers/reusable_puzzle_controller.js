@@ -270,7 +270,8 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
     const t = await sequelize.transaction();
 
-    isPuzzleAssigned =  isPuzzleAssigned ? false : true;
+    isPuzzleAssigned =  isPuzzleAssigned ? false : (config.puzzle === "noSelected" ? false : true); // Checkbox marked or the please select option marked
+    config.isPuzzleAssigned = isPuzzleAssigned;
 
     let newInstanceId = "";
     let reusablePuzzleInstance;
@@ -433,7 +434,7 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
 
     try {
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleId);
-        const linkedPuzzle = req.query.puzzleId !== 'undefined' ? await models.puzzle.findByPk(req.query.puzzleId) : 0;
+        const linkedPuzzle = !(req.query.puzzleId === 'undefined' || req.query.puzzleId === "noSelected")  ? await models.puzzle.findByPk(req.query.puzzleId) : 0;
         const escapeRoom = await models.escapeRoom.findByPk(escapeRoomId);
         const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);

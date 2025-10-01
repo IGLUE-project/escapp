@@ -318,7 +318,7 @@
                 <label for="expectedDuration">
                     <%=i18n.escapeRoom.steps.indications.front.catalog.config.expectedDuration%>
                 </label>
-                <input id="descOfReusablePuzzle" type="text" name="expectedDuration" value="${instanceId ? expectedDuration:''}"/>
+                <input id="descOfReusablePuzzle" type="text" name="expectedDuration" value="${instanceId ? (expectedDuration ? expectedDuration : ''):''}"/>
             </div>
 
         </div>
@@ -337,6 +337,7 @@
     function setPuzzleSol(id, reusablePuzzleInstanceConfig, reusablePuzzleId) {
         const puzzleSol = $('#puzzleSol');
         const puzzleId = $('#associatedPuzzle').val();
+        const associatedPuzzle = $('#associatedPuzzle');
         const span = $('#warningSpan');
         const validator = $('#inputValidator');
         const puzzleSelected = window.puzzles.find(p => p.id == puzzleId);
@@ -345,6 +346,8 @@
         const rangeDiv = $('#rangeDiv');
         const solutionLength = $('#solutionLengthInput');
         const solutionLengthDiv = $('#solutionLength');
+        const selectedPuzzleDiv = $('#selectePuzzle');
+        const isPuzzleAssignedCheckbox = $('#isPuzzleAssigned');
 
         if(puzzleSelected) {
             if (puzzleSelected.assignedReusablePuzzleInstances.length > 0 && puzzleSelected.assignedReusablePuzzleInstance != id) {
@@ -352,6 +355,9 @@
             } else {
                 span.hide();
             }
+            $('#selectePuzzle').show();
+            $('#solutionLength').show();
+            $('#puzzleSol').show();
 
             $(`#inputValidator option:selected`).attr("selected", null);
             $(`#inputValidator option[value="${puzzleSelected.validator}"]`).attr("selected", "selected");
@@ -389,10 +395,17 @@
 
 
         } else {
+            associatedPuzzle.prop("disabled", true);
+            associatedPuzzle.append('<option selected id="placeholderOption" style="display:none" value="noSelected">Please select puzzle</option>');
             puzzleSol.val("");
             span.hide();
             validator.hide()
             assignDiv.hide();
+            rangeDiv.hide();
+            solutionLengthDiv.hide();
+            puzzleSol.hide();
+            selectedPuzzleDiv.hide();
+            isPuzzleAssignedCheckbox.prop('checked', true);
         }
 
         updateIframe();
@@ -641,8 +654,10 @@
                 let selectedPuzzle = window.puzzles.find(p => p.assignedReusablePuzzleInstances.includes(Number(puzzle.id)));
 
                 try {
-                    if(!selectedPuzzle && window.puzzles.length > 0) {
+                    if((!selectedPuzzle && window.puzzles.length > 0) && config.isPuzzleAssigned) {
                         selectedPuzzle = window.puzzles[0];
+                    } else if (!selectedPuzzle && window.puzzles.length > 0) {
+                        selectedPuzzle = {}
                     }
                 } catch (e) {
                     console.error("Error setting default puzzle:", e);
@@ -838,6 +853,12 @@
                                     window.puzzles[index].assignedReusablePuzzleInstances.push(Number(resJSON.id)); //Puzzle in server doesnt have updated instances as where looking for the puzzle before the update
                                 }
                             } else if(window.puzzles[index].assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
+                                window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {return p !== Number(resJSON.id)});
+                            }
+                        });
+                    }else{
+                        window.puzzles.forEach((puzzle,index) => {
+                            if(puzzle.assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
                                 window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {return p !== Number(resJSON.id)});
                             }
                         });
@@ -1092,9 +1113,14 @@
         }
 
 const returnTableRowPuzzle = (resJSON) => {
-    if(resJSON.puzzles.length === 0 || (resJSON.puzzles.length === 1 && resJSON.puzzles[0] === undefined)){
+    let type = "assigned"
+    if(resJSON.puzzles.length === 0 || (resJSON.puzzles.length === 1 && resJSON.puzzles[0] === undefined)){ //Reusable Puzzle not assigned to any puzzle
         resJSON.puzzles = null;
+        type = "unassigned"
     }
+
+    let puzzlesWhenShowed = type === "assigned" ?  `[window.puzzles.findIndex(p=> ${resJSON.puzzles} == (p.id))]` : JSON.stringify([...Array(puzzleList.length + 1).keys()])
+
     return `<tr class="catalogItem" id=p-${resJSON.id}>
         <td>
             <p class="title">
@@ -1120,7 +1146,7 @@ const returnTableRowPuzzle = (resJSON) => {
                 </button>
 
                 <button class="rounded listButton addButton"
-                    onclick='insertAndScrollContent(0, "reusable", "${resJSON.id}", [window.puzzles.findIndex(p=> ${resJSON.puzzles} == (p.id))])'>
+                    onclick='insertAndScrollContent(0, "reusable", "${resJSON.id}", ${puzzlesWhenShowed})'>
                     <span class="building-block-icon material-icons" id="add"> add
                     </span>
                     <p>

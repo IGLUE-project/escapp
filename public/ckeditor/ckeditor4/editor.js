@@ -384,10 +384,6 @@ $(()=>{
                 obj.type = "text";
             } else if (type == "reusable") {
                 const src = $(e).find(".reusablePuzzleIframe").attr("src");
-                console.log(
-                    $(e).find("#classReusableRatio"),
-                    $(e).find("#hightSelector")
-                )
                 obj.payload = {url: src, width: $(e).find(".reusablePuzzleWidth").val(),
                     height: $(e).find(".reusablePuzzleHeight").val(),
                     align: $(e).find(".reusable-align:checked").val(),

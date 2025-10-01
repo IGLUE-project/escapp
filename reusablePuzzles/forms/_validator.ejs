@@ -62,10 +62,9 @@
         <%=i18n.escapeRoom.steps.indications.front.catalog.config.warningPuzzleChange%>
 </span>
 <script>
-
     var optionsPuzzle = window.puzzles.map((puzzler,index) => {
-    return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>`
-}).join('')
+    return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>` }).join('')
+
     $("#associatedPuzzle").append(optionsPuzzle);
 
     $('#isPuzzleAssigned').on("change", function(){
@@ -77,6 +76,7 @@
             if($('#inputValidator').val() == "range"){
                 $('#rangeInput').prop('disabled', false);
             }
+
         }else{
             $('#associatedPuzzle').prop('disabled', true);
             $('#puzzleSol').prop('disabled', true);
@@ -86,6 +86,10 @@
             if($('#inputValidator').val() == "range"){
                 $('#rangeInput').prop('disabled', true);
             }
+            $('#selectePuzzle').hide();
+            $('#solutionLength').hide();
+            $('#puzzleSol').hide();
+            $('#placeholderOption').prop('selected', true);
         }
     });
 
