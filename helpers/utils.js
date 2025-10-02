@@ -646,3 +646,9 @@ exports.solutionSeparatorLength = (sol, sep = ";", oneIsSplit = false) => {
     }
     return 0;
 };
+
+exports.partition = (array, isValid) => {
+    return array.reduce(([pass, fail], elem) => {
+        return isValid(elem) ? [[...pass, elem], fail] : [pass, [...fail, elem]];
+    }, [[], []]);
+}

@@ -1487,6 +1487,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   flex-flow: row wrap;
   -webkit-flex-flow: row;
   flex-wrap: wrap;
+  background-color: #232850;
 }
 .escapeRooms .flexBoxEscapeRooms:after {
   content: "";

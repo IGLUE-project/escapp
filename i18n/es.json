@@ -383,9 +383,10 @@
             "noERsPublic": "No hay ninguna escape room disponible.",
             "notFound": "No hay resultados para tu búsqueda. ¡Prueba otra vez!",
             "myERs": "Mis escape rooms",
-            "otherERs": "Públicas",
+            "otherERs": "Novedades en escape rooms",
+            "finishedERs": "Escape rooms pasadas",
             "emptyER": "No hay colaboradores",
-            "playingERs": "Participando",
+            "playingERs": "Escape rooms activas",
             "yesERStudent": "Estas son las escape rooms disponibles",
             "yesERTeacher": "Escape rooms",
             "notAvailable": "Escape room no disponible"

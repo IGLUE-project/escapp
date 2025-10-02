@@ -387,9 +387,10 @@
             "noERsPublic": "There are no escape rooms currently available.",
             "notFound": "There are no results for your search. Try a different search!",
             "myERs": "My escape rooms",
-            "otherERs":"Public",
+            "otherERs":"Trending escape rooms",
+            "finishedERs": "Past escape rooms",
             "emptyER": "No collaborators yet",
-            "playingERs":"Participating",
+            "playingERs":"Active escape rooms",
             "yesERStudent": "These are your escape rooms",
             "yesERTeacher": "Escape rooms",
             "notAvailable": "Escape room not available"

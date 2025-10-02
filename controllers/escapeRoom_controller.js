@@ -6,7 +6,7 @@ const cloudinary = require("cloudinary");
 const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted, partition } = require("../helpers/utils");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 
 const fs = require("fs");
@@ -41,62 +41,95 @@ exports.load = async (req, res, next, escapeRoomId) => {
 exports.index = async (req, res, next) => {
     const user = req.user || req.session.user;
     const {search} = req.query;
-    const isOwn = req.query.own == 1;
-    const isPublic = req.query.public == 1;
-    let whichMenu = "public";
 
-    if (isOwn || user && user.isStudent && !isPublic) {
-        whichMenu = "playing";
-    } else if (user && !user.isStudent && !isOwn && !isPublic) {
-        whichMenu = "created";
-    }
-    let page = parseInt(req.query.page || 1, 10);
-
-    page = isNaN(page) || page < 1 ? 1 : page;
-    const limit = whichMenu === "created" ? 9 : 10;
-    let escapeRooms = [];
-    let count = 0;
-
+    let pagePublic = parseInt(req.query.pagePublic || 1, 10);
+    pagePublic = isNaN(pagePublic) || pagePublic < 1 ? 1 : pagePublic;
+    let pageCreated = parseInt(req.query.pageCreated || 1, 10);
+    pageCreated = isNaN(pageCreated) || pageCreated < 1 ? 1 : pageCreated;
+    let pagePending = parseInt(req.query.pagePending || 1, 10);
+    pagePending = isNaN(pagePending) || pagePending < 1 ? 1 : pagePending;
+    let pageFinished = parseInt(req.query.pageFinished || 1, 10);
+    pageFinished = isNaN(pageFinished) || pageFinished < 1 ? 1 : pageFinished;
+    const limit =  10;
+    let pending = [];
+    let created = [];
+    let publicc = [];
+    let finished = [];
+    let countPending = 0;
+    let countPublic = 0;
+    let countCreated = 0;
+    let countFinished = 0;
+    
 
     try {
-        if (whichMenu === "created") {
-            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, page, limit, search)));
-        } else if (whichMenu === "playing") {
-            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, page, limit, search)));
-        } else {
-            let erAll = [];
-            const searchCondition = search ? ` AND (LOWER(title) LIKE '%${search.toLowerCase()}%' OR LOWER(description) LIKE '%${search.toLowerCase()}%')` : "";
+        // Created
+        if (!user.isStudent) {
+            ({"count": countCreated, "rows": created} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, pageCreated, limit -1 , search)));
+        } 
+        const pagesCreated = Math.ceil(countCreated / limit);
 
-            count = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRooms"."status" = 'completed') AND  (scope = FALSE OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active')) ) ${searchCondition}`, {"raw": true, "type": QueryTypes.SELECT});
-            erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRoom"."status" = 'completed') AND (scope = FALSE OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')) ) ${searchCondition} ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(page - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
-            count = parseInt(count[0].count, 10);
+        if (pageCreated > pagesCreated && pagesCreated !== 0) {
+            pageCreated = pagesCreated
+        } 
+        const pageCreatedArray = paginate(pageCreated, pagesCreated, 5);
+        
+        // Pending
+        ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = false)));
 
-            const orIds = erAll.map((e) => e.id);
+        const pagesPending = Math.ceil(countPending / limit);
 
-            erAll = await models.escapeRoom.findAll(query.escapeRoom.ids(orIds));
-            const erFiltered = await models.escapeRoom.findAll(query.escapeRoom.all(user.id, null));
-            const ids = erFiltered.map((e) => e.id);
-            const now = new Date();
+        if (pagePending > pagesPending && pagesPending !== 0) {
+            pagePending = pagesPending
+        } 
+        const pagePendingArray = paginate(pagePending, pagesPending, 5);   
 
-            now.setHours(now.getHours() - now.getTimezoneOffset() / 60);
-            escapeRooms = erAll.map((er) => {
-                const {id, title, invitation, attachment} = er;
-                const isSignedUp = ids.indexOf(er.id) !== -1;
-                const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
-                const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
+                
+        // Finished
+        ({"count": countFinished, "rows": finished} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = true)));
 
-                return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor };
-            });
-        }
-        const pages = Math.ceil(count / limit);
+        const pagesFinished = Math.ceil(countPending / limit);
 
-        if (page > pages && pages !== 0) {
-            res.redirect(`/escapeRooms?page=${pages}`);
-        } else {
-            const pageArray = paginate(page, pages, 5);
+        if (pageFinished > pagesFinished && pagesFinished !== 0) {
+            pageFinished = pagesFinished
+        } 
+        const pageFinishedArray = paginate(pageFinished, pagesFinished, 5);   
+        
 
-            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray, whichMenu, isPublic, isOwn, search, "admin": false});
-        }
+        // Public
+        let erAll = [];
+        const searchCondition = search ? ` AND (LOWER(title) LIKE '%${search.toLowerCase()}%' OR LOWER(description) LIKE '%${search.toLowerCase()}%')` : "";
+
+        countPublic = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRooms"."status" = 'completed') AND  (scope = FALSE OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active') AND ("escapeRooms"."authorId" != ${user.id}))) ${searchCondition}`, {"raw": true, "type": QueryTypes.SELECT});
+        erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRoom"."status" = 'completed') AND (scope = FALSE OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')  AND ("escapeRoom"."authorId" != ${user.id}))) ${searchCondition} ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(pagePublic - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
+        countPublic = parseInt(countPublic[0].count, 10);
+
+        const orIds = erAll.map((e) => e.id);
+
+        erAll = await models.escapeRoom.findAll(query.escapeRoom.ids(orIds));
+        const erFiltered = await models.escapeRoom.findAll(query.escapeRoom.all(user.id, null));
+        const ids = erFiltered.map((e) => e.id);
+        const now = new Date();
+
+        now.setHours(now.getHours() - now.getTimezoneOffset() / 60);
+        publicc = erAll.map((er) => {
+            const {id, title, invitation, attachment} = er;
+            const isSignedUp = ids.indexOf(er.id) !== -1;
+            const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
+            const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
+
+            return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor };
+        });
+        
+        const pagesPublic = Math.ceil(countPublic / limit);
+
+        if (pagePublic > pagesPublic && pagesPublic !== 0) {
+            pagePublic = pagesPublic; 
+        } 
+        const pagePublicArray = paginate(pagePublic, pagesPublic, 5);
+
+        // Render
+        res.render("escapeRooms/index.ejs", {escapeRooms: {pending,created,publicc,finished}, cloudinary, user, count:{countCreated,countPending,countPublic,countFinished}, page: {pagePublic,pagePending,pageCreated,pageFinished}, pages: {pagesPublic,pagesPending,pagesCreated,pagesFinished}, pageArray: {pagePublicArray,pagePendingArray,pageCreatedArray,pageFinishedArray}, search, "admin": false});
+
     } catch (error) {
         next(error);
     }
@@ -636,22 +669,22 @@ exports.admin = async (req, res, next) => {
     let page = parseInt(req.query.page || 1, 10);
 
     page = isNaN(page) || page < 1 ? 1 : page;
-    const limit = user.isStudent ? 10 : 9;
+    const limit = 10
     let escapeRooms = [];
     let count = 0;
 
     try {
         if (user && !user.isStudent) {
-            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll()));
+            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll(page,limit,search)));
         }
         const pages = Math.ceil(count / limit);
 
         if (page > pages && pages !== 0) {
-            res.redirect(`/escapeRooms?page=${pages}`);
+            res.redirect(`/escapeRoomsAdmin?page=${pages}`);
         } else {
             const pageArray = paginate(page, pages, 5);
 
-            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
+            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
         }
     } catch (error) {
         next(error);
