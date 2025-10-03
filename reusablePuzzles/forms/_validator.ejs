@@ -50,13 +50,6 @@
     <input id="rangeInput" step="0.01"  min="0" name="rangeInput" type="number"/>
 </div>
 
-
-<div style="display:flex;align-items:center">
-    <label style="padding-top:0px" for="isPuzzleAssigned"><%=i18n.escapeRoom.steps.indications.front.catalog.config.independentPuzzle%></label>
-    <input type="checkbox" id="isPuzzleAssigned" name="isPuzzleAssigned" style="">
-</div>
-
-
 <span id="warningMessageForReusablePuzzleCreation" style="display:none;">
     <span class="material-icons">warning</span>
         <%=i18n.escapeRoom.steps.indications.front.catalog.config.warningPuzzleChange%>
@@ -65,33 +58,13 @@
     var optionsPuzzle = window.puzzles.map((puzzler,index) => {
     return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>` }).join('')
 
+    <% if(allowedNullPuzzle === true){ %>
+        $("#associatedPuzzle").append( `<option value="" hidden disabled selected>Select Puzzle</option>`);
+    <% } %>
+
     $("#associatedPuzzle").append(optionsPuzzle);
 
-    $('#isPuzzleAssigned').on("change", function(){
-        if(!this.checked){
-            $('#associatedPuzzle').prop('disabled', false);
-            $('#puzzleSol').prop('disabled', false);
-            $('#inputValidator').prop('disabled', false);
-            $('#solutionLengthInput').prop('disabled', false);
-            if($('#inputValidator').val() == "range"){
-                $('#rangeInput').prop('disabled', false);
-            }
-
-        }else{
-            $('#associatedPuzzle').prop('disabled', true);
-            $('#puzzleSol').prop('disabled', true);
-            $('#inputValidator').prop('disabled', true);
-            $('#solutionLengthInput').prop('disabled', true);
-            $('#rangeInput').prop('disabled', true);
-            if($('#inputValidator').val() == "range"){
-                $('#rangeInput').prop('disabled', true);
-            }
-            $('#selectePuzzle').hide();
-            $('#solutionLength').hide();
-            $('#puzzleSol').hide();
-            $('#placeholderOption').prop('selected', true);
-        }
-    });
-
-
+    <% if(allowedNullPuzzle === true){ %>
+        $("#associatedPuzzle").append( `<option value="noSelected">None</option>`);
+    <% } %>
 </script>

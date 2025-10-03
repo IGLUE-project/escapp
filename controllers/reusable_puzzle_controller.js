@@ -266,11 +266,10 @@ exports.editReusablePuzzle = async (req, res, next) => {
 exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId, reusablePuzzleInstanceId} = req.params;
     const {name, expectedDuration, reusablePuzzleId, ...config} = req.body;
-    let {isPuzzleAssigned} = req.body;
 
     const t = await sequelize.transaction();
 
-    isPuzzleAssigned =  isPuzzleAssigned ? false : (config.puzzle === "noSelected" ? false : true); // Checkbox marked or the please select option marked
+    let isPuzzleAssigned =  (config.puzzle === "noSelected" || config.puzzle === undefined) ? false : true; // Checkbox marked or the please select option marked
     config.isPuzzleAssigned = isPuzzleAssigned;
 
     let newInstanceId = "";

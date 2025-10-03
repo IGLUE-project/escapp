@@ -347,7 +347,6 @@
         const solutionLength = $('#solutionLengthInput');
         const solutionLengthDiv = $('#solutionLength');
         const selectedPuzzleDiv = $('#selectePuzzle');
-        const isPuzzleAssignedCheckbox = $('#isPuzzleAssigned');
 
         if(puzzleSelected) {
             if (puzzleSelected.assignedReusablePuzzleInstances.length > 0 && puzzleSelected.assignedReusablePuzzleInstance != id) {
@@ -395,8 +394,6 @@
 
 
         } else {
-            associatedPuzzle.prop("disabled", true);
-            associatedPuzzle.append('<option selected id="placeholderOption" style="display:none" value="noSelected">Please select puzzle</option>');
             puzzleSol.val("");
             span.hide();
             validator.hide()
@@ -405,7 +402,6 @@
             solutionLengthDiv.hide();
             puzzleSol.hide();
             selectedPuzzleDiv.hide();
-            isPuzzleAssignedCheckbox.prop('checked', true);
         }
 
         updateIframe();
@@ -686,6 +682,11 @@
                 });
 
                 $('#associatedPuzzle').val(puzzleObject.id).change();
+                if(!puzzleObject.id && $('#associatedPuzzle option[value=""]').length > 0) {
+                    $('#associatedPuzzle').val("noSelected").change();
+                }else if(!puzzleObject.id) {
+                    $('#associatedPuzzle').val("1").change();
+                }
 
                 updateIframe();
 
