@@ -287,7 +287,7 @@
         modal.toggleClass("active");
     }
 
-    function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, expectedDuration, instanceId) {
+    function puzzleForm(config, puzzle, reusablePuzzleId, puzzleName, instanceId) {
         let selectedPuzzle = window.puzzles.find(p => p.id == config.puzzle);
         if(!selectedPuzzle){
             selectedPuzzle = window.puzzles[0] || {};
@@ -314,18 +314,10 @@
                 </label>
                 <input id="nameOfReusablePuzzle" type="text" required name="name" value="${puzzleName}"/>
             </div>
-            <div>
-                <label for="expectedDuration">
-                    <%=i18n.escapeRoom.steps.indications.front.catalog.config.expectedDuration%>
-                </label>
-                <input id="descOfReusablePuzzle" type="text" name="expectedDuration" value="${instanceId ? (expectedDuration ? expectedDuration : ''):''}"/>
-            </div>
-
         </div>
-
         `
-
     }
+
     function editPuzzle(id, mime) {
         $('.previewReusablePuzzle').show();
         const jsonPuzzle = window.reusablePuzzleInstances.find(p => p.id == id);
@@ -625,7 +617,6 @@
         const configForm = $('#configForm');
         const resources = $('.sectionAddResource');
         const puzzleName = puzzle.id ? puzzle.name : reusablePuzzleName;
-        const expectedDuration = puzzle.expectedDuration ;
         configForm.empty();
         configZone.removeAttr('hidden');
         resources.attr('hidden', true);
@@ -642,7 +633,7 @@
                 elements += `<input type="submit" class="rounded acceptButton" value="<%=i18n.common.save%>"/>`;
                 elements += `<button type="button" class="rounded deleteButton" onclick="goBack()"><%=i18n.common.back%></button>`;
                 elements += `</div>`;
-                configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, expectedDuration, puzzle.id));
+                configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzle.id));
                 configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
 
                 $('#appendFormElementsHere').append(elements);
@@ -669,7 +660,7 @@
 
                 $('#puzzleSol').change(function(e) {
                     updateIframe();
-                    $('#warningMessageForReusablePuzzleCreation').show()
+                    $('#warningMessageForReusablPuzzleCreation').show()
                 });
 
                  $('#associatedPuzzle').change(function(e) {
@@ -682,8 +673,9 @@
                 });
 
                 $('#associatedPuzzle').val(puzzleObject.id).change();
+
                 if(!puzzleObject.id && $('#associatedPuzzle option[value=""]').length > 0) {
-                    $('#associatedPuzzle').val("noSelected").change();
+                    $('#associatedPuzzle').val("").change();
                 }else if(!puzzleObject.id) {
                     $('#associatedPuzzle').val("1").change();
                 }
@@ -839,7 +831,6 @@
                         if(puzzle.id == resJSON.id) {
                             puzzle.config = JSON.stringify(resJSON.config);
                             puzzle.name = resJSON.name;
-                            puzzle.expectedDuration = resJSON.expectedDuration;
                             found = true;
                         }
                     });

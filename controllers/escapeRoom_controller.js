@@ -454,7 +454,6 @@ exports.teamInterface = async (req, res, next) => {
         reusablePuzzlesInstances = reusablePuzzlesInstances.map((puzzleInstance) => ({
             "id": puzzleInstance.id,
             "name": puzzleInstance.name,
-            "expectedDuration": puzzleInstance.expectedDuration,
             "reusablePuzzleId": puzzleInstance.reusablePuzzleId,
             "config": puzzleInstance.config,
             "puzzles": puzzleInstance.puzzles.map((p) => p.id)
