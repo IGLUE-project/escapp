@@ -54,8 +54,10 @@ require(path.join(__dirname, "reusablePuzzle"))(sequelize, Sequelize.DataTypes);
 
 require(path.join(__dirname, "report"))(sequelize, Sequelize.DataTypes);
 
+require(path.join(__dirname, "scene"))(sequelize, Sequelize.DataTypes);
+
 // Relation between models
-const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
+const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report, scene} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
 
 // Relation 1-to-N between Escape Room and Turno:
 
@@ -320,4 +322,14 @@ reusablePuzzleInstance.belongsToMany(puzzle, {"through": "reusablePuzzleInstance
 puzzle.belongsToMany(reusablePuzzleInstance, {"through": "reusablePuzzleInstancePuzzle"});
 
 report.belongsTo(user, {"foreignKey": "reportAuthor"});
+
+scene.belongsTo(escapeRoom);
+escapeRoom.hasMany(scene, {"foreignKey": "escapeRoomId"});
+
+scene.hasMany(reusablePuzzleInstance);
+reusablePuzzleInstance.belongsTo(scene);
+
+scene.hasMany(puzzle);
+puzzle.belongsTo(scene);
+
 module.exports = sequelize;

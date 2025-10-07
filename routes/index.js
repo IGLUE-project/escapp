@@ -16,6 +16,7 @@ const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
 const managementController = require("../controllers/management_controller");
+const sceneController = require("../controllers/scene_controller");
 const { instructions, thumbnails, hints, upload } = require("../controllers/multer_controller");
 
 
@@ -198,6 +199,10 @@ router.get("/escapeRooms/:escapeRoomId/analytics/puzzles", sessionController.log
 router.get("/escapeRooms/:escapeRoomId/analytics/grading", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.grading);
 router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.download);
 router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.downloadRaw);
+//Routes for scenes
+router.get("/escapeRooms/:escapeRoomId/scenes/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
+router.post("/escapeRooms/:escapeRoomId/scenes", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.upsertScene);
+router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId(\\d+)/visualize", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.visualizeScene);
 
 // Routes for guide/apps/resources
 router.get("/inspiration", escapeRoomController.showGuide);
@@ -221,5 +226,6 @@ router.get("/uploads/thumbnails/:file_name", sessionController.loginRequired, as
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
+
 
 module.exports = router;
