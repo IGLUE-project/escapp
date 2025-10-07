@@ -7,5 +7,5 @@ module.exports = {
             queryInterface.addColumn("puzzles", "expectedDuration", Sequelize.STRING)])},
     "down" (queryInterface, Sequelize) { return Promise.all([
         queryInterface.removeColumn("puzzles", "expectedDuration"),
-        queryInterface.addColumn("reusablePpuzzleuzzleInstances", "expectedDuration", Sequelize.STRING)])},
+        queryInterface.addColumn("reusablePuzzleInstances", "expectedDuration", Sequelize.STRING)])},
 };
