@@ -545,7 +545,6 @@
                         "scenarios2D": "Escenarios 2D",
                         "config": {
                             "description": "Descripción",
-                            "expectedDuration": "Duración aproximada (mins)",
                             "name": "Nombre",
                             "width": "Ancho",
                             "height": "Alto",
@@ -562,7 +561,10 @@
                             "warningPuzzleChange": "Si has cambiado la solución del reto debes guardar este formulario primero para que los cambios estén disponibles en la vista previa",
                             "independentPuzzle": "Puzzle sin reto",
                             "solutionLength": "Longitud de la solución",
-                            "reusablePuzzleInstructions": "instrucciones"
+                            "reusablePuzzleInstructions": "instrucciones",
+                            "noPuzzle": "Ninguno",
+                            "puzzlePlaceholder": "Seleccione el puzzle"
+
                         }
                     }
                 }
@@ -586,6 +588,8 @@
             	"automatic": "Automática",
                 "clueName": "Nombre de la pista",
                 "description": "Descripción",
+                "expectedDuration": "Duración aproximada (mins)",
+                "expectedDurationPlaceholder": "¿Cuánto tiempo crees que tardarán los participantes en resolver este reto?",
                 "failMsg": "Mensaje al fallar",
                 "Hint": "Pista",
                 "hints": "Pistas",

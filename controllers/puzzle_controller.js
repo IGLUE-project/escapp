@@ -86,6 +86,7 @@ exports.retosUpdate = async (req, res) => {
                     oldPuzzle.validator = reto.validator;
                     oldPuzzle.correct = reto.correct;
                     oldPuzzle.fail = reto.fail;
+                    oldPuzzle.expectedDuration = reto.dur;
                     promises.push(oldPuzzle.save({transaction}));
 
                     const hints = sanitizeHints(reto.hints);
