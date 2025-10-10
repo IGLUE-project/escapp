@@ -726,7 +726,7 @@ exports.addCollaborators = async (req, res, next) => {
                 } else if (!collab.isStudent) {
                     await escapeRoom.addUserCoAuthor(collab.id, {transaction});
                     const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}});
-                    const teamCreated = await models.team.create({ "name": `${collab.name} ${collab.surname}`, "turnoId": testShift.id}, {transaction});
+                    const teamCreated = await models.team.create({ "name": `${collab.alias}`, "turnoId": testShift.id}, {transaction});
 
                     await teamCreated.addTeamMembers(collab.id, {transaction});
                     await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": collab.id}, {transaction});

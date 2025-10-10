@@ -19,11 +19,11 @@
 		</div>
 		<div class="flex-er-info animated fadeIn">
             <h1><%=escapeRoom.title%></h1>
-            <p>by <%=escapeRoom.author.name%> <%=escapeRoom.author.surname%></p>
+            <p>by <%=escapeRoom.author.alias%></p>
 			
             <br/>
             <h3><%=i18n.showTeacher.titles.description%></h3>
-            <p><%=escapeRoom.description%></p>
+            <p><%-escapeRoom.description%></p>
             <div class="flex-er-info-preview fadeIn">
                 <%if(escapeRoom.field){%>
                     <div>

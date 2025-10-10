@@ -39,6 +39,7 @@ async function createAdmin () {
             "defaults": {
                 name,
                 surname,
+                alias: "admin_" + Math.ceil(1000*Math.random()),
                 password,
                 "isAdmin": true,
                 "isStudent": false,

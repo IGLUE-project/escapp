@@ -11,7 +11,7 @@
         </h1> 
         <%-include("../partials/_search", {search, admin})%>
         <%if(user.isAdmin && admin){%>
-            <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms,  whichMenu: "admin", title: i18n.escapeRoom.main.playingERs, pageQuery: "page"}) %>
+            <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms,  whichMenu: "admin", title: undefined, pageQuery: "page"}) %>
         <%}else{%>    
             <% if (user && !(user.isStudent)) { %> <!--todo-->
                 <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.created,  whichMenu: "created", title: i18n.escapeRoom.main.myERs, page: page.pageCreated, pages: pages.pagesCreated, pageArray: pageArray.pageCreatedArray, pageQuery: "pageCreated"}) %>

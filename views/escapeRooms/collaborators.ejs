@@ -30,13 +30,13 @@
             <div class="flex-row">
                 <div class="flex-cell flex-name">
                     <% if (!escapeRoom.author.anonymized) {%>
-                        <%=escapeRoom.author.name%> <%=escapeRoom.author.surname%> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
+                       <%=escapeRoom.author.alias%> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
                        <%}else{%>
                         <i><%=i18n.user.anonymous%> </i> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
                     <%}%>
                 </div>
                 <div class="flex-cell flex-email">
-                    <% if (escapeRoom.author.anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=escapeRoom.author.username%> <%}%>
+                    <% if (escapeRoom.author.anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=escapeRoom.author.alias%> <%}%>
 
                 </div>
                 <div class="flex-cell flex-actions">
@@ -49,7 +49,7 @@
                     <% if (collab.anonymized) {%>
                         <i><%=i18n.user.anonymous%> </i>
                     <% } else {%>
-                        <%=collab.name%> <%=collab.surname%>
+                        <%=collab.alias%>
                     <%}%>
                 </div>
                 <div class="flex-cell flex-email">

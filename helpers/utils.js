@@ -214,7 +214,7 @@ exports.getRanking = async (escapeRoomId, turnoId, anonymized = false) => {
         const team = {
             "id": ranking[i].id,
             "name": anonymized && anonymized != ranking[i].id ? "" : ranking[i].name,
-            "participants": anonymized && anonymized != ranking[i].id ? "" : ranking[i].teamMembers.map((member) => `${member.name} ${member.surname}`).join(", "),
+            "participants": anonymized && anonymized != ranking[i].id ? "" : ranking[i].teamMembers.map((member) => member.alias).join(", "),
             "result": ranking[i].result,
             "count": ranking[i].count,
             "latestRetoSuperado": ranking[i].latestRetoSuperado,
@@ -366,7 +366,7 @@ exports.automaticallySetAttendance = async (team, userId, automaticAttendance) =
     switch (automaticAttendance) {
     case "team":
         // eslint-disable-next-line no-case-declarations
-        const members = await team.getTeamMembers({"attributes": ["id", "name", "surname"]});
+        const members = await team.getTeamMembers({"attributes": ["id", "name", "surname", "alias"]});
 
         inUser = members.map((t) => t.id);
         // eslint-disable-next-line no-fallthrough

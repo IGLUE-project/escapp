@@ -321,6 +321,7 @@
             "cantRequestMoreThis": "No puedes pedir más pistas para tu situación actual",
             "canRequest": "Pide una pista",
             "newRetoSuperado": "¡Nuevo reto superado!",
+            "newRetoFailed": "Incorrecto!",
             "empty": "Ayuda del profesor",
             "Info": "Información",
             "newHint": "Nueva pista",
@@ -1185,6 +1186,7 @@
         "attributes": {
             "surname": "El apellido",
             "name": "El nombre",
+            "alias": "El alias",
             "username": "El e-mail",
             "password": "La contraseña",
             "eduLevel": "El nivel educativo"
@@ -1213,7 +1215,8 @@
             "passwordConfirmPlaceHolder": "Introduce tu contraseña",
             "passwordPlaceHolder": "Introduce tu contraseña",
             "surnamePlaceHolder": "Introduce tus apellidos",
-            "usernamePlaceHolder": "Introduce tu email"
+            "usernamePlaceHolder": "Introduce tu email",
+            "aliasPlaceHolder": "Introduce tu alias público"
         },
         "messages": {
             "doNotMatch": "Las contraseñas no coinciden",
@@ -1246,6 +1249,7 @@
         "sessionExpired": "Ha caducado la sesión",
         "surname": "Apellidos",
         "title": "Usuario",
+        "alias": "Alias",
         "user": "usuario",
         "username": "E-mail",
         "wrongCredentials": "Error al iniciar sesión",

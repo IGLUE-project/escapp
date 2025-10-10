@@ -19,6 +19,14 @@ module.exports = function (sequelize, DataTypes) {
                 "notEmpty": {"msg": "Surname must not be empty."}
             }
         },
+        "alias": {
+            "type": DataTypes.STRING,
+            "unique": true,
+            "validate": {
+                "len": [0, 50],
+                "notEmpty": {"msg": "Alias must not be empty."}
+            }
+        },
         "eduLevel": {
             "type": DataTypes.STRING,
             "allowNull": false,

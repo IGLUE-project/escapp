@@ -32,7 +32,6 @@ exports.ranking = async (req, res, next) => {
         }
         const teams = await models.team.findAll(queries.team.ranking(req.escapeRoom.id, turnoId));
         const puzzles = await getERPuzzles(req.escapeRoom.id);
-
         req.teams = getRetosSuperados(teams, puzzles.length, false, i18n).sort(byRanking);
         next();
     } catch (e) {
@@ -80,7 +79,7 @@ exports.startPlaying = async (req, res, next) => {
             "include": [
                 {
                     "model": models.user,
-                    "attributes": ["username"],
+                    "attributes": ["username","alias"],
                     "as": "teamMembers",
                     "where": {"id": req.session.user.id}
                 },

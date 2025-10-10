@@ -24,9 +24,9 @@
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
             <% if(attachment){ %>
-                <img  alt="None" src="<%=attachment.url%>">
+                <img alt="None" src="<%=attachment.url%>">
             <% }else{ %>
-                <img  alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
+                <img alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
             <% } %>
 		</div>
 		<div class="flex-er-info animated fadeIn">
@@ -38,7 +38,8 @@
 				<h2><%=i18n.team.Team%> </h2>
 				<h3><%=team.name%></h3>
 				<p class="members">
-					<%=team.teamMembers.map(m => m.name + " " + m.surname).join(", ")%>
+					<%team.teamMembers.map(m=>console.log(m))%>
+					<%=team.teamMembers.map(m => m.alias).join(", ")%>
 				</p>
 			<% } %>
 			<% if (escapeRoom.supportLink) { %>

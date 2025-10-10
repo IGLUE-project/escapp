@@ -24,6 +24,11 @@
     <input type="text" class="customInput" id="surname" name="surname" value="<%= user.surname %>" required placeholder="<%=i18n.user.inputs.surnamePlaceHolder %>" autocomplete="off"/></label>
 </div>
 <br />
+<div class="userField">
+    <label for="alias"><span><%=i18n.user.alias%></span>
+    <input type="text" class="customInput" id="alias" name="alias" value="<%= user.alias %>" required placeholder="<%=i18n.user.inputs.aliasPlaceHolder %>" autocomplete="off"/></label>
+</div>
+<br />
 <%if (user.id) {%>
     <div class="userField">
         <label for="user_confirm_password"><span><%=i18n.user.lang%></span>

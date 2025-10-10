@@ -180,7 +180,6 @@ exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) =>
             return;
         }
         const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id));
-
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
             next();
@@ -246,7 +245,7 @@ exports.create = async (req, res, next) => {
             }
             req.session.user = {
                 "id": user.id,
-                "name": `${user.name} ${user.surname}`,
+                "name": user.alias,
                 "username": user.username,
                 "isAdmin": user.isAdmin,
                 "isStudent": user.isStudent,

@@ -19,14 +19,7 @@
      }]
 %>
 <% let formFields2 = [
-     {
-        name: "description",
-        id: "desc",
-        i18n: "description",
-        required: true,
-        maxlength: 200,
-        value: escapeRoom.description
-    },
+     
      {
         name: "duration",
         id: "dur",
@@ -87,18 +80,26 @@
     <option value="other" <%=escapeRoom.level == "other" ? "selected" : "" %>><%=i18n.user.eduLevel["other"]%></option>
   </select>
 </div>
-<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
-  <label for="format" class="itemNarrow">4. <%=i18n.escapeRoom.steps.sharing.format%>:</label>
+<div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">
+  <label for="format"> <%=formFields.length+2%>. <%=i18n.escapeRoom.steps.sharing.format%>:</label>
   <select class="customInput itemWide" id="format" name="format" autocomplete="off">
     <option value="none" <%=!escapeRoom.format  || (escapeRoom.format == "none")? "selected" : "" %>><%=i18n.general.unespecified%></option>
     <option value="online" <%=escapeRoom.format == "online" ? "selected" : "" %>><%=i18n.escapeRoom.format["online"]%></option>
     <option value="hybrid" <%=escapeRoom.format == "hybrid" ? "selected" : "" %>><%=i18n.escapeRoom.format["hybrid"]%></option>
   </select>
 </div>
+ <div class="inputFormField erFormField animated slideInUp description" style="animation-delay: <%=200*(formFields.length+3)%>ms;">
+        <label for="custom-content"  class="itemNarrow"><%=formFields.length+3%>. <%=i18n.showTeacher.titles["description"]%>:</label><br/>
+        <div id="custom-content" class="editor-wrapper purple-ckeditor-small">
+          <%-escapeRoom.description%>
+        </div>
+    </div>
+
+ 
 <% for (let f in formFields2) {
   var field = formFields2[f];%>
     <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*f%>ms;">
-        <label for="<%=field.id%>"  class="itemNarrow"><%=parseInt(f)+5%>. <%=i18n.showTeacher.titles[field.i18n]%>:</label>
+        <label for="<%=field.id%>"  class="itemNarrow"><%=parseInt(f)+6%>. <%=i18n.showTeacher.titles[field.i18n]%>:</label>
         <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
                placeholder="<%=i18n.escapeRoom.steps.edit[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
     </div>
@@ -154,11 +155,19 @@
       </a>
   <% } %>
   <button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
-
   <button class="progress-buttons" type ="submit"><%=i18n.common.next%></button>
 </div>
+<script>
+  window.escapeRoomId = "<%=escapeRoom?.id%>";
+  window.endPoint = "description";
+  window.insert = "<%=i18n.gallery.insert%>";
+  window.cancel = "<%=i18n.gallery.cancel%>";
+  window.accept = "<%=i18n.common.accept%>";
+  window.lang = "<%=i18n.lang%>";
+  window.theme =  "/stylesheets/style.css";
 
-
+</script>
+<script src="/ckeditor/ckeditor4/ckeditor.js"></script>
 <script type="text/javascript">
 
 $(function(){
@@ -188,9 +197,44 @@ $(function(){
         $('#keepAttachment').val("0");
     })
 
-})
+   let editor = CKEDITOR.replace("custom-content");
+    //When replacing there is a hidden div with the content that is latter
+    //read to save the content and an iframe that is the editor
+    //when autoplay is enabled both audios or videos are played
+    //and there is no way to stop the hidden one
+    editor.on("instanceReady", function(){
+        let video = $(`#custom-content`).parent().find("video");
+        if(video.length){
+            video[0].pause();
+        }
+        let audio = $(`#custom-content`).parent().find("audio");
+        if(audio.length){
+            audio[0].pause();
+        }
+    });
 
+    $('#main-er-create-edit-form').submit((e)=>{
+      
+      
+      $("<input />").attr("type", "hidden")
+        .attr("name", "description")
+        .attr("value", CKEDITOR.instances["custom-content"].getData())
+        .appendTo("#main-er-create-edit-form");
+      return true;
+  });
+})
 
 </script>
 <%- include ("./_scrollListener") %>
 <%- include('../partials/_progress', {progress}) %>
+<style>
+  @font-face {
+      font-family: 'Digital';
+      src: url('/fonts/ds-digib.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+  }
+  :root {
+    --placeholder-text: "<%=i18n.escapeRoom.steps.indications.front.dropHere%>";
+  }
+</style>

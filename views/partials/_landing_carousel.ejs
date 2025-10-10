@@ -1,4 +1,4 @@
-        <h2><%=title%></h2>
+        <% if(title){%><h2><%=title%></h2><%}%>
         <div class="flexBoxEscapeRooms">
              <% if (escapeRoomsList.length == 0) { %>
                 <% if (user && (whichMenu == "public")) { %>

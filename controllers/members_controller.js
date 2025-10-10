@@ -37,8 +37,8 @@ exports.add = async (req, res, next) => {
             for (const p in newMembers) {
                 const member = newMembers[p];
 
-                teamMembers.push({"name": member.name, "surname": member.surname});
-                teamMembersNames.push(`${member.name} ${member.surname}`);
+                teamMembers.push({"name": member.name, "surname": member.surname, "alias": member.alias});
+                teamMembersNames.push(member.alias);
             }
             const teams = await getRanking(escapeRoom.id, turn.id, true);
 

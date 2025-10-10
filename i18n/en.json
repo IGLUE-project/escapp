@@ -329,6 +329,7 @@
             "Info": "Information",
             "newHint": "New hint",
             "newRetoSuperado": "New puzzle solved!",
+            "newRetoFailed": "Incorrect!",
             "Hints": "Hints",
             "noReqHints":"You have not requested any hint for this puzzle",
             "other": "Other messages",
@@ -1194,6 +1195,7 @@
         "attributes": {
             "surname": "Surname",
             "name": "Name",
+            "alias": "Alias",
             "username": "Email",
             "password": "Password",
             "eduLevel": "Educational level"
@@ -1222,7 +1224,8 @@
             "passwordConfirmPlaceHolder": "Enter your password",
             "passwordPlaceHolder": "Enter your password",
             "surnamePlaceHolder": "Enter your last name",
-            "usernamePlaceHolder": "Enter your email"
+            "usernamePlaceHolder": "Enter your email",
+            "aliasPlaceHolder": "Enter your public alias"
         },
         "messages": {
             "doNotMatch": "Oops! passwords must match",
@@ -1256,6 +1259,7 @@
         },
         "sessionExpired": "Your session has expired",
         "surname": "Last name",
+        "alias": "Alias",
         "title": "User",
         "user": "user",
         "username": "Email",

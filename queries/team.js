@@ -77,6 +77,7 @@ exports.teamComplete = (escapeRoomId, turnId, order, waiting = false) => {
                 "attributes": [
                     "name",
                     "surname",
+                    "alias",
                     "anonymized"
                 ]
             },
@@ -169,6 +170,7 @@ exports.puzzlesByTeam = (escapeRoomId, turnId, hints = false) => {
                 "attributes": [
                     "name",
                     "surname",
+                    "alias",
                     "anonymized"
                 ]
             }
@@ -209,6 +211,7 @@ exports.ranking = (escapeRoomId, turnId) => {
                 "attributes": [
                     "name",
                     "surname",
+                    "alias",
                     "anonymized"
                 ],
                 "through": {
@@ -289,6 +292,7 @@ exports.rankingShort = (escapeRoomId, turnId) => {
                     "name",
                     "surname",
                     "username",
+                    "alias",
                     "anonymized"
                 ],
                 "through": {

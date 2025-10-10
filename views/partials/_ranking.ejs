@@ -78,11 +78,10 @@
             if (currentTeam.finishTime) {
                 className += " won";
             }
-
             teamViews += `<div class="ranking-row ${className}" id="team-${currentTeam.id}" 
                     style="top: ${top}px">
                 <div class="ranking-pos"><span>${idx + 1}</span></div>
-                <div class="ranking-team"><b>${(currentTeam.id === myTeamId) ? ("<%=locals.team ? team.name : ''%>" || currentTeam.name || "<%=i18n.user.anonymous%>") : (currentTeam.name || "<%=i18n.user.anonymous%>")}</b></div>
+                <div class="ranking-team"><b>${currentTeam.name}</b></div>
                 <%if(locals.members){%><div class="ranking-members"><span>${currentTeam.participants}</span></div><%}%>
                 <div class="ranking-res"><span>${currentTeam.result}</span></div>
                 <div class="ranking-time"><span>${currentTeam.finishTime ? secondsToDhms(currentTeam.finishTime) : "---"}</span></div>
@@ -109,12 +108,14 @@
 
     <%
     var theTeams = []
+     
     for (var i in teams ){
         var team = {
             id: teams[i].id,
-            name: (locals.anonymize && (teamId != teams[i].id)) ? i18n.user.anonymous : teams[i].name,
+            name: teams[i].name,
             participants: teams[i].teamMembers.map(member => {
-                return (locals.anonymize && (teamId != teams[i].id)) ? i18n.user.anonymous : member.name + " " + member.surname;
+                // return (locals.anonymize && (teamId != teams[i].id)) ? i18n.user.anonymous : member.name + " " + member.surname;
+                return member.alias;
             }).join(", "),
             result: teams[i].result,
             finishTime: teams[i].finishTime,

@@ -1039,6 +1039,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border: 0px;
   background: white;
 }
+#mainSection .main .basicConfig .erFormField #cke_custom-content {
+  border: 2px solid white !important;
+}
 #mainSection .main .basicConfig .erFormField .customInput {
   border: none;
   border-radius: 0px;
@@ -1396,7 +1399,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   content: "\e5cd";
   font-family: "Material Icons";
 }
-#mainSection .main.escapeRoomShow .ui-dialog .ui-dialog-titlebar, #mainSection .main.escapeRoomShow h3 {
+#mainSection .main.escapeRoomShow .ui-dialog .ui-dialog-titlebar {
   background: white !important;
   border-color: white !important;
   color: #F47E84;
@@ -2272,7 +2275,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-color: var(--bckg);
   color: black;
 }
-#mainSection .main.step-instructions .editor-wrapper.indications .editor, #mainSection .main.step-instructions .editor-wrapper.after .editor {
+#mainSection .main.step-instructions .editor-wrapper.indications .editor, #mainSection .main.step-instructions .editor-wrapper.after .editor, #mainSection .main.step-instructions .editor-wrapper.description .editor {
   background-color: #2A2A52;
 }
 #mainSection .main.step-instructions .editor-wrapper #editor {
