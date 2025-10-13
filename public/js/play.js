@@ -798,11 +798,15 @@ const autoPlay = (newBlocks = []) => {
 /*******************************************************************/
 
 const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
-  socket = io('/', {query: {
+  let query = {
     escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId,
-    turn: turnId == "undefined" ? undefined : turnId,
-    preview: Boolean(endPoint)
-  }});
+    preview: !Boolean(endPoint)
+  }
+
+  if(endPoint == "class") {
+    query.turn = turnId == "undefined" ? undefined : turnId;
+  }
+  socket = io('/', {query});
   myTeamId = teamId;
   myUsername = username;
   /*Connect*/

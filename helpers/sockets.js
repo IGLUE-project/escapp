@@ -279,7 +279,7 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
                 const teamId = team.id;
                 const turnIdFound = team.turno.id;
 
-                if (!privileged && (turnId != turnIdFound)) {
+                if (!privileged && (turnId && (turnId != turnIdFound))) {
                     return {"errorMsg": i18n.api.notFound};
                 }
                 const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
@@ -292,7 +292,8 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
                 // If (participation === "PARTICIPANT") {
                 //     Await automaticallySetAttendance(team, user.id, escapeRoom.automaticAttendance);
                 // }
-                return {participation, teamId, turnId, erState, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
+                
+                return {participation, teamId, turnId: turnId || turnIdFound, erState, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
             }
 
             return {participation, "language": escapeRoom.forceLang, turnId, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
