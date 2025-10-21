@@ -319,15 +319,7 @@ exports.public = (page = 1, limit = 10) => ({
     "offset": (page - 1) * limit
 })
 
-exports.text = (page = 1, limit = 10, text = "") => ({
+exports.text = (page = 1, limit = 10) => ({
     "attributes": ["id", "title", "description"],
-    limit,
-    "where": {
-        [Op.or]: [
-            {"title": {[Op.substring]: text}},
-            {"description": {[Op.substring]: text}}
-        ]
-    },
-    "offset": (page - 1) * limit
 })
 

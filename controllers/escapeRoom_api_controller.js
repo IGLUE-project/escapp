@@ -1,5 +1,6 @@
 const query = require("../queries");
 const {models} = require("../models");
+const {fuzzy} = require("fast-fuzzy");
 
 exports.escapeRoomsOrdered = async (req, res, next) => {
     try {
@@ -22,7 +23,13 @@ exports.escapeRoomsOrdered = async (req, res, next) => {
             default:
                 throw new Error("Invalid orderBy parameter");
         };
-        const results = await models.escapeRoom.findAll(queryToExecute);
+        let results = await models.escapeRoom.findAll(queryToExecute);
+        //Fuzzy finding of escaperooms
+        if (req.query.orderBy === "text") {
+            results = results.sort((a, b) => -fuzzy(value, a.title) - fuzzy(value, a.description)*0.7 + fuzzy(value, b.title) + fuzzy(value, b.description)*0.7);
+            results = results.slice((page-1)*limit, page*limit);
+        }
+
         res.json(results);
     } catch (error) {
         console.error(error);
