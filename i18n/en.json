@@ -552,7 +552,6 @@
                         "scenarios2D": "2D scenarios",
                         "config": {
                             "description": "Description",
-                            "expectedDuration": "Expected Duration (mins)",
                             "name": "Name",
                             "width": "Width",
                             "height": "Height",
@@ -569,7 +568,9 @@
                             "warningPuzzleChange": "If you have changed your puzzle solution you must save this form first for your changes to be available in the preview",
                             "solutionLength": "Solution length",
                             "reusablePuzzleInstructions": "instructions",
-                            "independentPuzzle": "Resource without puzzle"
+                            "independentPuzzle": "Resource without puzzle",
+                            "noPuzzle": "None",
+                            "puzzlePlaceholder": "Select puzzle"
                         }
                     }
                 }
@@ -594,6 +595,8 @@
             	"automatic": "Automatic",
                 "clueName": "Clue name",
                 "description": "Description",
+                "expectedDuration": "Expected Duration (mins)",
+                "expectedDurationPlaceholder": "How long will it take participants to solve this puzzle?",
                 "failMsg": "Message on fail",
                 "Hint": "Hint",
                 "hints": "Hints",

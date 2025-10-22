@@ -75,9 +75,9 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
     const {reusablePuzzleInstanceId} = req.params;
 
     try {
-        const {config, name, expectedDuration} = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
+        const {config, name} = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
 
-        res.render("reusablePuzzles/reusablePuzzleConfiguration", {config, name, expectedDuration});
+        res.render("reusablePuzzles/reusablePuzzleConfiguration", {config, name});
     } catch (e) {
         next(e);
     }
@@ -265,12 +265,11 @@ exports.editReusablePuzzle = async (req, res, next) => {
 // INSTANCES
 exports.upsertReusablePuzzleInstance = async (req, res, next) => {
     const {escapeRoomId, reusablePuzzleInstanceId} = req.params;
-    const {name, expectedDuration, reusablePuzzleId, ...config} = req.body;
-    let {isPuzzleAssigned} = req.body;
+    const {name, reusablePuzzleId, ...config} = req.body;
 
     const t = await sequelize.transaction();
 
-    isPuzzleAssigned =  isPuzzleAssigned ? false : (config.puzzle === "noSelected" ? false : true); // Checkbox marked or the please select option marked
+    let isPuzzleAssigned =  (config.puzzle === "noSelected" || config.puzzle === undefined) ? false : true; // Checkbox marked or the please select option marked
     config.isPuzzleAssigned = isPuzzleAssigned;
 
     let newInstanceId = "";
@@ -294,7 +293,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             }
 
 
-            const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, expectedDuration, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
+            const reusablePuzzle = await models.reusablePuzzleInstance.create({escapeRoomId, reusablePuzzleId, name, "config": JSON.stringify(trimedConfig)}, {"transaction": t});
 
             reusablePuzzleInstance = reusablePuzzle;
             newInstanceId = reusablePuzzle.id;
@@ -310,7 +309,6 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             trimedConfig.range = trimedConfig.validator === "range" ? trimedConfig.range : undefined;
 
             reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
-            reusablePuzzleInstance.expectedDuration = expectedDuration || reusablePuzzleInstance.expectedDuration;
 
             if(reusablePuzzleId){
                 Object.keys(trimedConfig).forEach((key) => {
@@ -358,7 +356,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             "sol": puzzle.sol,
             "assignedReusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((instance) => instance.id)} : {};
 
-        res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "expectedDuration": reusablePuzzleInstance.expectedDuration, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
 
     } catch (e) {
         console.error(e);

@@ -1,8 +1,8 @@
 <br>
-<%- include ("./_validator.ejs", {allowedValidators: ["exact"]}) %>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: true} ) %>
 <br>
 <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
-            
+
 <div>
     <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
     <select id="skinSelect" name="skin">

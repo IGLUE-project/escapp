@@ -33,6 +33,10 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.TEXT,
                 "validate": {"len": [0, 5000]}
             },
+            "expectedDuration": {
+                "type": DataTypes.TEXT,
+                "validate": {"len": [0, 5000]}
+            },
             "automatic": {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
