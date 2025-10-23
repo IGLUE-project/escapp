@@ -59,10 +59,10 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent',
 		'-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' /*,'-','BidiLtr','BidiRtl' */] },
 		{ name: 'links', items : [ 'Link','Unlink','-'] },
-		{ name: 'insert', items : [ 'Image','Html5video','Youtube','Html5audio','Table'/*,'HorizontalRule','Smiley','SpecialChar', 'EqnEditor' ,'Iframe' */ ] },
+		{ name: 'insert', items : [ 'Image','Html5video','Youtube','Html5audio','Table','PasteCode'/*,'HorizontalRule','Smiley','SpecialChar', 'EqnEditor' ,'Iframe' */ ] },
 	];
 	config.removePlugins = 'elementspath,resize,iframe,image' ;
-	config.extraPlugins = 'autogrow,html5video,youtube,html5audio,widget,widgetselection,clipboard,lineutils';
+	config.extraPlugins = 'autogrow,html5video,youtube,html5audio,widget,widgetselection,clipboard,lineutils,pastecode';
 	config.extraAllowedContent = 'iframe[*]';
 	config.autoGrow_onStartup = true;
 	config.autoGrow_minHeight = 20;

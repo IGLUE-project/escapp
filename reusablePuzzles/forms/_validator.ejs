@@ -58,13 +58,13 @@
     var optionsPuzzle = window.puzzles.map((puzzler,index) => {
     return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>` }).join('')
 
-    <% if(allowedNullPuzzle === true){ %>
+    <% if(typeof allowedNullPuzzle !== 'undefined' && (allowedNullPuzzle === true)){ %>
         $("#associatedPuzzle").append( `<option value="" hidden disabled selected><%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzlePlaceholder%></option>`).change();
     <% } %>
 
     $("#associatedPuzzle").append(optionsPuzzle);
 
-    <% if(allowedNullPuzzle === true){ %>
+    <% if(typeof allowedNullPuzzle !== 'undefined' && (allowedNullPuzzle === true)){ %>
         $("#associatedPuzzle").append( `<option value="noSelected"><%=i18n.escapeRoom.steps.indications.front.catalog.config.noPuzzle %></option>`);
     <% } %>
 </script>
