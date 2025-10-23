@@ -1569,6 +1569,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   flex-direction: column;
   justify-content: center;
 }
+.escapeRooms .escapeRoomSearch .escapeRoomFilters {
+  text-align: right;
+}
 .escapeRooms .escapeRoomListButtons {
   display: flex;
   flex-direction: row;

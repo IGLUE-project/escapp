@@ -90,7 +90,7 @@ exports.index = async (req, res, next) => {
     const {turnId, orderBy} = query;
     const isAdmin = Boolean(req.session.user.isAdmin);
     const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
-    
+
 
     try {
         const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});

@@ -269,7 +269,8 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
     const t = await sequelize.transaction();
 
-    let isPuzzleAssigned =  (config.puzzle === "noSelected" || config.puzzle === undefined) ? false : true; // Checkbox marked or the please select option marked
+    const isPuzzleAssigned = !(config.puzzle === "noSelected" || config.puzzle === undefined); // Checkbox marked or the please select option marked
+
     config.isPuzzleAssigned = isPuzzleAssigned;
 
     let newInstanceId = "";
@@ -284,7 +285,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             trimedConfig.validator = null;
             trimedConfig.rangeInput = null;
             trimedConfig.solutionLength = null;
-            if(reusablePuzzleId){
+            if (reusablePuzzleId) {
                 Object.keys(trimedConfig).forEach((key) => {
                     if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
                         trimedConfig[key] = undefined;
@@ -310,7 +311,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
             reusablePuzzleInstance.name = name || reusablePuzzleInstance.name;
 
-            if(reusablePuzzleId){
+            if (reusablePuzzleId) {
                 Object.keys(trimedConfig).forEach((key) => {
                     if (trimedConfig[key] === "" || trimedConfig[key] === "undefined") {
                         trimedConfig[key] = undefined;
@@ -350,14 +351,15 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
 
         t.commit();
 
-        const newPuzzle = isPuzzleAssigned ? {"id": puzzle.id,
+        const newPuzzle = isPuzzleAssigned ? {
+            "id": puzzle.id,
             "validator": puzzle.validator,
             "title": puzzle.title,
             "sol": puzzle.sol,
-            "assignedReusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((instance) => instance.id)} : {};
+            "assignedReusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((instance) => instance.id)
+        } : {};
 
         res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
-
     } catch (e) {
         console.error(e);
         t.rollback();
@@ -388,7 +390,7 @@ exports.renderReusablePuzzle = async (req, res, _) => { // eslint-disable-line  
         const escapeRoom = await models.escapeRoom.findByPk(reusablePuzzleInstance.escapeRoomId);
         const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
         const linkedPuzzle = await reusablePuzzleInstance.getPuzzles();
-        const solutionLength = linkedPuzzle.length > 0 ? (reusablePuzzleInstanceConfig.solutionLength || linkedPuzzle.sol.length || 0) : 0;
+        const solutionLength = linkedPuzzle.length > 0 ? reusablePuzzleInstanceConfig.solutionLength || linkedPuzzle.sol.length || 0 : 0;
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
         const hostName = process.env.APP_NAME ? `${req.protocol}://${process.env.APP_NAME}` : "http://localhost:3000";
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/`;
@@ -432,7 +434,7 @@ exports.renderReusablePuzzlePreview = async (req, res, next) => {
 
     try {
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleId);
-        const linkedPuzzle = !(req.query.puzzleId === 'undefined' || req.query.puzzleId === "noSelected")  ? await models.puzzle.findByPk(req.query.puzzleId) : 0;
+        const linkedPuzzle = !(req.query.puzzleId === "undefined" || req.query.puzzleId === "noSelected") ? await models.puzzle.findByPk(req.query.puzzleId) : 0;
         const escapeRoom = await models.escapeRoom.findByPk(escapeRoomId);
         const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);

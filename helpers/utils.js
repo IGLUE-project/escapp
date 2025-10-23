@@ -63,7 +63,7 @@ exports.playInterface = async (name, req, res, next) => {
             },
             "teams": req.teams,
             "hints": [],
-            teamId: null,
+            "teamId": null,
             "turnoId": req.params.turnoId,
             "isStudent": false,
             "status": req.turn.status,
@@ -171,7 +171,7 @@ exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRo
 
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]], "include": [{"model": models.reusablePuzzleInstance}]});
 
-exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({"attributes": ["name","description", "instructions", "config", ["id", "reusablePuzzleId"]]});
+exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({"attributes": ["name", "description", "instructions", "config", ["id", "reusablePuzzleId"]]});
 
 exports.getReusablePuzzlesInstances = (id) => models.reusablePuzzleInstance.findAll({"where": {"escapeRoomId": id}, "include": [{"model": models.puzzle, "attributes": ["id"]}]});
 
@@ -188,10 +188,11 @@ exports.getERPuzzlesAndHints = (escapeRoomId) => models.puzzle.findAll({
     ]
 });
 
-
-exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, attendance, attendanceScore, scoreHintSuccess, scoreHintFail, includeRanking = false) => {
+exports.getERState = async (user, escapeRoomId, team, duration, hintLimit, nPuzzles, attendance, attendanceScore, scoreHintSuccess, scoreHintFail, includeRanking = false) => {
     const {puzzlesSolved, puzzleData} = await getPuzzleOrderSuperados(team);
-    const teamMembers = team.teamMembers.map((member) => member.username);
+    const teamMembers = team.teamMembers.map((member) => member.alias);
+    const participantTeamIndex = team.teamMembers.findIndex((member) => member.username === user.username);
+
     const {hintsAllowed, successHints, failHints} = await exports.areHintsAllowedForTeam(team.id, hintLimit);
     const progress = exports.getProgress(puzzlesSolved, nPuzzles);
     const score = exports.getScore(puzzlesSolved, puzzleData, successHints, failHints, attendance, attendanceScore, scoreHintSuccess, scoreHintFail);
@@ -201,7 +202,7 @@ exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, a
     const remainingTime = !timeLeft || timeLeft < 0 ? 0 : timeLeft;
     const teamId = team.id;
 
-    return {teamId, startTime, remainingTime, puzzlesSolved, puzzleData, nPuzzles, hintsAllowed, progress, score, teamMembers, ranking, "duration": duration * 60};
+    return {teamId, startTime, remainingTime, puzzlesSolved, puzzleData, nPuzzles, hintsAllowed, progress, score, teamMembers, ranking, "duration": duration * 60, participantTeamIndex};
 };
 
 exports.getRanking = async (escapeRoomId, turnoId, anonymized = false) => {
@@ -245,7 +246,8 @@ exports.getScore = (puzzlesSolved, puzzleData, successHints, failHints, attendan
 
 exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     let participation = PARTICIPANT;
-    const privileged = user.isAdmin || (escapeRoom.authorId === user.id) || ((escapeRoom.userCoAuthor || []).some((e) => e.id === user.id));
+    const privileged = user.isAdmin || escapeRoom.authorId === user.id || (escapeRoom.userCoAuthor || []).some((e) => e.id === user.id);
+
     if (!preview && privileged) {
         participation = AUTHOR;
     } else if (preview && privileged) {
@@ -348,7 +350,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
         if (participation !== AUTHOR && (teams && teams.length)) {
             const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
 
-            erState = await exports.getERState(escapeRoom.id, teams[0], escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed);
+            erState = await exports.getERState(user, escapeRoom.id, teams[0], escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed);
         }
     } catch (e) {
         console.error(e);
@@ -647,8 +649,4 @@ exports.solutionSeparatorLength = (sol, sep = ";", oneIsSplit = false) => {
     return 0;
 };
 
-exports.partition = (array, isValid) => {
-    return array.reduce(([pass, fail], elem) => {
-        return isValid(elem) ? [[...pass, elem], fail] : [pass, [...fail, elem]];
-    }, [[], []]);
-}
+exports.partition = (array, isValid) => array.reduce(([pass, fail], elem) => isValid(elem) ? [[...pass, elem], fail] : [pass, [...fail, elem]], [[], []]);

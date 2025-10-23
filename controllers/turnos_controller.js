@@ -15,7 +15,8 @@ exports.load = (req, res, next, turnId) => {
             {
                 "model": models.team,
                 "include": {"model": models.user, "as": "teamMembers"},
-                "order": [["date", "ASC"]]
+                "order": [["date", "ASC"], [{ "model": models.user, "as": "teamMembers" }, "createdAt", "ASC"]]
+
             }
         ]
     };

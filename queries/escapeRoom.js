@@ -212,29 +212,29 @@ exports.all = (user, page = 1, limit = 10, search, finished) => {
         findOptions.include[0].include[0].required = true;
         findOptions.attributes = ["id", "title"];
         findOptions.distinct = false;
-         
 
-        if(finished === true) {
+
+        if (finished === true) {
             findOptions.include[0].where = { "status": "finished" };
             findOptions.include[0].include.push({
                 "model": models.team,
                 "required": false,
-                "where": {startTime: {[Op.lt]: new Date(new Date()- 24*60*60*1000)}},
+                "where": {"startTime": {[Op.lt]: new Date(new Date() - 24 * 60 * 60 * 1000)}},
                 "attributes": ["startTime"],
                 "include": {"model": models.user, "as": "teamMembers", "required": true}
             });
         } else if (finished === false) {
-            findOptions.include[0].where =  { "status": {[Op.or] : ["pending","active"] }};
+            findOptions.include[0].where = { "status": {[Op.or]: ["pending", "active"] }};
             findOptions.include[0].include.push({
                 "model": models.team,
                 "required": false,
-                "where": {startTime: {[Op.or]: [{[Op.gte]: new Date(new Date()- 24*60*60*1000)}, null]}},
+                "where": {"startTime": {[Op.or]: [{[Op.gte]: new Date(new Date() - 24 * 60 * 60 * 1000)}, null]}},
                 "attributes": ["startTime"],
                 "include": {"model": models.user, "as": "teamMembers", "required": true}
             });
         }
     }
-        if (page !== null) {
+    if (page !== null) {
         findOptions.limit = limit;
         findOptions.offset = (page - 1) * limit;
     }

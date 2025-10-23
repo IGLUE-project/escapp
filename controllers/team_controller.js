@@ -12,7 +12,8 @@ exports.load = (req, res, next, teamId) => {
         "include": {
             "model": models.user,
             "as": "teamMembers"
-        }
+        },
+        "order": [[{ "model": models.user, "as": "teamMembers" }, models.members, "createdAt", "ASC"]]
     }).
         then((team) => {
             if (!team) {
@@ -99,7 +100,7 @@ exports.index = async (req, res, next) => {
 
             }
         ],
-        "order": Sequelize.literal("lower(team.name) ASC")
+        "order": [Sequelize.literal("lower(team.name) ASC"), [{ "model": models.user, "as": "teamMembers" }, "createdAt", "ASC"]]
     };
 
     if (turnId) {

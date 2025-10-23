@@ -84,7 +84,7 @@ exports.puzzlesByParticipants = async (req, res, next) => {
     const {turnId, orderBy, csv} = query;
     const isAdmin = Boolean(req.session.user.isAdmin);
     const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
-    
+
 
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
@@ -107,12 +107,11 @@ exports.puzzlesByParticipants = async (req, res, next) => {
             const resultsCsv = results.map((rslt) => {
                 const {id, name, surname, teamId, teamName, username, retosSuperados, alias, total} = rslt;
                 const rs = flattenObject(retosSuperados, puzzleNames);
+
                 if (includeNames) {
                     return {id, name, surname, username, alias, teamId, teamName, ...rs, total};
-                } else {
-                    return {id, teamId, teamName, alias, ...rs, total};
                 }
-                
+                return {id, teamId, teamName, alias, ...rs, total};
             });
 
             createCsvFile(res, resultsCsv);
@@ -134,7 +133,7 @@ exports.puzzlesByTeams = async (req, res, next) => {
     const {i18n} = res.locals;
     const isAdmin = Boolean(req.session.user.isAdmin);
     const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
-    
+
 
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
@@ -150,8 +149,8 @@ exports.puzzlesByTeams = async (req, res, next) => {
             const {id, name} = team;
             const {retosSuperados, retosSuperadosMin} = retosSuperadosByWho(team, puzzles, true, team.turno.startTime || team.startTime);
             const total = pctgRetosSuperados(retosSuperados);
-            
-            const members = team.teamMembers.map((member) => member.anonymized ? i18n.user.anonymous : (includeNames ? `${member.name} ${member.surname}` : member.alias));
+
+            const members = team.teamMembers.map((member) => member.anonymized ? i18n.user.anonymous : includeNames ? `${member.name} ${member.surname}` : member.alias);
             const teamAttendance = Boolean(team.startTime);
 
             return {id, name, members, teamAttendance, retosSuperados, retosSuperadosMin, turnId, total};
@@ -203,7 +202,7 @@ exports.hintsByParticipants = async (req, res, next) => {
     const {turnId, orderBy, csv} = query;
     const isAdmin = Boolean(req.session.user.isAdmin);
     const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
-    
+
     try {
         escapeRoom.turnos = await getERTurnos(escapeRoom.id);
         const users = await models.user.findAll(queries.hint.hintsByParticipant(escapeRoom.id, turnId, orderBy));
@@ -211,8 +210,8 @@ exports.hintsByParticipants = async (req, res, next) => {
             const [{requestedHints}] = u.teamsAgregados;
             const {name, surname, alias} = u;
             const {hintsSucceeded, hintsFailed} = countHints(requestedHints);
-            
-            return {"name": includeNames ? `${name} ${surname}`: alias, hintsSucceeded, hintsFailed};
+
+            return {"name": includeNames ? `${name} ${surname}` : alias, hintsSucceeded, hintsFailed};
         });
 
         if (!csv) {
@@ -232,6 +231,7 @@ exports.hintsByParticipants = async (req, res, next) => {
                     const {success, score, createdAt} = reqHint;
                     const hint = reqHint.hint && reqHint.hint.content ? reqHint.hint.content : "";
                     const minute = Math.floor((createdAt - startTime) / 600) / 100;
+
                     if (includeNames) {
                         resultsCsv.push({id, name, surname, username, alias, teamId, teamName, teamAttendance, success, "score": Math.round(score * 100) / 100, hint, minute, createdAt});
                     } else {
@@ -491,7 +491,7 @@ exports.grading = async (req, res, next) => {
     const hintAppConditional = hintConditional && escapeRoom.hintApp; // Hint app methodology
     const isAdmin = Boolean(req.session.user.isAdmin);
     const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
-    
+
     try {
         const puzzles = await getERPuzzles(escapeRoom.id);
         const puzzleIds = puzzles.map((puz) => puz.id);
@@ -542,10 +542,10 @@ exports.grading = async (req, res, next) => {
                 for (const r in grades) {
                     rs[puzzleNames[r]] = grades[r];
                 }
-                
-                const result = includeNames ? 
-                {name, surname, alias, username, turno, ...rs, attendance, total}:
-                {alias, turno, ...rs, attendance, total};
+
+                const result = includeNames
+                    ? {name, surname, alias, username, turno, ...rs, attendance, total}
+                    : {alias, turno, ...rs, attendance, total};
 
                 if (hintConditional) {
                     result.hintsSucceeded = hintsSucceeded;
@@ -605,11 +605,11 @@ exports.download = async (req, res) => {
             const hf = flattenObject(hintsFailed, puzzleNames.map((p) => `Hints failed for ${p}`));
             const hs = flattenObject(hintsSucceeded, puzzleNames.map((p) => `Hints succeeded for ${p}`));
             const attendance = Boolean(user.turnosAgregados[0].participants.attendance);
+
             if (includeNames) {
                 return {name, surname, username, alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
-            } else {
-                return {alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
             }
+            return {alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
         });
 
         createCsvFile(res, results);
@@ -623,8 +623,9 @@ exports.download = async (req, res) => {
 exports.downloadRaw = async (req, res) => {
     const {escapeRoom, query, session} = req;
     const {turnId} = query;
-    // const isAdmin = Boolean(session.user.isAdmin);
-    // const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
+    // Const isAdmin = Boolean(session.user.isAdmin);
+    // Const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
+
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
         const puzzleIdToOrder = {};

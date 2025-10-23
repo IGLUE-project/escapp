@@ -271,7 +271,7 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
         if (escapeRoom) {
             const teams = await user.getTeamsAgregados(queries.user.erTeam(escapeRoomId));
             const participation = await checkTurnoAccess(teams, user, escapeRoom, preview);
-            const privileged = user.isAdmin || (escapeRoom.authorId === user.id) || ((escapeRoom.userCoAuthor || []).some((e) => e.id === user.id));
+            const privileged = user.isAdmin || escapeRoom.authorId === user.id || (escapeRoom.userCoAuthor || []).some((e) => e.id === user.id);
 
             // TODO comprobar author turno está en ER
             if (teams && teams.length) {
@@ -279,7 +279,7 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
                 const teamId = team.id;
                 const turnIdFound = team.turno.id;
 
-                if (!privileged && (turnId && (turnId != turnIdFound))) {
+                if (!privileged && (turnId && turnId != turnIdFound)) {
                     return {"errorMsg": i18n.api.notFound};
                 }
                 const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
@@ -287,13 +287,13 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
                 if (!waiting) {
                     escapeRoom.puzzles = await getERPuzzles(escapeRoomId);
                 }
-                const erState = waiting ? {} : await getERState(escapeRoomId, team, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
+                const erState = waiting ? {} : await getERState(user, escapeRoomId, team, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
 
                 // If (participation === "PARTICIPANT") {
                 //     Await automaticallySetAttendance(team, user.id, escapeRoom.automaticAttendance);
                 // }
-                
-                return {participation, teamId, turnId: turnId || turnIdFound, erState, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
+
+                return {participation, teamId, "turnId": turnId || turnIdFound, erState, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
             }
 
             return {participation, "language": escapeRoom.forceLang, turnId, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
@@ -348,7 +348,8 @@ exports.solvePuzzle = async (escapeRoomId, teamId, userId, puzzleOrderMinus, sol
         if (!team && !puzzle) {
             throw new Error(i18n.api.notFound);
         }
-        const {body} = await checkPuzzle(solution, puzzle, team.turno.escapeRoom, [team], {"id": userId}, i18n);
+        const user = await models.user.findByPk(userId);
+        const {body} = await checkPuzzle(solution, puzzle, team.turno.escapeRoom, [team], user, i18n);
         const {code, correctAnswer, participation, authentication, msg, erState, alreadySolved} = body;
         let currentlyWorkingOn = await getCurrentPuzzle(team, puzzles);
 
@@ -405,6 +406,7 @@ exports.broadcastRanking = (turnoId, teams, teamId, puzzleOrder) => {
  */
 exports.sendInitialInfo = (socket, {code, authentication, token, participation, msg, erState}) => {
     const connectedMembers = erState && erState.teamId ? exports.getConnectedMembers(erState.teamId) : [];
+
     initialInfo(socket.id, code, authentication, token, participation, msg, erState, connectedMembers);
 };
 
@@ -427,11 +429,12 @@ exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n, preview 
                 const attendance = participation === PARTICIPANT || participation === TOO_LATE;
                 // eslint-disable-next-line init-declarations
                 let erState;
+
                 if (participation === PARTICIPANT || participation === NOT_STARTED) {
                     const firstTimer = await automaticallySetAttendance(team, user.id, escapeRoom.automaticAttendance);
 
                     escapeRoom.puzzles = await getERPuzzles(escapeRoomId);
-                    erState = await getERState(escapeRoomId, team, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
+                    erState = await getERState(user, escapeRoomId, team, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
 
                     if (firstTimer) {
                         joinTeam(turnId, teamId, erState.ranking);
@@ -440,7 +443,7 @@ exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n, preview 
                     return;
                 } else if (participation === TOO_LATE) {
                     escapeRoom.puzzles = await getERPuzzles(escapeRoomId);
-                    erState = await getERState(escapeRoomId, team, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
+                    erState = await getERState(user, escapeRoomId, team, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
                 }
                 startTeam(teamId, code, true, participation, msg, erState);
                 return;

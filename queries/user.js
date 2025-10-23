@@ -201,7 +201,9 @@ exports.erTeam = (escapeRoomId) => ({
             "model": models.user,
             "through": "members",
             "as": "teamMembers",
-            "attributes": ["username", "anonymized","alias"]
+            "attributes": ["username", "anonymized", "alias"]
         }
-    ]
+    ],
+    "order": [[{ "model": models.user, "as": "teamMembers" }, models.members, "createdAt", "ASC"]]
+
 });

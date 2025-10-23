@@ -180,6 +180,7 @@ exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) =>
             return;
         }
         const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id));
+
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
             next();

@@ -31,7 +31,7 @@ exports.teamRetosNoSuperados = (escapeRoomId, turnId) => {
                     },
                     {
                         "model": models.user,
-                        "attributes": ["id", "username"],
+                        "attributes": ["id", "username", "alias"],
                         "required": false
                     }
 
@@ -381,9 +381,12 @@ exports.teamInfo = (escapeRoomId, includeTest = false) => {
                 "model": models.user,
                 "through": "members",
                 "as": "teamMembers",
-                "attributes": ["username", "anonymized"]
+                "attributes": ["username", "anonymized", "alias"]
+
             }
-        ]
+        ],
+        "order": [[{ "model": models.user, "as": "teamMembers" }, models.members, "createdAt", "ASC"]]
+
     };
 
     if (includeTest) {

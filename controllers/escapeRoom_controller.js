@@ -43,14 +43,18 @@ exports.index = async (req, res, next) => {
     const {search} = req.query;
 
     let pagePublic = parseInt(req.query.pagePublic || 1, 10);
+
     pagePublic = isNaN(pagePublic) || pagePublic < 1 ? 1 : pagePublic;
     let pageCreated = parseInt(req.query.pageCreated || 1, 10);
+
     pageCreated = isNaN(pageCreated) || pageCreated < 1 ? 1 : pageCreated;
     let pagePending = parseInt(req.query.pagePending || 1, 10);
+
     pagePending = isNaN(pagePending) || pagePending < 1 ? 1 : pagePending;
     let pageFinished = parseInt(req.query.pageFinished || 1, 10);
+
     pageFinished = isNaN(pageFinished) || pageFinished < 1 ? 1 : pageFinished;
-    const limit =  10;
+    const limit = 10;
     let pending = [];
     let created = [];
     let publicc = [];
@@ -59,41 +63,41 @@ exports.index = async (req, res, next) => {
     let countPublic = 0;
     let countCreated = 0;
     let countFinished = 0;
-    
+
 
     try {
         // Created
         if (!user.isStudent) {
-            ({"count": countCreated, "rows": created} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, pageCreated, limit -1 , search)));
-        } 
+            ({"count": countCreated, "rows": created} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, pageCreated, limit - 1, search)));
+        }
         const pagesCreated = Math.ceil(countCreated / limit);
 
         if (pageCreated > pagesCreated && pagesCreated !== 0) {
-            pageCreated = pagesCreated
-        } 
+            pageCreated = pagesCreated;
+        }
         const pageCreatedArray = paginate(pageCreated, pagesCreated, 5);
-        
+
         // Pending
         ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = false)));
 
         const pagesPending = Math.ceil(countPending / limit);
 
         if (pagePending > pagesPending && pagesPending !== 0) {
-            pagePending = pagesPending
-        } 
-        const pagePendingArray = paginate(pagePending, pagesPending, 5);   
+            pagePending = pagesPending;
+        }
+        const pagePendingArray = paginate(pagePending, pagesPending, 5);
 
-                
+
         // Finished
         ({"count": countFinished, "rows": finished} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = true)));
 
         const pagesFinished = Math.ceil(countPending / limit);
 
         if (pageFinished > pagesFinished && pagesFinished !== 0) {
-            pageFinished = pagesFinished
-        } 
-        const pageFinishedArray = paginate(pageFinished, pagesFinished, 5);   
-        
+            pageFinished = pagesFinished;
+        }
+        const pageFinishedArray = paginate(pageFinished, pagesFinished, 5);
+
 
         // Public
         let erAll = [];
@@ -119,17 +123,16 @@ exports.index = async (req, res, next) => {
 
             return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor };
         });
-        
+
         const pagesPublic = Math.ceil(countPublic / limit);
 
         if (pagePublic > pagesPublic && pagesPublic !== 0) {
-            pagePublic = pagesPublic; 
-        } 
+            pagePublic = pagesPublic;
+        }
         const pagePublicArray = paginate(pagePublic, pagesPublic, 5);
 
         // Render
-        res.render("escapeRooms/index.ejs", {escapeRooms: {pending,created,publicc,finished}, cloudinary, user, count:{countCreated,countPending,countPublic,countFinished}, page: {pagePublic,pagePending,pageCreated,pageFinished}, pages: {pagesPublic,pagesPending,pagesCreated,pagesFinished}, pageArray: {pagePublicArray,pagePendingArray,pageCreatedArray,pageFinishedArray}, search, "admin": false});
-
+        res.render("escapeRooms/index.ejs", {"escapeRooms": {pending, created, publicc, finished}, cloudinary, user, "count": {countCreated, countPending, countPublic, countFinished}, "page": {pagePublic, pagePending, pageCreated, pageFinished}, "pages": {pagesPublic, pagesPending, pagesCreated, pagesFinished}, "pageArray": {pagePublicArray, pagePendingArray, pageCreatedArray, pageFinishedArray}, search, "admin": false});
     } catch (error) {
         next(error);
     }
@@ -273,8 +276,9 @@ exports.update = async (req, res) => {
             // There is no attachment: Delete old attachment.
             if (!req.file) {
                 if (er.attachment) {
-                    const old_url_used = await models.attachment.count({where: {url: er.attachment.url}}) > 1;
-                    if (!old_url_used){
+                    const old_url_used = await models.attachment.count({"where": {"url": er.attachment.url}}) > 1;
+
+                    if (!old_url_used) {
                         fs.unlinkSync(path.join(__dirname, "/../", er.attachment.url));
                     }
                     er.attachment.destroy();
@@ -294,7 +298,8 @@ exports.update = async (req, res) => {
                 attachment.filename = req.file.originalname;
                 attachment.mime = req.file.mimetype;
                 try {
-                    const old_url_used = await models.attachment.count({where: {url: old_url}}) > 1;
+                    const old_url_used = await models.attachment.count({"where": {"url": old_url}}) > 1;
+
                     if (old_url && !old_url_used) {
                         try {
                             fs.unlinkSync(path.join(__dirname, "/../", old_url));
@@ -324,7 +329,7 @@ exports.update = async (req, res) => {
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));
             });
-            if(req.file){
+            if (req.file) {
                 fs.unlinkSync(req.file.path);
             }
         } else {
@@ -557,10 +562,10 @@ exports.destroy = async (req, res, next) => {
 
     try {
         await req.escapeRoom.destroy({}, {transaction});
-        if (req.escapeRoom.attachment && await models.attachment.count({where: {url: req.escapeRoom.attachment.url}}) === 0) {
-            try{
+        if (req.escapeRoom.attachment && await models.attachment.count({"where": {"url": req.escapeRoom.attachment.url}}) === 0) {
+            try {
                 fs.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
-            } catch(e){
+            } catch (e) {
                 console.error("Error deleting attachment file:", e);
             }
         }
@@ -668,13 +673,13 @@ exports.admin = async (req, res, next) => {
     let page = parseInt(req.query.page || 1, 10);
 
     page = isNaN(page) || page < 1 ? 1 : page;
-    const limit = 10
+    const limit = 10;
     let escapeRooms = [];
     let count = 0;
 
     try {
         if (user && !user.isStudent) {
-            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll(page,limit,search)));
+            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll(page, limit, search)));
         }
         const pages = Math.ceil(count / limit);
 
