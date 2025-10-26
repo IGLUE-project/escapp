@@ -1365,9 +1365,13 @@
             "soundURLPlaceholder": "Puedes introducir la URL de cualquier fichero de audio que tengas en tu catálogo de recursos",
             "Numbers": "Números",
             "Letters": "Letras",
+            "Color": "Color",
             "Colors": "Colores",
+            "Multicolor": "Multicolor",
+            "SingleColor": "Monocolor",
             "Symbols": "Símbolos",
             "SymbolsColored": "Símbolos de colores",
+            "Standard": "Estándar",
             "None": "Ninguno",
             "NoneF": "Ninguna",
             "warningPuzzleLink": "Este reto está actualmente vinculado con otro recurso."
@@ -1393,7 +1397,16 @@
             "name": "Interruptores",
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes activen una serie de interruptores determinados. Opcionalmente, a cada interruptor se le puede asociar un número, una letra, un símbolo o un color.",
             "numberOfSwitches": "Número de interruptores",
-            "switchType": "Elementos asociados"
+            "switchesType": "Elementos asociados"
+        },
+        "WireConnection": {
+            "name": "Conexión de cables",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes interconecten nodos origen y destino mediante cables de una manera determinada. Los cables pueden tener diferentes colores y, opcionalmente, a cada nodo (origen o destino) se le puede asociar un número, una letra o un símbolo.",
+            "numberOfWires": "Número de cables",
+            "wiresType": "Tipo de cables",
+            "sourceNodesType": "Tipo de nodos origen",
+            "destinationNodesType": "Tipo de nodos destino",
+            "wiresColor": "Color de los cables"
         },
         "SignalGenerator": {
             "name": "Generador de señales",

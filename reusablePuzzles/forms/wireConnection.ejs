@@ -1,0 +1,85 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelect" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
+    </select>
+</div>
+
+<div>
+    <label for="wiresLength"><%=i18n.reusablePuzzleApps.WireConnection.numberOfWires%>:</label>
+    <select name="wiresLength" id="wiresLength">
+        <% for (let i = 1; i <= 14; i++) { %>
+            <option value="<%= i %>"><%= i %></option>
+        <% } %>
+    </select>
+</div>
+
+<div>
+    <label for=""><%=i18n.reusablePuzzleApps.WireConnection.wiresType%>:</label>
+    <select name="wiresType" id="wiresType">
+        <option value="COLORED"><%=i18n.reusablePuzzleApps.Common.Multicolor%></option>
+        <option value="MONOCHROME"><%=i18n.reusablePuzzleApps.Common.SingleColor%></option>
+    </select>
+</div>
+
+<div id="wiresColor">
+    <label for="wiresColor"><%=i18n.reusablePuzzleApps.WireConnection.wiresColor%>:</label>
+    <input type="text" id="wiresColorInput" name="wiresColor" style="flex:1;" />
+</div>
+
+<div>
+    <label for=""><%=i18n.reusablePuzzleApps.WireConnection.sourceNodesType%>:</label>
+    <select name="sourcesType" id="sourcesType">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.Standard%></option>
+        <option value="NUMBERS"><%=i18n.reusablePuzzleApps.Common.Numbers%></option>
+        <option value="LETTERS"><%=i18n.reusablePuzzleApps.Common.Letters%></option>
+        <option value="SHAPES"><%=i18n.reusablePuzzleApps.Common.Symbols%></option>
+    </select>
+</div>
+
+<div>
+    <label for=""><%=i18n.reusablePuzzleApps.WireConnection.destinationNodesType%>:</label>
+    <select name="targetsType" id="targetsType">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.Standard%></option>
+        <option value="NUMBERS"><%=i18n.reusablePuzzleApps.Common.Numbers%></option>
+        <option value="LETTERS"><%=i18n.reusablePuzzleApps.Common.Letters%></option>
+        <option value="SHAPES"><%=i18n.reusablePuzzleApps.Common.Symbols%></option>
+    </select>
+</div>
+
+<div>
+    <label for="background"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<script>
+    document.getElementById('wiresType').addEventListener('change', function() {
+        if (this.value === 'MONOCHROME') {
+            document.getElementById("wiresColor").style.display = 'flex';
+        } else {
+            document.getElementById("wiresColor").style.display = 'none';
+        }
+    });
+
+    document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
+    document.getElementById("wiresLength").value =  window.currentOpenPuzzleConfig?.wiresLength || 5;
+    document.getElementById("wiresType").value =  window.currentOpenPuzzleConfig?.wiresType || 'COLORED';
+    document.getElementById("wiresColorInput").value =  window.currentOpenPuzzleConfig?.wiresColor || 'black';
+    document.getElementById("sourcesType").value =  window.currentOpenPuzzleConfig?.sourcesType || 'NONE';
+    document.getElementById("targetsType").value =  window.currentOpenPuzzleConfig?.targetsType || 'NONE';
+
+    if(window.currentOpenPuzzleConfig?.wiresType === 'MONOCHROME') {
+        document.getElementById("wiresColor").style.display = 'flex';
+    } else {
+        document.getElementById("wiresColor").style.display = 'none';
+    }
+</script>

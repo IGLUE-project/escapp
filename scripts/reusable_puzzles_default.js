@@ -42,6 +42,16 @@ const reusablePuzzlesList = [
         }
     },
     {
+        "name": "WireConnection",
+        "zip": "defaultReusablePuzzles/WireConnection/WireConnection_Puzzle.zip",
+        "form": "wireConnection.ejs",
+        "thumbnail": "defaultReusablePuzzles/WireConnection/WireConnection_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/WireConnection/WireConnection_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/WireConnection/WireConnection_Instructions_ES.pdf"
+        }
+    },
+    {
         "name": "SignalGenerator",
         "zip": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Puzzle.zip",
         "form": "signalGenerator.ejs",

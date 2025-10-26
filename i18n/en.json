@@ -1373,9 +1373,13 @@
             "soundURLPlaceholder": "You can enter the URL of any audio file from your resource catalog",
             "Numbers": "Numbers",
             "Letters": "Letters",
+            "Color": "Color",
             "Colors": "Colors",
+            "Multicolor": "Multicolor",
+            "SingleColor": "Single color",
             "Symbols": "Symbols",
             "SymbolsColored": "Colored symbols",
+            "Standard": "Standard",
             "None": "None",
             "NoneF": "None",
             "warningPuzzleLink": "This puzzle is currently linked to another resource"
@@ -1402,6 +1406,15 @@
             "description": "This resource allows you to create a puzzle whose solution requires participants to activate a specific set of switches. Optionally, each switch can be associated with a number, a letter, a symbol, or a color.",
             "numberOfSwitches": "Number of switches",
             "switchType": "Associated elements"
+        },
+        "WireConnection": {
+            "name": "Wire connection",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to connect source and destination nodes with cables in a specific way. The cables can have different colors and, optionally, each node (source or destination) can be associated with a number, a letter, or a symbol.",
+            "numberOfWires": "Number of cables",
+            "wiresType": "Type of cables",
+            "sourceNodesType": "Type of source nodes",
+            "destinationNodesType": "Type of destination nodes",
+            "wiresColor": "Wires color"
         },
         "SignalGenerator": {
             "name": "Signal generator",

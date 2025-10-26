@@ -22,7 +22,7 @@
 </div>
 
 <div>
-    <label for=""><%=i18n.reusablePuzzleApps.Switches.switchType%>:</label>
+    <label for=""><%=i18n.reusablePuzzleApps.Switches.switchesType%>:</label>
     <select name="switchType" id="switchType">
         <option value="NONE"><%=i18n.reusablePuzzleApps.Common.None%></option>
         <option value="NUMBERS"><%=i18n.reusablePuzzleApps.Common.Numbers%></option>
@@ -41,7 +41,6 @@
 <script>
     document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
     document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
-    document.getElementById("switchType").value =  window.currentOpenPuzzleConfig?.switchType || 'NONE';
     document.getElementById("nSwitches").value =  window.currentOpenPuzzleConfig?.nSwitches || 6;
     document.getElementById("switchType").value =  window.currentOpenPuzzleConfig?.switchType || 'NONE';
 </script>
