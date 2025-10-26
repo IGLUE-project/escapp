@@ -3,38 +3,92 @@ const {reusablePuzzles} = require("./reusable_puzzle.js");
 const reusablePuzzlesList = [
     {
         "name": "Keypad",
-        "zip": "defaultReusablePuzzles/keypad/Keypad_Puzzle.zip",
+        "zip": "defaultReusablePuzzles/Keypad/Keypad_Puzzle.zip",
         "form": "keypad.ejs",
-        "thumbnail": "defaultReusablePuzzles/keypad/Keypad_Thumbnail.png",
+        "thumbnail": "defaultReusablePuzzles/Keypad/Keypad_Thumbnail.png",
         "instructions": {
-            "en": "defaultReusablePuzzles/keypad/Keypad_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/keypad/Keypad_Instructions_ES.pdf"
+            "en": "defaultReusablePuzzles/Keypad/Keypad_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Keypad/Keypad_Instructions_ES.pdf"
         }
     },
     {
-        "name": "Wheel",
-        "zip": "defaultReusablePuzzles/wheel/Wheel_Puzzle.zip",
-        "form": "wheel.ejs",
-        "thumbnail": "defaultReusablePuzzles/wheel/Wheel_Thumbnail.jpg",
+        "name": "DecoderDisk",
+        "zip": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Puzzle.zip",
+        "form": "decoderDisk.ejs",
+        "thumbnail": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Thumbnail.jpg",
         "instructions": {
-            "en": "defaultReusablePuzzles/wheel/Wheel_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/wheel/Wheel_Instructions_ES.pdf"
+            "en": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Instructions_ES.pdf"
         }
     },
     {
-        "name": "CodeEditor",
-        "zip": "defaultReusablePuzzles/codeeditor/CodeEditor_Escapp.zip",
-        "form": "codeeditor.ejs",
-        "thumbnail": "defaultReusablePuzzles/codeeditor/CodeEditor_Thumbnail.png",
+        "name": "Safebox",
+        "zip": "defaultReusablePuzzles/Safebox/Safebox_Puzzle.zip",
+        "form": "safebox.ejs",
+        "thumbnail": "defaultReusablePuzzles/Safebox/Safebox_Thumbnail.jpg",
         "instructions": {
-            "en": "defaultReusablePuzzles/wheel/Wheel_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/wheel/Wheel_Instructions_ES.pdf"
+            "en": "defaultReusablePuzzles/Safebox/Safebox_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Safebox/Safebox_Instructions_ES.pdf"
+        }
+    },
+    {
+        "name": "Switches",
+        "zip": "defaultReusablePuzzles/Switches/Switches_Puzzle.zip",
+        "form": "switches.ejs",
+        "thumbnail": "defaultReusablePuzzles/Switches/Switches_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Switches/Switches_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Switches/Switches_Instructions_ES.pdf"
+        }
+    },
+    {
+        "name": "WireConnection",
+        "zip": "defaultReusablePuzzles/WireConnection/WireConnection_Puzzle.zip",
+        "form": "wireConnection.ejs",
+        "thumbnail": "defaultReusablePuzzles/WireConnection/WireConnection_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/WireConnection/WireConnection_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/WireConnection/WireConnection_Instructions_ES.pdf"
+        }
+    },
+    {
+        "name": "SignalGenerator",
+        "zip": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Puzzle.zip",
+        "form": "signalGenerator.ejs",
+        "thumbnail": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Thumbnail.jpg",
+        "instructions": {
+            "en": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_ES.pdf"
+        }
+    },
+    {
+        "name": "Chessboard",
+        "zip": "defaultReusablePuzzles/Chessboard/Chessboard_Puzzle.zip",
+        "form": "chessboard.ejs",
+        "thumbnail": "defaultReusablePuzzles/Chessboard/Chessboard_Thumbnail.jpg",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_ES.pdf"
         }
     }
+    
+    // {
+    //     "name": "CodeEditor",
+    //     "zip": "defaultReusablePuzzles/CodeEditor/CodeEditor_Puzzle.zip",
+    //     "form": "codeEditor.ejs",
+    //     "thumbnail": "defaultReusablePuzzles/CodeEditor/CodeEditor_Thumbnail.png",
+    //     "instructions": {
+    //         "en": "defaultReusablePuzzles/CodeEditor/CodeEditor_Instructions_EN.pdf",
+    //         "es": "defaultReusablePuzzles/CodeEditor/CodeEditor_Instructions_ES.pdf"
+    //     }
+    // }
 ];
 
-for (i in reusablePuzzlesList) {
-    const puz = reusablePuzzlesList[i];
-
-    reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
+async function addReusablePuzzles() {
+  for (const puz of reusablePuzzlesList) {
+    await reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
+  }
+  console.log("✅ Task succesfully completed");
 }
+
+addReusablePuzzles().catch(console.error);

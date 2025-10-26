@@ -1359,20 +1359,33 @@
             "skin": "Skin",
             "skins": {
                 "Standard": "Standard",
+                "Basic": "Basic",
                 "Retro": "Retro",
-                "Futuristic": "Futuristic"
+                "Futuristic": "Futuristic",
+                "Realistic": "Realistic"
             },
             "actionAfterSolve": "Action after solving",
+            "enabled": "Enabled",
+            "disabled": "Disabled",
+            "enabledF": "Enabled",
+            "disabledF": "Disabled",
             "showMessage": "Show message",
+            "playSound": "Play sound",
             "Message": "Message",
             "MessagePlaceholder": "Message to show after solving",
             "BackgroundURL": "Background",
-            "BackgroundURLPlaceholder": "You can enter the URL of any image from your resource catalog.",
+            "BackgroundURLPlaceholder": "You can enter the URL of any image from your resource catalog",
+            "soundURL": "Sound",
+            "soundURLPlaceholder": "You can enter the URL of any audio file from your resource catalog",
             "Numbers": "Numbers",
             "Letters": "Letters",
+            "Color": "Color",
             "Colors": "Colors",
+            "Multicolor": "Multicolor",
+            "SingleColor": "Single color",
             "Symbols": "Symbols",
             "SymbolsColored": "Colored symbols",
+            "Standard": "Standard",
             "None": "None",
             "NoneF": "None",
             "warningPuzzleLink": "This puzzle is currently linked to another resource"
@@ -1380,17 +1393,52 @@
         "Keypad": {
             "name": "Keypad",
             "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of numbers, letters, colors, or symbols using a keypad.",
-            "KeyType": "Type of buttons"
+            "keyType": "Type of buttons"
         },
-        "Wheel": {
+        "DecoderDisk": {
             "name": "Decoder disk",
-            "description": "This resource allows you to create a decoder disk and link it to an escape room puzzle and its solution. The disk can have multiple wheels, and each wheel can contain numbers, letters, colors, or symbols.",
+            "description": "This resource allows you to create a decoder disk with multiple wheels, where each wheel can contain numbers, letters, colors, or symbols. The disk can be linked to an escape room puzzle and its solution.",
             "numberOfWheels": "Number of wheels",
             "wheel": "Wheel",
             "wheelType": "Wheel type",
             "wheelLength": "Number of elements"
         },
-        "Codeeditor": {
+        "Safebox": {
+            "name": "Safe box",
+            "description": "This resource allows you to create a puzzle in which participants must open a safe box by turning a dial multiple times following a specific sequence."
+        },
+        "Switches": {
+            "name": "Switches",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to activate a specific set of switches. Optionally, each switch can be associated with a number, a letter, a symbol, or a color.",
+            "numberOfSwitches": "Number of switches",
+            "switchesType": "Associated elements"
+        },
+        "WireConnection": {
+            "name": "Wire connection",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to connect source and destination nodes with wires in a specific way. The wires can have different colors and, optionally, each node (source or destination) can be associated with a number, a letter, or a symbol.",
+            "numberOfWires": "Number of wires",
+            "wiresType": "Type of wires",
+            "sourceNodesType": "Type of source nodes",
+            "destinationNodesType": "Type of destination nodes",
+            "wiresColor": "Wires color"
+        },
+        "SignalGenerator": {
+            "name": "Signal generator",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to use a device to generate an electrical signal with a specified waveform, frequency (F), amplitude (A), and phase (φ).",
+            "waveformButton": "Waveform button"
+        },
+        "Chessboard": {
+            "name": "Chessboard",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to perform a specific sequence of chess piece moves.",
+            "initialSetup": "Initial position",
+            "initialSetup_CLASSIC": "Classic",
+            "initialSetup_EMPTY_BOARD": "Empty board",
+            "initialSetup_QUEEN_GAMBIT": "Queen’s Gambit",
+            "initialSetup_SPANISH_OPENING": "Spanish Opening",
+            "initialSetup_ITALIAN_OPENING": "Italian Opening",
+            "automaticReset": "Automatic reset"
+        },
+        "CodeEditor": {
             "name": "Code Editor",
             "skins": {
                 "auto" :  "Auto",
