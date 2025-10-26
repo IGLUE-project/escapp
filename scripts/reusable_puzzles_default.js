@@ -21,6 +21,16 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Instructions_ES.pdf"
         }
     },
+    {
+        "name": "Safebox",
+        "zip": "defaultReusablePuzzles/Safebox/Safebox_Puzzle.zip",
+        "form": "safebox.ejs",
+        "thumbnail": "defaultReusablePuzzles/Safebox/Safebox_Thumbnail.jpg",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Safebox/Safebox_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Safebox/Safebox_Instructions_ES.pdf"
+        }
+    },
 
     // {
     //     "name": "CodeEditor",

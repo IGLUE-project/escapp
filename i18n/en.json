@@ -1380,11 +1380,15 @@
         },
         "DecoderDisk": {
             "name": "Decoder disk",
-            "description": "This resource allows you to create a decoder disk and link it to an escape room puzzle and its solution. The disk can have multiple wheels, and each wheel can contain numbers, letters, colors, or symbols.",
+            "description": "This resource allows you to create a decoder disk with multiple wheels, where each wheel can contain numbers, letters, colors, or symbols. The disk can be linked to an escape room puzzle and its solution.",
             "numberOfWheels": "Number of wheels",
             "wheel": "Wheel",
             "wheelType": "Wheel type",
             "wheelLength": "Number of elements"
+        },
+        "Safebox": {
+            "name": "Safe box",
+            "description": "This resource allows you to create a puzzle in which participants must open a safe box by turning a dial multiple times following a specific sequence."
         },
         "Codeeditor": {
             "name": "Code Editor",

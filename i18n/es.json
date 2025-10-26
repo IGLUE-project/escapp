@@ -1372,11 +1372,15 @@
         },
         "DecoderDisk": {
             "name": "Disco decodificador",
-            "description": "Este recurso permite crear un disco decodificador y vincularlo a un reto de la escape room y a la solución de dicho reto. El disco puede tener múltiples ruedas y cada rueda puede contener números, letras, colores o símbolos.",
+            "description": "Este recurso permite crear un disco decodificador con múltiples ruedas donde cada una de las ruedas puede contener números, letras, colores o símbolos. El disco puede ser vinculado a un reto de la escape room y a la solución de dicho reto.",
             "numberOfWheels": "Número de ruedas",
             "wheel": "Rueda",
             "wheelType": "Tipo de rueda",
             "wheelLength": "Número de elementos"
+        },
+        "Safebox": {
+            "name": "Caja fuerte",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes abran una caja fuerte girando una rueda varias veces siguiendo una secuencia específica."
         },
         "Codeeditor": {
             "name": "Editor HTML/CSS/JS",
