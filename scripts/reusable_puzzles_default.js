@@ -3,34 +3,35 @@ const {reusablePuzzles} = require("./reusable_puzzle.js");
 const reusablePuzzlesList = [
     {
         "name": "Keypad",
-        "zip": "defaultReusablePuzzles/keypad/Keypad_Puzzle.zip",
+        "zip": "defaultReusablePuzzles/Keypad/Keypad_Puzzle.zip",
         "form": "keypad.ejs",
-        "thumbnail": "defaultReusablePuzzles/keypad/Keypad_Thumbnail.png",
+        "thumbnail": "defaultReusablePuzzles/Keypad/Keypad_Thumbnail.png",
         "instructions": {
-            "en": "defaultReusablePuzzles/keypad/Keypad_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/keypad/Keypad_Instructions_ES.pdf"
+            "en": "defaultReusablePuzzles/Keypad/Keypad_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Keypad/Keypad_Instructions_ES.pdf"
         }
     },
     {
-        "name": "Wheel",
-        "zip": "defaultReusablePuzzles/wheel/Wheel_Puzzle.zip",
-        "form": "wheel.ejs",
-        "thumbnail": "defaultReusablePuzzles/wheel/Wheel_Thumbnail.jpg",
+        "name": "DecoderDisk",
+        "zip": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Puzzle.zip",
+        "form": "decoderDisk.ejs",
+        "thumbnail": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Thumbnail.jpg",
         "instructions": {
-            "en": "defaultReusablePuzzles/wheel/Wheel_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/wheel/Wheel_Instructions_ES.pdf"
+            "en": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Instructions_ES.pdf"
         }
     },
-    {
-        "name": "CodeEditor",
-        "zip": "defaultReusablePuzzles/codeeditor/CodeEditor_Escapp.zip",
-        "form": "codeeditor.ejs",
-        "thumbnail": "defaultReusablePuzzles/codeeditor/CodeEditor_Thumbnail.png",
-        "instructions": {
-            "en": "defaultReusablePuzzles/wheel/Wheel_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/wheel/Wheel_Instructions_ES.pdf"
-        }
-    }
+
+    // {
+    //     "name": "CodeEditor",
+    //     "zip": "defaultReusablePuzzles/CodeEditor/CodeEditor_Puzzle.zip",
+    //     "form": "codeEditor.ejs",
+    //     "thumbnail": "defaultReusablePuzzles/CodeEditor/CodeEditor_Thumbnail.png",
+    //     "instructions": {
+    //         "en": "defaultReusablePuzzles/CodeEditor/CodeEditor_Instructions_EN.pdf",
+    //         "es": "defaultReusablePuzzles/CodeEditor/CodeEditor_Instructions_ES.pdf"
+    //     }
+    // }
 ];
 
 for (i in reusablePuzzlesList) {

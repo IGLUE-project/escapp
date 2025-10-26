@@ -1,0 +1,239 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"]}) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+<style>
+    select, input {
+     max-width: 25vw !important;
+}
+</style>   
+<div>
+    <label for="theme"><%=i18n.reusablePuzzleApps.Common.skin%> <a target="_blank" href="https://sandpack.codesandbox.io/docs/getting-started/themes"><span class="material-icons">info</span></a>:</label>
+    <select id="theme" name="theme">
+        <option value="auto" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.auto%></option>
+        <option value="dark" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.dark%></option>
+        <option value="light" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.light%></option>
+        <option value="amethyst" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.amethyst%></option>
+        <option value="aquaBlue" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.aquaBlue%></option>
+        <option value="atomDark" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.atomDark%></option>
+        <option value="cobalt2" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.cobalt2%></option>
+        <option value="cyberpunk" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.cyberpunk%></option>
+        <option value="dracula" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.dracula%></option>
+        <option value="ecoLight" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.ecoLight%></option>
+        <option value="freeCodeCampDark" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.freeCodeCampDark%></option>
+        <option value="githubLight" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.githubLight%></option>
+        <option value="gruvboxDark" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.gruvboxDark%></option>
+        <option value="gruvboxLight" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.gruvboxLight%></option>
+        <option value="levelUp" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.levelUp%></option>
+        <option value="monokaiPro" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.monokaiPro%></option>
+        <option value="neoCyan" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.neoCyan%></option>
+        <option value="nightOwl" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.nightOwl%></option>
+        <option value="sandpackDark" ><%=i18n.reusablePuzzleApps.Codeeditor.skins.sandpackDark%></option>
+    </select>
+</div>
+
+
+<div id="mainTitleTextDiv">
+    <label for="mainTitleTextInput"><%=i18n.reusablePuzzleApps.Codeeditor.mainTitleText%>:</label>
+    <input id="mainTitleTextInput" type="text" name="mainTitleText" placeholder="<%=i18n.reusablePuzzleApps.Codeeditor.mainTitleTextPlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div id="runButtonTextDiv">
+    <label for="runButtonTextInput"><%=i18n.reusablePuzzleApps.Codeeditor.runButtonText%>:</label>
+    <input id="runButtonTextInput" type="text" name="runButtonText" placeholder="<%=i18n.reusablePuzzleApps.Codeeditor.runButtonTextPlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div id="resetAppTextDiv">
+    <label for="resetAppTextInput"><%=i18n.reusablePuzzleApps.Codeeditor.resetAppText%>:</label>
+    <input id="resetAppTextInput" type="text" name="resetAppText" placeholder="<%=i18n.reusablePuzzleApps.Codeeditor.resetAppTextPlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div id="showTestsDiv">
+    <label for="showTestsInput"><%=i18n.reusablePuzzleApps.Codeeditor.showTests%>:
+    <input id="showTestsInput" type="checkbox" name="showTests"  /></label>
+</div>
+
+<div id="allCorrectMessageDiv">
+    <label for="allCorrectMessageInput"><%=i18n.reusablePuzzleApps.Codeeditor.allCorrectMessage%>:</label>
+    <input id="allCorrectMessageInput" type="text" name="allCorrectMessage" placeholder="<%=i18n.reusablePuzzleApps.Codeeditor.allCorrectMessagePlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div id="someWrongMessageDiv">
+    <label for="someWrongMessageInput"><%=i18n.reusablePuzzleApps.Codeeditor.someWrongMessage%>:</label>
+    <input id="someWrongMessageInput" type="text" name="someWrongMessage" placeholder="<%=i18n.reusablePuzzleApps.Codeeditor.someWrongMessagePlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div id="continueButtonTextDiv" style="display: block;">
+    <label for="continueButtonTextInput"><%=i18n.reusablePuzzleApps.Codeeditor.continueButtonText%>:</label><br/>
+    <input id="continueButtonTextInput" type="text" name="continueButtonText" placeholder="<%=i18n.reusablePuzzleApps.Codeeditor.continueButtonTextPlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div id="tryAgainButtonTextDiv" style="display: block;">
+    <label for="tryAgainButtonTextInput"><%=i18n.reusablePuzzleApps.Codeeditor.tryAgainButtonText%>:</label><br/>
+    <input id="tryAgainButtonTextInput" type="text" name="tryAgainButtonText" placeholder="<%=i18n.reusablePuzzleApps.Codeeditor.tryAgainButtonTextPlaceholder%>"  style="flex:1;"  />
+</div>
+
+<style>
+
+.codeOne {
+    display: block !important;
+}
+.codeOne textarea {
+    width: 100%;
+    max-width: 40vw;
+    height: 150px;
+    display:block;
+    font-family: monospace;
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+    color: black;
+}
+</style>
+<div id="indexDiv" class="codeOne">
+    <label for="indexCode"><%=i18n.reusablePuzzleApps.Codeeditor.content%> <code>index.html</code>:</label>
+    <textarea id="indexCode"  name="indexCode" ></textarea>
+    <label for="indexRO"><%=i18n.reusablePuzzleApps.Codeeditor.readOnly%>:
+    <input id="indexRO" type="checkbox" name="indexRO"  /></label>
+    <label for="indexHidden"><%=i18n.reusablePuzzleApps.Codeeditor.hidden%>
+    <input id="indexHidden" type="checkbox" name="indexHidden"  /></label>
+</div>
+<div id="styleDiv" class="codeOne">
+    <label for="stylesCode"> <%=i18n.reusablePuzzleApps.Codeeditor.content%> <code>style.css</code>:</label>
+    <textarea id="stylesCode"  name="stylesCode"  ></textarea>
+    <label for="stylesRO"><%=i18n.reusablePuzzleApps.Codeeditor.readOnly%>
+    <input id="stylesRO" type="checkbox" name="stylesRO"  /></label>
+    <label for="stylesHidden"><%=i18n.reusablePuzzleApps.Codeeditor.hidden%>
+    <input id="stylesHidden" type="checkbox" name="stylesHidden"  /></label>
+</div>
+<div id="jsDiv" class="codeOne">
+    <label for="jsCode"><%=i18n.reusablePuzzleApps.Codeeditor.content%> <code>index.js</code>:</label>
+    <textarea id="jsCode"  name="jsCode" ></textarea>
+    <label for="jsRO"><%=i18n.reusablePuzzleApps.Codeeditor.readOnly%>
+    <input id="jsRO" type="checkbox" name="jsRO"  /></label>
+    <label for="jsHidden"><%=i18n.reusablePuzzleApps.Codeeditor.hidden%>
+    <input id="jsHidden" type="checkbox" name="jsHidden"  /></label>
+</div>
+<div id="testsDiv" class="codeOne">
+    <label for="testsCode"><%=i18n.reusablePuzzleApps.Codeeditor.Tests%>:</label>
+    <textarea id="testsCode" name="testsCode" ></textarea>
+</div>
+<br>
+
+<script>
+
+    document.getElementById("theme").value =  window.currentOpenPuzzleConfig?.theme || 'auto';
+    document.getElementById("mainTitleTextInput").value =  window.currentOpenPuzzleConfig?.mainTitleText || "";
+    document.getElementById("runButtonTextInput").value =  window.currentOpenPuzzleConfig?.runButtonText || "<%=i18n.reusablePuzzleApps.Codeeditor.runButtonTextPlaceholder%>";
+    document.getElementById("resetAppTextInput").value =  window.currentOpenPuzzleConfig?.resetAppText || "<%=i18n.reusablePuzzleApps.Codeeditor.resetAppTextPlaceholder%>";
+    document.getElementById("showTestsInput").value =  Boolean(window.currentOpenPuzzleConfig?.showTests) || false;
+    document.getElementById("allCorrectMessageInput").value =  window.currentOpenPuzzleConfig?.allCorrectMessage || "<%=i18n.reusablePuzzleApps.Codeeditor.allCorrectMessagePlaceholder%>";
+    document.getElementById("someWrongMessageInput").value =  window.currentOpenPuzzleConfig?.someWrongMessage || "<%=i18n.reusablePuzzleApps.Codeeditor.someWrongMessagePlaceholder%>";
+    document.getElementById("continueButtonTextInput").value =  window.currentOpenPuzzleConfig?.continueButtonText || "<%=i18n.reusablePuzzleApps.Codeeditor.continueButtonTextPlaceholder%>";
+    document.getElementById("tryAgainButtonTextInput").value =  window.currentOpenPuzzleConfig?.tryAgainButtonText || "<%=i18n.reusablePuzzleApps.Codeeditor.tryAgainButtonTextPlaceholder%>";
+    document.getElementById("indexRO").value =  Boolean(window.currentOpenPuzzleConfig?.indexRO);
+    document.getElementById("indexHidden").value =  Boolean(window.currentOpenPuzzleConfig?.indexHidden);
+    document.getElementById("jsRO").value =  Boolean(window.currentOpenPuzzleConfig?.jsRO);
+    document.getElementById("jsHidden").value =  Boolean(window.currentOpenPuzzleConfig?.jsHidden);
+    document.getElementById("stylesRO").value =  Boolean(window.currentOpenPuzzleConfig?.stylesRO);
+    document.getElementById("stylesHidden").value =  Boolean(window.currentOpenPuzzleConfig?.stylesHidden);
+    
+    document.getElementById("stylesCode").value =  (window.currentOpenPuzzleConfig?.stylesCode  !== undefined ? window.currentOpenPuzzleConfig?.stylesCode : `body { 
+  font-family: system-ui, sans-serif; 
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+button { 
+  padding: .5rem 1rem;
+  background: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background: #0052a3;
+}
+#value { 
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}`);
+    document.getElementById("jsCode").value =  (window.currentOpenPuzzleConfig?.jsCode !== undefined ? window.currentOpenPuzzleConfig?.jsCode :  `// Utility functions (exported for testing)
+export function add(a, b) { 
+  return a + b; 
+}
+
+export function multiply(a, b) {
+  return a * b;
+}
+
+// Counter application
+let v = 0;
+const el = document.getElementById('value');
+const btn = document.getElementById('inc');
+
+function render() { 
+  if (el) {
+    el.textContent = String(v);
+  }
+}
+
+if (btn) {
+  btn.addEventListener('click', () => {
+    v = add(v, 1); // Using our add function
+    render();
+  });
+}
+
+render();`);
+    document.getElementById("testsCode").value =  (window.currentOpenPuzzleConfig?.testsCode !== undefined ? window.currentOpenPuzzleConfig?.testsCode : `
+ test('clicking increment button should increase counter by 1', () => {
+  const valueEl = document.getElementById('value');
+  const incBtn = document.getElementById('inc');
+  
+  // Get current value
+  const initialValue = parseInt(valueEl.textContent);
+  
+  // Click the button
+  incBtn.click();
+  
+  // Check if value increased
+  const newValue = parseInt(valueEl.textContent);
+  expect(newValue).toBe(initialValue + 1);
+
+
+});
+
+
+ test('other', () => {
+    expect(2).toBe(2);
+  });`);
+
+ 
+    document.getElementById("indexCode").value =  (window.currentOpenPuzzleConfig?.indexCode !== undefined ? window.currentOpenPuzzleConfig?.indexCode : `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Counter App</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Counter</h1>
+    <p id="value">0</p>
+    <button id="inc">Increment</button>
+    <script type="module" src="/index.js">
+    <\/script>
+  </body>
+</html>`);
+var textareas = document.querySelectorAll("#configForm textarea");
+
+textareas.forEach(ta => {
+ta.addEventListener("blur", function() {
+    if (this.value.trim() === "") {
+    this.value = "\n";
+    }
+});
+});
+</script>

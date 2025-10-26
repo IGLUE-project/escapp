@@ -1346,6 +1346,7 @@
             "skin": "Apariencia",
             "skins": {
                 "Standard": "Estándar",
+                "Basic": "Básica",
                 "Retro": "Retro",
                 "Futuristic": "Futurista"
             },
@@ -1369,7 +1370,7 @@
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes introduzcan una secuencia determinada de números, letras, colores o símbolos mediante un panel de botones.",
             "KeyType": "Tipo de botones"
         },
-        "Wheel": {
+        "DecoderDisk": {
             "name": "Disco decodificador",
             "description": "Este recurso permite crear un disco decodificador y vincularlo a un reto de la escape room y a la solución de dicho reto. El disco puede tener múltiples ruedas y cada rueda puede contener números, letras, colores o símbolos.",
             "numberOfWheels": "Número de ruedas",

@@ -1354,6 +1354,7 @@
             "skin": "Skin",
             "skins": {
                 "Standard": "Standard",
+                "Basic": "Basic",
                 "Retro": "Retro",
                 "Futuristic": "Futuristic"
             },
@@ -1377,7 +1378,7 @@
             "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of numbers, letters, colors, or symbols using a keypad.",
             "KeyType": "Type of buttons"
         },
-        "Wheel": {
+        "DecoderDisk": {
             "name": "Decoder disk",
             "description": "This resource allows you to create a decoder disk and link it to an escape room puzzle and its solution. The disk can have multiple wheels, and each wheel can contain numbers, letters, colors, or symbols.",
             "numberOfWheels": "Number of wheels",
