@@ -1356,7 +1356,8 @@
                 "Standard": "Standard",
                 "Basic": "Basic",
                 "Retro": "Retro",
-                "Futuristic": "Futuristic"
+                "Futuristic": "Futuristic",
+                "Realistic": "Realistic"
             },
             "actionAfterSolve": "Action after solving",
             "enabled": "Enabled",
@@ -1421,7 +1422,18 @@
             "description": "This resource allows you to create a puzzle whose solution requires participants to use a device to generate an electrical signal with a specified waveform, frequency (F), amplitude (A), and phase (φ).",
             "waveformButton": "Waveform button"
         },
-        "Codeeditor": {
+        "Chessboard": {
+            "name": "Chessboard",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to perform a specific sequence of chess piece moves.",
+            "initialSetup": "Initial position",
+            "initialSetup_CLASSIC": "Classic",
+            "initialSetup_EMPTY_BOARD": "Empty board",
+            "initialSetup_QUEEN_GAMBIT": "Queen’s Gambit",
+            "initialSetup_SPANISH_OPENING": "Spanish Opening",
+            "initialSetup_ITALIAN_OPENING": "Italian Opening",
+            "automaticReset": "Automatic reset"
+        },
+        "CodeEditor": {
             "name": "Code Editor",
             "skins": {
                 "auto" :  "Auto",

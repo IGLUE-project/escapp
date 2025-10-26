@@ -60,6 +60,16 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_ES.pdf"
         }
+    },
+    {
+        "name": "Chessboard",
+        "zip": "defaultReusablePuzzles/Chessboard/Chessboard_Puzzle.zip",
+        "form": "chessboard.ejs",
+        "thumbnail": "defaultReusablePuzzles/Chessboard/Chessboard_Thumbnail.jpg",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_ES.pdf"
+        }
     }
 
     // {

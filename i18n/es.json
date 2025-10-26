@@ -1348,7 +1348,8 @@
                 "Standard": "Estándar",
                 "Basic": "Básica",
                 "Retro": "Retro",
-                "Futuristic": "Futurista"
+                "Futuristic": "Futurista",
+                "Realistic": "Realista"
             },
             "actionAfterSolve": "Acción tras resolver",
             "enabled": "Habilitado",
@@ -1413,7 +1414,18 @@
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes empleen un dispositivo para generar una señal eléctrica con una forma, frecuencia (F), amplitud (A) y fase (φ) determinadas.",
             "waveformButton": "Botón de forma de onda"
         },
-        "Codeeditor": {
+        "Chessboard": {
+            "name": "Tablero de ajedrez",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes realicen una determinada secuencia de movimientos de piezas de ajedrez.",
+            "initialSetup": "Posición inicial",
+            "initialSetup_CLASSIC": "Clásico",
+            "initialSetup_EMPTY_BOARD": "Tablero vacío",
+            "initialSetup_QUEEN_GAMBIT": "Gambito de dama",
+            "initialSetup_SPANISH_OPENING": "Apertura española",
+            "initialSetup_ITALIAN_OPENING": "Apertura italiana",
+            "automaticReset": "Reinicio automático"
+        },
+        "CodeEditor": {
             "name": "Editor HTML/CSS/JS",
             "skins": {
                 "auto" :  "Auto",
