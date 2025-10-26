@@ -4,21 +4,10 @@
 <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
 
 <div>
-    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
-    <select id="skinSelect" name="skin">
-        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
-        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
-        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
-    </select>
-</div>
-
-<div>
-    <label for=""><%=i18n.reusablePuzzleApps.Keypad.keyType%>:</label>
-    <select name="keysType" id="keysType">
-        <option value="NUMBERS"><%=i18n.reusablePuzzleApps.Common.Numbers%></option>
-        <option value="LETTERS"><%=i18n.reusablePuzzleApps.Common.Letters%></option>
-        <option value="COLORS"><%=i18n.reusablePuzzleApps.Common.Colors%></option>
-        <option value="SYMBOLS"><%=i18n.reusablePuzzleApps.Common.Symbols%></option>
+    <label for=""><%=i18n.reusablePuzzleApps.SignalGenerator.waveformButton%>:</label>
+    <select name="waveformButton" id="waveformButton">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.enabled%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.disabled%></option>
     </select>
 </div>
 
@@ -27,12 +16,18 @@
     <select id="actionValue" name="actionAfterSolve">
         <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
         <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+        <option value="PLAY_SOUND"><%=i18n.reusablePuzzleApps.Common.playSound%></option>
     </select>
 </div>
 
-<div id="actionDiv">
+<div id="messageDiv">
     <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
     <input id="messageInput" type="message" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div id="soundDiv">
+    <label for="soundInput"><%=i18n.reusablePuzzleApps.Common.soundURL%>:</label>
+    <input type="text" id="soundInput" name="soundAfterSolve" placeholder="<%=i18n.reusablePuzzleApps.Common.soundURLPlaceholder%>" style="flex:1;" />
 </div>
 
 <div>
@@ -43,22 +38,34 @@
 
 <script>
     document.getElementById('actionValue').addEventListener('change', function() {
+        var messageDiv = document.getElementById("messageDiv");
+        var soundDiv = document.getElementById("soundDiv");
         if (this.value === 'SHOW_MESSAGE') {
-            document.getElementById("actionDiv").style.display = 'flex';
+            messageDiv.style.display = 'flex';
         } else {
-            document.getElementById("actionDiv").style.display = 'none';
+            messageDiv.style.display = 'none';
+        }
+        if (this.value === 'PLAY_SOUND') {
+            soundDiv.style.display = 'flex';
+        } else {
+            soundDiv.style.display = 'none';
         }
     });
 
     document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.background || '';
     document.getElementById("messageInput").value =  window.currentOpenPuzzleConfig?.message || '';
-    document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById("soundInput").value =  window.currentOpenPuzzleConfig?.soundAfterSolve || '';
     document.getElementById("actionValue").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
-    document.getElementById("keysType").value =  window.currentOpenPuzzleConfig?.keysType || 'NUMBERS';
+    document.getElementById("waveformButton").value =  window.currentOpenPuzzleConfig?.waveformButton || 'TRUE';
 
     if(window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
-        document.getElementById("actionDiv").style.display = 'block';
+        document.getElementById("messageDiv").style.display = 'block';
     } else {
-        document.getElementById("actionDiv").style.display = 'none';
+        document.getElementById("messageDiv").style.display = 'none';
+    }
+    if(window.currentOpenPuzzleConfig?.actionAfterSolve === 'PLAY_SOUND') {
+        document.getElementById("soundDiv").style.display = 'block';
+    } else {
+        document.getElementById("soundDiv").style.display = 'none';
     }
 </script>

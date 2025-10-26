@@ -31,6 +31,16 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/Safebox/Safebox_Instructions_ES.pdf"
         }
     },
+    {
+        "name": "SignalGenerator",
+        "zip": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Puzzle.zip",
+        "form": "signalGenerator.ejs",
+        "thumbnail": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Thumbnail.jpg",
+        "instructions": {
+            "en": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_ES.pdf"
+        }
+    },
 
     // {
     //     "name": "CodeEditor",

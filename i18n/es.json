@@ -1351,11 +1351,16 @@
                 "Futuristic": "Futurista"
             },
             "actionAfterSolve": "Acción tras resolver",
+            "enabled": "Habilitado",
+            "disabled": "Deshabilitado",
             "showMessage": "Mostrar mensaje",
+            "playSound": "Reproducir sonido",
             "Message": "Mensaje",
             "MessagePlaceholder": "Mensaje a mostrar tras resolver el reto",
             "BackgroundURL": "Fondo",
             "BackgroundURLPlaceholder": "Puedes introducir la URL de cualquier imagen que tengas en tu catálogo de recursos",
+            "soundURL": "Sonido",
+            "soundURLPlaceholder": "Puedes introducir la URL de cualquier fichero de audio que tengas en tu catálogo de recursos",
             "Numbers": "Números",
             "Letters": "Letras",
             "Colors": "Colores",
@@ -1368,7 +1373,7 @@
         "Keypad": {
             "name": "Panel de botones",
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes introduzcan una secuencia determinada de números, letras, colores o símbolos mediante un panel de botones.",
-            "KeyType": "Tipo de botones"
+            "keyType": "Tipo de botones"
         },
         "DecoderDisk": {
             "name": "Disco decodificador",
@@ -1381,6 +1386,11 @@
         "Safebox": {
             "name": "Caja fuerte",
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes abran una caja fuerte girando una rueda varias veces siguiendo una secuencia específica."
+        },
+        "SignalGenerator": {
+            "name": "Generador de señales",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes empleen un dispositivo para generar una señal eléctrica con una forma, frecuencia (F), amplitud (A) y fase (φ) determinadas.",
+            "waveformButton": "Botón de forma de onda"
         },
         "Codeeditor": {
             "name": "Editor HTML/CSS/JS",

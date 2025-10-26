@@ -1359,11 +1359,16 @@
                 "Futuristic": "Futuristic"
             },
             "actionAfterSolve": "Action after solving",
+            "enabled": "Enabled",
+            "disabled": "Disabled",
             "showMessage": "Show message",
+            "playSound": "Reproducir sonido",
             "Message": "Message",
             "MessagePlaceholder": "Message to show after solving",
             "BackgroundURL": "Background",
-            "BackgroundURLPlaceholder": "You can enter the URL of any image from your resource catalog.",
+            "BackgroundURLPlaceholder": "You can enter the URL of any image from your resource catalog",
+            "soundURL": "Sound",
+            "soundURLPlaceholder": "You can enter the URL of any audio file from your resource catalog",
             "Numbers": "Numbers",
             "Letters": "Letters",
             "Colors": "Colors",
@@ -1389,6 +1394,11 @@
         "Safebox": {
             "name": "Safe box",
             "description": "This resource allows you to create a puzzle in which participants must open a safe box by turning a dial multiple times following a specific sequence."
+        },
+        "SignalGenerator": {
+            "name": "Signal generator",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to use a device to generate an electrical signal with a specified waveform, frequency (F), amplitude (A), and phase (φ).",
+            "waveformButton": "Waveform button"
         },
         "Codeeditor": {
             "name": "Code Editor",
