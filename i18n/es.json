@@ -1353,6 +1353,8 @@
             "actionAfterSolve": "Acción tras resolver",
             "enabled": "Habilitado",
             "disabled": "Deshabilitado",
+            "enabledF": "Habilitada",
+            "disabledF": "Deshabilitada",
             "showMessage": "Mostrar mensaje",
             "playSound": "Reproducir sonido",
             "Message": "Mensaje",
@@ -1386,6 +1388,12 @@
         "Safebox": {
             "name": "Caja fuerte",
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes abran una caja fuerte girando una rueda varias veces siguiendo una secuencia específica."
+        },
+        "Switches": {
+            "name": "Interruptores",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes activen una serie de interruptores determinados. Opcionalmente, a cada interruptor se le puede asociar un número, una letra, un símbolo o un color.",
+            "numberOfSwitches": "Número de interruptores",
+            "switchType": "Elementos asociados"
         },
         "SignalGenerator": {
             "name": "Generador de señales",

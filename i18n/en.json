@@ -1361,6 +1361,8 @@
             "actionAfterSolve": "Action after solving",
             "enabled": "Enabled",
             "disabled": "Disabled",
+            "enabledF": "Enabled",
+            "disabledF": "Disabled",
             "showMessage": "Show message",
             "playSound": "Reproducir sonido",
             "Message": "Message",
@@ -1394,6 +1396,12 @@
         "Safebox": {
             "name": "Safe box",
             "description": "This resource allows you to create a puzzle in which participants must open a safe box by turning a dial multiple times following a specific sequence."
+        },
+        "Switches": {
+            "name": "Switches",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to activate a specific set of switches. Optionally, each switch can be associated with a number, a letter, a symbol, or a color.",
+            "numberOfSwitches": "Number of switches",
+            "switchType": "Associated elements"
         },
         "SignalGenerator": {
             "name": "Signal generator",

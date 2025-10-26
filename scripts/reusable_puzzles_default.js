@@ -32,6 +32,16 @@ const reusablePuzzlesList = [
         }
     },
     {
+        "name": "Switches",
+        "zip": "defaultReusablePuzzles/Switches/Switches_Puzzle.zip",
+        "form": "switches.ejs",
+        "thumbnail": "defaultReusablePuzzles/Switches/Switches_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Switches/Switches_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Switches/Switches_Instructions_ES.pdf"
+        }
+    },
+    {
         "name": "SignalGenerator",
         "zip": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Puzzle.zip",
         "form": "signalGenerator.ejs",
@@ -40,7 +50,7 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_ES.pdf"
         }
-    },
+    }
 
     // {
     //     "name": "CodeEditor",
@@ -54,8 +64,11 @@ const reusablePuzzlesList = [
     // }
 ];
 
-for (i in reusablePuzzlesList) {
-    const puz = reusablePuzzlesList[i];
-
-    reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
+async function addReusablePuzzles() {
+  for (const puz of reusablePuzzlesList) {
+    await reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
+  }
+  console.log("✅ Task succesfully completed");
 }
+
+addReusablePuzzles().catch(console.error);
