@@ -1365,7 +1365,7 @@
             "enabledF": "Enabled",
             "disabledF": "Disabled",
             "showMessage": "Show message",
-            "playSound": "Reproducir sonido",
+            "playSound": "Play sound",
             "Message": "Message",
             "MessagePlaceholder": "Message to show after solving",
             "BackgroundURL": "Background",
@@ -1388,7 +1388,7 @@
         "Keypad": {
             "name": "Keypad",
             "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of numbers, letters, colors, or symbols using a keypad.",
-            "KeyType": "Type of buttons"
+            "keyType": "Type of buttons"
         },
         "DecoderDisk": {
             "name": "Decoder disk",
@@ -1406,13 +1406,13 @@
             "name": "Switches",
             "description": "This resource allows you to create a puzzle whose solution requires participants to activate a specific set of switches. Optionally, each switch can be associated with a number, a letter, a symbol, or a color.",
             "numberOfSwitches": "Number of switches",
-            "switchType": "Associated elements"
+            "switchesType": "Associated elements"
         },
         "WireConnection": {
             "name": "Wire connection",
-            "description": "This resource allows you to create a puzzle whose solution requires participants to connect source and destination nodes with cables in a specific way. The cables can have different colors and, optionally, each node (source or destination) can be associated with a number, a letter, or a symbol.",
-            "numberOfWires": "Number of cables",
-            "wiresType": "Type of cables",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to connect source and destination nodes with wires in a specific way. The wires can have different colors and, optionally, each node (source or destination) can be associated with a number, a letter, or a symbol.",
+            "numberOfWires": "Number of wires",
+            "wiresType": "Type of wires",
             "sourceNodesType": "Type of source nodes",
             "destinationNodesType": "Type of destination nodes",
             "wiresColor": "Wires color"

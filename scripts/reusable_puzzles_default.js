@@ -71,7 +71,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_ES.pdf"
         }
     }
-
+    
     // {
     //     "name": "CodeEditor",
     //     "zip": "defaultReusablePuzzles/CodeEditor/CodeEditor_Puzzle.zip",
