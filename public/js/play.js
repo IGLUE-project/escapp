@@ -154,7 +154,7 @@ const onJoin = ({ranking}) => {
 }
 
 const onPuzzleResponse = async ({code, correctAnswer, solution, "puzzleOrder": puzzleOrderPlus, participation, authentication, erState, msg, participantMessage, content, teamInstructions }) => {
-  const feedback = (msg) + (participantMessage && participation !== "PARTICIPANT" ? `. ${participantMessage}`: "");
+  const feedback = (msg || "") + (participantMessage && participation !== "PARTICIPANT" ? `. ${participantMessage}`: "");
   const puzzleOrder = puzzleOrderPlus - 1;
   if (code === "OK") {
     let nextPuzzleOrder = null;
@@ -198,13 +198,13 @@ const onPuzzleResponse = async ({code, correctAnswer, solution, "puzzleOrder": p
       }
     }
   } else {
-    if (msg !== i18n.wrong) {
-      let incorrect = escapeHtml(feedback);
+    if (msg !== i18n.newRetoFailed) {
+      let incorrect = escapeHtml(feedback || "");
       let time = 5000;
       try {
         time = incorrect.split(" ").length*1000;
       } catch(e){}
-      createAlert("danger", incorrect, false, Math.max(time, 4000));
+      createAlert("danger", `<b>${i18n.newRetoFailed}</b><br/> ${incorrect}`, false, Math.max(time, 4000));
     }
     if (ER.erState.waitingForPuzzleReply) {
       $('#puzzle-input').addClass(correctAnswer ? 'is-valid':'is-invalid');
@@ -798,11 +798,15 @@ const autoPlay = (newBlocks = []) => {
 /*******************************************************************/
 
 const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
-  socket = io('/', {query: {
+  let query = {
     escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId,
-    turn: turnId == "undefined" ? undefined : turnId,
-    preview: Boolean(endPoint)
-  }});
+    preview: !Boolean(endPoint)
+  }
+
+  if(endPoint == "class") {
+    query.turn = turnId == "undefined" ? undefined : turnId;
+  }
+  socket = io('/', {query});
   myTeamId = teamId;
   myUsername = username;
   /*Connect*/

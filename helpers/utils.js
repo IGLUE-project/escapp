@@ -246,9 +246,9 @@ exports.getScore = (puzzlesSolved, puzzleData, successHints, failHints, attendan
 exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     let participation = PARTICIPANT;
     const privileged = user.isAdmin || (escapeRoom.authorId === user.id) || ((escapeRoom.userCoAuthor || []).some((e) => e.id === user.id));
-    if (preview && privileged) {
+    if (!preview && privileged) {
         participation = AUTHOR;
-    } else if (!preview && privileged) {
+    } else if (preview && privileged) {
         participation = PARTICIPANT;
     } else if (teams && teams.length > 0) {
         const [team] = teams;
