@@ -31,7 +31,7 @@
 
 <div id="wiresColor">
     <label for="wiresColor"><%=i18n.reusablePuzzleApps.WireConnection.wiresColor%>:</label>
-    <input type="text" id="wiresColorInput" name="wiresColor" style="flex:1;" />
+    <input type="text" id="wiresColorInput" name="wiresColor" data-jscolor='{ "closeButton": true, "closeText": "<%= i18n.common.ok %>", "backgroundColor": "#161938", "buttonColor": "#fff" }' style="flex:1;" />
 </div>
 
 <div>
@@ -61,11 +61,15 @@
 <br>
 
 <script>
+    var wiresColorInput = document.getElementById("wiresColorInput");
+
     document.getElementById('wiresType').addEventListener('change', function() {
         if (this.value === 'MONOCHROME') {
             document.getElementById("wiresColor").style.display = 'flex';
         } else {
             document.getElementById("wiresColor").style.display = 'none';
+            wiresColorInput.value = '#000000';
+            wiresColorInput.jscolor.fromString(wiresColorInput.value);
         }
     });
 
@@ -73,7 +77,8 @@
     document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
     document.getElementById("wiresLength").value =  window.currentOpenPuzzleConfig?.wiresLength || 5;
     document.getElementById("wiresType").value =  window.currentOpenPuzzleConfig?.wiresType || 'COLORED';
-    document.getElementById("wiresColorInput").value =  window.currentOpenPuzzleConfig?.wiresColor || 'black';
+    wiresColorInput.value =  window.currentOpenPuzzleConfig?.wiresColor || '#000000';
+    wiresColorInput.jscolor.fromString(wiresColorInput.value); //Update picker
     document.getElementById("sourcesType").value =  window.currentOpenPuzzleConfig?.sourcesType || 'NONE';
     document.getElementById("targetsType").value =  window.currentOpenPuzzleConfig?.targetsType || 'NONE';
 
