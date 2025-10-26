@@ -1351,20 +1351,33 @@
             "skin": "Apariencia",
             "skins": {
                 "Standard": "Estándar",
+                "Basic": "Básica",
                 "Retro": "Retro",
-                "Futuristic": "Futurista"
+                "Futuristic": "Futurista",
+                "Realistic": "Realista"
             },
             "actionAfterSolve": "Acción tras resolver",
+            "enabled": "Habilitado",
+            "disabled": "Deshabilitado",
+            "enabledF": "Habilitada",
+            "disabledF": "Deshabilitada",
             "showMessage": "Mostrar mensaje",
+            "playSound": "Reproducir sonido",
             "Message": "Mensaje",
             "MessagePlaceholder": "Mensaje a mostrar tras resolver el reto",
             "BackgroundURL": "Fondo",
             "BackgroundURLPlaceholder": "Puedes introducir la URL de cualquier imagen que tengas en tu catálogo de recursos",
+            "soundURL": "Sonido",
+            "soundURLPlaceholder": "Puedes introducir la URL de cualquier fichero de audio que tengas en tu catálogo de recursos",
             "Numbers": "Números",
             "Letters": "Letras",
+            "Color": "Color",
             "Colors": "Colores",
+            "Multicolor": "Multicolor",
+            "SingleColor": "Monocolor",
             "Symbols": "Símbolos",
             "SymbolsColored": "Símbolos de colores",
+            "Standard": "Estándar",
             "None": "Ninguno",
             "NoneF": "Ninguna",
             "warningPuzzleLink": "Este reto está actualmente vinculado con otro recurso."
@@ -1372,17 +1385,52 @@
         "Keypad": {
             "name": "Panel de botones",
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes introduzcan una secuencia determinada de números, letras, colores o símbolos mediante un panel de botones.",
-            "KeyType": "Tipo de botones"
+            "keyType": "Tipo de botones"
         },
-        "Wheel": {
+        "DecoderDisk": {
             "name": "Disco decodificador",
-            "description": "Este recurso permite crear un disco decodificador y vincularlo a un reto de la escape room y a la solución de dicho reto. El disco puede tener múltiples ruedas y cada rueda puede contener números, letras, colores o símbolos.",
+            "description": "Este recurso permite crear un disco decodificador con múltiples ruedas donde cada una de las ruedas puede contener números, letras, colores o símbolos. El disco puede ser vinculado a un reto de la escape room y a la solución de dicho reto.",
             "numberOfWheels": "Número de ruedas",
             "wheel": "Rueda",
             "wheelType": "Tipo de rueda",
             "wheelLength": "Número de elementos"
         },
-        "Codeeditor": {
+        "Safebox": {
+            "name": "Caja fuerte",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes abran una caja fuerte girando una rueda varias veces siguiendo una secuencia específica."
+        },
+        "Switches": {
+            "name": "Interruptores",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes activen una serie de interruptores determinados. Opcionalmente, a cada interruptor se le puede asociar un número, una letra, un símbolo o un color.",
+            "numberOfSwitches": "Número de interruptores",
+            "switchesType": "Elementos asociados"
+        },
+        "WireConnection": {
+            "name": "Conexión de cables",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes interconecten nodos origen y destino mediante cables de una manera determinada. Los cables pueden tener diferentes colores y, opcionalmente, a cada nodo (origen o destino) se le puede asociar un número, una letra o un símbolo.",
+            "numberOfWires": "Número de cables",
+            "wiresType": "Tipo de cables",
+            "sourceNodesType": "Tipo de nodos origen",
+            "destinationNodesType": "Tipo de nodos destino",
+            "wiresColor": "Color de los cables"
+        },
+        "SignalGenerator": {
+            "name": "Generador de señales",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes empleen un dispositivo para generar una señal eléctrica con una forma, frecuencia (F), amplitud (A) y fase (φ) determinadas.",
+            "waveformButton": "Botón de forma de onda"
+        },
+        "Chessboard": {
+            "name": "Tablero de ajedrez",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes realicen una determinada secuencia de movimientos de piezas de ajedrez.",
+            "initialSetup": "Posición inicial",
+            "initialSetup_CLASSIC": "Clásico",
+            "initialSetup_EMPTY_BOARD": "Tablero vacío",
+            "initialSetup_QUEEN_GAMBIT": "Gambito de dama",
+            "initialSetup_SPANISH_OPENING": "Apertura española",
+            "initialSetup_ITALIAN_OPENING": "Apertura italiana",
+            "automaticReset": "Reinicio automático"
+        },
+        "CodeEditor": {
             "name": "Editor HTML/CSS/JS",
             "skins": {
                 "auto" :  "Auto",

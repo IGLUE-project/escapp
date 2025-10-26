@@ -1,0 +1,46 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelect" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
+    </select>
+</div>
+
+<div>
+    <label for="nSwitches"><%=i18n.reusablePuzzleApps.Switches.numberOfSwitches%>:</label>
+    <select name="nSwitches" id="nSwitches">
+        <% for (let i = 1; i <= 14; i++) { %>
+            <option value="<%= i %>"><%= i %></option>
+        <% } %>
+    </select>
+</div>
+
+<div>
+    <label for=""><%=i18n.reusablePuzzleApps.Switches.switchesType%>:</label>
+    <select name="switchType" id="switchType">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.None%></option>
+        <option value="NUMBERS"><%=i18n.reusablePuzzleApps.Common.Numbers%></option>
+        <option value="LETTERS"><%=i18n.reusablePuzzleApps.Common.Letters%></option>
+        <option value="SHAPES"><%=i18n.reusablePuzzleApps.Common.Symbols%></option>
+        <option value="COLORS"><%=i18n.reusablePuzzleApps.Common.Colors%></option>
+    </select>
+</div>
+
+<div>
+    <label for="background"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<script>
+    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
+    document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById("nSwitches").value =  window.currentOpenPuzzleConfig?.nSwitches || 6;
+    document.getElementById("switchType").value =  window.currentOpenPuzzleConfig?.switchType || 'NONE';
+</script>
