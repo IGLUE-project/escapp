@@ -287,9 +287,7 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
                 if (!waiting) {
                     escapeRoom.puzzles = await getERPuzzles(escapeRoomId);
                 }
-                const erState = waiting ? {} : await getERState(user, escapeRoomId, team, turnId, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
-                console.log("{erState}")
-                console.log({erState: erState.ranking})
+                const erState = waiting ? {} : await getERState(user, escapeRoomId, team, turnId || turnIdFound, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
                 // If (participation === "PARTICIPANT") {
                 //     Await automaticallySetAttendance(team, user.id, escapeRoom.automaticAttendance);
                 // }
