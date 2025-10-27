@@ -45,6 +45,7 @@ exports.saveInterface = async (name, req, res, next) => {
 
 
 exports.playInterface = async (name, req, res, next) => {
+    const {i18n} = res.locals;
     const isAdmin = Boolean(req.session.user.isAdmin),
         isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
@@ -108,8 +109,18 @@ exports.playInterface = async (name, req, res, next) => {
             });
 
             const team = teams && teams[0] ? teams[0] : {};
-
-            if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
+            const tooLate = exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) ;
+            const alreadyFinished = team.retos.length === req.escapeRoom.puzzles.length
+            if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || tooLate || alreadyFinished) {
+                if (!team.startTime) {
+                    req.flash("error", i18n.team.notStarted);
+                } else if (!(team.turno.status === "active" || team.turno.status === "test")) {
+                    req.flash("error", i18n.turno.notActive);           
+                } else if (tooLate) {
+                    req.flash("error", i18n.team.tooLate);       
+                } else if (alreadyFinished) {
+                    req.flash("error", i18n.team.alreadyFinished);       
+                }
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
                 return;
             }
@@ -188,7 +199,7 @@ exports.getERPuzzlesAndHints = (escapeRoomId) => models.puzzle.findAll({
     ]
 });
 
-exports.getERState = async (user, escapeRoomId, team, duration, hintLimit, nPuzzles, attendance, attendanceScore, scoreHintSuccess, scoreHintFail, includeRanking = false) => {
+exports.getERState = async (user, escapeRoomId, team, turnId, duration, hintLimit, nPuzzles, attendance, attendanceScore, scoreHintSuccess, scoreHintFail, includeRanking = false) => {
     const {puzzlesSolved, puzzleData} = await getPuzzleOrderSuperados(team);
     const teamMembers = team.teamMembers.map((member) => member.alias);
     const participantTeamIndex = team.teamMembers.findIndex((member) => member.username === user.username);
@@ -196,7 +207,7 @@ exports.getERState = async (user, escapeRoomId, team, duration, hintLimit, nPuzz
     const {hintsAllowed, successHints, failHints} = await exports.areHintsAllowedForTeam(team.id, hintLimit);
     const progress = exports.getProgress(puzzlesSolved, nPuzzles);
     const score = exports.getScore(puzzlesSolved, puzzleData, successHints, failHints, attendance, attendanceScore, scoreHintSuccess, scoreHintFail);
-    const ranking = includeRanking ? await exports.getRanking(escapeRoomId, team.turno.id, true) : undefined;
+    const ranking = includeRanking ? await exports.getRanking(escapeRoomId, turnId, true) : undefined;
     const startTime = team.turno.startTime || team.startTime;
     const timeLeft = duration * 60 - Math.round((new Date() - startTime) / 1000);
     const remainingTime = !timeLeft || timeLeft < 0 ? 0 : timeLeft;
@@ -206,16 +217,17 @@ exports.getERState = async (user, escapeRoomId, team, duration, hintLimit, nPuzz
 };
 
 exports.getRanking = async (escapeRoomId, turnoId, anonymized = false) => {
+    
     const teamsRaw = await models.team.findAll(queries.team.rankingShort(escapeRoomId, turnoId));
     const nPuzzles = await models.puzzle.count({"where": { escapeRoomId }});
     const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {"user": { "anonymous": "Anonymous"}}).sort(byRanking);
     const newRanking = [];
-
+   
     for (const i in ranking) {
         const team = {
             "id": ranking[i].id,
-            "name": anonymized && anonymized != ranking[i].id ? "" : ranking[i].name,
-            "participants": anonymized && anonymized != ranking[i].id ? "" : ranking[i].teamMembers.map((member) => member.alias).join(", "),
+            "name": ranking[i].name,
+            "participants": ranking[i].participants,
             "result": ranking[i].result,
             "count": ranking[i].count,
             "latestRetoSuperado": ranking[i].latestRetoSuperado,
@@ -247,14 +259,11 @@ exports.getScore = (puzzlesSolved, puzzleData, successHints, failHints, attendan
 exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     let participation = PARTICIPANT;
     const privileged = user.isAdmin || escapeRoom.authorId === user.id || (escapeRoom.userCoAuthor || []).some((e) => e.id === user.id);
-
-    if (!preview && privileged) {
-        participation = AUTHOR;
-    } else if (preview && privileged) {
+     if (preview && privileged) {
         participation = PARTICIPANT;
     } else if (teams && teams.length > 0) {
         const [team] = teams;
-
+        
         if (team.turno.status === "pending") {
             participation = NOT_ACTIVE;
         } else if (!team.startTime) {
@@ -264,7 +273,9 @@ exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
         } else {
             participation = PARTICIPANT;
         }
-    } else {
+    } else if (!preview && privileged) {
+        participation = AUTHOR;
+    } else{
         participation = NOT_A_PARTICIPANT;
     }
     return participation;
@@ -350,7 +361,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
         if (participation !== AUTHOR && (teams && teams.length)) {
             const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
 
-            erState = await exports.getERState(user, escapeRoom.id, teams[0], escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed);
+            erState = await exports.getERState(user, escapeRoom.id, teams[0], teams[0].turno.id, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed);
         }
     } catch (e) {
         console.error(e);
@@ -511,15 +522,16 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     const when = val["puzzlesSolved.createdAt"];
     const userId = val["puzzlesSolved.user.id"];
     const username = val["puzzlesSolved.user.username"];
+    const alias = val["puzzlesSolved.user.alias"];
     const answer = val["puzzlesSolved.answer"];
     const order = useIdInsteadOfOrder ? val["puzzlesSolved.puzzle.id"] : val["puzzlesSolved.puzzle.order"];
 
     if (!acc[id]) {
-        acc[id] = {[order]: [{success, when, answer, userId, username}] };
+        acc[id] = {[order]: [{success, when, answer, userId, username, alias}] };
     } else if (!acc[id][order]) {
-        acc[id][order] = [{success, when, answer, userId, username}];
+        acc[id][order] = [{success, when, answer, userId, username, alias}];
     } else {
-        acc[id][order].push({success, when, answer, userId, username});
+        acc[id][order].push({success, when, answer, userId, username, alias});
     }
     return acc;
 }, {});

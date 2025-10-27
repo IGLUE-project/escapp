@@ -44,7 +44,7 @@ exports.createServer = (server, sessionMiddleware) => {
                     return;
                 }
                 const {code, msg} = getAuthMessageAndCode(participation, i18n);
-
+                console.log({code,msg, teacherTurnId, studentTurnId, preview})
                 const response = {code, "authentication": true, token, participation, msg, erState};
                 const turnId = teacherTurnId || studentTurnId;
 

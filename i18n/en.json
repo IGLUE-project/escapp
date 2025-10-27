@@ -913,7 +913,8 @@
         "wrongToken": "Wrong password to access the escape room",
         "connected": "Connected",
         "waiting": "Waiting",
-        "disconnected": "Disconnected"
+        "disconnected": "Disconnected",
+        "participants": "participant(s)"
     },
     "collaborators": {
         "Collaborators": "Collaborators",
@@ -1082,7 +1083,10 @@
         "title": "Teams",
         "turnNotAvailable": "The selected shift is not available",
         "message": "Send a message",
-        "email": "Contact via email"
+        "email": "Contact via email",
+        "notStarted" : "The escape room has not started yet for you",
+        "tooLate": "It is too late to play this escape room",
+        "alreadyFinished" : "You have already finished this escape room"
     },
     "turno": {
         "Actions": "Actions",
@@ -1092,6 +1096,7 @@
         "always": "always",
         "tooLate": "It is too late to join this team",
         "alwaysOpen": "Always open",
+        "notActive": "This escape room is not active right now",
         "participants": "Participants",
         "arrows": {
         	"closeText": "Close",

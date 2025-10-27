@@ -156,7 +156,6 @@ const onJoin = ({ranking}) => {
 const onPuzzleResponse = async (RESPONSE) => {
   var  {code, correctAnswer, solution, "puzzleOrder": puzzleOrderPlus, participation, authentication, erState, msg, participantMessage, content, teamInstructions } = RESPONSE;
   
-  console.log("Puzzle response received:", RESPONSE);
   const feedback = (msg || "") + (participantMessage && participation !== "PARTICIPANT" ? `. ${participantMessage}`: "");
   const puzzleOrder = puzzleOrderPlus - 1;
   if (code === "OK") {
@@ -812,6 +811,7 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket = io('/', {query});
   myTeamId = teamId;
   myUsername = username;
+
   /*Connect*/
   socket.on("connect", onConnect);
 

@@ -906,7 +906,8 @@
         "wrongToken": "Contraseña de acceso a la escape room incorrecta",
         "connected": "Conectado",
         "waiting": "En espera",
-        "disconnected": "Desonectado"
+        "disconnected": "Desonectado",
+        "participants" : "participante(s)"
     },
     "collaborators": {
         "Collaborators": "Colaboradores",
@@ -1075,7 +1076,10 @@
         "title": "Equipos",
         "turnNotAvailable": "El turno seleccionado no está disponible",
         "message": "Envía un mensaje",
-        "email": "Contacta por e-mail"
+        "email": "Contacta por e-mail",
+        "notStarted" : "La escape room aún no ha empezado para ti",
+        "tooLate": "Es demasiado tarde para jugar a esta escape room",
+        "alreadyFinished" : "Ya has terminado esta escape room"
     },
     "turno": {
         "Actions": "Acciones",
@@ -1085,6 +1089,7 @@
         "tooLate": "Es demasiado tarde para unirte a este equipo",
         "always": "siempre",
         "alwaysOpen": "Siempre abierto",
+        "notActive": "Esta escape room no esta abierta",
         "participants": "Participantes",
         "arrows": {
         	"closeText": "Cerrar",

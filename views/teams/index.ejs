@@ -41,7 +41,7 @@
                             <%for (var m in team.teamMembers) {%>
                                 <%nParticipants++;%>
                             <%}%>
-                            <p><%=nParticipants%> participants</p>
+                            <p><%=team.teamMembers.length%> <%=i18n.participant.participants%></p>
                         </div>
                     <% } %>
                 </div>
