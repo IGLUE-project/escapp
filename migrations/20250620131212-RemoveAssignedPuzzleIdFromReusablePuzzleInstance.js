@@ -9,10 +9,10 @@ module.exports = {
       const [rows] = await queryInterface.sequelize.query(
         `
           SELECT id AS "puzzleId",
-                 assignedReusablePuzzleInstance AS "val"
+                 "assignedReusablePuzzleInstance" AS "val"
           FROM puzzles
-          WHERE assignedReusablePuzzleInstance IS NOT NULL
-            AND TRIM(assignedReusablePuzzleInstance) <> ''
+          WHERE "assignedReusablePuzzleInstance" IS NOT NULL
+            AND TRIM("assignedReusablePuzzleInstance") <> ''
         `,
         { transaction }
       );
@@ -73,7 +73,7 @@ module.exports = {
       const [rows] = await queryInterface.sequelize.query(
         `
           SELECT puzzleId,
-                 MIN(reusablePuzzleInstanceId) AS "rid"
+                 MIN("reusablePuzzleInstanceId") AS "rid"
           FROM "reusablePuzzleInstancePuzzle"
           GROUP BY puzzleId
         `,
@@ -84,7 +84,7 @@ module.exports = {
         await queryInterface.sequelize.query(
           `
             UPDATE puzzles
-            SET assignedReusablePuzzleInstance = :rid
+            SET "assignedReusablePuzzleInstance" = :rid
             WHERE id = :puzzleId
           `,
           { replacements: { rid: String(rid), puzzleId }, transaction }
