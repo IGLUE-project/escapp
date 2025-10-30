@@ -34,10 +34,15 @@
         <label for="hybrid"  class="itemNarrow"><%=i18n.escapeRoom.steps.indications.hybridInstructions%></label>
         <p class="explanation" style="padding-left: 0px;"><%=i18n.escapeRoom.steps.indications.hybridInstructionsNote%></p>
         <input class="attach" type="file" id="hybrid" name="hybrid"/>
-        <label for="hybrid" style="margin-left: 0px;padding-left: 0px;" class="fileUpload customInput itemWide">
+        <label for="hybrid" style="margin-left: 0px;padding-left: 0px;display:flex;align-items:baseline;" class="fileUpload customInput itemWide">
           <span id="imgLabel" class="fileTitle">
             <% if (escapeRoom.id && escapeRoom.hybridInstructions) { %>
-              <%=escapeRoom.hybridInstructions || "Default" %>
+              <a href="/uploads/hybrid/<%=escapeRoom.hybridInstructions%>" target="_blank">
+
+              <button class="rounded" type="button"><%=i18n.common.download%> 
+                <span class="material-icons" style="color: #F40F02;">file_download</span>
+              </button>
+              </a>
             <% } else { %>
               <%=i18n.escapeRoom.steps.edit.noFileUploaded%>
             <% } %>
@@ -54,7 +59,7 @@
               style="display: none;"
             <% } %>
             class="fileUploadButton">
-              <span class="material-icons">delete</span>
+              		 <span class="material-icons">delete</span>
             </span>
             <input type="text" class="inputFormField erFormField" style="opacity:0;" aria-label="Force focus"/>
             <input type="hidden" name="keepHybridInstructions" id="keepHybridInstructions" value="<%= (escapeRoom.hybridInstructions) ? "1" : "0" %>" >

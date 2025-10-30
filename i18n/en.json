@@ -358,7 +358,7 @@
         "format":{
             "online": "Virtual",
             "hybrid": "Hybrid (some physical resources are needed)",
-            "provideLater": "You can provide the necessar resources at the 'Pre-activity instructions' step"
+            "provideLater": "You can provide the necessary resources at the 'Pre-activity instructions' step"
         },
         "fields": {
             "00":"Generic programmes and qualifications",

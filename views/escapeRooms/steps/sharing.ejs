@@ -26,10 +26,14 @@
             <label for="instructionsTitle"  class="itemNarrow">2. <%=i18n.escapeRoom.steps.sharing.instructions%></label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.publication%></p>
             <input class="attach" type="file" id="instructions" name="instructions"/>
-            <label for="instructions" class="fileUpload customInput itemWide">
+            <label for="instructions" class="fileUpload customInput itemWide" style="display: flex; align-items: baseline;">
               <span id="imgLabel" class="fileTitle">
                 <% if (escapeRoom.id && escapeRoom.instructions) { %>
-                  <%=escapeRoom.instructions || "Default" %>
+                  <a href="/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
+                    <button class="rounded" type="button"><%=i18n.common.download%> 
+                        <span class="material-icons" style="color: #F40F02;">file_download</span>
+                    </button>
+                    </a>
                 <% } else { %>
                   <%=i18n.escapeRoom.steps.edit.noFileUploaded%>
                 <% } %>
