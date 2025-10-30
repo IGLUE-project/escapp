@@ -363,7 +363,9 @@
         },
         "format":{
             "online": "Virtual",
-            "hybrid": "Híbrido (se necesitan algunos recursos físicos)"
+            "hybrid": "Híbrido (se necesitan algunos recursos físicos)",
+            "provideLater": "Puedes proporcionar los recursos necesarios en el paso de 'Instrucciones previas'"
+
         },
         "fields": {
             "00":"Programas y cualificaciones genéricos",
@@ -494,6 +496,8 @@
                 "explanation": "En este apartado puedes personalizar las instrucciones que los participantes recibirán antes de que comience la escape room desde el momento en el que se apunten. Por ejemplo, puedes recordarles que traigan algún material, indicarles que repasen parte del contenido de la asignatura o proporcionarles un vídeo.",
                 "placeholder": "Añade instrucciones previas personalizadas",
                 "title": "Instrucciones previas",
+                "hybridInstructions": "Recursos físicos",
+                "hybridInstructionsNote": "Has indicado que la escape room es híbrida. Si es necesario, proporciona a los participantes los recursos físicos que necesitarán para completar la actividad.",
                 "front": {
                     "countdown": "Cuenta atrás",
                     "ranking": "Ranking",
@@ -950,6 +954,7 @@
         "access": "acceder",
         "beforeLeave": "Antes de irte rellena el siguiente cuestionario",
         "beforeStart": "Antes de empezar rellena el siguiente cuestionario",
+        "hybridInstructions": "Recursos físicos necesarios",
         "opinion": "¡Tu opinión cuenta! Dinos lo que piensas de la escape room",
         "play": "comenzar",
         "results": "resultados",
@@ -1487,6 +1492,6 @@
         }
     },
     "general": {
-        "unespecified": "No especificado"
+        "unspecified": "No especificado"
     }
 }

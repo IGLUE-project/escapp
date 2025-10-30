@@ -16,7 +16,7 @@ const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
 const managementController = require("../controllers/management_controller");
-const { instructions, thumbnails, hints, upload } = require("../controllers/multer_controller");
+const { instructions, thumbnails, hints, upload, hybridInstructions } = require("../controllers/multer_controller");
 
 
 router.all("*", sessionController.deleteExpiredUserSession);
@@ -113,7 +113,7 @@ router.post("/escapeRooms/:escapeRoomId(\\d+)/deleteAssets/:assetId(\\d+)", sess
 router.get("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluation);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluationUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.indicationsInterface);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.indicationsInterfaceUpdate);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hybridInstructions.single("hybrid"), escapeRoomController.indicationsInterfaceUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/after", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.afterInterface);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/after", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.afterInterfaceUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/sharing", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.sharing);
@@ -220,7 +220,7 @@ router.get("/reusablePuzzlePreview/:reusablePuzzleId", reusablePuzzleController.
 router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
 router.get("/uploads/thumbnails/:file_name", sessionController.loginRequired, assetsController.returnThumbnail);
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
-
+router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
 
 module.exports = router;

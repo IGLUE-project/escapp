@@ -24,10 +24,43 @@
     <%- include ("../../partials/_resource_catalog", {theme, endPoint, escapeRoom}) %>
     </div>
     <br/>
-    <form style="width:100%" method='POST' id="instructionsForm" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  >
+    <form style="width:100%" method='POST' id="instructionsForm" class="basicConfig" action='/escapeRooms/<%= escapeRoom.id %>/<%=endPoint%>'  <%if (endPoint === "indications" && escapeRoom.format === "hybrid"){%> enctype="multipart/form-data"  <%}%> >
+        
       <input type="hidden" id="appearance" name="appearance" value="<%=theme%>" />
       <div id="custom-content">
       </div>
+      <%if (endPoint === "indications" && escapeRoom.format === "hybrid"){%>
+      <div class="inputFormField erFormField" style="padding-left: 0px;">
+        <label for="hybrid"  class="itemNarrow"><%=i18n.escapeRoom.steps.indications.hybridInstructions%></label>
+        <p class="explanation" style="padding-left: 0px;"><%=i18n.escapeRoom.steps.indications.hybridInstructionsNote%></p>
+        <input class="attach" type="file" id="hybrid" name="hybrid"/>
+        <label for="hybrid" style="margin-left: 0px;padding-left: 0px;" class="fileUpload customInput itemWide">
+          <span id="imgLabel" class="fileTitle">
+            <% if (escapeRoom.id && escapeRoom.hybridInstructions) { %>
+              <%=escapeRoom.hybridInstructions || "Default" %>
+            <% } else { %>
+              <%=i18n.escapeRoom.steps.edit.noFileUploaded%>
+            <% } %>
+          </span>
+          <span id="upload"
+            <% if (escapeRoom.hybridInstructions) { %>
+              style="display: none;"
+            <% } %>
+            class="fileUploadButton">
+              <span class="material-icons">file_upload</span>
+          </span>
+          <span id="delete"
+            <% if (!escapeRoom.hybridInstructions) { %>
+              style="display: none;"
+            <% } %>
+            class="fileUploadButton">
+              <span class="material-icons">delete</span>
+            </span>
+            <input type="text" class="inputFormField erFormField" style="opacity:0;" aria-label="Force focus"/>
+            <input type="hidden" name="keepHybridInstructions" id="keepHybridInstructions" value="<%= (escapeRoom.hybridInstructions) ? "1" : "0" %>" >
+        </label>
+      </div>
+      <%}%>
     <br/>
       <div class="align-right flex-buttons buttons_before_progressbar">
           <button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
@@ -75,6 +108,7 @@ window.reusablePuzzleInstances = <%- JSON.stringify(reusablePuzzlesInstances || 
 window.reusablePuzzles = <%- JSON.stringify(availableReusablePuzzles || [])%>
 window.assets = <%- JSON.stringify(assets || [])%>
 </script>
+
   <div id="dialog-themes" title="<%=i18n.escapeRoom.steps.indications.front.theme%>" style="display: none;">
     <div class="theme-list">
       <%var themes = ["litera", "cerulean", "journal", "sketchy", "darkly", "cyborg", "cosmo", "flatly", "lumen", "lux", "materia", "minty", "pulse", "sandstone", "simplex", "slate", "solar", "spacelab", "united", "yeti", "superhero"];%>
@@ -124,6 +158,34 @@ $(document).ready(function() {
         queryTargetTab.addClass('active');
         queryTargetTab.addClass('show');
     });
+<%if (endPoint == "indications" && escapeRoom.format === "hybrid"){%>
+$(function(){
+    $('#hybrid').on("change", function(e){
+      let path = $(this).val();
+      try {
+        let fileNameArr = path.split("\\");
+        let fileName = fileNameArr[fileNameArr.length - 1];
+        if(fileName) {
+          $('#delete').show();
+          $('#upload').hide();
+          $('#imgLabel').html(fileName);
+        }
+      } catch (e) {
+          $('#delete').hide();
+          $('#upload').show();
+          $('#imgLabel').html("<%=i18n.escapeRoom.steps.edit.noImageUploaded%>");
+      }
+    });
+
+    $('#delete').on('click', function(e){
+        e.preventDefault();
+        $('#delete').hide();
+        $('#upload').show();
+        $('#imgLabel').html("<%=i18n.escapeRoom.steps.edit.noImageUploaded%>");
+        $('#keepHybridInstructions').val("0");
+    })
+  })
+<%}%>
 });
 </script>
 <style>

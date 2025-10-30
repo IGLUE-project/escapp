@@ -29,8 +29,30 @@ exports.saveInterface = async (name, req, res, next) => {
 
     escapeRoom[`${name}Instructions`] = body.instructions;
     escapeRoom[`${name}Appearance`] = body.appearance;
+    let fields =  [`${name}Instructions`, `${name}Appearance`]
+    if(name === "indications") {
+        const hybridInstructionsFile = req.file;
+
+        if (hybridInstructionsFile && hybridInstructionsFile.filename) {
+            try {
+                fs.unlinkSync(path.join(__dirname, "/../uploads/hybrid/", escapeRoom.hybridInstructions));
+            } catch (e) {
+                console.error("Error deleting old resources file:", e);
+            }
+            escapeRoom.hybridInstructions = hybridInstructionsFile.filename;
+        } else if (body.keepHybridInstructions === "0") {
+            try {
+                fs.unlinkSync(path.join(__dirname, "/../uploads/hybrid/", escapeRoom.hybridInstructions));
+            } catch (e) {
+                console.error("Error deleting old resources file:", e);
+            }
+            escapeRoom.hybridInstructions = null;
+        }
+        fields.push("hybridInstructions");
+
+    }
     try {
-        await escapeRoom.save({"fields": [`${name}Instructions`, `${name}Appearance`]});
+        await escapeRoom.save({"fields": fields});
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep(name) : progressBar || nextStep(name)}`);
     } catch (error) {
         if (error instanceof Sequelize.ValidationError) {
@@ -330,7 +352,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
         const participationCode = await exports.checkTurnoAccess(teams, user, escapeRoom, preview);
 
         participation = participationCode;
-        alreadySolved = Boolean(await models.retosSuperados.findOne({"where": {"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true}}, {transaction}));
+        alreadySolved = preview || Boolean(await models.retosSuperados.findOne({"where": {"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true}}, {transaction}));
         if (participation === PARTICIPANT) {
             try {
                 if (correctAnswer) {

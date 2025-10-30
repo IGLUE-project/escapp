@@ -1070,6 +1070,8 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: white;
   border: none;
   padding: 0px;
+  line-height: 3.3;
+  vertical-align: top;
 }
 #mainSection .main .basicConfig .erFormField .customInput #imgLabel, #mainSection .main .basicConfig .erFormField .customInput #hintsLabel, #mainSection .main .basicConfig .erFormField .customInput .fileTitle {
   font-size: 1em;

@@ -70,17 +70,7 @@ exports.uploadAssets = async (req, res) => {
     const { escapeRoom } = req;
     const { i18n } = res.locals;
     const userId = req.session.user && req.session.user.id;
-
-    /*
-    Try {
-        // await attHelper.checksCloudinaryEnv();
-        // Save the new asset into Cloudinary:
-        //UploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
-    } catch (err) {
-        res.status(500);
-        res.send(err);
-    }
-    */
+    
     try {
         const mime = req.file.mimetype;
         const isSupported = supportedMimeTypes.some((m) => new RegExp(m).test(mime));
@@ -439,3 +429,11 @@ exports.returnInstructions = (req, res) => {
 
     res.sendFile(path.join(__dirname, `../uploads/instructions/${file_name}`));
 };
+
+exports.returnHybridInstructions = (req, res) => {
+    const {file_name} = req.params;
+
+    res.sendFile(path.join(__dirname, `../uploads/hybrid/${file_name}`));
+};
+
+ 

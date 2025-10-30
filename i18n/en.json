@@ -357,7 +357,8 @@
         },
         "format":{
             "online": "Virtual",
-            "hybrid": "Hybrid (some physical resources are needed)"
+            "hybrid": "Hybrid (some physical resources are needed)",
+            "provideLater": "You can provide the necessar resources at the 'Pre-activity instructions' step"
         },
         "fields": {
             "00":"Generic programmes and qualifications",
@@ -501,6 +502,8 @@
                 "explanation": "Here you can customize the information participants will see prior to the start of the escape room since the moment the sign up. For instance, you can remind them to bring certain material, tell them to review the course content, or provide them a video to watch.",
                 "placeholder": "Add custom instructions",
                 "title": "Pre-activity instructions",
+                "hybridInstructions": "Physical resources",
+                "hybridInstructionsNote": "You have indicated that the escape room is hybrid, please upload here any additional resources that participants will need to complete the activity.",
                 "front": {
                     "countdown": "Countdown",
                     "ranking": "Leaderboard",
@@ -959,6 +962,7 @@
         "beforeLeave": "Before you leave, fill in the following questionnaire",
         "beforeStart": "Before you start, fill in the following questionnaire",
         "opinion": "Your opinion matters to us! Please tell us what do you think about it",
+        "hybridInstructions": "Physical resources needed beforehand",
         "play": "play",
         "results": "results",
         "Results": "Results",
@@ -1494,6 +1498,6 @@
         }
     },
     "general": {
-        "unespecified": "Unespecified"
+        "unspecified": "Unspecified"
     }
 }

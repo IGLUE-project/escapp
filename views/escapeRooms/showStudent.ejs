@@ -45,6 +45,16 @@
 				<h2><%=i18n.showStudent.supportLink%></h2>
 				<p><a target="_blank" href="<%=escapeRoom.supportLink%>"><%=escapeRoom.supportLink%></a></p>
 			<% } %>
+			<% if (escapeRoom.hybridInstructions) { %>
+				<h2><%=i18n.showStudent.hybridInstructions%></h2>
+				<p>
+					<a href="/uploads/hybrid/<%=escapeRoom.hybridInstructions%>" target="_blank">
+						<button class="rounded"><%=i18n.common.download%> 
+							<span class="material-icons" style="color: #F40F02;">folder</span>
+						</button>
+					</a>
+				</p>
+			<% } %>
 		</div>
 	</div>
 	<div class="animated fadeIn">
@@ -70,6 +80,7 @@
 			</div>
 		</div>
 		<div class="status animated fadeIn">
+
 			<% if (turno.status === "pending") { %>
 				<span id ="start">
 					<button class="rounded disabled" disabled id ><%=i18n.showStudent.play%>%></button>

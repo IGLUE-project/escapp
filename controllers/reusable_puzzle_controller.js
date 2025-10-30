@@ -106,7 +106,6 @@ exports.createReusablePuzzle = async (req, res, next) => {
             throw new Error("No file uploaded");
         }
 
-
         const zipPath = path.join(__dirname, "/../", req.files.file[0].path);
         let hasForm = false;
 

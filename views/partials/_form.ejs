@@ -58,7 +58,7 @@
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
   <label for="field" class="itemNarrow">3. <%=i18n.escapeRoom.steps.sharing.field%>:</label>
   <select class="customInput itemWide" id="field" name="field" autocomplete="off">
-    <option value="" <%= !escapeRoom.field ? "selected" : "" %>><%= i18n.general.unespecified %></option>
+    <option value="" <%= !escapeRoom.field ? "selected" : "" %>><%= i18n.general.unspecified %></option>
     <% for (let i = 0; i <= 10; i++) {
       const value = i.toString().padStart(2, "0"); %>
       <option value="<%= value %>" <%= escapeRoom.field == value ? "selected" : "" %>>
@@ -70,7 +70,7 @@
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
   <label for="level" class="itemNarrow">4. <%=i18n.escapeRoom.steps.sharing.level%>:</label>
   <select class="customInput itemWide" id="level" name="level" autocomplete="off">
-    <option value="" <%=!escapeRoom.level ? "selected" : "" %>><%=i18n.general.unespecified%></option>
+    <option value="" <%=!escapeRoom.level ? "selected" : "" %>><%=i18n.general.unspecified%></option>
     <option value="higher" <%=escapeRoom.level == "higher" ? "selected" : "" %>><%=i18n.user.eduLevel["higher"]%></option>
     <option value="secondary" <%=escapeRoom.level == "secondary" ? "selected" : "" %>><%=i18n.user.eduLevel["secondary"]%></option>
     <option value="primary" <%=escapeRoom.level == "primary" ? "selected" : "" %>><%=i18n.user.eduLevel["primary"]%></option>
@@ -81,10 +81,23 @@
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">
   <label for="format"> 5. <%=i18n.escapeRoom.steps.sharing.format%>:</label>
   <select class="customInput itemWide" id="format" name="format" autocomplete="off">
-    <option value="none" <%=!escapeRoom.format  || (escapeRoom.format == "none")? "selected" : "" %>><%=i18n.general.unespecified%></option>
+    <option value="none" <%=!escapeRoom.format  || (escapeRoom.format == "none")? "selected" : "" %>><%=i18n.general.unspecified%></option>
     <option value="online" <%=escapeRoom.format == "online" ? "selected" : "" %>><%=i18n.escapeRoom.format["online"]%></option>
     <option value="hybrid" <%=escapeRoom.format == "hybrid" ? "selected" : "" %>><%=i18n.escapeRoom.format["hybrid"]%></option>
   </select>
+  <div class="note-up" style="padding-top:10px;padding-left: 30px;display:<%=escapeRoom.format === 'hybrid' ? 'block':'none'%>"><%=i18n.escapeRoom.format.provideLater%></div>
+  <script type="text/javascript">
+    $(function(){
+      $('#format').on("change", function(e){
+        let format = $(this).val();
+        if(format == "hybrid"){
+          $('.note-up').show();
+        }else{
+          $('.note-up').hide();
+        }
+      });
+    });
+  </script>
 </div>
  <div class="inputFormField erFormField animated slideInUp description" style="animation-delay: <%=200*(formFields.length+3)%>ms;">
         <label for="custom-content"  class="itemNarrow">6. <%=i18n.showTeacher.titles["description"]%>:</label><br/>
