@@ -186,6 +186,7 @@ exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) =>
         if (req.participant) {
             next();
         } else if (req.escapeRoom.status === "completed") {
+            req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
             res.render("escapeRooms/preview", {"escapeRoom": req.escapeRoom, "user": req.session.user});
         } else {
             res.status(404);

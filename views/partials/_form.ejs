@@ -7,15 +7,6 @@
          maxlength: 200,
          value: escapeRoom.title,
          required: true
-     },
-     {
-         name: "subject",
-         id: "subj",
-         i18n: "subject",
-         maxlength: 200,
-         value: escapeRoom.subject,
-         required: true
-
      }]
 %>
 <% let formFields2 = [
@@ -56,6 +47,12 @@
     </div>
 
 <%}%>
+  <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 200ms;">
+      <label for="subj"  class="itemNarrow">2. <%=i18n.showTeacher.titles["subject"]%>:</label>
+      
+      <input  type="text" 
+       class="customInput itemWide" id="subj" name="subject" value="<%=(escapeRoom.subject || []).map(e=>e.subject).join(',')%>" maxlength="200" autocomplete="off"/>
+  </div>
 
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
   <label for="field" class="itemNarrow">3. <%=i18n.escapeRoom.steps.sharing.field%>:</label>
@@ -81,7 +78,7 @@
   </select>
 </div>
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">
-  <label for="format"> <%=formFields.length+2%>. <%=i18n.escapeRoom.steps.sharing.format%>:</label>
+  <label for="format"> 5. <%=i18n.escapeRoom.steps.sharing.format%>:</label>
   <select class="customInput itemWide" id="format" name="format" autocomplete="off">
     <option value="none" <%=!escapeRoom.format  || (escapeRoom.format == "none")? "selected" : "" %>><%=i18n.general.unespecified%></option>
     <option value="online" <%=escapeRoom.format == "online" ? "selected" : "" %>><%=i18n.escapeRoom.format["online"]%></option>
@@ -89,7 +86,7 @@
   </select>
 </div>
  <div class="inputFormField erFormField animated slideInUp description" style="animation-delay: <%=200*(formFields.length+3)%>ms;">
-        <label for="custom-content"  class="itemNarrow"><%=formFields.length+3%>. <%=i18n.showTeacher.titles["description"]%>:</label><br/>
+        <label for="custom-content"  class="itemNarrow">6. <%=i18n.showTeacher.titles["description"]%>:</label><br/>
         <div id="custom-content" class="editor-wrapper purple-ckeditor-small">
           <%-escapeRoom.description%>
         </div>
@@ -223,10 +220,179 @@ $(function(){
       return true;
   });
 })
+// /assets/js/tags.js
+// Enhances #subj into a chip-based tag input with remote autocomplete and CSV submission.
+
+$(function(){
+  'use strict';
+
+  function onReady(fn) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else {
+      fn();
+    }
+  }
+
+  onReady(function () {
+    var $visible = $('#subj'); // exact ID from your label/field
+    if ($visible.length === 0) return;
+
+    // Keep label binding intact by leaving id="subj" as-is.
+    var originalName = $visible.attr('name'); // "subject"
+
+    // Initialize from any server-rendered CSV in value=""
+    var initial = String($visible.val() || '')
+      .split(',')
+      .map(function (s) { return s.trim(); })
+      .filter(Boolean);
+
+    $visible.val("")
+      
+    // Move the name to a hidden input; the visible field should not submit raw text.
+    $visible.removeAttr('name');
+
+    var $hidden = $('<input>', {
+      type: 'hidden',
+      id: originalName + '_hidden',
+      name: originalName,
+      value: initial.join(',')
+    });
+
+    // Wrap the input in a chips container and inject the hidden field
+    var $box = $('<div class="tags-box"></div>');
+    $visible.wrap($box);
+    $visible.after($hidden);
+
+    // Internal state and helpers
+    var tags = [];
+    var norm = function (s) { return s.trim().replace(/\s+/g, ' '); };
+    var containsCI = function (arr, item) {
+      var lower = item.toLowerCase();
+      for (var i = 0; i < arr.length; i++) if (arr[i].toLowerCase() === lower) return true;
+      return false;
+    };
+
+    function updateHidden() { $hidden.val(tags.join(',')); }
+
+    function makeChip(text) {
+      var safe = $('<div>').text(text).html();
+      var $chip = $(
+        '<span class="tag-chip" data-tag="' + safe + '">' +
+          safe +
+          '<span class="remove" aria-label="Remove tag" title="Remove">×</span>' +
+        '</span>'
+      );
+      $chip.find('.remove').on('click', function () {
+        removeTag(text, $chip);
+      });
+      return $chip;
+    }
+
+    function addTag(raw) {
+      var t = norm(raw);
+      if (!t || containsCI(tags, t)) return;
+      tags.push(t);
+      $visible.before(makeChip(t));
+      updateHidden();
+    }
+
+    function removeTag(text, $chip) {
+      var lower = text.toLowerCase();
+      tags = tags.filter(function (x) { return x.toLowerCase() !== lower; });
+      $chip.remove();
+      updateHidden();
+    }
+
+    // Initialize chips from pre-filled value
+    initial.forEach(addTag);
+
+    // Paste "a, b, c" to create multiple tags at once
+    $visible.on('paste', function (e) {
+      var text = (e.originalEvent || e).clipboardData && (e.originalEvent || e).clipboardData.getData('text');
+      if (!text || text.indexOf(',') === -1) return;
+      e.preventDefault();
+      text.split(',').map(norm).filter(Boolean).forEach(addTag);
+    });
+
+    // Enter/comma to confirm; Backspace with empty field removes last chip
+    $visible.on('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        var value = norm($visible.val() || '');
+        if (value) addTag(value);
+        $visible.val('');
+      } else if (e.key === 'Backspace' && !$visible.val()) {
+        var $last = $visible.siblings('.tag-chip').last();
+        if ($last.length) {
+          var t = $last.attr('data-tag');
+          removeTag(t, $last);
+        }
+      }
+    });
+
+    // Click anywhere in the box to focus the input
+    $visible.parent().on('click', function () { $visible.focus(); });
+
+    // Remote autocomplete with caching and race protection
+    var endpoint = '/api/tags'; // change to your endpoint
+    var cache = new Map();
+    var lastXhr = null;
+
+    $visible.autocomplete({
+      minLength: 1,
+      delay: 150,
+      source: function (request, response) {
+        var term = (request.term || '').trim();
+        if (!term) { response([]); return; }
+
+        if (cache.has(term)) { response(cache.get(term)); return; }
+
+        if (lastXhr && lastXhr.readyState !== 4) lastXhr.abort();
+
+        lastXhr = $.ajax({
+          url: endpoint,
+          method: 'GET',
+          dataType: 'json',
+          data: { q: term }
+          // headers: { 'X-CSRF-Token': window.CSRF_TOKEN } // enable if your app needs it
+        }).done(function (data) {
+          var items;
+          if (Array.isArray(data) && data.length && typeof data[0] === 'object') {
+            items = data.map(function (o) { return o && (o.label || o.value); }).filter(Boolean);
+          } else if (Array.isArray(data)) {
+            items = data.filter(function (s) { return typeof s === 'string' && s.trim(); });
+          } else if (data && Array.isArray(data.results)) {
+            items = data.results.map(function (o) { return (o.label || o.value || o); }).filter(Boolean);
+          } else {
+            items = [];
+          }
+          items = items.filter(function (s) { return !containsCI(tags, s); });
+          cache.set(term, items);
+          response(items);
+        }).fail(function (xhr, status) {
+          if (status !== 'abort') response([]);
+        });
+      },
+      select: function (e, ui) {
+        var value = typeof ui.item === 'string' ? ui.item : (ui.item.value || ui.item.label);
+        if (value) addTag(value);
+        setTimeout(function () { $visible.val(''); }, 0);
+        return false;
+      },
+      focus: function () { return false; }
+    });
+
+    // If you prefer opening the menu immediately on focus, uncomment the next line.
+    // $visible.on('focus', function () { $(this).autocomplete('search', this.value); });
+  });
+});
 
 </script>
 <%- include ("./_scrollListener") %>
 <%- include('../partials/_progress', {progress}) %>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js" defer></script>
 <style>
   @font-face {
       font-family: 'Digital';

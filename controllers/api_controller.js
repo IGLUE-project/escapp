@@ -1,4 +1,6 @@
 const {models} = require("../models");
+const Sequelize = require("sequelize");
+
 const { authenticate, checkPuzzle, checkTurnoAccess, getERState, automaticallySetAttendance, getRanking, getCurrentPuzzle, getContentForPuzzle, getERPuzzles} = require("../helpers/utils");
 const {puzzleResponse, puzzleChecked, broadcastRanking, sendJoinTeam, sendStartTeam} = require("../helpers/sockets");
 const queries = require("../queries");
@@ -207,4 +209,20 @@ exports.startPlaying = async (req, res, next) => {
 
 exports.reply = (req, res) => {
     res.status(req.response.status).json(req.response.body);
+};
+exports.getTags = async (req, res) => {
+    try {
+        const query = req.query.q || ""; // E.g., ?q=math
+        const tags = await models.subject.findAll({
+            "where": {"subject": {[Sequelize.Op.iLike]: `%${query}%`}},
+            "attributes": [[Sequelize.fn("DISTINCT", Sequelize.col("subject")), "subject"]],
+            "order": [["subject", "ASC"]],
+            "limit": 5 // Optional: limit number of suggestions
+        });
+
+        res.status(200).json(tags.map((t) => t.subject));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ "error": "Internal server error" });
+    }
 };

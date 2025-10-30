@@ -144,6 +144,8 @@ exports.index = async (req, res, next) => {
 exports.show = async (req, res) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
 
+    escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
+
     const {participant} = req;
     const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
 
@@ -172,14 +174,25 @@ exports.create = async (req, res) => {
     const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
 
-    const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, authorId, forceLang, field, format, level}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, authorId, forceLang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
     escapeRoom.forceLang = isValidLocale(forceLang) ? forceLang : null;
+    const subjects = subject.
+        split(/[;,]/).
+        map((s) => s.trim()).
+        filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang", "format", "level", "field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "teacher", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang", "format", "level", "field"], transaction});
+        const newSubjects = subjects.map((s) => ({
+            "subject": s,
+            "escapeRoomId": er.id
+        }));
+
+        await models.subject.bulkCreate(newSubjects, {transaction});
+
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": er.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});
 
@@ -243,6 +256,7 @@ exports.create = async (req, res) => {
 exports.edit = async (req, res, next) => {
     try {
         req.escapeRoom.attachment = await models.attachment.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
+        req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
         res.render("escapeRooms/edit", {"escapeRoom": req.escapeRoom, "progress": "edit"});
     } catch (error) {
         console.error(error);
@@ -256,7 +270,6 @@ exports.update = async (req, res) => {
     const {i18n} = res.locals;
 
     escapeRoom.title = body.title;
-    escapeRoom.subject = body.subject;
     escapeRoom.duration = body.duration;
     escapeRoom.forbiddenLateSubmissions = body.forbiddenLateSubmissions === "on";
     escapeRoom.description = body.description;
@@ -270,9 +283,25 @@ exports.update = async (req, res) => {
     escapeRoom.forceLang = isValidLocale(body.forceLang) ? body.forceLang : null;
 
     const progressBar = body.progress;
+    const transaction = await sequelize.transaction();
+    const subjects = body.subject.
+        split(/[;,]/).
+        map((s) => s.trim()).
+        filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "subject", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "forceLang", "format", "level", "field"]});
+        const er = await escapeRoom.save({"fields": ["title", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "forceLang", "format", "level", "field"], transaction});
+
+        // Remove all previous subjects for this escape room
+        await models.subject.destroy({ "where": { "escapeRoomId": er.id } }, {transaction});
+
+        // Insert the new ones
+        const newSubjects = subjects.map((s) => ({
+            "subject": s,
+            "escapeRoomId": er.id
+        }));
+
+        await models.subject.bulkCreate(newSubjects, {transaction});
 
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
@@ -285,6 +314,7 @@ exports.update = async (req, res) => {
                     }
                     er.attachment.destroy();
                 }
+                transaction.commit();
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
                 return;
             }
@@ -317,6 +347,7 @@ exports.update = async (req, res) => {
                     fs.unlinkSync(req.file.path);
                     // AttHelper.deleteResource(uploadResult.public_id, models.attachment);
                 }
+                transaction.commit();
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
                 return;
             } catch (error) {
@@ -324,9 +355,11 @@ exports.update = async (req, res) => {
                 req.flash("error", i18n.common.flash.errorFile);
             }
         }
+        transaction.commit();
         res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
     } catch (error) {
         console.error(error);
+        transaction.rollback();
         if (error instanceof Sequelize.ValidationError) {
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));
@@ -337,6 +370,7 @@ exports.update = async (req, res) => {
         } else {
             req.flash("error", i18n.common.flash.errorEditingER);
         }
+        escapeRoom.subject = subjects.map((ss) => ({"subject": ss}));
         res.render("escapeRooms/edit", {escapeRoom, "progress": "edit"});
     }
 };

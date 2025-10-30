@@ -4950,6 +4950,67 @@ table.mainTable tr td .icon {
   border-radius: 12px;
 }
 
+.tags-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+}
+.tags-box .customInput {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent;
+  flex: 1 1 140px;
+  min-width: 100px;
+  padding: 4px 2px;
+  font: inherit;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: white;
+  color: #161938 !important;
+  font-size: 0.8em;
+  line-height: 1;
+  user-select: none;
+  white-space: nowrap;
+  font-weight: bold;
+}
+.tag-chip .remove {
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 1;
+  color: #161938 !important;
+  opacity: 0.9;
+  transition: transform 0.1s ease, opacity 0.15s ease;
+}
+.tag-chip .remove:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.ui-autocomplete {
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 10000;
+  background: transparent;
+  width: 250px !important;
+  display: inline-block;
+  color: white !important;
+  list-style: none;
+  padding-left: 5px;
+}
+
+.inputFormField .tags-box {
+  width: 100%;
+}
+
 .toggle-container {
   position: relative;
   padding: 0.9em;

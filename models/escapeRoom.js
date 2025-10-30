@@ -6,10 +6,6 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.STRING,
                 "validate": {"notEmpty": {"msg": "El título no puede estar vacío."}}
             },
-            "subject": {
-                "type": DataTypes.STRING,
-                "validate": {"notEmpty": {"msg": "El nombre de la asignatura no puede estar vacío."}}
-            },
             "duration": {
                 "type": DataTypes.INTEGER,
                 "validate": {
