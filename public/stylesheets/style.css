@@ -1119,6 +1119,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main .note input {
   vertical-align: middle;
 }
+#mainSection .main .note-up {
+  font-size: 16px;
+  color: #656683;
+  font-family: "Lato", sans-serif;
+  text-align: left;
+  display: block;
+}
 
 #mainSection .main.escapeRoomShow {
   background: none;
@@ -4955,7 +4962,7 @@ table.mainTable tr td .icon {
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  padding: 6px;
+  padding: 0px;
 }
 .tags-box .customInput {
   border: none !important;

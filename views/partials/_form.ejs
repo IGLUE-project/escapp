@@ -49,8 +49,9 @@
 <%}%>
   <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 200ms;">
       <label for="subj"  class="itemNarrow">2. <%=i18n.showTeacher.titles["subject"]%>:</label>
-      
-      <input  type="text" 
+      <p class="note-up animated slideInUp" style="animation-delay: 200ms;" for="forbiddenLateSubmissions" ><%=i18n.escapeRoom.steps.edit.subjectNote%></p>
+
+      <input  type="text" placeholder="<%=i18n.escapeRoom.steps.edit.subjectPlaceHolder%>" style="padding-left: 0px; padding-top: 5px; margin-left: 12px;"
        class="customInput itemWide" id="subj" name="subject" value="<%=(escapeRoom.subject || []).map(e=>e.subject).join(',')%>" maxlength="200" autocomplete="off"/>
   </div>
 
