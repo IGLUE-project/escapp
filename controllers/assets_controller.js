@@ -249,7 +249,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
             const basePath = `/uploads/webapps/${asset.public_id}/index.html`;
             const escapeRoom = await models.escapeRoom.findByPk(asset.escapeRoomId);
             const localeForAsset = getLocaleForEscapeRoom(req, escapeRoom, false);
-            const file = path.join(__dirname, `/../uploads/webapps/${asset.public_id}/index.html`);
+            const newfile = path.join(__dirname, `/../uploads/webapps/${asset.public_id}/index.html`);
             const config = {
                 "locale": localeForAsset,
                 "escappClientSettings": {
@@ -263,7 +263,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
                 }
             };
 
-            res.render("reusablePuzzles/reusablePuzzleContainer", {basePath, config, file, "layout": false});
+            res.render("reusablePuzzles/reusablePuzzleContainer", {basePath, config, "file": newfile, "layout": false});
         } else {
             res.sendFile(filePath);
         }
@@ -274,7 +274,7 @@ exports.getAsset = async (req, res, next) => { // eslint-disable-line  no-unused
 };
 
 
-const appendParameters = (...parameters) => {
+exports.appendParameters = (...parameters) => {
     let config = "";
 
     parameters.forEach((parameter) => {
@@ -300,9 +300,9 @@ exports.editAsset = async (req, res, next) => {
             Let config = "";
 
             if (asset.mime.search(imageRegex) !== -1) {
-                config = appendParameters({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
+                config = exports.({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else if (asset.mime.search(videoRegex) !== -1 || asset.mime.search(audioRegex) !== -1) {
-                config = appendParameters(
+                config = exports.appendParameters(
                     {"name": "width", "value": req.body.width},
                     {"name": "height", "value": req.body.height},
                     {"name": "controls", "value": req.body.controls},
@@ -310,7 +310,7 @@ exports.editAsset = async (req, res, next) => {
                     {"name": "download", "value": req.body.download}
                 );
             } else if (asset.mime.search(applicationRegex) !== -1) {
-                config = appendParameters({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
+                config = exports.appendParameters({"name": "width", "value": req.body.width}, {"name": "height", "value": req.body.height});
             } else {
                 return "";
             }
@@ -372,7 +372,7 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
     const {puzzle_id, file_name } = req.params;
 
     try {
-        let name;
+        let name = puzzle_id;
 
         if (puzzle_id !== "forms") {
             const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
@@ -383,7 +383,6 @@ exports.getReusablePuzzleAsset = async (req, res, next) => { // eslint-disable-l
 
             res.sendFile(filePath);
         } else { // If they are asking for a hardcoded form
-            name = puzzle_id;
             const { i18n } = res.locals;
             const filePath = path.join(__dirname, `/../reusablePuzzles/${name}/${file_name}`);
             // Render the EJS file with i18n context
@@ -429,13 +428,13 @@ exports.getFormForInstance = async (req, res, next) => {
 };
 
 
-exports.returnThumbnail = async (req, res, next) => {
+exports.returnThumbnail = (req, res) => {
     const {file_name} = req.params;
 
     res.sendFile(path.join(__dirname, `../uploads/thumbnails/${file_name}`));
 };
 
-exports.returnInstructions = async (req, res, next) => {
+exports.returnInstructions = (req, res) => {
     const {file_name} = req.params;
 
     res.sendFile(path.join(__dirname, `../uploads/instructions/${file_name}`));

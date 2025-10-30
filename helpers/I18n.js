@@ -23,10 +23,7 @@ function getDefaultLocale () {
 }
 
 function getTextsForLocale (locale) {
-    if (!isValidLocale(locale)) {
-        locale = getDefaultLocale();
-    }
-    return LOCALES[locale];
+    return LOCALES[isValidLocale(locale) ? locale : getDefaultLocale()];
 }
 
 exports.getLocaleForEscapeRoom = (req, escapeRoom, editing) => {

@@ -190,7 +190,7 @@ exports.startPlaying = async (req, res, next) => {
             const joinTeam = await automaticallySetAttendance(teams[0], user.id, escapeRoom.automaticAttendance);
 
             escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
-            erState = await getERState(req.user, escapeRoom.id, teams[0],teams[0].turno.id, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
+            erState = await getERState(req.user, escapeRoom.id, teams[0], teams[0].turno.id, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
             if (joinTeam) {
                 sendStartTeam(joinTeam.id, code, authentication, PARTICIPANT, msg, erState);
                 sendJoinTeam(joinTeam.id, joinTeam.turno.id, erState.ranking);

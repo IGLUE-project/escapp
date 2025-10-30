@@ -6,7 +6,7 @@ const cloudinary = require("cloudinary");
 const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted, partition } = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 
 const fs = require("fs");
@@ -119,9 +119,11 @@ exports.index = async (req, res, next) => {
             const {id, title, invitation, attachment} = er;
             const isSignedUp = ids.indexOf(er.id) !== -1;
             const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
+            const tobeConfirmed = er.userCoAuthor.some((e) => e.id === user.id && !e.coAuthors.confirmed);
+
             const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
 
-            return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor };
+            return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor, tobeConfirmed };
         });
 
         const pagesPublic = Math.ceil(countPublic / limit);
@@ -294,7 +296,7 @@ exports.update = async (req, res) => {
                     attachment = models.attachment.build({"escapeRoomId": er.id});
                 }
                 attachment.public_id = req.file.originalname;
-                attachment.url = `/uploads/thumbnails/${req.file.filename}`,
+                attachment.url = `/uploads/thumbnails/${req.file.filename}`;
                 attachment.filename = req.file.originalname;
                 attachment.mime = req.file.mimetype;
                 try {
@@ -729,12 +731,6 @@ exports.addCollaborators = async (req, res, next) => {
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
                 } else if (!collab.isStudent) {
                     await escapeRoom.addUserCoAuthor(collab.id, {transaction});
-                    const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}});
-                    const teamCreated = await models.team.create({ "name": `${collab.alias}`, "turnoId": testShift.id}, {transaction});
-
-                    await teamCreated.addTeamMembers(collab.id, {transaction});
-                    await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": collab.id}, {transaction});
-
                     await transaction.commit();
                     req.flash("success", i18n.common.flash.successAddingCollaborator);
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
@@ -756,23 +752,91 @@ exports.addCollaborators = async (req, res, next) => {
     }
 };
 
+exports.confirmCollaborators = async (req, res, next) => {
+    const {escapeRoom, body, session} = req;
+    const {i18n} = res.locals;
+    const transaction = await sequelize.transaction();
+
+    try {
+        const findCollab = await models.coAuthors.findOne(
+            {"escapeRoomId": escapeRoom.id, "userId": req.session.user.id},
+            {transaction}
+        );
+
+        if (!findCollab) {
+            throw new Error(i18n.common.flash.youHaveNotBeenAddedAsACollaborator);
+        }
+        if (!body.confirm) { // Cancel collaboration
+            await escapeRoom.removeUserCoAuthor(req.session.user.id, {transaction});
+        } else { // Accept collaboration
+            await models.coAuthors.update(
+                { "confirmed": true },
+                {
+                    "where": {
+                        "escapeRoomId": escapeRoom.id,
+                        "userId": req.session.user.id
+                    },
+                    transaction
+                }
+            );
+            const user = await models.user.findByPk(session.user.id, {transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}}, {transaction});
+            const teamCreated = await models.team.create({ "name": `${user.alias}`, "turnoId": testShift.id}, {transaction});
+
+            await teamCreated.addTeamMembers(user.id, {transaction});
+            await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": req.session.user.id}, {transaction});
+        }
+
+        await transaction.commit();
+        req.flash("success", i18n.common.flash.successConfirmingCollaborator);
+        res.redirect(`/escapeRooms/${escapeRoom.id}`);
+    } catch (error) {
+        await transaction.rollback();
+        console.error(error);
+        req.flash("error", `${error.message}`);
+        next(error);
+    }
+};
 // DELETE /escapeRooms/:escapeRoomId/collaborators
 exports.deleteCollaborators = async (req, res, next) => {
     const {escapeRoom, body} = req;
     const {collaborator} = body;
+    const transaction = await sequelize.transaction();
 
     if (collaborator) {
         try {
+            const collab = await models.user.findByPk(collaborator, {transaction});
+
             await escapeRoom.removeUserCoAuthor(collaborator);
+            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}}, {transaction});
+
+            const teamCreated = await models.team.findOne({
+                "where": { "name": collab.alias, "turnoId": testShift.id },
+                transaction
+            });
+
+            if (teamCreated) {
+                // Remove member via association helper, within transaction
+                await teamCreated.removeTeamMembers(collab.id, { transaction });
+                await teamCreated.destroy({ transaction });
+            }
+
+            await models.participants.destroy({
+                "where": { "attendance": false, "turnId": testShift.id, "userId": collab.id },
+                transaction
+            });
+
+            await transaction.commit();
             res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
         } catch (error) {
+            await transaction.rollback();
             req.flash("error", `${error.message}`);
             next(error);
         }
     }
 };
 
-exports.isStatusCompleted = async (req, res, next) => {
+exports.isStatusCompleted = (req, res, next) => {
     if (req.escapeRoom.status === "completed") {
         next();
     } else {

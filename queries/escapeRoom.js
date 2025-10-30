@@ -268,13 +268,12 @@ exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
         {
             "model": models.user,
             "as": "userCoAuthor",
-            "attributes": [],
             "duplicating": false,
             "required": false
         }
     ],
     "where": {
-        [Op.and]: [
+        [Op.and]: [
             {
                 [Op.or]: [
                     {"title": {[Op.iLike]: `%${search}%`}},

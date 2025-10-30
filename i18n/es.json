@@ -221,10 +221,12 @@
             "successEditingTeam": "Equipo editado con éxito",
             "successEditingTurno": "Turno editado con éxito",
             "successEditingUser": "Usuario editado con éxito",
-            "successAddingCollaborator": "Colaborador añadido con éxito",
+            "successAddingCollaborator": "Colaborador añadido con éxito. Se le notificará para que confirme su colaboración",
+            "successConfirmingCollaborator": "Confirmado como colaborador con éxito",
             "successImage": "Imagen subida con éxito",
             "successSendingReport": "Reporte enviado con éxito",
-            "youMustAcceptTerms": "Debes aceptar los términos y condiciones para poder registrarte."
+            "youMustAcceptTerms": "Debes aceptar los términos y condiciones para poder registrarte.",
+            "youHaveNotBeenAddedAsACollaborator": "No has sido añadido como colaborador de esta escape room."
         },
         "guide": "Manual de usuario",
         "ideas": "Ideas para retos",
@@ -916,7 +918,11 @@
         "add": "añadir",
         "delete": "borrar",
         "areYouSureDelete": "¿Seguro que desea quitar este colaborador?",
+        "invitation": "Te han invitado a colaborar en esta escape room.",
+        "beforeJoin": "Antes de jugar, tienes que aceptar o rechazar la solicitud de ser colaborador de esta escape room",
         "addCollaborator": "Añadir colaborador",
+        "confirmCollaboration": "confirmar",
+        "cancelCollaboration": "cancelar",
         "owner": "Propietario"
     },
     "puzzle": {

@@ -1530,12 +1530,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: -2px;
+  left: -2px;
   color: WHITE;
   padding: 9px;
   border-radius: 50%;
   line-height: 1px;
+  border: 2px solid white;
   background-color: #48C18E;
 }
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.add {
@@ -1543,6 +1544,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.edit {
   background-color: #36A2EB;
+}
+.escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.warning {
+  background-color: #F3945E;
 }
 .escapeRooms .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .erFoto {
   width: 100%;
@@ -4759,6 +4763,15 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.showStudent .flex .flex-er-info .flex-er-info-preview div {
   width: 50%;
+}
+#mainSection .main.showStudent .flex-er-collaborator {
+  background-color: #656683;
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 1em;
+}
+#mainSection .main.showStudent .flex-er-collaborator p {
+  margin-top: 0px;
 }
 #mainSection .main.showStudent .editor img {
   max-width: 100%;

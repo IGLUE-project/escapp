@@ -154,6 +154,7 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/results", sessionController.loginRe
 // Routes for playing - teacher
 router.get("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.showCollaborators);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.addCollaborators);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/confirmCoAuthor", sessionController.loginRequired, escapeRoomController.confirmCollaborators);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.deleteCollaborators);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/message", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, playController.ranking, playController.writeMessage);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/message", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, playController.ranking, playController.sendMessage);

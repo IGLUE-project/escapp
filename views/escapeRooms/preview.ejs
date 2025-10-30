@@ -8,7 +8,20 @@
                 <span><%=escapeRoom.title%></span>
         </div>
 	</div>
+    <%var isCollaborator = escapeRoom.userCoAuthor.find(u => user.id == u.id) %>
+    <%var isUnconfirmedCollaborator = isCollaborator && !isCollaborator.coAuthors.confirmed%>
+    <%if(isUnconfirmedCollaborator){%>
+            <div class="flex-er-collaborator fadeIn">
+                <p><%=i18n.collaborators.invitation%></p>
+                <form method="POST" action='/escapeRooms/<%= escapeRoom.id %>/confirmCoAuthor?_method=PUT' >
+                    <button class="acceptButton rounded small" style="font-size:medium;"  type="submit" name="confirm" value="true"><%=i18n.collaborators.confirmCollaboration%></button>
+                    <button class="stopButton rounded" style="font-size:medium;" type="submit" name="confirm" value=""><%=i18n.collaborators.cancelCollaboration%></button>
+                </form>
+
+            </div>
+    <%}%>
     <div class="flex ">
+        
 		<div class="flex-thumb attachmentShow animated">
             <% if(escapeRoom.attachment){ %>
                 <img  alt="None" src="<%=escapeRoom.attachment.url%>">
@@ -90,7 +103,7 @@
     <br/>
    <br/>
     <div class="button-share">
-        <%if(!user.isStudent){%>
+        <%if(!user.isStudent && !isUnconfirmedCollaborator){%>
             <span>
                 <button class="rounded cloneButton" title="<%=i18n.escapeRoom.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
                     <%=i18n.showTeacher.actionList.clone%>
@@ -104,14 +117,17 @@
                 </div>
             </spa >
         <%}%>
-
-        <a href="/escapeRooms/<%=escapeRoom.id%>/join"><button class="rounded editButton acceptButton"><%=i18n.showStudent.join%></button></a>
+        
+        <a href="/escapeRooms/<%=escapeRoom.id%>/join" >
+            <button class="rounded editButton acceptButton" <%if(!user.isStudent && isUnconfirmedCollaborator){%>disabled title="<%=i18n.collaborators.beforeJoin%>"<%}%>><%=i18n.showStudent.join%></button>
+        </a>
     </div>
    <br/>
    <br/>
    <br/>
    <br/>
 </div>
+
 <%- include ("../partials/_footer.ejs") %>
 <script>
     const overlayTrigger = (id, close) => {
@@ -120,4 +136,5 @@
 		$('.overlay-trigger[data-id="' + id + '"]').show();
 	}
 };
+
 </script>

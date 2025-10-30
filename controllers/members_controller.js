@@ -1,6 +1,6 @@
 const sequelize = require("../models");
 const {models} = sequelize;
-const {sendJoinParticipant} = require("../helpers/sockets");
+// Const {sendJoinParticipant} = require("../helpers/sockets");
 const {getRanking} = require("../helpers/utils");
 
 // PUT /escapeRooms/:escapeRoomId/users/:userId/turnos/:turnoId/teams/:teamId
@@ -40,7 +40,7 @@ exports.add = async (req, res, next) => {
                 teamMembers.push({"name": member.name, "surname": member.surname, "alias": member.alias});
                 teamMembersNames.push(member.alias);
             }
-            const teams = await getRanking(escapeRoom.id, turn.id, true);
+            // Const teams = await getRanking(escapeRoom.id, turn.id, true);
 
             // SendJoinParticipant(user.username, team.id, turn.id, teams);
             res.redirect(direccion);

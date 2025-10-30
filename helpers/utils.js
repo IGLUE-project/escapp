@@ -47,7 +47,7 @@ exports.saveInterface = async (name, req, res, next) => {
 exports.playInterface = async (name, req, res, next) => {
     const {i18n} = res.locals;
     const isAdmin = Boolean(req.session.user.isAdmin),
-        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id),
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
 
     req.escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPuzzles);
@@ -109,17 +109,18 @@ exports.playInterface = async (name, req, res, next) => {
             });
 
             const team = teams && teams[0] ? teams[0] : {};
-            const tooLate = exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) ;
-            const alreadyFinished = team.retos.length === req.escapeRoom.puzzles.length
+            const tooLate = exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration);
+            const alreadyFinished = team.retos.length === req.escapeRoom.puzzles.length;
+
             if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || tooLate || alreadyFinished) {
                 if (!team.startTime) {
                     req.flash("error", i18n.team.notStarted);
                 } else if (!(team.turno.status === "active" || team.turno.status === "test")) {
-                    req.flash("error", i18n.turno.notActive);           
+                    req.flash("error", i18n.turno.notActive);
                 } else if (tooLate) {
-                    req.flash("error", i18n.team.tooLate);       
+                    req.flash("error", i18n.team.tooLate);
                 } else if (alreadyFinished) {
-                    req.flash("error", i18n.team.alreadyFinished);       
+                    req.flash("error", i18n.team.alreadyFinished);
                 }
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
                 return;
@@ -217,12 +218,11 @@ exports.getERState = async (user, escapeRoomId, team, turnId, duration, hintLimi
 };
 
 exports.getRanking = async (escapeRoomId, turnoId, anonymized = false) => {
-    
     const teamsRaw = await models.team.findAll(queries.team.rankingShort(escapeRoomId, turnoId));
     const nPuzzles = await models.puzzle.count({"where": { escapeRoomId }});
     const ranking = getRetosSuperados(teamsRaw, nPuzzles, true, {"user": { "anonymous": "Anonymous"}}).sort(byRanking);
     const newRanking = [];
-   
+
     for (const i in ranking) {
         const team = {
             "id": ranking[i].id,
@@ -258,12 +258,13 @@ exports.getScore = (puzzlesSolved, puzzleData, successHints, failHints, attendan
 
 exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     let participation = PARTICIPANT;
-    const privileged = user.isAdmin || escapeRoom.authorId === user.id || (escapeRoom.userCoAuthor || []).some((e) => e.id === user.id);
-     if (preview && privileged) {
+    const privileged = user.isAdmin || escapeRoom.authorId === user.id || (escapeRoom.userCoAuthor || []).some((e) => e.id === user.id && e.coAuthors.confirmed);
+
+    if (preview && privileged) {
         participation = PARTICIPANT;
     } else if (teams && teams.length > 0) {
         const [team] = teams;
-        
+
         if (team.turno.status === "pending") {
             participation = NOT_ACTIVE;
         } else if (!team.startTime) {
@@ -275,7 +276,7 @@ exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
         }
     } else if (!preview && privileged) {
         participation = AUTHOR;
-    } else{
+    } else {
         participation = NOT_A_PARTICIPANT;
     }
     return participation;
@@ -500,13 +501,13 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
 </script>`;
 
 
-exports.validationError = ({instance, path, validatorKey}, i18n) => {
+exports.validationError = ({instance, paths, validatorKey}, i18n) => {
     try {
         if (i18n[instance.constructor.name] &&
             i18n[instance.constructor.name].attributes &&
-            i18n[instance.constructor.name].attributes[path] &&
+            i18n[instance.constructor.name].attributes[paths] &&
             i18n.common.error[validatorKey]) {
-            return `${i18n[instance.constructor.name].attributes[path]} ${i18n.common.error[validatorKey]}`;
+            return `${i18n[instance.constructor.name].attributes[paths]} ${i18n.common.error[validatorKey]}`;
         }
         throw new Error("Error during validation");
     } catch (e) {

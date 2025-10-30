@@ -167,7 +167,7 @@ exports.update = (req, res, next) => {
         }).
         catch((error) => {
             if (error instanceof Sequelize.ValidationError) {
-                error.errors.forEach((error) => req.flash("error", validationError(error, i18n)));
+                error.errors.forEach((err) => req.flash("error", validationError(err, i18n)));
                 res.render("users/edit", {user});
             } else {
                 next(error);

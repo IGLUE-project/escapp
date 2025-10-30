@@ -204,7 +204,7 @@
             "resetPasswordSent": "We have sent you an email with a link to reset your password",
             "resetPasswordUserNotFound": "Sorry, you are not registered in escapp",
             "successActivatingTurno": "Shift successfully activated/deactivated",
-            "successAddingCollaborator": "Successfully added collaborator",
+            "successAddingCollaborator": "Successfully added collaborator. They will be notified to confirm their collaboration",
             "successCreatingER": "Escape room successfully set up",
             "successCreatingHint": "Hint successfully created",
             "successCreatingPuzzle": "Puzzle successfully created",
@@ -228,7 +228,9 @@
             "successEditingUser": "User successfully edited",
             "successImage": "Picture successfully uploaded",
             "successSendingReport":    "Report successfully sent",
-            "youMustAcceptTerms": "You must accept the conditions in order to register"
+            "successConfirmingCollaborator": "Confirmed as collaborator successfully",
+            "youMustAcceptTerms": "You must accept the conditions in order to register",
+            "youHaveNotBeenAddedAsACollaborator": "You have not been added as a collaborator"
         },
         "guide": "User guide",
         "ideas": "Puzzle ideas",
@@ -923,7 +925,10 @@
         "add": "add",
         "delete": "delete",
         "areYouSureDelete": "Are you sure you want to remove this collaborator?",
-
+        "invitation": "You have been invited to collaborate in this escape room.",
+        "beforeJoin": "Before playing you have to accept or reject the request for being a collaborator of this escape room",
+        "confirmCollaboration": "confirm",
+        "cancelCollaboration": "cancel",
         "addCollaborator": "Add collaborator",
         "owner": "Owner"
     },

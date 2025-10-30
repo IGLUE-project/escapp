@@ -19,7 +19,7 @@ exports.ranking = async (req, res, next) => {
     const {i18n} = res.locals;
 
     try {
-        const isAuthorOrCoAuthor = req.escapeRoom.authorId === req.session.user.id || req.escapeRoom.userCoAuthor.some((e) => e.id === req.session.user.id);
+        const isAuthorOrCoAuthor = req.escapeRoom.authorId === req.session.user.id || req.escapeRoom.userCoAuthor.some((e) => e.id === req.session.user.id && e.coAuthors.confirmed);
 
         if (!isAuthorOrCoAuthor) {
             const turno = await models.turno.findOne(queries.turno.myTurno(req.escapeRoom.id, req.session.user.id));

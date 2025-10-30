@@ -34,7 +34,7 @@ const fullName = `${name} ${surname}`;
 
 async function createAdmin () {
     try {
-        const [admin, created] = await sequelize.models.user.findOrCreate({
+        const [, created] = await sequelize.models.user.findOrCreate({
             "where": { "username": email },
             "defaults": {
                 name,

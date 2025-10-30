@@ -192,7 +192,7 @@ exports.studentLeave = async (req, res, next) => {
 exports.isNotAuthorOrCoAuthorOrAdmin = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
         isAuthor = req.escapeRoom.authorId === req.session.user.id,
-        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed);
 
     const {i18n} = res.locals;
 

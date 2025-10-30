@@ -427,7 +427,7 @@ exports.renderReusablePuzzle = async (req, res, _) => { // eslint-disable-line  
 };
 
 // GET /reusablePuzzlePreview/:reusablePuzzleId
-exports.renderReusablePuzzlePreview = async (req, res, next) => {
+exports.renderReusablePuzzlePreview = async (req, res) => {
     const {reusablePuzzleId} = req.params;
     const receivedConfig = req.query.config ? JSON.parse(req.query.config) : {};
     const escapeRoomId = req.query.escapeRoomId || "";

@@ -7,7 +7,7 @@ module.exports = {
         await queryInterface.addColumn("escapeRooms", "instructions", { "type": Sequelize.STRING});
     },
 
-    async down (queryInterface, Sequelize) {
+    async down (queryInterface) {
         await queryInterface.removeColumn("escapeRooms", "instructions");
     }
 };

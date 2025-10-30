@@ -38,7 +38,6 @@
 				<h2><%=i18n.team.Team%> </h2>
 				<h3><%=team.name%></h3>
 				<p class="members">
-					<%team.teamMembers.map(m=>console.log(m))%>
 					<%=team.teamMembers.map(m => m.alias).join(", ")%>
 				</p>
 			<% } %>
