@@ -69,12 +69,12 @@
 				<% } %>
 			</div>
 		</div>
-
 		<div class="status animated fadeIn">
 			<% if (turno.status === "pending") { %>
 				<span id ="start">
 					<button class="rounded disabled" disabled id ><%=i18n.showStudent.play%>%></button>
 				</span>
+			
 			<% } else if((turno.status === "active")&& !finished && (!team.startTime || (new Date(team.startTime.getTime() + escapeRoom.duration * 60000) > new Date()))) { %>
 				<span id ="start">
 					<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/play" style="display: inline;">
@@ -83,7 +83,7 @@
 						</button>
 					</form>
 				</span>
-			<%} else if((turno.status === "test" )&& !finished) { %>
+			<%} else if(((turno.status === "test" )&& !finished)) { %>
 				<span id ="start">
 					<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/test" style="display: inline;">
 						<button class="rounded acceptButton pulseButton" onclick="clicked()">
@@ -124,7 +124,7 @@
 					</div>
 				</div>
 			<% } %>
-
+			
 			<% if(!(turno.status == "finished" || turno.status == "test") && !team.startTime){%>
 				<div id="unjoin" method="post" style="display: inline-block;">
 					<button class="rounded deleteButton" onclick="overlayTrigger('unjoin')">

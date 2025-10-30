@@ -154,7 +154,7 @@ exports.show = async (req, res) => {
         const howManyRetos = await models.retosSuperados.count({"where": {"success": true, "teamId": team.id }});
         const finished = howManyRetos === escapeRoom.puzzles.length;
 
-        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished});
+        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished, isAdmin: req.session.user.isAdmin});
     } else {
         const completed = stepsCompleted(escapeRoom);
 
@@ -882,15 +882,17 @@ exports.test = async (req, res) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
     const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
     const participant = participants && participants.length ? participants[0] : null;
-
+    const isAdmin = req.session.user && req.session.user.isAdmin;
     if (participant) {
         const [team] = participant.teamsAgregados;
         const howManyRetos = await models.retosSuperados.count({"where": {"success": true, "teamId": team.id }});
         const finished = howManyRetos === escapeRoom.puzzles.length;
-
-        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished});
+        
+        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished, isAdmin});
+    } else if(isAdmin) {
+        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant: {}, team : {turno:{status:"test"},teamMembers:[]}, finished: false, isAdmin});
     } else {
-        res.redirect("escapeRooms/", req.escapeRoom.id);
+        res.redirect("/escapeRooms/" + req.escapeRoom.id);
     }
 };
 

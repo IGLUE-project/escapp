@@ -1,5 +1,6 @@
 const {authenticate, findFirstAvailableFile} = require("../helpers/utils");
-const {models} = require("../models");
+const sequelize = require("../models");
+const {models} = sequelize
 const query = require("../queries");
 const path = require("path");
 /*
@@ -200,21 +201,32 @@ exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) =>
 // MW that allows actions only if the user logged in is a participant of the escape room.
 exports.participantRequired = async (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin);
+    const transaction = await sequelize.transaction();
 
     try {
-        const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
+        const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true), {transaction});
 
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
+            transaction.commit();
             next();
         } else {
             if (isAdmin) {
-                res.status(403);
-                throw new Error("Forbidden");
+                const user = await models.user.findByPk(req.session.user.id, {transaction});
+                const testShift = await models.turno.findOne({"where": {"status": "test", "escapeRoomId" : req.escapeRoom.id}}, {transaction});
+                const teamCreated = await models.team.create({ "name": `${user.alias}`, "turnoId": testShift.id}, {transaction});
+                await teamCreated.addTeamMembers(user.id, {transaction});
+                await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": user.id}, {transaction});
+                transaction.commit();
+                next();
+
+            } else {
+                transaction.commit();
+                res.redirect("back");
             }
-            res.redirect("back");
         }
     } catch (error) {
+        transaction.rollback();
         next(error);
     }
 };
