@@ -379,8 +379,9 @@
             "typePasscode": "Type the access passcode for",
             "yes": "yes",
             "scopes": {
-                "public": "Public",
-                "private": "Unlisted"
+                "public": "Available to everyone",
+                "escapp": "Available to all Escapp users",
+                "private": "Unlisted (only shared by link)"
             }
         },
         "main": {
@@ -677,7 +678,9 @@
                     "stillInfoNeeded": "You still have some mandatory information that you need to complete before making your escape room public.",
                     "warningAboutLicense": "Once you publish your escape room, you will not be able to change the license. Once you are ready, click on the switch."
                 },
-                "warningOldEscapeRooms": "<b>We have a new version of Escapp!</b></br/> In this version, you need to change the status from draft to published in order to make your escape room accessible to the students."
+                "warningOldEscapeRooms": "<b>We have a new version of Escapp!</b></br/> In this version, you need to change the status from draft to published in order to make your escape room accessible to the students.",
+                "allowGuests": "Allow playing without signing up in Escapp"
+
             },
             "turnos": {
                 "title": "Shifts",
@@ -934,7 +937,8 @@
         "confirmCollaboration": "confirm",
         "cancelCollaboration": "cancel",
         "addCollaborator": "Add collaborator",
-        "owner": "Owner"
+        "owner": "Owner",
+        "pendingConfirmation": "PENDING CONFIRMATION"
     },
     "puzzle": {
         "puzzle": "puzzle",

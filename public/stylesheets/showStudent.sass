@@ -66,7 +66,30 @@
       animation: pulseButton 2s infinite
       &:hover
         animation: none
-
+  .main.preview
+    #dialog-join-anon
+      background: colors.$purplebg
+      padding: 1em
+    .ui-dialog 
+      border: 2px solid white !important
+    .ui-button-icon-space::after
+      color: white
+    .ui-dialog-titlebar, .ui-dialog-title
+      background-color: colors.$purplebg !important
+      color: white
+    label
+      color: white !important
+      margin-bottom: 5px
+    input, select
+      color: white !important
+      -webkit-text-fill-color: white !important
+      border-color: white !important
+      text-align: center
+      min-width: 40%
+    option
+      text-align: center
+    .ui-widget-overlay 
+      opacity: 0.8
 .finish
   .content
     width: 100%

@@ -131,6 +131,7 @@ exports.checkPuzzleSolution = async (req, res, next) => {
 
         req.response = await checkPuzzle(solution, puzzle, escapeRoom, teams, user, i18n, true, req.body.preview);
         const {code, correctAnswer, participation, authentication, msg, erState} = req.response.body;
+
         if (participation === PARTICIPANT) {
             await automaticallySetAttendance(teams[0], user.id, escapeRoom.automaticAttendance);
             const [team] = teams;
@@ -154,20 +155,19 @@ exports.auth = async (req, res, next) => {
 
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
-        console.log(req.body.preview)
         const {i18n} = res.locals || req.app.locals;
         const participation = await checkTurnoAccess(teams, user, escapeRoom, req.body.preview);
         const attendance = participation === PARTICIPANT || participation === TOO_LATE;
         const erState = teams && teams.length ? await getERState(req.user, escapeRoom.id, teams[0], teams[0].turno.id, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true) : undefined;
 
-        if (!req.body.preview && (participation === PARTICIPANT)) {
+        if (!req.body.preview && participation === PARTICIPANT) {
             await automaticallySetAttendance(teams[0], user.id, escapeRoom.automaticAttendance);
         }
         const {status, code, msg} = getAuthMessageAndCode(participation, i18n);
 
         req.response = {status, "body": {code, authentication, token, participation, msg, erState}};
     } catch (err) {
-        console.error(err)
+        console.error(err);
         req.response = {"status": 500, "body": {"code": NOK, authentication, token}};
     }
     next();

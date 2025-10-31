@@ -29,8 +29,9 @@ exports.saveInterface = async (name, req, res, next) => {
 
     escapeRoom[`${name}Instructions`] = body.instructions;
     escapeRoom[`${name}Appearance`] = body.appearance;
-    let fields =  [`${name}Instructions`, `${name}Appearance`]
-    if(name === "indications") {
+    const fields = [`${name}Instructions`, `${name}Appearance`];
+
+    if (name === "indications") {
         const hybridInstructionsFile = req.file;
 
         if (hybridInstructionsFile && hybridInstructionsFile.filename) {
@@ -49,10 +50,9 @@ exports.saveInterface = async (name, req, res, next) => {
             escapeRoom.hybridInstructions = null;
         }
         fields.push("hybridInstructions");
-
     }
     try {
-        await escapeRoom.save({"fields": fields});
+        await escapeRoom.save({fields});
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep(name) : progressBar || nextStep(name)}`);
     } catch (error) {
         if (error instanceof Sequelize.ValidationError) {
@@ -683,5 +683,3 @@ exports.solutionSeparatorLength = (sol, sep = ";", oneIsSplit = false) => {
     }
     return 0;
 };
-
-exports.partition = (array, isValid) => array.reduce(([pass, fail], elem) => isValid(elem) ? [[...pass, elem], fail] : [pass, [...fail, elem]], [[], []]);

@@ -2,13 +2,20 @@
 
 <div role="main" class="main ranking finish">
 	<div class="breadcrumbs-container">
-        <div class="breadcrumbs">
+       <% if (locals.user && !locals.user.anonymized) { %>
+		<div class="breadcrumbs">
             <a href="/escapeRooms"><%=i18n.common.my%></a>
 			<span class="material-icons">chevron_right</span>
 			<a href="/escapeRooms/<%=escapeRoom.id%>"><%=escapeRoom.title%></a>
             <span class="material-icons">chevron_right</span>
             <span><%=i18n.showStudent.Results%></span>
         </div>
+		<%} else {%>
+			<div class="breadcrumbs">
+				<span class="material-icons">arrow_left</span>
+			<a href="/escapeRooms/<%=escapeRoom.id%>"><%=i18n.common.back%></a>
+		</div>
+		<%}%>
 	</div>
 	<div class="content">
 		<% var theTeam =  (teams && teams.find(t=>t.id==teamId))%>

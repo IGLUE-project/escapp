@@ -357,8 +357,9 @@
             "typePasscode": "Introduce la contraseña de acceso para",
             "yes": "sí",
             "scopes": {
-                "public": "Pública",
-                "private": "Oculta"
+                "public": "Disponible para todo el mundo",
+                "escapp": "Disponible para todos los usuarios de Escapp",
+                "private": "Oculta (sólo accesible por enlace)"
             }
         },
         "format":{
@@ -670,7 +671,8 @@
                     "stillInfoNeeded": "Aún tienes información obligatoria que debes completar antes de hacer pública tu escape room",
                     "warningAboutLicense": "Una vez publiques tu escape room, no podrás cambiar la licencia. Cuando estés listo, haz clic en el interruptor."
                 },
-                "warningOldEscapeRooms": "<b>¡Tenemos una nueva versión de Escapp!</b></br/> En esta versión, necesitas cambiar el estado de la escape room de borrador a publicado para que tu escape room sea accesible para los participantes."
+                "warningOldEscapeRooms": "<b>¡Tenemos una nueva versión de Escapp!</b></br/> En esta versión, necesitas cambiar el estado de la escape room de borrador a publicado para que tu escape room sea accesible para los participantes.",
+                "allowGuests": "Permitir jugar sin registrarse en Escapp"
 
             },
             "turnos": {
@@ -928,7 +930,9 @@
         "addCollaborator": "Añadir colaborador",
         "confirmCollaboration": "confirmar",
         "cancelCollaboration": "cancelar",
-        "owner": "Propietario"
+        "owner": "Propietario",
+        "pendingConfirmation": "PENDIENTE CONFIRMACIÓN"
+
     },
     "puzzle": {
         "puzzle": "reto",

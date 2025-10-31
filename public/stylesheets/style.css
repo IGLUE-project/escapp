@@ -4821,6 +4821,37 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.showStudent .pulseButton:hover {
   animation: none;
 }
+#mainSection .main.preview #dialog-join-anon {
+  background: #232951;
+  padding: 1em;
+}
+#mainSection .main.preview .ui-dialog {
+  border: 2px solid white !important;
+}
+#mainSection .main.preview .ui-button-icon-space::after {
+  color: white;
+}
+#mainSection .main.preview .ui-dialog-titlebar, #mainSection .main.preview .ui-dialog-title {
+  background-color: #232951 !important;
+  color: white;
+}
+#mainSection .main.preview label {
+  color: white !important;
+  margin-bottom: 5px;
+}
+#mainSection .main.preview input, #mainSection .main.preview select {
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+  border-color: white !important;
+  text-align: center;
+  min-width: 40%;
+}
+#mainSection .main.preview option {
+  text-align: center;
+}
+#mainSection .main.preview .ui-widget-overlay {
+  opacity: 0.8;
+}
 
 .finish .content {
   width: 100%;
@@ -6104,6 +6135,9 @@ html body p {
 html body p.centeredSmall {
   font-size: 20px;
   font-family: Gugi, sans-serif;
+  text-align: center;
+}
+html body .text-center {
   text-align: center;
 }
 html body label {

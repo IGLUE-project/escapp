@@ -307,3 +307,36 @@ exports.forAll = (page = 1, limit = 10, search = "") => ({
     "offset": (page - 1) * limit,
     "order": [["id", "desc"]]
 });
+
+
+exports.loadExport = {
+    "include": [
+        {
+            "model": models.puzzle,
+            "include": [{"model": models.hint}]
+        },
+        models.attachment,
+        {
+            "model": models.subject,
+            "attributes": ["subject"]
+        },
+        models.hintApp,
+        {
+            "model": models.asset,
+            "attributes": ["url", "filename", "mime"]
+        }
+    ],
+    "order": [
+        [
+            {"model": models.puzzle},
+            "order",
+            "asc"
+        ],
+        [
+            {"model": models.puzzle},
+            {"model": models.hint},
+            "order",
+            "asc"
+        ]
+    ]
+};

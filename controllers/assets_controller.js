@@ -70,7 +70,7 @@ exports.uploadAssets = async (req, res) => {
     const { escapeRoom } = req;
     const { i18n } = res.locals;
     const userId = req.session.user && req.session.user.id;
-    
+
     try {
         const mime = req.file.mimetype;
         const isSupported = supportedMimeTypes.some((m) => new RegExp(m).test(mime));
@@ -436,4 +436,4 @@ exports.returnHybridInstructions = (req, res) => {
     res.sendFile(path.join(__dirname, `../uploads/hybrid/${file_name}`));
 };
 
- 
+

@@ -6,6 +6,7 @@
 
 <div role="main" class="main showStudent">
 	<div class="breadcrumbs-container">
+		<% if (locals.user && !locals.user.anonymized) { %>
         <div class="breadcrumbs">
 			<a href="/escapeRooms"><%=i18n.common.my%></a>
 				<span class="material-icons">chevron_right</span>
@@ -17,10 +18,10 @@
 					<span><%=escapeRoom.title%></span>
 				<%}%>
         </div>
+		<%}%>
 	</div>
 	<div class="reporting"><a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a> <!--/ <a href="/escapeRooms/<%=escapeRoom.id%>/contact"> Contactar </a>--> </div>
 	<div class="flex ">
-
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
             <% if(attachment){ %>
@@ -181,7 +182,7 @@ const overlayTrigger = (id, close) => {
 		$('.overlay-trigger[data-id="' + id + '"]').show();
 	}
 };
-
+<% if (session.user) { %>
 $(()=>{
 	var participant = JSON.parse('<%-JSON.stringify(participant)%>')
 	var socket;
@@ -203,7 +204,6 @@ $(()=>{
 	$("#dialog-start").dialog(dialogOptions);
 	$("#dialog-start").css("visibility","visible");
 
-
 	const onJoin = (msg, e) => {
 		if (!startTime && !CLICKED) {
 			$( "#dialog-start" ).dialog( "open" )
@@ -216,7 +216,6 @@ $(()=>{
 	const onMessage = ({msg}) => {
 		$.easyAlert({message: msg, alertType: 'warning', position: 'b l', time: 30000, autoHide: true})
 	}
-
 
 	const initSocketServer = (escapeRoomId, teamId, turnId, userId) => {
 		socket = io('/', {query: {
@@ -234,6 +233,7 @@ $(()=>{
 	initSocketServer(<%= escapeRoom.id%>, teamId, <%= turno ? turno.id : "undefined" %>, userId);
 });
 </script>
+<% }%>
 <% } %>
 </div>
 

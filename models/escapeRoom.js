@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.INTEGER,
                 "validate": {"max": 10000, "notEmpty": {"msg": "El tamaño de los equipos no puede estar vacío."}}
             },
-            "scope": {"type": DataTypes.BOOLEAN},
+            "scope": {"type": DataTypes.STRING},
             "invitation": {"type": DataTypes.STRING},
             "teamAppearance": {
                 "type": DataTypes.TEXT,
@@ -139,6 +139,10 @@ module.exports = function (sequelize, DataTypes) {
                 "validate": {"isIn": [["none", "online", "hybrid"]]}
             },
             "publishedOnce": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
+            },
+            "allowGuests": {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
             },

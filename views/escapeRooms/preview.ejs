@@ -1,14 +1,16 @@
 <%- include ("../partials/_header.ejs") %>
 
-<div role="main" class="main showStudent">
-	<div class="breadcrumbs-container">
+<div role="main" class="main showStudent preview">
+	 <% if (user && !user.anonymized) { %>
+        <div class="breadcrumbs-container">
         <div class="breadcrumbs">
 			<a href="/escapeRooms"><%=i18n.common.my%></a>
 				<span class="material-icons">chevron_right</span>
                 <span><%=escapeRoom.title%></span>
         </div>
 	</div>
-    <%var isCollaborator = escapeRoom.userCoAuthor.find(u => user.id == u.id) %>
+    <% } %>
+    <%var isCollaborator = user && escapeRoom.userCoAuthor.find(u => user.id == u.id) %>
     <%var isUnconfirmedCollaborator = isCollaborator && !isCollaborator.coAuthors.confirmed%>
     <%if(isUnconfirmedCollaborator){%>
             <div class="flex-er-collaborator fadeIn">
@@ -75,7 +77,7 @@
                         <p><%=i18n.escapeRoom.format[escapeRoom.format]%></p>
                     </div>
                 <%}%>
-                <%if(escapeRoom.instructions && !user.isStudent){%>
+                <%if(escapeRoom.instructions && user && !user.isStudent){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.instructions%></h3>
                         <a href="/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
@@ -97,7 +99,6 @@
                         <p><%=i18n.user.eduLevel[escapeRoom.level]%></p>
                     </div>
                 <%}%>
-                <!--<%if(!user.isStudent){%><div><h3>Associated materials</h3><p><%=escapeRoom.duration%></p></div><%}%>-->
             </div>
         </div>
 
@@ -105,24 +106,65 @@
     <br/>
    <br/>
     <div class="button-share">
-        <%if(!user.isStudent && !isUnconfirmedCollaborator){%>
-            <span>
-                <button class="rounded cloneButton" title="<%=i18n.escapeRoom.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
-                    <%=i18n.showTeacher.actionList.clone%>
-                </button>
-                <div class="overlay-trigger" data-id="clone-<%=escapeRoom.id%>">
-                    <form method="POST" action='/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT' >
-                        <p><%=i18n.escapeRoom.general.areYouSureClone%></p>
-                        <button class="deleteButton" type="button" onclick="overlayTrigger('clone-<%=escapeRoom.id%>', true)"><%=i18n.common.cancel%></button>
-                        <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
-                    </form>
-                </div>
-            </spa >
+        <% if (user) { %>
+            <%if(!user.isStudent && !isUnconfirmedCollaborator){%>
+                <span>
+                    <button class="rounded cloneButton" title="<%=i18n.escapeRoom.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
+                        <%=i18n.showTeacher.actionList.clone%>
+                    </button>
+                    <div class="overlay-trigger" data-id="clone-<%=escapeRoom.id%>">
+                        <form method="POST" action='/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT' >
+                            <p><%=i18n.escapeRoom.general.areYouSureClone%></p>
+                            <button class="deleteButton" type="button" onclick="overlayTrigger('clone-<%=escapeRoom.id%>', true)"><%=i18n.common.cancel%></button>
+                            <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
+                        </form>
+                    </div>
+                </spa >
+            <%}%>
+            <a href="/escapeRooms/<%=escapeRoom.id%>/join" >
+                <button class="rounded editButton acceptButton" <%if(!user.isStudent && isUnconfirmedCollaborator){%>disabled title="<%=i18n.collaborators.beforeJoin%>"<%}%>><%=i18n.showStudent.join%></button>
+            </a>
+        <%} else {%>
+            <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showStudent.join%></button>
+            <div id="dialog-join-anon" title="Playing '<%=escapeRoom.title%>'" style="display: none;">
+                <p class="text-center"> 
+                Already have an account in Escapp
+                <br/><br/> <a href="/escapeRooms/<%=escapeRoom.id%>/join" >
+                <button class="rounded editButton acceptButton" ><%=i18n.user.actions.login%></button>
+                </a>
+                </p>
+                 <p class="text-center"> 
+                If you don't, you can register now:
+                 <br/><br/><a href="/register?redir=/escapeRooms/<%=escapeRoom.id%>/play" >
+                <button class="rounded editButton editButton" ><%=i18n.user.actions.register%></button>
+                </a>
+                </p>
+                <hr/>
+                <p class="text-center">
+                You can also play without signing up.
+                </p>
+                <form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/join-anon">
+                    <p class="text-center"><label for="alias"><%=i18n.user.alias%></label><br/>
+                        <input type="text" placeholder="Enter alias" id="alias" name="alias"/>
+                    </p>
+                <div class="userField text-center">
+                <label for="eduLevel"><span><%=i18n.user.eduLevelField%><span id="roleFieldStudy"><%=i18n.user.roleFieldStudy%></span> <span id="roleFieldTeach"><%=i18n.user.roleFieldTeach%></span></span><br/>
+                <select required class="customInput" id="eduLevel" name="eduLevel" value="<%= escapeRoom.level %>" placeholder="<%=i18n.user.inputs.eduLevelPlaceHolder %>" autocomplete="off">
+                    <option disabled value  <%= !escapeRoom.level ? "selected" : ""%>/>
+                    <option value="higher" <%= escapeRoom.level === "higher" ? "selected" : ""%>><%=i18n.user.eduLevel.higher%></option>
+                    <option value="secondary" <%= escapeRoom.level === "secondary" ? "selected" : ""%>><%=i18n.user.eduLevel.secondary%></option>
+                    <option value="primary" <%= escapeRoom.level === "primary" ? "selected" : ""%>><%=i18n.user.eduLevel.primary%></option>
+                    <option value="vet" <%= escapeRoom.level === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
+                    <option value="other" <%= escapeRoom.level === "other" ? "selected" : ""%>><%=i18n.user.eduLevel.other%></option>
+                    <option value="none" <%= escapeRoom.level === "none" ? "selected" : ""%>><%=i18n.user.eduLevel.none%></option>
+                </select></label>
+            </div>
+            <p class="text-center">
+                <button class="rounded editButton acceptButton" type="submit"><%=i18n.showStudent.join%></button>
+            </p>
+            </form>
+            </div>
         <%}%>
-        
-        <a href="/escapeRooms/<%=escapeRoom.id%>/join" >
-            <button class="rounded editButton acceptButton" <%if(!user.isStudent && isUnconfirmedCollaborator){%>disabled title="<%=i18n.collaborators.beforeJoin%>"<%}%>><%=i18n.showStudent.join%></button>
-        </a>
     </div>
    <br/>
    <br/>
@@ -137,6 +179,39 @@
 	if (!close) {
 		$('.overlay-trigger[data-id="' + id + '"]').show();
 	}
+
+    
 };
 
 </script>
+<%if(!user){%>
+
+<script src="/js/vendor/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    var dialogOptions = {
+        autoOpen: false,
+        resizable: false,
+        width: window.innerWidth > 900 ? 860 : window.innerWidth*0.9,
+        height: "auto",
+        modal: true,
+        show: {
+            effect: "scale",
+            duration: 400
+        },
+        hide: {
+            effect: "scale",
+            duration: 400
+        },
+        appendTo: '.main'
+    };
+    $(
+    ()=>{
+        $("#dialog-join-anon").dialog({...dialogOptions, height: screen.height * 0.8});
+         $( "#join-anon-btn" ).on( "click", function() {
+            $( "#dialog-join-anon" ).dialog( "open" );
+        });
+    }
+    );
+
+</script>
+<%}%>
