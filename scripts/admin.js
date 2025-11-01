@@ -44,6 +44,7 @@ async function createAdmin () {
                 "isAdmin": true,
                 "isStudent": false,
                 "username": email,
+                "eduLevel": "other",
                 "lastAcceptedTermsDate": new Date()
             }
         });
