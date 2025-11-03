@@ -64,17 +64,20 @@
           cursor: not-allowed
         .sign
           position: absolute
-          top: 5px
-          left: 5px
+          top: -2px
+          left: -2px
           color: WHITE
           padding: 9px
           border-radius: 50%
           line-height: 1px
+          border: 2px solid white
           background-color: colors.$brightgreen
           &.add
             background-color: colors.$brightyellow
           &.edit
             background-color: colors.$brightblue
+          &.warning
+            background-color: colors.$brightorange
         .erFoto
           width: 100%
           display: flex

@@ -1,4 +1,6 @@
 const {models} = require("../models");
+const Sequelize = require("sequelize");
+
 const { authenticate, checkPuzzle, checkTurnoAccess, getERState, automaticallySetAttendance, getRanking, getCurrentPuzzle, getContentForPuzzle, getERPuzzles} = require("../helpers/utils");
 const {puzzleResponse, puzzleChecked, broadcastRanking, sendJoinTeam, sendStartTeam} = require("../helpers/sockets");
 const queries = require("../queries");
@@ -153,19 +155,19 @@ exports.auth = async (req, res, next) => {
 
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
-
         const {i18n} = res.locals || req.app.locals;
         const participation = await checkTurnoAccess(teams, user, escapeRoom, req.body.preview);
         const attendance = participation === PARTICIPANT || participation === TOO_LATE;
         const erState = teams && teams.length ? await getERState(req.user, escapeRoom.id, teams[0], teams[0].turno.id, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true) : undefined;
 
-        if (participation === PARTICIPANT) {
+        if (!req.body.preview && participation === PARTICIPANT) {
             await automaticallySetAttendance(teams[0], user.id, escapeRoom.automaticAttendance);
         }
         const {status, code, msg} = getAuthMessageAndCode(participation, i18n);
 
         req.response = {status, "body": {code, authentication, token, participation, msg, erState}};
     } catch (err) {
+        console.error(err);
         req.response = {"status": 500, "body": {"code": NOK, authentication, token}};
     }
     next();
@@ -190,7 +192,7 @@ exports.startPlaying = async (req, res, next) => {
             const joinTeam = await automaticallySetAttendance(teams[0], user.id, escapeRoom.automaticAttendance);
 
             escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
-            erState = await getERState(req.user, escapeRoom.id, teams[0],teams[0].turno.id, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
+            erState = await getERState(req.user, escapeRoom.id, teams[0], teams[0].turno.id, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed, true);
             if (joinTeam) {
                 sendStartTeam(joinTeam.id, code, authentication, PARTICIPANT, msg, erState);
                 sendJoinTeam(joinTeam.id, joinTeam.turno.id, erState.ranking);
@@ -207,4 +209,20 @@ exports.startPlaying = async (req, res, next) => {
 
 exports.reply = (req, res) => {
     res.status(req.response.status).json(req.response.body);
+};
+exports.getTags = async (req, res) => {
+    try {
+        const query = req.query.q || ""; // E.g., ?q=math
+        const tags = await models.subject.findAll({
+            "where": {"subject": {[Sequelize.Op.iLike]: `%${query}%`}},
+            "attributes": [[Sequelize.fn("DISTINCT", Sequelize.col("subject")), "subject"]],
+            "order": [["subject", "ASC"]],
+            "limit": 5 // Optional: limit number of suggestions
+        });
+
+        res.status(200).json(tags.map((t) => t.subject));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ "error": "Internal server error" });
+    }
 };

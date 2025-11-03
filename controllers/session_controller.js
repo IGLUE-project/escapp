@@ -1,5 +1,6 @@
 const {authenticate, findFirstAvailableFile} = require("../helpers/utils");
-const {models} = require("../models");
+const sequelize = require("../models");
+const {models} = sequelize;
 const query = require("../queries");
 const path = require("path");
 /*
@@ -44,6 +45,40 @@ exports.deleteExpiredUserSession = (req, res, next) => {
  *
  */
 exports.loginRequired = (req, res, next) => {
+    console.log(req.get("Referrer"));
+    if (req.session.user) {
+        if (!req.session.user.lastAcceptedTermsDate ||
+            req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY) {
+            res.redirect("/accept-new");
+        } else if (req.route.path === "/uploads/thumbnails/:file_name") { // Allows to access thumbnails...
+            next();
+        } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes(`/escapeRooms/${req.session.user.onlyForER}`)) {
+            next();
+        } else if (req.session.user.anonymized) {
+            if (req.session.user.onlyForER) {
+                if (req.escapeRoom) {
+                    if (req.escapeRoom.id == req.session.user.onlyForER) {
+                        next();
+                    } else {
+                        res.redirect(`/escapeRooms/${req.session.user.onlyForER}`);
+                    }
+                } else {
+                    res.redirect(`/escapeRooms/${req.session.user.onlyForER}`);
+                }
+            } else {
+                res.redirect(`/?redir=${req.param("redir") || req.url}`);
+            }
+        } else {
+            next();
+        }
+    } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes("/escapeRooms/")) {
+        next();
+    } else {
+        res.redirect(`/?redir=${req.param("redir") || req.url}`);
+    }
+};
+
+exports.loginOrAnonymousRequired = (req, res, next) => {
     if (req.session.user) {
         if (!req.session.user.lastAcceptedTermsDate ||
              req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY) {
@@ -51,6 +86,8 @@ exports.loginRequired = (req, res, next) => {
         } else {
             next();
         }
+    } else if (req.escapeRoom && req.escapeRoom.allowGuests) {
+        next();
     } else {
         res.redirect(`/?redir=${req.param("redir") || req.url}`);
     }
@@ -156,7 +193,7 @@ exports.adminOrAuthorRequired = (req, res, next) => {
 exports.adminOrCoAuthorRequired = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
         isAuthor = req.escapeRoom.authorId === req.session.user.id,
-        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed);
 
     const {i18n} = res.locals;
 
@@ -168,23 +205,33 @@ exports.adminOrCoAuthorRequired = (req, res, next) => {
     }
 };
 
+
 // MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
 exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) => {
-    const isAdmin = Boolean(req.session.user.isAdmin),
-        isAuthor = req.escapeRoom.authorId === req.session.user.id,
-        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
+    const isAdmin = req.session.user && Boolean(req.session.user.isAdmin),
+        isAuthor = req.session.user && req.escapeRoom.authorId === req.session.user.id,
+        isCoAuthor = req.session.user && req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed),
+        isCoAuthorPending = req.session.user && req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && !user.coAuthors.confirmed);
 
     try {
         if (isAdmin || isAuthor || isCoAuthor) {
             next();
             return;
         }
+        const isAnonymous = !req.session.user;
+
+        if (isAnonymous) {
+            next();
+            return;
+        }
+
         const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id));
 
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
             next();
-        } else if (req.escapeRoom.status === "completed") {
+        } else if (req.escapeRoom.status === "completed" || isCoAuthorPending) {
+            req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
             res.render("escapeRooms/preview", {"escapeRoom": req.escapeRoom, "user": req.session.user});
         } else {
             res.status(404);
@@ -198,22 +245,30 @@ exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) =>
 // MW that allows actions only if the user logged in is a participant of the escape room.
 exports.participantRequired = async (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin);
+    const transaction = await sequelize.transaction();
 
     try {
-        
-        const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
+        const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true), {transaction});
 
         req.participant = participants && participants.length ? participants[0] : null;
         if (req.participant) {
+            transaction.commit();
+            next();
+        } else if (isAdmin) {
+            const user = await models.user.findByPk(req.session.user.id, {transaction});
+            const testShift = await models.turno.findOne({"where": {"status": "test", "escapeRoomId": req.escapeRoom.id}}, {transaction});
+            const teamCreated = await models.team.create({ "name": `${user.alias}`, "turnoId": testShift.id}, {transaction});
+
+            await teamCreated.addTeamMembers(user.id, {transaction});
+            await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": user.id}, {transaction});
+            transaction.commit();
             next();
         } else {
-            if (isAdmin) {
-                res.status(403);
-                throw new Error("Forbidden");
-            }
+            transaction.commit();
             res.redirect("back");
         }
     } catch (error) {
+        transaction.rollback();
         next(error);
     }
 };
@@ -240,7 +295,7 @@ exports.create = async (req, res, next) => {
         const user = await authenticate((login || "").toLowerCase(), password);
 
         if (user) {
-            if (user.anonymized) {
+            if (user.anonymized && !req.body.anonymous) {
                 req.flash("error", i18n.user.anonymizedCantLogin);
                 res.render("index", {redir});
                 return;
@@ -251,6 +306,8 @@ exports.create = async (req, res, next) => {
                 "username": user.username,
                 "isAdmin": user.isAdmin,
                 "isStudent": user.isStudent,
+                "anonymized": user.anonymized,
+                "onlyForER": req.escapeRoom && req.escapeRoom.id,
                 "lastAcceptedTermsDate": user.lastAcceptedTermsDate,
                 "expires": Date.now() + maxIdleTime
             };

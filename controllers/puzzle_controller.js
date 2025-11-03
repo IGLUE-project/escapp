@@ -81,7 +81,6 @@ exports.retosUpdate = async (req, res) => {
                     oldPuzzle.title = reto.title;
                     oldPuzzle.automatic = reto.automatic;
                     oldPuzzle.order = reto.order;
-                    oldPuzzle.desc = reto.desc;
                     oldPuzzle.sol = reto.sol;
                     oldPuzzle.validator = reto.validator;
                     oldPuzzle.correct = reto.correct;

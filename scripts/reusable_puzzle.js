@@ -107,7 +107,7 @@ if (require.main === module) {
             thumbnailPath = args[i + 1];
             i++;
         } else if (args[i].startsWith("--instructions:")) {
-            const lang = args[i].split(":")[1];
+            const [, lang] = args[i].split(":");
 
             if (lang && args[i + 1]) {
                 instructions[lang] = args[i + 1];

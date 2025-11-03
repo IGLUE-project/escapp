@@ -6,10 +6,6 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.STRING,
                 "validate": {"notEmpty": {"msg": "El título no puede estar vacío."}}
             },
-            "subject": {
-                "type": DataTypes.STRING,
-                "validate": {"notEmpty": {"msg": "El nombre de la asignatura no puede estar vacío."}}
-            },
             "duration": {
                 "type": DataTypes.INTEGER,
                 "validate": {
@@ -27,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.INTEGER,
                 "validate": {"max": 10000, "notEmpty": {"msg": "El tamaño de los equipos no puede estar vacío."}}
             },
-            "scope": {"type": DataTypes.BOOLEAN},
+            "scope": {"type": DataTypes.STRING},
             "invitation": {"type": DataTypes.STRING},
             "teamAppearance": {
                 "type": DataTypes.TEXT,
@@ -117,6 +113,10 @@ module.exports = function (sequelize, DataTypes) {
                 "allowNull": true,
                 "validate": {"isIn": [["en", "es"]]}
             },
+            "lang": {
+                "type": DataTypes.STRING,
+                "allowNull": false
+            },
             "status": {
                 "type": DataTypes.STRING,
                 "allowNull": true,
@@ -146,7 +146,12 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
             },
-            "instructions": {"type": DataTypes.TEXT}
+            "allowGuests": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
+            },
+            "instructions": {"type": DataTypes.TEXT},
+            "hybridInstructions": {"type": DataTypes.TEXT}
         }
     );
 };

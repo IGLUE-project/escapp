@@ -3,7 +3,6 @@
 /* eslint-disable no-loop-func */
 const request = require("supertest");
 const session = require("supertest-session");
-const {execSync} = require("child_process");
 
 global.console.log = jest.fn();
 
@@ -18,7 +17,6 @@ const turnoId = 1;
 const puzzleId = 1;
 
 const routes = require("./routes");
-const dbName = process.env.DATABASE_URL;
 
 const teacherRoutes = routes.teacherRoutes(escapeRoomId, teacherId, puzzleId, turnoId);
 const studentRoutes = routes.studentRoutes(escapeRoomId, studentId, puzzleId, turnoId);

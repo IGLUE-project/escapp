@@ -621,7 +621,7 @@ exports.download = async (req, res) => {
 
 // GET /escapeRooms/:escapeRoomId/analytics/download_raw
 exports.downloadRaw = async (req, res) => {
-    const {escapeRoom, query, session} = req;
+    const {escapeRoom, query} = req;
     const {turnId} = query;
     // Const isAdmin = Boolean(session.user.isAdmin);
     // Const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;

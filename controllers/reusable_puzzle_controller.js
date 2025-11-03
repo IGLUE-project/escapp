@@ -106,7 +106,6 @@ exports.createReusablePuzzle = async (req, res, next) => {
             throw new Error("No file uploaded");
         }
 
-
         const zipPath = path.join(__dirname, "/../", req.files.file[0].path);
         let hasForm = false;
 
@@ -427,7 +426,7 @@ exports.renderReusablePuzzle = async (req, res, _) => { // eslint-disable-line  
 };
 
 // GET /reusablePuzzlePreview/:reusablePuzzleId
-exports.renderReusablePuzzlePreview = async (req, res, next) => {
+exports.renderReusablePuzzlePreview = async (req, res) => {
     const {reusablePuzzleId} = req.params;
     const receivedConfig = req.query.config ? JSON.parse(req.query.config) : {};
     const escapeRoomId = req.query.escapeRoomId || "";

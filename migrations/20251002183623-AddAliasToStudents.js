@@ -7,7 +7,7 @@ module.exports = {
         await queryInterface.sequelize.query("UPDATE \"users\" SET \"alias\" = CONCAT('anonymous_', CAST(id as TEXT))");
     },
 
-    async down (queryInterface, Sequelize) {
+    async down (queryInterface) {
         await queryInterface.removeColumn("users");
     }
 };

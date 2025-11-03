@@ -71,7 +71,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_ES.pdf"
         }
     }
-    
+
     // {
     //     "name": "CodeEditor",
     //     "zip": "defaultReusablePuzzles/CodeEditor/CodeEditor_Puzzle.zip",
@@ -84,11 +84,11 @@ const reusablePuzzlesList = [
     // }
 ];
 
-async function addReusablePuzzles() {
-  for (const puz of reusablePuzzlesList) {
-    await reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
-  }
-  console.log("✅ Task succesfully completed");
+async function addReusablePuzzles () {
+    for (const puz of reusablePuzzlesList) {
+        await reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
+    }
+    console.log("✅ Task succesfully completed");
 }
 
 addReusablePuzzles().catch(console.error);

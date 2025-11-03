@@ -20,7 +20,7 @@ module.exports = {
         });
     },
 
-    "down": async (queryInterface, Sequelize) => {
+    "down": async (queryInterface) => {
     // Remove the column in rollback
         await queryInterface.removeColumn("assets", "userId");
     }

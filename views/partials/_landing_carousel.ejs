@@ -27,6 +27,7 @@
                         }
                     }
                 }%>
+                <%var tobeConfirmed = escapeRoom.tobeConfirmed || (escapeRoom.userCoAuthor && escapeRoom.userCoAuthor.find(e=>(e.id == user.id) && !e.coAuthors.confirmed) )%>
                 <a href="<%=href%>" <%-disabled ? "onclick='return false;'":'' %> class="escapeRoomItemWrapper animated bounceIn" title="<%=disabled ? i18n.escapeRoom.main.notAvailable :  (escapeRoom.title||"").replace("\"","'")%>"style="animation-delay: <%=100*i%>ms;"  >
                     <div class="escapeRoomItem <%= disabled ?' disabled':'' %>">
                         <div class="erFoto" style="text-align: center">
@@ -38,16 +39,26 @@
                             <div class="sign">
                                 <span class="material-icons">check</span>
                             </div>
-                            <%} else if (escapeRoom.isAuthorOrCoAuthor){%>
+                            <%} else if (escapeRoom.isAuthorOrCoAuthor && !tobeConfirmed){%>
                             <div class="sign edit">
                                 <span class="material-icons">edit</span>
                             </div>
-                            <%} else if (!disabled ){%>
+                            <%} else if (!disabled && !tobeConfirmed){%>
                                 <div class="sign add">
                                     <span class="material-icons">add</span>
                                 </div>
-                                <%}%>
-                        <%}%>
+                            <%} else if (tobeConfirmed){%>
+                                <div class="sign warning" title="<%=i18n.collaborators.pendingConfirmation%>">
+                                    <span class="material-icons">warning</span>
+                                </div>
+                            <%}%>
+                        <%}else if(user && whichMenu == "created"){%>
+                            <% if(tobeConfirmed){%>
+                                <div class="sign warning" title="<%=i18n.collaborators.pendingConfirmation%>">
+                                    <span class="material-icons">warning</span>
+                                </div>  
+                                
+                        <%}}%> 
                     </div>
                 </a>
             <% } %>

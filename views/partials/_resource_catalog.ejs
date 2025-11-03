@@ -660,7 +660,7 @@
 
                 $('#puzzleSol').change(function(e) {
                     updateIframe();
-                    $('#warningMessageForReusablPuzzleCreation').show()
+                    $('#warningMessageForReusablePuzzleCreation').show()
                 });
 
                  $('#associatedPuzzle').change(function(e) {
@@ -677,7 +677,7 @@
                 if(!puzzleObject.id && $('#associatedPuzzle option[value=""]').length > 0) {
                     $('#associatedPuzzle').val("").change();
                 }else if(!puzzleObject.id) {
-                    $('#associatedPuzzle').val("1").change();
+                    $('#associatedPuzzle').val($('#associatedPuzzle').children(":first").val()).change();
                 }
 
                 updateIframe();

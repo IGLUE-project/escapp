@@ -157,7 +157,9 @@
                         <%=i18n.showTeacher.titles.subject%>:
                     </div>
                     <div class="flexShowRight">
-                        <%= escapeRoom.subject %>
+                        <span class="tags-box"><% for (var s in escapeRoom.subject || []) {%>
+                            <span class="tag-chip"><%=escapeRoom.subject[s].subject%></span>
+                        <%}%></span>
                     </div>
                 </div>
                 <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 60ms;">
@@ -368,7 +370,7 @@
         </p>
         <%-include("../partials/_copyLink",{invitationLink,key:"main"})%>
         <p class="join-instructions">
-            <%if (!escapeRoom.scope){%>
+            <%if (escapeRoom.scope != "private"){%>
                 <%=i18n.showTeacher.messages.join.also%> <a><%=hostName%></a>
                 <%=i18n.showTeacher.messages.join.register%>
                 "<span class="hl"><%=escapeRoom.title%></span>"

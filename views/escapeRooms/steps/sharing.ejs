@@ -26,10 +26,14 @@
             <label for="instructionsTitle"  class="itemNarrow">2. <%=i18n.escapeRoom.steps.sharing.instructions%></label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.publication%></p>
             <input class="attach" type="file" id="instructions" name="instructions"/>
-            <label for="instructions" class="fileUpload customInput itemWide">
+            <label for="instructions" class="fileUpload customInput itemWide" style="display: flex; align-items: baseline;">
               <span id="imgLabel" class="fileTitle">
                 <% if (escapeRoom.id && escapeRoom.instructions) { %>
-                  <%=escapeRoom.instructions || "Default" %>
+                  <a href="/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
+                    <button class="rounded" type="button"><%=i18n.common.download%> 
+                        <span class="material-icons" style="color: #F40F02;">file_download</span>
+                    </button>
+                    </a>
                 <% } else { %>
                   <%=i18n.escapeRoom.steps.edit.noFileUploaded%>
                 <% } %>
@@ -58,12 +62,19 @@
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.scopeExplanation%></p>
 
             <select class="customInput itemWide" id="scope" name="scope" autocomplete="off">
-                <option value="public" <%=!Boolean(escapeRoom.scope)  ? "" : "selected" %>><%=i18n.escapeRoom.invitation.scopes["public"]%> </option>
-                <option value="private" <%=Boolean(escapeRoom.scope) ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["private"]%></option>
+                <option value="public" <%=(escapeRoom.scope == "public")   ? "" : "selected" %>><%=i18n.escapeRoom.invitation.scopes["public"]%> </option>
+                <!-- <option value="private" <%=(escapeRoom.scope  == "escapp") ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["escapp"]%></option> -->
+                <option value="private" <%=(escapeRoom.scope == "private") ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["private"]%></option>
             </select>
+            <br/>
+            <br/>
+            <br/>
+            <label class="note" style="padding-left:30px;" for="allowGuests" ><%=i18n.escapeRoom.steps.sharing.allowGuests%>
+                <input class="customCheckbox" type="checkbox" name="allowGuests" id="allowGuests" <%= escapeRoom.allowGuests ? "checked" : "" %> />
+            </label>
         </div>
 
-        <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms; <%=Boolean(escapeRoom.scope) ?  '' : 'display: none;'%>" id = "invitationBlock"   ">
+        <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms; <%=(escapeRoom.scope == 'private') ?  '' : 'display: none;'%>" id = "invitationBlock"   ">
             <label for="invitation"  class="itemNarrow">4. <%=i18n.showTeacher.titles.password%></label>
 			<p class="explanation"><%=i18n.escapeRoom.steps.sharing.invitationExplanation%></p>
 
@@ -131,6 +142,7 @@ $('#scope').on('change', function(e){
 
 		switch(option) {
 			case 'public':
+            case 'escapp':
 				$('#invitationBlock').hide();
                 break;
             case 'private':

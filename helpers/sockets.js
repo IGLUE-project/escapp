@@ -271,7 +271,7 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
         if (escapeRoom) {
             const teams = await user.getTeamsAgregados(queries.user.erTeam(escapeRoomId));
             const participation = await checkTurnoAccess(teams, user, escapeRoom, preview);
-            const privileged = user.isAdmin || escapeRoom.authorId === user.id || (escapeRoom.userCoAuthor || []).some((e) => e.id === user.id);
+            const privileged = user.isAdmin || escapeRoom.authorId === user.id || (escapeRoom.userCoAuthor || []).some((e) => e.id === user.id && e.coAuthors.confirmed);
 
             // TODO comprobar author turno está en ER
             if (teams && teams.length) {
@@ -279,10 +279,10 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
                 const teamId = team.id;
                 const turnIdFound = team.turno.id;
 
-                if (!privileged && (turnId && (turnId != turnIdFound))) {
+                if (!privileged && (turnId && turnId != turnIdFound)) {
                     return {"errorMsg": i18n.api.notFound};
                 }
-                const attendance = (participation === "PARTICIPANT") || (participation === "TOO_LATE");
+                const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
 
                 if (!waiting) {
                     escapeRoom.puzzles = await getERPuzzles(escapeRoomId);
@@ -295,7 +295,7 @@ exports.checkAccess = async (user, escapeRoomId, turnId, i18n, waiting, preview 
                 return {participation, teamId, "turnId": turnId || turnIdFound, erState, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
             }
 
-            return {participation, "language": escapeRoom.forceLang, turnId, "language": escapeRoom.forceLang, "teamInstructions": escapeRoom.teamInstructions};
+            return {participation, "language": escapeRoom.forceLang, turnId, "teamInstructions": escapeRoom.teamInstructions};
         }
         return {"errorMsg": i18n.api.notFound};
     } catch (err) {
