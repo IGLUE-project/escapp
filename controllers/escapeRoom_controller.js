@@ -293,8 +293,7 @@ exports.update = async (req, res) => {
     escapeRoom.level = body.level;
     escapeRoom.field = body.field;
     escapeRoom.format = body.format;
-    escapeRoom.supportLink = body.supportLink;
-    escapeRoom.supportLink = body.lang;
+    escapeRoom.lang = body.lang;
 
     escapeRoom.teamSize = body.teamSize || 0;
     escapeRoom.forceLang = isValidLocale(body.forceLang) ? body.forceLang : null;
