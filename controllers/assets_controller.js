@@ -17,6 +17,7 @@ const imageRegex = new RegExp(/image\/.*/);
 const videoRegex = new RegExp(/video\/.*/);
 const audioRegex = new RegExp(/audio\/.*/);
 const applicationRegex = new RegExp(/application\/webapp/);
+const zipType = new RegExp(/application\/(zip|x-zip-compressed|x-zip)/);
 
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
@@ -83,7 +84,8 @@ exports.uploadAssets = async (req, res) => {
         // Res.json({"id": saved.id, "url": uploadResult.url});
         // Const html = ckeditorResponse(req.query.CKEditorFuncNum, req.file.url);
 
-        if (mime === "application/zip") {
+        if (mime.search(zipType) !== -1) {
+            asset.update({ "mime": "application/zip" });
             let isWebapp = false;
             const zip = new StreamZip.async({ "file": req.file.path });
             const entries = await zip.entries();

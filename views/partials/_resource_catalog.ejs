@@ -677,7 +677,7 @@
                 if(!puzzleObject.id && $('#associatedPuzzle option[value=""]').length > 0) {
                     $('#associatedPuzzle').val("").change();
                 }else if(!puzzleObject.id) {
-                    $('#associatedPuzzle').val("1").change();
+                    $('#associatedPuzzle').val($('#associatedPuzzle').children(":first").val()).change();
                 }
 
                 updateIframe();
