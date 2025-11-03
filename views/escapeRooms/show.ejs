@@ -152,6 +152,14 @@
                         <%= escapeRoom.title %>
                     </div>
                 </div>
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 30ms;">
+                    <div class="flexShowLeft">
+                        <%=i18n.showTeacher.titles.forceLang2%>:
+                    </div>
+                    <div class="flexShowRight">
+                        <%= i18n.languages[escapeRoom.lang] %>
+                    </div>
+                </div>
                 <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 40ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.subject%>:
@@ -162,7 +170,7 @@
                         <%}%></span>
                     </div>
                 </div>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 60ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 50ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.duration%>:
                     </div>
@@ -171,7 +179,7 @@
                     </div>
                 </div>
                 <%if(escapeRoom.field) {%>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 80ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 60ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.field%>:
                     </div>
@@ -181,7 +189,7 @@
                 </div>
                 <%}%>
                 <%if(escapeRoom.level) {%>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 100ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 70ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.level%>:
                     </div>
@@ -191,7 +199,7 @@
                 </div>
                 <%}%>
                 <%if(escapeRoom.format) {%>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 120ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 80ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.format%>:
                     </div>
@@ -201,7 +209,7 @@
                 </div>
                 <%}%>
                 <%if(escapeRoom.instructions){%>
-                    <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 140ms;">
+                    <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 90ms;">
                         <div class="flexShowLeft">
                             <%=i18n.showTeacher.titles.instructions%>:
                         </div>
@@ -273,9 +281,7 @@
                                     <div class="flex-cell flex-cell-sol">
                                         <%=i18n.escapeRoom.steps.puzzles.solution%>
                                     </div>
-                                    <div class="flex-cell flex-cell-desc">
-                                        <%=i18n.escapeRoom.steps.puzzles.description%>
-                                    </div>
+                                    
                                     <div class="flex-cell flex-cell-pista">
                                         <%=i18n.escapeRoom.steps.puzzles.hints%>
                                     </div>
@@ -289,9 +295,6 @@
                                     </div>
                                     <div class="flex-cell flex-cell-sol">
                                         <div class="retoTextArea editable" data-reto="<%=puzzle.id%>" data-id="sol"><%= puzzle.sol%></div>
-                                    </div>
-                                    <div class="flex-cell flex-cell-desc">
-                                        <div class="retoTextArea editable" data-reto="<%=puzzle.id%>" data-id="desc"><%= puzzle.desc%></div>
                                     </div>
                                     <div class="flex-cell flex-cell-pista">
                                         <div class="retoTextArea hints-cell hints-cell-preview" data-reto="<%=puzzle.id%>" data-id="hint">
