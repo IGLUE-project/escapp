@@ -119,7 +119,7 @@ exports.joinAnonymous = async (req, res, next) => {
     req.body.username = `${req.escapeRoom.id}_${req.body.alias}_${Date.now()}@anonymous.org`;
     req.body.redir = `/escapeRooms/${req.escapeRoom.id}/join`;
     req.body.anonymous = true;
-    
+
     const user = models.user.build({
         "name": "Anonymous",
         "surname": "Anonymous",

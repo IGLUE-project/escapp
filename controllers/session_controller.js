@@ -45,7 +45,7 @@ exports.deleteExpiredUserSession = (req, res, next) => {
  *
  */
 exports.loginRequired = (req, res, next) => {
-    console.log(req.get("Referrer"))
+    console.log(req.get("Referrer"));
     if (req.session.user) {
         if (!req.session.user.lastAcceptedTermsDate ||
             req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY) {
@@ -71,8 +71,8 @@ exports.loginRequired = (req, res, next) => {
         } else {
             next();
         }
-    } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes(`/escapeRooms/`)) {
-        next();    
+    } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes("/escapeRooms/")) {
+        next();
     } else {
         res.redirect(`/?redir=${req.param("redir") || req.url}`);
     }

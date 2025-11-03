@@ -180,7 +180,7 @@ exports.show = async (req, res) => {
 
 // GET /escapeRooms/new
 exports.new = (_req, res) => {
-    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "",  "lang": "", "forceLang": ""};
+    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "lang": "", "forceLang": ""};
 
     res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
 };
@@ -917,7 +917,6 @@ exports.test = async (req, res) => {
 
 
 exports.showGuide = (req, res) => res.render("inspiration/inspiration");
-
 
 
 // Work in progress
