@@ -106,12 +106,11 @@
 <br/>
 <div class="userField">
     <label for="accept_terms" >
-     <p>
-        <input type="checkbox" class="" id="accept_terms" name="accept_terms" required/>
-        <%-i18n.user.terms%><br/>
-        
-    </p>
-</label>
+        <p>
+            <input type="checkbox" class="" id="accept_terms" name="accept_terms" required/>
+            <%-i18n.user.terms%><br/>
+        </p>
+    </label>
 </div>
 <br/>
     <button class="registro" type="submit" value="Save" onclick="return confirmPassword()"><%=i18n.user.actions.register %></button>
@@ -123,8 +122,6 @@
 
 </form>
 <%} else {%>
-    
-
 
     <br/>
     <a href="/"><button class="save white rounded" type="button"><%=i18n.common.back %></button></a>

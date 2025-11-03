@@ -4754,6 +4754,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.showStudent .flex .flex-thumb {
   width: 25%;
+  flex: 1;
   position: relative;
   padding-top: 22px;
   margin-left: 8px;
@@ -4763,7 +4764,11 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-width: 5px;
 }
 #mainSection .main.showStudent .flex .flex-er-info {
-  flex: 1;
+  flex: 3;
+  max-width: 75%;
+}
+#mainSection .main.showStudent .flex .flex-er-info img {
+  max-width: 90%;
 }
 #mainSection .main.showStudent .flex .flex-er-info .flex-er-info-preview {
   flex-direction: row;
@@ -4824,6 +4829,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.preview #dialog-join-anon {
   background: #232951;
   padding: 1em;
+  overflow-y: auto;
+}
+#mainSection .main.preview .lang {
+  font-family: Lato;
+  border: 2px solid white;
+  vertical-align: middle;
+  margin-bottom: 5px;
 }
 #mainSection .main.preview .ui-dialog {
   border: 2px solid white !important;
@@ -4831,26 +4843,52 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.preview .ui-button-icon-space::after {
   color: white;
 }
+#mainSection .main.preview .ui-dialog-titlebar {
+  border-bottom: 2px solid white;
+}
 #mainSection .main.preview .ui-dialog-titlebar, #mainSection .main.preview .ui-dialog-title {
   background-color: #232951 !important;
   color: white;
+}
+#mainSection .main.preview .ui-dialog-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  width: calc(100% - 75px);
 }
 #mainSection .main.preview label {
   color: white !important;
   margin-bottom: 5px;
 }
-#mainSection .main.preview input, #mainSection .main.preview select {
+#mainSection .main.preview input:not([type=checkbox]), #mainSection .main.preview select {
   color: white !important;
   -webkit-text-fill-color: white !important;
   border-color: white !important;
   text-align: center;
   min-width: 40%;
+  max-width: 90%;
 }
 #mainSection .main.preview option {
   text-align: center;
 }
 #mainSection .main.preview .ui-widget-overlay {
   opacity: 0.8;
+}
+#mainSection .main.preview .accept_terms {
+  max-width: min(800px, 90%);
+  margin: auto;
+  font-size: 0.7em;
+  margin-top: 1em;
+}
+#mainSection .main.preview .accept_terms a {
+  text-decoration: underline;
+}
+#mainSection .main.preview .accept_terms label p {
+  text-align: center;
+}
+#mainSection .main.preview .accept_terms input[type=checkbox] {
+  height: auto;
 }
 
 .finish .content {
@@ -5017,7 +5055,7 @@ table.mainTable tr td .icon {
   background: white;
   color: #161938 !important;
   font-size: 0.8em;
-  line-height: 1;
+  line-height: 1.15;
   user-select: none;
   white-space: nowrap;
   font-weight: bold;

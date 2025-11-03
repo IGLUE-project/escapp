@@ -82,7 +82,7 @@ exports.create = (req, res, next) => {
         });
         return;
     }
-
+    
     const isStudent = role_override === "student";
 
     user.isStudent = Boolean(isStudent);

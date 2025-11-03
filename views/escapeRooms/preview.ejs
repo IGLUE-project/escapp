@@ -33,10 +33,19 @@
 
 		</div>
 		<div class="flex-er-info animated fadeIn">
-            <h1><%=escapeRoom.title%></h1>
-            <p>by <%=escapeRoom.author.alias%></p>
-			
+            <h1><%=escapeRoom.title%> 
+            
             <br/>
+        </h1>
+            <p>
+                <span>by <%=escapeRoom.author.alias%></span>
+                <%if(escapeRoom.lang){%>   &middot; 
+                <span class="tag-chip lang"><%=i18n.languages[escapeRoom.lang]%></span>
+                <%}%>
+            </p>
+
+            <br/>
+            
             <h3><%=i18n.showTeacher.titles.description%></h3>
             <p><%-escapeRoom.description%></p>
             <div class="flex-er-info-preview fadeIn">
@@ -128,27 +137,29 @@
             <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showStudent.join%></button>
             <div id="dialog-join-anon" title="Playing '<%=escapeRoom.title%>'" style="display: none;">
                 <p class="text-center"> 
-                Already have an account in Escapp
+                <%=i18n.showStudent.alreadyAccount%>
                 <br/><br/> <a href="/escapeRooms/<%=escapeRoom.id%>/join" >
                 <button class="rounded editButton acceptButton" ><%=i18n.user.actions.login%></button>
                 </a>
                 </p>
                  <p class="text-center"> 
-                If you don't, you can register now:
+                <%=i18n.showStudent.registerNow%>    
+
                  <br/><br/><a href="/register?redir=/escapeRooms/<%=escapeRoom.id%>/play" >
                 <button class="rounded editButton editButton" ><%=i18n.user.actions.register%></button>
                 </a>
                 </p>
                 <hr/>
                 <p class="text-center">
-                You can also play without signing up.
+                <%=i18n.showStudent.playAnonymously%>  
                 </p>
                 <form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/join-anon">
-                    <p class="text-center"><label for="alias"><%=i18n.user.alias%></label><br/>
+                    <p class="text-center">
+                        <label for="alias" style="display: inline-block;"><%=i18n.user.alias%></label><br/>
                         <input type="text" placeholder="Enter alias" id="alias" name="alias"/>
                     </p>
                 <div class="userField text-center">
-                <label for="eduLevel"><span><%=i18n.user.eduLevelField%><span id="roleFieldStudy"><%=i18n.user.roleFieldStudy%></span> <span id="roleFieldTeach"><%=i18n.user.roleFieldTeach%></span></span><br/>
+                    <label for="eduLevel" style="display: inline-block;"><%=i18n.user.eduLevelField%></label><br/>
                 <select required class="customInput" id="eduLevel" name="eduLevel" value="<%= escapeRoom.level %>" placeholder="<%=i18n.user.inputs.eduLevelPlaceHolder %>" autocomplete="off">
                     <option disabled value  <%= !escapeRoom.level ? "selected" : ""%>/>
                     <option value="higher" <%= escapeRoom.level === "higher" ? "selected" : ""%>><%=i18n.user.eduLevel.higher%></option>
@@ -157,7 +168,15 @@
                     <option value="vet" <%= escapeRoom.level === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
                     <option value="other" <%= escapeRoom.level === "other" ? "selected" : ""%>><%=i18n.user.eduLevel.other%></option>
                     <option value="none" <%= escapeRoom.level === "none" ? "selected" : ""%>><%=i18n.user.eduLevel.none%></option>
-                </select></label>
+                </select> 
+                <div class="userField accept_terms">
+                    <label for="accept_terms">
+                        <p>
+                            <input type="checkbox" class="" id="accept_terms" name="accept_terms" required="">
+                            I confirm that I have read and accept the <a href="/terms" target="_blank">Terms of Use</a> and the <a href="/privacy" target="_blank">Privacy Policy</a>.<br>
+                        </p>
+                    </label>
+                </div>
             </div>
             <p class="text-center">
                 <button class="rounded editButton acceptButton" type="submit"><%=i18n.showStudent.join%></button>
@@ -202,7 +221,13 @@
             effect: "scale",
             duration: 400
         },
-        appendTo: '.main'
+        appendTo: '.main',
+        open: function(event, ui) {
+        $("body").css({ overflow: 'hidden' })
+        },
+        beforeClose: function(event, ui) {
+        $("body").css({ overflow: 'inherit' })
+        }
     };
     $(
     ()=>{

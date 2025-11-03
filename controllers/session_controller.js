@@ -45,11 +45,14 @@ exports.deleteExpiredUserSession = (req, res, next) => {
  *
  */
 exports.loginRequired = (req, res, next) => {
+    console.log(req.get("Referrer"))
     if (req.session.user) {
         if (!req.session.user.lastAcceptedTermsDate ||
             req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY) {
             res.redirect("/accept-new");
         } else if (req.route.path === "/uploads/thumbnails/:file_name") { // Allows to access thumbnails...
+            next();
+        } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes(`/escapeRooms/${req.session.user.onlyForER}`)) {
             next();
         } else if (req.session.user.anonymized) {
             if (req.session.user.onlyForER) {
@@ -68,6 +71,8 @@ exports.loginRequired = (req, res, next) => {
         } else {
             next();
         }
+    } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes(`/escapeRooms/`)) {
+        next();    
     } else {
         res.redirect(`/?redir=${req.param("redir") || req.url}`);
     }
@@ -302,7 +307,7 @@ exports.create = async (req, res, next) => {
                 "isAdmin": user.isAdmin,
                 "isStudent": user.isStudent,
                 "anonymized": user.anonymized,
-                "onlyForER": req.escapeRoom.id,
+                "onlyForER": req.escapeRoom && req.escapeRoom.id,
                 "lastAcceptedTermsDate": user.lastAcceptedTermsDate,
                 "expires": Date.now() + maxIdleTime
             };

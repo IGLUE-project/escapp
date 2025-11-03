@@ -4,6 +4,7 @@
   .main.showStudent
     background-image: none
     background: colors.$bckg
+
     .button-share
       text-align: center
       padding-top: 0.5em
@@ -16,6 +17,7 @@
       flex-direction: row-reverse
       .flex-thumb
         width: 25%
+        flex: 1
         position: relative
         padding-top: 22px
         margin-left: 8px
@@ -23,7 +25,10 @@
           width: 100%
           border-width: 5px
       .flex-er-info
-        flex: 1
+        flex: 3
+        max-width: 75%
+        img
+          max-width: 90%
         .flex-er-info-preview
           flex-direction: row
           flex-wrap: wrap
@@ -70,26 +75,52 @@
     #dialog-join-anon
       background: colors.$purplebg
       padding: 1em
+      overflow-y: auto
+    .lang
+      font-family: Lato
+      border: 2px solid white
+      vertical-align: middle
+      margin-bottom: 5px
     .ui-dialog 
       border: 2px solid white !important
     .ui-button-icon-space::after
       color: white
+    .ui-dialog-titlebar
+      border-bottom: 2px solid white
     .ui-dialog-titlebar, .ui-dialog-title
       background-color: colors.$purplebg !important
       color: white
+    .ui-dialog-title
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+      display: inline-block
+      width: calc(100% - 75px)
     label
       color: white !important
       margin-bottom: 5px
-    input, select
+    input:not([type="checkbox"]), select
       color: white !important
       -webkit-text-fill-color: white !important
       border-color: white !important
       text-align: center
       min-width: 40%
+      max-width: 90%
     option
       text-align: center
     .ui-widget-overlay 
       opacity: 0.8
+    .accept_terms
+      max-width: min(800px, 90%)
+      margin: auto
+      font-size: 0.7em
+      margin-top: 1em
+      a
+        text-decoration: underline
+      label p
+        text-align: center
+      input[type="checkbox"]
+        height: auto
 .finish
   .content
     width: 100%

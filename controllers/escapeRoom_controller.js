@@ -180,17 +180,17 @@ exports.show = async (req, res) => {
 
 // GET /escapeRooms/new
 exports.new = (_req, res) => {
-    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "forceLang": ""};
+    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "",  "lang": "", "forceLang": ""};
 
     res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
 };
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, lang, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
 
-    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, authorId, forceLang, field, format, level}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
@@ -201,7 +201,7 @@ exports.create = async (req, res) => {
         filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "teacher", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang", "format", "level", "field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "teacher", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "lang", "forceLang", "format", "level", "field"], transaction});
         const newSubjects = subjects.map((s) => ({
             "subject": s,
             "escapeRoomId": er.id
@@ -294,6 +294,7 @@ exports.update = async (req, res) => {
     escapeRoom.field = body.field;
     escapeRoom.format = body.format;
     escapeRoom.supportLink = body.supportLink;
+    escapeRoom.supportLink = body.lang;
 
     escapeRoom.teamSize = body.teamSize || 0;
     escapeRoom.forceLang = isValidLocale(body.forceLang) ? body.forceLang : null;
@@ -306,7 +307,7 @@ exports.update = async (req, res) => {
         filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "forceLang", "format", "level", "field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "lang", "forceLang", "format", "level", "field"], transaction});
 
         // Remove all previous subjects for this escape room
         await models.subject.destroy({ "where": { "escapeRoomId": er.id } }, {transaction});
@@ -636,7 +637,7 @@ exports.clone = async (req, res, next) => {
     const transaction = await sequelize.transaction();
 
     try {
-        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, publishedOnce} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
+        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, publishedOnce} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${oldTitle}`;
         const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -916,41 +917,7 @@ exports.test = async (req, res) => {
 
 
 exports.showGuide = (req, res) => res.render("inspiration/inspiration");
-// EscapeRoomController.isStatusCompleted, participantController.isNotAuthorOrCoAuthorOrAdmin, participantController.checkIsNotParticipant, participantController.checkSomeTurnAvailable, joinController.indexTurnos, teamController.create);
-exports.joinAnonymous = async (req, res, next) => {
-    const { i18n } = res.locals;
-    const currentLang = i18n.lang;
 
-    req.body.password = Math.random().toString(36).slice(-8);
-    req.body.username = `${req.escapeRoom.id}_${req.body.alias}_${Date.now()}@anonymous.org`;
-    req.body.redir = `/escapeRooms/${req.escapeRoom.id}/join`;
-    req.body.anonymous = true;
-    const user = models.user.build({
-        "name": "Anonymous",
-        "surname": "Anonymous",
-        "alias": req.body.alias || "Anonymous",
-        "eduLevel": req.body.eduLevel || "other",
-        "username": req.body.username,
-        "password": req.body.password,
-        "lang": currentLang,
-        "anonymized": true,
-        "isStudent": true,
-        "lastAcceptedTermsDate": new Date()
-    });
-
-    try {
-        await user.save({"fields": ["name", "surname", "alias", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate", "anonymized"]});
-
-        req.body.login = user.username;
-
-
-        next();
-    } catch (error) {
-        console.error(error);
-        req.flash("error", i18n.common.flash.errorCreatingUser);
-        res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
-    }
-};
 
 
 // Work in progress
