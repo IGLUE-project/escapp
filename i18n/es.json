@@ -1294,7 +1294,7 @@
         "msgPlaceholder2": "Escribe aquí tu mensaje. Todos los usuarios de esta lista que estén conectados ahora mismo lo recibirán."
     },
     "cookies": {
-        "cookie_message": "Utilizamos únicamente cookies propias con finalidad técnica, no recabamos ni cedemos datos de carácter personal de los usuarios sin su conocimiento.",
+        "cookie_message": "Usamos solo cookies esenciales para garantizar el funcionamiento adecuado de este sitio. No utilizamos cookies de seguimiento ni de terceros",
         "accept_button": "aceptar",
         "privacy_policy": "Más información",
         "back_to_home": "Volver a inicio"
