@@ -308,6 +308,39 @@ exports.forAll = (page = 1, limit = 10, search = "") => ({
     "order": [["id", "desc"]]
 });
 
+exports.update_after = (page = 1, limit = 10, date = "") => ({
+    "attributes": ["id", "title", "description"],
+    limit,
+    "where": {
+        "updatedAt": {[Op.gte]: date}
+    },
+    "order": [["id", "desc"]],
+    "offset": (page - 1) * limit
+});
+
+exports.created_after = (page = 1, limit = 10, date = "") => ({
+    "attributes": ["id", "title", "description"],
+    limit,
+    "where": {
+        "updatedAt": {[Op.lte]: date}
+    },
+    "order": [["createdAt", "desc"]],
+    "offset": (page - 1) * limit
+})
+
+exports.public = (page = 1, limit = 10) => ({
+    "attributes": ["id", "title", "description"],
+    limit,
+    "where": {
+        "status": "completed",
+    },
+    "order": [["createdAt", "desc"]],
+    "offset": (page - 1) * limit
+})
+
+exports.text = (page = 1, limit = 10) => ({
+    "attributes": ["id", "title", "description"],
+})
 
 exports.loadExport = {
     "include": [
