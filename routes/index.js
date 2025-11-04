@@ -16,7 +16,7 @@ const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
 const managementController = require("../controllers/management_controller");
-const escapeRoom_api_controller = require("../controllers/escapeRoom_api_controller");
+const networkController = require("../controllers/network_controller");
 const { instructions, thumbnails, hints, upload, hybridInstructions } = require("../controllers/multer_controller");
 
 
@@ -227,6 +227,8 @@ router.get("/uploads/instructions/:file_name", sessionController.loginRequired, 
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
 
-router.get("/getEscapeRooms", sessionController.loginRequired, escapeRoom_api_controller.escapeRoomsOrdered);
+router.get("/network/searchInInstance", networkController.searchInInstance);
+router.get("/network/search", sessionController.loginRequired, networkController.renderSearch);
+router.get("/network/query", sessionController.loginRequired, networkController.searchInNetwork);
 
 module.exports = router;

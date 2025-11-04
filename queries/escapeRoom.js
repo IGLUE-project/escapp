@@ -308,26 +308,6 @@ exports.forAll = (page = 1, limit = 10, search = "") => ({
     "order": [["id", "desc"]]
 });
 
-exports.update_after = (page = 1, limit = 10, date = "") => ({
-    "attributes": ["id", "title", "description"],
-    limit,
-    "where": {
-        "updatedAt": {[Op.gte]: date}
-    },
-    "order": [["id", "desc"]],
-    "offset": (page - 1) * limit
-});
-
-exports.created_after = (page = 1, limit = 10, date = "") => ({
-    "attributes": ["id", "title", "description"],
-    limit,
-    "where": {
-        "updatedAt": {[Op.lte]: date}
-    },
-    "order": [["createdAt", "desc"]],
-    "offset": (page - 1) * limit
-})
-
 exports.public = (page = 1, limit = 10) => ({
     "attributes": ["id", "title", "description"],
     limit,
@@ -338,9 +318,28 @@ exports.public = (page = 1, limit = 10) => ({
     "offset": (page - 1) * limit
 })
 
-exports.text = (page = 1, limit = 10) => ({
-    "attributes": ["id", "title", "description"],
-})
+exports.text = (before, after, lang) => {
+
+    let conditions = {
+        "where": {
+            "status": "completed",
+        },
+        "attributes": ["id", "title", "description"]
+    }
+    if (before) {
+        conditions.where.createdAt = {[Op.lt]: new Date(before)};
+    }
+    if (after) {
+        conditions.where.createdAt = {[Op.gt]: new Date(after)};
+    }
+    if (lang) {
+        conditions.where.lang = lang;
+    }
+
+    console.log(conditions);
+
+    return conditions
+}
 
 exports.loadExport = {
     "include": [

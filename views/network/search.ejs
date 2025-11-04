@@ -1,0 +1,50 @@
+<%- include ("../partials/_header.ejs") %>
+<div role="main" class="main">
+    <h1>Busqueda en red</h1>
+    <div style="display:grid; display: grid; grid-template-columns: 2fr 5fr; grid-template-rows: 1fr 3fr; grid-column-gap: 0px; grid-row-gap: 0px;">
+        <input id="search" type="text" style="grid-column:2; grid-row:1;" placeholder="Buscar...">
+        <div style="grid-column:1; grid-row:2;" id="filters">
+            <div>
+                <label> Antes de:</label>
+                <input type="date" id="before"/>
+            </div>
+            <div>
+                <label> Despues de:</label>
+                <input type="date" id="after"/>
+            </div>
+
+            <select id="language">
+                <option value="">--Idioma--</option>
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+                <option value="sr">Serbio</option>
+            </select>
+        </div>
+        <div style="grid-column:2; grid-row:2;" class="Results"> Los resultados </div>
+    </div>
+    <button>Buscar</button>
+</div>
+
+<script>
+    document.querySelector("button").addEventListener("click", async () => {
+        const query = document.getElementById("search").value;
+        const before = document.getElementById("before").value;
+        const after = document.getElementById("after").value;
+        const language = document.getElementById("language").value;
+
+        let url = `/network/query?query=${encodeURIComponent(query)}`;
+        if (before) {
+            url += `&before=${encodeURIComponent(before)}`;
+        }
+        if (after) {
+            url += `&after=${encodeURIComponent(after)}`;
+        }
+        if (language) {
+            url += `&language=${encodeURIComponent(language)}`;
+        }
+
+        const response = await fetch(url);
+        const results = await response.text();
+        document.querySelector(".Results").innerHTML = results;
+    });
+</script>
