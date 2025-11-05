@@ -3,9 +3,13 @@ const {models} = require("../models");
 const {fuzzy} = require("fast-fuzzy");
 const urls = JSON.parse(process.env.URLS) || ["http://localhost:3000"];
 
-exports.searchInInstance = async (req, res, next) => {
+exports.searchInInstance = async (req, res, next) => { //Busqueda local
     try {
-        console.log(req.query);
+        const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+        if(Math.random() < 0.5){
+            console.log("Simulating delay...");
+            await wait(6000);
+        }
         let {value, page, limit, after, before, lang} = req.query || {};
         let queryToExecute = query.escapeRoom.text(before, after, lang);
         let results = await models.escapeRoom.findAll(queryToExecute);
@@ -15,7 +19,6 @@ exports.searchInInstance = async (req, res, next) => {
             results = results.slice((page-1)*limit, page*limit);
         }
         res.json(results);
-        console.log(results);
     } catch (error) {
         console.error(error);
         next(error);
@@ -26,23 +29,86 @@ exports.renderSearch = (req, res) => {
     res.render("network/search", {user: req.user});
 }
 
-exports.searchInNetwork = async (req, res, _) => {
+
+//Promesa que si no se resuelve en X tiempo, rechaza
+// Esta se usa para el fetch, si el fetch falla, rechaza, si se resuelve, limpia el timeout y resuelve con el json
+// Si el json no es json correcto, rechaza, si no devuelve el json
+const timeoutPromise = (timeout, ogPromise) =>  {
+    return new Promise((resolve, reject) => {
+
+        const timer = setTimeout(() => { //Timer
+            reject("Fetch timout");
+            console.warn("Request timed out");
+        }, timeout);
+
+        ogPromise.then( //Fetch original
+            async (val)=>{ //Si se resuelve
+                clearTimeout(timer);
+                if(val && val.ok){
+                    try{
+                        let data = await val.json();
+                        resolve(data);
+                    }catch(error){
+                        console.error("Error parsing JSON:", error);
+                        reject(error);
+                    }
+                }else{
+                    reject("Fetch error");
+                }
+            },
+            (error)=>{clearTimeout(timer);reject(error)} //Si falla
+        );
+    });
+}
+
+
+const tryFetch = async (url) => { //El fetch falla si no hay nadie, wrapper
+    try {
+        const response = await fetch(url);
+        return response;
+    } catch (error) {
+        console.error(`Error fetching from ${url}: ${error.message}`);
+        return null;
+    }
+}
+
+exports.searchInNetwork = async (req, res, _) => { //Busqueda en la red, tira querys contra el resto de instancias y agrega
     const {query, before, after, language} = req.query;
-    let aggregated = [];
+    const aggregated = [];
+    const promises = [];
+
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //TODO: BORRAR ESTO QUE ES SOLO PARA TESTING
+    let urls = ["http://localhost:3000", "http://localhost:3000", "http://localhost:5000"]
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
 
     for (let index in urls){
         const url = urls[index];
         try {
-            const response = await fetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${language || ""}`);
-            if (response.ok) {
-                let data = await response.json();
-                aggregated = aggregated.concat(data);
-            } else {
-                console.error(`Error fetching from ${url}: ${response.statusText}`);
-            }
+            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${language || ""}`)))
         } catch (error) {
             console.error(`Error fetching from ${url}: ${error.message}`);
         }
     }
+
+    let values = await Promise.allSettled(promises); //All a secas termina si una falla
+
+    for (let i = 0; i < values.length; i++){
+        const data = values[i];
+        if(data.status === "fulfilled"){
+            aggregated.push(data.value);
+        }
+    }
+
     res.json(aggregated);
 }
