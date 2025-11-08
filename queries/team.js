@@ -31,7 +31,7 @@ exports.teamRetosNoSuperados = (escapeRoomId, turnId) => {
                     },
                     {
                         "model": models.user,
-                        "attributes": ["id", "username"],
+                        "attributes": ["id", "username", "alias"],
                         "required": false
                     }
 
@@ -77,6 +77,7 @@ exports.teamComplete = (escapeRoomId, turnId, order, waiting = false) => {
                 "attributes": [
                     "name",
                     "surname",
+                    "alias",
                     "anonymized"
                 ]
             },
@@ -169,6 +170,7 @@ exports.puzzlesByTeam = (escapeRoomId, turnId, hints = false) => {
                 "attributes": [
                     "name",
                     "surname",
+                    "alias",
                     "anonymized"
                 ]
             }
@@ -209,6 +211,7 @@ exports.ranking = (escapeRoomId, turnId) => {
                 "attributes": [
                     "name",
                     "surname",
+                    "alias",
                     "anonymized"
                 ],
                 "through": {
@@ -289,6 +292,7 @@ exports.rankingShort = (escapeRoomId, turnId) => {
                     "name",
                     "surname",
                     "username",
+                    "alias",
                     "anonymized"
                 ],
                 "through": {
@@ -377,9 +381,12 @@ exports.teamInfo = (escapeRoomId, includeTest = false) => {
                 "model": models.user,
                 "through": "members",
                 "as": "teamMembers",
-                "attributes": ["username", "anonymized"]
+                "attributes": ["username", "anonymized", "alias"]
+
             }
-        ]
+        ],
+        "order": [[{ "model": models.user, "as": "teamMembers" }, models.members, "createdAt", "ASC"]]
+
     };
 
     if (includeTest) {

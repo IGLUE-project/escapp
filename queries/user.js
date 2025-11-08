@@ -16,7 +16,8 @@ exports.escapeRoomsForUser = (escapeRoomId, userId, includeTest = false) => {
                         "attributes": [
                             "name",
                             "id",
-                            "surname"
+                            "surname",
+                            "alias"
                         ]
                     },
                     {
@@ -129,6 +130,7 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
             "name",
             "surname",
             "username",
+            "alias",
             "anonymized"
         ],
         "include": [
@@ -199,7 +201,9 @@ exports.erTeam = (escapeRoomId) => ({
             "model": models.user,
             "through": "members",
             "as": "teamMembers",
-            "attributes": ["username", "anonymized"]
+            "attributes": ["username", "anonymized", "alias"]
         }
-    ]
+    ],
+    "order": [[{ "model": models.user, "as": "teamMembers" }, models.members, "createdAt", "ASC"]]
+
 });

@@ -19,8 +19,9 @@ exports.ranking = async (req, res, next) => {
     const {i18n} = res.locals;
 
     try {
-        const isAuthorOrCoAuthor = req.escapeRoom.authorId ===  req.session.user.id || req.escapeRoom.userCoAuthor.some((e) => e.id ===  req.session.user.id);
-        if(!isAuthorOrCoAuthor){
+        const isAuthorOrCoAuthor = req.escapeRoom.authorId === req.session.user.id || req.escapeRoom.userCoAuthor.some((e) => e.id === req.session.user.id && e.coAuthors.confirmed);
+
+        if (!isAuthorOrCoAuthor) {
             const turno = await models.turno.findOne(queries.turno.myTurno(req.escapeRoom.id, req.session.user.id));
 
             if (turno) {
@@ -80,7 +81,7 @@ exports.startPlaying = async (req, res, next) => {
             "include": [
                 {
                     "model": models.user,
-                    "attributes": ["username"],
+                    "attributes": ["username", "alias"],
                     "as": "teamMembers",
                     "where": {"id": req.session.user.id}
                 },
@@ -89,7 +90,8 @@ exports.startPlaying = async (req, res, next) => {
                     "attributes": ["id", "startTime"],
                     "where": {"escapeRoomId": req.escapeRoom.id}
                 }
-            ]
+            ],
+            "order": [[{ "model": models.user, "as": "teamMembers" }, models.members, "createdAt", "ASC"]]
         });
 
         if (!team) {
@@ -98,7 +100,7 @@ exports.startPlaying = async (req, res, next) => {
         const joinTeam = await automaticallySetAttendance(team, req.session.user.id, automaticAttendance);
 
         if (joinTeam) {
-            const erState = await getERState(req.escapeRoom.id, team, duration, hintLimit, puzzles.length, true, attendanceScore, scoreHintSuccess, scoreHintFail, true);
+            const erState = await getERState(req.session.user, req.escapeRoom.id, team, team.turno.id, duration, hintLimit, puzzles.length, true, attendanceScore, scoreHintSuccess, scoreHintFail, true);
 
             sendStartTeam(joinTeam.id, "OK", true, "PARTICIPANT", i18n.escapeRoom.api.participationStart.PARTICIPANT, erState);
             sendJoinTeam(joinTeam.id, joinTeam.turno.id, erState.ranking);

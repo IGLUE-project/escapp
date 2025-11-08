@@ -30,13 +30,13 @@
             <div class="flex-row">
                 <div class="flex-cell flex-name">
                     <% if (!escapeRoom.author.anonymized) {%>
-                        <%=escapeRoom.author.name%> <%=escapeRoom.author.surname%> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
+                       <%=escapeRoom.author.alias%> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
                        <%}else{%>
                         <i><%=i18n.user.anonymous%> </i> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
                     <%}%>
                 </div>
                 <div class="flex-cell flex-email">
-                    <% if (escapeRoom.author.anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=escapeRoom.author.username%> <%}%>
+                    <% if (escapeRoom.author.anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=escapeRoom.author.alias%> <%}%>
 
                 </div>
                 <div class="flex-cell flex-actions">
@@ -46,36 +46,32 @@
                 var collab = collaborators[t]; %>
             <div class="flex-row">
                 <div class="flex-cell flex-name">
-                    <% if (collab.anonymized) {%>
-                        <i><%=i18n.user.anonymous%> </i>
-                    <% } else {%>
-                        <%=collab.name%> <%=collab.surname%>
-                    <%}%>
+                    <%=collab.alias%>
                 </div>
                 <div class="flex-cell flex-email">
                     <% if (collab.anonymized) {%>
                         <i><%=i18n.user.anonymous%> </i>
                     <% } else {%>
-                        <%=collab.username%>
+                        <%=collab.alias%>
                     <%}%>
-                    
                 </div>
-                 
                 <div class="flex-cell flex-actions">
-                        <div class="overlay-wrapper">
-                            <button class="team-button msg-team" title="<%=i18n.team.delete%>" onclick="overlayTrigger('collaborator-<%=collab.id%>')">
-                                <span class="material-icons">delete </span>
-                            </button>
-                            <div class="overlay-trigger overlayf-menu" data-id="collaborator-<%=collab.id%>">
-                                <form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/collaborators?_method=delete">
-                                    <input type="hidden" id="collaborator" name="collaborator" value="<%=collab.id%>">
-                                    <p><%=i18n.collaborators.areYouSureDelete%></p>
-                                    <button class="deleteButton" type="button" onclick="overlayTrigger('collaborator-<%=collab.id%>', true)"><%=i18n.common.cancel%></button>
-                                    <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
-                                </form>
-                            </div>
+                    <div class="overlay-wrapper">
+                        <%if(!collab.coAuthors.confirmed){%><span class="tag-chip">
+                            <%=i18n.collaborators.pendingConfirmation%>
+                        </span><%}%>
+                        <button class="team-button msg-team" title="<%=i18n.team.delete%>" onclick="overlayTrigger('collaborator-<%=collab.id%>')">
+                            <span class="material-icons">delete </span>
+                        </button>
+                        <div class="overlay-trigger overlayf-menu" data-id="collaborator-<%=collab.id%>">
+                            <form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/collaborators?_method=delete">
+                                <input type="hidden" id="collaborator" name="collaborator" value="<%=collab.id%>">
+                                <p><%=i18n.collaborators.areYouSureDelete%></p>
+                                <button class="deleteButton" type="button" onclick="overlayTrigger('collaborator-<%=collab.id%>', true)"><%=i18n.common.cancel%></button>
+                                <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
+                            </form>
                         </div>
-                       
+                    </div>
                 </div>
             </div>
             <% } %>

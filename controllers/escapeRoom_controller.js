@@ -6,11 +6,24 @@ const cloudinary = require("cloudinary");
 const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted } = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted} = require("../helpers/utils");
+const {
+    toArray,
+    statSafe,
+    baseFor,
+    resolveUnder,
+    zipEntryPath,
+    addPath,
+    collectAssetEntries
+} = require("../helpers/archive");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 
+// Npm i archiver
 const fs = require("fs");
+const fsp = require("fs/promises");
 const path = require("path");
+const archiver = require("archiver");
+
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -41,62 +54,100 @@ exports.load = async (req, res, next, escapeRoomId) => {
 exports.index = async (req, res, next) => {
     const user = req.user || req.session.user;
     const {search} = req.query;
-    const isOwn = req.query.own == 1;
-    const isPublic = req.query.public == 1;
-    let whichMenu = "public";
 
-    if (isOwn || user && user.isStudent && !isPublic) {
-        whichMenu = "playing";
-    } else if (user && !user.isStudent && !isOwn && !isPublic) {
-        whichMenu = "created";
-    }
-    let page = parseInt(req.query.page || 1, 10);
+    let pagePublic = parseInt(req.query.pagePublic || 1, 10);
 
-    page = isNaN(page) || page < 1 ? 1 : page;
-    const limit = whichMenu === "created" ? 9 : 10;
-    let escapeRooms = [];
-    let count = 0;
+    pagePublic = isNaN(pagePublic) || pagePublic < 1 ? 1 : pagePublic;
+    let pageCreated = parseInt(req.query.pageCreated || 1, 10);
+
+    pageCreated = isNaN(pageCreated) || pageCreated < 1 ? 1 : pageCreated;
+    let pagePending = parseInt(req.query.pagePending || 1, 10);
+
+    pagePending = isNaN(pagePending) || pagePending < 1 ? 1 : pagePending;
+    let pageFinished = parseInt(req.query.pageFinished || 1, 10);
+
+    pageFinished = isNaN(pageFinished) || pageFinished < 1 ? 1 : pageFinished;
+    const limit = 10;
+    let pending = [];
+    let created = [];
+    let publicc = [];
+    let finished = [];
+    let countPending = 0;
+    let countPublic = 0;
+    let countCreated = 0;
+    let countFinished = 0;
 
 
     try {
-        if (whichMenu === "created") {
-            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, page, limit, search)));
-        } else if (whichMenu === "playing") {
-            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, page, limit, search)));
-        } else {
-            let erAll = [];
-            const searchCondition = search ? ` AND (LOWER(title) LIKE '%${search.toLowerCase()}%' OR LOWER(description) LIKE '%${search.toLowerCase()}%')` : "";
-
-            count = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRooms"."status" = 'completed') AND  (scope = FALSE OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active')) ) ${searchCondition}`, {"raw": true, "type": QueryTypes.SELECT});
-            erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRoom"."status" = 'completed') AND (scope = FALSE OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')) ) ${searchCondition} ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(page - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
-            count = parseInt(count[0].count, 10);
-
-            const orIds = erAll.map((e) => e.id);
-
-            erAll = await models.escapeRoom.findAll(query.escapeRoom.ids(orIds));
-            const erFiltered = await models.escapeRoom.findAll(query.escapeRoom.all(user.id, null));
-            const ids = erFiltered.map((e) => e.id);
-            const now = new Date();
-
-            now.setHours(now.getHours() - now.getTimezoneOffset() / 60);
-            escapeRooms = erAll.map((er) => {
-                const {id, title, invitation, attachment} = er;
-                const isSignedUp = ids.indexOf(er.id) !== -1;
-                const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
-                const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
-
-                return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor };
-            });
+        // Created
+        if (!user.isStudent) {
+            ({"count": countCreated, "rows": created} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, pageCreated, limit - 1, search)));
         }
-        const pages = Math.ceil(count / limit);
+        const pagesCreated = Math.ceil(countCreated / limit);
 
-        if (page > pages && pages !== 0) {
-            res.redirect(`/escapeRooms?page=${pages}`);
-        } else {
-            const pageArray = paginate(page, pages, 5);
-
-            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray, whichMenu, isPublic, isOwn, search, "admin": false});
+        if (pageCreated > pagesCreated && pagesCreated !== 0) {
+            pageCreated = pagesCreated;
         }
+        const pageCreatedArray = paginate(pageCreated, pagesCreated, 5);
+
+        // Pending
+        ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = false)));
+
+        const pagesPending = Math.ceil(countPending / limit);
+
+        if (pagePending > pagesPending && pagesPending !== 0) {
+            pagePending = pagesPending;
+        }
+        const pagePendingArray = paginate(pagePending, pagesPending, 5);
+
+
+        // Finished
+        ({"count": countFinished, "rows": finished} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = true)));
+
+        const pagesFinished = Math.ceil(countPending / limit);
+
+        if (pageFinished > pagesFinished && pagesFinished !== 0) {
+            pageFinished = pagesFinished;
+        }
+        const pageFinishedArray = paginate(pageFinished, pagesFinished, 5);
+
+
+        // Public
+        let erAll = [];
+        const searchCondition = search ? ` AND (LOWER(title) LIKE '%${search.toLowerCase()}%' OR LOWER(description) LIKE '%${search.toLowerCase()}%')` : "";
+
+        countPublic = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRooms"."status" = 'completed') AND  (scope != 'private' OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active') AND ("escapeRooms"."authorId" != ${user.id}))) ${searchCondition}`, {"raw": true, "type": QueryTypes.SELECT});
+        erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRoom"."status" = 'completed') AND (scope != 'private'  OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')  AND ("escapeRoom"."authorId" != ${user.id}))) ${searchCondition} ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(pagePublic - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
+        countPublic = parseInt(countPublic[0].count, 10);
+
+        const orIds = erAll.map((e) => e.id);
+
+        erAll = await models.escapeRoom.findAll(query.escapeRoom.ids(orIds));
+        const erFiltered = await models.escapeRoom.findAll(query.escapeRoom.all(user.id, null));
+        const ids = erFiltered.map((e) => e.id);
+        const now = new Date();
+
+        now.setHours(now.getHours() - now.getTimezoneOffset() / 60);
+        publicc = erAll.map((er) => {
+            const {id, title, invitation, attachment} = er;
+            const isSignedUp = ids.indexOf(er.id) !== -1;
+            const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
+            const tobeConfirmed = er.userCoAuthor.some((e) => e.id === user.id && !e.coAuthors.confirmed);
+
+            const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
+
+            return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor, tobeConfirmed };
+        });
+
+        const pagesPublic = Math.ceil(countPublic / limit);
+
+        if (pagePublic > pagesPublic && pagesPublic !== 0) {
+            pagePublic = pagesPublic;
+        }
+        const pagePublicArray = paginate(pagePublic, pagesPublic, 5);
+
+        // Render
+        res.render("escapeRooms/index.ejs", {"escapeRooms": {pending, created, publicc, finished}, cloudinary, user, "count": {countCreated, countPending, countPublic, countFinished}, "page": {pagePublic, pagePending, pageCreated, pageFinished}, "pages": {pagesPublic, pagesPending, pagesCreated, pagesFinished}, "pageArray": {pagePublicArray, pagePendingArray, pageCreatedArray, pageFinishedArray}, search, "admin": false});
     } catch (error) {
         next(error);
     }
@@ -106,15 +157,20 @@ exports.index = async (req, res, next) => {
 exports.show = async (req, res) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
 
+    escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
+
     const {participant} = req;
     const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+    const isAnonymous = !req.session.user;
 
-    if (participant) {
+    if (isAnonymous) {
+        res.render("escapeRooms/preview", {"escapeRoom": req.escapeRoom, "user": null});
+    } else if (participant) {
         const [team] = participant.teamsAgregados;
         const howManyRetos = await models.retosSuperados.count({"where": {"success": true, "teamId": team.id }});
         const finished = howManyRetos === escapeRoom.puzzles.length;
 
-        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished});
+        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished, "isAdmin": req.session.user.isAdmin});
     } else {
         const completed = stepsCompleted(escapeRoom);
 
@@ -124,24 +180,35 @@ exports.show = async (req, res) => {
 
 // GET /escapeRooms/new
 exports.new = (_req, res) => {
-    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "forceLang": ""};
+    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "lang": "", "forceLang": ""};
 
     res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
 };
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, lang, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
 
-    const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, authorId, forceLang, field, format, level}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
     escapeRoom.forceLang = isValidLocale(forceLang) ? forceLang : null;
+    const subjects = subject.
+        split(/[;,]/).
+        map((s) => s.trim()).
+        filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang", "format", "level", "field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "teacher", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "lang", "forceLang", "format", "level", "field"], transaction});
+        const newSubjects = subjects.map((s) => ({
+            "subject": s,
+            "escapeRoomId": er.id
+        }));
+
+        await models.subject.bulkCreate(newSubjects, {transaction});
+
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": er.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});
 
@@ -205,6 +272,7 @@ exports.create = async (req, res) => {
 exports.edit = async (req, res, next) => {
     try {
         req.escapeRoom.attachment = await models.attachment.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
+        req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
         res.render("escapeRooms/edit", {"escapeRoom": req.escapeRoom, "progress": "edit"});
     } catch (error) {
         console.error(error);
@@ -218,7 +286,6 @@ exports.update = async (req, res) => {
     const {i18n} = res.locals;
 
     escapeRoom.title = body.title;
-    escapeRoom.subject = body.subject;
     escapeRoom.duration = body.duration;
     escapeRoom.forbiddenLateSubmissions = body.forbiddenLateSubmissions === "on";
     escapeRoom.description = body.description;
@@ -226,26 +293,44 @@ exports.update = async (req, res) => {
     escapeRoom.level = body.level;
     escapeRoom.field = body.field;
     escapeRoom.format = body.format;
-    escapeRoom.supportLink = body.supportLink;
+    escapeRoom.lang = body.lang;
 
     escapeRoom.teamSize = body.teamSize || 0;
     escapeRoom.forceLang = isValidLocale(body.forceLang) ? body.forceLang : null;
 
     const progressBar = body.progress;
+    const transaction = await sequelize.transaction();
+    const subjects = body.subject.
+        split(/[;,]/).
+        map((s) => s.trim()).
+        filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "subject", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "forceLang", "format", "level", "field"]});
+        const er = await escapeRoom.save({"fields": ["title", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "lang", "forceLang", "format", "level", "field"], transaction});
+
+        // Remove all previous subjects for this escape room
+        await models.subject.destroy({ "where": { "escapeRoomId": er.id } }, {transaction});
+
+        // Insert the new ones
+        const newSubjects = subjects.map((s) => ({
+            "subject": s,
+            "escapeRoomId": er.id
+        }));
+
+        await models.subject.bulkCreate(newSubjects, {transaction});
 
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
             if (!req.file) {
                 if (er.attachment) {
-                    const old_url_used = await models.attachment.count({where: {url: er.attachment.url}}) > 1;
-                    if (!old_url_used){
+                    const old_url_used = await models.attachment.count({"where": {"url": er.attachment.url}}) > 1;
+
+                    if (!old_url_used) {
                         fs.unlinkSync(path.join(__dirname, "/../", er.attachment.url));
                     }
                     er.attachment.destroy();
                 }
+                transaction.commit();
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
                 return;
             }
@@ -257,11 +342,12 @@ exports.update = async (req, res) => {
                     attachment = models.attachment.build({"escapeRoomId": er.id});
                 }
                 attachment.public_id = req.file.originalname;
-                attachment.url = `/uploads/thumbnails/${req.file.filename}`,
+                attachment.url = `/uploads/thumbnails/${req.file.filename}`;
                 attachment.filename = req.file.originalname;
                 attachment.mime = req.file.mimetype;
                 try {
-                    const old_url_used = await models.attachment.count({where: {url: old_url}}) > 1;
+                    const old_url_used = await models.attachment.count({"where": {"url": old_url}}) > 1;
+
                     if (old_url && !old_url_used) {
                         try {
                             fs.unlinkSync(path.join(__dirname, "/../", old_url));
@@ -277,6 +363,7 @@ exports.update = async (req, res) => {
                     fs.unlinkSync(req.file.path);
                     // AttHelper.deleteResource(uploadResult.public_id, models.attachment);
                 }
+                transaction.commit();
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
                 return;
             } catch (error) {
@@ -284,19 +371,22 @@ exports.update = async (req, res) => {
                 req.flash("error", i18n.common.flash.errorFile);
             }
         }
+        transaction.commit();
         res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
     } catch (error) {
         console.error(error);
+        transaction.rollback();
         if (error instanceof Sequelize.ValidationError) {
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));
             });
-            if(req.file){
+            if (req.file) {
                 fs.unlinkSync(req.file.path);
             }
         } else {
             req.flash("error", i18n.common.flash.errorEditingER);
         }
+        escapeRoom.subject = subjects.map((ss) => ({"subject": ss}));
         res.render("escapeRooms/edit", {escapeRoom, "progress": "edit"});
     }
 };
@@ -381,8 +471,8 @@ exports.sharingUpdate = async (req, res) => {
     const transaction = await sequelize.transaction();
 
     try {
-        escapeRoom.scope = body.scope === "private";
-        if (escapeRoom.scope) { // Only public rooms  can have a password
+        escapeRoom.scope = body.scope;
+        if (escapeRoom.scope === "private") { // Only private rooms  can have a password
             escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
         } else {
             escapeRoom.invitation = null;
@@ -391,13 +481,14 @@ exports.sharingUpdate = async (req, res) => {
             escapeRoom.license = body.license;
             if ((escapeRoom.status === "draft" || !escapeRoom.status) && body.status === "completed") {
                 escapeRoom.publishedOnce = true;
-                if (!escapeRoom.scope) {
+                if (escapeRoom.scope !== "private") {
                     await models.turno.create({"place": "_PUBLIC", "status": "active", "escapeRoomId": escapeRoom.id }, {transaction});
                 }
             }
         }
 
         escapeRoom.status = body.status;
+        escapeRoom.allowGuests = body.allowGuests === "on";
 
         const instructionsFile = req.file;
 
@@ -418,7 +509,7 @@ exports.sharingUpdate = async (req, res) => {
         }
 
 
-        await escapeRoom.save({"fields": ["invitation", "scope", "license", "instructions", "status", "publishedOnce"], transaction});
+        await escapeRoom.save({"fields": ["invitation", "scope", "license", "instructions", "status", "publishedOnce", "allowGuests"], transaction});
         await transaction.commit();
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("sharing") : progressBar || nextStep("sharing")}`);
     } catch (error) {
@@ -524,10 +615,10 @@ exports.destroy = async (req, res, next) => {
 
     try {
         await req.escapeRoom.destroy({}, {transaction});
-        if (req.escapeRoom.attachment && await models.attachment.count({where: {url: req.escapeRoom.attachment.url}}) === 0) {
-            try{
+        if (req.escapeRoom.attachment && await models.attachment.count({"where": {"url": req.escapeRoom.attachment.url}}) === 0) {
+            try {
                 fs.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
-            } catch(e){
+            } catch (e) {
                 console.error("Error deleting attachment file:", e);
             }
         }
@@ -545,7 +636,7 @@ exports.clone = async (req, res, next) => {
     const transaction = await sequelize.transaction();
 
     try {
-        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, publishedOnce} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
+        const {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, publishedOnce} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${oldTitle}`;
         const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -635,22 +726,22 @@ exports.admin = async (req, res, next) => {
     let page = parseInt(req.query.page || 1, 10);
 
     page = isNaN(page) || page < 1 ? 1 : page;
-    const limit = user.isStudent ? 10 : 9;
+    const limit = 10;
     let escapeRooms = [];
     let count = 0;
 
     try {
         if (user && !user.isStudent) {
-            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll()));
+            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll(page, limit, search)));
         }
         const pages = Math.ceil(count / limit);
 
         if (page > pages && pages !== 0) {
-            res.redirect(`/escapeRooms?page=${pages}`);
+            res.redirect(`/escapeRoomsAdmin?page=${pages}`);
         } else {
             const pageArray = paginate(page, pages, 5);
 
-            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, count, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
+            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
         }
     } catch (error) {
         next(error);
@@ -691,12 +782,6 @@ exports.addCollaborators = async (req, res, next) => {
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
                 } else if (!collab.isStudent) {
                     await escapeRoom.addUserCoAuthor(collab.id, {transaction});
-                    const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}});
-                    const teamCreated = await models.team.create({ "name": `${collab.name} ${collab.surname}`, "turnoId": testShift.id}, {transaction});
-
-                    await teamCreated.addTeamMembers(collab.id, {transaction});
-                    await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": collab.id}, {transaction});
-
                     await transaction.commit();
                     req.flash("success", i18n.common.flash.successAddingCollaborator);
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
@@ -718,23 +803,91 @@ exports.addCollaborators = async (req, res, next) => {
     }
 };
 
+exports.confirmCollaborators = async (req, res, next) => {
+    const {escapeRoom, body, session} = req;
+    const {i18n} = res.locals;
+    const transaction = await sequelize.transaction();
+
+    try {
+        const findCollab = await models.coAuthors.findOne(
+            {"escapeRoomId": escapeRoom.id, "userId": req.session.user.id},
+            {transaction}
+        );
+
+        if (!findCollab) {
+            throw new Error(i18n.common.flash.youHaveNotBeenAddedAsACollaborator);
+        }
+        if (!body.confirm) { // Cancel collaboration
+            await escapeRoom.removeUserCoAuthor(req.session.user.id, {transaction});
+        } else { // Accept collaboration
+            await models.coAuthors.update(
+                { "confirmed": true },
+                {
+                    "where": {
+                        "escapeRoomId": escapeRoom.id,
+                        "userId": req.session.user.id
+                    },
+                    transaction
+                }
+            );
+            const user = await models.user.findByPk(session.user.id, {transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}}, {transaction});
+            const teamCreated = await models.team.create({ "name": `${user.alias}`, "turnoId": testShift.id}, {transaction});
+
+            await teamCreated.addTeamMembers(user.id, {transaction});
+            await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": req.session.user.id}, {transaction});
+        }
+
+        await transaction.commit();
+        req.flash("success", i18n.common.flash.successConfirmingCollaborator);
+        res.redirect(`/escapeRooms/${escapeRoom.id}`);
+    } catch (error) {
+        await transaction.rollback();
+        console.error(error);
+        req.flash("error", `${error.message}`);
+        next(error);
+    }
+};
 // DELETE /escapeRooms/:escapeRoomId/collaborators
 exports.deleteCollaborators = async (req, res, next) => {
     const {escapeRoom, body} = req;
     const {collaborator} = body;
+    const transaction = await sequelize.transaction();
 
     if (collaborator) {
         try {
+            const collab = await models.user.findByPk(collaborator, {transaction});
+
             await escapeRoom.removeUserCoAuthor(collaborator);
+            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}}, {transaction});
+
+            const teamCreated = await models.team.findOne({
+                "where": { "name": collab.alias, "turnoId": testShift.id },
+                transaction
+            });
+
+            if (teamCreated) {
+                // Remove member via association helper, within transaction
+                await teamCreated.removeTeamMembers(collab.id, { transaction });
+                await teamCreated.destroy({ transaction });
+            }
+
+            await models.participants.destroy({
+                "where": { "attendance": false, "turnId": testShift.id, "userId": collab.id },
+                transaction
+            });
+
+            await transaction.commit();
             res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
         } catch (error) {
+            await transaction.rollback();
             req.flash("error", `${error.message}`);
             next(error);
         }
     }
 };
 
-exports.isStatusCompleted = async (req, res, next) => {
+exports.isStatusCompleted = (req, res, next) => {
     if (req.escapeRoom.status === "completed") {
         next();
     } else {
@@ -746,17 +899,94 @@ exports.test = async (req, res) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
     const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
     const participant = participants && participants.length ? participants[0] : null;
+    const isAdmin = req.session.user && req.session.user.isAdmin;
 
     if (participant) {
         const [team] = participant.teamsAgregados;
         const howManyRetos = await models.retosSuperados.count({"where": {"success": true, "teamId": team.id }});
         const finished = howManyRetos === escapeRoom.puzzles.length;
 
-        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished});
+        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished, isAdmin});
+    } else if (isAdmin) {
+        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, "participant": {}, "team": {"turno": {"status": "test"}, "teamMembers": []}, "finished": false, isAdmin});
     } else {
-        res.redirect("escapeRooms/", req.escapeRoom.id);
+        res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
     }
 };
 
 
 exports.showGuide = (req, res) => res.render("inspiration/inspiration");
+
+
+// Work in progress
+
+exports.export = async (req, res, next) => {
+    try {
+        const escapeRoom = await models.escapeRoom.findByPk(
+            req.escapeRoom.id,
+            query.escapeRoom.loadExport
+        );
+
+        if (!escapeRoom) {
+            return res.status(404).json({ "error": "Escape room not found" });
+        }
+
+        const toExport = escapeRoom.toJSON ? escapeRoom.toJSON() : escapeRoom.dataValues;
+        const pathFields = ["attachment", "hintApp", "hybridInstructions", "instructions"];
+
+        const flatCandidates = pathFields.flatMap((field) => toArray(toExport[field]).map((p) => ({ field, "relKeys": [], "pathStr": p })));
+
+        const assetEntries = collectAssetEntries(toExport.assets, []);
+        const assetCandidates = assetEntries.map(({ relKeys, pathStr }) => ({
+            "field": "assets",
+            relKeys,
+            pathStr
+        }));
+
+        const all = [...flatCandidates, ...assetCandidates];
+        const seen = new Set();
+        const resolved = [];
+
+        for (const { field, relKeys, pathStr } of all) {
+            const [firstKey] = relKeys;
+            const baseDir = baseFor(field, firstKey);
+            const abs = resolveUnder(baseDir, pathStr);
+
+            if (!abs) {
+                continue;
+            }
+
+            const key = `${field}::${firstKey || ""}::${abs}`;
+
+            if (seen.has(key)) {
+                continue;
+            }
+            seen.add(key);
+
+            const zipRoot = field === "assets" ? ["assets", ...relKeys].join("/") : field;
+
+            resolved.push({ abs, baseDir, zipRoot });
+        }
+
+        const zipName = `escape-room-${escapeRoom.id}.zip`;
+
+        res.setHeader("Content-Type", "application/zip");
+        res.setHeader("Content-Disposition", `attachment; filename="${zipName}"`);
+
+        const archive = archiver("zip", { "zlib": { "level": 9 } });
+
+        archive.on("error", (err) => {
+            throw err;
+        });
+        archive.pipe(res);
+
+        for (const { abs, baseDir, zipRoot } of resolved) {
+            await addPath(archive, abs, zipRoot, baseDir);
+        }
+
+        archive.append(JSON.stringify(toExport, null, 2), { "name": "escape-room.json" });
+        await archive.finalize();
+    } catch (err) {
+        next(err);
+    }
+};

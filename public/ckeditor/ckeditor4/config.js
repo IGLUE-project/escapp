@@ -31,7 +31,7 @@ var theme_styles = [{ name: 'Blue' , element: 'span', styles: { 'color': 'var(--
 	{ name: 'Dark gray' , element: 'span', styles: { 'color': 'var(--gray-dark)'}}
 ];
 
-if ((window.endPoint === "indications") || (window.endPoint === "after")) {
+if ((window.endPoint === "indications") || (window.endPoint === "after") || (window.endPoint === "description")) {
 	CKEDITOR.addCss("body {color: white;}");
 } else {
 	for (var i = 0; i < theme_styles.length; i++) {
@@ -59,10 +59,10 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent',
 		'-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' /*,'-','BidiLtr','BidiRtl' */] },
 		{ name: 'links', items : [ 'Link','Unlink','-'] },
-		{ name: 'insert', items : [ 'Image','Html5video','Youtube','Html5audio','Table'/*,'HorizontalRule','Smiley','SpecialChar', 'EqnEditor' ,'Iframe' */ ] },
+		{ name: 'insert', items : [ 'Image','Html5video','Youtube','Html5audio','Table','PasteCode'/*,'HorizontalRule','Smiley','SpecialChar', 'EqnEditor' ,'Iframe' */ ] },
 	];
 	config.removePlugins = 'elementspath,resize,iframe,image' ;
-	config.extraPlugins = 'autogrow,html5video,youtube,html5audio,widget,widgetselection,clipboard,lineutils';
+	config.extraPlugins = 'autogrow,html5video,youtube,html5audio,widget,widgetselection,clipboard,lineutils,pastecode';
 	config.extraAllowedContent = 'iframe[*]';
 	config.autoGrow_onStartup = true;
 	config.autoGrow_minHeight = 20;
@@ -86,8 +86,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserWindowWidth = '640';
     config.filebrowserWindowHeight = '480';
 };
-
-CKEDITOR.addCss(((window.endPoint === "indications") || (window.endPoint === "after")) ? `body {font-size: 22px;}` : `body {font-size: 1rem;}`);
+CKEDITOR.addCss(((window.endPoint === "indications") || (window.endPoint === "after") || (window.endPoint === "description")) ? `body {font-size: 22px;}` : `body {font-size: 1rem;}`);
 CKEDITOR.addCss(`#cke_bottom_detail,.cke_bottom{display:none}`);
 CKEDITOR.addCss(`.cke_combo_button{border: 1px solid white !important;}`);
 CKEDITOR.addCss(`.cke_editable{padding: 12px;}`);

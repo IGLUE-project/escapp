@@ -22,5 +22,5 @@ router.post("/escapeRooms/:escapeRoomId(\\d+)/puzzles/:puzzleOrder(\\d+)/submit"
 router.post("/escapeRooms/:escapeRoomId(\\d+)/puzzles/:puzzleOrder(\\d+)/check_solution", apiController.checkParticipantSafe, apiController.checkPuzzleSolution, apiController.reply);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/auth", apiController.checkParticipantSafe, apiController.auth, apiController.reply);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/start", apiController.checkParticipantSafe, apiController.startPlaying, apiController.reply);
-
+router.get("/tags", apiController.getTags);
 module.exports = router;

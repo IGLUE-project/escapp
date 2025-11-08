@@ -1,11 +1,11 @@
+<script src="/js/vendor/jscolor.min.js"></script>
+
 <div class="associatedPuzzle" style="padding:0px">
 <h4 class="titleLabelEdit">
     <%=i18n.escapeRoom.steps.indications.front.catalog.config.assignedPuzzle%>
 </h4>
 
-
-<select id="associatedPuzzle" name="puzzle">
-</select>
+<select id="associatedPuzzle" name="puzzle"></select>
 
 <div id="selectePuzzle">
     <label for="puzzleSol">
@@ -58,13 +58,13 @@
     var optionsPuzzle = window.puzzles.map((puzzler,index) => {
     return `<option ${(puzzler.id == config.puzzle) ? "selected": ""} value="${puzzler.id}">${puzzler.title}</option>` }).join('')
 
-    <% if(allowedNullPuzzle === true){ %>
+    <% if(typeof allowedNullPuzzle !== 'undefined' && (allowedNullPuzzle === true)){ %>
         $("#associatedPuzzle").append( `<option value="" hidden disabled selected><%=i18n.escapeRoom.steps.indications.front.catalog.config.puzzlePlaceholder%></option>`).change();
     <% } %>
 
     $("#associatedPuzzle").append(optionsPuzzle);
 
-    <% if(allowedNullPuzzle === true){ %>
+    <% if(typeof allowedNullPuzzle !== 'undefined' && (allowedNullPuzzle === true)){ %>
         $("#associatedPuzzle").append( `<option value="noSelected"><%=i18n.escapeRoom.steps.indications.front.catalog.config.noPuzzle %></option>`);
     <% } %>
 </script>

@@ -7,6 +7,9 @@ uploads/*
 !uploads/thumbnails/
 uploads/thumbnails/*
 !uploads/thumbnails/.gitkeep
+!uploads/hybrid/
+uploads/hybrid/*
+!uploads/hybrid/.gitkeep
 !uploads/webapps/
 uploads/webapps/*
 !uploads/webapps/.gitkeep

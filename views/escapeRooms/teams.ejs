@@ -74,7 +74,8 @@
                         <%= team.turno.date ? getFullDate(team.turno.date): i18n.turno.alwaysOpen%>
                     </div>
                     <div class="flex-cell flex-participants">
-                        <%=team.teamMembers.map(m=>m.anonymized ? i18n.user.anonymous :(m.name + " " + m.surname)).join(", ") %>
+                        <%=team.teamMembers.map(m=>m.anonymized ? i18n.user.anonymous :(m.alias)).join(", ") %>
+                        <!--<%=team.teamMembers.map(m=>m.anonymized ? i18n.user.anonymous :(m.name + " " + m.surname)).join(", ") %>-->
                     </div>
                     <div class="flex-cell flex-started">
                         <span class="material-icons" style="color: var(--<%= team.startTime ? 'brightgreen':'lightred'%>);"><%=team.startTime ? "done" : "clear"  %></span>

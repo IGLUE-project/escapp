@@ -1,0 +1,65 @@
+// tags.sass
+// Compile this to /assets/css/tags.css
+@use "common/colors"
+
+
+$primary: white
+$chip-fg: colors.$darkerpurple
+$border: #ccc
+$bg: #fff
+$focus: #4a90e2
+
+.tags-box
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  gap: 6px
+  padding: 0px
+
+  .customInput
+    border: none !important
+    outline: none !important
+    box-shadow: none !important
+    background: transparent
+    flex: 1 1 140px
+    min-width: 100px
+    padding: 4px 2px
+    font: inherit
+
+.tag-chip
+  display: inline-flex
+  align-items: center
+  gap: 8px
+  padding: 4px 10px
+  border-radius: 999px
+  background: $primary
+  color: $chip-fg !important
+  font-size: .8em
+  line-height: 1.15
+  user-select: none
+  white-space: nowrap
+  font-weight: bold
+  .remove
+    cursor: pointer
+    font-weight: bold
+    line-height: 1
+    color: $chip-fg !important
+    opacity: .9
+    transition: transform .1s ease, opacity .15s ease
+    &:hover
+      opacity: 1
+      transform: scale(1.1)
+
+.ui-autocomplete
+  max-height: 220px
+  overflow-y: auto
+  z-index: 10000
+  background: transparent
+  width: 250px !important
+  display: inline-block
+  color: white !important
+  list-style: none
+  padding-left: 5px
+
+.inputFormField .tags-box
+  width: 100%

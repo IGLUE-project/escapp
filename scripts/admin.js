@@ -34,15 +34,17 @@ const fullName = `${name} ${surname}`;
 
 async function createAdmin () {
     try {
-        const [admin, created] = await sequelize.models.user.findOrCreate({
+        const [, created] = await sequelize.models.user.findOrCreate({
             "where": { "username": email },
             "defaults": {
                 name,
                 surname,
+                "alias": `admin_${Math.ceil(1000 * Math.random())}`,
                 password,
                 "isAdmin": true,
                 "isStudent": false,
                 "username": email,
+                "eduLevel": "other",
                 "lastAcceptedTermsDate": new Date()
             }
         });

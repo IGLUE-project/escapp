@@ -7,13 +7,18 @@
 
     <table class="mainTable">
         <tr>
-            <th><%=i18n.user.user%></th><th><%=i18n.common.edit%></th><th><%=i18n.common.delete%></th>
+            <th><%=i18n.user.user%></th><th><%=i18n.user.alias%></th><th><%=i18n.common.edit%></th><th><%=i18n.common.delete%></th>
         </tr>
         <% for (var i in users) { %>
             <tr>
                 <td>
                     <a href="/users/<%= users[i].id %>" >
                         <% if (users[i].anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=users[i].username%> <%}%>
+                    </a>
+                </td>
+                 <td>
+                    <a href="/users/<%= users[i].id %>" >
+                        <% if (users[i].anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=users[i].alias%> <%}%>
                     </a>
                     <%= users[i].isAdmin ? "(admin)" : "" %>
                 </td>

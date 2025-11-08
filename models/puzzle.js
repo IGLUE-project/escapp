@@ -17,10 +17,6 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.TEXT,
                 "validate": {"isIn": [["exact", "caseinsensitive", "range", "regex"]]}
             },
-            "desc": {
-                "type": DataTypes.TEXT,
-                "validate": {"len": [0, 5000]}
-            },
             "order": {
                 "type": DataTypes.INTEGER,
                 "allowNull": false

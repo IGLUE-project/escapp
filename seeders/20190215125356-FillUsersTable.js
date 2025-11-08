@@ -9,6 +9,7 @@ module.exports = {
                 "name": "Sonsoles",
                 "surname": "López Pernas",
                 "username": "admin@upm.es",
+                "alias": "the_admin",
                 "password": crypt.encryptPassword("1234", "aaaa"),
                 "salt": "aaaa",
                 "isAdmin": !process.env.TEST,
@@ -22,6 +23,7 @@ module.exports = {
                 "name": "Pepe",
                 "surname": "Lopez Garcia",
                 "username": "pepe@alumnos.upm.es",
+                "alias": "pepe",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
                 "isStudent": true,
@@ -35,6 +37,7 @@ module.exports = {
                 "name": "Alfonso",
                 "surname": "Jiménez Martínez",
                 "username": "al.jm@alumnos.upm.es",
+                "alias": "alf2",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
                 "isStudent": true,
@@ -47,6 +50,7 @@ module.exports = {
             {
                 "name": "Alejandro",
                 "surname": "Pozo Huertas",
+                "alias": "t-rex",
                 "username": "aph@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -60,6 +64,7 @@ module.exports = {
             {
                 "name": "Nuria",
                 "surname": "Martínez Arias",
+                "alias": "nunu",
                 "username": "nma@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -73,6 +78,7 @@ module.exports = {
             {
                 "name": "Clara",
                 "surname": "Rodríguez Vega",
+                "alias": "crv",
                 "username": "crv@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -86,6 +92,7 @@ module.exports = {
             {
                 "name": "Ana",
                 "surname": "de la Mata Martínez",
+                "alias": "amm",
                 "username": "amm@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -99,6 +106,7 @@ module.exports = {
             {
                 "name": "José",
                 "surname": "González Martín",
+                "alias": "joe1",
                 "username": "jgm@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",
@@ -112,6 +120,7 @@ module.exports = {
             {
                 "name": "Antonio",
                 "surname": "Lorenzo Álvarez",
+                "alias": "ala",
                 "username": "ala@alumnos.upm.es",
                 "password": crypt.encryptPassword("5678", "bbbb"),
                 "salt": "bbbb",

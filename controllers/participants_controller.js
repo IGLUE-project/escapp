@@ -88,6 +88,9 @@ exports.checkTeamAvailable = (req, res, next) => {
 exports.index = async (req, res, next) => {
     const {escapeRoom, query} = req;
     const {turnId, orderBy} = query;
+    const isAdmin = Boolean(req.session.user.isAdmin);
+    const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
+
 
     try {
         const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});
@@ -95,7 +98,7 @@ exports.index = async (req, res, next) => {
         const participants = [];
 
         users.forEach((user) => {
-            const {id, name, username, surname, teamsAgregados, turnosAgregados, anonymized} = user;
+            const {id, name, username, surname, alias, teamsAgregados, turnosAgregados, anonymized} = user;
             const [{"id": turnoId, "date": turnDate, "participants": parts}] = turnosAgregados;
             const [{"id": teamId, "name": teamName}] = teamsAgregados;
             const connected = isParticipantTeamConnected(id, teamId);
@@ -103,7 +106,11 @@ exports.index = async (req, res, next) => {
             let {attendance} = parts;
 
             attendance = Boolean(attendance);
-            participants.push({id, name, surname, username, teamId, teamName, turnoId, turnDate, attendance, connected, waiting, anonymized});
+            if (includeNames) {
+                participants.push({id, name, surname, username, alias, teamId, teamName, turnoId, turnDate, attendance, connected, waiting, anonymized});
+            } else {
+                participants.push({id, alias, teamId, teamName, turnoId, turnDate, attendance, connected, waiting, anonymized});
+            }
         });
         if (req.query.csv) {
             createCsvFile(res, participants, "participants");
@@ -185,7 +192,7 @@ exports.studentLeave = async (req, res, next) => {
 exports.isNotAuthorOrCoAuthorOrAdmin = (req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
         isAuthor = req.escapeRoom.authorId === req.session.user.id,
-        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id);
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed);
 
     const {i18n} = res.locals;
 

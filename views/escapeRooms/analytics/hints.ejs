@@ -23,6 +23,7 @@
                     <option value="" <%= !orderBy ? "selected": ""%>  disabled></option>
                     <option value="name" <%= orderBy === "name" ? "selected": ""%>><%=i18n.user.name%></option>
                     <option value="surname" <%= orderBy === "surname" ? "selected": ""%>><%=i18n.user.surname%></option>
+                    <option value="alias" <%= orderBy === "alias" ? "selected": ""%>><%=i18n.user.alias%></option>
                 </select></label>
             <% } %>    
             <button type="submit" class="editButton filter-button" >

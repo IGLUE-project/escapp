@@ -108,3 +108,40 @@ exports.selectTurno = (req, res, next) => {
         res.redirect(direccion);
     }
 };
+
+
+// EscapeRoomController.isStatusCompleted, participantController.isNotAuthorOrCoAuthorOrAdmin, participantController.checkIsNotParticipant, participantController.checkSomeTurnAvailable, joinController.indexTurnos, teamController.create);
+exports.joinAnonymous = async (req, res, next) => {
+    const { i18n } = res.locals;
+    const currentLang = i18n.lang;
+
+    req.body.password = Math.random().toString(36).slice(-8);
+    req.body.username = `${req.escapeRoom.id}_${req.body.alias}_${Date.now()}@anonymous.org`;
+    req.body.redir = `/escapeRooms/${req.escapeRoom.id}/join`;
+    req.body.anonymous = true;
+
+    const user = models.user.build({
+        "name": "Anonymous",
+        "surname": "Anonymous",
+        "alias": req.body.alias || "Anonymous",
+        "eduLevel": req.body.eduLevel || "other",
+        "username": req.body.username,
+        "password": req.body.password,
+        "lang": currentLang,
+        "anonymized": true,
+        "isStudent": true,
+        "lastAcceptedTermsDate": new Date()
+    });
+
+    try {
+        await user.save({"fields": ["name", "surname", "alias", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate", "anonymized"]});
+
+        req.body.login = user.username;
+
+        next();
+    } catch (error) {
+        console.error(error);
+        req.flash("error", i18n.common.flash.errorCreatingUser);
+        res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
+    }
+};

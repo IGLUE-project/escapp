@@ -6,7 +6,7 @@ module.exports = {
         await queryInterface.addColumn("reusablePuzzles", "instructions", { "type": Sequelize.STRING});
     },
 
-    async down (queryInterface, _) {
+    async down (queryInterface) {
         await queryInterface.removeColumn("reusablePuzzles", "instructions");
     }
 };

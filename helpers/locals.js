@@ -73,7 +73,7 @@ module.exports = function (app) {
     };
     app.locals.getPlaceholder = function getColor (id) {
         const index = id % 5;
-        let color;
+        let color = "red";
 
         if (index === 0) {
             color = "blue";
@@ -85,8 +85,6 @@ module.exports = function (app) {
             color = "orange";
         } else if (index === 4) {
             color = "green";
-        } else {
-            color = "red";
         }
 
         return color;

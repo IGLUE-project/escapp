@@ -52,14 +52,23 @@ require(path.join(__dirname, "reusablePuzzleInstance"))(sequelize, Sequelize.Dat
 // Import the definition of the RetosSuperados Table from retosSuperados.js
 require(path.join(__dirname, "reusablePuzzle"))(sequelize, Sequelize.DataTypes);
 
+// Import the definition of the coAuthors Table from coAuthors.js
+require(path.join(__dirname, "coAuthors"))(sequelize, Sequelize.DataTypes);
+
+// Import the definition of the report Table from report.js
 require(path.join(__dirname, "report"))(sequelize, Sequelize.DataTypes);
 
+// Import the definition of the subjects Table from subject.js
+require(path.join(__dirname, "subject"))(sequelize, Sequelize.DataTypes);
+
+// Import the definition of the scenes Table from scene.js
 require(path.join(__dirname, "scene"))(sequelize, Sequelize.DataTypes);
 
 // Relation between models
-const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report, scene} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
+const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report, coAuthors, subject, scene} = sequelize.models;
 
-// Relation 1-to-N between Escape Room and Turno:
+
+// Relation 1-to-N between Escape Room and Turn:
 
 turno.belongsTo(escapeRoom);
 escapeRoom.hasMany(turno, {
@@ -104,26 +113,19 @@ escapeRoom.belongsTo(user, {
 
 escapeRoom.belongsToMany(user, {
     "as": "userCoAuthor",
-    "through": "coAuthors",
-    "foreignKey": {
-        "name": "escapeRoomId",
-        "allowNull": false
-    },
-    "onDelete": "CASCADE",
+    "through": coAuthors,
+    "foreignKey": { "name": "escapeRoomId", "allowNull": false },
     "otherKey": "userId",
+    "onDelete": "CASCADE",
     "constraints": true
-
 });
 
 user.belongsToMany(escapeRoom, {
     "as": "escapeRoomCoAuthored",
-    "through": "coAuthors",
-    "foreignKey": {
-        "name": "userId",
-        "allowNull": false
-    },
-    "onDelete": "CASCADE",
+    "through": coAuthors,
+    "foreignKey": { "name": "userId", "allowNull": false },
     "otherKey": "escapeRoomId",
+    "onDelete": "CASCADE",
     "constraints": true
 });
 
@@ -284,6 +286,22 @@ user.hasMany(asset, {
 
 asset.belongsTo(user);
 
+//Reports
+escapeRoom.hasMany(report, {
+    "onDelete": "CASCADE",
+    "hooks": true,
+    "foreignKey": "escapeRoomId"
+});
+
+report.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
+report.belongsTo(user, {"foreignKey": "reportAuthor"});
+
+user.hasMany(report, {
+    "onDelete": "CASCADE",
+    "hooks": true,
+    "foreignKey": "reportAuthor"
+});
+
 // Relation 1-to-N between EscapeRoom and reusablePuzzleInstance:
 escapeRoom.hasMany(reusablePuzzleInstance, {
     "foreignKey": "escapeRoomId",
@@ -302,27 +320,12 @@ reusablePuzzle.hasMany(reusablePuzzleInstance, {
 
 reusablePuzzleInstance.belongsTo(reusablePuzzle, {"foreignKey": "reusablePuzzleId"});
 
-escapeRoom.hasMany(report, {
-    "onDelete": "CASCADE",
-    "hooks": true,
-    "foreignKey": "escapeRoomId"
-});
-
-report.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
-
-user.hasMany(report, {
-    "onDelete": "CASCADE",
-    "hooks": true,
-    "foreignKey": "reportAuthor"
-});
-
-
 reusablePuzzleInstance.belongsToMany(puzzle, {"through": "reusablePuzzleInstancePuzzle"});
 
 puzzle.belongsToMany(reusablePuzzleInstance, {"through": "reusablePuzzleInstancePuzzle"});
 
-report.belongsTo(user, {"foreignKey": "reportAuthor"});
 
+//Scenes
 scene.belongsTo(escapeRoom);
 escapeRoom.hasMany(scene, {"foreignKey": "escapeRoomId"});
 
@@ -331,5 +334,21 @@ reusablePuzzleInstance.belongsTo(scene);
 
 scene.hasMany(puzzle);
 puzzle.belongsTo(scene);
+
+
+// Relation 1-to-N between EscapeRoom and Subject
+
+subject.belongsTo(escapeRoom, {
+    "foreignKey": "escapeRoomId",
+    "onDelete": "CASCADE",
+    "onUpdate": "CASCADE"
+});
+
+escapeRoom.hasMany(subject, {
+    "foreignKey": "escapeRoomId",
+    "onDelete": "CASCADE",
+    "hooks": true
+});
+
 
 module.exports = sequelize;

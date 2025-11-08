@@ -15,7 +15,7 @@ module.exports = {
         });
     },
 
-    async down (queryInterface, Sequelize) {
+    async down (queryInterface) {
     // Remove userId from retosSuperados
         await queryInterface.removeColumn("retosSuperados", "userId");
     }

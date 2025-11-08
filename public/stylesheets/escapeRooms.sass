@@ -31,6 +31,7 @@
     flex-flow: row wrap
     -webkit-flex-flow: row
     flex-wrap: wrap
+    background-color: colors.$mainpurple
     &:after 
         content: ""
         flex: 1
@@ -63,17 +64,20 @@
           cursor: not-allowed
         .sign
           position: absolute
-          top: 5px
-          left: 5px
+          top: -2px
+          left: -2px
           color: WHITE
           padding: 9px
           border-radius: 50%
           line-height: 1px
+          border: 2px solid white
           background-color: colors.$brightgreen
           &.add
             background-color: colors.$brightyellow
           &.edit
             background-color: colors.$brightblue
+          &.warning
+            background-color: colors.$brightorange
         .erFoto
           width: 100%
           display: flex
@@ -97,6 +101,9 @@
           flex-direction: column
           justify-content: center
           @extend %scale-animation-down
+  .escapeRoomSearch
+    .escapeRoomFilters
+      text-align: right
   .escapeRoomListButtons
     display: flex
     flex-direction: row

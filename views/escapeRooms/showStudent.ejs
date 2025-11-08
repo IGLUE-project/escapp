@@ -6,6 +6,7 @@
 
 <div role="main" class="main showStudent">
 	<div class="breadcrumbs-container">
+		<% if (locals.user && !locals.user.anonymized) { %>
         <div class="breadcrumbs">
 			<a href="/escapeRooms"><%=i18n.common.my%></a>
 				<span class="material-icons">chevron_right</span>
@@ -17,16 +18,16 @@
 					<span><%=escapeRoom.title%></span>
 				<%}%>
         </div>
+		<%}%>
 	</div>
 	<div class="reporting"><a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a> <!--/ <a href="/escapeRooms/<%=escapeRoom.id%>/contact"> Contactar </a>--> </div>
 	<div class="flex ">
-
 		<div class="flex-thumb attachmentShow animated">
 			<% var attachment = escapeRoom.attachment; %>
             <% if(attachment){ %>
-                <img  alt="None" src="<%=attachment.url%>">
+                <img alt="None" src="<%=attachment.url%>">
             <% }else{ %>
-                <img  alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
+                <img alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
             <% } %>
 		</div>
 		<div class="flex-er-info animated fadeIn">
@@ -38,12 +39,22 @@
 				<h2><%=i18n.team.Team%> </h2>
 				<h3><%=team.name%></h3>
 				<p class="members">
-					<%=team.teamMembers.map(m => m.name + " " + m.surname).join(", ")%>
+					<%=team.teamMembers.map(m => m.alias).join(", ")%>
 				</p>
 			<% } %>
 			<% if (escapeRoom.supportLink) { %>
 				<h2><%=i18n.showStudent.supportLink%></h2>
 				<p><a target="_blank" href="<%=escapeRoom.supportLink%>"><%=escapeRoom.supportLink%></a></p>
+			<% } %>
+			<% if (escapeRoom.hybridInstructions) { %>
+				<h2><%=i18n.showStudent.hybridInstructions%></h2>
+				<p>
+					<a href="/uploads/hybrid/<%=escapeRoom.hybridInstructions%>" target="_blank">
+						<button class="rounded"><%=i18n.common.download%> 
+							<span class="material-icons" style="color: #F40F02;">folder</span>
+						</button>
+					</a>
+				</p>
 			<% } %>
 		</div>
 	</div>
@@ -69,12 +80,13 @@
 				<% } %>
 			</div>
 		</div>
-
 		<div class="status animated fadeIn">
+
 			<% if (turno.status === "pending") { %>
 				<span id ="start">
 					<button class="rounded disabled" disabled id ><%=i18n.showStudent.play%>%></button>
 				</span>
+			
 			<% } else if((turno.status === "active")&& !finished && (!team.startTime || (new Date(team.startTime.getTime() + escapeRoom.duration * 60000) > new Date()))) { %>
 				<span id ="start">
 					<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/play" style="display: inline;">
@@ -83,7 +95,7 @@
 						</button>
 					</form>
 				</span>
-			<%} else if((turno.status === "test" )&& !finished) { %>
+			<%} else if(((turno.status === "test" )&& !finished)) { %>
 				<span id ="start">
 					<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/test" style="display: inline;">
 						<button class="rounded acceptButton pulseButton" onclick="clicked()">
@@ -124,7 +136,7 @@
 					</div>
 				</div>
 			<% } %>
-
+			
 			<% if(!(turno.status == "finished" || turno.status == "test") && !team.startTime){%>
 				<div id="unjoin" method="post" style="display: inline-block;">
 					<button class="rounded deleteButton" onclick="overlayTrigger('unjoin')">
@@ -170,7 +182,7 @@ const overlayTrigger = (id, close) => {
 		$('.overlay-trigger[data-id="' + id + '"]').show();
 	}
 };
-
+<% if (session.user) { %>
 $(()=>{
 	var participant = JSON.parse('<%-JSON.stringify(participant)%>')
 	var socket;
@@ -192,7 +204,6 @@ $(()=>{
 	$("#dialog-start").dialog(dialogOptions);
 	$("#dialog-start").css("visibility","visible");
 
-
 	const onJoin = (msg, e) => {
 		if (!startTime && !CLICKED) {
 			$( "#dialog-start" ).dialog( "open" )
@@ -205,7 +216,6 @@ $(()=>{
 	const onMessage = ({msg}) => {
 		$.easyAlert({message: msg, alertType: 'warning', position: 'b l', time: 30000, autoHide: true})
 	}
-
 
 	const initSocketServer = (escapeRoomId, teamId, turnId, userId) => {
 		socket = io('/', {query: {
@@ -223,6 +233,7 @@ $(()=>{
 	initSocketServer(<%= escapeRoom.id%>, teamId, <%= turno ? turno.id : "undefined" %>, userId);
 });
 </script>
+<% }%>
 <% } %>
 </div>
 

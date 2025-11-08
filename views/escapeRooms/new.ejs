@@ -10,7 +10,7 @@
         </div>
     </div>
     <h1><%=i18n.escapeRoom.steps.edit.title%></h1>
-    <form class="basicConfig" method="post" action="/escapeRooms" enctype="multipart/form-data">
+    <form id="main-er-create-edit-form" class="basicConfig" method="post" action="/escapeRooms" enctype="multipart/form-data">
         <%- include ("../partials/_form.ejs", {ignoreExtras: true}) %>
     </form>
 </div>

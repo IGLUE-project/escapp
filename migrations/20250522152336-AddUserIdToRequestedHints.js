@@ -21,7 +21,7 @@ module.exports = {
      */
     },
 
-    async down (queryInterface, Sequelize) {
+    async down (queryInterface) {
     // Remove userid from requestedHints
         await queryInterface.removeColumn("requestedHints", "userId");
     /**

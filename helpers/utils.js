@@ -29,8 +29,30 @@ exports.saveInterface = async (name, req, res, next) => {
 
     escapeRoom[`${name}Instructions`] = body.instructions;
     escapeRoom[`${name}Appearance`] = body.appearance;
+    const fields = [`${name}Instructions`, `${name}Appearance`];
+
+    if (name === "indications") {
+        const hybridInstructionsFile = req.file;
+
+        if (hybridInstructionsFile && hybridInstructionsFile.filename) {
+            try {
+                fs.unlinkSync(path.join(__dirname, "/../uploads/hybrid/", escapeRoom.hybridInstructions));
+            } catch (e) {
+                console.error("Error deleting old resources file:", e);
+            }
+            escapeRoom.hybridInstructions = hybridInstructionsFile.filename;
+        } else if (body.keepHybridInstructions === "0") {
+            try {
+                fs.unlinkSync(path.join(__dirname, "/../uploads/hybrid/", escapeRoom.hybridInstructions));
+            } catch (e) {
+                console.error("Error deleting old resources file:", e);
+            }
+            escapeRoom.hybridInstructions = null;
+        }
+        fields.push("hybridInstructions");
+    }
     try {
-        await escapeRoom.save({"fields": [`${name}Instructions`, `${name}Appearance`]});
+        await escapeRoom.save({fields});
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep(name) : progressBar || nextStep(name)}`);
     } catch (error) {
         if (error instanceof Sequelize.ValidationError) {
@@ -45,8 +67,9 @@ exports.saveInterface = async (name, req, res, next) => {
 
 
 exports.playInterface = async (name, req, res, next) => {
+    const {i18n} = res.locals;
     const isAdmin = Boolean(req.session.user.isAdmin),
-        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id),
+        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
 
     req.escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPuzzles);
@@ -63,7 +86,7 @@ exports.playInterface = async (name, req, res, next) => {
             },
             "teams": req.teams,
             "hints": [],
-            teamId: null,
+            "teamId": null,
             "turnoId": req.params.turnoId,
             "isStudent": false,
             "status": req.turn.status,
@@ -108,8 +131,19 @@ exports.playInterface = async (name, req, res, next) => {
             });
 
             const team = teams && teams[0] ? teams[0] : {};
+            const tooLate = exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration);
+            const alreadyFinished = team.retos.length === req.escapeRoom.puzzles.length;
 
-            if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
+            if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || tooLate || alreadyFinished) {
+                if (!team.startTime) {
+                    req.flash("error", i18n.team.notStarted);
+                } else if (!(team.turno.status === "active" || team.turno.status === "test")) {
+                    req.flash("error", i18n.turno.notActive);
+                } else if (tooLate) {
+                    req.flash("error", i18n.team.tooLate);
+                } else if (alreadyFinished) {
+                    req.flash("error", i18n.team.alreadyFinished);
+                }
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
                 return;
             }
@@ -171,7 +205,7 @@ exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRo
 
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]], "include": [{"model": models.reusablePuzzleInstance}]});
 
-exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({"attributes": ["name","description", "instructions", "config", ["id", "reusablePuzzleId"]]});
+exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({"attributes": ["name", "description", "instructions", "config", ["id", "reusablePuzzleId"]]});
 
 exports.getReusablePuzzlesInstances = (id) => models.reusablePuzzleInstance.findAll({"where": {"escapeRoomId": id}, "include": [{"model": models.puzzle, "attributes": ["id"]}]});
 
@@ -188,20 +222,21 @@ exports.getERPuzzlesAndHints = (escapeRoomId) => models.puzzle.findAll({
     ]
 });
 
-
-exports.getERState = async (escapeRoomId, team, duration, hintLimit, nPuzzles, attendance, attendanceScore, scoreHintSuccess, scoreHintFail, includeRanking = false) => {
+exports.getERState = async (user, escapeRoomId, team, turnId, duration, hintLimit, nPuzzles, attendance, attendanceScore, scoreHintSuccess, scoreHintFail, includeRanking = false) => {
     const {puzzlesSolved, puzzleData} = await getPuzzleOrderSuperados(team);
-    const teamMembers = team.teamMembers.map((member) => member.username);
+    const teamMembers = team.teamMembers.map((member) => member.alias);
+    const participantTeamIndex = team.teamMembers.findIndex((member) => member.username === user.username);
+
     const {hintsAllowed, successHints, failHints} = await exports.areHintsAllowedForTeam(team.id, hintLimit);
     const progress = exports.getProgress(puzzlesSolved, nPuzzles);
     const score = exports.getScore(puzzlesSolved, puzzleData, successHints, failHints, attendance, attendanceScore, scoreHintSuccess, scoreHintFail);
-    const ranking = includeRanking ? await exports.getRanking(escapeRoomId, team.turno.id, true) : undefined;
+    const ranking = includeRanking ? await exports.getRanking(escapeRoomId, turnId, true) : undefined;
     const startTime = team.turno.startTime || team.startTime;
     const timeLeft = duration * 60 - Math.round((new Date() - startTime) / 1000);
     const remainingTime = !timeLeft || timeLeft < 0 ? 0 : timeLeft;
     const teamId = team.id;
 
-    return {teamId, startTime, remainingTime, puzzlesSolved, puzzleData, nPuzzles, hintsAllowed, progress, score, teamMembers, ranking, "duration": duration * 60};
+    return {teamId, startTime, remainingTime, puzzlesSolved, puzzleData, nPuzzles, hintsAllowed, progress, score, teamMembers, ranking, "duration": duration * 60, participantTeamIndex};
 };
 
 exports.getRanking = async (escapeRoomId, turnoId, anonymized = false) => {
@@ -213,8 +248,8 @@ exports.getRanking = async (escapeRoomId, turnoId, anonymized = false) => {
     for (const i in ranking) {
         const team = {
             "id": ranking[i].id,
-            "name": anonymized && anonymized != ranking[i].id ? "" : ranking[i].name,
-            "participants": anonymized && anonymized != ranking[i].id ? "" : ranking[i].teamMembers.map((member) => `${member.name} ${member.surname}`).join(", "),
+            "name": ranking[i].name,
+            "participants": ranking[i].participants,
             "result": ranking[i].result,
             "count": ranking[i].count,
             "latestRetoSuperado": ranking[i].latestRetoSuperado,
@@ -245,10 +280,9 @@ exports.getScore = (puzzlesSolved, puzzleData, successHints, failHints, attendan
 
 exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
     let participation = PARTICIPANT;
-    const privileged = user.isAdmin || (escapeRoom.authorId === user.id) || ((escapeRoom.userCoAuthor || []).some((e) => e.id === user.id));
+    const privileged = user.isAdmin || escapeRoom.authorId === user.id || (escapeRoom.userCoAuthor || []).some((e) => e.id === user.id && e.coAuthors.confirmed);
+
     if (preview && privileged) {
-        participation = AUTHOR;
-    } else if (!preview && privileged) {
         participation = PARTICIPANT;
     } else if (teams && teams.length > 0) {
         const [team] = teams;
@@ -262,6 +296,8 @@ exports.checkTurnoAccess = (teams, user, escapeRoom, preview = false) => {
         } else {
             participation = PARTICIPANT;
         }
+    } else if (!preview && privileged) {
+        participation = AUTHOR;
     } else {
         participation = NOT_A_PARTICIPANT;
     }
@@ -316,7 +352,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
         const participationCode = await exports.checkTurnoAccess(teams, user, escapeRoom, preview);
 
         participation = participationCode;
-        alreadySolved = Boolean(await models.retosSuperados.findOne({"where": {"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true}}, {transaction}));
+        alreadySolved = preview || Boolean(await models.retosSuperados.findOne({"where": {"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true}}, {transaction}));
         if (participation === PARTICIPANT) {
             try {
                 if (correctAnswer) {
@@ -348,7 +384,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
         if (participation !== AUTHOR && (teams && teams.length)) {
             const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
 
-            erState = await exports.getERState(escapeRoom.id, teams[0], escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed);
+            erState = await exports.getERState(user, escapeRoom.id, teams[0], teams[0].turno.id, escapeRoom.duration, escapeRoom.hintLimit, escapeRoom.puzzles.length, attendance, escapeRoom.scoreParticipation, escapeRoom.hintSuccess, escapeRoom.hintFailed);
         }
     } catch (e) {
         console.error(e);
@@ -366,7 +402,7 @@ exports.automaticallySetAttendance = async (team, userId, automaticAttendance) =
     switch (automaticAttendance) {
     case "team":
         // eslint-disable-next-line no-case-declarations
-        const members = await team.getTeamMembers({"attributes": ["id", "name", "surname"]});
+        const members = await team.getTeamMembers({"attributes": ["id", "name", "surname", "alias"]});
 
         inUser = members.map((t) => t.id);
         // eslint-disable-next-line no-fallthrough
@@ -487,13 +523,13 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
 </script>`;
 
 
-exports.validationError = ({instance, path, validatorKey}, i18n) => {
+exports.validationError = ({instance, paths, validatorKey}, i18n) => {
     try {
         if (i18n[instance.constructor.name] &&
             i18n[instance.constructor.name].attributes &&
-            i18n[instance.constructor.name].attributes[path] &&
+            i18n[instance.constructor.name].attributes[paths] &&
             i18n.common.error[validatorKey]) {
-            return `${i18n[instance.constructor.name].attributes[path]} ${i18n.common.error[validatorKey]}`;
+            return `${i18n[instance.constructor.name].attributes[paths]} ${i18n.common.error[validatorKey]}`;
         }
         throw new Error("Error during validation");
     } catch (e) {
@@ -509,15 +545,16 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
     const when = val["puzzlesSolved.createdAt"];
     const userId = val["puzzlesSolved.user.id"];
     const username = val["puzzlesSolved.user.username"];
+    const alias = val["puzzlesSolved.user.alias"];
     const answer = val["puzzlesSolved.answer"];
     const order = useIdInsteadOfOrder ? val["puzzlesSolved.puzzle.id"] : val["puzzlesSolved.puzzle.order"];
 
     if (!acc[id]) {
-        acc[id] = {[order]: [{success, when, answer, userId, username}] };
+        acc[id] = {[order]: [{success, when, answer, userId, username, alias}] };
     } else if (!acc[id][order]) {
-        acc[id][order] = [{success, when, answer, userId, username}];
+        acc[id][order] = [{success, when, answer, userId, username, alias}];
     } else {
-        acc[id][order].push({success, when, answer, userId, username});
+        acc[id][order].push({success, when, answer, userId, username, alias});
     }
     return acc;
 }, {});
