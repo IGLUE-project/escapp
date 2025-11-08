@@ -550,7 +550,8 @@
                         "gamificationElements": "Elementos de gamificación",
                         "interactiveResources": "Recursos interactivos vinculables a retos",
                         "interactiveResourcesNotAllowed": "No puedes añadir recursos vinculados a retos hasta que hayas creado al menos un reto en la escape room",
-                        "scenarios2D": "Escenarios 2D",
+                        "scenarios2D": "Escenarios",
+                        "addScenario2D": "Nuevo escenario",
                         "config": {
                             "description": "Descripción",
                             "name": "Nombre",

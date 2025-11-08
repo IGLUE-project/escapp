@@ -203,7 +203,11 @@ router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.lo
 router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.downloadRaw);
 
 //Routes for scenes
-router.get("/escapeRooms/:escapeRoomId/scenes/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
+router.get("/escapeRooms/:escapeRoomId/scenes/new", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.newScene);
+router.get("/scene_maker/editor", sessionController.loginRequired, sceneController.editor);
+
+
+router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
 router.post("/escapeRooms/:escapeRoomId/scenes", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.upsertScene);
 router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId(\\d+)/visualize", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.visualizeScene);
 

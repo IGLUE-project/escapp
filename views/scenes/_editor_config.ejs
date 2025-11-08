@@ -1,0 +1,42 @@
+<script type="text/javascript">
+  window.SCENE_MAKER_OPTIONS = (function(){
+    var options = {};
+
+    var configuration = {};
+    //Paths
+    configuration["ImagesPath"] = "/scene_maker/images/";
+    configuration["StylesheetsPath"] = "/scene_maker/";
+    configuration["PreviewPath"] = "/viewer.html";
+    configuration["UploadScenePath"] = "/scene";
+    options["configuration"] = configuration;
+
+    // Options to initialize Scene Maker
+    options["developping"] = false;
+
+    //Exit URL
+    options.exitURL = window.location.origin + "/escapeRooms/<%= escapeRoomId %>/team";
+
+    //Specify a default language
+    options["lang"] = "en";
+
+    //Specify number of puzzles (Only used by the editor)
+    options["nPuzzles"] = parseInt('<%=nPuzzles%>');
+
+    //Escapp client settings
+    options["escapp"] = {
+      endpoint: window.location.origin + "/api/escapeRooms/<%= escapeRoomId %>",
+    };
+
+    //User credentials
+    // options["user"] = {
+    //    email: "user@domain.com", 
+    //    token: "userToken",
+    // }
+
+    if((typeof window !== "undefined")&&(window.console) && (window.console.log)){
+      console.log("Scene Maker options", options);
+    }
+
+    return options;
+  })();
+</script>

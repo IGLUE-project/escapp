@@ -556,7 +556,8 @@
                         "gamificationElements": "Gamification elements",
                         "interactiveResources": "Interactive resources linkable to puzzles",
                         "interactiveResourcesNotAllowed": "You cannot add resources linked to puzzles until you have created at least one puzzle in the escape room",
-                        "scenarios2D": "2D scenarios",
+                        "scenarios2D": "Scenes",
+                        "addScenario2D": "New Scene",
                         "config": {
                             "description": "Description",
                             "name": "Name",

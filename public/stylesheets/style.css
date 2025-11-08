@@ -3227,25 +3227,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   aspect-ratio: 4/3;
   border-radius: 5px 5px 0px 0;
 }
+.modalCatalogResource .resources-group .resource-card a {
+  display: flex;
+  flex: 1;
+}
 .modalCatalogResource .resources-group .resource-card .resourceCatalogBtn {
   border-radius: 0px 0px 6px 6px;
   border: 0px;
-}
-.modalCatalogResource #scenery {
-  width: 400px;
-  border-radius: 6px;
-  border: 1px rgba(101, 102, 131, 0.7) solid;
-}
-.modalCatalogResource #scenery img {
-  height: 120px;
-  object-fit: cover;
-  width: 100%;
-  border-radius: 5px 5px 0px 0;
-}
-.modalCatalogResource #scenery .resourceCatalogBtn {
-  border-radius: 0px 0px 6px 6px;
-  border: 0px;
-  width: 100%;
+  flex: 1;
 }
 
 #iframePreview {

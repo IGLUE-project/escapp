@@ -114,18 +114,23 @@
             </div>
         </section>
 
-        <!--<section class="sectionAddResource">
+        <section class="sectionAddResource">
             <p class="title-section">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.scenarios2D%>
             </p>
-            <div class="resource-card" id="scenery">
-                <img src="/images/scenery.png">
-                <button class="resourceCatalogBtn">
-                    <span class="building-block-icon material-icons"> add </span>
-                    <p><%=i18n.escapeRoom.steps.indications.front.catalog.scenarios2D%></p>
-                </button>
+            <div class="resources-group">
+                <div class="resource-card">
+                    <img src="/images/scene_maker_escapp_thumbnail.png">
+                    <a href="/escapeRooms/<%= escapeRoom.id %>/scenes/new">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p><%=i18n.escapeRoom.steps.indications.front.catalog.addScenario2D%></p>
+                        </button>
+                    </a>
+                </div>
             </div>
-        </section>-->
+        </section>
+
         <section id="configZone" hidden>
             <div class="configReusablePuzzle">
                 <form action="reusablePuzzleInstance" class="reusablePuzzleInstanceForm" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
