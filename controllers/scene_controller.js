@@ -4,43 +4,21 @@ exports.newScene = async (req, res, _) => {
     const escapeRoomId = req.params.escapeRoomId;
     const puzzles = await models.puzzle.findAll({where: {escapeRoomId}});
     const nPuzzles = puzzles.length;
+    const user = req.session.user;
+    const lang =  res.locals.i18n_lang;
 
-    res.render("scenes/new", {escapeRoomId, nPuzzles});
+    res.render("scenes/new", {escapeRoomId, nPuzzles, user, lang});
 }
 
 exports.editor = async (req, res, _) => {
     res.render("scenes/editor", { layout: false });
 }
 
-exports.editScene = async (req, res, _) => {
-    const escapeRoomId = req.params.escapeRoomId;
-    const sceneId = req.params.id;
-    const puzzles = await models.puzzle.findAll({where: {escapeRoomId}});
-    //const reusablePuzzlesInstances = await models.reusablePuzzleInstance.findAll({where: {escapeRoomId}});
-
-    try{
-        let scene = await getSceneByID(sceneId);
-        scene = scene ? scene : {}
-        console.log(reusablePuzzlesInstances)
-        res.render("scenes/editor", {scene, puzzles, reusablePuzzlesInstances, escapeRoomId});
-    }catch(error){
-        console.error(error);
-        return res.status(500).json({error: 'An error occurred while fetching the scene.'});
-    }
+exports.preview = async (req, res, _) => {
+    res.render("scenes/viewer", { layout: false });
 }
 
-exports.visualizeScene = async (req, res, _) => {
-    const sceneId = req.params.id;
-    try{
-        const scene = await getSceneByID(sceneId);
-        res.sendJSON(scene);
-    }catch(error){
-        console.error(error);
-        return res.status(500).json({error: 'An error occurred while fetching the scene.'});
-    }
-}
-
-exports.upsertScene = async (req, res, _) => {
+exports.createScene = async (req, res, _) => {
     const {id,name} = req.body;
     let {puzzles, reusablePuzzlesInstances} = req.body;
     const escapeRoomId = req.params.escapeRoomId;
@@ -103,6 +81,36 @@ exports.upsertScene = async (req, res, _) => {
         return res.status(500).json({error: 'An error occurred while upserting the scene.'});
     }
 };
+
+exports.editScene = async (req, res, _) => {
+    const escapeRoomId = req.params.escapeRoomId;
+    const sceneId = req.params.id;
+    const puzzles = await models.puzzle.findAll({where: {escapeRoomId}});
+    //const reusablePuzzlesInstances = await models.reusablePuzzleInstance.findAll({where: {escapeRoomId}});
+
+    try{
+        let scene = await getSceneByID(sceneId);
+        scene = scene ? scene : {}
+        console.log(reusablePuzzlesInstances)
+        res.render("scenes/editor", {scene, puzzles, reusablePuzzlesInstances, escapeRoomId});
+    }catch(error){
+        console.error(error);
+        return res.status(500).json({error: 'An error occurred while fetching the scene.'});
+    }
+}
+
+exports.visualizeScene = async (req, res, _) => {
+    const sceneId = req.params.id;
+    try{
+        const scene = await getSceneByID(sceneId);
+        res.sendJSON(scene);
+    }catch(error){
+        console.error(error);
+        return res.status(500).json({error: 'An error occurred while fetching the scene.'});
+    }
+}
+
+
 
 const getSceneByID = async (sceneId) => {
     return await models.scene.findByPk(sceneId, {

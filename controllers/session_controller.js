@@ -304,6 +304,7 @@ exports.create = async (req, res, next) => {
                 "id": user.id,
                 "name": user.alias,
                 "username": user.username,
+                "token": user.token,
                 "isAdmin": user.isAdmin,
                 "isStudent": user.isStudent,
                 "anonymized": user.anonymized,

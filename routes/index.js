@@ -205,24 +205,23 @@ router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionControlle
 //Routes for scenes
 router.get("/escapeRooms/:escapeRoomId/scenes/new", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.newScene);
 router.get("/scene_maker/editor", sessionController.loginRequired, sceneController.editor);
-
-
-router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
-router.post("/escapeRooms/:escapeRoomId/scenes", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.upsertScene);
-router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId(\\d+)/visualize", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.visualizeScene);
+router.get("/scene_maker/preview", sessionController.loginRequired, sceneController.preview);
+router.post("/escapeRooms/:escapeRoomId/scenes", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.createScene);
+//router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
+//router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId(\\d+)/visualize", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.visualizeScene);
 
 // Routes for guide/apps/resources
 router.get("/inspiration", escapeRoomController.showGuide);
 
 // Routes for reusablePuzzles
-router.post("/reusablePuzzles", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }, { "name": "instructions", "maxCount": 10 }]), reusablePuzzleController.createReusablePuzzle);
+router.post("/reusablePuzzles", sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }, { "name": "instructions", "maxCount": 10 }]), reusablePuzzleController.createReusablePuzzle);
 router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);
-router.put("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }]), reusablePuzzleController.editReusablePuzzle);
+router.put("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }]), reusablePuzzleController.editReusablePuzzle);
 router.get("/reusablePuzzles/new", sessionController.loginRequired, reusablePuzzleController.renderCreatePuzzle);
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzle);
 router.get("/reusablePuzzles/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
 router.get("/reusablePuzzles/installed/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
-router.delete("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, sessionController.loginRequired, reusablePuzzleController.deleteReusablePuzzle);
+router.delete("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, reusablePuzzleController.deleteReusablePuzzle);
 router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browse);
 router.get("/reusablePuzzlesInstances/:puzzle_id/form", sessionController.loginRequired, assetsController.getFormForInstance);
 router.get("/reusablePuzzlePreview/:reusablePuzzleId", reusablePuzzleController.renderReusablePuzzlePreview);

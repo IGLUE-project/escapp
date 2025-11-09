@@ -5,9 +5,9 @@
     var configuration = {};
     //Paths
     configuration["ImagesPath"] = "/scene_maker/images/";
-    configuration["StylesheetsPath"] = "/scene_maker/";
-    configuration["PreviewPath"] = "/viewer.html";
-    configuration["UploadScenePath"] = "/scene";
+    configuration["StylesheetsPath"] = "/scene_maker/stylesheets/";
+    configuration["PreviewPath"] = "/scene_maker/preview";
+    configuration["UploadScenePath"] = "/escapeRooms/<%= escapeRoomId %>/scenes";
     options["configuration"] = configuration;
 
     // Options to initialize Scene Maker
@@ -17,7 +17,7 @@
     options.exitURL = window.location.origin + "/escapeRooms/<%= escapeRoomId %>/team";
 
     //Specify a default language
-    options["lang"] = "en";
+    options["lang"] = '<%=lang%>';
 
     //Specify number of puzzles (Only used by the editor)
     options["nPuzzles"] = parseInt('<%=nPuzzles%>');
@@ -28,10 +28,10 @@
     };
 
     //User credentials
-    // options["user"] = {
-    //    email: "user@domain.com", 
-    //    token: "userToken",
-    // }
+    options["user"] = {
+      email: "<%=user.username%>", 
+      token: "<%=user.token%>",
+    }
 
     if((typeof window !== "undefined")&&(window.console) && (window.console.log)){
       console.log("Scene Maker options", options);

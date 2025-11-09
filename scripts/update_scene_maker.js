@@ -113,11 +113,55 @@ async function updateSceneMaker() {
   }
   console.log("✅ Scene Maker build completed.");
 
-  console.log("📦 Copy Scene Maker build to " + targetPath);
-  await removeDir(targetPath);
-  await copyDir(distPath, targetPath);
+  //console.log("Copy Scene Maker build to " + targetPath);
 
-  console.log("Copy Scene Maker assets");
+  await removeDir(targetPath);
+
+  console.log("Copy Scene Maker files");
+
+  //JavaScript
+  const jsFiles = [
+    "dist/scene_maker_editor.min.js",
+    "dist/scene_maker_viewer.min.js"
+  ];
+  const jsDestDir = path.join(targetPath, "js");
+  await fsp.mkdir(jsDestDir, { recursive: true });
+
+  for (const relativeJSFilePath of jsFiles) {
+    const src = path.join(sceneMakerPath, relativeJSFilePath);
+    const dest = path.join(jsDestDir, path.basename(relativeJSFilePath));
+    await fsp.copyFile(src, dest);
+    console.log(`✅ Copied javascript file: ${relativeJSFilePath}`);
+  }
+  console.log("✅ Scene Maker bundled javascript.");
+
+  //Stylesheets
+  const cssFiles = [
+    "dist/scene_maker_editor.min.css",
+    "dist/scene_maker_viewer.min.css",
+    "stylesheets/language/es.css"
+  ];
+
+  const stylesheetsDestDir = path.join(targetPath, "stylesheets");
+  await fsp.mkdir(stylesheetsDestDir, { recursive: true });
+
+  for (const relativeCSSFilePath of cssFiles) {
+    const src = path.join(sceneMakerPath, relativeCSSFilePath);
+    if (relativeCSSFilePath.startsWith("dist/")) {
+      dest = path.join(stylesheetsDestDir, path.basename(relativeCSSFilePath));
+    } else {
+      const relativeSubPath = relativeCSSFilePath.replace(/^stylesheets[\/\\]/, "");
+      dest = path.join(stylesheetsDestDir, relativeSubPath);
+    }
+    await fsp.mkdir(path.dirname(dest), { recursive: true });
+    await fsp.copyFile(src, dest);
+    console.log(`✅ Copied CSS file: ${relativeCSSFilePath}`);
+  }
+
+  console.log("Change paths in CSS files");
+  await updateCSSFiles(targetPath);
+
+  console.log("✅ Scene Maker bundled stylesheets.");
 
   //Images
   const imagesSrcDir = path.join(sceneMakerPath, "images");
@@ -161,8 +205,20 @@ async function updateSceneMaker() {
   await fsp.writeFile(viewerHTMLFileDestPath, viewerHTML, "utf8");
   console.log("✅ Scene Maker Viewer HTML saved to:", viewerHTMLFileDestPath);
 
-  console.log("Change paths in CSS files");
-  await updateCSSFiles(targetPath);
+  //License
+  console.log("Copy license file");
+  const licenseFileSrcPath = path.join(sceneMakerPath, "dist/scene_maker.LICENSE");
+  const licenseFileDestPath = path.join(targetPath, "scene_maker.LICENSE");
+  await fsp.copyFile(licenseFileSrcPath, licenseFileDestPath);
+  console.log("✅ Scene Maker License");
+
+  console.log("Copy CKEditor");
+  const ckEditorSrcDir = path.join(sceneMakerPath, "libs/ckeditor");
+  const ckEditorDestDir = path.join(__dirname, "../public/ckeditor/ckeditor3");
+  await removeDir(ckEditorDestDir);
+  await fsp.mkdir(ckEditorDestDir, { recursive: true });
+  await copyDir(ckEditorSrcDir, ckEditorDestDir);
+  console.log("✅ CKEditor.");
 
   console.log("✅ Task successfully completed");
 }

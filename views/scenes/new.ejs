@@ -1,5 +1,5 @@
-<%- include ("_editor_config", {escapeRoomId, nPuzzles}) %>
+<%- include ("_scene_maker_config", {escapeRoomId, nPuzzles, user, lang}) %>
 
-<div style=" position:fixed; inset:0; display:flex; justify-content:center; align-items:center; background:#f1f1f1;">
-  <iframe src="/scene_maker/editor" width="1200" height="750" style="border:0" allowfullscreen></iframe>
+<div class="scene_container">
+  <iframe src="/scene_maker/editor" width="1200" height="750" allowfullscreen></iframe>
 </div>
