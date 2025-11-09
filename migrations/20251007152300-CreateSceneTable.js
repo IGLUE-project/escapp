@@ -15,12 +15,16 @@ module.exports = {
                 "type": Sequelize.INTEGER,
                 "allowNull": false
             },
+            "content": {
+                "type": Sequelize.JSON,
+                "allowNull": false
+            },
             "name": {
                 "type": Sequelize.STRING,
                 "allowNull": false
             },
-            "config": {
-                "type": Sequelize.STRING,
+            "thumbnail": {
+                "type": Sequelize.TEXT,
                 "allowNull": false
             },
             "createdAt": {

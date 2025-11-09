@@ -19,66 +19,25 @@ exports.preview = async (req, res, _) => {
 }
 
 exports.createScene = async (req, res, _) => {
-    const {id,name} = req.body;
-    let {puzzles, reusablePuzzlesInstances} = req.body;
     const escapeRoomId = req.params.escapeRoomId;
-    const config = JSON.stringify(req.body.config || {});
-
-    if(!name || !escapeRoomId){
-        return res.status(400).json({error: 'Missing required fields: name and escapeRoomId are required.'});
-    }
-
-    if(!Array.isArray(puzzles) && puzzles){
-        puzzles = [puzzles]
-    }else if(!puzzles){
-        puzzles = []
-    }
-
-    if(!Array.isArray(reusablePuzzlesInstances) && reusablePuzzlesInstances){
-        reusablePuzzlesInstances = [reusablePuzzlesInstances]
-    }else{
-        reusablePuzzlesInstances = []
-    }
-
-    let scene;
-
+    let sceneJSON;
     try {
-        if(!id){
-             scene = await models.scene.create({ name, config, escapeRoomId, });
-        } else {
-            scene = await models.scene.update({ name, config, escapeRoomId}, { where: {id} });
-        }
-
-        console.log(puzzles, reusablePuzzlesInstances);
-        const associatedPuzzles = await models.puzzle.findAll({
-            where: {id: puzzles}
-        });
-
-        const associatedReusablePuzzlesInstances = await models.reusablePuzzleInstance.findAll({
-            where: {id: reusablePuzzlesInstances}
-        });
-
-        let puzzlesPromises = [];
-        let instancesPromises = [];
-        console.log(associatedPuzzles, associatedReusablePuzzlesInstances);
-
-        associatedPuzzles.forEach(puzzle => {
-            puzzlesPromises.push(puzzle.setScene(scene));
-        })
-
-        associatedReusablePuzzlesInstances.forEach(instance => {
-            instancesPromises.push(instance.setScene(scene));
-        })
-
-        await Promise.all([...puzzlesPromises, ...instancesPromises]);
-
-        const returnScene = await getSceneByID(id || scene.id);
-
-
-        return res.status(201).json(returnScene);
+        sceneJSON = JSON.parse(req.body.scene.json);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({error: 'An error occurred while upserting the scene.'});
+        return res.status(500).json({error: 'Invalid scene JSON.'});
+    }
+
+    try {
+        let scene = await models.scene.create({
+            escapeRoomId,
+            content: sceneJSON
+        });
+        //TO DO. Send editPath to SM
+        return res.status(201);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({error: 'An error occurred while creating the scene.'});
     }
 };
 
