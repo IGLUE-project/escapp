@@ -180,24 +180,18 @@
                 <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
                 <th></th>
             </tr>
-
-
-                    <tr class="catalogItem" id="noResources">
-                        <td colspan="3" style="text-align: center; height:200px
-                        <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
-                               <%}else{%>; display: none;<%}%>">
-                            <p class="title" style="text-align: center;">
-                                <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
-                            </p>
-                        </td>
-                    </tr>
-
-
-            </table>
-
+            <tr class="catalogItem" id="noResources">
+                <td colspan="3" style="text-align: center; height:200px
+                <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
+                       <%}else{%>; display: none;<%}%>">
+                    <p class="title" style="text-align: center;">
+                        <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
+                    </p>
+                </td>
+            </tr>
+        </table>
 </div>
 <div style="display:flex; margin-top:2em; align-items:center; justify-content: end; gap: 0.7rem">
-
     <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
     <button class="building-block-bar-button theme-btn" style="display:flex;">
         <span class="building-block-icon material-icons" style="color: var(--info);">color_lens</span>

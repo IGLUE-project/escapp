@@ -33,7 +33,6 @@ exports.load = async (req, res, next, escapeRoomId) => {
         if (escapeRoom && res.locals) {
             req.escapeRoom = escapeRoom;
             const editing = req.session && req.session.user && !req.session.user.isStudent;
-
             res.locals.i18n_lang = getLocaleForEscapeRoom(req, escapeRoom, editing);
             res.locals.i18n_texts = getTextsForLocale(res.locals.i18n_lang);
             res.locals.i18n = res.locals.i18n_texts;

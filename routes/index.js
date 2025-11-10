@@ -204,11 +204,13 @@ router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionControlle
 
 //Routes for scenes
 router.get("/escapeRooms/:escapeRoomId/scenes/new", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.newScene);
-router.get("/scene_maker/editor", sessionController.loginRequired, sceneController.editor);
-router.get("/scene_maker/preview", sessionController.loginRequired, sceneController.preview);
+router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, sceneController.show);
 router.post("/escapeRooms/:escapeRoomId/scenes", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.createScene);
-//router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
-//router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId(\\d+)/visualize", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.visualizeScene);
+router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
+router.put("/escapeRooms/:escapeRoomId/scenes/:sceneId/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.updateScene);
+router.get("/scene_maker/viewer", sessionController.loginRequired, sceneController.preview);
+router.get("/scene_maker/preview", sessionController.loginRequired, sceneController.preview);
+router.get("/scene_maker/editor", sessionController.loginRequired, sceneController.editor);
 
 // Routes for guide/apps/resources
 router.get("/inspiration", escapeRoomController.showGuide);

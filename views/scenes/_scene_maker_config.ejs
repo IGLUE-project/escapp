@@ -7,25 +7,39 @@
     configuration["ImagesPath"] = "/scene_maker/images/";
     configuration["StylesheetsPath"] = "/scene_maker/stylesheets/";
     configuration["PreviewPath"] = "/scene_maker/preview";
-    configuration["UploadScenePath"] = "/escapeRooms/<%= escapeRoomId %>/scenes";
+    <% if (typeof sceneId === "undefined") { %>
+      configuration["UploadScenePath"] = "/escapeRooms/<%= escapeRoomId %>/scenes";
+    <% } else { %>
+       configuration["UploadScenePath"] = "/escapeRooms/<%= escapeRoomId %>/scenes/<%= sceneId %>/edit";
+    <% } %>
     options["configuration"] = configuration;
 
     // Options to initialize Scene Maker
     options["developping"] = false;
 
+    //Scene to load
+    <% if (typeof sceneJSON !== "undefined") { %>
+      options.scene = <%- JSON.stringify(sceneJSON) %>
+    <% } %>
+
     //Exit URL
     options.exitURL = window.location.origin + "/escapeRooms/<%= escapeRoomId %>/team";
 
-    //Specify a default language
+    //Language
     options["lang"] = '<%=lang%>';
 
-    //Specify number of puzzles (Only used by the editor)
+    //Escape room data
+    //Escape room ID
+    options["erId"] = parseInt('<%=escapeRoomId%>');
+    //Number of puzzles
     options["nPuzzles"] = parseInt('<%=nPuzzles%>');
 
-    //Escapp client settings
-    options["escapp"] = {
-      endpoint: window.location.origin + "/api/escapeRooms/<%= escapeRoomId %>",
-    };
+    <% if (editor !== true) { %>
+      //Escapp client settings
+      options["escapp"] = {
+        endpoint: window.location.origin + "/api/escapeRooms/<%= escapeRoomId %>",
+      };
+    <% } %>
 
     //User credentials
     options["user"] = {
@@ -33,9 +47,11 @@
       token: "<%=user.token%>",
     }
 
-    if((typeof window !== "undefined")&&(window.console) && (window.console.log)){
-      console.log("Scene Maker options", options);
-    }
+    <% if (process.env.NODE_ENV === "development") { %>
+      if((typeof window !== "undefined")&&(window.console) && (window.console.log)){
+        console.log("Scene Maker options", options);
+      }
+    <% } %>
 
     return options;
   })();
