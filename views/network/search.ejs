@@ -30,7 +30,7 @@
         const query = document.getElementById("search").value;
         const before = document.getElementById("before").value;
         const after = document.getElementById("after").value;
-        const language = document.getElementById("language").value;
+        const lang = document.getElementById("language").value;
 
         let url = `/network/query?query=${encodeURIComponent(query)}`;
         if (before) {
@@ -40,7 +40,7 @@
             url += `&after=${encodeURIComponent(after)}`;
         }
         if (language) {
-            url += `&language=${encodeURIComponent(language)}`;
+            url += `&lang=${encodeURIComponent(lang)}`;
         }
 
         const response = await fetch(url);

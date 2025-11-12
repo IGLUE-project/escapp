@@ -326,11 +326,15 @@ exports.text = (before, after, lang) => {
         },
         "attributes": ["id", "title", "description"]
     }
-    if (before) {
-        conditions.where.createdAt = {[Op.lt]: new Date(before)};
-    }
-    if (after) {
-        conditions.where.createdAt = {[Op.gt]: new Date(after)};
+    if (before && after) {
+        conditions.where.createdAt = {[Op.between]: [new Date(after), new Date(before)]};
+    }else{
+        if (before) {
+            conditions.where.createdAt = {[Op.lt]: new Date(before)};
+        }
+        if (after) {
+            conditions.where.createdAt = {[Op.gt]: new Date(after)};
+        }
     }
     if (lang) {
         conditions.where.lang = lang;

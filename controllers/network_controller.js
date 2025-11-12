@@ -1,7 +1,21 @@
-const query = require("../queries");
+const queries = require("../queries");
 const {models} = require("../models");
 const {fuzzy} = require("fast-fuzzy");
-const urls = JSON.parse(process.env.URLS) || ["http://localhost:3000"];
+const urls = JSON.parse(process.env.URLS) || [];
+
+const getResultsFromInstance = async (value, before, after, lang, page=1, limit=10) => {
+    try{
+        let queryToExecute = queries.escapeRoom.text(before, after, lang);
+        let results = await models.escapeRoom.findAll(queryToExecute);
+        //Fuzzy finding of escaperooms
+        results = results.sort((a, b) => -fuzzy(value, a.title) - fuzzy(value, a.description)*0.7 + fuzzy(value, b.title) + fuzzy(value, b.description)*0.7);
+        results = results.slice((page-1)*limit, page*limit);
+        return results;
+    } catch (error) {
+        console.error(`Error getting local results: `, error);
+        return {};
+    }
+}
 
 exports.searchInInstance = async (req, res, next) => { //Busqueda local
     try {
@@ -10,14 +24,8 @@ exports.searchInInstance = async (req, res, next) => { //Busqueda local
             console.log("Simulating delay...");
             await wait(6000);
         }
-        let {value, page, limit, after, before, lang} = req.query || {};
-        let queryToExecute = query.escapeRoom.text(before, after, lang);
-        let results = await models.escapeRoom.findAll(queryToExecute);
-        //Fuzzy finding of escaperooms
-        if (req.query.orderBy === "text") {
-            results = results.sort((a, b) => -fuzzy(value, a.title) - fuzzy(value, a.description)*0.7 + fuzzy(value, b.title) + fuzzy(value, b.description)*0.7);
-            results = results.slice((page-1)*limit, page*limit);
-        }
+        let {query, before, after, lang, page, limit} = req.query || {};
+        const results = await getResultsFromInstance(query, before, after, lang, page, limit);
         res.json(results);
     } catch (error) {
         console.error(error);
@@ -73,7 +81,7 @@ const tryFetch = async (url) => { //El fetch falla si no hay nadie, wrapper
 }
 
 exports.searchInNetwork = async (req, res, _) => { //Busqueda en la red, tira querys contra el resto de instancias y agrega
-    const {query, before, after, language} = req.query;
+    const {query, before, after, lang, page, limit} = req.query;
     const aggregated = [];
     const promises = [];
 
@@ -92,10 +100,11 @@ exports.searchInNetwork = async (req, res, _) => { //Busqueda en la red, tira qu
     //---------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------
 
+    aggregated.push(await getResultsFromInstance(query, before, after, lang, page, limit));
     for (let index in urls){
         const url = urls[index];
         try {
-            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${language || ""}`)))
+            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${lang || ""}`)))
         } catch (error) {
             console.error(`Error fetching from ${url}: ${error.message}`);
         }
