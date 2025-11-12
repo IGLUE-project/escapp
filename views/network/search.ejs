@@ -20,7 +20,8 @@
                 <option value="sr">Serbio</option>
             </select>
         </div>
-        <div style="grid-column:2; grid-row:2;" class="Results"> Los resultados </div>
+        <div style="grid-column:2; grid-row:2;" class="Results"> Los resultados
+        </div>
     </div>
     <button>Buscar</button>
 </div>
@@ -45,6 +46,27 @@
 
         const response = await fetch(url);
         const results = await response.text();
-        document.querySelector(".Results").innerHTML = results;
+        const jsonResults = JSON.parse(results);
+        let parsedResults = "";
+        jsonResults.forEach((escapeRoom, i) => {
+            const href = `/network/escapeRoom/${escapeRoom.id}`;
+            const attachment = escapeRoom.attachments && escapeRoom.attachments.length > 0 ? escapeRoom.attachments[0] : null;
+            const url = attachment ? attachment.url : null;
+            parsedResults += newEscapeRoom(href, url, escapeRoom.title);
+        });
+        document.querySelector(".Results").innerHTML = parsedResults;
     });
+
+
+
+    const newEscapeRoom = (href, url, title) => {return `
+                <a href="${href}%>" class="escapeRoomItemWrapper animated bounceIn" title=${title} style="animation-delay: 100ms;" >
+                    <div class="escapeRoomItem">
+                        <div class="erFoto" style="text-align: center">
+                            <div class="bckgFoto" style="background-image: url( ${url ? url :  "../images/puzzleorange.png"})"></div>
+                            <h2 class="escapeRoomTitle">${title}</h2>
+                        </div>
+                    </div>
+                </a>
+`;}
 </script>

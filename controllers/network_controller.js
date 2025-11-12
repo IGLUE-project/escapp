@@ -22,11 +22,12 @@ exports.searchInInstance = async (req, res, next) => { //Busqueda local
         const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
         if(Math.random() < 0.5){
             console.log("Simulating delay...");
-            await wait(6000);
+            await wait(1000);
         }
         let {query, before, after, lang, page, limit} = req.query || {};
         const results = await getResultsFromInstance(query, before, after, lang, page, limit);
         res.json(results);
+
     } catch (error) {
         console.error(error);
         next(error);
@@ -71,6 +72,7 @@ const timeoutPromise = (timeout, ogPromise) =>  {
 
 
 const tryFetch = async (url) => { //El fetch falla si no hay nadie, wrapper
+    console.log(`Fetching from ${url}`);
     try {
         const response = await fetch(url);
         return response;
@@ -92,15 +94,17 @@ exports.searchInNetwork = async (req, res, _) => { //Busqueda en la red, tira qu
     //---------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------
     //TODO: BORRAR ESTO QUE ES SOLO PARA TESTING
-    let urls = ["http://localhost:3000", "http://localhost:3000", "http://localhost:5000"]
+    let urls = ["http://localhost:3000", "http://localhost:3000"]
     //---------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------
+    const localR = await getResultsFromInstance(query, before, after, lang, page, limit)
+    console.log(localR);
+    localR.forEach(r => aggregated.push(r));
 
-    aggregated.push(await getResultsFromInstance(query, before, after, lang, page, limit));
     for (let index in urls){
         const url = urls[index];
         try {
@@ -111,13 +115,17 @@ exports.searchInNetwork = async (req, res, _) => { //Busqueda en la red, tira qu
     }
 
     let values = await Promise.allSettled(promises); //All a secas termina si una falla
+    console.log(values);
 
     for (let i = 0; i < values.length; i++){
         const data = values[i];
         if(data.status === "fulfilled"){
-            aggregated.push(data.value);
+            data.value.forEach(v => {
+                aggregated.push(v);
+            })
         }
     }
 
+    console.log(aggregated);
     res.json(aggregated);
 }
