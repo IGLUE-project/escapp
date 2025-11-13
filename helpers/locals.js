@@ -2,6 +2,8 @@ const {steps} = require("./progress");
 const {getContentForPuzzle} = require("./utils");
 
 module.exports = function (app) {
+    app.locals.domain = process.env.APP_DOMAIN || "https://escapp.es";
+
     const zeroPadding = (d) => {
         if (d < 10) {
             return `0${d}`;

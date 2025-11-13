@@ -1,0 +1,72 @@
+<script type="text/javascript">
+  function scale_scene_maker(){
+    var HEADER_HEIGHT = 50;
+    var FOOTER_HEIGHT = 50;
+    var DISTANCE_TO_HEADER = 10;
+    var DISTANCE_TO_FOOTER = 20;
+    var MINIMUM_SCALE_FACTOR_TO_APPLY_SCALE = 0.90;
+    var MAXIMUM_SCALE_FACTOR_TO_APPLY_SCALE = 1;
+    var WRAPPER_PADDING_LEFT = 0;
+    var WRAPPER_PADDING_RIGHT = 0;
+    var DEFAULT_SM_HEIGHT = 750;
+    var DEFAULT_SM_WIDTH = 1200;
+    var available_height = $(window).height() - HEADER_HEIGHT - FOOTER_HEIGHT - DISTANCE_TO_HEADER - DISTANCE_TO_FOOTER;
+    var available_width = $(window).width() - WRAPPER_PADDING_LEFT - WRAPPER_PADDING_RIGHT;    
+    var scale;
+
+    var scale_width = available_width/DEFAULT_SM_WIDTH; 
+    var scale_height = available_height/DEFAULT_SM_HEIGHT;
+    if(scale_width < MAXIMUM_SCALE_FACTOR_TO_APPLY_SCALE && scale_height < MAXIMUM_SCALE_FACTOR_TO_APPLY_SCALE ){
+        //both width and height should be scaled, we use the minimum
+        if(scale_width > scale_height){
+            scale = scale_height;
+        } else {
+            scale = scale_width;
+        }
+    } else if(scale_width < MAXIMUM_SCALE_FACTOR_TO_APPLY_SCALE ) {
+        scale = scale_width;
+    } else if (scale_height < MAXIMUM_SCALE_FACTOR_TO_APPLY_SCALE) {
+        scale = scale_height;
+    } else {
+        scale = 1;
+    }
+
+    if(scale>MINIMUM_SCALE_FACTOR_TO_APPLY_SCALE){
+        scale = 1;
+    }
+    
+    add_scale_prop_to_elem($("#scene_maker_iframe"),scale);
+
+    setTimeout(function(){
+        $("#scene_maker_container").width(DEFAULT_SM_WIDTH*scale + "px");
+        $("#scene_maker_container").height(DEFAULT_SM_HEIGHT*scale + "px");
+    }, 0);
+  };
+
+  function add_scale_prop_to_elem(elem, scale_factor){
+    if(scale_factor != 1){
+        $(elem).css("transform-origin","0 0 0");
+        $(elem).css("-ms-transform-origin","0 0 0");
+        $(elem).css("-webkit-transform-origin","0 0 0");
+        $(elem).css("transform","scale3d("+scale_factor+","+scale_factor+",1)");
+        $(elem).css("-ms-transform","scale3d("+scale_factor+","+scale_factor+",1)");
+        $(elem).css("-webkit-transform","scale3d("+scale_factor+","+scale_factor+",1)");
+    } else {
+        $(elem).css("transform-origin","50% 50% 0");
+        $(elem).css("-ms-transform-origin","50% 50% 0");
+        $(elem).css("-webkit-transform-origin","50% 50% 0");
+        $(elem).css("transform","none");
+        $(elem).css("-ms-transform","none");
+        $(elem).css("-webkit-transform","none");
+    }
+  };
+
+  $(window).resize(function() {
+    scale_scene_maker();
+  });
+
+  (document.readyState === "loading"
+    ? document.addEventListener("DOMContentLoaded", scale_scene_maker)
+    : scale_scene_maker());
+
+</script>
