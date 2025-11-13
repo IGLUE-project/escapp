@@ -204,6 +204,7 @@ router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionControlle
 
 //Routes for scenes
 router.get("/escapeRooms/:escapeRoomId/scenes/new", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.newScene);
+router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId/framed", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, sceneController.show_framed);
 router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, sceneController.show);
 router.post("/escapeRooms/:escapeRoomId/scenes", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.createScene);
 router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);

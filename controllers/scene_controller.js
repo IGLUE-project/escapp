@@ -1,32 +1,44 @@
 const {models} = require("../models");
 
-exports.show = async (req, res, _) => {
+async function showScene(req, res, view, layout) {
     const escapeRoomId = req.params.escapeRoomId;
     if (!escapeRoomId) {
         return res.status(400).send("Escape room ID must be specified.");
     }
+
     const sceneId = req.params.sceneId;
     if (!sceneId) {
         return res.status(400).send("Scene ID must be specified.");
     }
 
     let scene;
-    try{
+    try {
         scene = await models.scene.findByPk(sceneId);
         if (!scene) {
             return res.status(404).send("Scene not found.");
         }
-    }catch(error){
+    } catch (error) {
         console.error(error);
-        return res.status(500).send('An error occurred while fetching the scene.');
+        return res.status(500).send("An error occurred while fetching the scene.");
     }
 
     const sceneJSON = scene.content;
     const user = req.session.user;
-    const lang =  res.locals.i18n_lang;
+    const lang = res.locals.i18n_lang;
 
-    res.render("scenes/show", {sceneId, sceneJSON, escapeRoomId, nPuzzles: undefined, user, lang});
+    return res.render(view, {
+        layout,
+        sceneId,
+        sceneJSON,
+        escapeRoomId,
+        nPuzzles: undefined,
+        user,
+        lang
+    });
 }
+
+exports.show = (req, res) => showScene(req, res, "scenes/show", false);
+exports.show_framed = (req, res) => showScene(req, res, "scenes/show_framed", true);
 
 exports.newScene = async (req, res, _) => {
     const escapeRoomId = req.params.escapeRoomId;
