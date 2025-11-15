@@ -423,6 +423,11 @@
         $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
     }
 
+    function editScene(sceneId) {
+      const editSceneUrl = `/escapeRooms/<%=escapeRoom.id%>/scenes/${sceneId}/edit`;
+      window.location.href = editSceneUrl;
+    }
+
     function parseAssetConfig(mime, config) {
         let configJSON = {};
 
