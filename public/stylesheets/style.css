@@ -2813,7 +2813,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   gap: 12px;
   padding: 0px 0px;
   max-height: 46px;
-  /*celda botón*/
 }
 #resourceCatalog .catalogItem:last-child {
   border-bottom: 0px;
@@ -2877,6 +2876,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   justify-content: end;
   height: 52px;
   align-items: center;
+}
+#resourceCatalog .catalogItem .scene_icon {
+  height: 30px;
+  max-height: 30px;
+  width: 30px;
+  max-width: 30px;
 }
 #resourceCatalog #myTabContent {
   background: #161938;
