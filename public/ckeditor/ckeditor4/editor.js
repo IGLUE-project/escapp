@@ -182,18 +182,6 @@ const catalogTemplate = async(id, payload) =>{
     return textEditorTemplate(id, `${catalogItem({config:payload.config, url:payload.url, puzzleId:payload.puzzleId,  mime:payload.mime,id, name:""}, {editorId:id})}`);
 }
 
-const deleteAsset = async (assetId) => {
-    const response = await fetch(`/escapeRooms/${escapeRoomId}/deleteAssets/${assetId}`, {
-        method: 'POST',
-    })
-    if (response.ok) {
-        const asset = $(`#${assetId}`);
-        asset.remove();
-        overlayTrigger(assetId, false)
-    }
-}
-
-
 var insertContent = async (index, type, payload, puzzles) => {
     var content = "";
     var id = "ck-" + index + "-" + Date.now();

@@ -546,7 +546,7 @@
                         "copyUrl": "Copiar enlace",
                         "copyEmbed": "Copiar código de incrustación",
                         "previewAsset": "vista previa",
-                        "deleteConfirm": "¿Estás seguro de que quieres borrar este archivo?",
+                        "deleteConfirm": "¿Estás seguro de que quieres borrar este recurso?",
                         "gamificationElements": "Elementos de gamificación",
                         "interactiveResources": "Recursos interactivos vinculables a retos",
                         "interactiveResourcesNotAllowed": "No puedes añadir recursos vinculados a retos hasta que hayas creado al menos un reto en la escape room",

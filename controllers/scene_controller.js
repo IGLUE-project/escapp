@@ -84,6 +84,40 @@ exports.editScene = async (req, res, _) => {
     res.render("scenes/edit", {sceneId, sceneJSON, escapeRoomId, nPuzzles, user, lang});
 }
 
+exports.deleteScene = async (req, res, _) => {
+    const escapeRoomId = req.params.escapeRoomId;
+    if (!escapeRoomId) {
+        return res.status(400).send("Escape room ID must be specified ");
+    }
+    const sceneId = req.params.sceneId;
+    if (!sceneId) {
+        return res.status(400).send("Scene ID must be specified ");
+    }
+
+    let scene;
+    try{
+        scene = await models.scene.findByPk(sceneId);
+        if (!scene) {
+            return res.status(404).send("Scene not found.");
+        }
+    }catch(error){
+        console.error(error);
+        return res.status(500).send('An error occurred while fetching the scene.');
+    }
+
+    if (String(scene.escapeRoomId) !== String(escapeRoomId)) {
+        return res.status(404).send("Scene not found.");
+    }
+
+    try {
+        await scene.destroy();
+        return res.status(204).end();
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("An error occurred while deleting the scene.");
+    }
+}
+
 exports.viewer = async (req, res, _) => {
     res.render("scenes/viewer", { layout: false });
 }

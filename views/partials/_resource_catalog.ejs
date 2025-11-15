@@ -1131,6 +1131,28 @@
         toggleUploadModal()
     }
 
+    const deleteAsset = async (assetId) => {
+      const response = await fetch(`/escapeRooms/${escapeRoomId}/deleteAssets/${assetId}`, {
+          method: 'POST',
+      })
+      if (response.ok) {
+          const asset = $(`#${assetId}`);
+          asset.remove();
+          if(typeof overlayTrigger === "function"){
+            overlayTrigger(assetId, false);
+          }
+      }
+    }
+
+    const deleteScene = async (sceneId) => {
+      const response = await fetch(`/escapeRooms/${escapeRoomId}/scenes/${sceneId}`, {
+          method: 'DELETE',
+      })
+      if (response.ok) {
+        $(`#scene-${sceneId}`).remove();
+      }
+    }
+
     const getResourceTableRowId = (resource, options)=> { 
         switch(resource.resourceType){
         case "asset":

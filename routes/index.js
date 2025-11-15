@@ -209,6 +209,7 @@ router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.login
 router.post("/escapeRooms/:escapeRoomId/scenes", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.createScene);
 router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
 router.put("/escapeRooms/:escapeRoomId/scenes/:sceneId/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.updateScene);
+router.delete("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.deleteScene);
 router.get("/scene_maker/viewer", sessionController.loginRequired, sceneController.preview);
 router.get("/scene_maker/preview", sessionController.loginRequired, sceneController.preview);
 router.get("/scene_maker/editor", sessionController.loginRequired, sceneController.editor);
