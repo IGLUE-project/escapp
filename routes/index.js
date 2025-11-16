@@ -224,6 +224,7 @@ router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginR
 router.get("/uploads/thumbnails/:file_name", sessionController.loginRequired, assetsController.returnThumbnail);
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
+router.get("/escapeRooms/:escapeRoomId/uploads/hints/:file_name", sessionController.loginRequired, assetsController.returnHints);
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
 
 module.exports = router;

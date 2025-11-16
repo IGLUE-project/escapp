@@ -52,7 +52,7 @@
 		  	<label for="hints" class="fileUpload customInput itemWide">
 		  	  <span id="hintsLabel" >
 		  	    <% if (escapeRoom.id && escapeRoom.hintApp) { %>
-		  	      <%=i18n.escapeRoom.steps.hints.hintFile%>: <%= escapeRoom.hintApp.filename ||  "file" %>
+		  	      <%=i18n.escapeRoom.steps.hints.hintFile%>: <a href="<%=escapeRoom.hintApp.url%>" onclick="function(e){e.stopPropagation()}"><%= escapeRoom.hintApp.filename ||  "file" %></a>
 		  	    <% } else { %>
 		  	      <%=i18n.escapeRoom.steps.hints.uploadFile%>
 		  	    <% } %>

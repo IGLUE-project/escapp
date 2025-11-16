@@ -2,7 +2,6 @@ const Sequelize = require("sequelize");
 const {QueryTypes} = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
-const cloudinary = require("cloudinary");
 const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
@@ -147,7 +146,7 @@ exports.index = async (req, res, next) => {
         const pagePublicArray = paginate(pagePublic, pagesPublic, 5);
 
         // Render
-        res.render("escapeRooms/index.ejs", {"escapeRooms": {pending, created, publicc, finished}, cloudinary, user, "count": {countCreated, countPending, countPublic, countFinished}, "page": {pagePublic, pagePending, pageCreated, pageFinished}, "pages": {pagesPublic, pagesPending, pagesCreated, pagesFinished}, "pageArray": {pagePublicArray, pagePendingArray, pageCreatedArray, pageFinishedArray}, search, "admin": false});
+        res.render("escapeRooms/index.ejs", {"escapeRooms": {pending, created, publicc, finished}, user, "count": {countCreated, countPending, countPublic, countFinished}, "page": {pagePublic, pagePending, pageCreated, pageFinished}, "pages": {pagesPublic, pagesPending, pagesCreated, pagesFinished}, "pageArray": {pagePublicArray, pagePendingArray, pageCreatedArray, pageFinishedArray}, search, "admin": false});
     } catch (error) {
         next(error);
     }
@@ -170,11 +169,11 @@ exports.show = async (req, res) => {
         const howManyRetos = await models.retosSuperados.count({"where": {"success": true, "teamId": team.id }});
         const finished = howManyRetos === escapeRoom.puzzles.length;
 
-        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished, "isAdmin": req.session.user.isAdmin});
+        res.render("escapeRooms/showStudent", {escapeRoom, participant, team, finished, "isAdmin": req.session.user.isAdmin});
     } else {
         const completed = stepsCompleted(escapeRoom);
 
-        res.render("escapeRooms/show", {escapeRoom, cloudinary, completed, hostName, "email": req.session.user.username});
+        res.render("escapeRooms/show", {escapeRoom, completed, hostName, "email": req.session.user.username});
     }
 };
 
@@ -223,8 +222,6 @@ exports.create = async (req, res) => {
         }
 
         try {
-            // Await attHelper.checksCloudinaryEnv();
-            // Const uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options);
 
             try {
                 await models.attachment.create({
@@ -741,7 +738,7 @@ exports.admin = async (req, res, next) => {
         } else {
             const pageArray = paginate(page, pages, 5);
 
-            res.render("escapeRooms/index.ejs", {escapeRooms, cloudinary, user, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
+            res.render("escapeRooms/index.ejs", {escapeRooms, user, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
         }
     } catch (error) {
         next(error);
@@ -906,9 +903,9 @@ exports.test = async (req, res) => {
         const howManyRetos = await models.retosSuperados.count({"where": {"success": true, "teamId": team.id }});
         const finished = howManyRetos === escapeRoom.puzzles.length;
 
-        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, participant, team, finished, isAdmin});
+        res.render("escapeRooms/showStudent", {escapeRoom, participant, team, finished, isAdmin});
     } else if (isAdmin) {
-        res.render("escapeRooms/showStudent", {escapeRoom, cloudinary, "participant": {}, "team": {"turno": {"status": "test"}, "teamMembers": []}, "finished": false, isAdmin});
+        res.render("escapeRooms/showStudent", {escapeRoom, "participant": {}, "team": {"turno": {"status": "test"}, "teamMembers": []}, "finished": false, isAdmin});
     } else {
         res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
     }
@@ -932,21 +929,35 @@ exports.export = async (req, res, next) => {
         }
 
         const toExport = escapeRoom.toJSON ? escapeRoom.toJSON() : escapeRoom.dataValues;
-        const pathFields = ["attachment", "hintApp", "hybridInstructions", "instructions"];
 
-        const flatCandidates = pathFields.flatMap((field) => toArray(toExport[field]).map((p) => ({ field, "relKeys": [], "pathStr": p })));
+        const flatCandidates = []//pathFields.flatMap((field) => toArray(toExport[field]).map((p) => ({ field, "relKeys": [], "pathStr": p })));
+        if (toExport.hintApp) {
+            flatCandidates.push({field: "hintApp", relKeys: "hints", pathStr: toExport.hintApp.url})
+        }
+        if (toExport.hybridInstructions) {
+            flatCandidates.push({field: "hybridInstructions", relKeys: "hybrid", pathStr: "uploads/hints/" + toExport.hybridInstructions})
+        }
+        if (toExport.instructions) {
+            flatCandidates.push({field: "instructions", relKeys: "instructions", pathStr: toExport.instructions})
+        }
+        if (toExport.attachment) {
+            flatCandidates.push({field: "attachment", relKeys: "attachment", pathStr: toExport.attachment.url})
+        }
+        if (toExport.assets) {
+            for (let ast in toExport.assets) {
+                 flatCandidates.push({
+                    "field": "assets",
+                    relKeys: "assets",
+                    pathStr: toExport.assets[ast].url
+                })
+            }
+         }
 
-        const assetEntries = collectAssetEntries(toExport.assets, []);
-        const assetCandidates = assetEntries.map(({ relKeys, pathStr }) => ({
-            "field": "assets",
-            relKeys,
-            pathStr
-        }));
+        console.log(flatCandidates)
 
-        const all = [...flatCandidates, ...assetCandidates];
-        const seen = new Set();
+        const all = [...flatCandidates];
         const resolved = [];
-
+        const seen = new Set();
         for (const { field, relKeys, pathStr } of all) {
             const [firstKey] = relKeys;
             const baseDir = baseFor(field, firstKey);

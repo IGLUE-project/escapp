@@ -5,14 +5,6 @@ const fsp = require("fs/promises");
 
 const DEFAULT_BASE = path.join(process.cwd(), "uploads");
 
-const FIELD_BASES = {
-    "attachment": path.join(DEFAULT_BASE, "attachments"),
-    "hintApp": path.join(DEFAULT_BASE, "hints"),
-    "hybridInstructions": path.join(DEFAULT_BASE, "hybrid"),
-    "instructions": path.join(DEFAULT_BASE, "instructions"),
-    "assets": (firstKey) => ""
-};
-
 exports.toArray = (x) => Array.isArray(x) ? x : x ? [x] : [];
 
 exports.statSafe = async (p) => {
@@ -23,26 +15,23 @@ exports.statSafe = async (p) => {
     }
 };
 
-exports.baseFor = (field, firstAssetKey) => {
-    const v = FIELD_BASES[field];
-
-    return typeof v === "function" ? v(firstAssetKey) : v || DEFAULT_BASE;
-};
+ 
 
 exports.resolveUnder = (baseDir, p) => {
-    if (!p || typeof p !== "string") {
-        return null;
-    }
-    const normalized = path.normalize(p);
-    const abs = path.isAbsolute(normalized)
-        ? normalized
-        : path.resolve(baseDir, normalized);
-    const baseResolved = path.resolve(baseDir);
+    // if (!p || typeof p !== "string") {
+    //     return null;
+    // }
+    // const normalized = path.normalize(p);
+    // console.log(normalized)
+    // const abs = path.isAbsolute(normalized)
+    //     ? normalized
+    //     : path.resolve(baseDir, normalized);
+    // const baseResolved = path.resolve(baseDir);
 
-    if (!abs.startsWith(baseResolved + path.sep) && abs !== baseResolved) {
-        return null;
-    }
-    return abs;
+    // if (!abs.startsWith(baseResolved + path.sep) && abs !== baseResolved) {
+    //     return null;
+    // }
+    return baseDir;
 };
 
 exports.zipEntryPath = (zipRoot, absPath, baseDir) => {

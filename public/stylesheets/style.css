@@ -3376,6 +3376,10 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-color: #007bff !important;
 }
 
+.reusablePuzzleInstanceForm {
+  max-width: 50vw;
+}
+
 #mainSection .main.student {
   background-image: url("../images/puzzle_bg.png");
   font-size: xx-large;

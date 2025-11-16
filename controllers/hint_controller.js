@@ -70,6 +70,8 @@ exports.pistas = async (req, res, next) => {
     }
 };
 
+
+
 // POST /escapeRooms/:escapeRoomId/hints
 exports.pistasUpdate = async (req, res) => {
     const {escapeRoom, body} = req;
@@ -102,18 +104,15 @@ exports.pistasUpdate = async (req, res) => {
                 }
             } else {
                 try {
-                    await attHelper.checksCloudinaryEnv();
-                    const uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
-                    const old_public_id = escapeRoom.hintApp ? escapeRoom.hintApp.public_id : null; // Update the attachment into the data base.
+                    console.log()
 
-                    const att = await escapeRoom.getHintApp();
-                    let hintApp = att;
+                    let hintApp = await escapeRoom.getHintApp();
 
                     if (!hintApp) {
                         hintApp = models.hintApp.build({"escapeRoomId": escapeRoom.id});
                     }
-                    hintApp.public_id = uploadResult.public_id;
-                    hintApp.url = uploadResult.url;
+                    hintApp.public_id = req.file.filename;
+                    hintApp.url = req.file.path
                     hintApp.filename = req.file.originalname;
                     hintApp.mime = req.file.mimetype;
 
@@ -123,6 +122,7 @@ exports.pistasUpdate = async (req, res) => {
                             await attHelper.deleteResource(old_public_id, models.hintApp);
                         }
                     } catch (error) {
+                        console.log(error)
                         req.flash("error", i18n.common.flash.errorFile);
                         await attHelper.deleteResource(uploadResult.public_id, models.hintApp);
                     }

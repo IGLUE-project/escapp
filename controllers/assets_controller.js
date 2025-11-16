@@ -438,4 +438,8 @@ exports.returnHybridInstructions = (req, res) => {
     res.sendFile(path.join(__dirname, `../uploads/hybrid/${file_name}`));
 };
 
+exports.returnHints = (req, res) => {
+    const {file_name} = req.params;
 
+    res.sendFile(path.join(__dirname, `../uploads/hints/${file_name}`));
+};

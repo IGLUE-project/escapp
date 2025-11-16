@@ -3,7 +3,6 @@ const {Op} = Sequelize;
 const sequelize = require("../models");
 const {models} = sequelize;
 const {nextStep, prevStep} = require("./progress");
-const cloudinary = require("cloudinary");
 const ejs = require("ejs");
 const queries = require("../queries");
 const {OK, NOT_A_PARTICIPANT, AUTHOR, PARTICIPANT, NOK, NOT_ACTIVE, NOT_STARTED, TOO_LATE, ERROR} = require("../helpers/apiCodes");
@@ -79,7 +78,6 @@ exports.playInterface = async (name, req, res, next) => {
     if (name === "class" && (isAdmin || isAuthor || isCoAuthor)) {
         res.render("escapeRooms/play/play", {
             "escapeRoom": req.escapeRoom,
-            cloudinary,
             "team": {
                 "turno": req.turn,
                 "retos": []
@@ -150,7 +148,7 @@ exports.playInterface = async (name, req, res, next) => {
             await exports.automaticallySetAttendance(team, req.session.user.id, req.escapeRoom.automaticAttendance);
             const hints = await models.requestedHint.findAll({"where": {"teamId": team.id, "success": true}, "include": [{"model": models.hint, "include": [{"model": models.puzzle, "attributes": ["order"]}]}], "order": [["createdAt", "ASC"]]});
 
-            res.render("escapeRooms/play/play", {"escapeRoom": req.escapeRoom, "hostName": process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000", cloudinary, "teams": [], team, token, "userId": req.session.user.id, "turnoId": team.turno.id, "teamId": team.id, "isStudent": true, "hints": hints || [], "endPoint": name, "layout": false });
+            res.render("escapeRooms/play/play", {"escapeRoom": req.escapeRoom, "hostName": process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000", "teams": [], team, token, "userId": req.session.user.id, "turnoId": team.turno.id, "teamId": team.id, "isStudent": true, "hints": hints || [], "endPoint": name, "layout": false });
         } catch (err) {
             next(err);
         }
