@@ -351,4 +351,8 @@ escapeRoom.hasMany(subject, {
 });
 
 
+//Hooks
+const sceneHooks = require(path.join(__dirname, "sceneHooks"));
+sceneHooks({ scene, puzzle });
+
 module.exports = sequelize;

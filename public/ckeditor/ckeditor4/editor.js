@@ -233,7 +233,6 @@ var insertContent = async (index, type, payload, puzzles) => {
             content = reusablePuzzleTemplate(id, payload.url, payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
             break;
         case "scene":
-            console.log("Scene template called with ratio payload.ratio", payload.ratio);
             content = sceneTemplate(id, payload.url, payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
             break;
         case "catalog":

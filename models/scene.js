@@ -18,11 +18,5 @@ module.exports = function (sequelize, DataTypes) {
         }
     );
 
-    Scene.beforeSave((scene, options) => {
-        //console.log("Scene content to save:", scene.content);
-        scene.name = scene.content.title
-        scene.thumbnail = scene.content.avatar
-    });
-
     return Scene;
 };
