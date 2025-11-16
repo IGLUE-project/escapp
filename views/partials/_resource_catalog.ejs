@@ -52,18 +52,18 @@
                 <%=i18n.escapeRoom.steps.indications.front.catalog.gamificationElements%>
             </p>
             <div class="btn-group">
-                <button onclick='insertGamification(0,"countdown",{}, puzzleList)' class="resourceCatalogBtn">
+                <button onclick='insertGamification(0,"countdown",{})' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
                     <p><%=i18n.escapeRoom.steps.indications.front.countdown%></p>
                     <img class="building-block-img" src="/images/countdown.png" />
                 </button>
-                <button onclick='insertGamification(0,"ranking",{}, puzzleList)' class="resourceCatalogBtn">
+                <button onclick='insertGamification(0,"ranking",{})' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
                     <p><%=i18n.escapeRoom.steps.indications.front.ranking%></p>
                     <img class="building-block-img" src="/images/ranking.png" />
                 </button>
                 <%if(endPoint!=="class"){%>
-                <button onclick='insertGamification(0,"progress",{}, puzzleList)' class="resourceCatalogBtn">
+                <button onclick='insertGamification(0,"progress",{})' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
                     <p><%=i18n.escapeRoom.steps.indications.front.progress%></p>
                     <span class="building-block-icon material-icons" style="color: var(--lightred);">
@@ -556,19 +556,32 @@
 
     function insertContentBlock() {
         const text = `<p>${window.placeholder}</p>`
-        insertAndScrollContent(0, 'text', { text }, puzzleList);
+        insertAndScrollContent(0, 'text', { text });
         if($('.building-block').children().last().offset()) {
             window.scrollTo(0, $('.building-block').children().last().offset().top);
         }
     }
 
-    function insertAndScrollContent(index, type, id, puzzles) {
+    function insertAndScrollContent(index, type, id) {
         let payload = {};
         let newType = type;
+        let puzzleIds;
+        if(type !== "reusablePuzzleInstance"){
+          puzzleIds = window.puzzleList;
+        }
+
         if(type === "reusablePuzzleInstance") {
-            const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
-            payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
-            // newType = "catalog"
+            const reusablePuzzleInstance = window.reusablePuzzleInstances.find(p => p.id == id);
+            payload = { mime: "application/reusable", config: reusablePuzzleInstance.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${reusablePuzzleInstance.id}/render`};
+            puzzleIds = [];
+            if((reusablePuzzleInstance.puzzles.length > 0) && (typeof reusablePuzzleInstance.puzzles[0] !== undefined)){ 
+              const assignedPuzzleIdsRPIJSON = new Set(reusablePuzzleInstance.puzzles);
+              window.puzzles.forEach((puzzle, index) => {
+                if (assignedPuzzleIdsRPIJSON.has(puzzle.id)) {
+                  puzzleIds.push(index);
+                }
+              });
+            }
         } else if(type === "countdown" || type === "progress" || type === "ranking" || type === "text") {
             payload = id;
         } else {
@@ -577,22 +590,23 @@
             payload = { mime: asset.mime, config: asset.config, url: asset.url}
             newType = "catalog"
         }
+
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
 
-        insertContent(index, newType, payload, puzzles);
+        insertContent(index, newType, payload, puzzleIds);
+
         setTimeout(() => {
            if($('.building-block').children().last().offset()) {
                 window.scrollTo(0, $('.building-block').children().last().offset().top);
             }
         }, 1);
-
     }
 
-    function insertGamification(index, type, payload, puzzles) {
+    function insertGamification(index, type, payload) {
         toggleCatalogModal();
-        insertAndScrollContent(index, type, payload, puzzles);
+        insertAndScrollContent(index, type, payload);
     }
 
     function openPuzzleConfiguration(puzzle, baseId, reusablePuzzleName){
@@ -825,17 +839,6 @@
                 }
 
                 if(resJSON.resourceType === "reusablePuzzleInstance"){
-                    let found = false;
-                    window.reusablePuzzleInstances.forEach((puzzle) => {
-                        if(puzzle.id == resJSON.id) {
-                            puzzle.config = JSON.stringify(resJSON.config);
-                            puzzle.name = resJSON.name;
-                            found = true;
-                        }
-                    });
-                    if(!found){
-                        window.reusablePuzzleInstances.push(resJSON);
-                    }
                     if(resJSON.puzzle){
                         resJSON.puzzles = [resJSON.puzzle.id];
                         window.puzzles.forEach((puzzle,index) => {
@@ -849,12 +852,28 @@
                             }
                         });
                     }else{
+                        resJSON.puzzles = [];
                         window.puzzles.forEach((puzzle,index) => {
                             if(puzzle.assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
                                 window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {return p !== Number(resJSON.id)});
                             }
                         });
                     }
+
+                    //Update in indow.reusablePuzzleInstances
+                    let found = false;
+                    window.reusablePuzzleInstances.forEach((reusablePuzzleInstance) => {
+                        if(reusablePuzzleInstance.id == resJSON.id) {
+                            reusablePuzzleInstance.config = JSON.stringify(resJSON.config);
+                            reusablePuzzleInstance.name = resJSON.name;
+                            reusablePuzzleInstance.puzzles = resJSON.puzzles;
+                            found = true;
+                        }
+                    });
+                    if(!found){
+                        window.reusablePuzzleInstances.push(resJSON);
+                    }
+
                     toggleCatalogModal();
                     refreshCKEditor();
                 } else if(resJSON.resourceType === "asset"){
@@ -1213,9 +1232,9 @@
     const getResourceTableRow = (resource, options)=> {
         switch(resource.resourceType){
         case "asset":
-            return getTableRowForAsset(resource,window.puzzles);
+            return getTableRowForAsset(resource);
         case "scene":
-          return getTableRowForScene(resource,window.puzzles);
+          return getTableRowForScene(resource);
         case "reusablePuzzleInstance":
             return getTableRowForReusablePuzzleInstance(resource,options);
         default:
@@ -1223,7 +1242,7 @@
         }
     }
 
-    const getTableRowForAsset = (asset, puzzleList)=> {
+    const getTableRowForAsset = (asset)=> {
         let icon, color;
         let disabled = false;
         let regexType = null;
@@ -1263,7 +1282,7 @@
         }
 
         const insertButton = `<button ${disabled ? 'disabled': null} class="rounded listButton addButton"
-                                onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify([...Array(puzzleList.length + 1).keys()])})'>
+                                onclick='insertAndScrollContent(0,"asset", ${asset.id})'>
                                 <span class="building-block-icon material-icons" id="add"> add
                                 </span>
                                 <p>
@@ -1312,7 +1331,7 @@
             </tr>`
     }
 
-    const getTableRowForScene = (scene, puzzleList)=> {
+    const getTableRowForScene = (scene)=> {
         let aspectRatio = "4:3";
         try {
           aspectRatio = scene.content.aspectRatio.replace(":", "/");
@@ -1357,14 +1376,6 @@
     }
 
     const getTableRowForReusablePuzzleInstance = (rpiJSON) => {
-        let type = "assigned"
-        if(rpiJSON.puzzles.length === 0 || (rpiJSON.puzzles.length === 1 && rpiJSON.puzzles[0] === undefined)){ //Reusable Puzzle not assigned to any puzzle
-            rpiJSON.puzzles = null;
-            type = "unassigned"
-        }
-
-        let puzzlesWhenShowed = type === "assigned" ?  `[window.puzzles.findIndex(p=> ${rpiJSON.puzzles} == (p.id))]` : JSON.stringify([...Array(puzzleList.length + 1).keys()])
-
         return `<tr class="catalogItem" id=p-${rpiJSON.id}>
             <td>
                 <p class="title">
@@ -1390,7 +1401,7 @@
                     </button>
 
                     <button class="rounded listButton addButton"
-                        onclick='insertAndScrollContent(0, "reusablePuzzleInstance", "${rpiJSON.id}", ${puzzlesWhenShowed})'>
+                        onclick='insertAndScrollContent(0, "reusablePuzzleInstance", "${rpiJSON.id}")'>
                         <span class="building-block-icon material-icons" id="add"> add
                         </span>
                         <p>

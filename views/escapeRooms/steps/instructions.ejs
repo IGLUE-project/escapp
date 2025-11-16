@@ -92,7 +92,7 @@
 <% var puzzleArr = Array(escapeRoom.puzzles.length).fill(0).map((_i,e)=>e);
 puzzleArr.push("all")%>
 <script>
-window.puzzleList =<%- JSON.stringify(puzzleArr)%>;
+window.puzzleList = <%- JSON.stringify(puzzleArr)%>;
 window.endPoint = "<%=endPoint%>"
 window.placeholder = "<%=i18n.escapeRoom.steps[endPoint].placeholder%>"
 window.insert = "<%=i18n.gallery.insert%>";
@@ -109,6 +109,7 @@ window.theme = ((endPoint === "indications") || (endPoint === "after")) ? "/styl
 window.content = <%- content%>
 
 window.puzzles = <%- JSON.stringify(escapeRoom.puzzles.map((puzzle) =>{ return {id: puzzle.id, validator:puzzle.validator, sol: puzzle.sol, title:puzzle.title, assignedReusablePuzzleInstances: puzzle.reusablePuzzleInstances}}))%>
+window.puzzleIds = window.puzzles.map(p => p.id);
 window.reusablePuzzleInstances = <%- JSON.stringify(reusablePuzzlesInstances || [])%>
 window.reusablePuzzles = <%- JSON.stringify(availableReusablePuzzles || [])%>
 window.assets = <%- JSON.stringify(assets || [])%>
