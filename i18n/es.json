@@ -530,6 +530,15 @@
                     "aspectRatio": "Relación de aspecto",
                     "resourceCatalog": "Catálogo de recursos",
                     "catalog": {
+                        "assets": {
+                            "image": "Imagen",
+                            "video": "Vídeo",
+                            "audio": "Audio",
+                            "pdf": "Archivo PDF",
+                            "zip": "Archivo ZIP",
+                            "webapp": "Aplicación web",
+                            "other": "Archivo"
+                        },
                         "newPuzzle": "nuevo puzzle",
                         "uploadFile": "subir fichero",
                         "selectFile": "Selecciona un fichero",
@@ -550,7 +559,9 @@
                         "gamificationElements": "Elementos de gamificación",
                         "interactiveResources": "Recursos interactivos vinculables a retos",
                         "interactiveResourcesNotAllowed": "No puedes añadir recursos vinculados a retos hasta que hayas creado al menos un reto en la escape room",
+                        "reusablePuzzleInstance": "Recurso interactivo",
                         "scenarios2D": "Escenarios",
+                        "scenario2D": "Escenario",
                         "addScenario2D": "Nuevo escenario",
                         "config": {
                             "description": "Descripción",

@@ -536,6 +536,15 @@
                     "Right": "Right",
                     "aspectRatio": "Aspect ratio",
                     "catalog": {
+                        "assets": {
+                            "image": "Image",
+                            "video": "Video",
+                            "audio": "Audio",
+                            "pdf": "PDF file",
+                            "zip": "ZIP file",
+                            "webapp": "Web application",
+                            "other": "Asset"
+                        },
                         "newPuzzle": "new puzzle",
                         "uploadFile": "upload file",
                         "selectFile": "select file",
@@ -556,7 +565,9 @@
                         "gamificationElements": "Gamification elements",
                         "interactiveResources": "Interactive resources linkable to puzzles",
                         "interactiveResourcesNotAllowed": "You cannot add resources linked to puzzles until you have created at least one puzzle in the escape room",
+                        "reusablePuzzleInstance": "Interactive resource",
                         "scenarios2D": "Scenes",
+                        "scenario2D": "Scene",
                         "addScenario2D": "New Scene",
                         "config": {
                             "description": "Description",

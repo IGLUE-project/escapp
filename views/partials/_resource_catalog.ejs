@@ -1250,11 +1250,13 @@
         }
     }
 
+    const i18nAssetTitles = <%- JSON.stringify(i18n.escapeRoom.steps.indications.front.catalog.assets) %>;
     const getTableRowForAsset = (asset)=> {
         let icon, color;
         let disabled = false;
         let regexType = null;
-
+        let i18nTitle = "";
+        
         if(typeof asset.mime === "string"){
           if (asset.mime.search(new RegExp(/image\/.*/))!==-1){
               icon = "image";
@@ -1283,6 +1285,12 @@
           }
         }
 
+        if((typeof regexType === "string")&&(typeof i18nAssetTitles[regexType] === "string")){
+          i18nTitle = i18nAssetTitles[regexType];
+        } else {
+          i18nTitle = i18nAssetTitles["other"];
+        }
+
         if(typeof icon === "undefined"){
           icon = "question_mark";
           color = "btn-gray";
@@ -1306,7 +1314,7 @@
                                 </p>
                                 </button> `
 
-        const button = regexType === "zip" ? downloadButton : insertButton;
+        const button = (regexType === "zip" ? downloadButton : insertButton);
 
         return `<tr class="catalogItem" id=${asset.id}>
                     <td>
@@ -1314,7 +1322,10 @@
                                 ${asset.filename}
                         </p>
                     </td>
-                    <td> <span class="building-block-icon material-icons ${color}" > ${icon} </span>
+                    <td> <span 
+                    class="building-block-icon material-icons ${color}" 
+                    title="${i18nTitle} %>"
+                    >${icon}</span>
                     </td>
                     <td>
                     <div class=" button-group row-button">
@@ -1352,7 +1363,9 @@
                         </p>
                     </td>
                     <td> 
-                      <img class="scene_icon" src="/scene_maker/images/logos/scene_maker_escapp_thumbnail.png"/>
+                      <img class="scene_icon"
+                      src="/scene_maker/images/logos/scene_maker_escapp_thumbnail_square.png"
+                      title="<%= i18n.escapeRoom.steps.indications.front.catalog.scenario2D %>"/>
                     </td>
                     <td>
                     <div class=" button-group row-button">
@@ -1390,7 +1403,10 @@
                     ${rpiJSON.name}
                 </p>
             </td>
-            <td> <span class="building-block-icon material-icons btn-green"> videogame_asset </span>
+            <td> <span 
+              class="building-block-icon material-icons btn-green"
+              title="<%= i18n.escapeRoom.steps.indications.front.catalog.reusablePuzzleInstance %>"
+              >videogame_asset</span>
             </td>
             <td>
                 <div class=" button-group row-button">
