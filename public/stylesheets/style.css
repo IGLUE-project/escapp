@@ -3301,7 +3301,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   display: none;
 }
 
-.config-size-reusable-puzzle {
+.config-size-webappfull {
   font-family: Lato;
   font-size: 70%;
   position: relative;
@@ -3314,24 +3314,24 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin-bottom: 5px;
   border-bottom: 1px solid #eee !important;
 }
-.config-size-reusable-puzzle label {
+.config-size-webappfull label {
   font-family: Lato !important;
   display: inline-block;
   height: 27px;
   font-weight: lighter;
 }
-.config-size-reusable-puzzle .aspectRatioLabel {
+.config-size-webappfull .aspectRatioLabel {
   margin-right: 10px;
 }
-.config-size-reusable-puzzle span.units {
+.config-size-webappfull span.units {
   color: #161938;
   margin-right: 10px;
 }
-.config-size-reusable-puzzle span.px {
+.config-size-webappfull span.webappfullHeightTitle, .config-size-webappfull span.webappfullHeightValue {
   color: #161938;
   font-family: Lato !important;
 }
-.config-size-reusable-puzzle .alignment-group {
+.config-size-webappfull .alignment-group {
   display: flex;
   gap: 20px;
   align-items: center;
@@ -3339,31 +3339,31 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin-right-align-items: center;
   margin-right-cursor: pointer;
 }
-.config-size-reusable-puzzle .alignment-group label {
+.config-size-webappfull .alignment-group label {
   cursor: pointer;
 }
-.config-size-reusable-puzzle .alignment-group input[type=radio] {
+.config-size-webappfull .alignment-group input[type=radio] {
   display: none;
 }
-.config-size-reusable-puzzle .alignment-group input[type=radio]:checked + label {
+.config-size-webappfull .alignment-group input[type=radio]:checked + label {
   color: #007bff;
 }
-.config-size-reusable-puzzle .alignment-group .material-icons {
+.config-size-webappfull .alignment-group .material-icons {
   font-size: 27px;
 }
-.config-size-reusable-puzzle .dark:hover, .config-size-reusable-puzzle .dark:focus, .config-size-reusable-puzzle .dark:active {
+.config-size-webappfull .dark:hover, .config-size-webappfull .dark:focus, .config-size-webappfull .dark:active {
   font-family: Gugi !important;
   color: black !important;
   -webkit-text-fill-color: black !important;
   border-color: black !important;
 }
-.config-size-reusable-puzzle .reusablePuzzleWidth, .config-size-reusable-puzzle .reusablePuzzleHeight {
+.config-size-webappfull .webappfullWidth, .config-size-webappfull .webappfullHeight {
   width: 60px;
   height: auto;
   font-family: Lato;
   font-size: 15px;
 }
-.config-size-reusable-puzzle .reusablePuzzleWidth:active, .config-size-reusable-puzzle .reusablePuzzleWidth:focus, .config-size-reusable-puzzle .reusablePuzzleHeight:active, .config-size-reusable-puzzle .reusablePuzzleHeight:focus {
+.config-size-webappfull .webappfullWidth:active, .config-size-webappfull .webappfullWidth:focus, .config-size-webappfull .webappfullHeight:active, .config-size-webappfull .webappfullHeight:focus {
   font-family: Lato !important;
   color: #007bff;
   -webkit-text-fill-color: #007bff !important;

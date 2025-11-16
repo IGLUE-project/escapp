@@ -496,7 +496,7 @@ var insertContent =async (type, payload, puzzles, index, prevIndex) => {
     case "ranking":
       content = rankingEmptyTemplate();
       break;
-    case "reusable":
+    case "reusablePuzzleInstance":
       const replacedURL = (payload.url || "").toString().replaceAll("__ESCAPP_USER__",encodeURIComponent(username)).replaceAll("__ESCAPP_TOKEN__",token).replaceAll("__ESCAPP_LOCALE__",ER.locale).replaceAll("__ESCAPP_ENDPOINT__",encodeURIComponent(ER.escappEndpoint))
       content = reusablePuzzleTemplate(escapeUnsafeHtml(replacedURL),payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
       break;
