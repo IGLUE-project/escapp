@@ -51,9 +51,11 @@ module.exports = ({ scene, puzzle }) => {
             if((puzzleLength >= puzzleOrder)&&(puzzleOrder > 0)){
                 const puzzleSolution = puzzleSolutions[puzzleOrder];
                 let puzzleInstance = puzzles[puzzleOrder-1];
-                await puzzleInstance.update(
-                  { sol: puzzleSolution }
-                );
+                await puzzleInstance.update({ 
+                  sol: puzzleSolution,
+                  validator: 'exact',
+                  automatic: true
+                });
             }
         }
     }
