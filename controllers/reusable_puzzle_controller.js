@@ -31,7 +31,6 @@ exports.getReusablePuzzle = async (req, res, next) => {
     }
 };
 
-
 exports.deleteReusablePuzzle = async (req, res, next) => {
     const {puzzle_id} = req.params;
 
@@ -67,7 +66,6 @@ exports.deleteReusablePuzzleInstance = async (req, res, next) => {
 
 exports.renderPuzzleConfiguration = async (_, res) => {
     const rPuzzles = await models.reusablePuzzle.findAll();
-
     res.render("reusablePuzzles/reusablePuzzleCreation", {rPuzzles});
 };
 
@@ -76,18 +74,15 @@ exports.renderEditPuzzleConfiguration = async (req, res, next) => {
 
     try {
         const {config, name} = await models.reusablePuzzleInstance.findOne({"where": {"id": reusablePuzzleInstanceId}});
-
         res.render("reusablePuzzles/reusablePuzzleConfiguration", {config, name});
     } catch (e) {
         next(e);
     }
 };
 
-
 exports.renderCreatePuzzle = (req, res) => {
     res.render("reusablePuzzles/reusablePuzzleCreation");
 };
-
 
 exports.createReusablePuzzle = async (req, res, next) => {
     const {name, description, form } = req.body;
@@ -117,7 +112,6 @@ exports.createReusablePuzzle = async (req, res, next) => {
                 hasForm = true;
             }
         }
-
 
         if (await models.reusablePuzzle.findOne({"where": {name}}) !== null) {
             throw new Error("Puzzle with that name already exists");
@@ -173,7 +167,6 @@ exports.createReusablePuzzle = async (req, res, next) => {
         }
     }
 };
-
 
 exports.editReusablePuzzle = async (req, res, next) => {
     const {name, description, form } = req.body;
@@ -358,7 +351,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
             "assignedReusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((instance) => instance.id)
         } : {};
 
-        res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusable"});
+        res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusablePuzzleInstance"});
     } catch (e) {
         console.error(e);
         t.rollback();

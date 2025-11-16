@@ -525,10 +525,10 @@
 
     }
 
-    function openClipboardModal(url, asset) {
+    function openClipboardModal(url, resourceType, aspectRatio="4/3") {
         const container = $('#linkContainer')
         $('#linkInput').val(window.location.origin + url);
-        $('#embedInput').val(getTemplate(asset, window.location.origin + url, {removeIds: true}));
+        $('#embedInput').val(getEmbedCode(resourceType, window.location.origin + url, {"aspectRatio": aspectRatio}));
         container.dialog({
             title: "<%=i18n.common.copyembed%>",
             resizable: false,
@@ -565,7 +565,7 @@
     function insertAndScrollContent(index, type, id, puzzles) {
         let payload = {};
         let newType = type;
-        if(type === "reusable") {
+        if(type === "reusablePuzzleInstance") {
             const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
             payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
             // newType = "catalog"
@@ -818,7 +818,7 @@
                 return;
             }
             res.json().then((resJSON)=>{
-                if(resJSON.type === "reusable"){
+                if(resJSON.type === "reusablePuzzleInstance"){
                   resJSON.resourceType = "reusablePuzzleInstance";
                 } else {
                   resJSON.resourceType = "asset";
@@ -834,9 +834,10 @@
                         }
                     });
                     if(!found){
-                        window.reusablePuzzleInstances.push(resJSON)
+                        window.reusablePuzzleInstances.push(resJSON);
                     }
                     if(resJSON.puzzle){
+                        resJSON.puzzles = [resJSON.puzzle.id];
                         window.puzzles.forEach((puzzle,index) => {
                             if(puzzle.id == resJSON.puzzle.id) {
                                 window.puzzles[index] = resJSON.puzzle;
@@ -855,30 +856,43 @@
                         });
                     }
                     toggleCatalogModal();
-                    const row = $(`#p-${resJSON.id}`);
-                     if(!row.length) {
-                        const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
-                        resJSON.puzzles = [resJSON.puzzle.id] ; // Gets puzzle that will be assigned in the block config
-                        $('#myTabContent tr:last').after(getResourceTableRow(resJSON));
-                    }
-                    $('#noResources').hide();
-                    row.find('.title').text(resJSON.name);
                     refreshCKEditor();
-                    const tr = document.getElementById(`p-${resJSON.id}`);
-                    const title = tr.querySelector('.title');
-                    addListenerForHover(title);
-                } else {
+                } else if(resJSON.resourceType === "asset"){
                     window.assets.forEach((asset) => {
                         if(asset.id == resJSON.id) {
                             asset.filename = resJSON.filename;
-                            const title = $(`#${asset.id} .title`);
-                            title.text(resJSON.filename);
                         }
                     });
                     if($('#editDialog').hasClass("ui-dialog-content")) {
                         $('#editDialog').dialog('close');
                     }
                 }
+
+                //Common actions for reusablePuzzleInstances and assets
+                const rowId = getResourceTableRowId(resJSON);
+                const row = $("#"+rowId);
+ 
+                if(row.length > 0) {
+                  //Update row
+                  let resourceName = "Untitled";
+                  if(resJSON.resourceType === "reusablePuzzleInstance"){
+                    resourceName = resJSON.name;
+                  } else if(resJSON.resourceType === "asset"){
+                    resourceName = resJSON.filename;
+                  }
+                  const title = row.find('.title');
+                  title.text(resourceName);
+
+                  row.detach();
+                  $('#myTabContent tr:first').after(row);
+                } else {
+                  //New row
+                  $('#myTabContent tr:first').after(getResourceTableRow(resJSON));
+                  const newRowTitle = $("#"+getResourceTableRowId(resJSON)).find('.title')[0];
+                  addListenerForHover(newRowTitle);
+                }
+                $('#thescrollable').animate({scrollTop: 0});
+                $('#noResources').hide();
             })
         });
         e.preventDefault();
@@ -892,44 +906,72 @@
     const items = document.querySelectorAll('.catalogItem .title');
     const container = $('#previewContainer');
 
-    function getTemplate(resourceType, url, options = {}) {
+    function getPreviewHTML(resourceType, url, options = {}) {
         const {
-            removeIds = false,
             aspectRatio = "4/3"
         } = options;
 
         switch(resourceType) {
             case "scene":
-              return `<iframe
-                src="${url}"
-                style="width:100%;aspect-ratio:${aspectRatio}"
-                ${removeIds === false ? `id="iframePreview"` : ""}
-              ></iframe>`;
+                return `<iframe 
+                  src="${url}" 
+                  style="width:100%;aspect-ratio:${aspectRatio}" 
+                  id="iframePreview">
+                </iframe>`;
             case "reusablePuzzle":
                 return `<iframe 
-                  src="${url}"
-                  ${
-                    removeIds
-                      ? `style="width:100%;aspect-ratio:${aspectRatio};"`
-                      : `id="iframePreview" style="width:100%;aspect-ratio:${aspectRatio};"`
-                  }
-                ></iframe>`;
+                  src="${url}" 
+                  style="width:100%;aspect-ratio:${aspectRatio}" 
+                  id="iframePreview">
+                </iframe>`;
             case "image":
-                return `<img src="${url}" ${removeIds ? '' : 'id="imagePreview" style="position:relative; width:100%"'} />`;
+                return `<img 
+                  src="${url}" 
+                  style="position:relative; width:100%" 
+                  id="imagePreview"
+                />`;
             case "audio":
-                return `<audio src="${url}" controls ${removeIds ? '' : 'id="audioPreview"'}></audio>`;
+                return `<audio
+                  src="${url}"
+                  controls
+                  id="audioPreview"
+                ></audio>`;
             case "video":
-                return `<video src="${url}" controls ${removeIds ? '' : 'id="videoPreview" style="position:relative;width:100%"'}></video>`;
+                return `<video
+                  src="${url}"
+                  style="position:relative;width:100%"
+                  controls
+                  id="videoPreview"
+                ></video>`;
             case "webapp":
             case "pdf":
-                if (removeIds) {
-                    return `<iframe src="${url}" style="width:100%;height:100%;border:none;"></iframe>`;
-                } else {
-                    return `<div id="pdfPreviewDiv" style="height:700px;width:100%;"><iframe src="${url}" id="pdfPreview" style="border:none"></iframe></div>`;
-                }
+                return `<div id="pdfPreviewDiv" style="height:700px;width:100%;"><iframe src="${url}" id="pdfPreview" style="border:none"></iframe></div>`;
             default:
                 return "";
+        }
+    }
 
+    function getEmbedCode(resourceType, url, options = {}) {
+        const {
+            aspectRatio = "4/3"
+        } = options;
+
+        switch(resourceType) {
+            case "scene":
+                return `<iframe src="${url}" style="width:100%;aspect-ratio:${options.aspectRatio}"></iframe>`;
+            case "reusablePuzzle":
+                return `<iframe src="${url}" style="width:100%;aspect-ratio:${options.aspectRatio}"></iframe>`;
+            case "image":
+                return `<img src="${url}"}/>`;
+            case "audio":
+                return `<audio src="${url}" controls}></audio>`;
+            case "video":
+                return `<video src="${url}" controls}></video>`;
+            case "webapp":
+            case "pdf":
+                return `<iframe src="${url}" style="width:100%;height:100%;"></iframe>`;
+            default:
+                return url;
         }
     }
 
@@ -945,20 +987,20 @@
 
             if(asset){
                 if(asset.mime.search(imageRegex) !== -1) {
-                    container.append(getTemplate("image", asset.url));
+                    container.append(getPreviewHTML("image", asset.url));
                     const image = document.getElementById('imagePreview');
                 } else if(asset.mime.search(audioRegex) !== -1) {
-                    container.append(getTemplate("audio", asset.url));
+                    container.append(getPreviewHTML("audio", asset.url));
                     const audio = document.getElementById('audioPreview');
                     audio.play();
                 } else if(asset.mime.search(videoRegex) !== -1) {
-                    container.append(getTemplate("video", asset.url));
+                    container.append(getPreviewHTML("video", asset.url));
                     const video = document.getElementById('videoPreview');
                     video.play();
                 } else if(asset.mime.search(webappRegex) !== -1) {
-                    container.append(getTemplate("webapp", asset.url));
+                    container.append(getPreviewHTML("webapp", asset.url));
                 } else if(asset.mime.search(pdfRegex) !== -1) {
-                    container.append(getTemplate("pdf", asset.url));
+                    container.append(getPreviewHTML("pdf", asset.url));
                 } 
             } else if (scene){
               const sceneUrl = `/escapeRooms/<%=escapeRoom.id%>/scenes/${scene.id}`;
@@ -966,10 +1008,10 @@
               try {
                 sceneAspectRatio = scene.content.aspectRatio.replace(":", "/");
               } catch(e){};
-              container.append(getTemplate("scene", sceneUrl, {aspectRatio: sceneAspectRatio}));
+              container.append(getPreviewHTML("scene", sceneUrl, {aspectRatio: sceneAspectRatio}));
             } else if (reusablePuzzleInstance) {
                 const puzzleUrl = `reusablePuzzleInstances/${reusablePuzzleInstance.id}/render`;
-                container.append(getTemplate("reusablePuzzle", puzzleUrl));
+                container.append(getPreviewHTML("reusablePuzzle", puzzleUrl));
             } else {
                  openContainer = false;
             }
@@ -1022,9 +1064,7 @@
         allItems.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
         for (const item of allItems) {
-          $('#myTabContent').append(
-            getResourceTableRow(item, { puzzles: window.puzzles })
-          );
+          $('#myTabContent').append(getResourceTableRow(item));
 
           const trId = getResourceTableRowId(item);
           const tr = document.getElementById(trId);
@@ -1124,12 +1164,11 @@
                     asset.resourceType = "asset";
                     window.assets.push(asset);
                     $('#noResources').hide();
-                    $('#myTabContent').append(getResourceTableRow(asset, window.puzzles));
-                    $('#thescrollable').animate({scrollTop: 100000000});
+                    $('#myTabContent tr:first').after(getResourceTableRow(asset));
+                    $('#thescrollable').animate({scrollTop: 0});
                     const tr = document.getElementById(asset.id);
                     const title = tr.querySelector('.title');
                     addListenerForHover(title);
-
                 })
             }
         })
@@ -1174,9 +1213,9 @@
     const getResourceTableRow = (resource, options)=> {
         switch(resource.resourceType){
         case "asset":
-            return getTableRowForAsset(resource,options.puzzles);
+            return getTableRowForAsset(resource,window.puzzles);
         case "scene":
-          return getTableRowForScene(resource,options.puzzles);
+          return getTableRowForScene(resource,window.puzzles);
         case "reusablePuzzleInstance":
             return getTableRowForReusablePuzzleInstance(resource,options);
         default:
@@ -1274,6 +1313,11 @@
     }
 
     const getTableRowForScene = (scene, puzzleList)=> {
+        let aspectRatio = "4:3";
+        try {
+          aspectRatio = scene.content.aspectRatio.replace(":", "/");
+        } catch(e){}
+
         return `<tr class="catalogItem" id=scene-${scene.id}>
                     <td>
                         <p class="title">
@@ -1296,7 +1340,7 @@
                             <span class="building-block-icon material-icons" id="edit"> edit
                             </span>
                         </button>
-                        <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/scenes/${scene.id}","scene")'>
+                        <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/scenes/${scene.id}","scene","${aspectRatio}")'>
                         <span class="building-block-icon material-icons" id="link">link</span>
                         </button>
                         <button class="rounded listButton addButton"
@@ -1346,7 +1390,7 @@
                     </button>
 
                     <button class="rounded listButton addButton"
-                        onclick='insertAndScrollContent(0, "reusable", "${rpiJSON.id}", ${puzzlesWhenShowed})'>
+                        onclick='insertAndScrollContent(0, "reusablePuzzleInstance", "${rpiJSON.id}", ${puzzlesWhenShowed})'>
                         <span class="building-block-icon material-icons" id="add"> add
                         </span>
                         <p>
