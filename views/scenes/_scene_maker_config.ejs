@@ -17,6 +17,11 @@
     // Options to initialize Scene Maker
     options["developping"] = false;
 
+    //Preview mode
+    <% if ((editor !== true) && (preview === true)) { %>
+    options["preview"] = true;
+    <% } %>
+
     //Scene to load
     <% if (typeof sceneJSON !== "undefined") { %>
       options.scene = <%- JSON.stringify(sceneJSON) %>

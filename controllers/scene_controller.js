@@ -25,6 +25,8 @@ async function showScene(req, res, view, layout) {
     const sceneJSON = scene.content;
     const user = req.session.user;
     const lang = res.locals.i18n_lang;
+    const referrer = req.get("Referrer");
+    const preview = Boolean(referrer && referrer.match("/team$"));
 
     return res.render(view, {
         layout,
@@ -33,7 +35,8 @@ async function showScene(req, res, view, layout) {
         escapeRoomId,
         nPuzzles: undefined,
         user,
-        lang
+        lang,
+        preview
     });
 }
 

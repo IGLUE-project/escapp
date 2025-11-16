@@ -980,7 +980,7 @@
         "resultsTitle": "This is the escape room's leaderboard",
         "unjoin": "leave",
         "reset": "reset",
-        "sureReset": "Are you sure you wish to restart the test?",
+        "sureReset": "Are you sure you wish to restart the escape room?",
         "alreadyAccount": "Do you already have an account in Escapp?",
         "registerNow": "You don't have an account yet?",
         "playAnonymously" : "You can also play this escape room without signing up."
