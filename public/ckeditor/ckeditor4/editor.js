@@ -391,7 +391,7 @@ $(()=>{
     });
 
     if ($( ".block-config" ).length) { $( ".block-config" ).disableSelection();}
-    $('#instructionsForm').submit(()=>{
+    $('#instructionsForm').submit((ev)=>{
         var results = [];
         $('.building-block').each((_i,e)=>{
             var type = $(e).data("content-type");
@@ -417,7 +417,7 @@ $(()=>{
                     align: $(e).find(".webappfull-align:checked").val(),
                     ratio: $(e).find(".webappfullAspectRatioSelect").val(),
                     heightIframe: $(e).find(".hightSelector").val()};
-                obj.type = "reusablePuzzleInstance";
+                obj.type = "scene";
             }
             results.push(obj);
         });

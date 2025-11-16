@@ -284,7 +284,7 @@ $(function(){
         return delta;
     });
 
-    const insertContent = (index, url = "", mime = "", name = "") => {
+    const insertContentInstructions = (index, url = "", mime = "", name = "") => {
         if (mime && mime.match("image")) {
             quill.insertEmbed(index, 'image', url, Quill.sources.USER);
             quill.formatText(index, 1, 'width', '30%');
@@ -328,7 +328,7 @@ $(function(){
             switch (selected) {
                 case "sourceFile":
                     if (fileSelected && fileSelected.mime) {
-                        insertContent(range.index, fileSelected.url, fileSelected.mime, fileSelected.name);
+                        insertContentInstructions(range.index, fileSelected.url, fileSelected.mime, fileSelected.name);
                     }
                     break;
                 case "sourceUrl":
@@ -337,7 +337,6 @@ $(function(){
                         const youtube = url.match(/(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))(.*)/);
                         if (youtube && youtube[5]) {
                             quill.insertEmbed(range.index, 'iframe', "https://www.youtube.com/embed/" + youtube[5], Quill.sources.USER);
-                            // insertContent(range.index, "https://www.youtube.com/embed/" + youtube[5] , "video/mp4", "video");
                         } else {
                             var xhttp = new XMLHttpRequest();
                             xhttp.open('HEAD', url);
@@ -347,20 +346,20 @@ $(function(){
                                 if (parts && parts.length > 0) {
                                     const ext = parts[parts.length - 1];
                                     if (imageExt.indexOf(ext) > -1) {
-                                        insertContent(range.index, url, "image/"+ext, "image");
+                                        insertContentInstructions(range.index, url, "image/"+ext, "image");
                                     } else if (videoExt.indexOf(ext) > -1) {
-                                        insertContent(range.index, url, "video/"+ext, "video");
+                                        insertContentInstructions(range.index, url, "video/"+ext, "video");
                                     } else if (audioExt.indexOf(ext) > -1) {
-                                        insertContent(range.index, url, "audio/"+ext, "audio");
+                                        insertContentInstructions(range.index, url, "audio/"+ext, "audio");
                                     } else {
-                                        insertContent(range.index, url);
+                                        insertContentInstructions(range.index, url);
                                     }
                                 }
                             };
                             xhttp.onreadystatechange = function () {
                                 if (this.readyState == this.DONE && this.status < 400) {
                                     const mime = this.getResponseHeader("Content-Type");
-                                    insertContent(range.index, url, mime, url);
+                                    insertContentInstructions(range.index, url, mime, url);
                                 }
                             };
                             xhttp.onerror = onerror;
@@ -453,10 +452,6 @@ function onYouTubeIframeAPIReady() {
             });
         });
     } catch(e){console.error(e)}
-    /*uncomment
-    */
-
-
 }
 
 try {
