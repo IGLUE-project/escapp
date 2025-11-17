@@ -116,8 +116,8 @@ var reusablePuzzleTemplate = (id, url, width = 100, height = "auto", align = "ce
       </option>
     </select>
     <span class="webappfullHeightTitle" style="${ratio !== "" ? "display:none" : "display:block"};padding:0px 10px">${window.i18n.height}</span>
-    <input class="reusable-ratio hightSelector dark" type="number" style="${ratio !== "" ? "display:none" : "display:block"}" onchange="changeWebappfullHeight(this)" min="100" max="3000" value="${heightIframe ? heightIframe : 300 }"/>
-    <span class="webappfullHeightValue" style="display:none;padding:0px 10px">px</span>
+    <input class="webappfullHeightInput dark" type="number" style="${ratio !== "" ? "display:none" : "display:block"}" onchange="changeWebappfullHeight(this)" min="100" max="3000" value="${heightIframe ? heightIframe : 300 }"/>
+    <span class="webappfullHeightPx" style="display:none;padding:0px 10px">px</span>
 </div>
 <iframe class="webappfullIframe reusablePuzzleIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px; aspect-ratio:${ratio}" >
 </iframe>
@@ -405,19 +405,23 @@ $(()=>{
                 obj.type = "text";
             } else if (type == "reusablePuzzleInstance") {
                 const src = $(e).find(".webappfullIframe").attr("src");
-                obj.payload = {url: src, width: $(e).find(".webappfullWidth").val(),
-                    height: $(e).find(".webappfullHeight").val(),
+                obj.payload = {
+                    url: src, 
+                    width: $(e).find(".webappfullWidth").val(),
+                    heightIframe: $(e).find(".webappfullHeightInput").val(),
                     align: $(e).find(".webappfull-align:checked").val(),
-                    ratio: $(e).find(".webappfullAspectRatioSelect").val(),
-                    heightIframe: $(e).find(".hightSelector").val()};
+                    ratio: $(e).find(".webappfullAspectRatioSelect").val()
+                };
                 obj.type = "reusablePuzzleInstance";
             } else if (type == "scene") {
-                const src = $(e).find(".webappfullIframe").attr("src");
-                obj.payload = {url: src, width: $(e).find(".webappfullWidth").val(),
-                    height: $(e).find(".webappfullHeight").val(),
+                const sceneIframe = $(e).find(".webappfullIframe");
+                const src = sceneIframe.attr("src");
+                obj.payload = {
+                    url: src, 
+                    width: $(e).find(".webappfullWidth").val(),
                     align: $(e).find(".webappfull-align:checked").val(),
-                    ratio: $(e).find(".webappfullAspectRatioSelect").val(),
-                    heightIframe: $(e).find(".hightSelector").val()};
+                    ratio: sceneIframe.attr("aspect-ratio")
+                };
                 obj.type = "scene";
             }
             results.push(obj);
@@ -426,7 +430,6 @@ $(()=>{
           .attr("name", "instructions")
           .attr("value", JSON.stringify(results))
           .appendTo("#instructionsForm");
-
     });
 
     var videoCallback = (win) => {

@@ -1397,15 +1397,15 @@
         const resourceBlock = $(el).parents('.webappfull-block');
         resourceBlock.children("iframe").css("aspect-ratio", el.value);
         if (el.value === ""){
-            $(resourceBlock).find(".hightSelector").show();
+            $(resourceBlock).find(".webappfullHeightInput").show();
             $(resourceBlock).find(".webappfullHeightTitle").show();
-            $(resourceBlock).find(".webappfullHeightValue").show();
-            resourceBlock.children('iframe').css("height", selector);
+            $(resourceBlock).find(".webappfullHeightPx").show();
+            resourceBlock.children('iframe').css("height", "auto");
         } else {
             resourceBlock.children("iframe").css("height", "100%");
-            $(resourceBlock).find(".hightSelector").hide();
+            $(resourceBlock).find(".webappfullHeightInput").hide();
             $(resourceBlock).find(".webappfullHeightTitle").hide();
-            $(resourceBlock).find(".webappfullHeightValue").hide();
+            $(resourceBlock).find(".webappfullHeightPx").hide();
         }
     }
 

@@ -3327,7 +3327,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: #161938;
   margin-right: 10px;
 }
-.config-size-webappfull span.webappfullHeightTitle, .config-size-webappfull span.webappfullHeightValue {
+.config-size-webappfull span.webappfullHeightTitle, .config-size-webappfull span.webappfullHeightPx {
   color: #161938;
   font-family: Lato !important;
 }
