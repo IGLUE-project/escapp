@@ -323,7 +323,7 @@
         const assignDiv = $('#assignPuzzDiv');
         const puzzleRangeInput = $('#rangeInput');
         const rangeDiv = $('#rangeDiv');
-        const solutionLength = $('#solutionLengthInput');
+        const solutionLengthInput = $('#solutionLengthInput');
         const solutionLengthDiv = $('#solutionLength');
         const selectedPuzzleDiv = $('#selectePuzzle');
 
@@ -333,8 +333,8 @@
             } else {
                 span.hide();
             }
-            $('#selectePuzzle').show();
-            $('#solutionLength').show();
+            selectedPuzzleDiv.show();
+            solutionLengthDiv.show();
             $('#puzzleSol').show();
 
             $(`#inputValidator option:selected`).attr("selected", null);
@@ -343,7 +343,7 @@
             assignDiv.show();
             validator.show();
 
-            if( puzzleSelected.validator === "range") {
+            if(puzzleSelected.validator === "range") {
                 $('#rangeDiv').show();
             } else {
                 $('#rangeDiv').hide();
@@ -360,18 +360,16 @@
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
                     solutionLengthDiv.show();
-                    solutionLength.val(reusablePuzzleInstanceConfig.solutionLength || 1);
+                    solutionLengthInput.val(reusablePuzzleInstanceConfig.solutionLength || 1);
                 } else {
                     puzzleSol.val(puzzleSelected.sol);
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
-                    solutionLengthDiv.hide()
+                    solutionLengthDiv.hide();
                 }
             } else {
                 puzzleSol.val("");
             }
-
-
         } else {
             puzzleSol.val("");
             span.hide();
@@ -384,7 +382,7 @@
         }
 
         updateIframe();
-    }
+    };
 
     function editAsset(id, mime) {
         const asset = window.assets.find(a => a.id == id);
@@ -667,24 +665,18 @@
                 config.puzzle =  selectedPuzzle ? selectedPuzzle.id : undefined;
                 const puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
 
-                if( puzzleObject?.validator === "range") {
-                    config.solutionLength = puzzleObject.sol.split("+")[0].length;
-                } else if(puzzleObject && puzzleObject.sol) {
-                    config.solutionLength = calculateSolutionLength(puzzleObject.sol);
-                }
-
                 $('#puzzleSol').change(function(e) {
                     updateIframe();
-                    $('#warningMessageForReusablePuzzleCreation').show()
+                    $('#warningMessageForReusablePuzzleCreation').show();
                 });
 
-                 $('#associatedPuzzle').change(function(e) {
+                $('#associatedPuzzle').change(function(e) {
                     setPuzzleSol(puzzle.id, config, baseId)
                 });
 
                 $('#inputValidator').change(function(e) {
                     validatorOnchange(e);
-                    $('#warningMessageForReusablePuzzleCreation').show()
+                    $('#warningMessageForReusablePuzzleCreation').show();
                 });
 
                 $('#associatedPuzzle').val(puzzleObject.id).change();
@@ -827,6 +819,26 @@
             method:'post'
         };
         if(form.classList.contains("reusablePuzzleInstanceForm")){
+            //Validate form
+            var errorsInReusablePuzzleInstanceForm = [];
+            var linkedPuzzleDOM = $("#associatedPuzzle");
+            var allowNullPuzzle = (linkedPuzzleDOM.attr("allowNullPuzzle") === "true");
+            if(allowNullPuzzle === false){
+                var linkedPuzzles = [linkedPuzzleDOM.val()];
+                linkedPuzzles = linkedPuzzles.filter(v =>
+                    typeof v === "string" &&
+                    /^\d+$/.test(v)
+                );
+                if(linkedPuzzles.length === 0){
+                    errorsInReusablePuzzleInstanceForm.push("<%= i18n.reusablePuzzles.errors.nullPuzzle%>",);
+                }
+            }
+            if(errorsInReusablePuzzleInstanceForm.length > 0){
+                alert(errorsInReusablePuzzleInstanceForm[0]);
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
             fetchOptions.body = JSON.stringify(generateReusablePuzzleInstanceConfigFromForm(form));
             fetchOptions.headers = {
                 'Content-Type': 'application/json',
@@ -1123,10 +1135,6 @@
         let solutionLength;
         if(validator === "regex") {
             solutionLength = $("#solutionLengthInput").val();
-        } else if (validator !== "range") {
-            solutionLength = calculateSolutionLength(sol);
-        } else {
-            solutionLength = sol.length;
         }
         if(typeof solutionLength === "number"){
             reusablePuzzleInstanceConfig.solutionLength = solutionLength;
@@ -1148,16 +1156,6 @@
 
         return reusablePuzzleInstanceConfig;
     };
-
-    function calculateSolutionLength(sol, sep = ";") {
-        if (sol && sol.length > 0) {
-            if (sol.includes(sep)) {
-                return sol.split(sep).length;
-            }
-            return sol.length
-        }
-        return 0;
-    }
 
     validatorOnchange = function(){
         $('#warningMessageForReusablePuzzleCreation').show()

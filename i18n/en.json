@@ -1363,7 +1363,10 @@
         "config": "Configuration",
         "expectedDuration": "Expected duration (mins)",
         "fullscreen":"fullscreen",
-        "reset":"reset"
+        "reset":"reset",
+        "errors": {
+            "nullPuzzle": "You must link at least one puzzle to this resource"
+        }
     },
     "management":{
         "contact": {

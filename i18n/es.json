@@ -1354,7 +1354,10 @@
         "config": "Configuración",
         "expectedDuration": "Duración aproximada (minutos)",
         "fullscreen":"pantalla completa",
-        "reset":"reiniciar"
+        "reset":"reiniciar",
+        "errors": {
+            "nullPuzzle": "Debes vincular al menos un reto a este recurso"
+        }
     },
     "management":{
         "contact": {
