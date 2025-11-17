@@ -231,11 +231,12 @@ router.get("/reusablePuzzlesInstances/:puzzle_id/form", sessionController.loginR
 router.get("/reusablePuzzlePreview/:reusablePuzzleId", reusablePuzzleController.renderReusablePuzzlePreview);
 
 // Routes for assets
-router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
+router.get("/assets/:asset_id.:asset_extension", sessionController.loginRequired, assetsController.getAsset);
+router.get("/assets/:asset_id/:file_name", sessionController.loginRequired, assetsController.getAsset);
+router.get("/uploads/webapps/:file_id/:webapp_file_name(*)", sessionController.loginRequired, assetsController.getWebAppFile);
 router.get("/uploads/thumbnails/:file_name", sessionController.loginRequired, assetsController.returnThumbnail);
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
-router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
-
+router.get("/uploads/:asset_id/:file_name?", sessionController.loginRequired, assetsController.getAsset);
 
 module.exports = router;

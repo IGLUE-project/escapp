@@ -368,7 +368,7 @@ exports.renderReusablePuzzle = async (req, res, _) => {
         const linkedPuzzlesLength = linkedPuzzles.length;
         let solutionLength = undefined;
         if (linkedPuzzlesLength > 0) {
-            if (typeof reusablePuzzleInstanceConfig.solutionLength !== "undefined"){
+            if ((typeof reusablePuzzleInstanceConfig.solutionLength !== "undefined")&&(reusablePuzzleInstanceConfig.solutionLength !== null)){
                 solutionLength = reusablePuzzleInstanceConfig.solutionLength;
             } else {
                 solutionLength = getPuzzlesSolutionLength(linkedPuzzles);

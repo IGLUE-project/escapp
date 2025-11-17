@@ -305,7 +305,7 @@
         `
     }
 
-    function editPuzzle(id, mime) {
+    function editReusablePuzzleInstance(id) {
         $('.previewReusablePuzzle').show();
         const jsonPuzzle = window.reusablePuzzleInstances.find(p => p.id == id);
         toggleCatalogModal();
@@ -384,7 +384,7 @@
         updateIframe();
     };
 
-    function editAsset(id, mime) {
+    function editAsset(id, assetType) {
         const asset = window.assets.find(a => a.id == id);
         const dialog = $('#editDialog');
         const form = dialog.find('form');
@@ -425,71 +425,6 @@
       const editSceneUrl = `/escapeRooms/<%=escapeRoom.id%>/scenes/${sceneId}/edit`;
       window.location.href = editSceneUrl;
     }
-
-    function parseAssetConfig(mime, config) {
-        let configJSON = {};
-
-        if(typeof config === "string"){
-            if(mime.search(reusableRegex) !== -1){
-                configJSON = JSON.parse(config);
-                let texts = config.split(';');
-                texts.forEach(text => {
-                    const data = text.split(':');
-                    configJSON[data[0]] = data[1];
-                });
-            }
-        } else if ((typeof config === "undefined")||(config === null)){
-            configJSON = {};
-        } else if (typeof config === "object"){
-            return config;
-        }
-
-        //Default width and height
-        if(typeof configJSON.width === "undefined"){
-            configJSON.width = "100%";
-        }
-        if(typeof configJSON.height === "undefined"){
-            configJSON.height = "auto";
-        }
-
-        if (mime.search(imageRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height
-            }
-        } else if (mime.search(videoRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height,
-                controls: configJSON.controls,
-                autoplay: configJSON.autoplay,
-                download: configJSON.download
-            }
-        } else if (mime.search(audioRegex) !== -1) {
-            return {
-                controls: configJSON.controls,
-                autoplay: configJSON.autoplay,
-            }
-        } else if (mime.search(pdfRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height,
-            }
-        } else if (mime.search(webappRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height,
-            }
-        } else if (mime.search(reusableRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height,
-            }
-        } else {
-            return {};
-        }
-    }
-
 
     function deleteReusablePuzzleInstance(id) {
         fetch(`/escapeRooms/${escapeRoomId}/reusablePuzzleInstance/${id}`, {
@@ -562,7 +497,6 @@
 
     function insertAndScrollContent(index, type, id) {
         let payload = {};
-        let newType = type;
         let puzzleIds;
         if(type !== "reusablePuzzleInstance"){
           puzzleIds = window.puzzleList;
@@ -570,7 +504,7 @@
 
         if(type === "reusablePuzzleInstance") {
             const reusablePuzzleInstance = window.reusablePuzzleInstances.find(p => p.id == id);
-            payload = { mime: "application/reusable", url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${reusablePuzzleInstance.id}/render`};
+            payload = { url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${reusablePuzzleInstance.id}/render`};
             puzzleIds = [];
             if((reusablePuzzleInstance.puzzles.length > 0) && (typeof reusablePuzzleInstance.puzzles[0] !== undefined)){ 
               const assignedPuzzleIdsRPIJSON = new Set(reusablePuzzleInstance.puzzles);
@@ -582,7 +516,7 @@
             }
         } else if(type === "scene"){
           const scene = window.scenes.find(s => s.id == id);
-          payload = { mime: "application/scene", url: `/escapeRooms/${escapeRoomId}/scenes/${scene.id}`};
+          payload = { url: `/escapeRooms/${escapeRoomId}/scenes/${scene.id}`};
           let sceneAspectRatio = "4/3";
           try {
             sceneAspectRatio = scene.content.aspectRatio.replace(":", "/");
@@ -591,17 +525,16 @@
         } else if(type === "countdown" || type === "progress" || type === "ranking" || type === "text") {
             payload = id;
         } else {
+            type = "asset";
             const asset = window.assets.find(p => p.id == id);
-            type = "catalog"
-            payload = { mime: asset.mime, config: asset.config, url: asset.url}
-            newType = "catalog"
+            payload = asset;
         }
 
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
 
-        insertContent(index, newType, payload, puzzleIds);
+        insertContent(index, type, payload, puzzleIds);
 
         setTimeout(() => {
            if($('.building-block').children().last().offset()) {
@@ -1025,22 +958,30 @@
             let openContainer = true;
 
             if(asset){
-                if(asset.mime.search(imageRegex) !== -1) {
+                switch(asset.assetType){
+                case "image":
                     container.append(getPreviewHTML("image", asset.url));
-                    const image = document.getElementById('imagePreview');
-                } else if(asset.mime.search(audioRegex) !== -1) {
+                    const image = document.getElementById('imagePreview');   
+                    break;
+                case "audio":
                     container.append(getPreviewHTML("audio", asset.url));
                     const audio = document.getElementById('audioPreview');
                     audio.play();
-                } else if(asset.mime.search(videoRegex) !== -1) {
+                    break;
+                case "video":
                     container.append(getPreviewHTML("video", asset.url));
                     const video = document.getElementById('videoPreview');
                     video.play();
-                } else if(asset.mime.search(webappRegex) !== -1) {
+                    break;
+                case "webapp":
                     container.append(getPreviewHTML("webapp", asset.url));
-                } else if(asset.mime.search(pdfRegex) !== -1) {
+                    break;
+                case "pdf":
                     container.append(getPreviewHTML("pdf", asset.url));
-                } 
+                    break;
+                default:
+                    break;
+                }
             } else if (scene){
               const sceneUrl = `/escapeRooms/<%=escapeRoom.id%>/scenes/${scene.id}`;
               let sceneAspectRatio = "4/3";
@@ -1255,44 +1196,47 @@
         let regexType = null;
         let i18nTitle = "";
         
-        if(typeof asset.mime === "string"){
-          if (asset.mime.search(new RegExp(/image\/.*/))!==-1){
-              icon = "image";
-              color = "btn-blue";
-              regexType = "image";
-          } else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){
-              icon = "videocam";
-              color = "btn-red";
-              regexType = "video";
-          } else if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){
-              icon = "music_note";
-              color = "btn-yellow";
-              regexType = "audio";
-          } else if (asset.mime.search(new RegExp(/application\/pdf/))!==-1){
-              icon = "picture_as_pdf";
-              color = "btn-red";
-              regexType = "pdf";
-          } else if (asset.mime.search(new RegExp(/application\/zip/))!==-1){
-              icon = "folder_zip";
-              color = "btn-orange";
-              regexType = "zip";
-          } else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1){
-              icon = "terminal"
-              color = "btn-purple";
-              regexType = "webapp";
-          }
+        switch(asset.assetType){
+        case "image":
+            icon = "image";
+            color = "btn-blue";
+            regexType = "image";  
+            break;
+        case "audio":
+            icon = "music_note";
+            color = "btn-yellow";
+            regexType = "audio";
+            break;
+        case "video":
+            icon = "videocam";
+            color = "btn-red";
+            regexType = "video";
+            break;
+        case "webapp":
+            icon = "terminal"
+            color = "btn-purple";
+            regexType = "webapp";
+            break;
+        case "pdf":
+            icon = "picture_as_pdf";
+            color = "btn-red";
+            regexType = "pdf";
+            break;
+        case "zip":
+            icon = "folder_zip";
+            color = "btn-orange";
+            regexType = "zip";
+        default:
+            icon = "question_mark";
+            color = "btn-gray";
+            disabled = true;
+            break;
         }
 
-        if((typeof regexType === "string")&&(typeof i18nAssetTitles[regexType] === "string")){
-          i18nTitle = i18nAssetTitles[regexType];
+        if((typeof asset.assetType === "string")&&(typeof i18nAssetTitles[asset.assetType] === "string")){
+          i18nTitle = i18nAssetTitles[asset.assetType];
         } else {
           i18nTitle = i18nAssetTitles["other"];
-        }
-
-        if(typeof icon === "undefined"){
-          icon = "question_mark";
-          color = "btn-gray";
-          disabled = true;
         }
 
         const insertButton = `<button ${disabled ? 'disabled': null} class="rounded listButton addButton"
@@ -1334,7 +1278,7 @@
                             </span>
                         </button>
                         <button ${disabled ? 'disabled': null} class="listButton iconButton editButton"
-                            onclick='editAsset(${asset.id}, "${asset.mime}")'>
+                            onclick='editAsset(${asset.id}, "${asset.assetType}")'>
                             <span class="building-block-icon material-icons" id="edit"> edit
                             </span>
                         </button>
@@ -1414,7 +1358,7 @@
                             delete_outline </span>
                     </button>
                     <button class="listButton iconButton editButton"
-                        onclick='editPuzzle("${rpiJSON.id}", "application/reusable")'>
+                        onclick='editReusablePuzzleInstance("${rpiJSON.id}")'>
                         <span class="building-block-icon material-icons" id="edit"> edit
                         </span>
                     </button>

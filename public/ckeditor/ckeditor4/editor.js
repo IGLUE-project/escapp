@@ -17,6 +17,10 @@ var config = {
 };
 
 var blockTemplate = (index, content, type, puzzles) => {
+    if(type === "asset"){
+        type = "text";
+    }
+
     var id = 'block-'+type+'-'+index+'-'+Date.now();
 
     return`
@@ -35,6 +39,7 @@ var blockTemplate = (index, content, type, puzzles) => {
     </div>
 </div>
 `;}
+
 var textEditorTemplate = (id, text) => `<div class="editor-wrapper
 ${((window.endPoint === 'indications') || (window.endPoint === 'after')) ? 'indications' : '' }">
     <div id="${id}" name="${id}" class="editor" spellcheck="false">${text}</div>
@@ -165,52 +170,47 @@ var progressBarTemplate = ()=> `<div class="editor" >
 </div>
 `;
 
-const imageRegex = new RegExp(/image\/.*/);
-const videoRegex = new RegExp(/video\/.*/);
-const audioRegex = new RegExp(/audio\/.*/);
-const pdfRegex = new RegExp(/application\/pdf/);
-const webappRegex = new RegExp(/application\/webapp/);
-const reusableRegex = new RegExp(/application\/reusable/);
+//Render item depending on assetType
+const assetItemTemplate = (payload)=> {
+    let assetConfig = payload.config;
+    if((typeof assetConfig === "undefined")||(assetConfig === null)){
+        assetConfig = {};
+    }
+    if(typeof assetConfig.width === "undefined"){
+        assetConfig.width = "100%";
+    }
+    if(typeof assetConfig.height === "undefined"){
+        assetConfig.height = "auto";
+    }
 
-//Render item depending on mime
-const catalogItem = (item)=> {
-    const configJSON = parseAssetConfig( item.mime, item.config);
-    if(item.mime.search(imageRegex) !== -1) {
-        return `<img src="${item.url}" style="width:${configJSON.width};height:${configJSON.height};max-width:100%">`;
-    }else if (item.mime.search(videoRegex) !== -1) {
-            return `<div class="ckeditor-html5-video" style="text-align: center;max-width:100%"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" download=${configJSON.download!=="undefined"?"download":null}/></div>`;
-    } else if (item.mime.search(audioRegex) !== -1) {
-            return `<audio controls=${configJSON.controls!=="undefined"?"controls":null}  autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  mime="${item.mime}" src="${item.url}"/>`;
-    } else if (item.mime.search(pdfRegex) !== -1) {
-        return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%"  >
-        <object data="${item.url}" type="application/pdf" width="100%" height="100%">
-            <iframe style="border:none" src="${item.url}" width="100%" height="100%" >
+    switch(payload.assetType){
+    case "image":
+        return `<img src="${payload.url}" style="width:${assetConfig.width};height:${assetConfig.height};max-width:100%">`;
+    case "audio":
+        return `<audio controls=${assetConfig.controls!=="undefined"?"controls":null}  ${assetConfig.autoplay===true ? "autoplay" : ""}  src="${payload.url}"/>`;
+    case "video":
+        return `<div class="ckeditor-html5-video" style="text-align: center;max-width:100%" src="${payload.url}" ><video ${assetConfig.autoplay===true ? "autoplay" : ""} style="width:${assetConfig.width}px;height:${assetConfig.height}px" controls=${assetConfig.controls!=="undefined"?"controls":null} src="${payload.url}" download=${assetConfig.download!=="undefined"?"download":null}/></div>`;
+    case "webapp":
+        assetConfig.width = "100%";
+        assetConfig.height = "auto";
+        return `<div style="width:${assetConfig.width};height:${assetConfig.height};max-width:1500px"  >
+             <iframe src="${payload.url}"  style="border:none" width="100%" height="100%" >
+             </iframe>
+        </div>`;
+    case "pdf":
+        return `<div style="width:${assetConfig.width}px;height:${assetConfig.height}px;max-width:100%"  >
+        <object data="${payload.url}" type="application/pdf" width="100%" height="100%">
+            <iframe style="border:none" src="${payload.url}" width="100%" height="100%" >
             </iframe>
         </object>
-    </div>`;
-     } else if (item.mime.search(webappRegex) !== -1) {
-        configJSON.width = "100%";
-        configJSON.height = "auto";
-         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px"  >
-             <iframe src="${item.url}"  style="border:none" width="100%" height="100%" >
-             </iframe>
-     </div>`;
-     } else if (item.mime.search(reusableRegex) !== -1) {
-        configJSON.width = "100%";
-        configJSON.height = "auto";
-         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px"  >
-             <iframe src="${item.url}" style="border:none" width="100%" height="100%" id="${item.id}" >
-                <script>
-                </script>
-             </iframe>
-     </div>`;
-    }else {
-        return `<div>${item.name}</div>`;
+        </div>`;
+    default:
+        return "";
     }
 }
 
-const catalogTemplate = async(id, payload) =>{
-    return textEditorTemplate(id, `${catalogItem({config:payload.config, url:payload.url, puzzleId:payload.puzzleId,  mime:payload.mime,id, name:""}, {editorId:id})}`);
+const assetTemplate = async(id, payload) =>{
+    return textEditorTemplate(id, assetItemTemplate(payload));
 }
 
 var insertContent = async (index, type, payload, puzzles) => {
@@ -235,15 +235,16 @@ var insertContent = async (index, type, payload, puzzles) => {
         case "scene":
             content = sceneTemplate(id, payload.url, payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
             break;
-        case "catalog":
-            type = "text"; //Reorder is not working otherwise
-            content = await catalogTemplate(id, payload);
+        case "asset":
+            content = await assetTemplate(id, payload);
             break;
+        case "text":
         default:
+            break;
     }
     var htmlContent = $(blockTemplate(index, content, type, puzzles));
     $('#custom-content').append(htmlContent);
-    if ((type === "text") || (type === "catalog" && payload.url )) {
+    if ((type === "text") || (type === "asset" && payload.url )) {
         let editor = CKEDITOR.replace(id);
         //When replacing there is a hidden div with the content that is latter
         //read to save the content and an iframe that is the editor
