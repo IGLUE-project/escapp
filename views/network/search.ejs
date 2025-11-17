@@ -7,20 +7,22 @@
             margin-bottom: 10px;
         }
     </style>
-    <h1>Busqueda en red</h1>
-    <div style="display:grid; display: grid; grid-template-columns: 2fr 5fr; grid-template-rows: 1fr 7fr; grid-column-gap: 0px; grid-row-gap: 0px;">
-        <div style="grid-column:2; grid-row:1;padding-top:2em;" >
+    <h1>Búsqueda en red</h1>
+    <div class="campoDeBusqueda">
+        <div class="headerBusqueda">
             <input id="search" type="text" placeholder="Buscar...">
             <button>Buscar</button>
         </div>
-        <div style="grid-column:1; grid-row:2;padding:1em;" id="filters">
-            <div class="flex-column">
-                <label class="label"> Antes de:</label>
-                <input type="date" id="before"/>
-            </div>
-            <div class="flex-column">
-                <label class="label"> Después de:</label>
-                <input type="date" id="after"/>
+        <div class="filtros" style="grid-column:1; grid-row:2;padding:1em;" id="filters">
+            <div class="fechas">
+                <div class="flex-column fecha">
+                    <label class="label"> Antes de:</label>
+                    <input class="inputsBusqueda" type="date" id="before"/>
+                </div>
+                <div class="flex-column fecha">
+                    <label class="label"> Después de:</label>
+                    <input class="inputsBusqueda" type="date" id="after"/>
+                </div>
             </div>
 
             <select id="language">
@@ -30,7 +32,7 @@
                 <option value="sr">Serbio</option>
             </select>
         </div>
-        <div style="grid-column:2; grid-row:2;margin-top:2em" class="Results flexBoxEscapeRooms"> Los resultados
+        <div style="grid-column:2; grid-row:2;" class="Results flexBoxEscapeRooms"> Los resultados
         </div>
     </div>
 </div>

@@ -6109,29 +6109,119 @@ span#roleFieldStudy, span#roleFieldTeach {
   display: none;
 }
 
-.label {
-  padding-bottom: 5px;
+.main {
+  display: flex;
+  flex-flow: column;
+  height: 100vh !important;
+}
+
+.campoDeBusqueda {
+  display: grid;
+  grid-template-columns: 2fr 5fr;
+  grid-template-rows: 1fr 7fr;
+  gap: 1rem;
+  height: 100%;
+}
+@media (hover: none) {
+  .campoDeBusqueda {
+    overflow-y: scroll;
+  }
+}
+@media screen and (max-width: 900px) {
+  .campoDeBusqueda {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+  }
+}
+.campoDeBusqueda .headerBusqueda {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  grid-column: 2;
+  grid-row: 1;
+}
+.campoDeBusqueda .headerBusqueda input {
+  width: 100%;
+  min-width: 5rem;
+  text-align: start;
+  padding: 1rem;
+}
+.campoDeBusqueda .filtros {
+  padding: 0 !important;
+  display: flex;
+  flex-flow: column;
+}
+.campoDeBusqueda .filtros .fechas {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0;
+  height: fit-content;
+}
+@media screen and (max-width: 900px) {
+  .campoDeBusqueda .filtros .fechas {
+    flex-flow: row nowrap;
+    width: 100%;
+    margin-bottom: 0rem;
+  }
+}
+.campoDeBusqueda .filtros .fechas .fecha {
+  width: 100%;
+}
+@media screen and (max-width: 900px) {
+  .campoDeBusqueda .filtros .fechas .fecha {
+    width: calc(50% - 0.25rem);
+  }
+}
+.campoDeBusqueda .filtros .fechas .fecha .label {
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: #656683;
+  width: 100%;
+}
+@media screen and (max-width: 900px) {
+  .campoDeBusqueda .filtros .fechas .fecha .label {
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+  }
+}
+.campoDeBusqueda .filtros .fechas .fecha .inputsBusqueda {
+  padding: 1rem;
+  color: #656683;
+  border-color: #656683;
+  webkit-text-fill-color: #656683;
+}
+@media screen and (max-width: 900px) {
+  .campoDeBusqueda .filtros .fechas .fecha .inputsBusqueda {
+    font-size: 1rem;
+  }
+}
+.campoDeBusqueda #language {
+  width: 100%;
 }
 
 .flexBoxEscapeRooms {
   padding: 1em;
   border: 2px solid white;
   border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  flex-flow: row wrap;
-  -webkit-flex-flow: row;
-  flex-wrap: wrap;
+  display: grid;
   background-color: #232850;
+  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  gap: 1rem;
+}
+@media not (hover: none) {
+  .flexBoxEscapeRooms {
+    overflow-y: scroll;
+  }
 }
 .flexBoxEscapeRooms:after {
   content: "";
   flex: 1;
 }
 .flexBoxEscapeRooms .escapeRoomItemWrapper {
-  width: 19.99%;
-  padding: 10px;
-  height: max(7vw, 25%);
+  aspect-ratio: 1;
 }
 .flexBoxEscapeRooms .escapeRoomItemWrapper:before {
   content: "";
