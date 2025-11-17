@@ -311,24 +311,20 @@ exports.forAll = (page = 1, limit = 10, search = "") => ({
 exports.public = (page = 1, limit = 10) => ({
     "attributes": ["id", "title", "description"],
     limit,
-    "where": {
-        "status": "completed",
-    },
+    "where": {"status": "completed"},
     "order": [["createdAt", "desc"]],
     "offset": (page - 1) * limit
-})
+});
 
 exports.text = (before, after, lang) => {
-
-    let conditions = {
-        "where": {
-            "status": "completed",
-        },
+    const conditions = {
+        "where": {"status": "completed"},
         "attributes": ["id", "title", "description"]
-    }
+    };
+
     if (before && after) {
         conditions.where.createdAt = {[Op.between]: [new Date(after), new Date(before)]};
-    }else{
+    } else {
         if (before) {
             conditions.where.createdAt = {[Op.lt]: new Date(before)};
         }
@@ -342,8 +338,8 @@ exports.text = (before, after, lang) => {
 
     console.log(conditions);
 
-    return conditions
-}
+    return conditions;
+};
 
 exports.loadExport = {
     "include": [

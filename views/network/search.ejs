@@ -1,29 +1,38 @@
 <%- include ("../partials/_header.ejs") %>
 <div role="main" class="main">
+    <style>
+        .flex-column {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+    </style>
     <h1>Busqueda en red</h1>
-    <div style="display:grid; display: grid; grid-template-columns: 2fr 5fr; grid-template-rows: 1fr 3fr; grid-column-gap: 0px; grid-row-gap: 0px;">
-        <input id="search" type="text" style="grid-column:2; grid-row:1;" placeholder="Buscar...">
-        <div style="grid-column:1; grid-row:2;" id="filters">
-            <div>
-                <label> Antes de:</label>
+    <div style="display:grid; display: grid; grid-template-columns: 2fr 5fr; grid-template-rows: 1fr 7fr; grid-column-gap: 0px; grid-row-gap: 0px;">
+        <div style="grid-column:2; grid-row:1;padding-top:2em;" >
+            <input id="search" type="text" placeholder="Buscar...">
+            <button>Buscar</button>
+        </div>
+        <div style="grid-column:1; grid-row:2;padding:1em;" id="filters">
+            <div class="flex-column">
+                <label class="label"> Antes de:</label>
                 <input type="date" id="before"/>
             </div>
-            <div>
-                <label> Despues de:</label>
+            <div class="flex-column">
+                <label class="label"> Después de:</label>
                 <input type="date" id="after"/>
             </div>
 
             <select id="language">
-                <option value="">--Idioma--</option>
+                <option value="">--Idiomabb--</option>
                 <option value="es">Español</option>
                 <option value="en">Inglés</option>
                 <option value="sr">Serbio</option>
             </select>
         </div>
-        <div style="grid-column:2; grid-row:2;" class="Results"> Los resultados
+        <div style="grid-column:2; grid-row:2;margin-top:2em" class="Results flexBoxEscapeRooms"> Los resultados
         </div>
     </div>
-    <button>Buscar</button>
 </div>
 
 <script>
@@ -48,25 +57,27 @@
         const results = await response.text();
         const jsonResults = JSON.parse(results);
         let parsedResults = "";
+
         jsonResults.forEach((escapeRoom, i) => {
-            const href = `/network/escapeRoom/${escapeRoom.id}`;
-            const attachment = escapeRoom.attachments && escapeRoom.attachments.length > 0 ? escapeRoom.attachments[0] : null;
-            const url = attachment ? attachment.url : null;
-            parsedResults += newEscapeRoom(href, url, escapeRoom.title);
+            const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
+            const imageURL = "../images/puzzleorange.png";
+            parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
         document.querySelector(".Results").innerHTML = parsedResults;
     });
 
 
-
-    const newEscapeRoom = (href, url, title) => {return `
+    const newEscapeRoom = (href, imageURL, title) => {return `
                 <a href="${href}%>" class="escapeRoomItemWrapper animated bounceIn" title=${title} style="animation-delay: 100ms;" >
                     <div class="escapeRoomItem">
                         <div class="erFoto" style="text-align: center">
-                            <div class="bckgFoto" style="background-image: url( ${url ? url :  "../images/puzzleorange.png"})"></div>
+                            <div class="bckgFoto" style="background-image: url( ${imageURL ? imageURL :  "../images/puzzleorange.png"})"></div>
                             <h2 class="escapeRoomTitle">${title}</h2>
                         </div>
                     </div>
                 </a>
-`;}
+    `;}
+
+
+
 </script>
