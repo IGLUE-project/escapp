@@ -58,7 +58,19 @@ module.exports = function (sequelize, DataTypes) {
     const path = require("path");
     Asset.addHook("afterDestroy", async (asset, options) => {
         try {
-            if (!asset.filePath) return;
+            if (!asset.filePath || !asset.fileId) return;
+
+            //Check if file should be deleted
+            const count = await Asset.count({
+                where: { fileId: asset.fileId },
+                transaction: options.transaction
+            });
+            if (count > 0) {
+                //Do not delete the file if there are more assets using the same file
+                return;
+            }
+
+            //Delete file
             const fileToDelete = path.resolve(path.join(__dirname, "..", asset.filePath));
             if (fsSync.existsSync(fileToDelete)) {
                 await fs.unlink(fileToDelete);
