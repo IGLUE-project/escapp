@@ -110,6 +110,10 @@ window.content = <%- content%>
 
 window.puzzles = <%- JSON.stringify(escapeRoom.puzzles.map((puzzle) =>{ return {id: puzzle.id, validator:puzzle.validator, sol: puzzle.sol, title:puzzle.title, assignedReusablePuzzleInstances: puzzle.reusablePuzzleInstances}}))%>
 window.puzzleIds = window.puzzles.map(p => p.id);
+<% var reusablePuzzleInstances = (typeof reusablePuzzleInstances !== "undefined") ? reusablePuzzleInstances : []; %>
+<% var availableReusablePuzzles = (typeof availableReusablePuzzles !== "undefined") ? availableReusablePuzzles : []; %>
+<% var assets = (typeof assets !== "undefined") ? assets : []; %>
+<% var scenes = (typeof scenes !== "undefined") ? scenes : []; %>
 window.reusablePuzzleInstances = <%- JSON.stringify(reusablePuzzlesInstances || [])%>
 window.reusablePuzzles = <%- JSON.stringify(availableReusablePuzzles || [])%>
 window.assets = <%- JSON.stringify(assets || [])%>
