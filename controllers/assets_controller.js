@@ -163,6 +163,7 @@ exports.getAsset = async (req, res, next) => {
         asset = await models.asset.findOne({"where": { id: asset_id, "userId": req.session.user.id }});
         if (!asset) {
             res.status(404).send("Asset not found.");
+            return;
         }
         const filePath = path.join(__dirname, "..", asset.filePath);
         switch(asset.assetType){
