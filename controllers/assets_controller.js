@@ -158,9 +158,8 @@ exports.browse = async (req, res, next) => {
 exports.getAsset = async (req, res, next) => {
     const {asset_id, asset_extension} = req.params;
     let asset;
-
     try {
-        asset = await models.asset.findOne({"where": { id: asset_id, "userId": req.session.user.id }});
+        asset = await models.asset.findOne({"where": { id: asset_id }});
         if (!asset) {
             res.status(404).send("Asset not found.");
             return;
@@ -319,7 +318,6 @@ exports.getReusablePuzzleAsset = async (req, res, next) => {
 exports.getFormForInstance = async (req, res, next) => {
     const {puzzle_id} = req.params;
 
-
     try {
         const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id);
         const reusable = await models.reusablePuzzle.findByPk(instance.reusablePuzzleId);
@@ -345,20 +343,15 @@ exports.getFormForInstance = async (req, res, next) => {
 
 exports.returnThumbnail = (req, res) => {
     const {file_name} = req.params;
-
     res.sendFile(path.join(__dirname, `../uploads/thumbnails/${file_name}`));
 };
 
 exports.returnInstructions = (req, res) => {
     const {file_name} = req.params;
-
     res.sendFile(path.join(__dirname, `../uploads/instructions/${file_name}`));
 };
 
 exports.returnHybridInstructions = (req, res) => {
     const {file_name} = req.params;
-
     res.sendFile(path.join(__dirname, `../uploads/hybrid/${file_name}`));
 };
-
-
