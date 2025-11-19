@@ -85,7 +85,6 @@ exports.uploadAssets = async (req, res) => {
 
         const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "assetType": assetType, "mimetype": assetMimetype, "fileId": assetFileId, "filePath": assetFilePath, "fileExtension": assetFileExtension, "filename": req.body.filename, "contentPath": assetContentPath, userId }).save();
 
-        let assetUrl = "/assets/" + asset.id + asset.fileExtension;
         if (assetType === "zip") {
             let isWebapp = false;
             const zip = new StreamZip.async({ "file": req.file.path });
@@ -103,11 +102,9 @@ exports.uploadAssets = async (req, res) => {
                 await zip.extract(null, assetContentPathFolderFull);
                 await zip.close();
                 const assetContentPath = assetContentPathFolder + "/index.html";
-                assetUrl = "/assets/" + asset.id + "/index.html";
+                const assetUrl = "/assets/" + asset.id + "/index.html";
                 await asset.update({ "assetType": "webapp", "contentPath": assetContentPath, "url": assetUrl });
             }
-        } else {
-            await asset.update({ "url": assetUrl });
         }
         res.json({asset});
     } catch (error) {

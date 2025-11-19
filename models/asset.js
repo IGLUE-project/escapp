@@ -1,6 +1,8 @@
 // Definition of the Asset model:
 
-// Definition of the Asset model:
+const fs = require("fs/promises");
+const fsSync = require("fs");
+const path = require("path");
 
 module.exports = function (sequelize, DataTypes) {
 
@@ -53,9 +55,11 @@ module.exports = function (sequelize, DataTypes) {
         }
     );
 
-    const fs = require("fs/promises");
-    const fsSync = require("fs");
-    const path = require("path");
+    Asset.addHook("afterCreate", async (asset, options) => {
+        asset.url = "/assets/" + asset.id + asset.fileExtension;
+        await asset.save();
+    });
+
     Asset.addHook("afterDestroy", async (asset, options) => {
         try {
             if (!asset.filePath || !asset.fileId) return;
