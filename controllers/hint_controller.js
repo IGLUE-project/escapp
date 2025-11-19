@@ -109,6 +109,13 @@ exports.updateHints = async (req, res) => {
                 }
             } else {
                 try {
+                    let quizFilePath = "/" + req.file.path;
+                    let quizFilePathFull = path.join(__dirname, "..", quizFilePath);
+                    let quizFileType = await uploadsHelper.getDataForFile(quizFilePathFull);
+                    if(quizFileType.mimetype !== 'application/xml'){
+                        throw new Error("Quiz file must be a valid Moodle XML file.");
+                    }
+
                     const oldFileId = escapeRoom.hintApp ? escapeRoom.hintApp.public_id : null;
                     let hintApp = await escapeRoom.getHintApp();
                     if (!hintApp) {
