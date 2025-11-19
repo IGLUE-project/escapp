@@ -334,7 +334,7 @@
                     </div>
                     <div class="flexShowRight">
                         <% if (hintAppConditional) { %>
-                            <a class="show_link"  download="quiz" href="/escapeRooms/<%= escapeRoom.id%>/xml"><%=escapeRoom.hintApp.filename%></a>
+                            <a class="show_link" href="/escapeRooms/<%= escapeRoom.id%>/quizFile"><%=escapeRoom.hintApp.filename%></a>
                             <button class="preview-icon" onclick="previewHintApp()"><span class="material-icons">remove_red_eye</span></button>
                         <% } else if (hintConditional) { %>
                             <%=i18n.showTeacher.messages.freeHintsStrategy%>

@@ -35,7 +35,7 @@
 				"threshold": "<%= escapeRoom.numRight || 50 %>",
 				"successMessage": "<%=i18n.escapeRoom.play.successMessage%>",
 				"failMessage": "<%=i18n.escapeRoom.play.failMessage%>",
-				"moodleXMLPath": "<%=escapeRoom.hintApp.url %>",
+				"moodleXMLPath": "/escapeRooms/<%=escapeRoom.id%>/quizFile",
 				"finishCallback": (completion, score, status) => {
 					if (window.parent && window.parent.parent && window.parent.parent.requestHintFinish) {
 						window.parent.parent.requestHintFinish(completion, score, status)
@@ -43,8 +43,6 @@
 				},
 				"dev": false
 			}
-
-
 		</script>
 		<script type="text/javascript" src="/js/hintApp.js"></script>
 	</body>
