@@ -18,8 +18,8 @@ const {
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 
 // Npm i archiver
-const fs = require("fs");
-const fsp = require("fs/promises");
+const fsSync = require("fs");
+const fs = require("fs/promises");
 const path = require("path");
 const archiver = require("archiver");
 
@@ -222,11 +222,31 @@ exports.create = async (req, res) => {
 
         try {
             try {
+                //Create thumbnail
+                let thumbnailFilePath = "/" + req.file.path;
+                let thumbnailFilePathFull = path.join(__dirname, "..", thumbnailFilePath);
+                let thumbnailFileType = await uploadsHelper.getDataForFile(thumbnailFilePathFull);
+                if(thumbnailFileType.assetType !== 'image'){
+                    throw new Error("Thumbnail must be an image.");
+                }
+                let thumbnailFileId = req.file.filename;
+                let thumbnailFileName = req.file.originalname;
+                
+                let thumbnailFileExtension = path.extname(req.file.filename); 
+                if(thumbnailFileType.extension !== thumbnailFileExtension){
+                    thumbnailFileId = path.parse(thumbnailFileId).name + thumbnailFileType.extension
+                    let newThumbnailFilePath = "/uploads/thumbnails/" + thumbnailFileId;
+                    let newThumbnailFilePathFull = path.join(__dirname, "..", newThumbnailFilePath);
+                    await fs.rename(thumbnailFilePathFull, newThumbnailFilePathFull);
+                    thumbnailFilePath = newThumbnailFilePath;
+                    thumbnailFilePathFull = newThumbnailFilePathFull;
+                }
+
                 await models.attachment.create({
-                    "public_id": req.file.originalname,
-                    "url": `/uploads/thumbnails/${req.file.filename}`,
-                    "filename": req.file.originalname,
-                    "mime": req.file.mimetype,
+                    "public_id": thumbnailFileId,
+                    "url": thumbnailFilePath,
+                    "filename": thumbnailFileName,
+                    "mime": thumbnailFileType.mimetype,
                     "escapeRoomId": er.id
                 });
                 await transaction.commit();
@@ -234,7 +254,7 @@ exports.create = async (req, res) => {
                 console.error(error);
                 await transaction.rollback();
                 req.flash("error", i18n.common.flash.errorImage);
-                fs.unlinkSync(req.file.path);
+                fsSync.unlinkSync(req.file.path);
                 res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
                 return;
             }
@@ -317,48 +337,56 @@ exports.update = async (req, res) => {
             // There is no attachment: Delete old attachment.
             if (!req.file) {
                 if (er.attachment) {
-                    const old_url_used = await models.attachment.count({"where": {"url": er.attachment.url}}) > 1;
-
-                    if (!old_url_used) {
-                        fs.unlinkSync(path.join(__dirname, "/../", er.attachment.url));
-                    }
-                    er.attachment.destroy();
+                    await uploadsHelper.deleteResource(er.attachment.public_id, models.attachment, "thumbnails");
+                    await er.attachment.destroy();
                 }
                 transaction.commit();
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
                 return;
             }
             try {
-                const old_url = er.attachment ? er.attachment.url : null;
+                const oldFileId = er.attachment ? er.attachment.public_id : null;
                 let attachment = await er.getAttachment();
-
                 if (!attachment) {
                     attachment = models.attachment.build({"escapeRoomId": er.id});
                 }
-                attachment.public_id = req.file.originalname;
-                attachment.url = `/uploads/thumbnails/${req.file.filename}`;
-                attachment.filename = req.file.originalname;
-                attachment.mime = req.file.mimetype;
-                try {
-                    const old_url_used = await models.attachment.count({"where": {"url": old_url}}) > 1;
 
-                    if (old_url && !old_url_used) {
-                        try {
-                            fs.unlinkSync(path.join(__dirname, "/../", old_url));
-                        } catch (e) {
-                            console.error("Error deleting old attachment file:", e);
-                        }
-                    }
-                    await attachment.save();
-                } catch (error) { // Ignoring image validation errors
-                    console.error(error);
-                    req.flash("error", i18n.common.flash.errorFile);
-                    fs.unlinkSync(req.file.path);
+                let thumbnailFilePath = "/" + req.file.path;
+                let thumbnailFilePathFull = path.join(__dirname, "..", thumbnailFilePath);
+                let thumbnailFileType = await uploadsHelper.getDataForFile(thumbnailFilePathFull);
+                if(thumbnailFileType.assetType !== 'image'){
+                    throw new Error("Thumbnail must be an image.");
                 }
+                let thumbnailFileId = req.file.filename;
+                let thumbnailFileName = req.file.originalname;
+                
+                let thumbnailFileExtension = path.extname(req.file.filename); 
+                if(thumbnailFileType.extension !== thumbnailFileExtension){
+                    thumbnailFileId = path.parse(thumbnailFileId).name + thumbnailFileType.extension
+                    let newThumbnailFilePath = "/uploads/thumbnails/" + thumbnailFileId;
+                    let newThumbnailFilePathFull = path.join(__dirname, "..", newThumbnailFilePath);
+                    await fs.rename(thumbnailFilePathFull, newThumbnailFilePathFull);
+                    thumbnailFilePath = newThumbnailFilePath;
+                    thumbnailFilePathFull = newThumbnailFilePathFull;
+                }
+
+                attachment.public_id = thumbnailFileId;
+                attachment.url = thumbnailFilePath;
+                attachment.filename = thumbnailFileName;
+                attachment.mime = thumbnailFileType.mimetype;
+                await attachment.save();
+
+                if (oldFileId) {
+                    await uploadsHelper.deleteResource(oldFileId, models.attachment, "thumbnails");
+                }
+
                 transaction.commit();
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("edit")}`);
                 return;
             } catch (error) {
+                if (req.file) {
+                    fsSync.unlinkSync(req.file.path);
+                }
                 console.error(error);
                 req.flash("error", i18n.common.flash.errorFile);
             }
@@ -372,7 +400,7 @@ exports.update = async (req, res) => {
                 req.flash("error", validationError(err, i18n));
             });
             if (req.file) {
-                fs.unlinkSync(req.file.path);
+                fsSync.unlinkSync(req.file.path);
             }
         } else {
             req.flash("error", i18n.common.flash.errorEditingER);
@@ -485,14 +513,14 @@ exports.sharingUpdate = async (req, res) => {
 
         if (instructionsFile && instructionsFile.filename) {
             try {
-                fs.unlinkSync(path.join(__dirname, "/../uploads/instructions/", escapeRoom.instructions));
+                fsSync.unlinkSync(path.join(__dirname, "/../uploads/instructions/", escapeRoom.instructions));
             } catch (e) {
                 console.error("Error deleting old instructions file:", e);
             }
             escapeRoom.instructions = instructionsFile.filename;
         } else if (body.keepInstructions === "0") {
             try {
-                fs.unlinkSync(path.join(__dirname, "/../uploads/instructions/", escapeRoom.instructions));
+                fsSync.unlinkSync(path.join(__dirname, "/../uploads/instructions/", escapeRoom.instructions));
             } catch (e) {
                 console.error("Error deleting old instructions file:", e);
             }
@@ -507,7 +535,7 @@ exports.sharingUpdate = async (req, res) => {
         await transaction.rollback();
         console.error(error);
         if (req.file) {
-            fs.unlinkSync(req.file.path);
+            fsSync.unlinkSync(req.file.path);
         }
         if (error instanceof Sequelize.ValidationError) {
             error.errors.forEach((err) => {
@@ -603,7 +631,7 @@ exports.destroy = async (req, res, next) => {
         await req.escapeRoom.destroy({}, {transaction});
         if (req.escapeRoom.attachment && await models.attachment.count({"where": {"url": req.escapeRoom.attachment.url}}) === 0) {
             try {
-                fs.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
+                fsSync.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
             } catch (e) {
                 console.error("Error deleting attachment file:", e);
             }

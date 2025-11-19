@@ -7,7 +7,8 @@ const mimeTypesRegexs = {
     "image": new RegExp("image\/.*"),
     "video": new RegExp(/video\/(mp4|webm)/),
     "audio": new RegExp("audio\/.*"),
-    "pdf": new RegExp("application\/pdf")
+    "pdf": new RegExp("application\/pdf"),
+    "xml": new RegExp("^application\\/xml$|\\+xml$|^text\\/xml$")
 }
 const mimeTypesRegexsEntries = Object.entries(mimeTypesRegexs);
 
@@ -35,7 +36,7 @@ exports.getDataForFile = async function(filePathFull){
 
 exports.deleteResource = async function (fileId, model, folderNameInsideUploads) {
     const inUse = await model.count({"where": {"public_id": fileId}});
-    if (inUse && inUse.length >= 1) {
+    if (inUse > 1) {
         return;
     }
     if(!folderNameInsideUploads || typeof folderNameInsideUploads !== "string" || folderNameInsideUploads.trim()===""){

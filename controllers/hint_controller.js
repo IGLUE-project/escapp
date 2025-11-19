@@ -130,6 +130,9 @@ exports.updateHints = async (req, res) => {
                         await uploadsHelper.deleteResource(oldFileId, models.hintApp, "hints");
                     }
                 } catch (e) {
+                    if (req.file) {
+                        fsSync.unlinkSync(req.file.path);
+                    }
                     console.error(e.message);
                     req.flash("error", i18n.common.flash.errorFile);
                 }
