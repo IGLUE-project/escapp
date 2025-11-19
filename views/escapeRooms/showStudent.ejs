@@ -104,6 +104,7 @@
 					</form>
 				</span>
 			<%}%>
+			<%if(turno.status === "test" ){%>
 			<div style="display: inline-block;">
 				<button class="rounded cloneButton" title="<%=i18n.escapeRoom.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
 					<%=i18n.showTeacher.actionList.clone%>
@@ -116,6 +117,7 @@
 					</form>
 				</div>
 			</div>
+			<%}%>
 			<% if (turno.status !== "pending" && team.startTime) { %>
 				<a href="/escapeRooms/<%=escapeRoom.id%>/results">
 					<button class="rounded editButton" type="button"><%=i18n.showStudent.results%></button>
