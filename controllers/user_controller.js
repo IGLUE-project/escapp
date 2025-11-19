@@ -271,7 +271,7 @@ exports.newResetPassword = async (req, res) => {
             try {
                 const str = await renderEJS("views/emails/resetPassword.ejs", {"i18n": res.locals.i18n, "link": `http://${process.env.APP_NAME}/users/password-reset/${user.id}?code=${user.password}&email=${user.username}`}, {});
 
-                await mailer.resetPasswordEmail(user.username, "Reset password", str, str);
+                await mailer.sendEmail(user.username, "Escapp Reset password", str, str);
                 req.flash("success", i18n.common.flash.resetPasswordSent);
                 res.redirect("/users/password-reset");
             } catch (err) {
