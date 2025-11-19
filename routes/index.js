@@ -220,17 +220,14 @@ router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired
 router.get("/reusablePuzzles/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
 router.get("/reusablePuzzles/installed/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
 router.delete("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, reusablePuzzleController.deleteReusablePuzzle);
-router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browse);
 router.get("/reusablePuzzlesInstances/:puzzle_id/form", sessionController.loginRequired, assetsController.getFormForInstance);
 router.get("/reusablePuzzlePreview/:reusablePuzzleId", reusablePuzzleController.renderReusablePuzzlePreview);
 
 // Routes for assets
-router.get("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.assets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/asset/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.editAsset);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/fetchAssets", sessionController.loginRequired, assetsController.fetchAssets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("upload"), assetsController.assetsUpdate);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/uploadAssets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("asset"), assetsController.uploadAssets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/deleteAssets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.deleteAssets);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/assets/new", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("asset"), assetsController.uploadAsset);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/assets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.editAsset);
+router.delete("/escapeRooms/:escapeRoomId(\\d+)/assets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.deleteAsset);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/browseResources", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browseResources);
 
 router.get("/assets/:asset_id.:asset_extension", sessionController.loginRequired, assetsController.getAsset);
 router.get("/assets/:asset_id/:file_name", sessionController.loginRequired, assetsController.getAsset);

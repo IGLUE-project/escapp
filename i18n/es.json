@@ -403,17 +403,7 @@
             },
             "assets": {
                 "title": "Selecciona un recurso",
-                "button": "Confirmar selección",
-                "dictDefaultMessage": "Arrastra los ficheros que necesitas para la escape room",
-                "dictFallbackMessage": "Intenta usar Google Chrome",
-                "dictFileTooBig": "El fichero es demasiado grande",
-                "dictInvalidFileTypedictResponseError": "Tipo de fichero no soportado",
-                "dictCancelUpload": "Cancelar subida",
-                "dictUploadCanceled": "La subida ha sido cancelada",
-                "dictCancelUploadConfirmation": "¿Seguro que deseas cancelar la subida?",
-                "dictRemoveFile": "Borrar fichero",
-                "dictRemoveFileConfirmation": "¿Seguro que deseas borrar este fichero?",
-                "dictMaxFilesExceeded": "Demasiados ficheros"
+                "button": "Confirmar selección"
             },
             "edit": {
                 "New": "Nueva",

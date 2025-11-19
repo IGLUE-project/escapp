@@ -1,47 +1,59 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="/js/vendor/dropzone.js"></script>
 <link rel="stylesheet" href="/stylesheets/vendor/dropzone.css">
-<!-- Theme included stylesheets -->
 <%- include ("../../partials/_header.ejs") %>
 <div role="main" class="main steps step-assets step-instructions">
-    <% if (mode === "CKEditor") { %>
-        <h1><%=i18n.escapeRoom.steps.assets.title%></h1>
-    <% } %>
-    <form method='POST' id="assetsForm" action='/escapeRooms/<%= escapeRoom.id %>/uploadAssets' class="dropzone animated zoomIn" style="border:none;margin:0;" >
+    <h1><%=i18n.escapeRoom.steps.assets.title%></h1>
+    <form method='POST' id="assetsForm" action='/' class="dropzone animated zoomIn" style="border:none;margin:0;" >
         <input type="file" name="file" style="display:none;"/>
     </form>
     <br/>
-    <% if (mode === "CKEditor") { %>
-        <button disabled class="rounded editButton" id="selectFile" onclick="returnFileUrl()"><%=i18n.escapeRoom.steps.assets.button%></button>
-    <% } %>
+    <button disabled class="rounded editButton" id="selectFile" onclick="returnFileUrl()"><%=i18n.escapeRoom.steps.assets.button%></button>
     <br/>
     <br/>
     <br/>
 </div>
-
 <%- include('../../partials/_footer', {ignoreExtras: true}) %>
 
-<script src="/js/vendor/dropzone.js"></script>
 <script>
     var assets = <%- JSON.stringify(assets) %>;
-    var escapeRoomId = <%=escapeRoom.id%>;
-    var i18nMsg = <%- JSON.stringify(i18n.escapeRoom.steps.assets)%>
-</script>
-<script src="/js/assets.js"></script>
-<script>
+
+    Dropzone.options.assetsForm = {
+        "clickable": "",
+        "addRemoveLinks": false,
+        "accept": function(file, done) {
+            done();
+        }
+    };
+
+    $(function(){
+        var dropzone = $("#assetsForm").get(0).dropzone;
+        for (let a of assets) {
+            let mockFile = { "name": a.name, "id": a.id, "url": a.url, "mime": a.mimetype, "status": "success"};
+            dropzone.files.push(mockFile);
+            dropzone.options.addedfile.call(dropzone, mockFile);
+            if (a.mimetype.match("image")) {
+                dropzone.options.thumbnail.call(dropzone, mockFile, a.url);
+            }
+            mockFile.previewElement.classList.add('dz-complete');
+        }
+    });
+
     // Helper function to get parameters from the query string.
-    function getUrlParam( paramName ) {
+    function getUrlParam(paramName) {
         var reParam = new RegExp( '(?:[\?&]|&)' + paramName + '=([^&]+)', 'i' );
         var match = window.location.search.match( reParam );
-
         return ( match && match.length > 1 ) ? match[1] : null;
     }
-    // Simulate user action of selecting a file to be returned to CKEditor.
+
+    // Get URL to be returned to CKEditor when selecting a file.
     function returnFileUrl() {
         var funcNum = getUrlParam( 'CKEditorFuncNum' );
         var fileUrl = fileSelected.url
         window.opener.CKEDITOR.tools.callFunction( funcNum, fileUrl );
         window.close();
     }
+
     /* Click on file from gallery */
     $(document).on('click','.dz-preview *', function(){
         $(".file-selected").removeClass("file-selected");

@@ -9,7 +9,7 @@
         <div style="margin: 4rem"></div>
         <div class="sections"  style="height: calc(45vh - 4rem)">
             <section class="sectionAddResource" style="color:white important;width:100%;height:100%">
-                <form action="uploadAssets" method="POST" enctype="multipart/form-data" id="uploadFileForm" style="width:100%;height:100%">
+                <form action="assets/new" method="POST" enctype="multipart/form-data" id="uploadFileForm" style="width:100%;height:100%">
                 <button type="submit" disabled style="display: none" aria-hidden="true"></button>
                 <div style="display:flex; flex-direction:column; justify-content:space-around; align-items:center;width:100%;height:100%">
                     <input type="hidden" name="escapeRoomId" value="<%=escapeRoom.id%>">
@@ -388,7 +388,8 @@
         const asset = window.assets.find(a => a.id == id);
         const dialog = $('#editDialog');
         const form = dialog.find('form');
-        form.attr('action', `./asset/${id}`);
+        form.attr('action', `./assets/${id}`);
+        form.attr('method', "PUT");
         form.empty();
         form.append('<label> <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%> </label>');
         form.append(`<input type="text" name="filename" value=${asset.filename} required>`);
@@ -751,6 +752,10 @@
         let fetchOptions = {
             method:'post'
         };
+        if($(form).attr('method') === "PUT"){
+            fetchOptions.method = "put";
+        }
+
         if(form.classList.contains("reusablePuzzleInstanceForm")){
             //Validate form
             var errorsInReusablePuzzleInstanceForm = [];
@@ -1120,7 +1125,7 @@
             return;
         }
 
-        fetch('uploadAssets', {
+        fetch('assets/new', {
             method: 'POST',
             body: data
         }).then(response => {
@@ -1142,8 +1147,8 @@
     }
 
     const deleteAsset = async (assetId) => {
-      const response = await fetch(`/escapeRooms/${escapeRoomId}/deleteAssets/${assetId}`, {
-          method: 'POST',
+      const response = await fetch(`/escapeRooms/${escapeRoomId}/assets/${assetId}`, {
+          method: 'DELETE',
       })
       if (response.ok) {
           const asset = $(`#${assetId}`);

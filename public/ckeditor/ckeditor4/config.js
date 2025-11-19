@@ -81,8 +81,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// };
 	config.toolbarCanCollapse = false;
     config.filebrowserUploadMethod = 'form';
-	config.filebrowserImageBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/assets';
-	config.filebrowserBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/assets';
+	config.filebrowserImageBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/browseResources?mode=image';
+	config.filebrowserBrowseUrl =  '/escapeRooms/'+window.escapeRoomId+'/browseResources';
     config.filebrowserWindowWidth = '640';
     config.filebrowserWindowHeight = '480';
 };

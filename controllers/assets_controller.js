@@ -10,48 +10,6 @@ const ejs = require("ejs");
 
 const fs = require("fs");
 const StreamZip = require("node-stream-zip");
-
-// GET /escapeRooms/:escapeRoomId/assets
-exports.assets = async (req, res, next) => {
-    const {escapeRoom} = req;
-    let mode;
-    if(req.query.CKEditor){
-        mode = "CKEditor";
-    } else {
-        mode = "default";
-    }
-    try {
-        const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
-            return {id: a.id, fileId: a.fileId, url: (req.app.locals.FULL_APP_NAME + a.url), mimetype: a.mimetype, "name": a.filename};
-        });
-        res.render("escapeRooms/steps/assets", {escapeRoom, assets, "progress": "assets", mode});
-    } catch (e) {
-        next(e);
-    }
-};
-
-// GET /escapeRooms/:escapeRoomId/fetchAssets
-exports.fetchAssets = async (req, res, next) => {
-    const {escapeRoom} = req;
-    try {
-        const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
-            const {id, fileId, url, mime, filename} = a;
-            return {id, fileId, url, mime, "name": filename};
-        });
-        res.json(assets);
-    } catch (e) {
-        next(e);
-    }
-};
-
-// POST /escapeRooms/:escapeRoomId/assets
-exports.assetsUpdate = (req, res /* , next*/) => {
-    const {escapeRoom, body} = req;
-    const isPrevious = Boolean(body.previous);
-    const progressBar = body.progress;
-    res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("assets") : progressBar || nextStep("assets")}`);
-};
-
 const mimeTypesRegexs = {
     "zip": new RegExp(/application\/(zip|x-zip-compressed|x-zip)/),
     "image": new RegExp("image\/.*"),
@@ -61,8 +19,8 @@ const mimeTypesRegexs = {
 }
 const mimeTypesRegexsEntries = Object.entries(mimeTypesRegexs);
 
-// POST /escapeRooms/:escapeRoomId/uploadAssets
-exports.uploadAssets = async (req, res) => {
+// POST /escapeRooms/:escapeRoomId/assets/new
+exports.uploadAsset = async (req, res) => {
     const { escapeRoom } = req;
     const { i18n } = res.locals;
     const userId = req.session.user && req.session.user.id;
@@ -119,8 +77,29 @@ exports.uploadAssets = async (req, res) => {
     }
 };
 
-// POST /escapeRooms/:escapeRoomId/deleteAssets/:assetId
-exports.deleteAssets = async (req, res) => {
+// PUT /escapeRooms/:escapeRoomId/assets/:assetId
+exports.editAsset = async (req, res, next) => {
+    const {assetId} = req.params;
+    const {filename} = req.body;
+    try {
+        const asset = await models.asset.findByPk(assetId);
+
+        if (asset) {
+            asset.filename = filename;
+            await asset.save();
+
+            res.json({"config": {}, filename, "id": asset.id});
+        } else {
+            res.status(404);
+            res.send("Asset not found");
+        }
+    } catch (err) {
+        next(err);
+    }
+};
+
+// DELETE /escapeRooms/:escapeRoomId/assets/:assetId
+exports.deleteAsset = async (req, res) => {
     const {assetId} = req.params;
     const {i18n} = res.locals;
     try {
@@ -137,18 +116,28 @@ exports.deleteAssets = async (req, res) => {
     }
 };
 
-exports.browse = async (req, res, next) => {
+// GET /escapeRooms/:escapeRoomId/browseResources
+exports.browseResources = async (req, res, next) => {
+    const {escapeRoom} = req;
+    const mode = req.query.mode || "";
+
     try {
-        const assets = (await models.asset.findAll({"where": { "escapeRoomId": req.escapeRoom.id }})).map((a) => {
-            const {id, public_id, url, mime, filename} = a;
+      let where = { escapeRoomId: escapeRoom.id };
+      if (mode === "image") {
+        where.assetType = "image";
+      }
+      const assets = (await models.asset.findAll({ where }))
+        .map(a => ({
+          id: a.id,
+          fileId: a.fileId,
+          url: req.app.locals.FULL_APP_NAME + a.url,
+          mimetype: a.mimetype,
+          name: a.filename
+        }));
 
-            return {id, public_id, url, mime, "name": filename};
-        });
-
-        res.render("escapeRooms/steps/assets", {"escapeRoom": req.escapeRoom, assets});
-    } catch (err) {
-        console.error(err);
-        next(err);
+        res.render("escapeRooms/steps/browseResources", {escapeRoom, assets});
+    } catch (e) {
+        next(e);
     }
 };
 
@@ -243,40 +232,6 @@ exports.getWebAppFile = async (req, res, next) => {
         res.sendFile(filePath);
     } catch (err) {
         console.error(err);
-        next(err);
-    }
-};
-
-exports.appendParameters = (...parameters) => {
-    let config = "";
-
-    parameters.forEach((parameter) => {
-        const {name} = parameter;
-        const {value} = parameter;
-
-        config += `${name}:${value};`;
-    });
-    return config;
-};
-
-// PUT /escapeRooms/:escapeRoomId/assets/:assetId
-exports.editAsset = async (req, res, next) => {
-    const {assetId} = req.params;
-    const {filename} = req.body;
-
-    try {
-        const asset = await models.asset.findByPk(assetId);
-
-        if (asset) {
-            asset.filename = filename;
-            await asset.save();
-
-            res.json({"config": {}, filename, "id": asset.id});
-        } else {
-            res.status(404);
-            res.send("Asset not found");
-        }
-    } catch (err) {
         next(err);
     }
 };
