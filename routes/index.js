@@ -85,6 +85,8 @@ router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionControll
 router.get("/reports", sessionController.loginRequired, sessionController.adminRequired, managementController.showReports);
 router.post("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.editReport);
 router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
+router.get("/urls", sessionController.loginRequired, sessionController.adminRequired, managementController.getNetworkURLS);
+router.post("/urls", sessionController.loginRequired, sessionController.adminRequired, managementController.editNetworkURLS);
 
 // Routes for the resource /escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
@@ -222,7 +224,7 @@ router.get("/reusablePuzzlePreview/:reusablePuzzleId", reusablePuzzleController.
 
 // Routes for assets
 router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
-router.get("/uploads/thumbnails/:file_name", sessionController.loginRequired, assetsController.returnThumbnail);
+router.get("/uploads/thumbnails/:file_name",  assetsController.returnThumbnail); //No login to get thumbnails in remote instances
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);

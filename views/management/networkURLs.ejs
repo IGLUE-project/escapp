@@ -1,0 +1,21 @@
+<%- include ("../partials/_header.ejs") %>
+<div class="main">
+    <h1>SET CONFIG URLS</h1>
+    <form style="display:flex; flex-direction:column;" action="/urls" method="POST">
+        <label> Semicolon separated urls: https://url:port/;https:...</label>
+        <input type="text" name="urls" value="<%= urlsDBText%>"/>
+        <button type="submit" ">Set URLs</button>
+        <span id="defaultURLs"> <%= urlsText%></span>
+
+        <button onclick="setDefaults(event)">Set Default URLs</button>
+    </form>
+
+    <script>
+        function setDefaults(event) {
+            event.preventDefault();
+            document.querySelector('input[name="urls"]').value =  document.getElementById('defaultURLs').innerText;
+        }
+    </script>
+
+<div>
+

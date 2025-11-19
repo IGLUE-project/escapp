@@ -3,15 +3,27 @@ const {models} = require("../models");
 const {fuzzy} = require("fast-fuzzy");
 const urls = JSON.parse(process.env.URLS) || [];
 
-const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10) => {
+const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10,  participation, area, duration, format, level) => {
     try {
-        const queryToExecute = queries.escapeRoom.text(before, after, lang);
+        const queryToExecute = queries.escapeRoom.text(before, after, lang,  participation, area, duration, format, level);
         let results = await models.escapeRoom.findAll(queryToExecute);
         // Fuzzy finding of escaperooms
-
+        const fuzzyThreshold = 0.4;
+        const filteredResults = [];
         results = results.sort((a, b) => -fuzzy(value, a.title) - fuzzy(value, a.description) * 0.7 + fuzzy(value, b.title) + fuzzy(value, b.description) * 0.7);
         results = results.slice((page - 1) * limit, page * limit);
-        return results;
+
+        for(let index = 0; index < results.length; index++) {
+            const result = results[index];
+            console.log(fuzzy(value, result.title), fuzzy(value, result.description));
+            if(fuzzy(value, result.title) > fuzzyThreshold || fuzzy(value, result.description) > fuzzyThreshold) {
+                filteredResults.push(result);
+            }else{
+                break;
+            }
+        }
+
+        return filteredResults;
     } catch (error) {
         console.error("Error getting local results: ", error);
         return {};
@@ -26,8 +38,8 @@ exports.searchInInstance = async (req, res, next) => { // Busqueda local
             console.log("Simulating delay...");
             await wait(1000);
         }
-        const {query, before, after, lang, page, limit} = req.query || {};
-        const results = await getResultsFromInstance(query, before, after, lang, page, limit);
+        const {query, before, after, lang, page, limit,  participation, area, duration, format, level} = req.query || {};
+        const results = await getResultsFromInstance(query, before, after, lang, page, limit,  participation, area, duration, format, level);
 
         res.json(results);
     } catch (error) {
@@ -85,7 +97,7 @@ const tryFetch = async (url) => { // El fetch falla si no hay nadie, wrapper
 };
 
 exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira querys contra el resto de instancias y agrega
-    const {query, before, after, lang, page, limit} = req.query;
+    const {query, before, after, lang, page, limit, participation, area, duration, format, level} = req.query;
     const aggregated = [];
     const promises = [];
 
@@ -103,7 +115,13 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
     // ---------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------
-    const localR = await getResultsFromInstance(query, before, after, lang, page, limit);
+    let localR = [];
+    try{
+        localR = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);
+    }catch(error){
+        console.error("Error getting local results: ", error);
+        localR = [];
+    }
 
     localR.forEach((r) => aggregated.push(r));
 
@@ -111,7 +129,7 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
         const url = urls[index];
 
         try {
-            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${lang || ""}`)));
+            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${ encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${lang || ""}&level=${level || ""}&format=${format || ""}&duration=${duration || ""}&area=${area || ""}&participation=${participation || ""}&page=${page || 1}&limit=${limit || 10}`)));
         } catch (error) {
             console.error(`Error fetching from ${url}: ${error.message}`);
         }
@@ -121,7 +139,6 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
 
     for (let i = 0; i < values.length; i++) {
         const data = values[i];
-        console.log(data);
 
         if (data.status === "fulfilled") {
             data.value.forEach((v) => {

@@ -61,6 +61,7 @@ require(path.join(__dirname, "report"))(sequelize, Sequelize.DataTypes);
 // Import the definition of the subjects Table from subject.js
 require(path.join(__dirname, "subject"))(sequelize, Sequelize.DataTypes);
 
+require(path.join(__dirname, "adminConfig"))(sequelize, Sequelize.DataTypes);
 // Relation between models
 const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report, coAuthors, subject} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
 

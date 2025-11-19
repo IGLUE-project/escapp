@@ -6115,6 +6115,11 @@ span#roleFieldStudy, span#roleFieldTeach {
   height: 100vh !important;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .campoDeBusqueda {
   display: grid;
   grid-template-columns: 2fr 5fr;
@@ -6124,7 +6129,7 @@ span#roleFieldStudy, span#roleFieldTeach {
 }
 @media (hover: none) {
   .campoDeBusqueda {
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 }
 @media screen and (max-width: 900px) {
@@ -6135,11 +6140,22 @@ span#roleFieldStudy, span#roleFieldTeach {
   }
 }
 .campoDeBusqueda .headerBusqueda {
-  display: flex;
-  align-items: center;
   gap: 1rem;
   grid-column: 2;
   grid-row: 1;
+}
+.campoDeBusqueda .headerBusqueda #tags {
+  margin-top: 1rem;
+  display: flex;
+  flex-flow: row wrap;
+}
+.campoDeBusqueda .headerBusqueda #tags .tag {
+  background-color: red;
+  border: solid 1px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 .campoDeBusqueda .headerBusqueda input {
   width: 100%;
@@ -6152,7 +6168,12 @@ span#roleFieldStudy, span#roleFieldTeach {
   display: flex;
   flex-flow: column;
 }
-.campoDeBusqueda .filtros .fechas {
+@media screen and (max-width: 900px) {
+  .campoDeBusqueda .filtros {
+    overflow-x: auto;
+  }
+}
+.campoDeBusqueda .filtros .container {
   display: flex;
   flex-flow: column nowrap;
   gap: 0.5rem;
@@ -6161,40 +6182,40 @@ span#roleFieldStudy, span#roleFieldTeach {
   height: fit-content;
 }
 @media screen and (max-width: 900px) {
-  .campoDeBusqueda .filtros .fechas {
+  .campoDeBusqueda .filtros .container {
     flex-flow: row nowrap;
     width: 100%;
     margin-bottom: 0rem;
   }
 }
-.campoDeBusqueda .filtros .fechas .fecha {
+.campoDeBusqueda .filtros .container .item {
   width: 100%;
 }
 @media screen and (max-width: 900px) {
-  .campoDeBusqueda .filtros .fechas .fecha {
+  .campoDeBusqueda .filtros .container .item {
     width: calc(50% - 0.25rem);
   }
 }
-.campoDeBusqueda .filtros .fechas .fecha .label {
+.campoDeBusqueda .filtros .container .item .label {
   font-size: 1.2rem;
   line-height: 2rem;
   color: #656683;
   width: 100%;
 }
 @media screen and (max-width: 900px) {
-  .campoDeBusqueda .filtros .fechas .fecha .label {
+  .campoDeBusqueda .filtros .container .item .label {
     font-size: 0.8rem;
     line-height: 1.2rem;
   }
 }
-.campoDeBusqueda .filtros .fechas .fecha .inputsBusqueda {
+.campoDeBusqueda .filtros .container .item .inputsBusqueda {
   padding: 1rem;
   color: #656683;
   border-color: #656683;
   webkit-text-fill-color: #656683;
 }
 @media screen and (max-width: 900px) {
-  .campoDeBusqueda .filtros .fechas .fecha .inputsBusqueda {
+  .campoDeBusqueda .filtros .container .item .inputsBusqueda {
     font-size: 1rem;
   }
 }
@@ -6211,9 +6232,14 @@ span#roleFieldStudy, span#roleFieldTeach {
   grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
   gap: 1rem;
 }
+.flexBoxEscapeRooms.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 @media not (hover: none) {
   .flexBoxEscapeRooms {
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 }
 .flexBoxEscapeRooms:after {

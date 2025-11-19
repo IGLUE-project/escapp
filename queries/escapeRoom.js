@@ -316,10 +316,11 @@ exports.public = (page = 1, limit = 10) => ({
     "offset": (page - 1) * limit
 });
 
-exports.text = (before, after, lang) => {
+exports.text = (before, after, lang,participation, area, duration, format, level) => {
     const conditions = {
         "where": {"status": "completed"},
-        "attributes": ["id", "title", "description"]
+        "attributes": ["id", "title", "description"],
+        "include": [{model: models.attachment, required: false, attributes: ["url"]}]
     };
 
     if (before && after) {
@@ -335,7 +336,26 @@ exports.text = (before, after, lang) => {
     if (lang) {
         conditions.where.lang = lang;
     }
+    if (participation) {
+        if(participation === "individual") {
+            conditions.where.teamSize = {[Op.eq]: 1};
+        }else if(participation === "team") {
+            conditions.where.teamSize = {[Op.gt]: 1};
+        }
+    }
+    if(area) {
+        conditions.where.field = area;
+    }
 
+    if(duration) {
+        conditions.where.duration = {[Op.lte]: duration};
+    }
+    if(format) {
+        conditions.where.format = format;
+    }
+    if(level) {
+        conditions.where.level = level;
+    }
     console.log(conditions);
 
     return conditions;

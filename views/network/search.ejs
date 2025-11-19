@@ -10,59 +10,219 @@
     <h1>Búsqueda en red</h1>
     <div class="campoDeBusqueda">
         <div class="headerBusqueda">
-            <input id="search" type="text" placeholder="Buscar...">
-            <button>Buscar</button>
+            <div class="flex-row">
+                <input id="search" type="text" placeholder="Buscar...">
+                <button>Buscar</button>
+                <br/>
+            </div>
+            <div id="tags">
+            </div>
         </div>
+
         <div class="filtros" style="grid-column:1; grid-row:2;padding:1em;" id="filters">
-            <div class="fechas">
-                <div class="flex-column fecha">
-                    <label class="label"> Antes de:</label>
-                    <input class="inputsBusqueda" type="date" id="before"/>
-                </div>
-                <div class="flex-column fecha">
+            <h2>Filtros</h2>
+            <div class="container">
+                <div class="flex-column item">
                     <label class="label"> Después de:</label>
                     <input class="inputsBusqueda" type="date" id="after"/>
                 </div>
-            </div>
+                <div class="flex-column item">
+                    <label class="label"> Antes de:</label>
+                    <input class="inputsBusqueda" type="date" id="before"/>
+                </div>
+                <div class="flex-column item">
+                    <label class="label">Idioma</label>
+                    <select id="language">
+                        <option value="">Cualquiera</option>
+                        <option value="es">Español</option>
+                        <option value="en">Inglés</option>
+                        <option value="sr">Serbio</option>
+                    </select>
+                </div>
+                <div class="flex-column item">
+                    <label class="label">Nivel Educativo</label>
+                    <select id="level">
+                        <option value="">Cualquiera</option>
+                        <option value="primary">Primaria</option>
+                        <option value="secondary">Secundaria</option>
+                        <option value="higher">Univeristaria</option>
+                        <option value="vet">Vet</option>
+                    </select>
+                </div>
+                <div class="flex-column item">
+                    <label class="label">Area</label>
+                    <select id="area">
+                        <option value="">Cualquiera</option>
+                        <option value="01">1</option>
+                        <option value="02">2</option>
+                        <option value="03">3</option>
+                        <option value="04">4</option>
+                        <option value="05">5</option>
+                        <option value="06">6</option>
+                        <option value="07">7</option>
+                        <option value="08">8</option>
+                        <option value="09">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="flex-column item">
+                    <label class="label">Pariticipación</label>
+                    <select id="participation">
+                        <option value="">Cualquiera</option>
+                        <option value="primary">Por equipos</option>
+                        <option value="secondary">Individual</option>
+                    </select>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"> Duracion(min)</label>
+                    <input min="0" class="inputsBusqueda" type="number" id="duration"/>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"> Formato</label>
+                    <select id="format">
+                        <option value="">Cualquiera</option>
+                        <option value="online">Online</option>
+                        <option value="hybrid">Híbrida</option>
+                    </select>
+                </div>
 
-            <select id="language">
-                <option value="">--Idiomabb--</option>
-                <option value="es">Español</option>
-                <option value="en">Inglés</option>
-                <option value="sr">Serbio</option>
-            </select>
+            </div>
         </div>
-        <div style="grid-column:2; grid-row:2;" class="Results flexBoxEscapeRooms"> Los resultados
+        <div style="grid-column:2; grid-row:2;" class="Results empty flexBoxEscapeRooms">
+            <div id="first">
+                <p>Realize una busqueda.</p>
+            </div>
         </div>
     </div>
 </div>
 
+<script src="/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/js/vendor/jquery-ui.min.js"></script>
 <script>
+
+    const tags = [];
+    let resultsToDraw = [];
+
+    const removeTagByCondition = (condition, selector) => {
+        const tag = $(`#tag-${condition}`);
+        if (tag) {
+            tag.remove();
+        }
+        tags.splice(tags.findIndex(t => t.condition === condition), 1);
+        selector.value = "";
+    };
+
+    const addTag = (color, condition, value, text, selector) => {
+        tags.push({condition, value});
+        const tag = $(`
+            <span class="tag" id="tag-${condition}" class="tag" style="background-color:${color};">
+                <span class="tagValue">
+                 ${text}
+                </span>
+                <span class="removeTag" style="margin-left:5px; cursor:pointer;">&times;</span>
+            </span>
+        `);
+        tag.find(".removeTag").on("click", () => {
+            removeTagByCondition(`tag-${condition}`, selector);
+            tag.remove();
+        });
+        $("#tags").append(tag);
+    };
+
+    const doestTagExist = (condition) => {
+        return tags.find(tag => tag.condition === condition);
+    };
+
+    const modifyOrInsertTag = (color, condition, value, text, selector) => {
+        if (doestTagExist(condition)) {
+            $(`#tag-${condition} .tagValue`).text(text);
+            tags.find(tag => tag.condition === condition).value = value;
+            if(value === ""){
+                removeTagByCondition(condition, selector);
+            }
+        } else {
+            addTag(color, condition, value, text, selector);
+        }
+    };
+
+    const before = document.getElementById("before");
+    before.addEventListener("change", (event) => {
+        modifyOrInsertTag("red", "before", event.target.value,  "<" + event.target.value, event.target);
+    });
+
+    const after = document.getElementById("after");
+    after.addEventListener("change", (event) => {
+        modifyOrInsertTag("green", "after",event.target.value,   ">" + event.target.value, event.target);
+    });
+
+    const lang = document.getElementById("language");
+    lang.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag("brown", "lang",event.target.value,   selected, event.target);
+    });
+
+    const format = document.getElementById("format");
+    format.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag("blue", "format",event.target.value,   selected, event.target);
+    });
+
+    const area = document.getElementById("area");
+    area.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag("orange", "area",event.target.value,   selected, event.target);
+    });
+
+    const duration = document.getElementById("duration");
+    duration.addEventListener("change", (event) => {
+        modifyOrInsertTag("purple", "duration",event.target.value,   "<" + event.target.value + " min", event.target);
+    });
+
+    const participation = document.getElementById("participation");
+    participation.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag("pink", "participation",event.target.value,   selected, event.target);
+    });
+
+    const level  = document.getElementById("level");
+    level.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag("black", "level",event.target.value,   selected, event.target);
+    });
+
+
+
     document.querySelector("button").addEventListener("click", async () => {
         const query = document.getElementById("search").value;
-        const before = document.getElementById("before").value;
-        const after = document.getElementById("after").value;
-        const lang = document.getElementById("language").value;
-
         let url = `/network/query?query=${encodeURIComponent(query)}`;
-        if (before) {
-            url += `&before=${encodeURIComponent(before)}`;
-        }
-        if (after) {
-            url += `&after=${encodeURIComponent(after)}`;
-        }
-        if (language) {
-            url += `&lang=${encodeURIComponent(lang)}`;
-        }
+
+        tags.forEach(tag =>{
+            url += `&${tag.condition}=${encodeURIComponent(tag.value)}`;
+        })
 
         const response = await fetch(url);
         const results = await response.text();
         const jsonResults = JSON.parse(results);
         let parsedResults = "";
+        if ($("#first")){ $("#first").remove(); }
+        if(jsonResults.length === 0){
+            $("#noResults").show();
+            $(".Results").addClass("empty");
+            parsedResults = `
+            <div id="noResults">
+                <p>No se han encontrado resultados.</p>
+            </div>
+            `;
+            resultsToDraw = [];
+            document.querySelector(".Results").innerHTML = parsedResults;
+            return;
+        }
 
+        $(".Results").removeClass("empty");
+        resultsToDraw = jsonResults;
         jsonResults.forEach((escapeRoom, i) => {
             const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
-            const imageURL = "../images/puzzleorange.png";
+            const imageURL = escapeRoom.attachment.url ? escapeRoom.attachment.url : "../images/puzzleorange.png";
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
         document.querySelector(".Results").innerHTML = parsedResults;
@@ -80,6 +240,11 @@
                 </a>
     `;}
 
+    let params = new URLSearchParams(window.location.search);
+    if(params.get("query") !== null){
+        document.getElementById("search").value = params.get("query");
+        document.querySelector("button").click();
+    }
 
 
 </script>

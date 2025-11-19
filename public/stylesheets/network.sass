@@ -3,7 +3,11 @@
   display: flex
   flex-flow: column
   height: 100vh !important
-  
+
+.flex-row
+  display: flex
+  flex-direction: row
+
 
 .campoDeBusqueda
   display: grid
@@ -12,22 +16,29 @@
   gap: 1rem
   height: 100%
   @media (hover: none)
-    overflow-y: scroll
-  
-  @media screen and (max-width: 900px) 
+    overflow-y: auto
+
+  @media screen and (max-width: 900px)
     display: flex
     flex-flow: column nowrap
     gap: 1rem
 
   .headerBusqueda
-    display: flex
-    align-items: center
     gap: 1rem
     grid-column: 2
     grid-row: 1
-    
-
-    input 
+    #tags
+      margin-top: 1rem
+      display: flex
+      flex-flow: row wrap
+      .tag
+        background-color: red
+        border: solid 1px
+        border-radius: 5px
+        padding: 5px 10px
+        margin-right: 5px
+        margin-top: 5px
+    input
       width: 100%
       min-width: 5rem
       text-align: start
@@ -36,7 +47,9 @@
     padding: 0 !important
     display: flex
     flex-flow: column
-    .fechas
+    @media screen and (max-width: 900px)
+      overflow-x: auto
+    .container
       display: flex
       flex-flow: column nowrap
       gap: .5rem
@@ -47,7 +60,7 @@
         flex-flow: row nowrap
         width: 100%
         margin-bottom: 0rem
-      .fecha
+      .item
         width: 100%
         @media screen and (max-width: 900px)
           width: calc( 50% - .25rem )
@@ -70,7 +83,7 @@
   .Results
     // height: 100%
   #language
-    width: 100% 
+    width: 100%
 
 .flexBoxEscapeRooms
   padding: 1em
@@ -80,16 +93,19 @@
   background-color: colors.$mainpurple
   grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
   gap: 1rem
+  &.empty
+    display: flex
+    justify-content: center
+    align-items: center
+
   @media not (hover: none)
-    overflow-y: scroll
+    overflow-y: auto
 
   &:after
       content: ""
       flex: 1
   .escapeRoomItemWrapper
     aspect-ratio: 1
-
-    
 
     &:before
       content: ''
