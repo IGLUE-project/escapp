@@ -232,7 +232,7 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/browseResources", sessionController
 router.get("/assets/:asset_id.:asset_extension", sessionController.loginRequired, assetsController.getAsset);
 router.get("/assets/:asset_id/:file_name", sessionController.loginRequired, assetsController.getAsset);
 router.get("/uploads/webapps/:file_id/:webapp_file_name(*)", sessionController.loginRequired, assetsController.getWebAppFile);
-router.get("/uploads/thumbnails/:file_name", sessionController.loginRequired, assetsController.returnThumbnail);
+router.get("/uploads/thumbnails/:file_name", assetsController.returnThumbnail);
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
 router.get("/uploads/:asset_id/:file_name?", sessionController.loginRequired, assetsController.getAsset);
