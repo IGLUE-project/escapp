@@ -402,7 +402,8 @@
                 "title": "Apariencia"
             },
             "assets": {
-                "title": "Galería de ficheros",
+                "title": "Selecciona un recurso",
+                "button": "Confirmar selección",
                 "dictDefaultMessage": "Arrastra los ficheros que necesitas para la escape room",
                 "dictFallbackMessage": "Intenta usar Google Chrome",
                 "dictFileTooBig": "El fichero es demasiado grande",

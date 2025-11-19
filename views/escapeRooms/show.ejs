@@ -65,15 +65,12 @@
                             <a href="/escapeRooms/<%= escapeRoom.id %>/analytics"><%=i18n.showTeacher.actionList.analytics%> <span class="material-icons">keyboard_arrow_right</span> </a>
                         <%}%>
                     </li>
-                    <!--<li><a href="/escapeRooms/<%= escapeRoom.id %>/assets?mode=catalogView"><%=i18n.showTeacher.actionList.resourceCatalog%> <span class="material-icons">keyboard_arrow_right</span> </a></li>-->
                     <li class="actionTitle"><%=i18n.showTeacher.actionList.actions%></li>
-
                     <li>
                         <a href="/escapeRooms/<%= escapeRoom.id %>/test">
                             <button id="test-button" class="showMenuButton compartirButton"><%=i18n.showTeacher.actionList.test%></button>
                         </a>
                     </li>
-
                     <li><button id="compartir-button" class="showMenuButton acceptButton" <%- (escapeRoom.status != 'draft' && escapeRoom.turnos && escapeRoom.turnos.length) ? '' : (escapeRoom.status == 'draft' ? ' title=\"' + i18n.showTeacher.messages.noShiftsShareDraft + '\" disabled' : ' title=\"' + i18n.showTeacher.messages.noShiftsShare + '\" disabled') %> ><%=i18n.showTeacher.actionList.share%></button></li>
                     <% const now = new Date();
                     now.setHours(now.getHours() - now.getTimezoneOffset() / 60);%>

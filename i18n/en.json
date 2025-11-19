@@ -405,7 +405,8 @@
                 "title": "Appearance"
             },
             "assets": {
-                "title": "Asset upload",
+                "title": "Select a resource",
+                "button": "Confirm selection",
                 "dictDefaultMessage": "Drop the files that you need to conduct the escape room",
                 "dictFallbackMessage": "Try to use Google Chrome",
                 "dictFileTooBig": "The file is too big",
