@@ -101,7 +101,7 @@ exports.startPlaying = async (req, res, next) => {
 
         if (joinTeam) {
             const erState = await getERState(req.session.user, req.escapeRoom.id, team, team.turno.id, duration, hintLimit, puzzles.length, true, attendanceScore, scoreHintSuccess, scoreHintFail, true);
-
+            
             sendStartTeam(joinTeam.id, "OK", true, "PARTICIPANT", i18n.escapeRoom.api.participationStart.PARTICIPANT, erState);
             sendJoinTeam(joinTeam.id, joinTeam.turno.id, erState.ranking);
         }

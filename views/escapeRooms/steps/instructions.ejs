@@ -92,7 +92,7 @@
 <% var puzzleArr = Array(escapeRoom.puzzles.length).fill(0).map((_i,e)=>e);
 puzzleArr.push("all")%>
 <script>
-window.puzzleList =<%- JSON.stringify(puzzleArr)%>;
+window.puzzleList = <%- JSON.stringify(puzzleArr)%>;
 window.endPoint = "<%=endPoint%>"
 window.placeholder = "<%=i18n.escapeRoom.steps[endPoint].placeholder%>"
 window.insert = "<%=i18n.gallery.insert%>";
@@ -105,12 +105,23 @@ window.getTheme = theme => "/stylesheets/vendor/bootswatch/"+theme+".bootstrap.m
 window.theme = ((endPoint === "indications") || (endPoint === "after")) ? "/stylesheets/style.css" : window.getTheme("<%=theme || 'litera' %>");
 <%var content =  (!escapeRoom[endPoint + "Instructions"] || (((endPoint === "indications") || (endPoint === "after")) && escapeRoom[endPoint + "Instructions"] === "[]")) ?
 [{"type":"text","payload":{"text": i18n.escapeRoom.steps[endPoint].placeholder }, "puzzles":puzzleArr, "endPoint": endPoint}] : JSON.parse( escapeRoom[endPoint + "Instructions"]);%>
-<% content =   JSON.stringify( content ).replaceAll('<\\\\/script>','</script>')%> <!--This tag does save properly on string, was replaced previously->
+<% content =   JSON.stringify( content ).replaceAll('<\\\\/script>','</script>')%>
 window.content = <%- content%>
+
 window.puzzles = <%- JSON.stringify(escapeRoom.puzzles.map((puzzle) =>{ return {id: puzzle.id, validator:puzzle.validator, sol: puzzle.sol, title:puzzle.title, assignedReusablePuzzleInstances: puzzle.reusablePuzzleInstances}}))%>
+window.puzzleIds = window.puzzles.map(p => p.id);
+<% var reusablePuzzleInstances = (typeof reusablePuzzleInstances !== "undefined") ? reusablePuzzleInstances : []; %>
+<% var availableReusablePuzzles = (typeof availableReusablePuzzles !== "undefined") ? availableReusablePuzzles : []; %>
+<% var assets = (typeof assets !== "undefined") ? assets : []; %>
+<% var scenes = (typeof scenes !== "undefined") ? scenes : []; %>
 window.reusablePuzzleInstances = <%- JSON.stringify(reusablePuzzlesInstances || [])%>
 window.reusablePuzzles = <%- JSON.stringify(availableReusablePuzzles || [])%>
 window.assets = <%- JSON.stringify(assets || [])%>
+window.scenes = <%- JSON.stringify(scenes || [])%>
+
+window.assets = window.assets.map(a => ({ ...a, resourceType: "asset" }));
+window.scenes = window.scenes.map(s => ({ ...s, resourceType: "scene" }));
+window.reusablePuzzleInstances = window.reusablePuzzleInstances.map(rpi => ({ ...rpi, resourceType: "reusablePuzzleInstance" }));
 </script>
 
   <div id="dialog-themes" title="<%=i18n.escapeRoom.steps.indications.front.theme%>" style="display: none;">

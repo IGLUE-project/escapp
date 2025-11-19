@@ -59,7 +59,7 @@
             $(e).addClass("active");
 
             $(e).find('input, select').focus();
-            console.log($(e))
+
             if($(e).find('#cke_custom-content').length > 0){
                try{CKEDITOR.instances['custom-content'].focus();}catch(err){}
             }

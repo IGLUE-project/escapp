@@ -1,26 +1,104 @@
 // Definition of the Asset model:
 
+// Definition of the Asset model:
+
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define(
+
+    const Asset = sequelize.define(
         "asset",
         {
-            "public_id": {
-                "type": DataTypes.STRING,
-                "validate": {"notEmpty": {"msg": "public_id must not be empty"}}
+            assetType: {
+                type: DataTypes.STRING,
+                validate: { notEmpty: { msg: "assetType must not be empty" } },
+                allowNull: false
             },
-            "url": {
-                "type": DataTypes.STRING,
-                "validate": {"notEmpty": {"msg": "url must not be empty"}}
+            mimetype: {
+                type: DataTypes.STRING,
+                validate: { notEmpty: { msg: "mimetype must not be empty" } },
+                allowNull: false
             },
-            "filename": {
-                "type": DataTypes.STRING,
-                "validate": {"notEmpty": {"msg": "filename must not be empty"}}
+            fileId: {
+                type: DataTypes.STRING,
+                validate: { notEmpty: { msg: "fileId must not be empty" } },
+                allowNull: false
             },
-            "mime": {
-                "type": DataTypes.STRING,
-                "validate": {"notEmpty": {"msg": "mime must not be empty"}}
+            filePath: {
+                type: DataTypes.STRING,
+                validate: { notEmpty: { msg: "filePath must not be empty" } },
+                allowNull: false
             },
-            "config": {"type": DataTypes.TEXT}
+            fileExtension: {
+                type: DataTypes.STRING,
+                validate: { notEmpty: { msg: "fileExtension must not be empty" } },
+                allowNull: false
+            },
+            filename: {
+                type: DataTypes.STRING,
+                validate: { notEmpty: { msg: "filename must not be empty" } },
+                allowNull: false
+            },
+            contentPath: {
+                type: DataTypes.STRING,
+                validate: { notEmpty: { msg: "contentPath must not be empty" } },
+                allowNull: false
+            },
+            url: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            config: {
+                type: DataTypes.TEXT,
+                allowNull: true
+            }
         }
     );
+
+    const fs = require("fs/promises");
+    const fsSync = require("fs");
+    const path = require("path");
+    Asset.addHook("afterDestroy", async (asset, options) => {
+        try {
+            if (!asset.filePath || !asset.fileId) return;
+
+            //Check if file should be deleted
+            const count = await Asset.count({
+                where: { fileId: asset.fileId },
+                transaction: options.transaction
+            });
+            if (count > 0) {
+                //Do not delete the file if there are more assets using the same file
+                return;
+            }
+
+            //Delete file
+            const fileToDelete = path.resolve(path.join(__dirname, "..", asset.filePath));
+            if (fsSync.existsSync(fileToDelete)) {
+                await fs.unlink(fileToDelete);
+            } else {
+                //File does not exist
+                return;
+            }
+            
+            if(asset.assetType === "webapp"){
+                //Remove webapp folder
+                const indexFile = path.join(__dirname, "..", asset.contentPath);
+                if (fsSync.existsSync(indexFile)) {
+                    let stats = await fs.stat(indexFile);
+                     if (stats.isFile()){
+                        const fileName = path.basename(indexFile);
+                        if (fileName === "index.html") {
+                            const webappFolder = path.dirname(indexFile);
+                            if (fsSync.existsSync(webappFolder)) {
+                                await fs.rm(webappFolder, { recursive: true, force: true });
+                            }
+                        }
+                     }
+                }
+            }
+        } catch (err) {
+            console.error("Asset file could not be deleted", err);
+        }
+    });
+
+    return Asset;
 };

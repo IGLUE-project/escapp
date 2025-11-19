@@ -1,4 +1,3 @@
-
 <div id="uploadFileDialog" class="modalCatalogResource" >
     <div class="modalContainer"  style="height:45vh;width:50vw">
         <div class="modalTitle" style="width:50vw;color:white">
@@ -53,18 +52,18 @@
                 <%=i18n.escapeRoom.steps.indications.front.catalog.gamificationElements%>
             </p>
             <div class="btn-group">
-                <button onclick='insertGamification(0,"countdown",{}, puzzleList)' class="resourceCatalogBtn">
+                <button onclick='insertGamification(0,"countdown",{})' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
                     <p><%=i18n.escapeRoom.steps.indications.front.countdown%></p>
                     <img class="building-block-img" src="/images/countdown.png" />
                 </button>
-                <button onclick='insertGamification(0,"ranking",{}, puzzleList)' class="resourceCatalogBtn">
+                <button onclick='insertGamification(0,"ranking",{})' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
                     <p><%=i18n.escapeRoom.steps.indications.front.ranking%></p>
                     <img class="building-block-img" src="/images/ranking.png" />
                 </button>
                 <%if(endPoint!=="class"){%>
-                <button onclick='insertGamification(0,"progress",{}, puzzleList)' class="resourceCatalogBtn">
+                <button onclick='insertGamification(0,"progress",{})' class="resourceCatalogBtn">
                     <span class="building-block-icon material-icons"> add </span>
                     <p><%=i18n.escapeRoom.steps.indications.front.progress%></p>
                     <span class="building-block-icon material-icons" style="color: var(--lightred);">
@@ -114,18 +113,23 @@
             </div>
         </section>
 
-        <!--<section class="sectionAddResource">
+        <section class="sectionAddResource">
             <p class="title-section">
                 <%=i18n.escapeRoom.steps.indications.front.catalog.scenarios2D%>
             </p>
-            <div class="resource-card" id="scenery">
-                <img src="/images/scenery.png">
-                <button class="resourceCatalogBtn">
-                    <span class="building-block-icon material-icons"> add </span>
-                    <p><%=i18n.escapeRoom.steps.indications.front.catalog.scenarios2D%></p>
-                </button>
+            <div class="resources-group">
+                <div class="resource-card">
+                    <img src="/images/scene_maker_escapp_thumbnail.png">
+                    <a href="/escapeRooms/<%= escapeRoom.id %>/scenes/new">
+                        <button class="resourceCatalogBtn">
+                            <span class="building-block-icon material-icons"> add </span>
+                            <p><%=i18n.escapeRoom.steps.indications.front.catalog.addScenario2D%></p>
+                        </button>
+                    </a>
+                </div>
             </div>
-        </section>-->
+        </section>
+
         <section id="configZone" hidden>
             <div class="configReusablePuzzle">
                 <form action="reusablePuzzleInstance" class="reusablePuzzleInstanceForm" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
@@ -142,6 +146,7 @@
     </div>
     </div>
 </div>
+
 <div id="resourceCatalog" style="display:flex;align-items:end;flex-direction:column">
     <div style="width:100%">
         <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem" >
@@ -159,10 +164,9 @@
                         <p><%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
                         </div>
                     </button>
-
         </div>
     </div>
-    <div id ="thescrollable" style="min-height:40px;height:auto; max-height: 240px; overflow-y:auto;width:100%;position:relative">
+    <div id="thescrollable" style="min-height:40px;height:auto; max-height: 240px; overflow-y:auto;width:100%;position:relative">
         <table style="width:100%;table-layout:fixed; padding: 16px" class="tab-content catalog-container"
             id="myTabContent">
             <colgroup>
@@ -175,24 +179,18 @@
                 <th><%=i18n.escapeRoom.steps.indications.front.catalog.table.type%></th>
                 <th></th>
             </tr>
-
-
-                    <tr class="catalogItem" id="noResources">
-                        <td colspan="3" style="text-align: center; height:200px
-                        <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
-                               <%}else{%>; display: none;<%}%>">
-                            <p class="title" style="text-align: center;">
-                                <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
-                            </p>
-                        </td>
-                    </tr>
-
-
-            </table>
-
+            <tr class="catalogItem" id="noResources">
+                <td colspan="3" style="text-align: center; height:200px
+                <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
+                       <%}else{%>; display: none;<%}%>">
+                    <p class="title" style="text-align: center;">
+                        <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
+                    </p>
+                </td>
+            </tr>
+        </table>
 </div>
 <div style="display:flex; margin-top:2em; align-items:center; justify-content: end; gap: 0.7rem">
-
     <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
     <button class="building-block-bar-button theme-btn" style="display:flex;">
         <span class="building-block-icon material-icons" style="color: var(--info);">color_lens</span>
@@ -209,10 +207,9 @@
             <%= i18n.escapeRoom.steps.indications.front.catalog.addText%>
         </p>
     </button>
-
 </div>
 <br>
-<div style="display:flex; justify-content:center">
+<div id="editDialogWrapper" style="display:flex; justify-content:center">
     <dialog id="editDialog" style="overflow:auto">
         <form onsubmit="send(event,this)" action="/escapeRoom/<%=escapeRoom.id%>/assets" method="POST">
         </form>
@@ -229,14 +226,9 @@
     <dialog id="linkContainer" style="overflow:auto">
         <h3><%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%></h3>
         <div id="linkContainerCopyDiv">
-
             <input type="text" id="linkInput" readonly>
             <button class="btn editButton rounded" id="copyLinkButton" onclick="copyURL()" title="<%=i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>">
                 <span class="material-icons">content_copy</span>
-                <!--<div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                <div class="tooltip-link" id="link-copied">
-                    <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                </div>-->
             </button>
         </div>
         <h3><%= i18n.escapeRoom.steps.indications.front.catalog.copyEmbed%></h3>
@@ -244,13 +236,8 @@
             <input  type="text" id="embedInput" readonly>
             <button class="btn editButton rounded" id="copyEmbedButton" onclick="copyEmbed()" title="<%=i18n.escapeRoom.steps.indications.front.catalog.copyUrl%>">
                 <span class="material-icons">content_copy</span>
-                <!--<div class="tooltip-link"> <%= i18n.escapeRoom.steps.indications.front.catalog.copyUrl%> </div>
-                <div class="tooltip-link" id="embed-copied">
-                    <%=i18n.escapeRoom.steps.indications.front.catalog.copied%>
-                </div>-->
             </button>
         </div>
-
     </dialog>
 </div>
 
@@ -318,7 +305,7 @@
         `
     }
 
-    function editPuzzle(id, mime) {
+    function editReusablePuzzleInstance(id) {
         $('.previewReusablePuzzle').show();
         const jsonPuzzle = window.reusablePuzzleInstances.find(p => p.id == id);
         toggleCatalogModal();
@@ -336,7 +323,7 @@
         const assignDiv = $('#assignPuzzDiv');
         const puzzleRangeInput = $('#rangeInput');
         const rangeDiv = $('#rangeDiv');
-        const solutionLength = $('#solutionLengthInput');
+        const solutionLengthInput = $('#solutionLengthInput');
         const solutionLengthDiv = $('#solutionLength');
         const selectedPuzzleDiv = $('#selectePuzzle');
 
@@ -346,8 +333,8 @@
             } else {
                 span.hide();
             }
-            $('#selectePuzzle').show();
-            $('#solutionLength').show();
+            selectedPuzzleDiv.show();
+            solutionLengthDiv.show();
             $('#puzzleSol').show();
 
             $(`#inputValidator option:selected`).attr("selected", null);
@@ -356,7 +343,7 @@
             assignDiv.show();
             validator.show();
 
-            if( puzzleSelected.validator === "range") {
+            if(puzzleSelected.validator === "range") {
                 $('#rangeDiv').show();
             } else {
                 $('#rangeDiv').hide();
@@ -373,18 +360,16 @@
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
                     solutionLengthDiv.show();
-                    solutionLength.val(reusablePuzzleInstanceConfig.solutionLength || 1);
+                    solutionLengthInput.val(reusablePuzzleInstanceConfig.solutionLength || 1);
                 } else {
                     puzzleSol.val(puzzleSelected.sol);
                     puzzleRangeInput.val(null);
                     rangeDiv.hide();
-                    solutionLengthDiv.hide()
+                    solutionLengthDiv.hide();
                 }
             } else {
                 puzzleSol.val("");
             }
-
-
         } else {
             puzzleSol.val("");
             span.hide();
@@ -397,9 +382,9 @@
         }
 
         updateIframe();
-    }
+    };
 
-    function editAsset(id, mime) {
+    function editAsset(id, assetType) {
         const asset = window.assets.find(a => a.id == id);
         const dialog = $('#editDialog');
         const form = dialog.find('form');
@@ -436,70 +421,10 @@
         $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
     }
 
-    function parseAssetConfig(mime, config) {
-        let configJSON = {};
-
-        if(typeof config === "string"){
-            if(mime.search(reusableRegex) !== -1){
-                configJSON = JSON.parse(config);
-                let texts = config.split(';');
-                texts.forEach(text => {
-                    const data = text.split(':');
-                    configJSON[data[0]] = data[1];
-                });
-            }
-        } else if ((typeof config === "undefined")||(config === null)){
-            configJSON = {};
-        } else if (typeof config === "object"){
-            return config;
-        }
-
-        //Default width and height
-        if(typeof configJSON.width === "undefined"){
-            configJSON.width = "100%";
-        }
-        if(typeof configJSON.height === "undefined"){
-            configJSON.height = "auto";
-        }
-
-        if (mime.search(imageRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height
-            }
-        } else if (mime.search(videoRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height,
-                controls: configJSON.controls,
-                autoplay: configJSON.autoplay,
-                download: configJSON.download
-            }
-        } else if (mime.search(audioRegex) !== -1) {
-            return {
-                controls: configJSON.controls,
-                autoplay: configJSON.autoplay,
-            }
-        } else if (mime.search(pdfRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height,
-            }
-        } else if (mime.search(webappRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height,
-            }
-        } else if (mime.search(reusableRegex) !== -1) {
-            return {
-                width: configJSON.width,
-                height: configJSON.height,
-            }
-        } else {
-            return {};
-        }
+    function editScene(sceneId) {
+      const editSceneUrl = `/escapeRooms/<%=escapeRoom.id%>/scenes/${sceneId}/edit`;
+      window.location.href = editSceneUrl;
     }
-
 
     function deleteReusablePuzzleInstance(id) {
         fetch(`/escapeRooms/${escapeRoomId}/reusablePuzzleInstance/${id}`, {
@@ -522,6 +447,7 @@
         }
 
     }
+
     function copyEmbed() {
         try {
             const url = $('#embedInput').val();
@@ -532,10 +458,10 @@
 
     }
 
-    function openClipboardModal(url, asset) {
+    function openClipboardModal(url, resourceType, aspectRatio="4/3") {
         const container = $('#linkContainer')
         $('#linkInput').val(window.location.origin + url);
-        $('#embedInput').val(getTemplate(asset, window.location.origin + url, true));
+        $('#embedInput').val(getEmbedCode(resourceType, window.location.origin + url, {"aspectRatio": aspectRatio}));
         container.dialog({
             title: "<%=i18n.common.copyembed%>",
             resizable: false,
@@ -563,43 +489,63 @@
 
     function insertContentBlock() {
         const text = `<p>${window.placeholder}</p>`
-        insertAndScrollContent(0, 'text', { text }, puzzleList);
+        insertAndScrollContent(0, 'text', { text });
         if($('.building-block').children().last().offset()) {
             window.scrollTo(0, $('.building-block').children().last().offset().top);
         }
     }
 
-    function insertAndScrollContent(index, type, id, puzzles) {
+    function insertAndScrollContent(index, type, id) {
         let payload = {};
-        let newType = type;
-        if(type === "reusable") {
-            const puzzle = window.reusablePuzzleInstances.find(p => p.id == id);
-            payload = { mime: "application/reusable", config: puzzle.config, url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${puzzle.id}/render`};
-            // newType = "catalog"
+        let puzzleIds;
+        if(type !== "reusablePuzzleInstance"){
+          puzzleIds = window.puzzleList;
+        }
+
+        if(type === "reusablePuzzleInstance") {
+            const reusablePuzzleInstance = window.reusablePuzzleInstances.find(p => p.id == id);
+            payload = { url: `/escapeRooms/${escapeRoomId}/reusablePuzzleInstances/${reusablePuzzleInstance.id}/render`};
+            puzzleIds = [];
+            if((reusablePuzzleInstance.puzzles.length > 0) && (typeof reusablePuzzleInstance.puzzles[0] !== undefined)){ 
+              const assignedPuzzleIdsRPIJSON = new Set(reusablePuzzleInstance.puzzles);
+              window.puzzles.forEach((puzzle, index) => {
+                if (assignedPuzzleIdsRPIJSON.has(puzzle.id)) {
+                  puzzleIds.push(index);
+                }
+              });
+            }
+        } else if(type === "scene"){
+          const scene = window.scenes.find(s => s.id == id);
+          payload = { url: `/escapeRooms/${escapeRoomId}/scenes/${scene.id}`};
+          let sceneAspectRatio = "4/3";
+          try {
+            sceneAspectRatio = scene.content.aspectRatio.replace(":", "/");
+          } catch(e){};
+          payload.ratio = sceneAspectRatio;
         } else if(type === "countdown" || type === "progress" || type === "ranking" || type === "text") {
             payload = id;
         } else {
+            type = "asset";
             const asset = window.assets.find(p => p.id == id);
-            type = "catalog"
-            payload = { mime: asset.mime, config: asset.config, url: asset.url}
-            newType = "catalog"
+            payload = asset;
         }
+
         if(payload.url){
             payload.url = encodeURI(payload.url);
         }
 
-        insertContent(index, newType, payload, puzzles);
+        insertContent(index, type, payload, puzzleIds);
+
         setTimeout(() => {
            if($('.building-block').children().last().offset()) {
                 window.scrollTo(0, $('.building-block').children().last().offset().top);
             }
         }, 1);
-
     }
 
-    function insertGamification(index, type, payload, puzzles) {
+    function insertGamification(index, type, payload) {
         toggleCatalogModal();
-        insertAndScrollContent(index, type, payload, puzzles);
+        insertAndScrollContent(index, type, payload);
     }
 
     function openPuzzleConfiguration(puzzle, baseId, reusablePuzzleName){
@@ -652,24 +598,18 @@
                 config.puzzle =  selectedPuzzle ? selectedPuzzle.id : undefined;
                 const puzzleObject = selectedPuzzle ? selectedPuzzle : undefined;
 
-                if( puzzleObject?.validator === "range") {
-                    config.solutionLength = puzzleObject.sol.split("+")[0].length;
-                } else if(puzzleObject && puzzleObject.sol) {
-                    config.solutionLength = calculateSolutionLength(puzzleObject.sol);
-                }
-
                 $('#puzzleSol').change(function(e) {
                     updateIframe();
-                    $('#warningMessageForReusablePuzzleCreation').show()
+                    $('#warningMessageForReusablePuzzleCreation').show();
                 });
 
-                 $('#associatedPuzzle').change(function(e) {
+                $('#associatedPuzzle').change(function(e) {
                     setPuzzleSol(puzzle.id, config, baseId)
                 });
 
                 $('#inputValidator').change(function(e) {
                     validatorOnchange(e);
-                    $('#warningMessageForReusablePuzzleCreation').show()
+                    $('#warningMessageForReusablePuzzleCreation').show();
                 });
 
                 $('#associatedPuzzle').val(puzzleObject.id).change();
@@ -730,7 +670,7 @@
             reusablePuzzleIframes = document.querySelectorAll('.reusablePuzzleIframe').forEach(function(embeddedIframe) {
                 var src = embeddedIframe.getAttribute('src');
                 if (src) {
-                embeddedIframe.setAttribute('src', src);
+                    embeddedIframe.setAttribute('src', src);
                 }
             });
         } catch (error) {
@@ -812,6 +752,26 @@
             method:'post'
         };
         if(form.classList.contains("reusablePuzzleInstanceForm")){
+            //Validate form
+            var errorsInReusablePuzzleInstanceForm = [];
+            var linkedPuzzleDOM = $("#associatedPuzzle");
+            var allowNullPuzzle = (linkedPuzzleDOM.attr("allowNullPuzzle") === "true");
+            if(allowNullPuzzle === false){
+                var linkedPuzzles = [linkedPuzzleDOM.val()];
+                linkedPuzzles = linkedPuzzles.filter(v =>
+                    typeof v === "string" &&
+                    /^\d+$/.test(v)
+                );
+                if(linkedPuzzles.length === 0){
+                    errorsInReusablePuzzleInstanceForm.push("<%= i18n.reusablePuzzles.errors.nullPuzzle%>",);
+                }
+            }
+            if(errorsInReusablePuzzleInstanceForm.length > 0){
+                alert(errorsInReusablePuzzleInstanceForm[0]);
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
             fetchOptions.body = JSON.stringify(generateReusablePuzzleInstanceConfigFromForm(form));
             fetchOptions.headers = {
                 'Content-Type': 'application/json',
@@ -825,19 +785,15 @@
                 return;
             }
             res.json().then((resJSON)=>{
-                if(resJSON.type === "reusable"){
-                    let found = false;
-                    window.reusablePuzzleInstances.forEach((puzzle) => {
-                        if(puzzle.id == resJSON.id) {
-                            puzzle.config = JSON.stringify(resJSON.config);
-                            puzzle.name = resJSON.name;
-                            found = true;
-                        }
-                    });
-                    if(!found){
-                        window.reusablePuzzleInstances.push(resJSON)
-                    }
+                if(resJSON.type === "reusablePuzzleInstance"){
+                  resJSON.resourceType = "reusablePuzzleInstance";
+                } else {
+                  resJSON.resourceType = "asset";
+                }
+
+                if(resJSON.resourceType === "reusablePuzzleInstance"){
                     if(resJSON.puzzle){
+                        resJSON.puzzles = [resJSON.puzzle.id];
                         window.puzzles.forEach((puzzle,index) => {
                             if(puzzle.id == resJSON.puzzle.id) {
                                 window.puzzles[index] = resJSON.puzzle;
@@ -849,37 +805,66 @@
                             }
                         });
                     }else{
+                        resJSON.puzzles = [];
                         window.puzzles.forEach((puzzle,index) => {
                             if(puzzle.assignedReusablePuzzleInstances.includes(Number(resJSON.id))) {
                                 window.puzzles[index].assignedReusablePuzzleInstances = window.puzzles[index].assignedReusablePuzzleInstances.filter(p => {return p !== Number(resJSON.id)});
                             }
                         });
                     }
-                    toggleCatalogModal();
-                    const row = $(`#p-${resJSON.id}`);
-                     if(!row.length) {
-                        const config = JSON.stringify({reusablePuzzleId: Number(resJSON.reusablePuzzleId), name:resJSON.name, description:resJSON.description, id:resJSON.id, config:resJSON.config}).replaceAll("\"", "&quot;")
-                        resJSON.puzzles = [resJSON.puzzle.id] ; // Gets puzzle that will be assigned in the block config
-                        $('#myTabContent tr:last').after(returnTableRowPuzzle(resJSON));
+
+                    //Update in indow.reusablePuzzleInstances
+                    let found = false;
+                    window.reusablePuzzleInstances.forEach((reusablePuzzleInstance) => {
+                        if(reusablePuzzleInstance.id == resJSON.id) {
+                            reusablePuzzleInstance.config = JSON.stringify(resJSON.config);
+                            reusablePuzzleInstance.name = resJSON.name;
+                            reusablePuzzleInstance.puzzles = resJSON.puzzles;
+                            found = true;
+                        }
+                    });
+                    if(!found){
+                        window.reusablePuzzleInstances.push(resJSON);
                     }
-                    $('#noResources').hide();
-                    row.find('.title').text(resJSON.name);
+
+                    toggleCatalogModal();
                     refreshCKEditor();
-                    const tr = document.getElementById(`p-${resJSON.id}`);
-                    const title = tr.querySelector('.title');
-                    addListenerForHover(title);
-                } else {
+                } else if(resJSON.resourceType === "asset"){
                     window.assets.forEach((asset) => {
                         if(asset.id == resJSON.id) {
                             asset.filename = resJSON.filename;
-                            const title = $(`#${asset.id} .title`);
-                            title.text(resJSON.filename);
                         }
                     });
                     if($('#editDialog').hasClass("ui-dialog-content")) {
                         $('#editDialog').dialog('close');
                     }
                 }
+
+                //Common actions for reusablePuzzleInstances and assets
+                const rowId = getResourceTableRowId(resJSON);
+                const row = $("#"+rowId);
+ 
+                if(row.length > 0) {
+                  //Update row
+                  let resourceName = "Untitled";
+                  if(resJSON.resourceType === "reusablePuzzleInstance"){
+                    resourceName = resJSON.name;
+                  } else if(resJSON.resourceType === "asset"){
+                    resourceName = resJSON.filename;
+                  }
+                  const title = row.find('.title');
+                  title.text(resourceName);
+
+                  row.detach();
+                  $('#myTabContent tr:first').after(row);
+                } else {
+                  //New row
+                  $('#myTabContent tr:first').after(getResourceTableRow(resJSON));
+                  const newRowTitle = $("#"+getResourceTableRowId(resJSON)).find('.title')[0];
+                  addListenerForHover(newRowTitle);
+                }
+                $('#thescrollable').animate({scrollTop: 0});
+                $('#noResources').hide();
             })
         });
         e.preventDefault();
@@ -890,58 +875,123 @@
         $('#warningMessageForReusablePuzzleCreation').show()
     }
 
-    const items = document.querySelectorAll('.catalogItem .title')
-    const container = $('#previewContainer')
+    const items = document.querySelectorAll('.catalogItem .title');
+    const container = $('#previewContainer');
 
-    function getTemplate(asset, url, removeIds = false) {
-        switch(asset) {
-            case "image":
-                return `<img src="${url}" ${removeIds ? '' : 'id="imagePreview" style="position:relative; width:100%"'} />`;
-            case "audio":
-                return `<audio src="${url}" controls ${removeIds ? '' : 'id="audioPreview"'}></audio>`;
-            case "video":
-                return `<video src="${url}" controls ${removeIds ? '' : 'id="videoPreview" style="position:relative;width:100%"'}></video>`;
-            case "webapp":
+    function getPreviewHTML(resourceType, url, options = {}) {
+        const {
+            aspectRatio = "4/3"
+        } = options;
+
+        switch(resourceType) {
+            case "scene":
+                return `<iframe 
+                  src="${url}" 
+                  style="width:100%;aspect-ratio:${aspectRatio}" 
+                  id="iframePreview">
+                </iframe>`;
             case "reusablePuzzle":
-                return `<iframe  src="${url}" ${removeIds ? 'style="width:100%;aspect-ratio:4/3;"' : 'id="iframePreview" style="width:100%;aspect-ratio:4/3;"'} ></iframe>`;
+                return `<iframe 
+                  src="${url}" 
+                  style="width:100%;aspect-ratio:${aspectRatio}" 
+                  id="iframePreview">
+                </iframe>`;
+            case "image":
+                return `<img 
+                  src="${url}" 
+                  style="position:relative; width:100%" 
+                  id="imagePreview"
+                />`;
+            case "audio":
+                return `<audio
+                  src="${url}"
+                  controls
+                  id="audioPreview"
+                ></audio>`;
+            case "video":
+                return `<video
+                  src="${url}"
+                  style="position:relative;width:100%"
+                  controls
+                  id="videoPreview"
+                ></video>`;
+            case "webapp":
             case "pdf":
-                if (removeIds) {
-                    return `<iframe src="${url}" style="width:100%;height:100%;border:none;"></iframe>`;
-                } else {
-                    return `<div id="pdfPreviewDiv" style="height:700px;width:100%;"><iframe src="${url}" id="pdfPreview" style="border:none"></iframe></div>`;
-
-                }
+                return `<div id="pdfPreviewDiv" style="height:700px;width:100%;"><iframe src="${url}" id="pdfPreview" style="border:none"></iframe></div>`;
             default:
                 return "";
+        }
+    }
 
+    function getEmbedCode(resourceType, url, options = {}) {
+        const {
+            aspectRatio = "4/3"
+        } = options;
+
+        switch(resourceType) {
+            case "scene":
+                return `<iframe src="${url}" style="width:100%;aspect-ratio:${options.aspectRatio}"></iframe>`;
+            case "reusablePuzzle":
+                return `<iframe src="${url}" style="width:100%;aspect-ratio:${options.aspectRatio}"></iframe>`;
+            case "image":
+                return `<img src="${url}"/>`;
+            case "audio":
+                return `<audio src="${url}" controls></audio>`;
+            case "video":
+                return `<video src="${url}" controls></video>`;
+            case "webapp":
+            case "pdf":
+                return `<iframe src="${url}" style="width:100%;height:100%;"></iframe>`;
+            default:
+                return url;
         }
     }
 
     function addListenerForHover(el){
-          id = el.closest('tr').getAttribute('id')
+          const id = el.closest('tr').getAttribute('id');
           const asset = window.assets.find(a => a.id == id);
-          const puzzle = window.reusablePuzzleInstances.find(p => ("p-" + p.id) == id);
-           el.addEventListener('click', (e) => {
+          const scene = window.scenes.find(p => ("scene-" + p.id) == id);
+          const reusablePuzzleInstance = window.reusablePuzzleInstances.find(p => ("p-" + p.id) == id);
+
+          el.addEventListener('click', (e) => {
             container.empty();
             let openContainer = true;
-            if(asset && asset.mime.search(imageRegex) !== -1) {
-                container.append(getTemplate("image", asset.url))
-                const image = document.getElementById('imagePreview')
-            } else if(asset && asset.mime.search(audioRegex) !== -1) {
-                container.append(getTemplate("audio", asset.url))
-                const audio = document.getElementById('audioPreview')
-                 audio.play()
-            } else if(asset && asset.mime.search(videoRegex) !== -1) {
-                container.append(getTemplate("video", asset.url))
-                const video = document.getElementById('videoPreview')
-                video.play()
-            } else if(asset && asset.mime.search(webappRegex) !== -1) {
-                container.append(getTemplate("webapp", asset.url))
-            } else if(asset && asset.mime.search(pdfRegex) !== -1) {
-                container.append(getTemplate("pdf", asset.url));
-            } else if (puzzle) {
-                const puzzleUrl = `reusablePuzzleInstances/${puzzle.id}/render`
-                container.append(getTemplate("reusablePuzzle", puzzleUrl));
+
+            if(asset){
+                switch(asset.assetType){
+                case "image":
+                    container.append(getPreviewHTML("image", asset.url));
+                    const image = document.getElementById('imagePreview');   
+                    break;
+                case "audio":
+                    container.append(getPreviewHTML("audio", asset.url));
+                    const audio = document.getElementById('audioPreview');
+                    audio.play();
+                    break;
+                case "video":
+                    container.append(getPreviewHTML("video", asset.url));
+                    const video = document.getElementById('videoPreview');
+                    video.play();
+                    break;
+                case "webapp":
+                    container.append(getPreviewHTML("webapp", asset.url));
+                    break;
+                case "pdf":
+                    container.append(getPreviewHTML("pdf", asset.url));
+                    break;
+                default:
+                    break;
+                }
+            } else if (scene){
+              const sceneUrl = `/escapeRooms/<%=escapeRoom.id%>/scenes/${scene.id}`;
+              let sceneAspectRatio = "4/3";
+              try {
+                sceneAspectRatio = scene.content.aspectRatio.replace(":", "/");
+              } catch(e){};
+              container.append(getPreviewHTML("scene", sceneUrl, {aspectRatio: sceneAspectRatio}));
+            } else if (reusablePuzzleInstance) {
+                const puzzleUrl = `reusablePuzzleInstances/${reusablePuzzleInstance.id}/render`;
+                container.append(getPreviewHTML("reusablePuzzle", puzzleUrl));
             } else {
                  openContainer = false;
             }
@@ -951,10 +1001,10 @@
                 title: "<%= i18n.escapeRoom.steps.indications.front.catalog.previewAsset%>",
                 modal: true,
                 resizable: false,
-                 maxWidth: window.innerWidth * 0.7,
+                maxWidth: window.innerWidth * 0.7,
                 minWidth: 700,
                 maxHeight: window.innerHeight * 0.8,
-                 position:  { my: "center top", at: "top+10%", of: window },
+                position:  { my: "center top", at: "top+10%", of: window },
                 closeText: "close",
                 close: ()=>{
                     try {container.find("video")[0].pause();}catch(e) {}
@@ -976,7 +1026,7 @@
               $('.ui-widget-overlay').css("height",document.body.scrollHeight + "px");
           } else {
             try {
-                container.dialog( "close" )
+                container.dialog("close");
             } catch (e) {
                 console.error("Error closing dialog:", e);
             }
@@ -984,21 +1034,24 @@
         });
     }
 
-    window.onload = function() {
+    window.onload = function() {    
+        const allItems = [
+          ...window.assets,
+          ...window.scenes,
+          ...window.reusablePuzzleInstances
+        ];
 
+        allItems.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
-        for (const asset of window.assets) {
-            $('#myTabContent').append(returnTableRow(asset, window.puzzles));
-            const tr = document.getElementById(asset.id);
+        for (const item of allItems) {
+          $('#myTabContent').append(getResourceTableRow(item));
+
+          const trId = getResourceTableRowId(item);
+          const tr = document.getElementById(trId);
+          if(tr){
             const title = tr.querySelector('.title');
             addListenerForHover(title);
-        }
-
-        for (const rpi of window.reusablePuzzleInstances) {
-            $('#myTabContent').append(returnTableRowPuzzle(rpi));
-            const tr = document.getElementById(`p-${rpi.id}`);
-            const title = tr.querySelector('.title');
-            addListenerForHover(title);
+          }
         }
 
         window.addEventListener('change', function(e) {
@@ -1009,7 +1062,6 @@
                 }
             }
         });
-
     }
 
     generateReusablePuzzleInstanceConfigFromForm = function(form){
@@ -1024,10 +1076,6 @@
         let solutionLength;
         if(validator === "regex") {
             solutionLength = $("#solutionLengthInput").val();
-        } else if (validator !== "range") {
-            solutionLength = calculateSolutionLength(sol);
-        } else {
-            solutionLength = sol.length;
         }
         if(typeof solutionLength === "number"){
             reusablePuzzleInstanceConfig.solutionLength = solutionLength;
@@ -1049,16 +1097,6 @@
 
         return reusablePuzzleInstanceConfig;
     };
-
-    function calculateSolutionLength(sol, sep = ";") {
-        if (sol && sol.length > 0) {
-            if (sol.includes(sep)) {
-                return sol.split(sep).length;
-            }
-            return sol.length
-        }
-        return 0;
-    }
 
     validatorOnchange = function(){
         $('#warningMessageForReusablePuzzleCreation').show()
@@ -1089,241 +1127,346 @@
             if (response.ok) {
                 response.json().then((resJSON) => {
                     const asset = resJSON.asset;
+                    asset.resourceType = "asset";
                     window.assets.push(asset);
-
                     $('#noResources').hide();
-                    $('#myTabContent').append(returnTableRow(asset, window.puzzles));
-                    $('#thescrollable').animate({scrollTop: 100000000});
+                    $('#myTabContent tr:first').after(getResourceTableRow(asset));
+                    $('#thescrollable').animate({scrollTop: 0});
                     const tr = document.getElementById(asset.id);
                     const title = tr.querySelector('.title');
                     addListenerForHover(title);
-
                 })
             }
         })
         toggleUploadModal()
+    }
+
+    const deleteAsset = async (assetId) => {
+      const response = await fetch(`/escapeRooms/${escapeRoomId}/deleteAssets/${assetId}`, {
+          method: 'POST',
+      })
+      if (response.ok) {
+          const asset = $(`#${assetId}`);
+          asset.remove();
+          if(typeof overlayTrigger === "function"){
+            overlayTrigger(assetId, false);
+          }
+      }
+    }
+
+    const deleteScene = async (sceneId) => {
+      const response = await fetch(`/escapeRooms/${escapeRoomId}/scenes/${sceneId}`, {
+          method: 'DELETE',
+      })
+      if (response.ok) {
+        $(`#scene-${sceneId}`).remove();
+      }
+    }
+
+    const getResourceTableRowId = (resource, options)=> { 
+        switch(resource.resourceType){
+        case "asset":
+          return resource.id;
+        case "scene":
+          return `scene-${resource.id}`;
+        case "reusablePuzzleInstance":
+          return `p-${resource.id}`;
+        default:
+            return "";
+        }
+    };
+
+    const getResourceTableRow = (resource, options)=> {
+        switch(resource.resourceType){
+        case "asset":
+            return getTableRowForAsset(resource);
+        case "scene":
+          return getTableRowForScene(resource);
+        case "reusablePuzzleInstance":
+            return getTableRowForReusablePuzzleInstance(resource,options);
+        default:
+            return "";
+        }
+    }
+
+    const i18nAssetTitles = <%- JSON.stringify(i18n.escapeRoom.steps.indications.front.catalog.assets) %>;
+    const getTableRowForAsset = (asset)=> {
+        let icon, color;
+        let disabled = false;
+        let regexType = null;
+        let i18nTitle = "";
+        
+        switch(asset.assetType){
+        case "image":
+            icon = "image";
+            color = "btn-blue";
+            regexType = "image";  
+            break;
+        case "audio":
+            icon = "music_note";
+            color = "btn-yellow";
+            regexType = "audio";
+            break;
+        case "video":
+            icon = "videocam";
+            color = "btn-red";
+            regexType = "video";
+            break;
+        case "webapp":
+            icon = "terminal"
+            color = "btn-purple";
+            regexType = "webapp";
+            break;
+        case "pdf":
+            icon = "picture_as_pdf";
+            color = "btn-red";
+            regexType = "pdf";
+            break;
+        case "zip":
+            icon = "folder_zip";
+            color = "btn-orange";
+            regexType = "zip";
+        default:
+            icon = "question_mark";
+            color = "btn-gray";
+            disabled = true;
+            break;
         }
 
-const returnTableRowPuzzle = (resJSON) => {
-    let type = "assigned"
-    if(resJSON.puzzles.length === 0 || (resJSON.puzzles.length === 1 && resJSON.puzzles[0] === undefined)){ //Reusable Puzzle not assigned to any puzzle
-        resJSON.puzzles = null;
-        type = "unassigned"
+        if((typeof asset.assetType === "string")&&(typeof i18nAssetTitles[asset.assetType] === "string")){
+          i18nTitle = i18nAssetTitles[asset.assetType];
+        } else {
+          i18nTitle = i18nAssetTitles["other"];
+        }
+
+        const insertButton = `<button ${disabled ? 'disabled': null} class="rounded listButton addButton"
+                                onclick='insertAndScrollContent(0,"asset", ${asset.id})'>
+                                <span class="building-block-icon material-icons" id="add"> add
+                                </span>
+                                <p>
+                                <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                                </p>
+                                </button>`;
+        const downloadButton = ` <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
+                                onclick='downloadZip(${asset.id})'>
+                                <span class="building-block-icon material-icons" id="download"> download
+                                </span>
+                                <p>
+                                <%=i18n.escapeRoom.steps.indications.front.catalog.downloadZip%>
+                                </p>
+                                </button> `
+
+        const button = (regexType === "zip" ? downloadButton : insertButton);
+
+        return `<tr class="catalogItem" id=${asset.id}>
+                    <td>
+                        <p class="title">
+                                ${asset.filename}
+                        </p>
+                    </td>
+                    <td> <span 
+                    class="building-block-icon material-icons ${color}" 
+                    title="${i18nTitle} %>"
+                    >${icon}</span>
+                    </td>
+                    <td>
+                    <div class=" button-group row-button">
+                        <button class="listButton iconButton delete-button"
+                            onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteAsset(${asset.id})" >
+                            <span class="building-block-icon material-icons" id="delete">
+                                delete_outline
+                            </span>
+                        </button>
+                        <button ${disabled ? 'disabled': null} class="listButton iconButton editButton"
+                            onclick='editAsset(${asset.id}, "${asset.assetType}")'>
+                            <span class="building-block-icon material-icons" id="edit"> edit
+                            </span>
+                        </button>
+                        <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")''>
+                            <span class="building-block-icon material-icons" id="link"> link
+                            </span>
+                        </button>
+                        ${button}
+                    </div>
+                </td>
+            </tr>`
     }
 
-    let puzzlesWhenShowed = type === "assigned" ?  `[window.puzzles.findIndex(p=> ${resJSON.puzzles} == (p.id))]` : JSON.stringify([...Array(puzzleList.length + 1).keys()])
+    const getTableRowForScene = (scene)=> {
+        let aspectRatio = "4:3";
+        try {
+          aspectRatio = scene.content.aspectRatio.replace(":", "/");
+        } catch(e){}
 
-    return `<tr class="catalogItem" id=p-${resJSON.id}>
-        <td>
-            <p class="title">
-                ${resJSON.name}
-            </p>
-        </td>
-        <td> <span class="building-block-icon material-icons btn-green"> videogame_asset </span>
-        </td>
-        <td>
-            <div class=" button-group row-button">
-                <button class="listButton iconButton delete-button"
-                     onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteReusablePuzzleInstance(${resJSON.id})" >
-                    <span class="building-block-icon material-icons" id="delete">
-                        delete_outline </span>
-                </button>
-                <button class="listButton iconButton editButton"
-                    onclick='editPuzzle("${resJSON.id}", "application/reusable")'>
-                    <span class="building-block-icon material-icons" id="edit"> edit
-                    </span>
-                </button>
-                <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/reusablePuzzleInstances/${resJSON.id}/render","reusablePuzzle")'>
-                    <span class="building-block-icon material-icons" id="link">link</span>
-                </button>
-
-                <button class="rounded listButton addButton"
-                    onclick='insertAndScrollContent(0, "reusable", "${resJSON.id}", ${puzzlesWhenShowed})'>
-                    <span class="building-block-icon material-icons" id="add"> add
-                    </span>
-                    <p>
-                        <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
-                    </p>
-                </button>
-                </div>
-        </td>
-</tr>`
-}
-
-const returnTableRow = (asset, puzzleList)=> {
-    let icon, color;
-    let disabled = false;
-    let regexType = null;
-    if (asset.mime.search(new RegExp(/image\/.*/))!==-1){
-        icon = "image";
-        color = "btn-blue";
-        regexType = "image";
-    }else if (asset.mime.search(new RegExp(/video\/.*/))!==-1){
-        icon = "videocam";
-        color = "btn-red";
-        regexType = "video";
-    }else if (asset.mime.search(new RegExp(/audio\/.*/))!==-1){
-        icon = "music_note";
-        color = "btn-yellow";
-        regexType = "audio";
-    }else if (asset.mime.search(new RegExp(/application\/pdf/))!==-1){
-        icon = "picture_as_pdf";
-        color = "btn-red";
-        regexType = "pdf";
-    }else if (asset.mime.search(new RegExp(/application\/zip/))!==-1){
-        icon = "folder_zip";
-        color = "btn-orange";
-        regexType = "zip";
-    }else if (asset.mime.search(new RegExp(/application\/webapp/))!==-1){
-        icon = "terminal"
-        color = "btn-purple";
-        regexType = "webapp";
-    } else {
-        icon = "question_mark";
-        color = "btn-gray";
-        disabled = true;
-
+        return `<tr class="catalogItem" id=scene-${scene.id}>
+                    <td>
+                        <p class="title">
+                                ${scene.name}
+                        </p>
+                    </td>
+                    <td> 
+                      <img class="scene_icon"
+                      src="/scene_maker/images/logos/scene_maker_escapp_thumbnail_square.png"
+                      title="<%= i18n.escapeRoom.steps.indications.front.catalog.scenario2D %>"/>
+                    </td>
+                    <td>
+                    <div class=" button-group row-button">
+                        <button class="listButton iconButton delete-button"
+                            onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteScene(${scene.id})" >
+                            <span class="building-block-icon material-icons" id="delete">
+                                delete_outline
+                            </span>
+                        </button>
+                        <button class="listButton iconButton editButton"
+                            onclick='editScene(${scene.id})'>
+                            <span class="building-block-icon material-icons" id="edit"> edit
+                            </span>
+                        </button>
+                        <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/scenes/${scene.id}","scene","${aspectRatio}")'>
+                        <span class="building-block-icon material-icons" id="link">link</span>
+                        </button>
+                        <button class="rounded listButton addButton"
+                          onclick='insertAndScrollContent(0, "scene", "${scene.id}")'>
+                          <span class="building-block-icon material-icons" id="add"> add
+                          </span>
+                          <p>
+                              <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                          </p>
+                        </button>
+                    </div>
+                </td>
+            </tr>`
     }
 
-    const insertButton = `<button ${disabled ? 'disabled': null} class="rounded listButton addButton"
-                            onclick='insertAndScrollContent(0,"asset", ${asset.id}, ${JSON.stringify([...Array(puzzleList.length + 1).keys()])})'>
-                            <span class="building-block-icon material-icons" id="add"> add
-                            </span>
-                            <p>
-                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
-                            </p>
-                            </button>`;
-    const downloadButton = ` <button ${disabled ? 'disabled': null} class="rounded listButton addButton"
-                            onclick='downloadZip(${asset.id})'>
-                            <span class="building-block-icon material-icons" id="download"> download
-                            </span>
-                            <p>
-                            <%=i18n.escapeRoom.steps.indications.front.catalog.downloadZip%>
-                            </p>
-                            </button> `
-
-    const button = regexType === "zip" ? downloadButton : insertButton;
-
-    return `<tr class="catalogItem" id=${asset.id}>
-                <td>
-                    <p class="title">
-                            ${asset.filename}
-                    </p>
-                </td>
-                <td> <span class="building-block-icon material-icons ${color}" > ${icon} </span>
-                </td>
-                <td>
+    const getTableRowForReusablePuzzleInstance = (rpiJSON) => {
+        return `<tr class="catalogItem" id=p-${rpiJSON.id}>
+            <td>
+                <p class="title">
+                    ${rpiJSON.name}
+                </p>
+            </td>
+            <td> <span 
+              class="building-block-icon material-icons btn-green"
+              title="<%= i18n.escapeRoom.steps.indications.front.catalog.reusablePuzzleInstance %>"
+              >videogame_asset</span>
+            </td>
+            <td>
                 <div class=" button-group row-button">
-
                     <button class="listButton iconButton delete-button"
-                        onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteAsset(${asset.id})" >
+                         onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteReusablePuzzleInstance(${rpiJSON.id})" >
                         <span class="building-block-icon material-icons" id="delete">
-                            delete_outline
-                        </span>
+                            delete_outline </span>
                     </button>
-                    <button ${disabled ? 'disabled': null} class="listButton iconButton editButton"
-                        onclick='editAsset(${asset.id}, "${asset.mime}")'>
+                    <button class="listButton iconButton editButton"
+                        onclick='editReusablePuzzleInstance("${rpiJSON.id}")'>
                         <span class="building-block-icon material-icons" id="edit"> edit
                         </span>
                     </button>
-                    <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")''>
-                        <span class="building-block-icon material-icons" id="link"> link
-                        </span>
+                    <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/reusablePuzzleInstances/${rpiJSON.id}/render","reusablePuzzle")'>
+                        <span class="building-block-icon material-icons" id="link">link</span>
                     </button>
 
-                    ${button}
-
-
-                </div>
+                    <button class="rounded listButton addButton"
+                        onclick='insertAndScrollContent(0, "reusablePuzzleInstance", "${rpiJSON.id}")'>
+                        <span class="building-block-icon material-icons" id="add"> add
+                        </span>
+                        <p>
+                            <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
+                        </p>
+                    </button>
+                    </div>
             </td>
         </tr>`
-}
-
-function triggerClick() {
-    $("#inputFile").click();
-}
-
-function changeName(e){
-    const nameField = $('#filename')
-    nameField.val(e.target.files[0].name);
-}
-
-function alignReusablePuzzle(el){
-    const reusablePuzzleBlock = $(el).parents('.reusable-puzzle-block')
-    reusablePuzzleBlock.css("text-align", el.value)
-}
-
-function ratioReusablePuzzle(el){
-    const reusablePuzzleBlock = $(el).parents('.reusable-puzzle-block')
-    reusablePuzzleBlock.children("iframe").css("aspect-ratio", el.value)
-    if (el.value === ""){
-        $("#hightSelector").show()
-        $(".px").show()
-        const selector = $("#hightSelector").val()
-        reusablePuzzleBlock.children('iframe').css("height", selector)
-    } else {
-        reusablePuzzleBlock.children("iframe").css("height", "100%")
-        $("#hightSelector").hide()
-        $(".px").hide()
     }
-}
 
-function changeReusablePuzzleHeight(el){
-    const reusablePuzzleBlock = $(el).parents('.reusable-puzzle-block')
-    reusablePuzzleBlock.children('iframe').css("height", el.value)
-}
+    function triggerClick() {
+        $("#inputFile").click();
+    }
 
-function resizeReusablePuzzleWidth(el){
-    const reusablePuzzleBlockIframe = $(el).parents('.reusable-puzzle-block').children("iframe");
-    reusablePuzzleBlockIframe.css("width", el.value+"%")
-}
+    function changeName(e){
+        const nameField = $('#filename')
+        nameField.val(e.target.files[0].name);
+    }
 
-function resizeReusablePuzzleHeight(el){
-    const reusablePuzzleBlockIframe = $(el).parents('.reusable-puzzle-block').children("iframe");
-    reusablePuzzleBlockIframe.css("height", el.value)
-}
+    function alignWebappfull(el){
+        const resourceBlock = $(el).parents('.webappfull-block');
+        resourceBlock.css("text-align", el.value);
+    }
 
-function downloadZip(id) {
-    const asset = window.assets.find(a => a.id == id);
-    fetch(asset.url).then(response => {
-        if (response.ok) {
-            return response.blob();
+    function onChangeAspectRatioWebappfull(el){
+        const resourceBlock = $(el).parents('.webappfull-block');
+        resourceBlock.children("iframe").css("aspect-ratio", el.value);
+        if (el.value === ""){
+            $(resourceBlock).find(".webappfullHeightInput").show();
+            $(resourceBlock).find(".webappfullHeightTitle").show();
+            $(resourceBlock).find(".webappfullHeightPx").show();
+            resourceBlock.children('iframe').css("height", "auto");
+        } else {
+            resourceBlock.children("iframe").css("height", "100%");
+            $(resourceBlock).find(".webappfullHeightInput").hide();
+            $(resourceBlock).find(".webappfullHeightTitle").hide();
+            $(resourceBlock).find(".webappfullHeightPx").hide();
         }
-        console.error('Error downloading')
-    }).then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = asset.filename;
-        if(asset.filename.length < 4 || asset.filename.slice(-4).toLowerCase() !== '.zip'){
-            a.download = asset.filename + '.zip';
-        }
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    }).catch(error => {
-        console.error('Error fetching', error);
+    }
+
+    function changeWebappfullHeight(el){
+        const resourceBlock = $(el).parents('.webappfull-block')
+        resourceBlock.children('iframe').css("height", el.value)
+    }
+
+    function resizeWebappfullWidth(el){
+        const resourceBlockIframe = $(el).parents('.webappfull-block').children("iframe");
+        resourceBlockIframe.css("width", el.value+"%")
+    }
+
+    function resizeWebappfullHeight(el){
+        const resourceBlockIframe = $(el).parents('.webappfull-block').children("iframe");
+        resourceBlockIframe.css("height", el.value)
+    }
+
+    function downloadZip(id) {
+        const asset = window.assets.find(a => a.id == id);
+        fetch(asset.url).then(response => {
+            if (response.ok) {
+                return response.blob();
+            }
+            console.error('Error downloading')
+        }).then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = asset.filename;
+            if(asset.filename.length < 4 || asset.filename.slice(-4).toLowerCase() !== '.zip'){
+                a.download = asset.filename + '.zip';
+            }
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }).catch(error => {
+            console.error('Error fetching', error);
+        });
+    }
+
+
+    function fullscreenIframe(iframeId) {
+      const iframe = document.getElementById(iframeId);
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.mozRequestFullScreen) { // Firefox
+        iframe.mozRequestFullScreen();
+      } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) { // IE/Edge
+        iframe.msRequestFullscreen();
+      }
+    }
+
+    $(document).on('keydown', function (e) {
+      // Prevent Enter key globally, except in textareas and submit buttons
+      if (e.key === 'Enter' && $(e.target).is('[type=text],[type=number]')) {
+        e.preventDefault();
+      }
     });
-}
 
-
-function fullscreenIframe(iframeId) {
-  const iframe = document.getElementById(iframeId);
-  if (iframe.requestFullscreen) {
-    iframe.requestFullscreen();
-  } else if (iframe.mozRequestFullScreen) { // Firefox
-    iframe.mozRequestFullScreen();
-  } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
-    iframe.webkitRequestFullscreen();
-  } else if (iframe.msRequestFullscreen) { // IE/Edge
-    iframe.msRequestFullscreen();
-  }
-}
-$(document).on('keydown', function (e) {
-  // Prevent Enter key globally, except in textareas and submit buttons
-  if (e.key === 'Enter' && $(e.target).is('[type=text],[type=number]')) {
-    e.preventDefault();
-  }
-});
 </script>

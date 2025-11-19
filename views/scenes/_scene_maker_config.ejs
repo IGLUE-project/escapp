@@ -1,0 +1,63 @@
+<script type="text/javascript">
+  window.SCENE_MAKER_OPTIONS = (function(){
+    var options = {};
+
+    var configuration = {};
+    //Paths
+    configuration["ImagesPath"] = "/scene_maker/images/";
+    configuration["StylesheetsPath"] = "/scene_maker/stylesheets/";
+    configuration["PreviewPath"] = "/scene_maker/preview";
+    <% if (typeof sceneId === "undefined") { %>
+      configuration["UploadScenePath"] = "/escapeRooms/<%= escapeRoomId %>/scenes";
+    <% } else { %>
+       configuration["UploadScenePath"] = "/escapeRooms/<%= escapeRoomId %>/scenes/<%= sceneId %>/edit";
+    <% } %>
+    options["configuration"] = configuration;
+
+    // Options to initialize Scene Maker
+    options["developping"] = false;
+
+    //Preview mode
+    <% if ((editor !== true) && (preview === true)) { %>
+    options["preview"] = true;
+    <% } %>
+
+    //Scene to load
+    <% if (typeof sceneJSON !== "undefined") { %>
+      options.scene = <%- JSON.stringify(sceneJSON) %>
+    <% } %>
+
+    //Exit URL
+    options.exitURL = window.location.origin + "/escapeRooms/<%= escapeRoomId %>/team";
+
+    //Language
+    options["lang"] = '<%=lang%>';
+
+    //Escape room data
+    //Escape room ID
+    options["erId"] = parseInt('<%=escapeRoomId%>');
+    //Number of puzzles
+    options["nPuzzles"] = parseInt('<%=nPuzzles%>');
+
+    <% if (editor !== true) { %>
+      //Escapp client settings
+      options["escapp"] = {
+        endpoint: window.location.origin + "/api/escapeRooms/<%= escapeRoomId %>",
+      };
+    <% } %>
+
+    //User credentials
+    options["user"] = {
+      email: "<%=user.username%>", 
+      token: "<%=user.token%>",
+    }
+
+    <% if (process.env.NODE_ENV === "development") { %>
+      if((typeof window !== "undefined")&&(window.console) && (window.console.log)){
+        console.log("Scene Maker options", options);
+      }
+    <% } %>
+
+    return options;
+  })();
+</script>

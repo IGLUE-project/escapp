@@ -17,6 +17,10 @@ var config = {
 };
 
 var blockTemplate = (index, content, type, puzzles) => {
+    if(type === "asset"){
+        type = "text";
+    }
+
     var id = 'block-'+type+'-'+index+'-'+Date.now();
 
     return`
@@ -35,6 +39,7 @@ var blockTemplate = (index, content, type, puzzles) => {
     </div>
 </div>
 `;}
+
 var textEditorTemplate = (id, text) => `<div class="editor-wrapper
 ${((window.endPoint === 'indications') || (window.endPoint === 'after')) ? 'indications' : '' }">
     <div id="${id}" name="${id}" class="editor" spellcheck="false">${text}</div>
@@ -67,42 +72,38 @@ var rankingTemplate = ()=>`<div class="editor">
         </div>
     </ranking>
 </div>`
-var reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio = "4/3", heightIframe = "300") => `<div class="reusable-puzzle-block" style="width:100%;height:auto;text-align:${align};">
-<div class="config-size-reusable-puzzle">
+
+var reusablePuzzleTemplate = (id, url, width = 100, height = "auto", align = "center", ratio = "4/3", heightIframe = "300") => `<div class="webappfull-block reusable-puzzle-block" style="width:100%;height:auto;text-align:${align};">
+<div class="config-size-webappfull">
     <div>
         <label>${window.i18n.width}</label>
-        <input type="number" class="reusablePuzzleWidth" placeholder="${window.i18n.width}" value="${width}"% onChange="resizeReusablePuzzleWidth(this)" max="100" min="0"> <span class="units">%</span>
-        <!--<label>${window.i18n.height}</label>
-        <input type="text"  class="reusablePuzzleHeight" placeholder="${window.i18n.height}" value="${height}" onChange="resizeReusablePuzzleHeight(this)">-->
+        <input type="number" class="webappfullWidth" placeholder="${window.i18n.width}" value="${width}"% onChange="resizeWebappfullWidth(this)" max="100" min="0"> <span class="units">%</span>
     </div>
     <div class="alignment-group">
       <div class="alignment-option">
-        <input type="radio" name="alignment-${url}" id="reusable-align-left-${url}" class="reusable-align" value="left" ${align === "left" ? "checked" : ""} onchange="alignReusablePuzzle(this)">
-        <label for="reusable-align-left-${url}">
+        <input type="radio" name="webappfull-alignment-${id}" id="webappfull-align-left-${id}" class="webappfull-align" value="left" ${align === "left" ? "checked" : ""} onchange="alignWebappfull(this)">
+        <label for="webappfull-align-left-${id}">
           <span class="material-icons">format_align_left</span>
           ${window.i18n.Left}
         </label>
       </div>
-
       <div class="alignment-option">
-        <input type="radio" name="alignment-${url}" id="reusable-align-center-${url}" class="reusable-align" value="center" ${align === "center" ? "checked" : ""} onchange="alignReusablePuzzle(this)">
-        <label for="reusable-align-center-${url}">
+        <input type="radio" name="webappfull-alignment-${id}" id="webappfull-align-center-${id}" class="webappfull-align" value="center" ${align === "center" ? "checked" : ""} onchange="alignWebappfull(this)">
+        <label for="webappfull-align-center-${id}">
           <span class="material-icons">format_align_center</span>
           ${window.i18n.Center}
         </label>
       </div>
-
       <div class="alignment-option">
-        <input type="radio" name="alignment-${url}" id="reusable-align-right-${url}" class="reusable-align" value="right" ${align === "right" ? "checked" : ""} onchange="alignReusablePuzzle(this)">
-        <label for="reusable-align-right-${url}">
+        <input type="radio" name="webappfull-alignment-${id}" id="webappfull-align-right-${id}" class="webappfull-align" value="right" ${align === "right" ? "checked" : ""} onchange="alignWebappfull(this)">
+        <label for="webappfull-align-right-${id}">
           <span class="material-icons">format_align_right</span>
           ${window.i18n.Right}
         </label>
       </div>
     </div>
-
     <label class="aspectRatioLabel">${window.i18n.aspectRatio}</label>
-    <select class="dark" id="classReusableRatio" onchange="ratioReusablePuzzle(this)">
+    <select class="webappfullAspectRatioSelect dark" onchange="onChangeAspectRatioWebappfull(this)">
       <option class="ratio-option" value="4/3" ${ratio === "4/3" ? "selected=selected" : null}>
           4/3
       </option>
@@ -114,15 +115,50 @@ var reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center
         Auto
       </option>
     </select>
-    <span class="px" style="${ratio !== "" ? "display:none" : "display:block"};padding:0px 10px">${window.i18n.height}</span>
-    <input class="dark" type="number" style="${ratio !== "" ? "display:none" : "display:block"}" id="hightSelector" class="reusable-ratio hightSelector" onchange="changeReusablePuzzleHeight(this)" min="100" max="3000" value="${heightIframe ? heightIframe : 300 }"/>
-    <span class="px" style="display:none;padding:0px 10px">px</span>
-
+    <span class="webappfullHeightTitle" style="${ratio !== "" ? "display:none" : "display:block"};padding:0px 10px">${window.i18n.height}</span>
+    <input class="webappfullHeightInput dark" type="number" style="${ratio !== "" ? "display:none" : "display:block"}" onchange="changeWebappfullHeight(this)" min="100" max="3000" value="${heightIframe ? heightIframe : 300 }"/>
+    <span class="webappfullHeightPx" style="display:none;padding:0px 10px">px</span>
 </div>
-<iframe class="reusablePuzzleIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px; aspect-ratio:${ratio}" >
+<iframe class="webappfullIframe reusablePuzzleIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px; aspect-ratio:${ratio}" >
 </iframe>
 </div>`;
+
+var sceneTemplate = (id, url, width = 100, height = "auto", align = "center", ratio = "4/3", heightIframe = "600") => `<div class="webappfull-block scene-block" style="width:100%;height:auto;text-align:${align};">
+<div class="config-size-webappfull">
+    <div>
+        <label>${window.i18n.width}</label>
+        <input type="number" class="webappfullWidth" placeholder="${window.i18n.width}" value="${width}"% onChange="resizeWebappfullWidth(this)" max="100" min="0"> <span class="units">%</span>
+    </div>
+    <div class="alignment-group">
+      <div class="alignment-option">
+        <input type="radio" name="webappfull-alignment-${id}" id="webappfull-align-left-${id}" class="webappfull-align" value="left" ${align === "left" ? "checked" : ""} onchange="alignWebappfull(this)">
+        <label for="webappfull-align-left-${id}">
+          <span class="material-icons">format_align_left</span>
+          ${window.i18n.Left}
+        </label>
+      </div>
+      <div class="alignment-option">
+        <input type="radio" name="webappfull-alignment-${id}" id="webappfull-align-center-${id}" class="webappfull-align" value="center" ${align === "center" ? "checked" : ""} onchange="alignWebappfull(this)">
+        <label for="webappfull-align-center-${id}">
+          <span class="material-icons">format_align_center</span>
+          ${window.i18n.Center}
+        </label>
+      </div>
+      <div class="alignment-option">
+        <input type="radio" name="webappfull-alignment-${id}" id="webappfull-align-right-${id}" class="webappfull-align" value="right" ${align === "right" ? "checked" : ""} onchange="alignWebappfull(this)">
+        <label for="webappfull-align-right-${id}">
+          <span class="material-icons">format_align_right</span>
+          ${window.i18n.Right}
+        </label>
+      </div>
+    </div>
+</div>
+<iframe class="webappfullIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px; aspect-ratio:${ratio}" >
+</iframe>
+</div>`;
+
 var countdownTemplate = ()=> `<div class="editor" ><countdown/></div>`;
+
 var progressBarTemplate = ()=> `<div class="editor" >
 <progressbar>
     <div class="col-xs-12 col-md-8 col-md-push-2 col-lg-6 col-lg-push-3"  style="margin:auto;">
@@ -134,65 +170,48 @@ var progressBarTemplate = ()=> `<div class="editor" >
 </div>
 `;
 
-const imageRegex = new RegExp(/image\/.*/);
-const videoRegex = new RegExp(/video\/.*/);
-const audioRegex = new RegExp(/audio\/.*/);
-const pdfRegex = new RegExp(/application\/pdf/);
-const webappRegex = new RegExp(/application\/webapp/);
-const reusableRegex = new RegExp(/application\/reusable/);
+//Render item depending on assetType
+const assetItemTemplate = (payload)=> {
+    let assetConfig = payload.config;
+    if((typeof assetConfig === "undefined")||(assetConfig === null)){
+        assetConfig = {};
+    }
+    if(typeof assetConfig.width === "undefined"){
+        assetConfig.width = "100%";
+    }
+    if(typeof assetConfig.height === "undefined"){
+        assetConfig.height = "auto";
+    }
 
-//Render item depending on mime
-const catalogItem = (item)=> {
-    const configJSON = parseAssetConfig( item.mime, item.config);
-    if(item.mime.search(imageRegex) !== -1) {
-        return `<img src="${item.url}" style="width:${configJSON.width};height:${configJSON.height};max-width:100%">`;
-    }else if (item.mime.search(videoRegex) !== -1) {
-            return `<div class="ckeditor-html5-video" style="text-align: center;max-width:100%"  src="${item.url}" ><video autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  style="width:${configJSON.width}px;height:${configJSON.height}px" controls=${configJSON.controls!=="undefined"?"controls":null} src="${item.url}" download=${configJSON.download!=="undefined"?"download":null}/></div>`;
-    } else if (item.mime.search(audioRegex) !== -1) {
-            return `<audio controls=${configJSON.controls!=="undefined"?"controls":null}  autoplay=${configJSON.autoplay!=="undefined"?"autoplay":null}  mime="${item.mime}" src="${item.url}"/>`;
-    } else if (item.mime.search(pdfRegex) !== -1) {
-        return `<div style="width:${configJSON.width}px;height:${configJSON.height}px;max-width:100%"  >
-        <object data="${item.url}" type="application/pdf" width="100%" height="100%">
-            <iframe style="border:none" src="${item.url}" width="100%" height="100%" >
+    switch(payload.assetType){
+    case "image":
+        return `<img src="${payload.url}" style="width:${assetConfig.width};height:${assetConfig.height};max-width:100%">`;
+    case "audio":
+        return `<audio controls=${assetConfig.controls!=="undefined"?"controls":null}  ${assetConfig.autoplay===true ? "autoplay" : ""}  src="${payload.url}"/>`;
+    case "video":
+        return `<div class="ckeditor-html5-video" style="text-align: center;max-width:100%" src="${payload.url}" ><video ${assetConfig.autoplay===true ? "autoplay" : ""} style="width:${assetConfig.width}px;height:${assetConfig.height}px" controls=${assetConfig.controls!=="undefined"?"controls":null} src="${payload.url}" download=${assetConfig.download!=="undefined"?"download":null}/></div>`;
+    case "webapp":
+        assetConfig.width = "100%";
+        assetConfig.height = "auto";
+        return `<div style="width:${assetConfig.width};height:${assetConfig.height};max-width:1500px"  >
+             <iframe src="${payload.url}"  style="border:none" width="100%" height="100%" >
+             </iframe>
+        </div>`;
+    case "pdf":
+        return `<div style="width:${assetConfig.width}px;height:${assetConfig.height}px;max-width:100%"  >
+        <object data="${payload.url}" type="application/pdf" width="100%" height="100%">
+            <iframe style="border:none" src="${payload.url}" width="100%" height="100%" >
             </iframe>
         </object>
-    </div>`;
-     } else if (item.mime.search(webappRegex) !== -1) {
-        configJSON.width = "100%";
-        configJSON.height = "auto";
-         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px"  >
-             <iframe src="${item.url}"  style="border:none" width="100%" height="100%" >
-             </iframe>
-     </div>`;
-     } else if (item.mime.search(reusableRegex) !== -1) {
-        configJSON.width = "100%";
-        configJSON.height = "auto";
-         return `<div style="width:${configJSON.width};height:${configJSON.height};max-width:1500px"  >
-             <iframe src="${item.url}" style="border:none" width="100%" height="100%" id="${item.id}" >
-                <script>
-                </script>
-             </iframe>
-     </div>`;
-    }else {
-        return `<div>${item.name}</div>`;
+        </div>`;
+    default:
+        return "";
     }
 }
 
-const catalogTemplate = async(id, payload) =>{
-    return textEditorTemplate(id, `${catalogItem({config:payload.config, url:payload.url, puzzleId:payload.puzzleId,  mime:payload.mime,id, name:""}, {editorId:id})}`);
+const assetTemplate = async(id, payload) =>{
+    return textEditorTemplate(id, assetItemTemplate(payload));
 }
-
-const deleteAsset = async (assetId) => {
-    const response = await fetch(`/escapeRooms/${escapeRoomId}/deleteAssets/${assetId}`, {
-        method: 'POST',
-    })
-    if (response.ok) {
-        const asset = $(`#${assetId}`);
-        asset.remove();
-        overlayTrigger(assetId, false)
-    }
-}
-
 
 var insertContent = async (index, type, payload, puzzles) => {
     var content = "";
@@ -205,24 +224,27 @@ var insertContent = async (index, type, payload, puzzles) => {
             content = rankingTemplate();
             break;
         case "text":
-            content = textEditorTemplate(
-                id, payload.text);
+            content = textEditorTemplate(id, payload.text);
             break;
         case "progress":
             content = progressBarTemplate();
             break;
-        case "reusable":
-            content = reusablePuzzleTemplate(payload.url, payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
+        case "reusablePuzzleInstance":
+            content = reusablePuzzleTemplate(id, payload.url, payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
             break;
-        case "catalog":
-            type = "text"; //Reorder is not working otherwise
-            content = await catalogTemplate(id, payload);
+        case "scene":
+            content = sceneTemplate(id, payload.url, payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
             break;
+        case "asset":
+            content = await assetTemplate(id, payload);
+            break;
+        case "text":
         default:
+            break;
     }
     var htmlContent = $(blockTemplate(index, content, type, puzzles));
     $('#custom-content').append(htmlContent);
-    if ((type === "text") || (type === "catalog" && payload.url )) {
+    if ((type === "text") || (type === "asset" && payload.url )) {
         let editor = CKEDITOR.replace(id);
         //When replacing there is a hidden div with the content that is latter
         //read to save the content and an iframe that is the editor
@@ -239,7 +261,6 @@ var insertContent = async (index, type, payload, puzzles) => {
             }
         });
     }
-
 };
 
 var deleteDef = (id) => {
@@ -371,7 +392,7 @@ $(()=>{
     });
 
     if ($( ".block-config" ).length) { $( ".block-config" ).disableSelection();}
-    $('#instructionsForm').submit(()=>{
+    $('#instructionsForm').submit((ev)=>{
         var results = [];
         $('.building-block').each((_i,e)=>{
             var type = $(e).data("content-type");
@@ -382,14 +403,26 @@ $(()=>{
                 //Por algun motivo el tag de script da problemas y hay que cambiarlo por este
                 obj.payload = {text: CKEDITOR.instances[id].getData().replaceAll("</script>", "<\\/script>")};
                 obj.type = "text";
-            } else if (type == "reusable") {
-                const src = $(e).find(".reusablePuzzleIframe").attr("src");
-                obj.payload = {url: src, width: $(e).find(".reusablePuzzleWidth").val(),
-                    height: $(e).find(".reusablePuzzleHeight").val(),
-                    align: $(e).find(".reusable-align:checked").val(),
-                    ratio: $(e).find("#classReusableRatio").val(),
-                    heightIframe: $(e).find("#hightSelector").val()};
-                obj.type = "reusable";
+            } else if (type == "reusablePuzzleInstance") {
+                const src = $(e).find(".webappfullIframe").attr("src");
+                obj.payload = {
+                    url: src, 
+                    width: $(e).find(".webappfullWidth").val(),
+                    heightIframe: $(e).find(".webappfullHeightInput").val(),
+                    align: $(e).find(".webappfull-align:checked").val(),
+                    ratio: $(e).find(".webappfullAspectRatioSelect").val()
+                };
+                obj.type = "reusablePuzzleInstance";
+            } else if (type == "scene") {
+                const sceneIframe = $(e).find(".webappfullIframe");
+                const src = sceneIframe.attr("src");
+                obj.payload = {
+                    url: src, 
+                    width: $(e).find(".webappfullWidth").val(),
+                    align: $(e).find(".webappfull-align:checked").val(),
+                    ratio: sceneIframe.attr("aspect-ratio")
+                };
+                obj.type = "scene";
             }
             results.push(obj);
         });
@@ -397,7 +430,6 @@ $(()=>{
           .attr("name", "instructions")
           .attr("value", JSON.stringify(results))
           .appendTo("#instructionsForm");
-
     });
 
     var videoCallback = (win) => {

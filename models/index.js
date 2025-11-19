@@ -61,10 +61,14 @@ require(path.join(__dirname, "report"))(sequelize, Sequelize.DataTypes);
 // Import the definition of the subjects Table from subject.js
 require(path.join(__dirname, "subject"))(sequelize, Sequelize.DataTypes);
 
-// Relation between models
-const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report, coAuthors, subject} = sequelize.models;// Relation 1-to-N between Escape Room and Turn:
+// Import the definition of the scenes Table from scene.js
+require(path.join(__dirname, "scene"))(sequelize, Sequelize.DataTypes);
 
-// Relation 1-to-N between Escape Room and Turno:
+// Relation between models
+const { escapeRoom, turno, attachment, user, puzzle, hint, hintApp, team, requestedHint, retosSuperados, asset, reusablePuzzle, reusablePuzzleInstance, report, coAuthors, subject, scene} = sequelize.models;
+
+
+// Relation 1-to-N between Escape Room and Turn:
 
 turno.belongsTo(escapeRoom);
 escapeRoom.hasMany(turno, {
@@ -282,6 +286,22 @@ user.hasMany(asset, {
 
 asset.belongsTo(user);
 
+//Reports
+escapeRoom.hasMany(report, {
+    "onDelete": "CASCADE",
+    "hooks": true,
+    "foreignKey": "escapeRoomId"
+});
+
+report.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
+report.belongsTo(user, {"foreignKey": "reportAuthor"});
+
+user.hasMany(report, {
+    "onDelete": "CASCADE",
+    "hooks": true,
+    "foreignKey": "reportAuthor"
+});
+
 // Relation 1-to-N between EscapeRoom and reusablePuzzleInstance:
 escapeRoom.hasMany(reusablePuzzleInstance, {
     "foreignKey": "escapeRoomId",
@@ -300,26 +320,20 @@ reusablePuzzle.hasMany(reusablePuzzleInstance, {
 
 reusablePuzzleInstance.belongsTo(reusablePuzzle, {"foreignKey": "reusablePuzzleId"});
 
-escapeRoom.hasMany(report, {
-    "onDelete": "CASCADE",
-    "hooks": true,
-    "foreignKey": "escapeRoomId"
-});
-
-report.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
-
-user.hasMany(report, {
-    "onDelete": "CASCADE",
-    "hooks": true,
-    "foreignKey": "reportAuthor"
-});
-
-
 reusablePuzzleInstance.belongsToMany(puzzle, {"through": "reusablePuzzleInstancePuzzle"});
 
 puzzle.belongsToMany(reusablePuzzleInstance, {"through": "reusablePuzzleInstancePuzzle"});
 
-report.belongsTo(user, {"foreignKey": "reportAuthor"});
+
+//Scenes
+scene.belongsTo(escapeRoom);
+escapeRoom.hasMany(scene, {"foreignKey": "escapeRoomId"});
+
+scene.hasMany(reusablePuzzleInstance);
+reusablePuzzleInstance.belongsTo(scene);
+
+scene.hasMany(puzzle);
+puzzle.belongsTo(scene);
 
 
 // Relation 1-to-N between EscapeRoom and Subject
@@ -336,5 +350,9 @@ escapeRoom.hasMany(subject, {
     "hooks": true
 });
 
+
+//Hooks
+const sceneHooks = require(path.join(__dirname, "sceneHooks"));
+sceneHooks({ scene, puzzle });
 
 module.exports = sequelize;

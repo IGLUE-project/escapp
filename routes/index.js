@@ -16,8 +16,8 @@ const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
 const managementController = require("../controllers/management_controller");
+const sceneController = require("../controllers/scene_controller");
 const { instructions, thumbnails, hints, upload, hybridInstructions } = require("../controllers/multer_controller");
-
 
 router.all("*", sessionController.deleteExpiredUserSession);
 
@@ -201,29 +201,42 @@ router.get("/escapeRooms/:escapeRoomId/analytics/puzzles", sessionController.log
 router.get("/escapeRooms/:escapeRoomId/analytics/grading", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.grading);
 router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.download);
 router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.downloadRaw);
-router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, analyticsController.downloadRaw);
+
+//Routes for scenes
+router.get("/escapeRooms/:escapeRoomId/scenes/new", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.newScene);
+router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId/framed", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, sceneController.show_framed);
+router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, sceneController.show);
+router.post("/escapeRooms/:escapeRoomId/scenes", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.createScene);
+router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.editScene);
+router.put("/escapeRooms/:escapeRoomId/scenes/:sceneId/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.updateScene);
+router.delete("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, sceneController.deleteScene);
+router.get("/scene_maker/viewer", sessionController.loginRequired, sceneController.preview);
+router.get("/scene_maker/preview", sessionController.loginRequired, sceneController.preview);
+router.get("/scene_maker/editor", sessionController.loginRequired, sceneController.editor);
 
 // Routes for guide/apps/resources
 router.get("/inspiration", escapeRoomController.showGuide);
 
 // Routes for reusablePuzzles
-router.post("/reusablePuzzles", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }, { "name": "instructions", "maxCount": 10 }]), reusablePuzzleController.createReusablePuzzle);
+router.post("/reusablePuzzles", sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }, { "name": "instructions", "maxCount": 10 }]), reusablePuzzleController.createReusablePuzzle);
 router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzles);
-router.put("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }]), reusablePuzzleController.editReusablePuzzle);
+router.put("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }]), reusablePuzzleController.editReusablePuzzle);
 router.get("/reusablePuzzles/new", sessionController.loginRequired, reusablePuzzleController.renderCreatePuzzle);
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzle);
 router.get("/reusablePuzzles/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
 router.get("/reusablePuzzles/installed/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
-router.delete("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, sessionController.loginRequired, reusablePuzzleController.deleteReusablePuzzle);
+router.delete("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, reusablePuzzleController.deleteReusablePuzzle);
 router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browse);
 router.get("/reusablePuzzlesInstances/:puzzle_id/form", sessionController.loginRequired, assetsController.getFormForInstance);
 router.get("/reusablePuzzlePreview/:reusablePuzzleId", reusablePuzzleController.renderReusablePuzzlePreview);
 
 // Routes for assets
-router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
+router.get("/assets/:asset_id.:asset_extension", sessionController.loginRequired, assetsController.getAsset);
+router.get("/assets/:asset_id/:file_name", sessionController.loginRequired, assetsController.getAsset);
+router.get("/uploads/webapps/:file_id/:webapp_file_name(*)", sessionController.loginRequired, assetsController.getWebAppFile);
 router.get("/uploads/thumbnails/:file_name", sessionController.loginRequired, assetsController.returnThumbnail);
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
-router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);
+router.get("/uploads/:asset_id/:file_name?", sessionController.loginRequired, assetsController.getAsset);
 
 module.exports = router;

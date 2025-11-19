@@ -530,6 +530,15 @@
                     "aspectRatio": "Relación de aspecto",
                     "resourceCatalog": "Catálogo de recursos",
                     "catalog": {
+                        "assets": {
+                            "image": "Imagen",
+                            "video": "Vídeo",
+                            "audio": "Audio",
+                            "pdf": "Archivo PDF",
+                            "zip": "Archivo ZIP",
+                            "webapp": "Aplicación web",
+                            "other": "Archivo"
+                        },
                         "newPuzzle": "nuevo puzzle",
                         "uploadFile": "subir fichero",
                         "selectFile": "Selecciona un fichero",
@@ -546,11 +555,14 @@
                         "copyUrl": "Copiar enlace",
                         "copyEmbed": "Copiar código de incrustación",
                         "previewAsset": "vista previa",
-                        "deleteConfirm": "¿Estás seguro de que quieres borrar este archivo?",
+                        "deleteConfirm": "¿Estás seguro de que quieres borrar este recurso?",
                         "gamificationElements": "Elementos de gamificación",
                         "interactiveResources": "Recursos interactivos vinculables a retos",
                         "interactiveResourcesNotAllowed": "No puedes añadir recursos vinculados a retos hasta que hayas creado al menos un reto en la escape room",
-                        "scenarios2D": "Escenarios 2D",
+                        "reusablePuzzleInstance": "Recurso interactivo",
+                        "scenarios2D": "Escenarios",
+                        "scenario2D": "Escenario",
+                        "addScenario2D": "Nuevo escenario",
                         "config": {
                             "description": "Descripción",
                             "name": "Nombre",
@@ -972,7 +984,7 @@
         "resultsTitle": "Este es el ranking de resultados de la escape room",
         "unjoin": "desapuntarse",
         "reset": "reiniciar",
-        "sureReset": "¿Seguro que deseas reiniciar la prueba?",
+        "sureReset": "¿Seguro que deseas reiniciar la escape room?",
         "alreadyAccount": "¿Ya tienes una cuenta en Escapp?",
         "registerNow": "¿Todavía no tienes una cuenta?",
         "playAnonymously" : "También puedes jugar de forma anónima a esta escape room"
@@ -1342,7 +1354,10 @@
         "config": "Configuración",
         "expectedDuration": "Duración aproximada (minutos)",
         "fullscreen":"pantalla completa",
-        "reset":"reiniciar"
+        "reset":"reiniciar",
+        "errors": {
+            "nullPuzzle": "Debes vincular al menos un reto a este recurso"
+        }
     },
     "management":{
         "contact": {

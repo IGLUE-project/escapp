@@ -546,14 +546,17 @@
       background: colors.$yellow
     .btn-gray
       background: rgb(75, 82, 87)
-
-    /*celda botón*/
     .row-button
       margin-right: 24px
       display: flex
       justify-content: end
       height: 52px
       align-items: center
+    .scene_icon
+      height: 30px
+      max-height: 30px
+      width: 30px
+      max-width: 30px
 
   #myTabContent
     background: colors.$darkerpurple
@@ -837,22 +840,14 @@
         height: 150px
         aspect-ratio: 4 / 3
         border-radius: 5px 5px 0px 0
+      a
+        display: flex
+        flex: 1
       .resourceCatalogBtn
         border-radius: 0px 0px 6px 6px
         border: 0px
-  #scenery
-    width: 400px
-    border-radius: 6px
-    border: 1px colors.$textpurplelessop solid
-    img
-      height: 120px
-      object-fit: cover
-      width: 100%
-      border-radius: 5px 5px 0px 0
-    .resourceCatalogBtn
-      border-radius: 0px 0px 6px 6px
-      border: 0px
-      width: 100%
+        flex: 1
+
 #iframePreview
   border: none
 #pdfPreviewDiv
@@ -904,7 +899,7 @@
 .tooltip-link
   display: none
 
-.config-size-reusable-puzzle
+.config-size-webappfull
   font-family: Lato
   font-size: 70%
   position: relative;
@@ -927,7 +922,7 @@
   span.units
     color:  colors.$darkerpurple
     margin-right: 10px
-  span.px
+  span.webappfullHeightTitle, span.webappfullHeightPx 
     color: colors.$darkerpurple
     font-family: Lato !important
   .alignment-group
@@ -952,7 +947,7 @@
       -webkit-text-fill-color: black !important
       border-color: black !important
 
-  .reusablePuzzleWidth, .reusablePuzzleHeight
+  .webappfullWidth, .webappfullHeight
     width: 60px
     height: auto
     font-family: Lato

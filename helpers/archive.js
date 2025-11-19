@@ -1,7 +1,5 @@
-
 const path = require("path");
 const fsp = require("fs/promises");
-
 
 const DEFAULT_BASE = path.join(process.cwd(), "uploads");
 

@@ -1,6 +1,7 @@
 node_modules/
 public/js
 public/ckeditor
+public/scene_maker
 public/apps
 public/pdf
 public/scorm

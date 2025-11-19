@@ -56,11 +56,16 @@ const retoMsg = (puzzle, sol) => {
   </li>`;
 }
 
-
-const reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio="16/9", heightIframe="300") => `<div style="width:100%;height:auto;max-width:1500px;margin: auto;max-height:95vh;text-align:${align};">
-  <iframe class="reusablePuzzleIframe"   src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px;aspect-ratio:${ratio}" >
+const reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio="16/9", heightIframe="300") => `<div style="width:100%;height:auto;max-width:1500px;margin: auto;text-align:${align};">
+  <iframe class="reusablePuzzleIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px;aspect-ratio:${ratio}" >
 </div>`;
+
+const sceneTemplate = (url, width = 100, height = "auto", align = "center", ratio="16/9", heightIframe="300") => `<div style="width:100%;height:auto;max-width:1500px;margin: auto;text-align:${align};">
+  <iframe class="sceneIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px;aspect-ratio:${ratio}" >
+</div>`;
+
 const blockTemplate = (content, index) => `<div class="content-block" data-id="${index}" id="content-${index}">${content}</div>`;
+
 const rankingEmptyTemplate = ()=>`
     <ranking>
         <div class="ranking-table table" style="height: 229px; ">
@@ -97,14 +102,6 @@ var progressBarTemplate = ()=> `<progressbar>
 </progressbar>
 `;
 
-const imageRegex = new RegExp(/image\/.*/);
-const videoRegex = new RegExp(/video\/.*/);
-const audioRegex = new RegExp(/audio\/.*/);
-const applicationRegex = new RegExp(/application\/webapp/);
-const reusableRegex = new RegExp(/application\/reusable/);
-
-
-const caltaTemplate = ()=> `<div> Hola buenas </div>`;
 
 /** OUTGOING MESSAGES **/
 const error = (msg) => ({type: "ERROR", payload: {msg}});
@@ -115,7 +112,7 @@ const requestHint = (score, status, category) => socket.emit("REQUEST_HINT", {sc
 
 /** INCOMING MESSAGES **/
 const onConnect = () => {
-  console.info("Connected");
+  //console.info("Connected");
   if (alertMsg) {
     $('.alert').remove();
     alertMsg = createAlert("success", i18n["connected"]);
@@ -123,7 +120,7 @@ const onConnect = () => {
 };
 
 const onDisconnect = () => {
-  console.log("Disconnect")
+  //console.log("Disconnect")
   $('.alert').remove();
   setTimeout(()=>{
     alertMsg = createAlert("danger", i18n["disconnect"], true);
@@ -131,7 +128,7 @@ const onDisconnect = () => {
 };
 
 const onReconnect = () => {
-  console.log("Reconnect")
+  //console.log("Reconnect")
   $('.alert').remove();
   alertMsg = createAlert("warning", i18n["reconnect"], true);
 };
@@ -490,27 +487,27 @@ const updateSuperados = (puzzleOrder) => {
 var insertContent =async (type, payload, puzzles, index, prevIndex) => {
   var content = "";
   switch(type){
+    case "text":
+      const text = (payload.text || "").toString();
+      content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(text)}</div>`;
+      break;
+    case "reusablePuzzleInstance":
+      content = reusablePuzzleTemplate(escapeUnsafeHtml(payload.url),payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
+      break;
+    case "scene":
+      content = sceneTemplate(escapeUnsafeHtml(payload.url),payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
+      break;
     case "countdown":
       content = countdownTemplate();
       break;
     case "ranking":
       content = rankingEmptyTemplate();
       break;
-    case "reusable":
-      const replacedURL = (payload.url || "").toString().replaceAll("__ESCAPP_USER__",encodeURIComponent(username)).replaceAll("__ESCAPP_TOKEN__",token).replaceAll("__ESCAPP_LOCALE__",ER.locale).replaceAll("__ESCAPP_ENDPOINT__",encodeURIComponent(ER.escappEndpoint))
-      content = reusablePuzzleTemplate(escapeUnsafeHtml(replacedURL),payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
-      break;
-    case "text":
-      const replacedText = (payload.text || "").toString().replaceAll("__ESCAPP_USER__",encodeURIComponent(username)).replaceAll("__ESCAPP_TOKEN__",token).replaceAll("__ESCAPP_LOCALE__",ER.locale).replaceAll("__ESCAPP_ENDPOINT__",encodeURIComponent(ER.escappEndpoint))
-      content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(replacedText)}</div>`;
-      break;
     case "progress":
       content = progressBarTemplate();
       break;
-    case "catalog":
-        content = await catalogTemplate(payload);
-      break;
     default:
+      break;
   }
   var htmlContent = $(blockTemplate(content, index));
   if (prevIndex === null) {
@@ -945,5 +942,4 @@ $( ()=>{
   let blockIndexes  = (window.ER.erState.content || []).map(b=>b.index);
   autoPlay(blockIndexes);
   setPuzzleLS(blockIndexes);
-
 });

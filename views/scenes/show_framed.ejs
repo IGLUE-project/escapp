@@ -1,0 +1,10 @@
+<%- include ("../partials/_header.ejs") %>
+
+<%- include ("_scene_maker_config", {editor: false, preview, sceneId, sceneJSON, escapeRoomId, nPuzzles, user, lang}) %>
+<!-- <%- include ("_scene_maker_scale", {editor: false}) %> -->
+
+<div id="scene_maker_container" class="scene_container">
+  <iframe id="scene_maker_iframe" src="/scene_maker/viewer" width="1200" height="750" allowfullscreen></iframe>
+</div>
+
+<%- include ("../partials/_footer.ejs") %>

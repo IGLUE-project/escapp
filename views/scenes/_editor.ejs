@@ -1,0 +1,613 @@
+<section id="slides_panel" class="slides slides_editor">
+
+		<!-- Force browser to preload some Editor icons -->
+		<img src="/scene_maker/images/thumbs/text_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/thumbs/image_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/thumbs/object_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/thumbs/video_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/icons/ve_delete_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/icons/delete_content_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/vicons/close.png" style="display:none"/>
+		<img src="/scene_maker/images/vicons/close2.png" style="display:none"/>
+		<img src="/scene_maker/images/vicons/close2_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/icons/slide_add_background_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/libs/jquery.carouFredSel/carousel_sprite.png" style="display:none"/>
+		<img src="/scene_maker/images/slidesthumbs/screen_templateh.png" style="display:none"/>
+		<img src="/scene_maker/images/slidesthumbs/view_content_templateh.png" style="display:none"/>
+
+		<!-- Toolbar -->
+		<div id="toolbar_wrapper">
+			<div id="toolbar_menu">
+				<!-- MENU -->
+				<ul id="menu" style="display:none">
+					<li class="current">
+						<a class="menu_option_main" href="#">
+							<img id="menuButton" src="/scene_maker/images/toolbar/menu_button.png"/>
+						</a>
+						<ul class="menu_option_main">
+							<li>
+								<a class="menu_option menu_action" action="displaySettings">
+									<i class="icon-button icon-cog"></i>
+									<span i18n-key="i.Settings">Settings</span>
+								</a>
+							</li>
+ 							<li>
+								<a class="menu_option menu_action" action="onSaveButtonClicked">
+									<i class="icon-button icon-save"></i>
+									<span i18n-key="i.Save">Save</span>
+								</a>
+							</li>
+							<li>
+								<a class="menu_option menu_action" action="preview">
+									<i class="icon-button icon-eye-open"></i>
+									<span i18n-key="i.Preview">Preview</span>
+								</a>
+							</li>
+							<li>
+								<a class="menu_option menu_action" action="addScreen">
+									<i class="icon-button icon-plus"></i> 
+									<span i18n-key="i.AddScreen">Add Screen</span>
+								</a>
+							</li>
+							<li>
+								<a class="menu_option menu_action" action="addView">
+									<i class="icon-button icon-plus"></i> 
+									<span i18n-key="i.AddView">Add View</span>
+								</a>
+							</li>
+							<li>
+								<a class="menu_option menu_action" action="exit">
+									<i class="icon-button icon-reply"></i>
+									<span i18n-key="i.Exit">Exit</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+			<div id="toolbar_scene">
+				<a id="toolbar_settings_button" class="tool_action" action="displaySettings" href="#">
+					<div class="toolbar_btn toolbar_scene_wrapper">
+						<button type="button" class="btn_toolbar">
+							<i class="icon-button icon-cog"></i>
+						</button>
+						<p class="toolbar_scene_title" i18n-key="i.Settings">Settings</p>
+					</div>
+				</a>
+				<a id="toolbar_save" class="tool_action" action="save" href="#">
+					<div class="toolbar_btn toolbar_scene_wrapper save">
+						<button type="button" class="btn_toolbar">
+							<i class="icon-button icon-save"></i>
+						</button>
+						<p class="toolbar_scene_title" i18n-key="i.Save">Save</p>
+					</div>
+				</a>
+				<a id="toolbar_preview" class="tool_action" action="preview" href="#">
+					<div id="toolbar_preview_wrapper" class="toolbar_btn toolbar_scene_wrapper">
+						<button type="button" class="btn_toolbar">
+							<i class="icon-button icon-eye-open"></i>
+						</button>
+						<p class="toolbar_scene_title" i18n-key="i.Preview">Preview</p>
+					</div>
+				</a>
+			</div>
+			<div id="toolbar_slide">
+				<div class="subToolbar toolbar_btn tool_action" action="changeBackground">
+					<img class="toolbar_icon" src="/scene_maker/images/toolbar/change_background.png"/>
+					<p i18n-key="i.Background">Background</p>
+				</div>
+				<div class="subToolbar toolbar_btn tool_action" action="addHotspot">
+					<img class="toolbar_icon" src="/scene_maker/images/toolbar/add_hotspot.png"/>
+					<p i18n-key="i.AddHotspot">Add hotspot</p>
+				</div>
+				<div class="subToolbar toolbar_btn tool_action" action="addHotzone">
+					<img class="toolbar_icon" src="/scene_maker/images/toolbar/add_zone.png"/>
+					<p i18n-key="i.AddZone">Add zone</p>
+				</div>
+				<div class="subToolbar toolbar_btn tool_action" action="addCaption">
+					<img class="toolbar_icon" src="/scene_maker/images/toolbar/add_caption.png"/>
+					<p i18n-key="i.AddCaption">Add caption</p>
+				</div>
+			</div>
+			<div id="toolbar_element">
+				<div id="toolbar_settings_wrapper" class="subToolbar toolbar_btn tool_action toolbar_hotspot toolbar_hotzone toolbar_object toolbar_web" style="display:none" action="showElementSettings">
+					<img class="toolbar_icon" src="/scene_maker/images/toolbar/properties.png"/>
+					<p i18n-key="i.Properties">Properties</p>
+				</div>
+				<div class="subToolbar toolbar_btn tool_action toolbar_hotspot toolbar_hotzone" action="deleteHotmarker">
+					<img class="toolbar_icon" src="/scene_maker/images/toolbar/delete.png"/>
+					<p i18n-key="i.Delete">Delete</p>
+				</div>
+				<div id="toolbar_text" class='toolbar_text' style="display:none"></div>
+			</div>
+			<a id="toolbar_exit_btn" class="tool_action" action="exit" href="#">
+				<div id="toolbar_exit">
+					<img src="/scene_maker/images/toolbar/exit_btn.png">
+					<p class="toolbar_scene_title" i18n-key="i.Exit">Exit</p>
+				</div>
+			</a>
+		</div>
+		
+		<div id="leftside">
+			<div id="screens_list_actions">
+				<a id="addScreenButton" href="#">
+					<button type="button" class="slidesScrollbarButton">
+						<i class="icon-plus"></i>
+						<span i18n-key="i.AddScreen">Add Screen</span>
+					</button>
+				</a>
+			</div>
+			<div id="screens_list"></div>
+		</div>
+
+		<div id="bottomside" style="display:none">
+			<div id="screen_selected">
+				<img id="screen_selected_img" class="image_slidethumbnail">
+			</div>
+			<div id="views_wrapper">
+				<div id="views_list_actions">
+					<a id="addViewButton" href="#">
+						<button type="button" class="slidesScrollbarButton">
+							<i class="icon-plus"></i>  
+							<span i18n-key="i.AddView">Add View</span>
+						</button>
+					</a>
+				</div>
+				<div id="views_list"></div>
+			</div>
+		</div>
+	</section>
+
+	<div id="hidden_links" style="display: none;">
+		<!-- Hidden link to open preview -->
+		<a id="preview_action"></a>
+		<!-- Hidden link to open fancybox when adding a view -->
+		<a id="addViewFancybox" href="#thumbcontent"></a>
+		<!-- Hidden link to open scene settings -->
+		<a id="edit_scene_details" href="#scene_details"></a>
+		<!-- Hidden link for loading fancybox -->
+		<a id="fancyLoad" href="#loading_fancy"></a>
+		<!-- Hidden link to open notification template -->
+		<a id="link_to_notification_template" href="#notification_template_cloned"></a>
+	</div>
+
+	<!-- Initial screen to input the basic scene data -->
+	<div style='display:none'>    
+		<div id="scene_details">
+			<div id="scene_details_fields">
+				<div id="settings_header">
+					<img id="scene_details_logo" src="/scene_maker/images/logos/scene_maker.png">
+				</div>
+				<div id="scene_details_fields_row1" class="scene_details_fields_row">
+					<div id="scene_details_title" class="scene_details_field">
+						<div class="scene_details_fieldTitle" i18n-key="i.Title">Title</div>
+						<div class="scene_details_fieldContent">
+							<input id="scene_details_input_title" type="text" placeholder="Untitled" i18n-key="i.Untitled" maxlength="100">
+						</div>
+					</div>
+					<div id="scene_details_aspectRatio" class="scene_details_field">
+						<div class="scene_details_fieldTitle" i18n-key="i.AspectRatio">Aspect ratio</div>
+						<div class="scene_details_fieldContent">
+							<select id="scene_details_select_aspectRatio" class="scene_details_select">
+								<option value="4:3" selected>4:3</option>
+								<option value="16:9">16:9</option>
+							</select>
+						</div>
+					</div>
+					<div id="sceneActions" class="actions_container scene_details_field">
+						<div class="scene_details_fieldTitle" i18n-key="i.SceneActions">Actions</div>
+						<div class="scene_details_fieldContent">
+							<button type="button" class="button add_action">
+								<i class="icon-plus"></i> 
+								<span i18n-key="i.NewAction">Add action</span> 
+							</button>
+						</div>
+					</div>
+				</div>
+				<div id="scene_details_fields_row2" class="scene_details_fields_row">
+					<button id="save_scene_details" type="button" class="button" i18n-key="i.Continue" i18n-key-disabledtooltip="i.tooltip.continueDisabled">Continue</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Add view fancybox -->
+	<div style='display:none'>
+		<div id='thumbcontent'>
+			<div class='fancy_tabs' id='thumcontent_tabs'>
+				<ul>
+					<li>
+						<a href="#" id="tab_views" class="fancy_tab tabbable" i18n-key="i.Views">Views</a>
+					</li>
+				</ul>
+			</div> 
+			<div id='tab_views_content' class="fancy_tab_content" style='display:none' > 
+				<div class="tab_views_content">
+					<div class="tab_views_templates">
+						<p class="select_view_text" i18n-key="i.ViewsType">Choose view type</p>
+						<div class="templateselectlist">
+							<div class='viewthumb' type='view_image'>
+								<div><img src="/scene_maker/images/slidesthumbs/blank.png"/></div>
+								<p i18n-key="i.ViewsTypeImage">Image</p>
+							</div>
+							<div class='viewthumb' type='view_content'>
+								<div><img src="/scene_maker/images/slidesthumbs/blank.png"/></div>
+								<p i18n-key="i.ViewsTypeOther">Other content</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div style='display:none'>
+		<div id='menuselect' class="menuselect_hide">
+			<!-- <a class="addpicture" href="#picture_fancybox">
+				<div class='thumbicon picthumb' i18n-key="i.Image" title="Image"></div>
+			</a> -->
+			<a class="addobject" href="#object_fancybox">
+				<div class='thumbicon objectthumb' i18n-key="i.Web" title="Web"></div>
+			</a>
+			<a class="addvideo" href="#video_fancybox">
+				<div class='thumbicon videothumb' i18n-key="i.Multimedia" title="Multimedia"></div>
+			</a>
+			<a class='addtext' href="#">
+				<div class='thumbicon textthumb' i18n-key="i.Text" title="Text"></div>
+			</a>
+		</div>
+	</div>
+  
+	<!-- NOTIFICATIONS -->
+	<div id="notification_template_wrapper" style='display:none'></div>
+
+	<!-- Images -->
+	<a id="hidden_button_to_change_slide_background" href="#picture_fancybox" style="display:none"></a>
+
+	<div style='display:none'>
+		<div id="picture_fancybox" class="outer_box">
+			<div class="fancy_tabs" id="images_fancy_tabs_id">	   
+				<ul>
+					<li><a href="#" id="tab_pic_from_url" class="fancy_tab tabbable" i18n-key="i.Image">Image</a></li>
+				</ul>
+			</div>
+			<div id='tab_pic_from_url_content' class="fancy_tab_content">
+				<div class="box1 box1fancy1">
+					<div class="box1_section1">
+						<p i18n-key="i.AddImageURL" class="textfancy">Add image URL</p>
+					</div>
+					<div class="box1_section2">
+						<img class="image_add_url" src="/scene_maker/images/icons/url_img.png"/>
+						<input id="picture_url" class="input_text_fancy formsizefancy1 marginsfancy1" type="text" size="25" value="">
+					</div>
+					<div class="box1_section3">
+					<button id="picture_url_previewButton" type="button" class="button previewButton" i18n-key="i.Preview">Preview</button>
+					</div>
+				</div>
+				<div class="box2">
+					<div class="previewimgbox">
+						<button i18n-key="i.AddContent" type="button" class="button button_addContent">Add Content</button>
+					</div>
+				</div>
+			</div> 
+		</div>
+	</div>
+  
+	<!-- Objects -->
+	<div style='display:none'>
+		<div id="object_fancybox" class="outer_box">
+			<div class="fancy_tabs" id="object_fancy_tabs_id">	   
+				<ul>
+					<li><a href="#" id="tab_object_from_url" class="fancy_tab" i18n-key="i.Web">Web</a></li>
+				</ul>
+			</div>
+			<div id='tab_object_from_url_content' class="fancy_tab_content">
+				<div class="box1 box1fancy1">
+					<div class="box1_section1">
+						<p class="textfancy" i18n-key="i.AddWebURL">Add web URL</p>
+						</div>
+					<div class="box1_section2">
+						<img class="image_add_url" src="/scene_maker/images/icons/url_img.png"/>
+						<input id="object_web_input" type="text" class="input_text_fancy formsizefancy1 marginsfancy1">
+					</div>
+					<div class="box1_section3">
+						<button type="button" class="button previewButton" i18n-key="i.Preview">Preview</button>
+					</div>
+				</div>
+				<div class="box2">
+					<div class="previewimgbox">
+						<button i18n-key="i.AddContent" type="button" class="button button_addContent">Add Content</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Videos and audios -->
+	<div style='display:none'>
+		<div id="video_fancybox" class="outer_box">
+			<div class="fancy_tabs" id="video_fancy_tabs_id">	   
+				<ul>
+					<li><a href="#" id="tab_video_from_url" class="fancy_tab" i18n-key="i.Multimedia">Video & audio</a></li>
+				</ul>
+			</div>
+			<div id='tab_video_from_url_content' class="fancy_tab_content">
+				<div id="box1" class="box1 box1fancy1">
+					<div class="box1_section1">
+						<p class="textfancy"><span i18n-key="i.AddMultimediaURL">Add video or audio URL (YouTube or HTML5)</span></p>
+					</div>
+					<div class="box1_section2">
+						<img id="image_add_url" class="image_add_url" src="/scene_maker/images/icons/url_img.png"/>
+						<input class="input_text_fancy formsizefancy1 marginsfancy1">
+					</div>
+					<div class="box1_section3">
+						<button type="button" class="button previewButton" i18n-key="i.Preview">Preview</button>
+					</div>
+				</div>
+				<div id="box2" class="box2">
+					<div id="previewimgbox" class="previewimgbox">
+						<button i18n-key="i.AddContent" type="button" class="button button_addContent">Add Content</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Hotspot Settings -->
+	<div style='display:none'>
+		<div id="hotspotSettings_fancybox" class="elSettings_fancybox">
+			<p class="elsettings_fancybox_title" i18n-key="i.Properties">Properties</p>
+			<div class="sceneSettings_wrapper">
+				<div class="scene_settings_field scene_settings_field_first">
+					<label i18n-key="i.HotspotID">Hotspot ID:</label>
+					<input id="hotspotIdInput" type="text" readonly>
+				</div>
+				<div class="scene_settings_field">
+					<p i18n-key="i.Image">Image</p>
+					<div id="HotspotImageSourceWrapper" class="settings_element_wrapper">
+						<label i18n-key="i.ImageSource">Source:</label>
+						<select id="hotspotImageSource">
+							<option value="gallery" i18n-key="i.ImageSourceGallery" selected>Gallery</option>
+							<option value="url" i18n-key="i.ImageSourceURL">URL</option>
+						</select>
+					</div>
+					<div id="hotspotImageGallery"></div>
+					<div id="hotspotImageURLWrapper" class="settings_element_wrapper" style='display:none'>
+						<label i18n-key="i.ImageURL">URL:</label>
+						<input id="hotspotImageURL" type="text">
+					</div>
+					<div id="hotspotImageURLPreviewWrapper" class="settings_element_wrapper" style='display:none'></div>
+				</div>
+				<div class="scene_settings_field">
+					<p i18n-key="i.Position">Position</p>
+					<div id="HotspotPositionXWrapper" class="settings_element_wrapper">
+						<label i18n-key="i.PositionX">X (px):</label>
+						<input id="hotspotPositionX" type="number" step="1">
+					</div>
+					<div id="HotspotPositionYWrapper" class="settings_element_wrapper">
+						<label i18n-key="i.PositionY">Y (px):</label>
+						<input id="hotspotPositionY" type="number" step="1">
+					</div>
+				</div>
+				<div class="scene_settings_field">
+					<p i18n-key="i.Size">Size</p>
+					<input type="hidden" id="hotspotAspectRatio">
+					<div id="HotspotAspectRatioWrapper" class="settings_element_wrapper">
+						<label i18n-key="i.LockAspectRatio">Maintain aspect ratio:</label>
+						<input id="hotspotLockAspectRatio" type="checkbox" checked>
+					</div>
+					<div id="HotspotSizeWidthWrapper" class="settings_element_wrapper">
+						<label i18n-key="i.SizeWidth">Width:</label>
+						<input id="hotspotSizeWidth" type="number" value="42" step="1">
+					</div>
+					<div id="HotspotSizeHeightWrapper" class="settings_element_wrapper">
+						<label i18n-key="i.SizeHeight">Height:</label>
+						<input id="hotspotSizeHeight" type="number" value="42" step="1">
+					</div>
+				</div>
+				<div class="scene_settings_field">
+					<label i18n-key="i.Rotation">Rotation angle (°):</label>
+					<input type="number" id="hotspotRotation" min="0" max="360" value="0" step="1">
+				</div>
+				<div class="scene_settings_field">
+					<label i18n-key="i.Visibility">Visibility:</label>
+					<select id="hotspotVisibility">
+						<option value="visible" i18n-key="i.VisibilityVisible" selected>Visible</option>
+						<option value="hidden" i18n-key="i.VisibilityHidden">Hidden</option>
+					</select>
+				</div>
+				<div class="scene_settings_field">
+					<label i18n-key="i.CursorVisibility">Cursor on hover:</label>
+					<select id="hotspotCursorVisibility">
+						<option value="pointer" i18n-key="i.CursorVisibilityPointer" selected>Pointer</option>
+						<option value="default" i18n-key="i.CursorVisibilityDefault">No change</option>
+					</select>
+				</div>
+				<div id="hotspotActions" class="actions_container scene_settings_field scene_settings_field_last">
+					<p i18n-key="i.HotspotActions">Actions to perform when the hotspot is clicked</p>
+					<button type="button" class="button add_action">
+						<i class="icon-plus"></i> 
+						<span i18n-key="i.NewAction">Add action</span> 
+					</button>
+				</div>
+			</div>
+			<div class="elSettingsButtonsWrapper">
+				<button id="hotspotSettingsDone" type="button" class="button" i18n-key="i.Done">Done</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Hotzone Settings -->
+	<div style='display:none'>
+		<div id="hotzoneSettings_fancybox" class="elSettings_fancybox">
+			<p class="elsettings_fancybox_title" i18n-key="i.Properties">Properties</p>
+			<div class="sceneSettings_wrapper">
+				<div class="scene_settings_field scene_settings_field_first">
+					<label i18n-key="i.HotzoneID">Zone ID:</label>
+					<input id="hotzoneIdInput" type="text" readonly>
+				</div>
+				<div class="scene_settings_field">
+					<label i18n-key="i.Enabled">Enabled:</label>
+					<select id="hotzoneEnabled">
+						<option value="true" i18n-key="i.Yes" selected>Yes</option>
+						<option value="false" i18n-key="i.No">No</option>
+					</select>
+				</div>
+				<div class="scene_settings_field">
+					<label i18n-key="i.CursorVisibility">Cursor on hover:</label>
+					<select id="hotzoneCursorVisibility">
+						<option value="pointer" i18n-key="i.CursorVisibilityPointer" selected>Pointer</option>
+						<option value="default" i18n-key="i.CursorVisibilityDefault">No change</option>
+					</select>
+				</div>
+				<div id="hotzoneActions" class="actions_container scene_settings_field scene_settings_field_last">
+					<p i18n-key="i.HotzoneActions">Actions to perform when the zone is clicked</p>
+					<button type="button" class="button add_action">
+						<i class="icon-plus"></i> 
+						<span i18n-key="i.NewAction">Add action</span> 
+					</button>
+				</div>
+			</div>
+			<div class="elSettingsButtonsWrapper">
+				<button id="hotzoneSettingsDone" type="button" class="button" i18n-key="i.Done">Done</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Teamplate to add new actions -->
+	<div class="actionWrapper actionWrapperTemplate" style='display:none'>
+		<div class="delete_action"></div>
+		<div class="settings_element_wrapper setting_scene">
+			<label i18n-key="i.ActionEvent">Triggering event:</label>
+			<select class="actionEvent">
+				<option value="none" i18n-key="i.Unspecified">Undefined</option>
+				<option value="puzzleSolved" i18n-key="i.ActionEventPuzzleSolved">Puzzle solved</option>
+				<option value="slideRevealedFirstTime" i18n-key="i.ActionEventSlideRevealedFirstTime">Screen or view accessed for the first time</option>
+				<option value="slideRevealed" i18n-key="i.ActionEventSlideRevealed">Screen or view accessed</option>
+			</select>
+		</div>
+		<div class="settings_element_wrapper actionEventParamsSlide setting_scene" style='display:none'>
+			<label i18n-key="i.ActionParamsSlide">Screen or view:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper actionEventParamsPuzzle setting_scene" style='display:none'>
+			<label i18n-key="i.ActionParamsPuzzle">Puzzle:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper">
+			<label i18n-key="i.ActionType">Action:</label>
+			<select class="actionType">
+				<option value="none" i18n-key="i.Unspecified">Undefined</option>
+				<option value="goToScreen" i18n-key="i.ActionTypeGoToScreen">Go to screen</option>
+				<option value="openView" i18n-key="i.ActionTypeOpenView">Open view</option>
+				<option value="openLink" i18n-key="i.ActionTypeOpenLink">Open link</option>
+				<option value="showText" i18n-key="i.ActionTypeShowText">Show text</option>
+				<option value="showHotspot" i18n-key="i.ActionTypeShowHotspot">Show hotspot</option>
+				<option value="hideHotspot" i18n-key="i.ActionTypeHideHotspot">Hide hotspot</option>
+				<option value="enableHotzone" i18n-key="i.ActionTypeEnableHotzone">Enable zone</option>
+				<option value="disableHotzone" i18n-key="i.ActionTypeDisableHotzone">Disable zone</option>
+				<option value="changeBackground" i18n-key="i.ActionTypeChangeBackground">Change background of screen or view</option>
+				<option value="changeScreen" i18n-key="i.ActionTypeChangeScreen">Change screen</option>
+				<option value="playSound" i18n-key="i.ActionTypePlaySound">Play sound</option>
+				<option value="stopSound" i18n-key="i.ActionTypeStopSound">Stop sound</option>
+				<option value="solvePuzzle" i18n-key="i.ActionTypeSolvePuzzle">Solve escape room puzzle</option>
+			</select>
+		</div>
+		<div class="settings_element_wrapper ActionWarningChangeBackground" style='display:none'>
+			<label i18n-key="i.ActionWarningChangeBackground"></label>
+		</div>
+		<div class="settings_element_wrapper actionParamsScreen" style='display:none'>
+			<label i18n-key="i.ActionParamsScreen">Screen:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper actionParamsScreenReplacement" style='display:none'>
+			<label i18n-key="i.ActionParamsScreenReplacement">Replace with:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper actionParamsView" style='display:none'>
+			<label i18n-key="i.ActionParamsView">View:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper actionParamsSlide" style='display:none'>
+			<label i18n-key="i.ActionParamsSlide">Screen or view:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper actionParamsURL" style='display:none'>
+			<label i18n-key="i.ActionParamsURL">URL:</label>
+			<input type="text">
+		</div>
+		<div class="settings_element_wrapper actionParamsText" style='display:none'>
+			<label i18n-key="i.ActionParamsText">Text:</label>
+			<textarea maxlength="500" rows="3"></textarea>
+		</div>
+		<div class="settings_element_wrapper actionParamsHotspotId" style='display:none'>
+			<label i18n-key="i.HotspotID">Hotspot ID:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper actionParamsHotzoneId" style='display:none'>
+			<label i18n-key="i.HotzoneID">Zone ID:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper actionParamsPuzzle" style='display:none'>
+			<label i18n-key="i.ActionParamsPuzzle">Puzzle:</label>
+			<select></select>
+		</div>
+		<div class="settings_element_wrapper actionParamsPuzzleSolution" style='display:none'>
+			<label i18n-key="i.ActionParamsPuzzleSolution">Puzzle solution:</label>
+			<input type="text" readonly>
+		</div>
+	</div>
+
+	<!-- Caption fancybox -->
+	<div style='display:none'>
+		<div id="caption_fancybox" class="elSettings_fancybox">
+			<p class="elsettings_fancybox_title" i18n-key="i.SceneCaption">Scene caption</p>
+			<div class="sceneSettings_wrapper">
+				<div class="scene_settings_field scene_settings_field_first settings_element_wrapper">
+					<p i18n-key="i.SceneCaptionText">Text:</p>
+					<textarea id="captionText" rows="10"></textarea>
+				</div>
+				<div class="scene_settings_field">
+					<label i18n-key="i.SceneCaptionMode">Display mode:</label>
+					<select id="captionMode">
+						<option value="minimizable" i18n-key="i.SceneCaptionModeMinimizable">Can be minimized</option>
+						<option value="closable" i18n-key="i.SceneCaptionModeClosable">Can be closed</option>
+						<option value="fixed" i18n-key="i.SceneCaptionModeFixed">Always visible</option>
+					</select>
+				</div>
+			</div>
+			<div class="elSettingsButtonsWrapper">
+				<button id="captionDone" type="button" class="button" i18n-key="i.Done">Done</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Object Settings -->
+	<div style='display:none'>
+		<div id="objectSettings_fancybox" class="elSettings_fancybox">
+			<p class="elsettings_fancybox_title" i18n-key="i.Properties">Properties</p>
+			<input type="hidden" name="elId">
+			<div class="new_elsettings_field">
+				<input type="checkbox" defaultvalue="true" name="unloadObject">
+				<span i18n-key="i.OSettingsUnload">Unload the web page when hiding the view.</span>
+			</div>
+			<div class="new_elsettings_field">
+				<input type="checkbox" defaultvalue="false" name="addPreviewParamToObject">
+				<span i18n-key="i.OSettingsPreview">Include preview param in the URL.</span>
+			</div>
+			<div class="elSettingsButtonsWrapper">
+				<button id="objectSettingsDone" type="button" class="button" i18n-key="i.Done">Done</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Loading fancybox -->
+	<div id='loading_fancy_wrapper' style='display:none'>
+		<div id='loading_fancy' class="loading_fancy">
+			<img class="loading_fancy_img" src='/scene_maker/images/lightbox-ico-loading.gif'></img>
+		</div>
+	</div>
+
+	<!-- Waiting overlay -->
+	<div id='waiting_overlay'></div>

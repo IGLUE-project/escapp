@@ -45,7 +45,6 @@ exports.deleteExpiredUserSession = (req, res, next) => {
  *
  */
 exports.loginRequired = (req, res, next) => {
-    console.log(req.get("Referrer"));
     if (req.session.user) {
         if (!req.session.user.lastAcceptedTermsDate ||
             req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY) {
@@ -304,6 +303,7 @@ exports.create = async (req, res, next) => {
                 "id": user.id,
                 "name": user.alias,
                 "username": user.username,
+                "token": user.token,
                 "isAdmin": user.isAdmin,
                 "isStudent": user.isStudent,
                 "anonymized": user.anonymized,

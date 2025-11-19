@@ -561,6 +561,8 @@ exports.groupByTeamRetos = (retos, useIdInsteadOfOrder = false) => retos.reduce(
 
 exports.getERAssets = (escapeRoomId) => models.asset.findAll({"where": {escapeRoomId}, "order": [["createdAt", "ASC NULLS LAST"]]});
 
+exports.getERScenes = (escapeRoomId) => models.scene.findAll({"where": {escapeRoomId}, "order": [["createdAt", "ASC NULLS LAST"]]});
+
 exports.isValidEmail = (email, whitelist = []) => {
     // Basic email format validation regex
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -657,7 +659,6 @@ exports.findFirstAvailableFile = async (section, lang) => {
     return null;
 };
 
-
 exports.stepsCompleted = (escapeRoom) => {
     const step1 = Boolean(escapeRoom.title);
     const step2 = escapeRoom.puzzles && escapeRoom.puzzles.length > 0;
@@ -672,14 +673,10 @@ exports.stepsCompleted = (escapeRoom) => {
     return [step1, step2, step3, step4, step5, step6, step7, step8, step9];
 };
 
-exports.solutionSeparatorLength = (sol, sep = ";", oneIsSplit = false) => {
-    if (sol && sol.length > 0) {
-        if (sol.includes(sep)) {
-            return sol.split(sep).length;
-        } else if (oneIsSplit) {
-            return 1;
-        }
-        return sol.length;
-    }
-    return 0;
+exports.getHostname = (req) => {
+    return process.env.APP_NAME? 
+    `${req.protocol}://${process.env.APP_NAME}${
+        process.env.PORT && process.env.PORT !== '80' && process.env.PORT !== '443' ? `:${process.env.PORT}` : ''
+    }`
+    : "http://localhost:3000";
 };

@@ -6,7 +6,7 @@ const cloudinary = require("cloudinary");
 const query = require("../queries");
 const attHelper = require("../helpers/attachments");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getReusablePuzzlesInstances, stepsCompleted} = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted} = require("../helpers/utils");
 const {
     toArray,
     statSafe,
@@ -33,7 +33,6 @@ exports.load = async (req, res, next, escapeRoomId) => {
         if (escapeRoom && res.locals) {
             req.escapeRoom = escapeRoom;
             const editing = req.session && req.session.user && !req.session.user.isStudent;
-
             res.locals.i18n_lang = getLocaleForEscapeRoom(req, escapeRoom, editing);
             res.locals.i18n_texts = getTextsForLocale(res.locals.i18n_lang);
             res.locals.i18n = res.locals.i18n_texts;
@@ -538,18 +537,6 @@ exports.teamInterface = async (req, res, next) => {
     try {
         const {escapeRoom} = req;
 
-        const availableReusablePuzzles = await getReusablePuzzles();
-        const assets = await getERAssets(escapeRoom.id);
-        let reusablePuzzlesInstances = await getReusablePuzzlesInstances(escapeRoom.id);
-
-        reusablePuzzlesInstances = reusablePuzzlesInstances.map((puzzleInstance) => ({
-            "id": puzzleInstance.id,
-            "name": puzzleInstance.name,
-            "reusablePuzzleId": puzzleInstance.reusablePuzzleId,
-            "config": puzzleInstance.config,
-            "puzzles": puzzleInstance.puzzles.map((p) => p.id)
-        }));
-
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
         escapeRoom.puzzles = escapeRoom.puzzles.map((puzzle) => ({
             "id": puzzle.id,
@@ -559,7 +546,22 @@ exports.teamInterface = async (req, res, next) => {
             "reusablePuzzleInstances": puzzle.reusablePuzzleInstances.map((p) => p.id)
         }));
 
-        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "team", "endPoint": "team", assets, reusablePuzzlesInstances, availableReusablePuzzles});
+        const assets = await getERAssets(escapeRoom.id);
+        const scenes = await getERScenes(escapeRoom.id);
+
+        const availableReusablePuzzles = await getReusablePuzzles();
+
+        let reusablePuzzlesInstances = await getReusablePuzzlesInstances(escapeRoom.id);
+        reusablePuzzlesInstances = reusablePuzzlesInstances.map((puzzleInstance) => ({
+            "id": puzzleInstance.id,
+            "name": puzzleInstance.name,
+            "updatedAt": puzzleInstance.updatedAt,
+            "reusablePuzzleId": puzzleInstance.reusablePuzzleId,
+            "config": puzzleInstance.config,
+            "puzzles": puzzleInstance.puzzles.map((p) => p.id)
+        }));
+
+        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "team", "endPoint": "team", assets, scenes, reusablePuzzlesInstances, availableReusablePuzzles});
     } catch (e) {
         req.flash("error", res.locals.i18n.common.flash.errorEditingER);
         next(e);
