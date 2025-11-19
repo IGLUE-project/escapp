@@ -1,6 +1,37 @@
 const fs = require("fs/promises");
 const fsSync = require("fs");
 const path = require("path");
+const { fileTypeFromFile } = require('file-type');
+const mimeTypesRegexs = {
+    "zip": new RegExp(/application\/(zip|x-zip-compressed|x-zip)/),
+    "image": new RegExp("image\/.*"),
+    "video": new RegExp(/video\/(mp4|webm)/),
+    "audio": new RegExp("audio\/.*"),
+    "pdf": new RegExp("application\/pdf")
+}
+const mimeTypesRegexsEntries = Object.entries(mimeTypesRegexs);
+
+const getAssetTypeFromMimeType = function(mimetype){
+    for (const [key, regex] of mimeTypesRegexsEntries) {
+        if (regex.test(mimetype)) {
+            return key;
+        }
+    }
+    return "unknown";
+};
+exports.getAssetTypeFromMimeType = getAssetTypeFromMimeType;
+
+exports.getDataForFile = async function(filePathFull){
+    let fileType = await fileTypeFromFile(filePathFull);
+    if (fileType && fileType.ext) {
+        fileType.ext = '.' + fileType.ext;
+    }
+    return {
+        "assetType": getAssetTypeFromMimeType(fileType.mime),
+        "mimetype": fileType.mime,
+        "extension": fileType.ext
+    };
+};
 
 exports.deleteResource = async function (fileId, model, folderNameInsideUploads) {
     const inUse = await model.count({"where": {"public_id": fileId}});

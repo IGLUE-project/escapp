@@ -1,22 +1,18 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
+const {getDataForFile} = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {ckeditorResponse, getHostname} = require("../helpers/utils");
 const {getLocaleForEscapeRoom} = require("../helpers/I18n");
 const queries = require("../queries");
 const path = require("path");
-
-const fs = require("fs");
+const fs = require("fs/promises");
+const fsSync = require("fs");
+const { fileTypeFromFile } = require('file-type');
 const StreamZip = require("node-stream-zip");
-const mimeTypesRegexs = {
-    "zip": new RegExp(/application\/(zip|x-zip-compressed|x-zip)/),
-    "image": new RegExp("image\/.*"),
-    "video": new RegExp(/video\/(mp4|webm)/),
-    "audio": new RegExp("audio\/.*"),
-    "pdf": new RegExp("application\/pdf")
-}
-const mimeTypesRegexsEntries = Object.entries(mimeTypesRegexs);
+
+
 
 // POST /escapeRooms/:escapeRoomId/assets/new
 exports.uploadAsset = async (req, res) => {
@@ -25,26 +21,26 @@ exports.uploadAsset = async (req, res) => {
     const userId = req.session.user && req.session.user.id;
 
     try {
-        const assetMimetype = req.file.mimetype;
-        let assetType = null;
-        for (const [key, regex] of mimeTypesRegexsEntries) {
-            if (regex.test(assetMimetype)) {
-                assetType = key;
-                break;
-            }
-        }
-        if(assetType === null){
-            assetType = "unknown";
+        let assetFilePath = "/" + req.file.path;
+        let assetFilePathFull = path.join(__dirname, "..", assetFilePath);
+        let assetFileType = await getDataForFile(assetFilePathFull);
+        let assetFileId = path.parse(req.file.filename).name;
+        let assetFileName = req.file.originalname;
+
+        let assetFileExtension = path.extname(req.body.filename); 
+        if(assetFileType.extension !== assetFileExtension){
+            let newAssetFilePath = "/uploads/" + assetFileName;
+            let newAssetFilePathFull = path.join(__dirname, "..", newAssetFilePath);
+            await fs.rename(assetFilePathFull, newAssetFilePathFull);
+            assetFilePath = newAssetFilePath;
+            assetFilePathFull = newAssetFilePathFull;
         }
 
-        let assetFileId = path.parse(req.file.filename).name;
-        let assetFilePath = "/" + req.file.path;
-        let assetFileExtension = path.extname(req.body.filename); 
         let assetContentPath = assetFilePath;
 
-        const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "assetType": assetType, "mimetype": assetMimetype, "fileId": assetFileId, "filePath": assetFilePath, "fileExtension": assetFileExtension, "filename": req.body.filename, "contentPath": assetContentPath, userId }).save();
+        const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "assetType": assetFileType.assetType, "mimetype": assetFileType.mimetype, "fileId": assetFileId, "filePath": assetFilePath, "fileExtension": assetFileType.extension, "filename": assetFileName, "contentPath": assetContentPath, userId }).save();
 
-        if (assetType === "zip") {
+        if (asset.assetType === "zip") {
             let isWebapp = false;
             const zip = new StreamZip.async({ "file": req.file.path });
             const entries = await zip.entries();
@@ -55,9 +51,9 @@ exports.uploadAsset = async (req, res) => {
                 }
             }
             if (isWebapp) {
-                const assetContentPathFolder = "/uploads/webapps/" + path.parse(req.file.filename).name;
+                const assetContentPathFolder = "/uploads/webapps/" + assetFileId;
                 const assetContentPathFolderFull = path.join(__dirname, `..${assetContentPathFolder}`);
-                fs.mkdirSync(assetContentPathFolderFull);
+                fsSync.mkdirSync(assetContentPathFolderFull);
                 await zip.extract(null, assetContentPathFolderFull);
                 await zip.close();
                 const assetContentPath = assetContentPathFolder + "/index.html";
@@ -154,7 +150,7 @@ exports.getAsset = async (req, res, next) => {
         const filePath = path.join(__dirname, "..", asset.filePath);
         switch(asset.assetType){
         case "video":
-            const stat = fs.statSync(filePath);
+            const stat = fsSync.statSync(filePath);
             const fileSize = stat.size;
             const {range} = req.headers;
             if (range) {
@@ -162,7 +158,7 @@ exports.getAsset = async (req, res, next) => {
                 const start = parseInt(parts[0], 10);
                 const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
                 const chunkSize = end - start + 1;
-                const stream = fs.createReadStream(filePath, { start, end });
+                const stream = fsSync.createReadStream(filePath, { start, end });
                 const head = {
                     "Content-Range": `bytes ${start}-${end}/${fileSize}`,
                     "Accept-Ranges": "bytes",
@@ -177,7 +173,7 @@ exports.getAsset = async (req, res, next) => {
                     "Content-Type": "video/mp4"
                 };
                 res.writeHead(200, head);
-                fs.createReadStream(filePath).pipe(res);
+                fsSync.createReadStream(filePath).pipe(res);
             }
             return;
         case "webapp":
@@ -206,7 +202,7 @@ exports.getAsset = async (req, res, next) => {
             res.render("reusablePuzzles/reusablePuzzleContainer", {basePath, config, "file": indexFile, "layout": false});
             return;
         case "pdf":
-            const data = fs.readFileSync(filePath);
+            const data = fsSync.readFileSync(filePath);
             res.setHeader("Content-Type", "application/pdf");
             res.contentType("application/pdf");
             res.send(data);

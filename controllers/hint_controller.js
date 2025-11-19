@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const http = require("https");
-const attHelper = require("../helpers/attachments");
+const uploadsHelper = require("../helpers/uploads");
 const fs = require("fs/promises");
 const fsSync = require("fs");
 const path = require("path");
@@ -104,7 +104,7 @@ exports.updateHints = async (req, res) => {
             if (!req.file) {
                 //Delete old attachment
                 if (escapeRoom.hintApp) {
-                    await attHelper.deleteResource(escapeRoom.hintApp.public_id, models.hintApp, "hints");
+                    await uploadsHelper.deleteResource(escapeRoom.hintApp.public_id, models.hintApp, "hints");
                     await escapeRoom.hintApp.destroy();
                 }
             } else {
@@ -120,7 +120,7 @@ exports.updateHints = async (req, res) => {
                     hintApp.mime = req.file.mimetype;
                     await hintApp.save();
                     if (oldFileId) {
-                        await attHelper.deleteResource(oldFileId, models.hintApp, "hints");
+                        await uploadsHelper.deleteResource(oldFileId, models.hintApp, "hints");
                     }
                 } catch (e) {
                     console.error(e.message);

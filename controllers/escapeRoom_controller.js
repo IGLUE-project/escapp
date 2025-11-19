@@ -3,7 +3,7 @@ const {QueryTypes} = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const query = require("../queries");
-const attHelper = require("../helpers/attachments");
+const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted} = require("../helpers/utils");
 const {
@@ -638,7 +638,7 @@ exports.clone = async (req, res, next) => {
         }
 
         lang = lang || "en";
-        assets = assets && assets.length ? [...assets].filter(a => a.assetType).map((asset) => ({...attHelper.getFieldsForAsset(asset), "userId": authorId})) : undefined;
+        assets = assets && assets.length ? [...assets].filter(a => a.assetType).map((asset) => ({...uploadsHelper.getFieldsForAsset(asset), "userId": authorId})) : undefined;
 
         const escapeRoom = models.escapeRoom.build({
             "title": newTitle,
@@ -689,9 +689,9 @@ exports.clone = async (req, res, next) => {
                 score,
                 "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
             })),
-            "hintApp": hintApp ? attHelper.getFields(hintApp) : undefined,
+            "hintApp": hintApp ? uploadsHelper.getFields(hintApp) : undefined,
             "assets": assets,
-            "attachment": attachment ? attHelper.getFields(attachment) : undefined
+            "attachment": attachment ? uploadsHelper.getFields(attachment) : undefined
         }, {include});
 
         const saved = await escapeRoom.save({transaction});
