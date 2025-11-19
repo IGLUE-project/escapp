@@ -14,14 +14,16 @@ const StreamZip = require("node-stream-zip");
 // GET /escapeRooms/:escapeRoomId/assets
 exports.assets = async (req, res, next) => {
     const {escapeRoom} = req;
-    const {mode} = req.query || "default";
-
+    let mode;
+    if(req.query.CKEditor){
+        mode = "CKEditor";
+    } else {
+        mode = "default";
+    }
     try {
         const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
-            const {id, public_id, url, mime, filename} = a;
-            return {id, public_id, url, mime, "name": filename};
+            return {id: a.id, fileId: a.fileId, url: (req.app.locals.FULL_APP_NAME + a.url), mimetype: a.mimetype, "name": a.filename};
         });
-
         res.render("escapeRooms/steps/assets", {escapeRoom, assets, "progress": "assets", mode});
     } catch (e) {
         next(e);
@@ -33,8 +35,8 @@ exports.fetchAssets = async (req, res, next) => {
     const {escapeRoom} = req;
     try {
         const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
-            const {id, public_id, url, mime, filename} = a;
-            return {id, public_id, url, mime, "name": filename};
+            const {id, fileId, url, mime, filename} = a;
+            return {id, fileId, url, mime, "name": filename};
         });
         res.json(assets);
     } catch (e) {
@@ -85,7 +87,6 @@ exports.uploadAssets = async (req, res) => {
 
         const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "assetType": assetType, "mimetype": assetMimetype, "fileId": assetFileId, "filePath": assetFilePath, "fileExtension": assetFileExtension, "filename": req.body.filename, "contentPath": assetContentPath, userId }).save();
 
-        let assetUrl = "/assets/" + asset.id + asset.fileExtension;
         if (assetType === "zip") {
             let isWebapp = false;
             const zip = new StreamZip.async({ "file": req.file.path });
@@ -103,11 +104,9 @@ exports.uploadAssets = async (req, res) => {
                 await zip.extract(null, assetContentPathFolderFull);
                 await zip.close();
                 const assetContentPath = assetContentPathFolder + "/index.html";
-                assetUrl = "/assets/" + asset.id + "/index.html";
+                const assetUrl = "/assets/" + asset.id + "/index.html";
                 await asset.update({ "assetType": "webapp", "contentPath": assetContentPath, "url": assetUrl });
             }
-        } else {
-            await asset.update({ "url": assetUrl });
         }
         res.json({asset});
     } catch (error) {
