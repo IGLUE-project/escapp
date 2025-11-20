@@ -74,6 +74,11 @@ exports.startPlaying = async (req, res, next) => {
     const {i18n} = res.locals;
 
     try {
+        if(req.participant_is_admin === true) {
+            //TO DO
+            throw new Error("Not implemented yet");
+        }
+
         const {automaticAttendance, duration, hintLimit, attendanceScore, scoreHintSuccess, scoreHintFail} = req.escapeRoom;
         const puzzles = await getERPuzzles(req.escapeRoom.id);
         const team = await models.team.findOne({

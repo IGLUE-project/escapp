@@ -179,5 +179,10 @@ module.exports = function (sequelize, DataTypes) {
             return `/images/puzzle${getColorForEscapeRoomThumbnail(this.id)}.png`;
         }
     };
+
+    EscapeRoom.prototype.isFullyPublic = function() {
+        return (this.status === 'completed')&&(this.scope === 'public')&&(this.allowGuests);
+    };
+
     return EscapeRoom;
 };
