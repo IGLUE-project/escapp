@@ -24,6 +24,13 @@ exports.getAssetTypeFromMimeType = getAssetTypeFromMimeType;
 
 exports.getDataForFile = async function(filePathFull){
     let fileType = await fileTypeFromFile(filePathFull);
+    if(typeof fileType === "undefined"){
+        return {
+            "assetType": "unknown",
+            "mimetype": "unknown",
+            "extension": ""
+        };
+    }
     if (fileType && fileType.ext) {
         fileType.ext = '.' + fileType.ext;
     }

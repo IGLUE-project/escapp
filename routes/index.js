@@ -96,7 +96,7 @@ router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequ
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.test);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.participantRequired, playController.startPlaying, playController.play);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.export);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.returnThumbnail);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", sessionController.loginRequired, escapeRoomController.returnThumbnail);
 
 // Edit escape room steps
 router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.turnos);
