@@ -489,14 +489,12 @@ exports.sharingUpdate = async (req, res) => {
             escapeRoom.license = body.license;
             if ((escapeRoom.status === "draft" || !escapeRoom.status) && body.status === "completed") {
                 escapeRoom.publishedOnce = true;
-                if (escapeRoom.scope !== "private") {
-                    await models.turno.create({"place": "_PUBLIC", "status": "active", "escapeRoomId": escapeRoom.id }, {transaction});
-                }
             }
         }
-
-        escapeRoom.status = body.status;
-        escapeRoom.allowGuests = body.allowGuests === "on";
+        if(typeof body.status !== "undefined"){
+            escapeRoom.status = body.status;
+        }
+        escapeRoom.allowGuests = (body.allowGuests === "on");
 
         const instructionsFile = req.file;
 
@@ -515,7 +513,6 @@ exports.sharingUpdate = async (req, res) => {
             }
             escapeRoom.instructions = null;
         }
-
 
         await escapeRoom.save({"fields": ["invitation", "scope", "license", "instructions", "status", "publishedOnce", "allowGuests"], transaction});
         await transaction.commit();

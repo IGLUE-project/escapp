@@ -72,9 +72,7 @@ exports.turnos = async (req, res, next) => {
     res.redirect(`/escapeRooms/${escapeRoom.id}/activate`);
     try {
         escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
-
         const {turnos} = escapeRoom;
-
         res.render("escapeRooms/steps/turnos", {escapeRoom, turnos, "progress": "turnos"});
     } catch (e) {
         next(e);
@@ -84,10 +82,8 @@ exports.turnos = async (req, res, next) => {
 // GET /escapeRooms/:escapeRoomId/activate
 exports.indexActivate = async (req, res, next) => {
     const {escapeRoom} = req;
-
     try {
         const turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
-
         res.render("turnos/_indexActivate.ejs", {turnos, escapeRoom});
     } catch (e) {
         next(e);
@@ -102,7 +98,6 @@ exports.activate = async (req, res, next) => {
 
     try {
         const turno = await models.turno.findByPk(body.turnSelected);
-
         if (turno.status === "pending") {
             turno.status = "active";
             turno.startTime = new Date();

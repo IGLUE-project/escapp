@@ -37,7 +37,7 @@ function isCoAuthorPending(user, er) {
     );
 }
 function isStudent(user) {
-    return Boolean(req.session.user.isStudent);
+    return Boolean(user.isStudent);
 }
 
 async function isParticipant(user,er,includeTest = false) {
@@ -118,7 +118,7 @@ exports.loginOrGuestAccessRequired = (req, res, next) => {
 
 exports.adminOrAuthorOrCoauthorOrParticipantOrErPublicRequired = async(req, res, next) => {
     const er = req.escapeRoom;
-    if (er && er.isFullyPublic()) {
+    if (er && er.isPubliclyAccessible) {
         return next();
     }
     const user = req.session.user;

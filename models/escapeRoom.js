@@ -172,16 +172,12 @@ module.exports = function (sequelize, DataTypes) {
         return color;
     };
 
-    EscapeRoom.prototype.getThumbnailUrl = function () {
+    EscapeRoom.prototype.getThumbnailUrl = function (){
         if(this.attachment){
             return this.attachment.getUrl();
         } else {
             return `/images/puzzle${getColorForEscapeRoomThumbnail(this.id)}.png`;
         }
-    };
-
-    EscapeRoom.prototype.isFullyPublic = function() {
-        return (this.status === 'completed')&&(this.scope === 'public')&&(this.allowGuests);
     };
 
     return EscapeRoom;

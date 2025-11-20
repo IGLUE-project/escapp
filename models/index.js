@@ -350,8 +350,9 @@ escapeRoom.hasMany(subject, {
     "hooks": true
 });
 
-
 //Hooks
+const escapeRoomHooks = require(path.join(__dirname, "escapeRoomHooks"));
+escapeRoomHooks({ escapeRoom, turno });
 const sceneHooks = require(path.join(__dirname, "sceneHooks"));
 sceneHooks({ scene, puzzle });
 
