@@ -2,7 +2,10 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const http = require("https");
-const attHelper = require("../helpers/attachments");
+const uploadsHelper = require("../helpers/uploads");
+const fs = require("fs/promises");
+const fsSync = require("fs");
+const path = require("path");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {validationError} = require("../helpers/utils");
 
@@ -40,16 +43,23 @@ exports.hintAppWrapper = async (req, res, next) => {
     }
 };
 
-// GET /escapeRooms/:escapeRoomId/xml
-exports.downloadMoodleXML = async (req, res) => {
+// GET /escapeRooms/:escapeRoomId/quizFile
+exports.downloadQuiz = async (req, res) => {
     try {
-        req.escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
-
-        if (req.escapeRoom.hintApp.url) {
-            http.get(req.escapeRoom.hintApp.url, (resp) => {
-                res.setHeader("content-disposition", "attachment; filename=\"quiz.xml\"");
-                resp.pipe(res);
-            });
+        const hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
+        let fileUrl = hintApp.url;
+        if (fileUrl) {
+            const isAbsolute = /^https?:\/\//i.test(fileUrl);
+            if (!isAbsolute) {
+                const filePath = path.join(__dirname, "..", fileUrl);
+                res.setHeader('Content-Disposition', 'attachment; filename="' + hintApp.filename + '"');
+                res.sendFile(filePath);
+            } else {
+                http.get(fileUrl, (resp) => {
+                    res.setHeader("content-disposition", "attachment; filename=\"" + hintApp.filename + "\"");
+                    resp.pipe(res);
+                });
+            }
         }
     } catch (e) {
         console.error(e);
@@ -57,12 +67,10 @@ exports.downloadMoodleXML = async (req, res) => {
     }
 };
 
-
 // GET /escapeRooms/:escapeRoomId/hints
-exports.pistas = async (req, res, next) => {
+exports.hints = async (req, res, next) => {
     try {
         const {escapeRoom} = req;
-
         req.escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
         res.render("escapeRooms/steps/hints", { escapeRoom, "progress": "hints" });
     } catch (e) {
@@ -71,7 +79,7 @@ exports.pistas = async (req, res, next) => {
 };
 
 // POST /escapeRooms/:escapeRoomId/hints
-exports.pistasUpdate = async (req, res) => {
+exports.updateHints = async (req, res) => {
     const {escapeRoom, body} = req;
     const isPrevious = Boolean(body.previous);
     const progressBar = body.progress;
@@ -80,7 +88,6 @@ exports.pistasUpdate = async (req, res) => {
     let pctgRight = numRight || 0;
 
     pctgRight = (numRight >= 0 && numRight <= numQuestions ? numRight : numQuestions) * 100 / (numQuestions || 1);
-    // eslint-disable-next-line eqeqeq
     escapeRoom.hintLimit = !hintLimit && hintLimit != 0 || hintLimit === "" ? null : parseInt(hintLimit, 10);
     escapeRoom.numQuestions = numQuestions || 0;
     escapeRoom.numRight = pctgRight || 0;
@@ -92,41 +99,40 @@ exports.pistasUpdate = async (req, res) => {
     try {
         await escapeRoom.save({"fields": ["numQuestions", "hintLimit", "numRight", "feedback", "allowCustomHints", "hintInterval"]});
         if (body.keepAttachment === "0") {
-            // There is no attachment: Delete old attachment.
+            // Delete/change old attachment.
             escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
-
             if (!req.file) {
+                //Delete old attachment
                 if (escapeRoom.hintApp) {
-                    await attHelper.deleteResource(escapeRoom.hintApp.public_id, models.hintApp);
+                    await uploadsHelper.deleteResource(escapeRoom.hintApp.public_id, models.hintApp, "hints");
                     await escapeRoom.hintApp.destroy();
                 }
             } else {
                 try {
-                    await attHelper.checksCloudinaryEnv();
-                    const uploadResult = await attHelper.uploadResource(req.file.path, attHelper.cloudinary_upload_options_zip);
-                    const old_public_id = escapeRoom.hintApp ? escapeRoom.hintApp.public_id : null; // Update the attachment into the data base.
+                    let quizFilePath = "/" + req.file.path;
+                    let quizFilePathFull = path.join(__dirname, "..", quizFilePath);
+                    let quizFileType = await uploadsHelper.getDataForFile(quizFilePathFull);
+                    if(quizFileType.mimetype !== 'application/xml'){
+                        throw new Error("Quiz file must be a valid Moodle XML file.");
+                    }
 
-                    const att = await escapeRoom.getHintApp();
-                    let hintApp = att;
-
+                    const oldFileId = escapeRoom.hintApp ? escapeRoom.hintApp.public_id : null;
+                    let hintApp = await escapeRoom.getHintApp();
                     if (!hintApp) {
                         hintApp = models.hintApp.build({"escapeRoomId": escapeRoom.id});
                     }
-                    hintApp.public_id = uploadResult.public_id;
-                    hintApp.url = uploadResult.url;
+                    hintApp.public_id = req.file.filename;
+                    hintApp.url = path.join("/uploads/hints/", hintApp.public_id);
                     hintApp.filename = req.file.originalname;
                     hintApp.mime = req.file.mimetype;
-
-                    try {
-                        await hintApp.save();
-                        if (old_public_id) {
-                            await attHelper.deleteResource(old_public_id, models.hintApp);
-                        }
-                    } catch (error) {
-                        req.flash("error", i18n.common.flash.errorFile);
-                        await attHelper.deleteResource(uploadResult.public_id, models.hintApp);
+                    await hintApp.save();
+                    if (oldFileId) {
+                        await uploadsHelper.deleteResource(oldFileId, models.hintApp, "hints");
                     }
                 } catch (e) {
+                    if (req.file) {
+                        fsSync.unlinkSync(req.file.path);
+                    }
                     console.error(e.message);
                     req.flash("error", i18n.common.flash.errorFile);
                 }
@@ -142,6 +148,6 @@ exports.pistasUpdate = async (req, res) => {
         } else {
             req.flash("error", i18n.common.flash.errorEditingER);
         }
-        res.render("escapeRooms/hints", {escapeRoom});
+        res.render("escapeRooms/steps/hints", { escapeRoom, "progress": "hints" });
     }
 };

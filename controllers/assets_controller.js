@@ -1,93 +1,46 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
+const {getDataForFile} = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {ckeditorResponse, getHostname} = require("../helpers/utils");
 const {getLocaleForEscapeRoom} = require("../helpers/I18n");
 const queries = require("../queries");
 const path = require("path");
-const ejs = require("ejs");
-
-const fs = require("fs");
+const fs = require("fs/promises");
+const fsSync = require("fs");
+const { fileTypeFromFile } = require('file-type');
 const StreamZip = require("node-stream-zip");
 
-// GET /escapeRooms/:escapeRoomId/assets
-exports.assets = async (req, res, next) => {
-    const {escapeRoom} = req;
-    let mode;
-    if(req.query.CKEditor){
-        mode = "CKEditor";
-    } else {
-        mode = "default";
-    }
-    try {
-        const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
-            return {id: a.id, fileId: a.fileId, url: (req.app.locals.FULL_APP_NAME + a.url), mimetype: a.mimetype, "name": a.filename};
-        });
-        res.render("escapeRooms/steps/assets", {escapeRoom, assets, "progress": "assets", mode});
-    } catch (e) {
-        next(e);
-    }
-};
 
-// GET /escapeRooms/:escapeRoomId/fetchAssets
-exports.fetchAssets = async (req, res, next) => {
-    const {escapeRoom} = req;
-    try {
-        const assets = (await models.asset.findAll({"where": { "escapeRoomId": escapeRoom.id }})).map((a) => {
-            const {id, fileId, url, mime, filename} = a;
-            return {id, fileId, url, mime, "name": filename};
-        });
-        res.json(assets);
-    } catch (e) {
-        next(e);
-    }
-};
 
-// POST /escapeRooms/:escapeRoomId/assets
-exports.assetsUpdate = (req, res /* , next*/) => {
-    const {escapeRoom, body} = req;
-    const isPrevious = Boolean(body.previous);
-    const progressBar = body.progress;
-    res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("assets") : progressBar || nextStep("assets")}`);
-};
-
-const mimeTypesRegexs = {
-    "zip": new RegExp(/application\/(zip|x-zip-compressed|x-zip)/),
-    "image": new RegExp("image\/.*"),
-    "video": new RegExp(/video\/(mp4|webm)/),
-    "audio": new RegExp("audio\/.*"),
-    "pdf": new RegExp("application\/pdf")
-}
-const mimeTypesRegexsEntries = Object.entries(mimeTypesRegexs);
-
-// POST /escapeRooms/:escapeRoomId/uploadAssets
-exports.uploadAssets = async (req, res) => {
+// POST /escapeRooms/:escapeRoomId/assets/new
+exports.uploadAsset = async (req, res) => {
     const { escapeRoom } = req;
     const { i18n } = res.locals;
     const userId = req.session.user && req.session.user.id;
 
     try {
-        const assetMimetype = req.file.mimetype;
-        let assetType = null;
-        for (const [key, regex] of mimeTypesRegexsEntries) {
-            if (regex.test(assetMimetype)) {
-                assetType = key;
-                break;
-            }
-        }
-        if(assetType === null){
-            assetType = "unknown";
+        let assetFilePath = "/" + req.file.path;
+        let assetFilePathFull = path.join(__dirname, "..", assetFilePath);
+        let assetFileType = await getDataForFile(assetFilePathFull);
+        let assetFileId = path.parse(req.file.filename).name;
+        let assetFileName = req.file.originalname;
+        
+        let assetFileExtension = path.extname(req.body.filename); 
+        if(assetFileType.extension !== assetFileExtension){
+            let newAssetFilePath = "/uploads/" + assetFileId + assetFileType.extension;
+            let newAssetFilePathFull = path.join(__dirname, "..", newAssetFilePath);
+            await fs.rename(assetFilePathFull, newAssetFilePathFull);
+            assetFilePath = newAssetFilePath;
+            assetFilePathFull = newAssetFilePathFull;
         }
 
-        let assetFileId = path.parse(req.file.filename).name;
-        let assetFilePath = "/" + req.file.path;
-        let assetFileExtension = path.extname(req.body.filename); 
         let assetContentPath = assetFilePath;
 
-        const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "assetType": assetType, "mimetype": assetMimetype, "fileId": assetFileId, "filePath": assetFilePath, "fileExtension": assetFileExtension, "filename": req.body.filename, "contentPath": assetContentPath, userId }).save();
+        const asset = await models.asset.build({ "escapeRoomId": escapeRoom.id, "assetType": assetFileType.assetType, "mimetype": assetFileType.mimetype, "fileId": assetFileId, "filePath": assetFilePath, "fileExtension": assetFileType.extension, "filename": assetFileName, "contentPath": assetContentPath, userId }).save();
 
-        if (assetType === "zip") {
+        if (asset.assetType === "zip") {
             let isWebapp = false;
             const zip = new StreamZip.async({ "file": req.file.path });
             const entries = await zip.entries();
@@ -98,9 +51,9 @@ exports.uploadAssets = async (req, res) => {
                 }
             }
             if (isWebapp) {
-                const assetContentPathFolder = "/uploads/webapps/" + path.parse(req.file.filename).name;
+                const assetContentPathFolder = "/uploads/webapps/" + assetFileId;
                 const assetContentPathFolderFull = path.join(__dirname, `..${assetContentPathFolder}`);
-                fs.mkdirSync(assetContentPathFolderFull);
+                fsSync.mkdirSync(assetContentPathFolderFull);
                 await zip.extract(null, assetContentPathFolderFull);
                 await zip.close();
                 const assetContentPath = assetContentPathFolder + "/index.html";
@@ -119,8 +72,29 @@ exports.uploadAssets = async (req, res) => {
     }
 };
 
-// POST /escapeRooms/:escapeRoomId/deleteAssets/:assetId
-exports.deleteAssets = async (req, res) => {
+// PUT /escapeRooms/:escapeRoomId/assets/:assetId
+exports.editAsset = async (req, res, next) => {
+    const {assetId} = req.params;
+    const {filename} = req.body;
+    try {
+        const asset = await models.asset.findByPk(assetId);
+
+        if (asset) {
+            asset.filename = filename;
+            await asset.save();
+
+            res.json({"config": {}, filename, "id": asset.id});
+        } else {
+            res.status(404);
+            res.send("Asset not found");
+        }
+    } catch (err) {
+        next(err);
+    }
+};
+
+// DELETE /escapeRooms/:escapeRoomId/assets/:assetId
+exports.deleteAsset = async (req, res) => {
     const {assetId} = req.params;
     const {i18n} = res.locals;
     try {
@@ -137,18 +111,28 @@ exports.deleteAssets = async (req, res) => {
     }
 };
 
-exports.browse = async (req, res, next) => {
+// GET /escapeRooms/:escapeRoomId/browseResources
+exports.browseResources = async (req, res, next) => {
+    const {escapeRoom} = req;
+    const mode = req.query.mode || "";
+
     try {
-        const assets = (await models.asset.findAll({"where": { "escapeRoomId": req.escapeRoom.id }})).map((a) => {
-            const {id, public_id, url, mime, filename} = a;
+      let where = { escapeRoomId: escapeRoom.id };
+      if (mode === "image") {
+        where.assetType = "image";
+      }
+      const assets = (await models.asset.findAll({ where }))
+        .map(a => ({
+          id: a.id,
+          fileId: a.fileId,
+          url: req.app.locals.FULL_APP_NAME + a.url,
+          mimetype: a.mimetype,
+          name: a.filename
+        }));
 
-            return {id, public_id, url, mime, "name": filename};
-        });
-
-        res.render("escapeRooms/steps/assets", {"escapeRoom": req.escapeRoom, assets});
-    } catch (err) {
-        console.error(err);
-        next(err);
+        res.render("escapeRooms/steps/browseResources", {escapeRoom, assets});
+    } catch (e) {
+        next(e);
     }
 };
 
@@ -166,7 +150,7 @@ exports.getAsset = async (req, res, next) => {
         const filePath = path.join(__dirname, "..", asset.filePath);
         switch(asset.assetType){
         case "video":
-            const stat = fs.statSync(filePath);
+            const stat = fsSync.statSync(filePath);
             const fileSize = stat.size;
             const {range} = req.headers;
             if (range) {
@@ -174,7 +158,7 @@ exports.getAsset = async (req, res, next) => {
                 const start = parseInt(parts[0], 10);
                 const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
                 const chunkSize = end - start + 1;
-                const stream = fs.createReadStream(filePath, { start, end });
+                const stream = fsSync.createReadStream(filePath, { start, end });
                 const head = {
                     "Content-Range": `bytes ${start}-${end}/${fileSize}`,
                     "Accept-Ranges": "bytes",
@@ -189,7 +173,7 @@ exports.getAsset = async (req, res, next) => {
                     "Content-Type": "video/mp4"
                 };
                 res.writeHead(200, head);
-                fs.createReadStream(filePath).pipe(res);
+                fsSync.createReadStream(filePath).pipe(res);
             }
             return;
         case "webapp":
@@ -218,7 +202,7 @@ exports.getAsset = async (req, res, next) => {
             res.render("reusablePuzzles/reusablePuzzleContainer", {basePath, config, "file": indexFile, "layout": false});
             return;
         case "pdf":
-            const data = fs.readFileSync(filePath);
+            const data = fsSync.readFileSync(filePath);
             res.setHeader("Content-Type", "application/pdf");
             res.contentType("application/pdf");
             res.send(data);
@@ -246,99 +230,6 @@ exports.getWebAppFile = async (req, res, next) => {
         next(err);
     }
 };
-
-exports.appendParameters = (...parameters) => {
-    let config = "";
-
-    parameters.forEach((parameter) => {
-        const {name} = parameter;
-        const {value} = parameter;
-
-        config += `${name}:${value};`;
-    });
-    return config;
-};
-
-// PUT /escapeRooms/:escapeRoomId/assets/:assetId
-exports.editAsset = async (req, res, next) => {
-    const {assetId} = req.params;
-    const {filename} = req.body;
-
-    try {
-        const asset = await models.asset.findByPk(assetId);
-
-        if (asset) {
-            asset.filename = filename;
-            await asset.save();
-
-            res.json({"config": {}, filename, "id": asset.id});
-        } else {
-            res.status(404);
-            res.send("Asset not found");
-        }
-    } catch (err) {
-        next(err);
-    }
-};
-
-exports.getReusablePuzzleAsset = async (req, res, next) => {
-    const {puzzle_id, file_name } = req.params;
-
-    try {
-        let name = puzzle_id;
-
-        if (puzzle_id !== "forms") {
-            const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
-
-            name = reusablePuzzle ? reusablePuzzle.name : null;
-
-            const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${name}/${file_name}`);
-
-            res.sendFile(filePath);
-        } else { // If they are asking for a hardcoded form
-            const { i18n } = res.locals;
-            const filePath = path.join(__dirname, `/../reusablePuzzles/${name}/${file_name}`);
-            // Render the EJS file with i18n context
-
-            ejs.renderFile(filePath, {i18n}, {}, function (err, data) {
-                if (err) {
-                    throw new Error(err);
-                }
-                res.setHeader("Content-type", "text/html");
-                res.send(data);
-            });
-        }
-    } catch (err) {
-        console.error(err);
-        next(err);
-    }
-};
-
-exports.getFormForInstance = async (req, res, next) => {
-    const {puzzle_id} = req.params;
-
-    try {
-        const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id);
-        const reusable = await models.reusablePuzzle.findByPk(instance.reusablePuzzleId);
-        const config = JSON.parse(reusable.config);
-        const regex = new RegExp(/\/reusablePuzzles\/[0-9]*\//); // Non hardcoded forms
-
-        config.url = config.url.replace(regex, `/reusablePuzzles/installed/${reusable.name}/`);
-        const filePath = path.join(__dirname, "/../", config.url);
-
-        ejs.renderFile(filePath, {"i18n": res.locals.i18n}, {}, function (err, data) {
-            if (err) {
-                throw new Error(err);
-            }
-            res.setHeader("Content-type", "text/html");
-            res.send(data);
-        });
-    } catch (err) {
-        console.error(err);
-        next(err);
-    }
-};
-
 
 exports.returnThumbnail = (req, res) => {
     const {file_name} = req.params;

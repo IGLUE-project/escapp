@@ -406,17 +406,7 @@
             },
             "assets": {
                 "title": "Select a resource",
-                "button": "Confirm selection",
-                "dictDefaultMessage": "Drop the files that you need to conduct the escape room",
-                "dictFallbackMessage": "Try to use Google Chrome",
-                "dictFileTooBig": "The file is too big",
-                "dictInvalidFileTypedictResponseError": "Invalid file type",
-                "dictCancelUpload": "Cancel upload",
-                "dictUploadCanceled": "The upload was canceled",
-                "dictCancelUploadConfirmation": "Are you sure you want to cancel the upload?",
-                "dictRemoveFile": "Delete file",
-                "dictRemoveFileConfirmation": "Are you sure you want to delete this file",
-                "dictMaxFilesExceeded": "Too many files"
+                "button": "Confirm selection"
             },
             "edit": {
                 "New": "New",

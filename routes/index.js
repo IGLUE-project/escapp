@@ -103,8 +103,8 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginReq
 router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.turnosUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/puzzles", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, puzzleController.retos);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/puzzles", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, puzzleController.retosUpdate);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hintController.pistas);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hints.single("hints"), hintController.pistasUpdate);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hintController.hints);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/hints", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hints.single("hints"), hintController.updateHints);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluation);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.evaluationUpdate);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/indications", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.indicationsInterface);
@@ -138,7 +138,7 @@ router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionC
 // Routes for hint app
 router.get("/escapeRooms/:escapeRoomId(\\d+)/hintApp", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, hintController.hintApp);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/hintAppWrapper", sessionController.loginRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, hintController.hintAppWrapper);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/xml", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hintController.downloadMoodleXML);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/quizFile", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, hintController.downloadQuiz);
 
 // Routes for playing - student
 router.post("/escapeRooms/:escapeRoomId(\\d+)/play", sessionController.loginRequired, sessionController.participantRequired, turnoController.isTurnNotPending, playController.startPlaying, playController.play);
@@ -217,25 +217,22 @@ router.get("/reusablePuzzles", sessionController.loginRequired, reusablePuzzleCo
 router.put("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, upload.fields([{ "name": "thumbnail", "maxCount": 1 }, { "name": "file", "maxCount": 1 }]), reusablePuzzleController.editReusablePuzzle);
 router.get("/reusablePuzzles/new", sessionController.loginRequired, reusablePuzzleController.renderCreatePuzzle);
 router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzle);
-router.get("/reusablePuzzles/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
-router.get("/reusablePuzzles/installed/:puzzle_id/:file_name(*)", sessionController.loginRequired, assetsController.getReusablePuzzleAsset);
+router.get("/reusablePuzzles/:puzzle_id/:file_name(*)", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzleAsset);
+router.get("/reusablePuzzles/installed/:puzzle_id/:file_name(*)", sessionController.loginRequired, reusablePuzzleController.getReusablePuzzleAsset);
 router.delete("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, reusablePuzzleController.deleteReusablePuzzle);
-router.get("/escapeRooms/:escapeRoomId/browse", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browse);
-router.get("/reusablePuzzlesInstances/:puzzle_id/form", sessionController.loginRequired, assetsController.getFormForInstance);
+router.get("/reusablePuzzlesInstances/:puzzle_id/form", sessionController.loginRequired, reusablePuzzleController.getFormForInstance);
 router.get("/reusablePuzzlePreview/:reusablePuzzleId", reusablePuzzleController.renderReusablePuzzlePreview);
 
 // Routes for assets
-router.get("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.assets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/asset/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.editAsset);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/fetchAssets", sessionController.loginRequired, assetsController.fetchAssets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/assets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("upload"), assetsController.assetsUpdate);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/uploadAssets", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("asset"), assetsController.uploadAssets);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/deleteAssets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.deleteAssets);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/assets/new", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, upload.single("asset"), assetsController.uploadAsset);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/assets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.editAsset);
+router.delete("/escapeRooms/:escapeRoomId(\\d+)/assets/:assetId(\\d+)", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.deleteAsset);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/browseResources", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, assetsController.browseResources);
 
 router.get("/assets/:asset_id.:asset_extension", sessionController.loginRequired, assetsController.getAsset);
 router.get("/assets/:asset_id/:file_name", sessionController.loginRequired, assetsController.getAsset);
 router.get("/uploads/webapps/:file_id/:webapp_file_name(*)", sessionController.loginRequired, assetsController.getWebAppFile);
-router.get("/uploads/thumbnails/:file_name", sessionController.loginRequired, assetsController.returnThumbnail);
+router.get("/uploads/thumbnails/:file_name", assetsController.returnThumbnail);
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
 router.get("/uploads/:asset_id/:file_name?", sessionController.loginRequired, assetsController.getAsset);

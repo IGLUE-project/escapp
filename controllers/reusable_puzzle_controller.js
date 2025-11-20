@@ -3,11 +3,36 @@ const fs = require("fs");
 const path = require("path");
 const StreamZip = require("node-stream-zip");
 const sequelize = require("../models");
+const ejs = require("ejs");
 const {getLocaleForEscapeRoom} = require("../helpers/I18n");
 const {getHostname} = require("../helpers/utils");
 const {getPuzzlesSolutionLength} = require("../helpers/reusablePuzzles");
 
 //Reusable puzzles
+
+exports.getFormForInstance = async (req, res, next) => {
+    const {puzzle_id} = req.params;
+    try {
+        const instance = await models.reusablePuzzleInstance.findByPk(puzzle_id);
+        const reusable = await models.reusablePuzzle.findByPk(instance.reusablePuzzleId);
+        const config = JSON.parse(reusable.config);
+        const regex = new RegExp(/\/reusablePuzzles\/[0-9]*\//); // Non hardcoded forms
+
+        config.url = config.url.replace(regex, `/reusablePuzzles/installed/${reusable.name}/`);
+        const filePath = path.join(__dirname, "/../", config.url);
+
+        ejs.renderFile(filePath, {"i18n": res.locals.i18n}, {}, function (err, data) {
+            if (err) {
+                throw new Error(err);
+            }
+            res.setHeader("Content-type", "text/html");
+            res.send(data);
+        });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {
@@ -460,5 +485,32 @@ exports.renderReusablePuzzlePreview = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(404).send("Error loading reusable puzzle on preview.");
+    }
+};
+
+exports.getReusablePuzzleAsset = async (req, res, next) => {
+    const {puzzle_id, file_name } = req.params;
+    try {
+        let name = puzzle_id;
+        if (puzzle_id !== "forms") {
+            const reusablePuzzle = await models.reusablePuzzle.findByPk(puzzle_id);
+            name = reusablePuzzle ? reusablePuzzle.name : null;
+            const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${name}/${file_name}`);
+            res.sendFile(filePath);
+        } else {
+            const { i18n } = res.locals;
+            const filePath = path.join(__dirname, `/../reusablePuzzles/${name}/${file_name}`);
+            // Render the EJS file with i18n context
+            ejs.renderFile(filePath, {i18n}, {}, function (err, data) {
+                if (err) {
+                    throw new Error(err);
+                }
+                res.setHeader("Content-type", "text/html");
+                res.send(data);
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        next(err);
     }
 };
