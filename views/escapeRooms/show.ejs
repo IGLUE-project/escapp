@@ -131,12 +131,7 @@
         <div class="menuERShowRight animated slideInUp" >
             <div class="flexShow">
                 <div class="attachmentShow" >
-                    <% var attachment = escapeRoom.attachment; %>
-                    <% if(attachment){ %>
-                        <img  alt="None" src="<%=attachment.url%>">
-                    <% }else{ %>
-                        <img  alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
-                    <% } %>
+                    <img  alt="thumbnail" src="<%=escapeRoom.getThumbnailUrl()%>">
                     <%if (!escapeRoom.status || escapeRoom.status == "draft") {%>
                     <span class="status-ribbon"><a href="/escapeRooms/<%= escapeRoom.id %>/sharing"><%=i18n.escapeRoom.steps.sharing.status.draft%></a></span>
                     <% } %>

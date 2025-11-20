@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define(
+    const EscapeRoom = sequelize.define(
         "escapeRoom",
         {
             "title": {
@@ -154,4 +154,30 @@ module.exports = function (sequelize, DataTypes) {
             "hybridInstructions": {"type": DataTypes.TEXT}
         }
     );
+
+    getColorForEscapeRoomThumbnail = function(id) {
+        const index = id % 5;
+        let color = "red";
+        if (index === 0) {
+            color = "blue";
+        } else if (index === 1) {
+            color = "red";
+        } else if (index === 2) {
+            color = "yellow";
+        } else if (index === 3) {
+            color = "orange";
+        } else if (index === 4) {
+            color = "green";
+        }
+        return color;
+    };
+
+    EscapeRoom.prototype.getThumbnailUrl = function () {
+        if(this.attachment){
+            return this.attachment.getUrl();
+        } else {
+            return `/images/puzzle${getColorForEscapeRoomThumbnail(this.id)}.png`;
+        }
+    };
+    return EscapeRoom;
 };

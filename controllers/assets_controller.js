@@ -231,11 +231,6 @@ exports.getWebAppFile = async (req, res, next) => {
     }
 };
 
-exports.returnThumbnail = (req, res) => {
-    const {file_name} = req.params;
-    res.sendFile(path.join(__dirname, `../uploads/thumbnails/${file_name}`));
-};
-
 exports.returnInstructions = (req, res) => {
     const {file_name} = req.params;
     res.sendFile(path.join(__dirname, `../uploads/instructions/${file_name}`));

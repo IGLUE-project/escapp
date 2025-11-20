@@ -73,24 +73,6 @@ module.exports = function (app) {
             return "var(--brightgreen)";
         }
     };
-    app.locals.getPlaceholder = function getColor (id) {
-        const index = id % 5;
-        let color = "red";
-
-        if (index === 0) {
-            color = "blue";
-        } else if (index === 1) {
-            color = "red";
-        } else if (index === 2) {
-            color = "yellow";
-        } else if (index === 3) {
-            color = "orange";
-        } else if (index === 4) {
-            color = "green";
-        }
-
-        return color;
-    };
     app.locals.steps = steps;
     app.locals.getContentForPuzzle = getContentForPuzzle;
     app.locals.analyticsSections = () => ({

@@ -23,18 +23,11 @@
             </div>
     <%}%>
     <div class="flex ">
-        
 		<div class="flex-thumb attachmentShow animated">
-            <% if(escapeRoom.attachment){ %>
-                <img  alt="None" src="<%=escapeRoom.attachment.url%>">
-            <% }else{ %>
-                <img  alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
-            <% } %>
-
+           <img  alt="thumbnail" src="<%=escapeRoom.getThumbnailUrl()%>">
 		</div>
 		<div class="flex-er-info animated fadeIn">
             <h1><%=escapeRoom.title%> 
-            
             <br/>
         </h1>
             <p>

@@ -1,7 +1,7 @@
 // Definition of the Attachment model:
 
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define(
+    const Attachment = sequelize.define(
         "attachment",
         {
             "public_id": {
@@ -22,4 +22,8 @@ module.exports = function (sequelize, DataTypes) {
             }
         }
     );
+    Attachment.prototype.getUrl = function () {
+        return `/escapeRooms/${this.escapeRoomId}/thumbnail`; 
+    };
+    return Attachment;
 };

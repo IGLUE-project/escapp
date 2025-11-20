@@ -23,12 +23,7 @@
 	<div class="reporting"><a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a> <!--/ <a href="/escapeRooms/<%=escapeRoom.id%>/contact"> Contactar </a>--> </div>
 	<div class="flex ">
 		<div class="flex-thumb attachmentShow animated">
-			<% var attachment = escapeRoom.attachment; %>
-            <% if(attachment){ %>
-                <img alt="None" src="<%=attachment.url%>">
-            <% }else{ %>
-                <img alt="None" src="/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png">
-            <% } %>
+			<img  alt="thumbnail" src="<%=escapeRoom.getThumbnailUrl()%>">
 		</div>
 		<div class="flex-er-info animated fadeIn">
 			<h1><%=escapeRoom.title%></h1>

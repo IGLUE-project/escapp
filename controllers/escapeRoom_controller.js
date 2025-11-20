@@ -16,13 +16,10 @@ const {
     collectAssetEntries
 } = require("../helpers/archive");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
-
-// Npm i archiver
 const fsSync = require("fs");
 const fs = require("fs/promises");
 const path = require("path");
 const archiver = require("archiver");
-
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -54,21 +51,21 @@ exports.index = async (req, res, next) => {
     const {search} = req.query;
 
     let pagePublic = parseInt(req.query.pagePublic || 1, 10);
-
     pagePublic = isNaN(pagePublic) || pagePublic < 1 ? 1 : pagePublic;
+    
     let pageCreated = parseInt(req.query.pageCreated || 1, 10);
-
     pageCreated = isNaN(pageCreated) || pageCreated < 1 ? 1 : pageCreated;
+    
     let pagePending = parseInt(req.query.pagePending || 1, 10);
-
     pagePending = isNaN(pagePending) || pagePending < 1 ? 1 : pagePending;
+    
     let pageFinished = parseInt(req.query.pageFinished || 1, 10);
-
     pageFinished = isNaN(pageFinished) || pageFinished < 1 ? 1 : pageFinished;
+
     const limit = 10;
     let pending = [];
     let created = [];
-    let publicc = [];
+    let publicERs = [];
     let finished = [];
     let countPending = 0;
     let countPublic = 0;
@@ -82,7 +79,6 @@ exports.index = async (req, res, next) => {
             ({"count": countCreated, "rows": created} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forTeacher(user.id, pageCreated, limit - 1, search)));
         }
         const pagesCreated = Math.ceil(countCreated / limit);
-
         if (pageCreated > pagesCreated && pagesCreated !== 0) {
             pageCreated = pagesCreated;
         }
@@ -90,62 +86,52 @@ exports.index = async (req, res, next) => {
 
         // Pending
         ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = false)));
-
         const pagesPending = Math.ceil(countPending / limit);
-
         if (pagePending > pagesPending && pagesPending !== 0) {
             pagePending = pagesPending;
         }
         const pagePendingArray = paginate(pagePending, pagesPending, 5);
 
-
         // Finished
         ({"count": countFinished, "rows": finished} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = true)));
-
         const pagesFinished = Math.ceil(countPending / limit);
-
         if (pageFinished > pagesFinished && pagesFinished !== 0) {
             pageFinished = pagesFinished;
         }
         const pageFinishedArray = paginate(pageFinished, pagesFinished, 5);
 
-
         // Public
         let erAll = [];
         const searchCondition = search ? ` AND (LOWER(title) LIKE '%${search.toLowerCase()}%' OR LOWER(description) LIKE '%${search.toLowerCase()}%')` : "";
-
         countPublic = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRooms"."status" = 'completed') AND  (scope != 'private' OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active') AND ("escapeRooms"."authorId" != ${user.id}))) ${searchCondition}`, {"raw": true, "type": QueryTypes.SELECT});
         erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRoom"."status" = 'completed') AND (scope != 'private'  OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')  AND ("escapeRoom"."authorId" != ${user.id}))) ${searchCondition} ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(pagePublic - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
         countPublic = parseInt(countPublic[0].count, 10);
-
         const orIds = erAll.map((e) => e.id);
+        publicERs = await models.escapeRoom.findAll(query.escapeRoom.ids(orIds));
+        
+        // const erFiltered = await models.escapeRoom.findAll(query.escapeRoom.all(user.id, null));
+        // const ids = erFiltered.map((e) => e.id);
+        // const now = new Date();
+        // now.setHours(now.getHours() - now.getTimezoneOffset() / 60);
+        // // public = erAll.map((er) => {
+        // //     const {id, title, invitation, attachment} = er;
+        // //     const isSignedUp = ids.indexOf(er.id) !== -1;
+        // //     const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
+        // //     const tobeConfirmed = er.userCoAuthor.some((e) => e.id === user.id && !e.coAuthors.confirmed);
 
-        erAll = await models.escapeRoom.findAll(query.escapeRoom.ids(orIds));
-        const erFiltered = await models.escapeRoom.findAll(query.escapeRoom.all(user.id, null));
-        const ids = erFiltered.map((e) => e.id);
-        const now = new Date();
+        // //     const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
 
-        now.setHours(now.getHours() - now.getTimezoneOffset() / 60);
-        publicc = erAll.map((er) => {
-            const {id, title, invitation, attachment} = er;
-            const isSignedUp = ids.indexOf(er.id) !== -1;
-            const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
-            const tobeConfirmed = er.userCoAuthor.some((e) => e.id === user.id && !e.coAuthors.confirmed);
-
-            const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
-
-            return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor, tobeConfirmed };
-        });
+        // //     return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor, tobeConfirmed };
+        // // });
 
         const pagesPublic = Math.ceil(countPublic / limit);
-
         if (pagePublic > pagesPublic && pagesPublic !== 0) {
             pagePublic = pagesPublic;
         }
         const pagePublicArray = paginate(pagePublic, pagesPublic, 5);
 
         // Render
-        res.render("escapeRooms/index.ejs", {"escapeRooms": {pending, created, publicc, finished}, user, "count": {countCreated, countPending, countPublic, countFinished}, "page": {pagePublic, pagePending, pageCreated, pageFinished}, "pages": {pagesPublic, pagesPending, pagesCreated, pagesFinished}, "pageArray": {pagePublicArray, pagePendingArray, pageCreatedArray, pageFinishedArray}, search, "admin": false});
+        res.render("escapeRooms/index.ejs", {"escapeRooms": {pending, created, "public": publicERs, finished}, user, "count": {countCreated, countPending, countPublic, countFinished}, "page": {pagePublic, pagePending, pageCreated, pageFinished}, "pages": {pagesPublic, pagesPending, pagesCreated, pagesFinished}, "pageArray": {pagePublicArray, pagePendingArray, pageCreatedArray, pageFinishedArray}, search, "admin": false});
     } catch (error) {
         next(error);
     }
@@ -179,7 +165,6 @@ exports.show = async (req, res) => {
 // GET /escapeRooms/new
 exports.new = (_req, res) => {
     const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "lang": "", "forceLang": ""};
-
     res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
 };
 
@@ -187,7 +172,6 @@ exports.new = (_req, res) => {
 exports.create = async (req, res) => {
     const {title, subject, duration, forbiddenLateSubmissions, description, lang, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
-
     const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
@@ -410,13 +394,20 @@ exports.update = async (req, res) => {
     }
 };
 
+exports.returnThumbnail = async (req, res) => {
+    try {
+        const thumbnail = await models.attachment.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
+        res.sendFile(path.join(__dirname, `../uploads/thumbnails/${thumbnail.public_id}`));
+    } catch (e) {
+        next(e);
+    }
+};
+
 // GET /escapeRooms/:escapeRoomId/evaluation
 exports.evaluation = async (req, res, next) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadPuzzles);
-
         escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
-
         res.render("escapeRooms/steps/evaluation", {escapeRoom, "progress": "evaluation"});
     } catch (e) {
         next(e);
@@ -471,9 +462,7 @@ exports.evaluationUpdate = async (req, res) => {
 exports.sharing = async (req, res, next) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
-
         const completed = stepsCompleted(escapeRoom);
-
         res.render("escapeRooms/steps/sharing", {escapeRoom, "progress": "sharing", completed});
     } catch (e) {
         next(e);

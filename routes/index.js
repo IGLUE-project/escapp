@@ -53,8 +53,7 @@ router.param("hintId", hintController.load);
 router.param("userId", userController.load);
 router.param("teamId", teamController.load);
 
-
-// Routes for LOGIN / REGISTER page /
+// Routes for LOGIN / REGISTER page
 router.get("/", sessionController.new); // Login form
 router.post("/", sessionController.create); // Create sesion
 router.delete("/", sessionController.destroy); // Close sesion
@@ -66,7 +65,7 @@ router.get("/cookies", sessionController.cookiePolicy);
 router.get("/accept-new", sessionController.acceptNewShow);
 router.post("/accept-new", sessionController.acceptNew);
 
-// Routes for the resource /users
+// Routes for users
 router.get("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.show);
 router.get("/users/password-reset", sessionController.logoutRequired, userController.resetPassword);
 router.get("/users/password-reset/:userId(\\d+)", sessionController.logoutRequired, userController.resetPasswordHash);
@@ -78,14 +77,14 @@ router.put("/users/:userId(\\d+)", sessionController.loginRequired, sessionContr
 router.delete("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.destroy);
 router.get("/users/:userId(\\d+)/escapeRooms", sessionController.loginRequired, sessionController.adminOrMyselfRequired, escapeRoomController.index);
 
-// Admin
+// Routes for admins
 router.get("/users/index", sessionController.loginRequired, sessionController.adminRequired, userController.index);
 router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.admin);
 router.get("/reports", sessionController.loginRequired, sessionController.adminRequired, managementController.showReports);
 router.post("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.editReport);
 router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
 
-// Routes for the resource /escapeRooms
+// Routes for escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
 router.get("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginOrAnonymousRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, escapeRoomController.show);
 router.get("/escapeRooms/new", sessionController.loginRequired, sessionController.notStudentRequired, escapeRoomController.new);
@@ -97,6 +96,7 @@ router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequ
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.test);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.participantRequired, playController.startPlaying, playController.play);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.export);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.returnThumbnail);
 
 // Edit escape room steps
 router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, turnoController.turnos);
@@ -232,7 +232,6 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/browseResources", sessionController
 router.get("/assets/:asset_id.:asset_extension", sessionController.loginRequired, assetsController.getAsset);
 router.get("/assets/:asset_id/:file_name", sessionController.loginRequired, assetsController.getAsset);
 router.get("/uploads/webapps/:file_id/:webapp_file_name(*)", sessionController.loginRequired, assetsController.getWebAppFile);
-router.get("/uploads/thumbnails/:file_name", assetsController.returnThumbnail);
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
 router.get("/uploads/:asset_id/:file_name?", sessionController.loginRequired, assetsController.getAsset);

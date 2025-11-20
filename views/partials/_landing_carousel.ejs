@@ -31,7 +31,7 @@
                 <a href="<%=href%>" <%-disabled ? "onclick='return false;'":'' %> class="escapeRoomItemWrapper animated bounceIn" title="<%=disabled ? i18n.escapeRoom.main.notAvailable :  (escapeRoom.title||"").replace("\"","'")%>"style="animation-delay: <%=100*i%>ms;"  >
                     <div class="escapeRoomItem <%= disabled ?' disabled':'' %>">
                         <div class="erFoto" style="text-align: center">
-                            <div class="bckgFoto" style="background-image: url(<% if (attachment) {%><%=attachment.url%><%} else {%>/images/puzzle<%=getPlaceholder(escapeRoom.id)%>.png<%}%>)"></div>
+                            <div class="bckgFoto" style="background-image: url('<%= escapeRoom.getThumbnailUrl() %>')"></div>
                             <h2 class="escapeRoomTitle"><%= escapeRoom.title %></h2>
                         </div>
                         <% if (user && whichMenu == "public" && !admin) {%>
