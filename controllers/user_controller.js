@@ -146,7 +146,6 @@ exports.update = (req, res, next) => {
         if (req.cookies && req.cookies.locale && (user.lang !== body.lang || req.cookies.locale !== body.lang)) {
             res.cookie("locale", body.lang);
             const i18n2 = require(`../i18n/${body.lang}`);
-
             scs = i18n2.user.sucessfullyUpdatedUser;
         }
     }
@@ -162,8 +161,23 @@ exports.update = (req, res, next) => {
 
     user.save({fields}).
         then((user_saved) => {
-            req.flash("success", scs);
-            res.redirect(`/users/${user_saved.id}/edit`);
+            if(req.session.user.id === user_saved.id){
+                //Update session
+                req.session.user.name = user_saved.alias;
+                req.session.user.isAdmin = user_saved.isAdmin;
+                req.session.user.isStudent = user_saved.isStudent;
+                req.session.user.anonymized = user_saved.anonymized;
+                req.session.save(() => {
+                    if (user.lang) {
+                        res.cookie("locale", user.lang);
+                    }
+                    req.flash("success", scs);
+                    return res.redirect(`/users/${user_saved.id}/edit`);
+                });
+            } else {
+                req.flash("success", scs);
+                res.redirect(`/users/${user_saved.id}/edit`);
+            }
         }).
         catch((error) => {
             if (error instanceof Sequelize.ValidationError) {
