@@ -43,7 +43,7 @@
               </button>
               </a>
             <% } else { %>
-              <%=i18n.escapeRoom.steps.edit.noFileUploaded%>
+              <%=i18n.escapeRoom.steps.settings.noFileUploaded%>
             <% } %>
           </span>
           <span id="upload"
@@ -188,7 +188,7 @@ $(function(){
       } catch (e) {
           $('#delete').hide();
           $('#upload').show();
-          $('#imgLabel').html("<%=i18n.escapeRoom.steps.edit.noImageUploaded%>");
+          $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noImageUploaded%>");
       }
     });
 
@@ -196,7 +196,7 @@ $(function(){
         e.preventDefault();
         $('#delete').hide();
         $('#upload').show();
-        $('#imgLabel').html("<%=i18n.escapeRoom.steps.edit.noImageUploaded%>");
+        $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noImageUploaded%>");
         $('#keepHybridInstructions').val("0");
     })
   })

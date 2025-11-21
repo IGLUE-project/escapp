@@ -43,15 +43,15 @@
     <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*f%>ms;">
         <label for="<%=field.id%>"  class="itemNarrow"><%=parseInt(f)+1%>. <%=i18n.showTeacher.titles[field.i18n]%>:</label>
         <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
-               placeholder="<%=i18n.escapeRoom.steps.edit[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
+               placeholder="<%=i18n.escapeRoom.steps.settings[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
     </div>
 
 <%}%>
   <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 200ms;">
       <label for="subj"  class="itemNarrow">2. <%=i18n.showTeacher.titles["subject"]%>:</label>
-      <p class="note-up animated slideInUp" style="animation-delay: 200ms;" ><%=i18n.escapeRoom.steps.edit.subjectNote%></p>
+      <p class="note-up animated slideInUp" style="animation-delay: 200ms;" ><%=i18n.escapeRoom.steps.settings.subjectNote%></p>
 
-      <input  type="text" placeholder="<%=i18n.escapeRoom.steps.edit.subjectPlaceHolder%>" style="padding-left: 0px; padding-top: 5px; margin-left: 12px;"
+      <input  type="text" placeholder="<%=i18n.escapeRoom.steps.settings.subjectPlaceHolder%>" style="padding-left: 0px; padding-top: 5px; margin-left: 12px;"
        class="customInput itemWide" id="subj" name="subject" value="<%=(escapeRoom.subject || []).map(e=>e.subject).join(',')%>" maxlength="200" autocomplete="off"/>
   </div>
 
@@ -112,10 +112,10 @@
     <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*f%>ms;">
         <label for="<%=field.id%>"  class="itemNarrow"><%=parseInt(f)+6%>. <%=i18n.showTeacher.titles[field.i18n]%>:</label>
         <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
-               placeholder="<%=i18n.escapeRoom.steps.edit[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
+               placeholder="<%=i18n.escapeRoom.steps.settings[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
     </div>
     <% if (field.name === "duration") { %>
-      <label class="note animated slideInUp" style="animation-delay: <%=200*f%>ms;" for="forbiddenLateSubmissions" ><%=i18n.escapeRoom.steps.edit.forbiddenLateSubmissionsPlaceHolder%>
+      <label class="note animated slideInUp" style="animation-delay: <%=200*f%>ms;" for="forbiddenLateSubmissions" ><%=i18n.escapeRoom.steps.settings.forbiddenLateSubmissionsPlaceHolder%>
         <input class="customCheckbox" type="checkbox" name="forbiddenLateSubmissions" id="forbiddenLateSubmissions" <%= escapeRoom.forbiddenLateSubmissions ? "checked" : "" %> />
       </label>
     <% } %>
@@ -145,7 +145,7 @@
         <% if (escapeRoom.id && escapeRoom.attachment) { %>
           <%= escapeRoom.attachment.filename ||  "Default" %>
         <% } else { %>
-          <%=i18n.escapeRoom.steps.edit.noFileUploaded%>
+          <%=i18n.escapeRoom.steps.settings.noFileUploaded%>
         <% } %>
       </span>
       <span id="upload"
@@ -204,7 +204,7 @@ $(function(){
       } catch (e) {
           $('#delete').hide();
           $('#upload').show();
-          $('#imgLabel').html("<%=i18n.escapeRoom.steps.edit.noImageUploaded%>");
+          $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noImageUploaded%>");
       }
     });
 
@@ -212,7 +212,7 @@ $(function(){
         e.preventDefault();
         $('#delete').hide();
         $('#upload').show();
-        $('#imgLabel').html("<%=i18n.escapeRoom.steps.edit.noImageUploaded%>");
+        $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noImageUploaded%>");
         $('#keepAttachment').val("0");
     })
 

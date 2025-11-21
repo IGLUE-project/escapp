@@ -1246,7 +1246,7 @@
 
         const insertButton = `<button ${disabled ? 'disabled': null} class="rounded listButton addButton"
                                 onclick='insertAndScrollContent(0,"asset", ${asset.id})'>
-                                <span class="building-block-icon material-icons" id="add"> add
+                                <span class="add_catalog_item building-block-icon material-icons"> add
                                 </span>
                                 <p>
                                 <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
@@ -1278,17 +1278,17 @@
                     <div class=" button-group row-button">
                         <button class="listButton iconButton delete-button"
                             onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteAsset(${asset.id})" >
-                            <span class="building-block-icon material-icons" id="delete">
+                            <span class="delete_catalog_item building-block-icon material-icons">
                                 delete_outline
                             </span>
                         </button>
                         <button ${disabled ? 'disabled': null} class="listButton iconButton editButton"
                             onclick='editAsset(${asset.id}, "${asset.assetType}")'>
-                            <span class="building-block-icon material-icons" id="edit"> edit
+                            <span class="edit_catalog_item building-block-icon material-icons"> edit
                             </span>
                         </button>
                         <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")''>
-                            <span class="building-block-icon material-icons" id="link"> link
+                            <span class="link_catalog_item building-block-icon material-icons"> link
                             </span>
                         </button>
                         ${button}
@@ -1318,21 +1318,21 @@
                     <div class=" button-group row-button">
                         <button class="listButton iconButton delete-button"
                             onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteScene(${scene.id})" >
-                            <span class="building-block-icon material-icons" id="delete">
+                            <span class="delete_catalog_item building-block-icon material-icons">
                                 delete_outline
                             </span>
                         </button>
                         <button class="listButton iconButton editButton"
                             onclick='editScene(${scene.id})'>
-                            <span class="building-block-icon material-icons" id="edit"> edit
+                            <span class="edit_catalog_item building-block-icon material-icons"> edit
                             </span>
                         </button>
                         <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/scenes/${scene.id}","scene","${aspectRatio}")'>
-                        <span class="building-block-icon material-icons" id="link">link</span>
+                        <span class="link_catalog_item building-block-icon material-icons" >link</span>
                         </button>
                         <button class="rounded listButton addButton"
                           onclick='insertAndScrollContent(0, "scene", "${scene.id}")'>
-                          <span class="building-block-icon material-icons" id="add"> add
+                          <span class="add_catalog_item building-block-icon material-icons"> add
                           </span>
                           <p>
                               <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>
@@ -1359,21 +1359,21 @@
                 <div class=" button-group row-button">
                     <button class="listButton iconButton delete-button"
                          onclick="confirm('<%=i18n.escapeRoom.steps.indications.front.catalog.deleteConfirm%>') && deleteReusablePuzzleInstance(${rpiJSON.id})" >
-                        <span class="building-block-icon material-icons" id="delete">
+                        <span class="delete_catalog_item building-block-icon material-icons">
                             delete_outline </span>
                     </button>
                     <button class="listButton iconButton editButton"
                         onclick='editReusablePuzzleInstance("${rpiJSON.id}")'>
-                        <span class="building-block-icon material-icons" id="edit"> edit
+                        <span class="edit_catalog_item building-block-icon material-icons"> edit
                         </span>
                     </button>
                     <button class="listButton linkButton" onclick='openClipboardModal("/escapeRooms/<%=escapeRoom.id%>/reusablePuzzleInstances/${rpiJSON.id}/render","reusablePuzzle")'>
-                        <span class="building-block-icon material-icons" id="link">link</span>
+                        <span class="link_catalog_item building-block-icon material-icons">link</span>
                     </button>
 
                     <button class="rounded listButton addButton"
                         onclick='insertAndScrollContent(0, "reusablePuzzleInstance", "${rpiJSON.id}")'>
-                        <span class="building-block-icon material-icons" id="add"> add
+                        <span class="edit_catalog_item building-block-icon material-icons"> add
                         </span>
                         <p>
                             <%=i18n.escapeRoom.steps.indications.front.catalog.addBlock%>

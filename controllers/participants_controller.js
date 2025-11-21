@@ -88,9 +88,7 @@ exports.checkTeamAvailable = (req, res, next) => {
 exports.index = async (req, res, next) => {
     const {escapeRoom, query} = req;
     const {turnId, orderBy} = query;
-    const isAdmin = Boolean(req.session.user.isAdmin);
-    const includeNames = process.env.ENABLE_TEACHER_PERSONAL_INFO || isAdmin;
-
+    const includeNames = true;
 
     try {
         const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});
@@ -109,7 +107,7 @@ exports.index = async (req, res, next) => {
             if (includeNames) {
                 participants.push({id, name, surname, username, alias, teamId, teamName, turnoId, turnDate, attendance, connected, waiting, anonymized});
             } else {
-                participants.push({id, alias, teamId, teamName, turnoId, turnDate, attendance, connected, waiting, anonymized});
+                participants.push({id, "name": alias, teamId, teamName, turnoId, turnDate, attendance, connected, waiting, anonymized});
             }
         });
         if (req.query.csv) {
@@ -142,7 +140,7 @@ exports.studentLeave = async (req, res, next) => {
     let {user} = req;
     const {turn} = req;
     const {i18n} = res.locals;
-    let redirectUrl = `/escapeRooms/${req.escapeRoom.id}/participants`;
+    let redirectUrl = `/escapeRooms/${req.escapeRoom.id}`;
 
     try {
         if (req.user && req.user.id !== req.session.user.id && req.session.user.isStudent) {
@@ -155,6 +153,8 @@ exports.studentLeave = async (req, res, next) => {
                 res.redirect("/");
                 return;
             }
+        }
+        if(!user){
             user = await models.user.findByPk(req.session.user.id);
         }
         const userId = user.id;
@@ -186,20 +186,5 @@ exports.studentLeave = async (req, res, next) => {
         res.redirect(redirectUrl);
     } catch (e) {
         next(e);
-    }
-};
-
-exports.isNotAuthorOrCoAuthorOrAdmin = (req, res, next) => {
-    const isAdmin = Boolean(req.session.user.isAdmin),
-        isAuthor = req.escapeRoom.authorId === req.session.user.id,
-        isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed);
-
-    const {i18n} = res.locals;
-
-    if (isAdmin || isAuthor || isCoAuthor) {
-        res.status(403);
-        next(new Error(i18n.api.forbidden));
-    } else {
-        next();
     }
 };

@@ -108,9 +108,7 @@ exports.index = async (req, res, next) => {
     }
     try {
         escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});
-
         const teams = await models.team.findAll(where);
-
         for (const team of teams) {
             team.connected = isTeamConnected(team.id);
             team.waiting = team.connected ? false : isTeamConnectedWaiting(team.id);

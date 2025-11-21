@@ -2911,7 +2911,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .editButton:hover {
   background: rgb(35, 40, 92);
 }
-#resourceCatalog .editButton:hover #edit {
+#resourceCatalog .editButton:hover .edit_catalog_item {
   color: white;
 }
 #resourceCatalog .editButton:disabled {
@@ -2923,7 +2923,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .delete-button:hover {
   background: rgb(83, 17, 20);
 }
-#resourceCatalog .delete-button:hover #delete {
+#resourceCatalog .delete-button:hover .delete_catalog_item {
   color: #F47E84;
 }
 #resourceCatalog .uploadButton {
@@ -2948,7 +2948,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #resourceCatalog .linkButton:hover {
   background: rgb(35, 40, 92);
 }
-#resourceCatalog .linkButton:hover #link {
+#resourceCatalog .linkButton:hover link_catalog_item {
   color: rgb(163, 218, 255);
 }
 #resourceCatalog .linkButton:hover .tooltip-link {
@@ -2961,12 +2961,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   z-index: 99999;
   right: 60px;
   bottom: 24px;
-}
-#resourceCatalog .linkButton:hover #link-copied, #resourceCatalog .linkButton:hover #embed-copied {
-  display: none;
-}
-#resourceCatalog .linkButton:hover:focus-within #link-copied, #resourceCatalog .linkButton:hover:focus-within #embed-copied {
-  display: flex;
 }
 #resourceCatalog .addButton {
   display: flex;
@@ -3007,19 +3001,16 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: rgb(221, 221, 221);
   font-size: 13px;
 }
-#resourceCatalog #link-copied {
-  background: rgb(0, 105, 61);
-}
-#resourceCatalog #delete {
+#resourceCatalog .delete_catalog_item {
   color: rgb(185, 62, 68);
 }
-#resourceCatalog #edit {
+#resourceCatalog .edit_catalog_item {
   color: #a1a3af;
 }
-#resourceCatalog #link {
+#resourceCatalog .link_catalog_item {
   color: #36A2EB;
 }
-#resourceCatalog #add {
+#resourceCatalog .edit_catalog_item {
   color: white;
 }
 #resourceCatalog .addItem {
@@ -3280,9 +3271,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #copyLinkButton:hover, #copyEmbedButton:hover {
   background: rgb(35, 40, 92);
 }
-#copyLinkButton:hover #link, #copyEmbedButton:hover #link {
-  color: rgb(163, 218, 255);
-}
 #copyLinkButton:hover .tooltip-link, #copyEmbedButton:hover .tooltip-link {
   display: flex;
   position: absolute;
@@ -3292,9 +3280,6 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: #dadada;
   right: 50px;
   top: 5px;
-}
-#copyLinkButton:hover:focus-within#link-copied, #copyLinkButton:hover:focus-within#embed-copied, #copyEmbedButton:hover:focus-within#link-copied, #copyEmbedButton:hover:focus-within#embed-copied {
-  display: flex !important;
 }
 
 .tooltip-link {
@@ -4729,95 +4714,95 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-color: #F47E84;
 }
 
-#mainSection .main.showStudent {
+#mainSection .main.showPlayer {
   background-image: none;
   background: #2A2A52;
 }
-#mainSection .main.showStudent .button-share {
+#mainSection .main.showPlayer .button-share {
   text-align: center;
   padding-top: 0.5em;
   margin-top: 0.5em;
 }
-#mainSection .main.showStudent .reporting {
+#mainSection .main.showPlayer .reporting {
   text-align: right;
   font-size: small;
 }
-#mainSection .main.showStudent .flex {
+#mainSection .main.showPlayer .flex {
   display: flex;
   flex-direction: row-reverse;
 }
-#mainSection .main.showStudent .flex .flex-thumb {
+#mainSection .main.showPlayer .flex .flex-thumb {
   width: 25%;
   flex: 1;
   position: relative;
   padding-top: 22px;
   margin-left: 8px;
 }
-#mainSection .main.showStudent .flex .flex-thumb img {
+#mainSection .main.showPlayer .flex .flex-thumb img {
   width: 100%;
   border-width: 5px;
 }
-#mainSection .main.showStudent .flex .flex-er-info {
+#mainSection .main.showPlayer .flex .flex-er-info {
   flex: 3;
   max-width: 75%;
 }
-#mainSection .main.showStudent .flex .flex-er-info img {
+#mainSection .main.showPlayer .flex .flex-er-info img {
   max-width: 90%;
 }
-#mainSection .main.showStudent .flex .flex-er-info .flex-er-info-preview {
+#mainSection .main.showPlayer .flex .flex-er-info .flex-er-info-preview {
   flex-direction: row;
   flex-wrap: wrap;
   display: flex;
 }
-#mainSection .main.showStudent .flex .flex-er-info .flex-er-info-preview div {
+#mainSection .main.showPlayer .flex .flex-er-info .flex-er-info-preview div {
   width: 50%;
 }
-#mainSection .main.showStudent .flex-er-collaborator {
+#mainSection .main.showPlayer .flex-er-collaborator {
   background-color: #656683;
   border: 2px solid white;
   border-radius: 5px;
   padding: 1em;
 }
-#mainSection .main.showStudent .flex-er-collaborator p {
+#mainSection .main.showPlayer .flex-er-collaborator p {
   margin-top: 0px;
 }
-#mainSection .main.showStudent .editor img {
+#mainSection .main.showPlayer .editor img {
   max-width: 100%;
   height: auto;
 }
-#mainSection .main.showStudent .desc {
+#mainSection .main.showPlayer .desc {
   font-family: Lato, sans-serif;
 }
-#mainSection .main.showStudent .members {
+#mainSection .main.showPlayer .members {
   margin-bottom: 0px;
 }
-#mainSection .main.showStudent .status {
+#mainSection .main.showPlayer .status {
   text-align: center;
 }
-#mainSection .main.showStudent .status .rounded {
+#mainSection .main.showPlayer .status .rounded {
   margin-bottom: 10px;
 }
-#mainSection .main.showStudent #unjoin {
+#mainSection .main.showPlayer #unjoin {
   text-align: right;
   position: relative;
 }
-#mainSection .main.showStudent #unjoin .overlay-trigger {
+#mainSection .main.showPlayer #unjoin .overlay-trigger {
   right: 12px;
   bottom: 60px;
 }
-#mainSection .main.showStudent #unjoin .overlay-trigger::after {
+#mainSection .main.showPlayer #unjoin .overlay-trigger::after {
   right: 10px;
   left: calc(100% - 50px);
   top: 100%;
   border-color: white transparent transparent transparent;
 }
-#mainSection .main.showStudent .pulseButton {
+#mainSection .main.showPlayer .pulseButton {
   margin-top: 10px;
   cursor: pointer;
   box-shadow: 0 0 2px 0px rgba(72, 193, 142, 0.5);
   animation: pulseButton 2s infinite;
 }
-#mainSection .main.showStudent .pulseButton:hover {
+#mainSection .main.showPlayer .pulseButton:hover {
   animation: none;
 }
 #mainSection .main.preview #dialog-join-anon {
@@ -4928,14 +4913,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   .finish .ranking-table .ranking-members {
     display: none;
   }
-  .showStudent .flex {
+  .showPlayer .flex {
     flex-direction: column;
   }
-  .showStudent .flex .flex-thumb {
+  .showPlayer .flex .flex-thumb {
     width: 100%;
     margin-left: 0px;
   }
-  .showStudent .flex .flex-er-info {
+  .showPlayer .flex .flex-er-info {
     padding: 0px;
   }
 }

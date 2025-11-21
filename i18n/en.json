@@ -151,6 +151,7 @@
         "download": "download",
         "edit": "edit",
         "my": "My escape rooms",
+        "escapeRooms": "Escape rooms",
         "error": {
             "whoops": "Whoops!",
             "notFound": "It seems like we couldn't find the page you were looking for",
@@ -196,6 +197,7 @@
             "errorUserIsAlreadyACollaborator": "The user is already a collaborator",
             "errorFile": "An error occurred while uploading the file",
             "errorImage": "An error occurred while uploading the picture",
+            "errorReady": "You cannot play the escape room",
             "errorMandatoryPass": "Sorry, password is required for login",
             "errorSendingReport": "An error occurred while sending the report",
             "passwordChangedSuccessfully": "Password changed successfully",
@@ -408,7 +410,7 @@
                 "title": "Select a resource",
                 "button": "Confirm selection"
             },
-            "edit": {
+            "settings": {
                 "New": "New",
                 "descriptionPlaceHolder": "Write the escape room's description here. This information will be given to the participants.",
                 "durationPlaceHolder": "How much time do participants have to complete the escape room?",
@@ -424,7 +426,6 @@
                 "title": "Escape Room basic configuration",
                 "titlePlaceHolder": "What is the escape room's name?",
                 "videoPlaceHolder": "An URL dor the escape room's introduction video"
-
             },
             "evaluation": {
                 "eachHint": "Penalty or reward for requesting a hint",
@@ -965,7 +966,7 @@
             "score": "The puzzle score"
         }
     },
-    "showStudent": {
+    "showPlayer": {
         "access": "access",
         "beforeLeave": "Before you leave, fill in the following questionnaire",
         "beforeStart": "Before you start, fill in the following questionnaire",
@@ -1216,6 +1217,7 @@
             "iForgotMyPassword": "I forgot my password",
             "login": "login",
             "Login": "Login",
+            "ready": "Play",
             "notRegistered": "Don't have an account?",
             "register": "register",
             "Register": "Register",

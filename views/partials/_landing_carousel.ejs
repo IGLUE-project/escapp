@@ -1,6 +1,6 @@
         <% if(title){%><h2><%=title%></h2><%}%>
         <div class="flexBoxEscapeRooms">
-             <% if (escapeRoomsList.length == 0) { %>
+            <% if (escapeRoomsList.length == 0) { %>
                 <% if (user && (whichMenu == "public")) { %>
                     <p class="notFound"><%=search ? i18n.escapeRoom.main.notFound : i18n.escapeRoom.main.noERsPublic%></p>
                 <% } else if (user && (whichMenu == "created")) { %>
@@ -10,6 +10,13 @@
                 <% } else if (user && (whichMenu == "finished")) { %>
                     <p class="notFound"><%=search ? i18n.escapeRoom.main.notFound : i18n.escapeRoom.main.noERStudentFinished%></p>
                 <% } %>
+            <% } %>
+            <% if (user && !user.isStudent && ((whichMenu == "created"))) { %>
+                <a href="/escapeRooms/new" class="escapeRoomItemWrapper animated bounceIn" title="<%=i18n.escapeRoom.main.createER%>" style="animation-delay: <%=escapeRooms ? (escapeRooms.length * 100 + 100): 0 %>ms;">
+                    <div class="escapeRoomItem addItem addEscapeRoom gugi" >
+                            <span>+</span>
+                    </div>
+                </a>
             <% } %>
             <% for (var i in escapeRoomsList) { %>
                 <% var escapeRoom = escapeRoomsList[i]; %>
@@ -26,7 +33,11 @@
                             href += "/";
                         }
                     }
-                }%>
+                }
+                if (whichMenu === "created") {
+                    href += "/edit";
+                }
+                %>
                 <%var tobeConfirmed = escapeRoom.tobeConfirmed || (escapeRoom.userCoAuthor && escapeRoom.userCoAuthor.find(e=>(e.id == user.id) && !e.coAuthors.confirmed) )%>
                 <a href="<%=href%>" <%-disabled ? "onclick='return false;'":'' %> class="escapeRoomItemWrapper animated bounceIn" title="<%=disabled ? i18n.escapeRoom.main.notAvailable :  (escapeRoom.title||"").replace("\"","'")%>"style="animation-delay: <%=100*i%>ms;"  >
                     <div class="escapeRoomItem <%= disabled ?' disabled':'' %>">
@@ -57,17 +68,9 @@
                                 <div class="sign warning" title="<%=i18n.collaborators.pendingConfirmation%>">
                                     <span class="material-icons">warning</span>
                                 </div>  
-                                
                         <%}}%> 
                     </div>
                 </a>
-            <% } %>
-            <% if (user && !user.isStudent && ((whichMenu == "created"))) { %>
-            <a href="/escapeRooms/new" class="escapeRoomItemWrapper animated bounceIn" title="<%=i18n.escapeRoom.main.createER%>" style="animation-delay: <%=escapeRooms ? (escapeRooms.length * 100 + 100): 0 %>ms;">
-                <div class="escapeRoomItem addItem addEscapeRoom gugi" >
-                        <span>+</span>
-                </div>
-            </a>
             <% } %>
         </div>
 

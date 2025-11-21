@@ -1,4 +1,7 @@
 const {authenticate, findFirstAvailableFile} = require("../helpers/utils");
+//const userHelper = require("../helpers/users");
+const {isAdmin, isStudent} = require("../helpers/users");
+const {isAuthor, isCoAuthor, isCoAuthorPending, getParticipant} = require("../helpers/escapeRooms");
 const sequelize = require("../models");
 const {models} = sequelize;
 const query = require("../queries");
@@ -14,46 +17,6 @@ const path = require("path");
  */
 const maxIdleTime = 3 * 60 * 60 * 1000; /* * * Middleware used to destroy the user's session if the inactivity time * has been exceeded. * */
 exports.maxIdleTime = maxIdleTime;
-
-/* Helpers */
-function isAdmin(user) {
-    return Boolean(user.isAdmin);
-}
-function isAuthor(user, er) {
-    return user.id === er.authorId;
-}
-function isCoAuthor(user, er) {
-    return er.userCoAuthor.some(author =>
-        author.id === user.id &&
-        author.coAuthors &&
-        author.coAuthors.confirmed
-    );
-}
-function isCoAuthorPending(user, er) {
-    return er.userCoAuthor.some(author =>
-        author.id === user.id &&
-        author.coAuthors &&
-        !author.coAuthors.confirmed
-    );
-}
-function isStudent(user) {
-    return Boolean(user.isStudent);
-}
-
-async function isParticipant(user,er,includeTest = false) {
-    let response = {"isParticipant": false, "participant": undefined};
-    const isAnonymous = !user;
-    if (isAnonymous) {
-        response.isParticipant = true;
-    } else {
-        const participants = await models.user.findAll(query.user.escapeRoomsForUser(er.id, user.id,includeTest));
-        if(participants && participants.length === 1){
-            response.isParticipant = true;
-            response.participant = participants[0];
-        }
-    }
-    return response;
-}
 
 /*
  * Middleware: Login required.
@@ -116,26 +79,6 @@ exports.loginOrGuestAccessRequired = (req, res, next) => {
     }
 };
 
-exports.adminOrAuthorOrCoauthorOrParticipantOrErAccessibleRequired = async(req, res, next) => {
-    const er = req.escapeRoom;
-    if (er && er.isAccessibleToAllUsers) {
-        return next();
-    }
-    const user = req.session.user;
-    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
-        return next();
-    }
-    let participationEval = await isParticipant(user,er);
-    if(participationEval.isParticipant === true){
-        if(typeof participationEval.participant !== "undefined"){
-            req.participant = participationEval.participant;
-        }
-        return next();
-    }
-    res.status(403);
-    return next(new Error(res.locals.i18n.api.forbidden));
-};
-
 exports.logoutRequired = (req, res, next) => {
     if (!req.session.user) {
         next();
@@ -170,7 +113,7 @@ exports.adminRequired = (req, res, next) => {
 };
 
 // MW that allows to pass only if the logged user in is not a student.
-exports.teacherOrAdminRequired = (req, res, next) => {
+exports.authCreateEscapeRoom = (req, res, next) => {
     const user = req.session.user;
     if (user && (isStudent(user) === false)) {
         return next();
@@ -204,8 +147,39 @@ exports.adminOrMyselfRequired = (req, res, next) => {
     throw new Error(res.locals.i18n.api.forbidden);
 };
 
+
+exports.authShowEscapeRoom = async(req, res, next) => {
+    const er = req.escapeRoom;
+    if (er && er.isAccessibleToAllUsers) {
+        return next();
+    }
+
+    const user = req.session.user;
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
+        return next();
+    }
+
+    req.participant = await getParticipant(user,er);
+    if(typeof req.participant !== "undefined"){
+        return next();
+    }
+
+    res.status(403);
+    return next(new Error(res.locals.i18n.api.forbidden));
+};
+
+exports.authEditEscapeRoom = (req, res, next) => {
+    const user = req.session.user;
+    const er = req.escapeRoom;
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
+        return next();
+    }
+    res.status(403);
+    next(new Error(res.locals.i18n.api.forbidden));
+};
+
 // MW that allows actions only if the user logged in is admin or is the author of the escape room.
-exports.adminOrAuthorRequired = (req, res, next) => {
+exports.authDeleteEscapeRoom = (req, res, next) => {
     const user = req.session.user;
     const er = req.escapeRoom;
     if (user && (isAuthor(user, er) || isAdmin(user))) {
@@ -215,88 +189,46 @@ exports.adminOrAuthorRequired = (req, res, next) => {
     next(new Error(res.locals.i18n.api.forbidden));
 };
 
-exports.adminOrCoAuthorRequired = (req, res, next) => {
-    const user = req.session.user;
-    const er = req.escapeRoom;
-    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
-        return next();
-    }
-    res.status(403);
-    next(new Error(res.locals.i18n.api.forbidden));
-};
-
 // MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
-exports.adminOrAuthorOrCoauthorOrParticipantRequired = async (req, res, next) => {
+exports.authEditOrPlayEscapeRoom = async (req, res, next) => {
     const user = req.session.user;
     const er = req.escapeRoom;
     if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
         return next();
     }
-    let participationEval = await isParticipant(user,er);
-    if(participationEval.isParticipant === true){
-        if(typeof participationEval.participant !== "undefined"){
-            req.participant = participationEval.participant;
-        }
+    req.participant = await getParticipant(user,er);
+    if(typeof req.participant !== "undefined"){
         return next();
     }
-
-    // This code should be in the controllers, not here.
-    // try {
-    //     if((er.status === "completed")||(user && isCoAuthorPending(user, er))){
-    //         req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
-    //         res.render("escapeRooms/preview", {"escapeRoom": er, "user": user});
-    //         return;
-    //     } else {
-    //         res.status(404);
-    //         next(new Error(404));
-    //     }
-    // } catch (error) {
-    //     return next(error);
-    // }
-    
     return next(new Error(res.locals.i18n.api.forbidden));
 };
 
 // MW that allows actions only if the user logged in is a participant of the escape room.
-exports.participantRequired = async (req, res, next) => {
+exports.authPlayEscapeRoom = async (req, res, next) => {
     const user = req.session.user;
-    const er = req.escapeRoom;
-
     if (user && isAdmin(user)) {
-        req.participant_is_admin = true;
-        req.participant = user;
         return next();
     }
 
-    let participationEval = await isParticipant(user,er,true);
-    if(participationEval.isParticipant === true){
-        if(typeof participationEval.participant !== "undefined"){
-            req.participant = participationEval.participant;
-        }
+    const er = req.escapeRoom;
+    req.participant = await getParticipant(user,er);
+    if(typeof req.participant !== "undefined"){
         return next();
     }
 
     return res.redirect("back");
-
-    // This code should be in the controllers, not here.
-    // if (isAdmin(user)) {
-    //     const transaction = await sequelize.transaction();
-    //     try {
-    //         const player = await models.user.findByPk(user.id, {transaction});
-    //         const testShift = await models.turno.findOne({"where": {"status": "test", "escapeRoomId": er.id}}, {transaction});
-    //         const teamCreated = await models.team.create({ "name": `${player.alias}`, "turnoId": testShift.id}, {transaction});
-    //         await teamCreated.addTeamMembers(player.id, {transaction});
-    //         await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": player.id}, {transaction});
-    //         transaction.commit();
-    //     } catch (error) {
-    //         transaction.rollback();
-    //         return next(error);
-    //     }
-    //     return next();
-    // } else {
-    //     return res.redirect("back");
-    // }
 };
+
+exports.authJoinEscapeRoom = (req, res, next) => {
+    const user = req.session.user;
+    const er = req.escapeRoom;
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
+        res.status(403);
+        return next(new Error(res.locals.i18n.api.forbidden));
+    }
+    next();
+};
+
 
 exports.new = (req, res) => {
     // Page to go/show after login:

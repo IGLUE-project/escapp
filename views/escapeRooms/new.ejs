@@ -4,12 +4,12 @@
         <div class="breadcrumbs">
             <a href="/escapeRooms"><%=i18n.common.my%></a>
             <span class="material-icons">chevron_right</span>
-            <span><%=i18n.escapeRoom.steps.edit.New%></span>
+            <span><%=i18n.escapeRoom.steps.settings.New%></span>
             </span>
 
         </div>
     </div>
-    <h1><%=i18n.escapeRoom.steps.edit.title%></h1>
+    <h1><%=i18n.escapeRoom.steps.settings.title%></h1>
     <form id="main-er-create-edit-form" class="basicConfig" method="post" action="/escapeRooms" enctype="multipart/form-data">
         <%- include ("../partials/_form.ejs", {ignoreExtras: true}) %>
     </form>

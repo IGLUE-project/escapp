@@ -8,7 +8,7 @@
 			<span class="material-icons">chevron_right</span>
 			<a href="/escapeRooms/<%=escapeRoom.id%>"><%=escapeRoom.title%></a>
             <span class="material-icons">chevron_right</span>
-            <span><%=i18n.showStudent.Results%></span>
+            <span><%=i18n.showPlayer.Results%></span>
         </div>
 		<%} else {%>
 			<div class="breadcrumbs">
@@ -19,7 +19,7 @@
 	</div>
 	<div class="content">
 		<% var theTeam =  (teams && teams.find(t=>t.id==teamId))%>
-		<h1 style="text-align:center;"><%= (theTeam && theTeam.finishTime) ? i18n.showStudent.congrats: i18n.showStudent.resultsTitle%></h1>
+		<h1 style="text-align:center;"><%= (theTeam && theTeam.finishTime) ? i18n.showPlayer.congrats: i18n.showPlayer.resultsTitle%></h1>
 		<% if (teams && teams.length >= 3 ) {%>
 			<%-include("../../partials/_podium")%>
 		<% } %>

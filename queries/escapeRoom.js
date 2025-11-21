@@ -16,7 +16,6 @@ exports.load = {
     ]
 };
 
-
 exports.loadShow = {
     "include": [
         {
@@ -51,7 +50,6 @@ exports.loadShow = {
     ]
 };
 
-
 exports.loadPuzzles = {
     "include": [
         {
@@ -73,7 +71,6 @@ exports.loadPuzzles = {
         ]
     ]
 };
-
 
 exports.loadComplete = {
     "include": [
@@ -321,7 +318,6 @@ exports.forAll = (page = 1, limit = 10, search = "") => ({
     "offset": (page - 1) * limit,
     "order": [["id", "desc"]]
 });
-
 
 exports.loadExport = {
     "include": [

@@ -1,5 +1,5 @@
 const steps = [
-    "edit",
+    "settings",
     "puzzles",
     "hints",
     "indications",

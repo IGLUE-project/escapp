@@ -159,6 +159,7 @@
         "Finish": "Finalizar",
         "finish": "finalizar",
         "my": "Mis escape rooms",
+        "escapeRooms": "Escape rooms",
         "completado": "completado",
         "validationError": "Datos de entrada incorrectos",
         "flash": {
@@ -192,6 +193,7 @@
             "errorUserIsAlreadyACollaborator": "El usuario ya es un colaborador",
             "errorFile": "Error al subir el fichero",
             "errorImage": "Error al subir la imagen",
+            "errorReady": "No pudes jugar a la escape room",
             "errorSendingReport": "Error al enviar el reporte",
             "errorMandatoryPass": "Es obligatorio introducir una contraseña",
             "passwordChangedSuccessfully": "Contraseña cambiada correctamente",
@@ -405,7 +407,7 @@
                 "title": "Selecciona un recurso",
                 "button": "Confirmar selección"
             },
-            "edit": {
+            "settings": {
                 "New": "Nueva",
                 "descriptionPlaceHolder": "Escribe la descripción de tu escape room. Esta será la información que se les presentará a los participantes.",
                 "durationPlaceHolder": "¿De cuánto tiempo disponen los participantes para completar la escape room?",
@@ -958,7 +960,7 @@
             "score": "La puntuación del reto"
         }
     },
-    "showStudent": {
+    "showPlayer": {
         "access": "acceder",
         "beforeLeave": "Antes de irte rellena el siguiente cuestionario",
         "beforeStart": "Antes de empezar rellena el siguiente cuestionario",
@@ -1210,6 +1212,7 @@
             "iForgotMyPassword": "He olvidado mi contraseña",
             "Login": "Iniciar sesión",
             "login": "entrar",
+            "ready": "Jugar",
             "notRegistered": "¿No tienes cuenta?",
             "register": "regístrate",
             "Register": "Regístrate",

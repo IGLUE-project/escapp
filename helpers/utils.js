@@ -64,7 +64,6 @@ exports.saveInterface = async (name, req, res, next) => {
     }
 };
 
-
 exports.playInterface = async (name, req, res, next) => {
     const {i18n} = res.locals;
     const isAdmin = Boolean(req.session.user.isAdmin),
