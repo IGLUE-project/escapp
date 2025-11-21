@@ -389,7 +389,7 @@
             "noERsPublic": "No hay ninguna escape room disponible.",
             "notFound": "No hay resultados para tu búsqueda. ¡Prueba otra vez!",
             "myERs": "Mis escape rooms",
-            "otherERs": "Novedades en escape rooms",
+            "publicERs": "Escape rooms públicas",
             "finishedERs": "Escape rooms pasadas",
             "emptyER": "No hay colaboradores",
             "playingERs": "Escape rooms activas",
@@ -1291,7 +1291,7 @@
             "deleteYourAccount": "Elimina tu cuenta",
             "deleteYourAccountMsg": "Si decides eliminar tu cuenta, toda la información personal asociada a ella será eliminada permanentemente de nuestro sistema. No obstante, tus datos de participación anteriores permanecerán de forma anonimizada para ser empleados con los fines indicados en nuestra <a href='/privacy' target='_blank'>política de privacidad</a>. Esto significa que tus contribuciones seguirán ayudando a mejorar la plataforma, pero ya no estarán vinculadas contigo de ninguna manera. De todas formas, lamentaríamos verte partir.",
             "deleteYourAccountMsgConfirmation": "¿Estás seguro de que deseas eliminar tu cuenta?",
-            "deleteAccount": "confirmar borrado"
+            "deleteAccount": "eliminar cuenta"
         }
     },
     "hint": {
@@ -1318,10 +1318,9 @@
         "msgPlaceholder2": "Escribe aquí tu mensaje. Todos los usuarios de esta lista que estén conectados ahora mismo lo recibirán."
     },
     "cookies": {
-        "cookie_message": "Usamos solo cookies esenciales para garantizar el funcionamiento adecuado de este sitio. No utilizamos cookies de seguimiento ni de terceros",
-        "accept_button": "aceptar",
-        "privacy_policy": "Más información",
-        "back_to_home": "Volver a inicio"
+        "cookie_message": "Usamos solo cookies esenciales para garantizar el funcionamiento adecuado de este sitio. No utilizamos cookies de seguimiento ni de terceros.",
+        "cookie_policy": "Para más información, consulte nuestra <a href=\"/cookies\" target=\"_blank\">Política de Cookies</a>.",
+        "accept_button": "aceptar"
     },
     "terms": {
           "title": "Términos de uso, política de privacidad y política de cookies actualizados",

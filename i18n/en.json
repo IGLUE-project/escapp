@@ -392,7 +392,7 @@
             "noERsPublic": "There are no escape rooms currently available.",
             "notFound": "There are no results for your search. Try a different search!",
             "myERs": "My escape rooms",
-            "otherERs":"Trending escape rooms",
+            "publicERs":"Public escape rooms",
             "finishedERs": "Past escape rooms",
             "emptyER": "No collaborators yet",
             "playingERs":"Active escape rooms",
@@ -1296,10 +1296,10 @@
         "wrongCredentials": "Login error. Please check your credentials",
         "turno": "Shift",
         "delete": {
-            "deleteYourAccount": "Delete Your Account",
+            "deleteYourAccount": "Delete your account",
             "deleteYourAccountMsg": "If you choose to delete your account, all personal information associated with it will be permanently removed from our system. Nonetheless, your past participation data will remain in anonymized form to be used for the purposes indicated in our <a href='/privacy' target='_blank'>privacy policy</a>. This means that while your contributions will still help improve our platform, they will no longer be linked to you in any way. Anyways, we would be sorry to see you go.",
             "deleteYourAccountMsgConfirmation": "Are you sure you want to delete your account?",
-            "deleteAccount": "confirm delete"
+            "deleteAccount": "delete account"
         }
     },
     "hint": {
@@ -1326,10 +1326,9 @@
         "msgPlaceholder2": "Write here your message. All the users in this list that are currently connected will receive it."
     },
     "cookies": {
-        "cookie_message": "We use only essential cookies to ensure the proper functioning of this site. No tracking or third-party cookies.",
-        "accept_button": "accept",
-        "privacy_policy": "Learn more",
-        "back_to_home": "Back to home"
+        "cookie_message": "We use only essential cookies to ensure the proper functioning of this site. We do not use tracking or third-party cookies.",
+        "cookie_policy": "For more information, please refer to our <a href=\"/cookies\" target=\"_blank\">Cookie Policy</a>.",
+        "accept_button": "accept"
     },
     "terms": {
         "title": "Updated Terms of Use, Privacy Policy & Cookies Policy",

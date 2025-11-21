@@ -17,7 +17,7 @@
                 <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.created,  whichMenu: "created", title: i18n.escapeRoom.main.myERs, page: page.pageCreated, pages: pages.pagesCreated, pageArray: pageArray.pageCreatedArray, pageQuery: "pageCreated"}) %>
             <%}%>
             <%if(escapeRooms.pending.length > 0){%><%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.pending,  whichMenu: "playing", title: i18n.escapeRoom.main.playingERs, page: page.pagePending, pages: pages.pagesPending, pageArray: pageArray.pagePendingArray, pageQuery: "pagePending"}) %> <%}%>
-            <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.public,  whichMenu: "public", title: i18n.escapeRoom.main.otherERs, page: page.pagePublic, pages: pages.pagesPublic, pageArray: pageArray.pagePublicArray, pageQuery: "pagePublic"}) %>
+            <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.public,  whichMenu: "public", title: i18n.escapeRoom.main.publicERs, page: page.pagePublic, pages: pages.pagesPublic, pageArray: pageArray.pagePublicArray, pageQuery: "pagePublic"}) %>
             <% if(escapeRooms.finished.length > 0){%><%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.finished,  whichMenu: "finished", title: i18n.escapeRoom.main.finishedERs, page: page.pageFinished, pages: pages.pagesFinished, pageArray: pageArray.pageFinishedArray, pageQuery: "pageFinished"}) %><%}%>
         <%}%>
     </br>

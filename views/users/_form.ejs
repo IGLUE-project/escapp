@@ -2,7 +2,11 @@
     body{height: 100vh;}
 </style>
 <script src="/js/vendor/jquery-ui.min.js"></script>
-<%if (!user.id) {%>
+
+<% const registrationForm = (!user.id) %>
+<% const isAdmin = (locals.admin) %>
+
+<%if (registrationForm) {%>
     <h1 class="loginWelcomeMessage">
         <%=i18n.user.messages.welcome%>
     </h1>
@@ -10,7 +14,7 @@
         <%=i18n.user.actions.Register%>
     </h2>
     <form method="post" class=" " action="/users<%=redir ? ("?redir="+redir) : "" %>">
-        <%}else{%>
+<%}else{%>
     <form method="post" class="editUserForm" action="/users/<%=user.id%>?_method=PUT%>">
 <%}%>
 
@@ -29,7 +33,8 @@
     <input type="text" class="customInput" id="alias" name="alias" value="<%= user.alias %>" required placeholder="<%=i18n.user.inputs.aliasPlaceHolder %>" autocomplete="off"/></label>
 </div>
 <br />
-<%if (user.id) {%>
+
+<%if (registrationForm) {%>
     <div class="userField">
         <label for="user_confirm_password"><span><%=i18n.user.lang%></span>
         <select  class="customInput" id="lang" name="lang" required autocomplete="off">
@@ -40,34 +45,43 @@
     </div>
     <br/>
 <%}%>
-<%if (!user.id || locals.admin) {%>
-<div class="userField">
-    <label for="username"><span><%=i18n.user.username%></span>
-    <input type="email" <%=user.id?"disabled":""%> class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
-</div>
-<br />
-    <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || locals.admin) {%>
+
+<%if (registrationForm) {%>
+    <div class="userField">
+        <label for="username"><span><%=i18n.user.username%></span>
+        <input type="email" class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
+    </div>
+    <br />
+<%} else if(user.id || isAdmin){ %>
+    <div class="userField">
+        <label for="username"><span><%=i18n.user.username%> : </span> <span><%=user.username %></span>
+        <br/>
+        <br/>
+    </div>
+<% } %>
+
+<%if (registrationForm || isAdmin) {%>
+    <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || isAdmin) {%>
         <div class="userField">
             <label for="eduLevel"><span><%=i18n.user.roleField%></span>
             <select  class="customInput" id="role" name="role"  autocomplete="off" required>
                 <option value <%if (!user.id) {%> selected <%}%> disabled > </option>
                 <option value="student" <%if (user.id && user.isStudent) {%> selected <%}%>> <%=i18n.user.roles.student%></option>
                 <option value="teacher" <%if (user.id && !user.isStudent)  {%> selected <%}%>> <%=i18n.user.roles.teacher%></option>
-                <%if (locals.admin) {%>
-                    <option value="admin" <%if (locals.admin && user.isAdmin)  {%> selected <%}%>> <%=i18n.user.roles.admin%></option>
+                <%if (isAdmin) {%>
+                    <option value="admin" <%if (isAdmin && user.isAdmin)  {%> selected <%}%>> <%=i18n.user.roles.admin%></option>
                 <%}%>
             </select>
         </div>
-    <br />
+        <br />
     <%}%>
-<%} else if (user.id && !locals.admin) {%>
+<%} else if (user.id) {%>
     <div class="userField">
-        <label for="eduLevel"><span><%=i18n.user.roleField%> : </span> <span><%=user.isStudent ? i18n.user.roles.student : i18n.user.roles.teacher %></span>
+        <label for="roleField"><span><%=i18n.user.roleField%> : </span> <span><%=user.isStudent ? i18n.user.roles.student : (user.isAdmin ? i18n.user.roles.admin : i18n.user.roles.teacher) %></span>
         <br/>
         <br/>
     </div>
 <%}%>
-
 
 <div class="userField">
     <label for="eduLevel"><span><%=i18n.user.eduLevelField%><span id="roleFieldStudy"><%=i18n.user.roleFieldStudy%></span> <span id="roleFieldTeach"><%=i18n.user.roleFieldTeach%></span></span>
@@ -85,16 +99,16 @@
  
 
 <%if (user.id) {%>
-
-<p><%=i18n.user.passLeaveBlank%></p>
+    <p><%=i18n.user.passLeaveBlank%></p>
 <%}%>
+
 <div class="userField">
         <label for="user_password"><span><%=i18n.user.password%></span>
         <input type="password" class="customInput" id="user_password" name="password" 
        <%if (!user.id) {%>  required <%}%>
          placeholder="<%=i18n.user.inputs.passwordPlaceHolder %>" autocomplete="nope"/></label>
 </div>
-<br />
+<br/>
 <div class="userField">
         <label for="user_confirm_password"><span><%=i18n.user.passwordConfirm%></span>
         <input type="password" class="customInput" id="user_confirm_password" name="confirm_password" 
@@ -102,53 +116,50 @@
          placeholder="<%=i18n.user.inputs.passwordConfirmPlaceHolder %>" autocomplete="nope"/></label>
 </div>
 <br/>
+
 <%if (!user.id) {%>
-<br/>
-<div class="userField">
-    <label for="accept_terms" >
-        <p>
-            <input type="checkbox" class="" id="accept_terms" name="accept_terms" required/>
-            <%-i18n.user.terms%><br/>
-        </p>
-    </label>
-</div>
-<br/>
-    <button class="registro" type="submit" value="Save" onclick="return confirmPassword()"><%=i18n.user.actions.register %></button>
-    <br />
-    <br />
-    <a class="login" href="/"><%=i18n.user.actions.alreadyRegistered %></a>
+        <br/>
+        <div class="userField">
+            <label for="accept_terms" >
+                <p>
+                    <input type="checkbox" class="" id="accept_terms" name="accept_terms" required/>
+                    <%-i18n.user.terms%><br/>
+                </p>
+            </label>
+        </div>
+        <br/>
+        <button class="registro" type="submit" value="Save" onclick="return confirmPassword()"><%=i18n.user.actions.register %></button>
+        <br />
+        <br />
+        <a class="login" href="/"><%=i18n.user.actions.alreadyRegistered %></a>
         <br/><br/><br/><br/>
-
-
-</form>
+    </form>
 <%} else {%>
+        <br/>
+        <a href="/"><button class="save white rounded" type="button"><%=i18n.common.back %></button></a>
+        <button class="save editButton rounded" type="submit" value="edit"
+        <%if (!user.id) {%> onclick="return confirmPassword()" <%}%>><%=i18n.user.actions.save %></button>
 
-    <br/>
-    <a href="/"><button class="save white rounded" type="button"><%=i18n.common.back %></button></a>
-    <button class="save editButton rounded" type="submit" value="edit"
-    <%if (!user.id) {%> onclick="return confirmPassword()" <%}%>><%=i18n.user.actions.save %></button>
+        <br />
+        <br />
+        <br />
+    </form>
+<% }%>
 
-    <br />
-    <br />
-    <br />
-</form>
+<%if (user.id) {%>
     <div class="deleteUser">
-        <form action="/users/<%=user.id%>?_method=delete" method="POST">
+        <form action="/users/<%=user.id%>?_method=delete" method="POST" onsubmit="return confirm('<%= i18n.user.delete.deleteYourAccountMsgConfirmation %>');">
             <h3><%=i18n.user.delete.deleteYourAccount%></h3>
             <p><%-i18n.user.delete.deleteYourAccountMsg%></p>
-            <p><%=i18n.user.delete.deleteYourAccountMsgConfirmation%></p>
             <button class="save deleteButton rounded" type="submit"><%=i18n.user.delete.deleteAccount%></button>
         </form>
-       
     </div>
     <br />
     <br />
-<%} %>
-
+<% } %>
 
 <script>
     function confirmPassword() {
-        
         var pw1 = document.getElementById('user_password').value;
         var pw2 = document.getElementById('user_confirm_password').value;
         if (!pw1 || !pw2) {
@@ -184,8 +195,5 @@
                 $('#roleFieldTeach').hide();
             }
         });
-
-         
     });
-    
 </script>
