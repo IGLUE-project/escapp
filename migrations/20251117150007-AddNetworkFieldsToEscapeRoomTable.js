@@ -14,7 +14,7 @@ module.exports = {
             type: Sequelize.BOOLEAN,
             defaultValue: false
         });
-        await queryInterface.addColumn("escapeRooms", "isAccessible", {
+        await queryInterface.addColumn("escapeRooms", "isAccessibleToAllUsers", {
             type: Sequelize.BOOLEAN,
             defaultValue: false
         });
@@ -31,7 +31,7 @@ module.exports = {
     async down(queryInterface, Sequelize) {
         await queryInterface.removeColumn("escapeRooms", "isNetworkAccessible");
         await queryInterface.removeColumn("escapeRooms", "isPubliclyAccessible");
-        await queryInterface.removeColumn("escapeRooms", "isAccessible");
+        await queryInterface.removeColumn("escapeRooms", "isAccessibleToAllUsers");
         await queryInterface.removeColumn("escapeRooms", "isLastVersionVerified");
         await queryInterface.removeColumn("escapeRooms", "verified_at");
         await queryInterface.removeColumn("escapeRooms", "verified");

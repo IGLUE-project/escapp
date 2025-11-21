@@ -167,14 +167,15 @@ exports.ids = (ids) => {
     return findOptions;
 };
 
-exports.all = (user, page = 1, limit = 10, search, finished) => {
+exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUsers = null) => {
     const findOptions = {
         "attributes": [
             "id",
             "title",
             "invitation",
             "duration",
-            "scope"
+            "scope",
+            "isAccessibleToAllUsers"
         ],
         "distinct": true,
         "include": [
@@ -212,8 +213,6 @@ exports.all = (user, page = 1, limit = 10, search, finished) => {
         findOptions.include[0].include[0].required = true;
         findOptions.attributes = ["id", "title"];
         findOptions.distinct = false;
-
-
         if (finished === true) {
             findOptions.include[0].where = { "status": "finished" };
             findOptions.include[0].include.push({
@@ -234,10 +233,12 @@ exports.all = (user, page = 1, limit = 10, search, finished) => {
             });
         }
     }
+
     if (page !== null) {
         findOptions.limit = limit;
         findOptions.offset = (page - 1) * limit;
     }
+
     if (search) {
         findOptions.where = {
             [Op.and]: [
@@ -250,6 +251,19 @@ exports.all = (user, page = 1, limit = 10, search, finished) => {
             ]
         };
     }
+
+    if (typeof isAccessibleToAllUsers === "boolean") {
+        if (!findOptions.where) {
+            findOptions.where = {};
+        }
+        if (!findOptions.where[Op.and]) {
+            findOptions.where[Op.and] = [];
+        }
+        findOptions.where[Op.and].push({
+            "isAccessibleToAllUsers": isAccessibleToAllUsers
+        });
+    }
+
     return findOptions;
 };
 

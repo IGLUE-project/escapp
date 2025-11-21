@@ -86,7 +86,7 @@ router.delete("/reports/:reportId", sessionController.loginRequired, sessionCont
 
 // Routes for escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
-router.get("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginOrGuestAccessRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantRequired, escapeRoomController.show);
+router.get("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginOrGuestAccessRequired, sessionController.adminOrAuthorOrCoauthorOrParticipantOrErAccessibleRequired, escapeRoomController.show);
 router.get("/escapeRooms/new", sessionController.loginRequired, sessionController.teacherOrAdminRequired, escapeRoomController.new);
 router.post("/escapeRooms", sessionController.loginRequired, sessionController.teacherOrAdminRequired, thumbnails.single("image"), escapeRoomController.create);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrCoAuthorRequired, escapeRoomController.edit);

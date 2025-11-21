@@ -85,7 +85,7 @@ exports.index = async (req, res, next) => {
         const pageCreatedArray = paginate(pageCreated, pagesCreated, 5);
 
         // Pending
-        ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = false)));
+        ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, false)));
         const pagesPending = Math.ceil(countPending / limit);
         if (pagePending > pagesPending && pagesPending !== 0) {
             pagePending = pagesPending;
@@ -93,7 +93,7 @@ exports.index = async (req, res, next) => {
         const pagePendingArray = paginate(pagePending, pagesPending, 5);
 
         // Finished
-        ({"count": countFinished, "rows": finished} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, finished = true)));
+        ({"count": countFinished, "rows": finished} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pageFinished, limit, search, true)));
         const pagesFinished = Math.ceil(countPending / limit);
         if (pageFinished > pagesFinished && pagesFinished !== 0) {
             pageFinished = pagesFinished;
@@ -101,29 +101,8 @@ exports.index = async (req, res, next) => {
         const pageFinishedArray = paginate(pageFinished, pagesFinished, 5);
 
         // Public
-        let erAll = [];
-        const searchCondition = search ? ` AND (LOWER(title) LIKE '%${search.toLowerCase()}%' OR LOWER(description) LIKE '%${search.toLowerCase()}%')` : "";
-        countPublic = await sequelize.query(`SELECT count(distinct "escapeRooms"."id") AS "count" FROM "escapeRooms" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRooms".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRooms"."status" = 'completed') AND  (scope != 'private' OR SCOPE IS NULL) AND ("turnos".status = 'pending' OR "turnos"."status" = 'active') AND ("escapeRooms"."authorId" != ${user.id}))) ${searchCondition}`, {"raw": true, "type": QueryTypes.SELECT});
-        erAll = await sequelize.query(`SELECT DISTINCT "escapeRoom"."id" FROM "escapeRooms" AS "escapeRoom" INNER JOIN turnos ON "turnos"."escapeRoomId" = "escapeRoom".id  LEFT JOIN participants ON  "participants"."turnId" = "turnos"."id" WHERE ((("escapeRoom"."status" = 'completed') AND (scope != 'private'  OR SCOPE IS NULL) AND ("turnos"."status" = 'pending' OR "turnos"."status" = 'active')  AND ("escapeRoom"."authorId" != ${user.id}))) ${searchCondition} ORDER BY "escapeRoom"."id" DESC LIMIT ${limit} OFFSET ${(pagePublic - 1) * limit}`, {"raw": false, "type": QueryTypes.SELECT});
-        countPublic = parseInt(countPublic[0].count, 10);
-        const orIds = erAll.map((e) => e.id);
-        publicERs = await models.escapeRoom.findAll(query.escapeRoom.ids(orIds));
-        
-        // const erFiltered = await models.escapeRoom.findAll(query.escapeRoom.all(user.id, null));
-        // const ids = erFiltered.map((e) => e.id);
-        // const now = new Date();
-        // now.setHours(now.getHours() - now.getTimezoneOffset() / 60);
-        // // public = erAll.map((er) => {
-        // //     const {id, title, invitation, attachment} = er;
-        // //     const isSignedUp = ids.indexOf(er.id) !== -1;
-        // //     const isAuthorOrCoAuthor = er.authorId === user.id || er.userCoAuthor.some((e) => e.id === user.id);
-        // //     const tobeConfirmed = er.userCoAuthor.some((e) => e.id === user.id && !e.coAuthors.confirmed);
-
-        // //     const disabled = !isSignedUp && !er.turnos.some((e) => (!e.from || e.from < now) && (!e.to || e.to > now) && e.status !== "finished" && e.status !== "test" && (!e.capacity || e.students.length < e.capacity));
-
-        // //     return { id, title, invitation, attachment, disabled, isSignedUp, isAuthorOrCoAuthor, tobeConfirmed };
-        // // });
-
+        ({"count": countPublic, "rows": publicERs} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(undefined, pagePublic, limit, search, null, true)));
+        //TO DO. Filter escape rooms included in other sections.
         const pagesPublic = Math.ceil(countPublic / limit);
         if (pagePublic > pagesPublic && pagesPublic !== 0) {
             pagePublic = pagesPublic;

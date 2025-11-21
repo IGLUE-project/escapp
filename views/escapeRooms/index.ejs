@@ -3,7 +3,7 @@
     <div class="escapeRoomList">
 
         <h1 role="title">
-            <% if (user && (user.isStudent)) { %> <!--todo-->
+            <% if (user && (user.isStudent)) { %>
                 <%=i18n.escapeRoom.main.yesERStudent%>
             <% } else { %>
                 <%=i18n.escapeRoom.main.yesERTeacher%>
@@ -12,13 +12,17 @@
         <%-include("../partials/_search", {search, admin})%>
         <%if(user.isAdmin && admin){%>
             <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms,  whichMenu: "admin", title: undefined, pageQuery: "page"}) %>
-        <%}else{%>    
-            <% if (user && !(user.isStudent)) { %> <!--todo-->
+        <%}else{%>
+            <% if (user && !(user.isStudent)) { %>
                 <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.created,  whichMenu: "created", title: i18n.escapeRoom.main.myERs, page: page.pageCreated, pages: pages.pagesCreated, pageArray: pageArray.pageCreatedArray, pageQuery: "pageCreated"}) %>
             <%}%>
-            <%if(escapeRooms.pending.length > 0){%><%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.pending,  whichMenu: "playing", title: i18n.escapeRoom.main.playingERs, page: page.pagePending, pages: pages.pagesPending, pageArray: pageArray.pagePendingArray, pageQuery: "pagePending"}) %> <%}%>
+            <%if(escapeRooms.pending.length > 0){%>
+                <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.pending,  whichMenu: "playing", title: i18n.escapeRoom.main.playingERs, page: page.pagePending, pages: pages.pagesPending, pageArray: pageArray.pagePendingArray, pageQuery: "pagePending"}) %> 
+            <%}%>
             <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.public,  whichMenu: "public", title: i18n.escapeRoom.main.publicERs, page: page.pagePublic, pages: pages.pagesPublic, pageArray: pageArray.pagePublicArray, pageQuery: "pagePublic"}) %>
-            <% if(escapeRooms.finished.length > 0){%><%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.finished,  whichMenu: "finished", title: i18n.escapeRoom.main.finishedERs, page: page.pageFinished, pages: pages.pagesFinished, pageArray: pageArray.pageFinishedArray, pageQuery: "pageFinished"}) %><%}%>
+            <% if(escapeRooms.finished.length > 0){%>
+                <%- include ("../partials/_landing_carousel",{escapeRoomsList: escapeRooms.finished,  whichMenu: "finished", title: i18n.escapeRoom.main.finishedERs, page: page.pageFinished, pages: pages.pagesFinished, pageArray: pageArray.pageFinishedArray, pageQuery: "pageFinished"}) %>
+            <%}%>
         <%}%>
     </br>
     </br>

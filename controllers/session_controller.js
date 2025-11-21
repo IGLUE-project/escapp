@@ -116,9 +116,9 @@ exports.loginOrGuestAccessRequired = (req, res, next) => {
     }
 };
 
-exports.adminOrAuthorOrCoauthorOrParticipantOrErPublicRequired = async(req, res, next) => {
+exports.adminOrAuthorOrCoauthorOrParticipantOrErAccessibleRequired = async(req, res, next) => {
     const er = req.escapeRoom;
-    if (er && er.isPubliclyAccessible) {
+    if (er && er.isAccessibleToAllUsers) {
         return next();
     }
     const user = req.session.user;

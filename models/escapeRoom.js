@@ -150,8 +150,40 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
             },
-            "instructions": {"type": DataTypes.TEXT},
-            "hybridInstructions": {"type": DataTypes.TEXT}
+            "instructions": {
+                "type": DataTypes.TEXT
+            },
+            "hybridInstructions": {
+                "type": DataTypes.TEXT
+            },
+            "verified": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
+            },
+            "verified": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
+            },
+            "verified_at": {
+                "type": DataTypes.DATE,
+                "allowNull": true
+            },
+            "isLastVersionVerified": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
+            },
+            "isAccessibleToAllUsers": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
+            },
+            "isPubliclyAccessible": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
+            },
+            "isNetworkAccessible": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
+            }
         }
     );
 

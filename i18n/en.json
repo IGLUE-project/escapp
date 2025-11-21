@@ -396,7 +396,7 @@
             "finishedERs": "Past escape rooms",
             "emptyER": "No collaborators yet",
             "playingERs":"Active escape rooms",
-            "yesERStudent": "These are your escape rooms",
+            "yesERStudent": "Escape rooms available",
             "yesERTeacher": "Escape rooms",
             "notAvailable": "Escape room not available"
         },
