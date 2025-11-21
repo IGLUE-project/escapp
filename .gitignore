@@ -2,6 +2,12 @@ node_modules/
 .idea
 *.env
 escaperoom.sqlite
+migrate.sh
+seed.sh
+*.pem
+.vscode
+.DS_Store
+*.code-workspace
 !uploads/
 uploads/*
 !uploads/thumbnails/
@@ -16,13 +22,6 @@ uploads/webapps/*
 !uploads/instructions
 uploads/instructions/*
 !uploads/instructions/.gitkeep
-migrate.sh
-seed.sh
-*.pem
-.vscode
-.DS_Store
-*.code-workspace
-catalog/*
 public/terms/*
 !public/terms/.gitkeep
 public/privacy/*
@@ -32,3 +31,4 @@ public/cookies/*
 reusablePuzzles/installed/*
 !reusablePuzzles/installed/.gitkeep
 dumps
+!dumps/loaddump.sh
