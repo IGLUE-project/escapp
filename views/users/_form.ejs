@@ -7,64 +7,42 @@
 <% const isAdmin = (locals.admin) %>
 
 <%if (registrationForm) {%>
-    <h1 class="loginWelcomeMessage">
-        <%=i18n.user.messages.welcome%>
-    </h1>
-    <h2>
-        <%=i18n.user.actions.Register%>
-    </h2>
-    <form method="post" class=" " action="/users<%=redir ? ("?redir="+redir) : "" %>">
+    <h1 class="loginWelcomeMessage"><%=i18n.user.messages.welcome%></h1>
+    <h2><%=i18n.user.actions.Register%></h2>
+    <form method="post" class="userForm" action="/users<%=redir ? ("?redir="+redir) : "" %>">
 <%}else{%>
-    <form method="post" class="editUserForm" action="/users/<%=user.id%>?_method=PUT%>">
+    <form method="post" class="userForm editUserForm" action="/users/<%=user.id%>?_method=PUT%>">
 <%}%>
 
 <div class="userField">
  <label for="name"><span><%=i18n.user.name%></span>
  <input type="text" class="customInput" id="name" name="name" value="<%= user.name %>" required placeholder="<%=i18n.user.inputs.namePlaceHolder %>" autocomplete="off"/> </label>
 </div>
-<br />
 <div class="userField">
     <label for="surname"><span><%=i18n.user.surname%></span>
     <input type="text" class="customInput" id="surname" name="surname" value="<%= user.surname %>" required placeholder="<%=i18n.user.inputs.surnamePlaceHolder %>" autocomplete="off"/></label>
 </div>
-<br />
 <div class="userField">
     <label for="alias"><span><%=i18n.user.alias%></span>
     <input type="text" class="customInput" id="alias" name="alias" value="<%= user.alias %>" required placeholder="<%=i18n.user.inputs.aliasPlaceHolder %>" autocomplete="off"/></label>
 </div>
-<br />
-
-<%if (registrationForm) {%>
-    <div class="userField">
-        <label for="user_confirm_password"><span><%=i18n.user.lang%></span>
-        <select  class="customInput" id="lang" name="lang" required autocomplete="off">
-            <option value="en" <%=(user.lang == "en" || (!user.lang && (i18n.lang === "en"))) ? "selected" :""%>><%=i18n.langs.en%></option>
-            <option value="es" <%=(user.lang == "es" || (!user.lang && (i18n.lang === "es"))) ? "selected" :""%>><%=i18n.langs.es%></option>
-        </select>
-        </label>
-    </div>
-    <br/>
-<%}%>
 
 <%if (registrationForm) {%>
     <div class="userField">
         <label for="username"><span><%=i18n.user.username%></span>
         <input type="email" class="customInput" id="username" name="username" value="<%= user.username %>" required placeholder="<%=i18n.user.inputs.usernamePlaceHolder %>" autocomplete="off"/></label>
     </div>
-    <br />
 <%} else if(user.id || isAdmin){ %>
     <div class="userField">
-        <label for="username"><span><%=i18n.user.username%> : </span> <span><%=user.username %></span>
-        <br/>
-        <br/>
+        <label for="username"><span><%=i18n.user.username%>: </span> <span><%=user.username %></span>
     </div>
 <% } %>
 
 <%if (registrationForm || isAdmin) {%>
     <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || isAdmin) {%>
         <div class="userField">
-            <label for="eduLevel"><span><%=i18n.user.roleField%></span>
-            <select  class="customInput" id="role" name="role"  autocomplete="off" required>
+            <label for="roleField"><span><%=i18n.user.roleField%></span>
+            <select class="customInput" id="role" name="role"  autocomplete="off" required>
                 <option value <%if (!user.id) {%> selected <%}%> disabled > </option>
                 <option value="student" <%if (user.id && user.isStudent) {%> selected <%}%>> <%=i18n.user.roles.student%></option>
                 <option value="teacher" <%if (user.id && !user.isStudent)  {%> selected <%}%>> <%=i18n.user.roles.teacher%></option>
@@ -73,13 +51,21 @@
                 <%}%>
             </select>
         </div>
-        <br />
     <%}%>
 <%} else if (user.id) {%>
     <div class="userField">
-        <label for="roleField"><span><%=i18n.user.roleField%> : </span> <span><%=user.isStudent ? i18n.user.roles.student : (user.isAdmin ? i18n.user.roles.admin : i18n.user.roles.teacher) %></span>
-        <br/>
-        <br/>
+        <label for="roleField"><span><%=i18n.user.roleField%>: </span> <span><%=user.isStudent ? i18n.user.roles.student : (user.isAdmin ? i18n.user.roles.admin : i18n.user.roles.teacher) %></span>
+    </div>
+<%}%>
+
+<%if (user.id) {%>
+    <div class="userField">
+        <label for="user_confirm_password"><span><%=i18n.user.lang%></span>
+        <select  class="customInput" id="lang" name="lang" required autocomplete="off">
+            <option value="en" <%=(user.lang == "en" || (!user.lang && (i18n.lang === "en"))) ? "selected" :""%>><%=i18n.langs.en%></option>
+            <option value="es" <%=(user.lang == "es" || (!user.lang && (i18n.lang === "es"))) ? "selected" :""%>><%=i18n.langs.es%></option>
+        </select>
+        </label>
     </div>
 <%}%>
 
@@ -95,9 +81,7 @@
         <option value="none" <%= user.eduLevel === "none" ? "selected" : ""%>><%=i18n.user.eduLevel.none%></option>
     </select></label>
 </div>
-<br />
  
-
 <%if (user.id) {%>
     <p><%=i18n.user.passLeaveBlank%></p>
 <%}%>
@@ -108,17 +92,14 @@
        <%if (!user.id) {%>  required <%}%>
          placeholder="<%=i18n.user.inputs.passwordPlaceHolder %>" autocomplete="nope"/></label>
 </div>
-<br/>
 <div class="userField">
         <label for="user_confirm_password"><span><%=i18n.user.passwordConfirm%></span>
         <input type="password" class="customInput" id="user_confirm_password" name="confirm_password" 
         <%if (!user.id) {%> required <%}%>
          placeholder="<%=i18n.user.inputs.passwordConfirmPlaceHolder %>" autocomplete="nope"/></label>
 </div>
-<br/>
 
 <%if (!user.id) {%>
-        <br/>
         <div class="userField">
             <label for="accept_terms" >
                 <p>
@@ -139,7 +120,6 @@
         <a href="/"><button class="save white rounded" type="button"><%=i18n.common.back %></button></a>
         <button class="save editButton rounded" type="submit" value="edit"
         <%if (!user.id) {%> onclick="return confirmPassword()" <%}%>><%=i18n.user.actions.save %></button>
-
         <br />
         <br />
         <br />
