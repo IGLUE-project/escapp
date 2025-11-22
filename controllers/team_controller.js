@@ -160,26 +160,19 @@ exports.resetProgress = async (req, res) => {
 
 // DELETE /escapeRooms/:escapeRoomId/turnos/:turnoId/teams/:teamId
 exports.delete = async (req, res) => {
-    const {i18n} = res.locals;
-
     try {
         const userIds = [];
-
         for (const member of req.team.teamMembers) {
             userIds.push(member.id);
         }
-
         await models.participants.destroy({"where": {"userId": {[Op.in]: userIds}}});
-
         await req.team.destroy();
-
         const teams = await getRanking(req.escapeRoom.id, req.turn.id, true);
-
         sendLeaveTeam(req.team.id, req.turn.id, teams);
-        req.flash("success", i18n.team.deleteSuccess);
+        req.flash("success", res.locals.i18n.team.deleteSuccess);
     } catch (e) {
         console.error(e);
-        req.flash("error", i18n.team.deleteFail);
+        req.flash("error", res.locals.i18n.team.deleteFail);
     }
     res.redirect("back");
 };

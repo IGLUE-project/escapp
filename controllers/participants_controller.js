@@ -134,14 +134,12 @@ exports.confirmAttendance = async (req, res) => {
     }
 };
 
-// DELETE /escapeRooms/:escapeRoomId/turno/:turnId/team/:teamId
 // DELETE /escapeRooms/:escapeRoomId/turno/:turnId/team/:teamId/user/:userId
 exports.studentLeave = async (req, res, next) => {
     let {user} = req;
     const {turn} = req;
     const {i18n} = res.locals;
     let redirectUrl = `/escapeRooms/${req.escapeRoom.id}`;
-
     try {
         if (req.user && req.user.id !== req.session.user.id && req.session.user.isStudent) {
             // If it's not myself and I am not a teacher
