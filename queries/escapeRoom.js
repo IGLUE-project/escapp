@@ -164,7 +164,7 @@ exports.ids = (ids) => {
     return findOptions;
 };
 
-exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUsers = null) => {
+exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUsers = null, ignoreERIds = []) => {
     const findOptions = {
         "attributes": [
             "id",
@@ -236,29 +236,29 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
         findOptions.offset = (page - 1) * limit;
     }
 
-    if (search) {
-        findOptions.where = {
-            [Op.and]: [
-                {
-                    [Op.or]: [
-                        {"title": {[Op.iLike]: `%${search}%`}},
-                        {"description": {[Op.iLike]: `%${search}%`}}
-                    ]
-                }
+    findOptions.where = { [Op.and]: [] };
+
+    if ((typeof search === "string")&&(search.trim()!=="")) {
+        findOptions.where[Op.and].push({
+            [Op.or]: [
+                { title: { [Op.iLike]: `%${search}%` }},
+                { description: { [Op.iLike]: `%${search}%` }}
             ]
-        };
+        });
     }
 
     if (typeof isAccessibleToAllUsers === "boolean") {
-        if (!findOptions.where) {
-            findOptions.where = {};
-        }
-        if (!findOptions.where[Op.and]) {
-            findOptions.where[Op.and] = [];
-        }
+        findOptions.where[Op.and].push({ isAccessibleToAllUsers });
+    }
+
+    if (Array.isArray(ignoreERIds) && ignoreERIds.length > 0) {
         findOptions.where[Op.and].push({
-            "isAccessibleToAllUsers": isAccessibleToAllUsers
+            id: { [Op.notIn]: ignoreERIds }
         });
+    }
+
+    if (findOptions.where[Op.and].length === 0) {
+        delete findOptions.where;
     }
 
     return findOptions;

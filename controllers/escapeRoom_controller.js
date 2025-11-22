@@ -98,9 +98,16 @@ exports.index = async (req, res, next) => {
         }
         const pageFinishedArray = paginate(pageFinished, pagesFinished, 5);
 
+        //Get ids from created, pending and finished escape rooms
+        let shownEscapeRoomIds = [
+          ...created.map(o => o.id),
+          ...pending.map(o => o.id),
+          ...finished.map(o => o.id),
+        ];
+        shownEscapeRoomIds = [...new Set(shownEscapeRoomIds)];
+
         // Public
-        ({"count": countPublic, "rows": publicERs} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(undefined, pagePublic, limit, search, null, true)));
-        //TO DO. Filter escape rooms included in other sections.
+        ({"count": countPublic, "rows": publicERs} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(undefined, pagePublic, limit, search, null, true, shownEscapeRoomIds)));
         const pagesPublic = Math.ceil(countPublic / limit);
         if (pagePublic > pagesPublic && pagesPublic !== 0) {
             pagePublic = pagesPublic;
