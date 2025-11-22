@@ -20,7 +20,9 @@
         </div>
 		<%}%>
 	</div>
-	<div class="reporting"><a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a> <!--/ <a href="/escapeRooms/<%=escapeRoom.id%>/contact"> Contactar </a>--> </div>
+	<div class="reporting">
+		<a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
+	</div>
 	<div class="flex ">
 		<div class="flex-thumb attachmentShow animated">
 			<img  alt="thumbnail" src="<%=escapeRoom.getThumbnailUrl()%>">
@@ -78,14 +80,14 @@
 		<div class="status animated fadeIn">
 			<% if (turno.status === "pending") { %>
 				<span id ="start">
-					<button class="rounded disabled" disabled id ><%=i18n.showPlayer.play%>%></button>
+					<button class="rounded disabled" disabled id ><%=i18n.showPlayer.startPlay%>%></button>
 				</span>
 			
 			<% } else if((turno.status === "active")&& !finished && (!team.startTime || (new Date(team.startTime.getTime() + escapeRoom.duration * 60000) > new Date()))) { %>
 				<span id ="start">
 					<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/play" style="display: inline;">
 						<button class="rounded acceptButton pulseButton" onclick="clicked()">
-							<%=team.startTime ? i18n.showPlayer.join : i18n.showPlayer.play%>
+							<%=team.startTime ? i18n.showPlayer.play : i18n.showPlayer.startPlay%>
 						</button>
 					</form>
 				</span>
@@ -93,7 +95,7 @@
 				<span id ="start">
 					<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/test" style="display: inline;">
 						<button class="rounded acceptButton pulseButton" onclick="clicked()">
-							<%=team.startTime ? i18n.showPlayer.join : i18n.showPlayer.play%>
+							<%=team.startTime ? i18n.showPlayer.play : i18n.showPlayer.startPlay%>
 						</button>
 					</form>
 				</span>
@@ -143,7 +145,7 @@
 		<div>
 			<p class="start-er"><%=i18n.showPlayer.start%> <br/>
 				<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/play" style="display: inline;">
-					<button class="rounded acceptButton pulseButton" onclick="clicked()"><%=i18n.showPlayer.join%>%></button>
+					<button class="rounded acceptButton pulseButton" onclick="clicked()"><%=i18n.showPlayer.play%>%></button>
 				</form>
 			</p>
 		</div>
@@ -188,7 +190,7 @@ $(()=>{
 		if (!startTime && !CLICKED) {
 			$( "#dialog-start" ).dialog( "open" )
 			$('#start-er').html(`<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/play" style="display: inline;">
-				<button class="rounded acceptButton pulseButton"  onclick="clicked()" ><%=i18n.showPlayer.join%>%></button>
+				<button class="rounded acceptButton pulseButton"  onclick="clicked()" ><%=i18n.showPlayer.play%>%></button>
 			</form>`);
 		}
 	};

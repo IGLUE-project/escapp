@@ -111,7 +111,7 @@
 
             <%}else{%>
                 <p><%=i18n.escapeRoom.steps.sharing.checklist.congrats%>
-                <%if(escapeRoom.scope){%>
+                <%if(!escapeRoom.isAccessibleToAllUsers){%>
                     <%=i18n.escapeRoom.steps.sharing.checklist.congrats2%>
                     <a href="/escapeRooms/<%= escapeRoom.id %>/turnos" class="link-turnos-share">
                         <span class="material-icons">open_in_new</span>

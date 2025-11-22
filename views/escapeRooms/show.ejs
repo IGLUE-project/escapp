@@ -2,7 +2,7 @@
 
 <div role="main" class="main showPlayer preview">
 	 <% if (user && !user.anonymized) { %>
-        <div class="breadcrumbs-container">
+    <div class="breadcrumbs-container">
         <div class="breadcrumbs">
 			<a href="/escapeRooms"><%=i18n.common.escapeRooms%></a>
 				<span class="material-icons">chevron_right</span>
@@ -10,6 +10,9 @@
         </div>
 	</div>
     <% } %>
+    <div class="reporting">
+        <a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
+    </div>
     <%var isCollaborator = (user && escapeRoom.userCoAuthor?.some(u => u.id === user.id)) %>
     <%var isUnconfirmedCollaborator = (isCollaborator && !isCollaborator.coAuthors.confirmed) %>
     <%if(isUnconfirmedCollaborator){%>
@@ -32,13 +35,8 @@
         </h1>
             <p>
                 <span>by <%=escapeRoom.author.alias%></span>
-                <%if(escapeRoom.lang){%>   &middot; 
-                <span class="tag-chip lang"><%=i18n.languages[escapeRoom.lang]%></span>
-                <%}%>
             </p>
-
             <br/>
-            
             <h3><%=i18n.showTeacher.titles.description%></h3>
             <p><%-escapeRoom.description%></p>
             <div class="flex-er-info-preview fadeIn">
@@ -111,7 +109,7 @@
         <% if (user) { %>
             <% if (isParticipant === false) { %>
                 <a href="/escapeRooms/<%=escapeRoom.id%>/join" >
-                    <button class="rounded editButton acceptButton" <%if(!user.isStudent && isUnconfirmedCollaborator){%>disabled title="<%=i18n.collaborators.beforeJoin%>"<%}%>><%=i18n.showPlayer.join%></button>
+                    <button class="rounded editButton acceptButton" <%if(!user.isStudent && isUnconfirmedCollaborator){%>disabled title="<%=i18n.collaborators.beforeJoin%>"<%}%>><%=i18n.showPlayer.Play%></button>
                 </a>
             <% } else { %>
                 <a href="/escapeRooms/<%=escapeRoom.id%>/ready" >
@@ -134,7 +132,7 @@
                 </spa >
             <%}%>
         <%} else {%>
-            <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.join%></button>
+            <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.Play%></button>
             <div id="dialog-join-anon" title="Playing '<%=escapeRoom.title%>'" style="display: none;">
                 <p class="text-center"> 
                 <%=i18n.showPlayer.alreadyAccount%>
@@ -178,7 +176,7 @@
                 </div>
             </div>
             <p class="text-center">
-                <button class="rounded editButton acceptButton" type="submit"><%=i18n.showPlayer.join%></button>
+                <button class="rounded editButton acceptButton" type="submit"><%=i18n.showPlayer.Play%></button>
             </p>
             </form>
             </div>

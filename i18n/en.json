@@ -312,7 +312,7 @@
         },
         "play": {
             "correct": "Correct answer!",
-            "check": "Check",
+            "check": "Check solution",
             "msg": "Message",
             "sol": "Solution",
             "autoPlayText": "Click the button to start playing the video",
@@ -327,7 +327,7 @@
             "noMoreLeftTeam": "Someone from your team requested a hint but there are no more hints for your current situation. The team can ask the teacher for help",
             "chooseCat": "What do you need help with?",
             "cantRequestMore": "You cannot request more hints",
-            "cantRequestMoreThis": "You cannot request more hints in your current situation",
+            "cantRequestMoreThis": "You cannot request more hints at this moment",
             "canRequest": "Request a hint",
             "empty": "Help from the teacher",
             "Info": "Information",
@@ -377,13 +377,12 @@
         },
         "invitation": {
             "no": "no",
-            "wannaJoin": "Would you like to join this escape room?",
+            "wannaJoin": "Would you like to play the escape room ",
             "typePasscode": "Type the access passcode for",
             "yes": "yes",
             "scopes": {
-                "public": "Available to everyone",
-                "escapp": "Available to all Escapp users",
-                "private": "Unlisted (only shared by link)"
+                "public": "Public",
+                "private": "Unlisted"
             }
         },
         "main": {
@@ -684,19 +683,19 @@
                 },
                 "warningOldEscapeRooms": "<b>We have a new version of Escapp!</b></br/> In this version, you need to change the status from draft to published in order to make your escape room accessible to the students.",
                 "allowGuests": "Allow playing without signing up in Escapp"
-
             },
             "turnos": {
                 "title": "Shifts",
                 "indicacion": "Add a comment",
                 "addTitle": "Add a new shift",
-                "alwaysTitle": "Shift always open",
+                "alwaysTitle": "Asynchronous shift",
                 "deleteTitle": "Delete shift",
                 "editTitle": "Edit shift",
                 "hourTitle": "Set time",
                 "name": "Name",
                 "namePlaceholder": "Name to identify the shift",
-                "autonomous": "Asynchronous",
+                "asynchronous": "Asynchronous",
+                "asynchronous_plural": "Asynchronous",
                 "date": "Celebration date",
                 "datePlaceholder": "Date in which the escape room will take place",
                 "enrollmentPeriod": "Enrollment period",
@@ -972,7 +971,9 @@
         "beforeStart": "Before you start, fill in the following questionnaire",
         "opinion": "Your opinion matters to us! Please tell us what do you think about it",
         "hybridInstructions": "Physical resources needed beforehand",
+        "startPlay": "start",
         "play": "play",
+        "Play": "Play",
         "results": "results",
         "Results": "Results",
         "start": "The escape room has just started!",
@@ -1075,7 +1076,7 @@
     },
     "team": {
         "add": "Add a team",
-        "addMsg": "Your friends can add to this team when they join the escape room",
+        "addMsg": "Your teammates can join your team once they register for the escape room",
         "addPlaceHolder": "Write your team's name",
         "areYouSureDelete": "Are you sure you want to remove this team from the escape room?",
         "areYouSureReset": "Are you sure you want to reset this team's progress?",
@@ -1112,13 +1113,16 @@
         "alreadyFinished" : "You have already finished this escape room"
     },
     "turno": {
+        "Shift": "Shift",
         "Actions": "Actions",
         "addTurno": "add shift",
         "all": "All shifts",
         "alreadyIn": "You're already assigned to a shift",
         "always": "always",
         "tooLate": "It is too late to join this team",
-        "alwaysOpen": "Always open",
+        "alwaysOpen": "asynchronous",
+        "asynchronousTitle": "Asynchronous shift",
+        "asynchronousShiftsTitle": "Asynchronous shifts",
         "notActive": "This escape room is not active right now",
         "participants": "Participants",
         "arrows": {
@@ -1160,7 +1164,7 @@
         	"dec": "December"
         },
         "place": "Location",
-        "publicSub": "open to all",
+        "publicSub": "Public shift",
         "PUBLIC": "Public",
         "noPlace": "Place not specified",
         "fullTurno": "The shift you selected is full. Select another one",
@@ -1197,6 +1201,7 @@
         "statusMsg": {
             "pending": "Pending shift",
             "active": "Active shift",
+            "unavailable": "Unavailable shift",
             "finished": "Closed shift",
             "canSignUp": "Shift available",
             "full": "No places left in this shift"
@@ -1378,9 +1383,9 @@
             "reason": "Reason",
             "additionalComments": "Additional comments",
             "reasons": {
-                "inappropriateContent": "Inappropriate content",
-                "copyrightViolation": "Copyright infringement",
-                "policyViolation": "Content that violates the platform's <a href='/terms'>terms and conditions</a>",
+                "inappropriateContent": "Inappropriate content for the target audience.",
+                "copyrightViolation": "Copyright infringement.",
+                "policyViolation": "Content that violates the <a target='_blank' href='/terms'>terms of use and legal conditions</a> of the platform.",
                 "other": "Other"
             }
         }

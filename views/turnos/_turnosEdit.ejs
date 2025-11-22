@@ -17,7 +17,7 @@
 			</div>
 			<div class="turno-form-group">
 				<span class="material-icons">alarm_off</span>
-				<label class="light" for="always"><%= i18n.escapeRoom.steps.turnos.autonomous %></label>
+				<label class="light" for="always"><%= i18n.escapeRoom.steps.turnos.asynchronous %></label>
 				<input name="always" class="light" onclick="$('#turno-date-<%=id%>').toggleClass('hide');$('#turno-date-<%=id%> input').prop('disabled', (_, val) => !val);" type="checkbox"  <%=turno.date ? '': 'checked="checked"' %> >
 				<br/><br/>
 			</div>

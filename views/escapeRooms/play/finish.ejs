@@ -6,14 +6,14 @@
 		<div class="breadcrumbs">
             <a href="/escapeRooms"><%=i18n.common.my%></a>
 			<span class="material-icons">chevron_right</span>
-			<a href="/escapeRooms/<%=escapeRoom.id%>"><%=escapeRoom.title%></a>
+			<a href="/escapeRooms/<%=escapeRoom.id%>/ready"><%=escapeRoom.title%></a>
             <span class="material-icons">chevron_right</span>
             <span><%=i18n.showPlayer.Results%></span>
         </div>
 		<%} else {%>
 			<div class="breadcrumbs">
 				<span class="material-icons">arrow_left</span>
-			<a href="/escapeRooms/<%=escapeRoom.id%>"><%=i18n.common.back%></a>
+			<a href="/escapeRooms/<%=escapeRoom.id%>/ready"><%=i18n.common.back%></a>
 		</div>
 		<%}%>
 	</div>

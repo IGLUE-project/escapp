@@ -6,7 +6,7 @@ const query = require("../queries");
 const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {isAuthor, isCoAuthor, isCoAuthorPending, isParticipant, getParticipant} = require("../helpers/escapeRooms");
-const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted} = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname} = require("../helpers/utils");
 const {
     toArray,
     statSafe,
@@ -142,7 +142,7 @@ exports.ready = async (req, res) => {
 exports.edit = async (req, res) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
     escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
-    const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+    const hostName = getHostname(req);
     const completed = stepsCompleted(escapeRoom);
     res.render("escapeRooms/edit", {escapeRoom, completed, hostName, "email": req.session.user.username}); 
 };
@@ -498,7 +498,7 @@ exports.sharingUpdate = async (req, res) => {
             escapeRoom.instructions = null;
         }
 
-        await escapeRoom.save({"fields": ["invitation", "scope", "license", "instructions", "status", "publishedOnce", "allowGuests"], transaction});
+        await escapeRoom.save({"fields": ["invitation", "scope", "license", "instructions", "status", "publishedOnce", "allowGuests", "verified", "isLastVersionVerified", "isAccessibleToAllUsers", "isPubliclyAccessible", "isNetworkAccessible"], transaction});
         await transaction.commit();
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("sharing") : progressBar || nextStep("sharing")}`);
     } catch (error) {

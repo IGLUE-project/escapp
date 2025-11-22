@@ -77,10 +77,10 @@
                     <%let pendingShifts = escapeRoom.turnos.filter(turn=>turn.status === "pending" &&  (turn.date - now)/1000/60 < 60)%>
                     <%for (let turn of pendingShifts) {%>
                         <li>
-
                             <button class="showMenuButton editButton" onclick="overlayTrigger('turno-<%=turn.id%>')">
                                 <%=i18n.showTeacher.actionList.activateTurno%> <%if(pendingShifts.length>1){%><%=getFullDate(turn.date)%> <%=i18n.showTeacher.actionList.shift%><%}%>
                             </button>
+                            <% if (turn.date) {%>
                             <div class="overlay-trigger" data-id="turno-<%=turn.id%>">
                                 <form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/activate?_method=put">
                                     <input type="hidden" id="turnSelected" name="turnSelected" value="<%=turn.id%>">
@@ -89,6 +89,7 @@
                                     <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
                                 </form>
                             </div>
+                            <% } %>
                         </li>
                      <%}%>
                     <%let activeShifts = escapeRoom.turnos.filter(turn=>turn.status === "active" && turn.startTime)%>
@@ -238,10 +239,7 @@
                     </div>
                 </div>
                 <%}%>
-
-
                 <% if (escapeRoom.turnos && escapeRoom.turnos.length) { %>
-
                 <div class="flexRow animated slideInUp" style="animation-delay: <%=delay%>ms;">
                     <% delay += 50 %>
                     <div class="flexShowLeft">
@@ -258,9 +256,6 @@
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.puzzles%>:
                         <% const someAutomatic = escapeRoom.puzzles && escapeRoom.puzzles.length > 0 && escapeRoom.puzzles.some(p=>p.automatic); %>
-                        <% // if (someAutomatic) { %>
-                            <!-- <br/><button id="api-button"><span class="material-icons">info</span></button> -->
-                        <% // } %>
                     </div>
                     <div class="flexShowRight previewPuzzles">
                         <%if (escapeRoom.puzzles && escapeRoom.puzzles.length > 0) {%>

@@ -147,7 +147,6 @@ exports.adminOrMyselfRequired = (req, res, next) => {
     throw new Error(res.locals.i18n.api.forbidden);
 };
 
-
 exports.authShowEscapeRoom = async(req, res, next) => {
     const er = req.escapeRoom;
     if (er && er.isAccessibleToAllUsers) {

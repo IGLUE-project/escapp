@@ -19,67 +19,75 @@
     <%- include ("../../partials/_seo.ejs") %>
 </head>
 <body>
-    <% var currentlyWorkingOn = null %>
-    <% var latestRetoSuperado =  null %>
-    <% var reqHints = {}; %>
-    <% var customHints = 0; %>
-    <% var reqHintsList = []; %>
-    <% var automaticHints = 0 %>
-    <% var pending = [] %>
-    <% var retosSuperados = []%>
-    <% var retosSuperadosIds = []%>
-    <% var progress = 0; %>
-    <% var finish = false; %>
-    
-    <% var content = JSON.parse(escapeRoom[endPoint + "Instructions"] || "[]").map((block, index) => ({...block, index}))  %>
-        <% var hintConditional  = (!escapeRoom.hintLimit && escapeRoom.hintLimit !== 0 ) || escapeRoom.hintLimit > 0; // Hints allowed %>
-        <% var hintAppConditional = hintConditional && Boolean(escapeRoom.hintApp); // Hint app methodology %>
-        <% retosSuperados = team.retos.map(a=>a.order);%>
-        <% retosSuperadosIds = team.retos.map(a=>a.id);%>
-        <% for (let h in hints) {
-            let hint = hints[h]
-            if (hint && hint.hint) {
-                reqHintsList.push(hint.hintId);
-                automaticHints++;
-            } else {
-                customHints++
-            }
-        } %>
-        <% progress = Math.round(retosSuperados.length / escapeRoom.puzzles.length * 100); %>
-        <% finish = retosSuperados.length === escapeRoom.puzzles.length; %>
-        <% latestRetoSuperado = retosSuperados.length ? Math.max(...retosSuperados) : null %>
-        <% currentlyWorkingOn = retosSuperados.length ? (Math.max(...retosSuperados) + 1) : 0 %>
-        <% if (finish) { currentlyWorkingOn = null;} %>
-        <% if (endPoint == "class") { currentlyWorkingOn = null;} %>
-        <% content = getContentForPuzzle(escapeRoom[endPoint + "Instructions"], currentlyWorkingOn === null ? "all": currentlyWorkingOn)%>
+    <% 
+    var currentlyWorkingOn = null;
+    var latestRetoSuperado =  null;
+    var reqHints = {};
+    var customHints = 0;
+    var reqHintsList = [];
+    var automaticHints = 0;
+    var pending = [];
+    var retosSuperados = [];
+    var retosSuperadosIds = [];
+    var progress = 0;
+    var finish = false;
+    var exitURL = "/escapeRooms/" + escapeRoom.id + "/ready";
 
-        <% var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, hints, validator })=>{ 
-            reqHints[order] = [];
-            var noSuperado = retosSuperados.indexOf(order) === -1;
-            if (noSuperado) {
-                pending.push(order)
-            }
-            const categories = Array.from(new Set(hints.map(h=>h.category)));
-            return { id, title, order, score, correct, automatic, validator, categories, hints: hints.reduce((a,b) => {
-                if (reqHintsList.indexOf(b.id) === -1){
-                    if ( a[b.category]) {
-                        a[b.category].push(b.order)
-                    } else {
-                        a[b.category] = [b.order];
-                    }
+    var content = JSON.parse(escapeRoom[endPoint + "Instructions"] || "[]").map((block, index) => ({...block, index}));
+    var hintConditional  = (!escapeRoom.hintLimit && escapeRoom.hintLimit !== 0 ) || escapeRoom.hintLimit > 0;
+    var hintAppConditional = hintConditional && Boolean(escapeRoom.hintApp);
+    retosSuperados = team.retos.map(a=>a.order);
+    retosSuperadosIds = team.retos.map(a=>a.id);
+    for (let h in hints) {
+        let hint = hints[h]
+        if (hint && hint.hint) {
+            reqHintsList.push(hint.hintId);
+            automaticHints++;
+        } else {
+            customHints++
+        }
+    }
+    progress = Math.round(retosSuperados.length / escapeRoom.puzzles.length * 100);
+    finish = retosSuperados.length === escapeRoom.puzzles.length;
+    latestRetoSuperado = retosSuperados.length ? Math.max(...retosSuperados) : null;
+    currentlyWorkingOn = retosSuperados.length ? (Math.max(...retosSuperados) + 1) : 0;
+    if (finish) { 
+        currentlyWorkingOn = null;
+    }
+    if (endPoint == "class") { 
+        currentlyWorkingOn = null;
+        exitURL = "/escapeRooms/" + escapeRoom.id + "/edit";
+    }
+    content = getContentForPuzzle(escapeRoom[endPoint + "Instructions"], currentlyWorkingOn === null ? "all": currentlyWorkingOn);
+
+    var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, hints, validator })=>{ 
+        reqHints[order] = [];
+        var noSuperado = retosSuperados.indexOf(order) === -1;
+        if (noSuperado) {
+            pending.push(order)
+        }
+        const categories = Array.from(new Set(hints.map(h=>h.category)));
+        return { id, title, order, score, correct, automatic, validator, categories, hints: hints.reduce((a,b) => {
+            if (reqHintsList.indexOf(b.id) === -1){
+                if ( a[b.category]) {
+                    a[b.category].push(b.order)
                 } else {
-                    reqHints[order].push(b.order);
-                    if (!a[b.category]) {
-                        a[b.category] = [];
-                    }
+                    a[b.category] = [b.order];
                 }
-                return a;
-            }, {})}}) %>
-            <%
-                if (!finish && pending.length && currentlyWorkingOn >= puzzles.length) {
-                    currentlyWorkingOn = pending[0];
+            } else {
+                reqHints[order].push(b.order);
+                if (!a[b.category]) {
+                    a[b.category] = [];
                 }
-            %>
+            }
+            return a;
+        }, {})}
+    })  
+    if (!finish && pending.length && currentlyWorkingOn >= puzzles.length) {
+        currentlyWorkingOn = pending[0];
+    }
+    %>
+
     <nav class="navbar fixed-top navbar-expand-md justify-content-between navbar-fixed-top navbar-dark bg-primary">
         <a class="navbar-brand" href="#" > 
             <%=escapeRoom.title%></a>
@@ -218,7 +226,7 @@
 
                 <%}%>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/escapeRooms/<%=escapeRoom.id%>" data-toggle="tooltip" title="<%=i18n.escapeRoom.play.Exit%>">
+                    <a class="nav-link" href="<%=exitURL%>" data-toggle="tooltip" title="<%=i18n.escapeRoom.play.Exit%>">
                         <button class="btn btn-light" >
                             <span class="material-icons ">exit_to_app</span>
                         </button>

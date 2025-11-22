@@ -1,4 +1,3 @@
-
 <%
 const monthArray = Object.values(i18n.turno.months);
 const formatDate = function (currentDate) {
@@ -31,27 +30,52 @@ var pastDates = [];
   		pastDates.push(dateNoTime.getTime()); %>
 		</div>
 		<p class="turno-date-title-show centeredSmall">
-			<%= turn.date ? formatDate(dateNoTime) : i18n.turno.alwaysOpen %>
+			<%= turn.date ? formatDate(dateNoTime) : i18n.escapeRoom.steps.turnos.asynchronous_plural %>
 		</p>
 		<div class="flexBoxTurnos">
 	<%}%>
-	<a href="" title="<%=i18n.turno.statusMsg[turn.status]%>" onclick="return false;">
+	<% let turnStatusText;
+		if ((!turn.date)&&(turn.status==="pending")){
+			turnStatusText = i18n.turno.statusMsg["unavailable"];
+		} else {
+			turnStatusText = i18n.turno.statusMsg[turn.status];
+		}
+
+		let turnPlaceText;
+		if (turn.place) {
+			turnPlaceText = turn.place === "_PUBLIC" ? i18n.turno.publicSub : turn.place;
+		} else {
+			turnPlaceText = i18n.turno.Shift;
+		}
+
+		let turnDialogTitle = turnPlaceText;
+		if (!turnDialogTitle.startsWith(i18n.turno.Shift)) {
+			turnDialogTitle = i18n.turno.Shift + ": " + turnPlaceText;
+		}
+		if (turn.date) {
+			turnDialogTitle = turnDialogTitle + " (" + getFullDate(turn.date) + ")";
+		} else {
+			turnDialogTitle = turnDialogTitle + " (" + i18n.escapeRoom.steps.turnos.asynchronous + ")";
+		}
+	%>
+	<a href="" title="<%=turnStatusText%>" onclick="return false;">
 		<div class="turno turno-play turnoProfe <%=turn.status === "active" ? "active" : "finished" %>" data-date="<%=dateNoTime.getTime()%>" id="turno-<%=turn.id%>">
 			<div class="hora">
-				<%- turn.date ? formatTime(date) : `<span class="always">${ turn.place =="_PUBLIC" ? i18n.turno.PUBLIC.toLowerCase() : i18n.turno.always}</span>`%>
+				<%- turn.date ? formatTime(date) : `<span class="asynchronous">${ i18n.escapeRoom.steps.turnos.asynchronous}</span>`%>
 			</div>
 			<div class="place">
 				<% if (turn.place) { %>
-					<%= turn.place =="_PUBLIC" ? i18n.turno.publicSub : turn.place %> <br/>
+					<%= turnPlaceText %> <br/>
 				<% } %>
 			</div>
 		</div>
 	</a>
-	<div id="dialog-turno-<%=turn.id%>" class="dialog-turno hidden" title="<%=i18n.turno.Turno%> <%= turn.date ? getFullDate(turn.date) : i18n.turno.alwaysOpen  %> <%if(turn.place){%><%=turn.place =="_PUBLIC" ? "" :("("+turn.place+")")%><%}%>">
+	<div id="dialog-turno-<%=turn.id%>" 
+		class="dialog-turno hidden" 
+		title="<%=turnDialogTitle%>">
 		<div class="flex-dialog-container">
 			<%if(turn.place !=="_PUBLIC"){%>
 				<div class="flex-block">
-				
 				<button class="turno-btn" title="<%=i18n.turno[turn.status === "active"? "stop" : "start"]%>"  <%if (turn.status === "finished") {%>   disabled <% } else { %> onclick="overlayTrigger('activate-<%=turn.id%>')"` <% } %>>
 					<span class="material-icons"  style="color: var(--brightgreen);" ><%= turn.status === "active"? "stop" : "play_arrow"%></span>
 					<span><%=i18n.escapeRoom.play[turn.status === "active"? "stop" : "start"]%></span>

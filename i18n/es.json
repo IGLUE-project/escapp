@@ -306,7 +306,7 @@
             }
         },
         "play": {
-            "check": "Comprobar",
+            "check": "Comprobar solución",
             "correct": "¡Respuesta correcta!",
             "msg": "Mensaje",
             "sol": "Solución",
@@ -322,7 +322,7 @@
             "noMoreLeftTeam": "Alguien de tu equipo ha conseguido una pista peor no queda ninguna para vuestra situación actual. Podéis llamar al profesor para que os ayude.",
             "chooseCat": "¿Con qué necesitas ayuda?",
             "cantRequestMore": "No puedes pedir más pistas",
-            "cantRequestMoreThis": "No puedes pedir más pistas para tu situación actual",
+            "cantRequestMoreThis": "No puedes solicitar más pistas en este momento",
             "canRequest": "Pide una pista",
             "newRetoSuperado": "¡Nuevo reto superado!",
             "newRetoFailed": "Incorrecto!",
@@ -355,13 +355,12 @@
         },
         "invitation": {
             "no": "no",
-            "wannaJoin": "¿Quieres unirte a la escape room de",
+            "wannaJoin": "¿Quieres jugar a la escape room ",
             "typePasscode": "Introduce la contraseña de acceso para",
             "yes": "sí",
             "scopes": {
-                "public": "Disponible para todo el mundo",
-                "escapp": "Disponible para todos los usuarios de Escapp",
-                "private": "Oculta (sólo accesible por enlace)"
+                "public": "Pública",
+                "private": "Oculta"
             }
         },
         "format":{
@@ -684,13 +683,14 @@
                 "title": "Turnos",
                 "indicacion": "¿Alguna indicación?",
                 "addTitle": "Añadir turno",
-                "alwaysTitle": "Turno siempre abierto",
+                "alwaysTitle": "Turno asíncrono",
                 "deleteTitle": "Borrar turno",
                 "editTitle": "Editar turno",
                 "hourTitle": "Fijar hora",
                 "name": "Nombre",
                 "namePlaceholder": "Nombre para identificar el turno",
-                "autonomous": "Asíncrono",
+                "asynchronous": "Asíncrono",
+                "asynchronous_plural": "Asíncronos",
                 "date": "Fecha de celebración",
                 "datePlaceholder": "Fecha en la que tendrá lugar el turno",
                 "enrollmentPeriod": "Periodo de matriculación",
@@ -966,7 +966,9 @@
         "beforeStart": "Antes de empezar rellena el siguiente cuestionario",
         "hybridInstructions": "Recursos físicos necesarios",
         "opinion": "¡Tu opinión cuenta! Dinos lo que piensas de la escape room",
-        "play": "comenzar",
+        "startPlay": "comenzar",
+        "play": "jugar",
+        "Play": "Jugar",
         "results": "resultados",
         "Results": "Resultados",
         "start": "¡La escape room acaba de empezar!",
@@ -1071,7 +1073,7 @@
     },
     "team": {
         "add": "Añada un equipo",
-        "addMsg": "Tus compañeros podrán unirse a tu equipo cuando se registren en la escape room",
+        "addMsg": "Tus compañeros podrán unirse a tu equipo cuando se inscriban en la escape room",
         "addPlaceHolder": "Escribe el nombre del equipo",
         "areYouSureDelete": "¿Seguro que deseas eliminar este equipo de la escape room?",
         "areYouSureReset": "¿Seguro que deseas reiniciar el progreso de este equipo?",
@@ -1108,13 +1110,16 @@
         "alreadyFinished" : "Ya has terminado esta escape room"
     },
     "turno": {
+        "Shift": "Turno",
         "Actions": "Acciones",
         "addTurno": "añadir turno",
         "all": "Todos los turnos",
         "alreadyIn": "Ya estas dentro de un turno.",
         "tooLate": "Es demasiado tarde para unirte a este equipo",
         "always": "siempre",
-        "alwaysOpen": "Siempre abierto",
+        "alwaysOpen": "asíncrono",
+        "asynchronousTitle": "Turno asíncrono",
+        "asynchronousShiftsTitle": "Turnos asíncronos",
         "notActive": "Esta escape room no esta abierta",
         "participants": "Participantes",
         "arrows": {
@@ -1158,7 +1163,7 @@
         "noPlace": "Lugar no indicado",
         "place": "Lugar",
         "PUBLIC": "Público",
-        "publicSub": "abierto",
+        "publicSub": "Turno público",
         "activateTurnos": "Administrar los turnos de la escape room",
         "areYouSureStop": "¿Seguro que deseas detener este turno?",
         "areYouSureStartScheduledFor": "¿Seguro que deseas comenzar el turno programado para",
@@ -1192,6 +1197,7 @@
         "statusMsg": {
             "pending": "Turno pendiente de comenzar",
             "active": "Turno activo ahora mismo",
+            "unavailable": "Turno no disponible",
             "finished": "Turno cerrado",
             "canSignUp": "Turno disponible",
             "full": "Turno lleno"
@@ -1373,10 +1379,10 @@
             "markAsRead": "Marcar como leído",
             "delete": "Eliminar",
             "reasons": {
-                "inappropriateContent": "Contenido inapropiado",
-                "copyrightViolation": "Infracción de copyright",
-                "policyViolation": "Contenido que incumple los  <a href='/terms'>términos y condiciones</a> de la plataforma",
-                "other": "Otro"
+                "inappropriateContent": "Contenido inapropiado para el público al que va dirigido.",
+                "copyrightViolation": "Infracción de copyright.",
+                "policyViolation": "Contenido que incumple los  <a target='_blank' href='/terms'>términos de uso y condiciones legales</a> de la plataforma.",
+                "other": "Otro."
             }
         }
     },

@@ -11,6 +11,6 @@
     </div>
     <h1><%=i18n.escapeRoom.steps.settings.title%></h1>
     <form id="main-er-create-edit-form" class="basicConfig" method="post" action="/escapeRooms" enctype="multipart/form-data">
-        <%- include ("../partials/_form.ejs", {ignoreExtras: true}) %>
+        <%- include ("../partials/_er_settings_form", {ignoreExtras: true}) %>
     </form>
 </div>
