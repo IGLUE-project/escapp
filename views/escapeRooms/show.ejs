@@ -22,7 +22,6 @@
                     <button class="acceptButton rounded small" style="font-size:medium;"  type="submit" name="confirm" value="true"><%=i18n.collaborators.confirmCollaboration%></button>
                     <button class="stopButton rounded" style="font-size:medium;" type="submit" name="confirm" value=""><%=i18n.collaborators.cancelCollaboration%></button>
                 </form>
-
             </div>
     <%}%>
     <div class="flex ">
@@ -107,21 +106,38 @@
    <br/>
     <div class="button-share">
         <% if (user) { %>
-            <% if (isParticipant === false) { %>
-                <a href="/escapeRooms/<%=escapeRoom.id%>/join" >
-                    <button class="rounded editButton acceptButton" <%if(!user.isStudent && isUnconfirmedCollaborator){%>disabled title="<%=i18n.collaborators.beforeJoin%>"<%}%>><%=i18n.showPlayer.Play%></button>
-                </a>
-            <% } else { %>
-                <a href="/escapeRooms/<%=escapeRoom.id%>/ready" >
-                    <button class="rounded editButton readyButton" ><%=i18n.user.actions.ready%></button>
+            <% 
+                let continueButtonURL;
+                let continueButtonText;
+                let continueButtonClass;
+                
+                if (user.isAdmin){
+                    continueButtonURL = "/escapeRooms/" + escapeRoom.id + "/test";
+                    continueButtonText = i18n.showPlayer.Play;
+                    continueButtonClass = "acceptButton";
+                } else {
+                    if (isParticipant === false) {
+                        continueButtonURL = "/escapeRooms/" + escapeRoom.id + "/join";
+                        continueButtonText = i18n.showPlayer.Play;
+                        continueButtonClass = "acceptButton";
+                    } else {
+                        continueButtonURL = "/escapeRooms/" + escapeRoom.id + "/ready";
+                        continueButtonText = i18n.user.actions.ready;
+                        continueButtonClass = "readyButton";
+                    }
+                } 
+            %>
+            <% if (typeof continueButtonURL !== "undefined") { %>
+                <a href="<%= continueButtonURL %>">
+                    <button class="rounded editButton <%= continueButtonClass %>"><%=continueButtonText%></button>
                 </a>
             <% } %>
+
             <%if(!user.isStudent && !isUnconfirmedCollaborator){%>
                 <span>
                     <button class="rounded cloneButton" title="<%=i18n.escapeRoom.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
                         <%=i18n.showTeacher.actionList.clone%>
                     </button>
-                    
                     <div class="overlay-trigger" data-id="clone-<%=escapeRoom.id%>">
                         <form method="POST" action='/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT' >
                             <p><%=i18n.escapeRoom.general.areYouSureClone%></p>

@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="/stylesheets/vendor/quill.snow.css">
 <script src="/js/vendor/socket.io.js"></script>
 <script src="/js/vendor/jquery-ui.min.js"></script>
-
 <div role="main" class="main showPlayer">
 	<div class="breadcrumbs-container">
 		<% if (participant) { %>
@@ -30,8 +29,21 @@
 		<div class="flex-er-info animated fadeIn">
 			<h1><%=escapeRoom.title%></h1>
 			<h2><%=i18n.turno.Turno%></h2>
-			<p><%= turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen%> <% if (turno.place) { %>(<%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%>)<% } %></p>
-
+			<% 
+			let turnPlaceText;
+			if (turno.place) {
+				turnPlaceText = turno.place === "_PUBLIC" ? i18n.turno.publicSub : turno.place;
+			} else {
+				turnPlaceText = i18n.turno.Shift;
+			}
+			let turnDialogTitle = turnPlaceText;
+			if (turno.date) {
+				turnDialogTitle = turnDialogTitle + " (" + getFullDate(turno.date) + ")";
+			} else {
+				turnDialogTitle = turnDialogTitle + " (" + i18n.escapeRoom.steps.turnos.asynchronous + ")";
+			}
+			%>
+			<p><%= turnDialogTitle %></p>
 			<% if (!escapeRoom.teamSize || (escapeRoom.teamSize > 1)) { %>
 				<h2><%=i18n.team.Team%> </h2>
 				<h3><%=team.name%></h3>
