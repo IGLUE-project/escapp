@@ -321,7 +321,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
     try {
         switch (puzzleValidator) {
         case "exact":
-            correctAnswer = removeDiacritics(answer.toString().trim()) === removeDiacritics(puzzleSol.toString().trim());
+            correctAnswer = (answer.toString().trim()) === (puzzleSol.toString().trim());
             break;
         case "regex":
             correctAnswer = new RegExp(puzzleSol).test(removeDiacritics(answer.toString()));
@@ -330,7 +330,6 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             const splitArray = puzzleSol.toString().split("+");
             const solutionNum = Number(splitArray[0]);
             const range = Number(splitArray[1]);
-
             correctAnswer = answer > solutionNum - range && answer < solutionNum + range;
             break;
         }
