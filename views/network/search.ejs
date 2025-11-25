@@ -1,11 +1,7 @@
 <%- include ("../partials/_header.ejs") %>
 <div role="main" class="main">
     <h1>Búsqueda en red</h1>
-    <div id="initialSearch" class="flex-column">
-        <input id="firstSearch" type="text" placeholder="Buscar...">
-        <button id="firstSearchButton">Busqueda</button>
-    </div>
-    <div id="filterSearch" style="display:none;" class="campoDeBusqueda">
+    <div id="filterSearch" class="campoDeBusqueda">
         <div class="headerBusqueda">
             <div id="searchBarContainer" class="flex-row"></div>
                 <input id="search" type="text" placeholder="Buscar...">
@@ -48,6 +44,7 @@
                     <label class="label">Area</label>
                     <select id="area">
                         <option value="">Cualquiera</option>
+                        <option value="00">0</option>
                         <option value="01">1</option>
                         <option value="02">2</option>
                         <option value="03">3</option>
@@ -302,15 +299,6 @@
     };
 
 
-    document.getElementById("firstSearchButton").addEventListener("click", async () => {
-        const query = document.getElementById("firstSearch").value;
-        $("#initialSearch").hide();
-        $("#filterSearch").show();
-        $("#search").val(query);
-        searchAndDisplay(query);
-    });
-
-
     document.getElementById("searchButton").addEventListener("click", async () => {
         const query = document.getElementById("search").value;
         tags.length = 0;
@@ -347,6 +335,7 @@
     const noResultsMessage = createMessage("noResults", "No se han encontrado resultados.");
     const noResultsMessageFilter = createMessage("noResults", "No se han encontrado resultados. Prueba a eliminar algunos filtros.");
     const loadingMessage = createMessage("loading", "Cargando resultados...");
+    $("#searchButton").click();
 
 
 </script>
