@@ -151,7 +151,8 @@ module.exports = function (sequelize, DataTypes) {
                 "defaultValue": false
             },
             "instructions": {"type": DataTypes.TEXT},
-            "hybridInstructions": {"type": DataTypes.TEXT}
+            "hybridInstructions": {"type": DataTypes.TEXT},
+            "isNetworkAccesible": {"type": DataTypes.BOOLEAN}
         }
     );
 };

@@ -224,7 +224,7 @@ router.get("/reusablePuzzlePreview/:reusablePuzzleId", reusablePuzzleController.
 
 // Routes for assets
 router.get("/uploads/webapps/:public_id/:file_name(*)", sessionController.loginRequired, assetsController.getWebAppAsset);
-router.get("/uploads/thumbnails/:file_name",  assetsController.returnThumbnail); //No login to get thumbnails in remote instances
+router.get("/uploads/thumbnails/:file_name", assetsController.returnThumbnail); // No login to get thumbnails in remote instances
 router.get("/uploads/instructions/:file_name", sessionController.loginRequired, assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", sessionController.loginRequired, assetsController.returnHybridInstructions);
 router.get("/uploads/:public_id", sessionController.loginRequired, assetsController.getAsset);

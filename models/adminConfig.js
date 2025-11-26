@@ -7,7 +7,7 @@ module.exports = function (sequelize, DataTypes) {
             "urls": {
                 "type": DataTypes.TEXT,
                 "validate": {"notEmpty": {"msg": "urls must not be empty"}}
-            },
-       }
+            }
+        }
     );
 };

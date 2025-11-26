@@ -5,7 +5,7 @@
         <div class="headerBusqueda">
             <div id="searchBarContainer" class="flex-row"></div>
                 <input id="search" type="text" placeholder="Buscar...">
-                <button id="searchButton">Nueva busqueda</button>
+                <button id="searchButton">Busqueda</button>
             <div id="tags">
             </div>
         </div>
@@ -14,67 +14,69 @@
             <h2>Filtros</h2>
             <div class="container">
                 <div class="flex-column item">
-                    <label class="label"> Después de:</label>
+                    <label class="label"><%=i18n.network.filters.after%></label>
                     <input class="inputsBusqueda" type="date" id="after"/>
                 </div>
                 <div class="flex-column item">
-                    <label class="label"> Antes de:</label>
+                    <label class="label"><%=i18n.network.filters.before%></label>
                     <input class="inputsBusqueda" type="date" id="before"/>
                 </div>
                 <div class="flex-column item">
-                    <label class="label">Idioma</label>
+                    <label class="label"><%=i18n.network.filters.language%></label>
                     <select id="language">
-                        <option value="">Cualquiera</option>
-                        <option value="es">Español</option>
-                        <option value="en">Inglés</option>
-                        <option value="sr">Serbio</option>
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="es"><%=i18n.languages.es%></option>
+                        <option value="en"><%=i18n.languages.en%></option>
+                        <option value="sr"><%=i18n.languages.sr%></option>
                     </select>
                 </div>
                 <div class="flex-column item">
-                    <label class="label">Nivel Educativo</label>
+                    <label class="label"><%=i18n.network.filters.eduLevel.filter%></label>
                     <select id="level">
-                        <option value="">Cualquiera</option>
-                        <option value="primary">Primaria</option>
-                        <option value="secondary">Secundaria</option>
-                        <option value="higher">Univeristaria</option>
-                        <option value="vet">Vet</option>
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="primary"><%=i18n.network.filters.eduLevel.primary%></option>
+                        <option value="secondary"><%=i18n.network.filters.eduLevel.secondary%></option>
+                        <option value="higher"><%=i18n.network.filters.eduLevel.higher%></option>
+                        <option value="vet"><%=i18n.network.filters.eduLevel.vet%></option>
                     </select>
                 </div>
                 <div class="flex-column item">
-                    <label class="label">Area</label>
+                    <label class="label"><%=i18n.network.filters.area%></label>
+                    <%console.log(i18n.escapeRoom.fields)%>
+                    <%console.log(i18n.escapeRoom)%>
                     <select id="area">
-                        <option value="">Cualquiera</option>
-                        <option value="00">0</option>
-                        <option value="01">1</option>
-                        <option value="02">2</option>
-                        <option value="03">3</option>
-                        <option value="04">4</option>
-                        <option value="05">5</option>
-                        <option value="06">6</option>
-                        <option value="07">7</option>
-                        <option value="08">8</option>
-                        <option value="09">9</option>
-                        <option value="10">10</option>
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="00"><%=i18n.escapeRoom.fields["00"]%></option>
+                        <option value="01"><%=i18n.escapeRoom.fields["01"]%></option>
+                        <option value="02"><%=i18n.escapeRoom.fields["02"]%></option>
+                        <option value="03"><%=i18n.escapeRoom.fields["03"]%></option>
+                        <option value="04"><%=i18n.escapeRoom.fields["04"]%></option>
+                        <option value="05"><%=i18n.escapeRoom.fields["05"]%></option>
+                        <option value="06"><%=i18n.escapeRoom.fields["06"]%></option>
+                        <option value="07"><%=i18n.escapeRoom.fields["07"]%></option>
+                        <option value="08"><%=i18n.escapeRoom.fields["08"]%></option>
+                        <option value="09"><%=i18n.escapeRoom.fields["09"]%></option>
+                        <option value="10"><%=i18n.escapeRoom.fields["10"]%></option>
                     </select>
                 </div>
                 <div class="flex-column item">
-                    <label class="label">Pariticipación</label>
+                    <label class="label"><%=i18n.network.filters.participation.filter%></label>
                     <select id="participation">
-                        <option value="">Cualquiera</option>
-                        <option value="individual">Por equipos</option>
-                        <option value="teams">Individual</option>
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="individual"><%=i18n.network.filters.participation.individual%></option>
+                        <option value="teams"><%=i18n.network.filters.participation.team%></option>
                     </select>
                 </div>
                 <div class="flex-column item">
-                    <label class="label"> Duracion(min)</label>
+                    <label class="label"> <%=i18n.network.filters.duration%></label>
                     <input min="0" class="inputsBusqueda" type="number" id="duration"/>
                 </div>
                 <div class="flex-column item">
-                    <label class="label"> Formato</label>
+                    <label class="label"> <%=i18n.network.filters.format.filter%></label>
                     <select id="format">
-                        <option value="">Cualquiera</option>
-                        <option value="online">Online</option>
-                        <option value="hybrid">Híbrida</option>
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="online"><%=i18n.network.filters.format.online%></option>
+                        <option value="hybrid"><%=i18n.network.filters.format.hybrid%></option>
                     </select>
                 </div>
 

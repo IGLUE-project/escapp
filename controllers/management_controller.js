@@ -81,6 +81,7 @@ exports.getNetworkURLS = async (_, res) => {
     const dbURLs = config.urls ? JSON.parse(config.urls) : [];
     let urlsText = "";
     let urlsDBText = "";
+
     envURLS.forEach((url) => {
         urlsText += `${url};`;
     });
@@ -91,17 +92,18 @@ exports.getNetworkURLS = async (_, res) => {
     urlsDBText = urlsDBText.slice(0, -1); // Ultimo ;
     console.log(urlsDBText);
 
-    res.render("management/networkURLs", {urlsText,urlsDBText});
-}
+    res.render("management/networkURLs", {urlsText, urlsDBText});
+};
 
 exports.editNetworkURLS = async (req, res) => {
-    try{
+    try {
         const {urls} = req.body;
         const parsedURLs = urls.split(";").map((url) => url.trim()).filter((url) => url.length > 0 && url.includes("http"));
 
-        let config = await models.adminConfig.findOne({"attributes": ["urls", "id"]})
-        if (!config){
-            config = {urls: JSON.stringify(parsedURLs)}
+        let config = await models.adminConfig.findOne({"attributes": ["urls", "id"]});
+
+        if (!config) {
+            config = {"urls": JSON.stringify(parsedURLs)};
             config = models.adminConfig.build(config);
             await config.save();
             res.status(200).send();
@@ -111,9 +113,9 @@ exports.editNetworkURLS = async (req, res) => {
         await config.save();
 
         res.status(200).send();
-    }catch (error){
+    } catch (error) {
         console.error("Error updating network URLs: ", error);
         res.status(500).send();
     }
-}
+};
 

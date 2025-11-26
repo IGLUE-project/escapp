@@ -316,11 +316,11 @@ exports.public = (page = 1, limit = 10) => ({
     "offset": (page - 1) * limit
 });
 
-exports.text = (before, after, lang,participation, area, duration, format, level) => {
+exports.text = (before, after, lang, participation, area, duration, format, level) => {
     const conditions = {
-        "where": {"status": "completed"},
+        "where": {"isNetworkAccesible": true},
         "attributes": ["id", "title", "description", "lang", "teamSize", "field", "duration", "format", "level", "createdAt"],
-        "include": [{model: models.attachment, required: false, attributes: ["url"]}]
+        "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}]
     };
 
     if (before && after) {
@@ -337,23 +337,23 @@ exports.text = (before, after, lang,participation, area, duration, format, level
         conditions.where.lang = lang;
     }
     if (participation) {
-        if(participation === "individual") {
+        if (participation === "individual") {
             conditions.where.teamSize = {[Op.eq]: 1};
-        }else if(participation === "team") {
+        } else if (participation === "team") {
             conditions.where.teamSize = {[Op.gt]: 1};
         }
     }
-    if(area) {
+    if (area) {
         conditions.where.field = area;
     }
 
-    if(duration) {
+    if (duration) {
         conditions.where.duration = {[Op.lte]: duration};
     }
-    if(format) {
+    if (format) {
         conditions.where.format = format;
     }
-    if(level) {
+    if (level) {
         conditions.where.level = level;
     }
     console.log(conditions);

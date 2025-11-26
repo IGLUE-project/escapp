@@ -12,18 +12,18 @@ module.exports = {
                     "autoIncrement": true,
                     "unique": true
                 },
-                urls: {
-                    type: Sequelize.TEXT,
-                    allowNull: false,
+                "urls": {
+                    "type": Sequelize.TEXT,
+                    "allowNull": false
                 },
-                createdAt: {
-                    type: Sequelize.DATE,
-                    allowNull: false,
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "allowNull": false
                 },
-                updatedAt: {
-                    type: Sequelize.DATE,
-                    allowNull: false,
-                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "allowNull": false
+                }
             },
             {"sync": {"force": true}}
         );

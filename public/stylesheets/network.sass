@@ -7,6 +7,7 @@
 .flex-row
   display: flex
   flex-direction: row
+  flex-wrap: nowrap
 
 .flex-column
     display: flex
@@ -47,6 +48,8 @@
       min-width: 5rem
       text-align: start
       padding: 1rem
+    #search
+      width:70%
   .filtros
     padding: 0 !important
     display: flex
@@ -95,7 +98,7 @@
   border-radius: 10px
   display: grid
   background-color: colors.$mainpurple
-  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
   gap: 1rem
   &.empty
     display: flex

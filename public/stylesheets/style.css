@@ -6118,6 +6118,7 @@ span#roleFieldStudy, span#roleFieldTeach {
 .flex-row {
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .flex-column {
@@ -6168,6 +6169,9 @@ span#roleFieldStudy, span#roleFieldTeach {
   min-width: 5rem;
   text-align: start;
   padding: 1rem;
+}
+.campoDeBusqueda .headerBusqueda #search {
+  width: 70%;
 }
 .campoDeBusqueda .filtros {
   padding: 0 !important;
@@ -6235,7 +6239,7 @@ span#roleFieldStudy, span#roleFieldTeach {
   border-radius: 10px;
   display: grid;
   background-color: #232850;
-  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
   gap: 1rem;
 }
 .flexBoxEscapeRooms.empty {
