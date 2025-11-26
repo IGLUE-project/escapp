@@ -1,11 +1,11 @@
 <%- include ("../partials/_header.ejs") %>
 <div role="main" class="main">
-    <h1>Búsqueda en red</h1>
+    <h1><%=i18n.network.search.title%></h1>
     <div id="filterSearch" class="campoDeBusqueda">
         <div class="headerBusqueda">
             <div id="searchBarContainer" class="flex-row"></div>
-                <input id="search" type="text" placeholder="Buscar...">
-                <button id="searchButton">Busqueda</button>
+                <input id="search" type="text" placeholder="<%=i18n.network.search.inputPlaceholder%>">
+                <button id="searchButton"><%=i18n.network.search.searchButton%></button>
             <div id="tags">
             </div>
         </div>
@@ -175,7 +175,7 @@
                     break;
                 }
             } else if(tag.condition === "after"){
-                const afterDate = new Date(tag.value);
+                const afterDate = new Date(tag.vaNo escape rooms foundlue);
                 const erDate = new Date(escapeRoom.createdAt);
                 if(erDate <= afterDate){
                     filteredOut = true;
@@ -334,9 +334,9 @@
             `;
     }
 
-    const noResultsMessage = createMessage("noResults", "No se han encontrado resultados.");
-    const noResultsMessageFilter = createMessage("noResults", "No se han encontrado resultados. Prueba a eliminar algunos filtros.");
-    const loadingMessage = createMessage("loading", "Cargando resultados...");
+    const noResultsMessage = createMessage("noResults", "<%=i18n.network.search.noResults%>");
+    const noResultsMessageFilter = createMessage("noResults", "<%=i18n.network.search.filterPlaceholder%>");
+    const loadingMessage = createMessage("loading", "<%=i18n.network.search.loadingPlaceholder%>");
     $("#searchButton").click();
 
 

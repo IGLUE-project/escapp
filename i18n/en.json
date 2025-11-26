@@ -1540,7 +1540,8 @@
             "inputPlaceholder": "Search...",
             "loadingPlaceholder": "Loading escape rooms...",
             "noResults": "No escape rooms found",
-            "filterPlaceholder": "No escape rooms found with the selected filters. Try removing some filters."
+            "filterPlaceholder": "No escape rooms found with the selected filters. Try removing some filters.",
+            "title": "Network Search"
         }
     },
     "languages": {

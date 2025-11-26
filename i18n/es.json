@@ -1531,7 +1531,8 @@
             "inputPlaceholder": "Buscar...",
             "loadingPlaceholder": "Cargando escape rooms...",
             "noResults": "No se han encontrado escape rooms que coincidan con los criterios de búsqueda.",
-            "filterPlaceholder": "No se han encontrado escape rooms con los filtros seleccionados. Prueba a cambiar los filtros."
+            "filterPlaceholder": "No se han encontrado escape rooms con los filtros seleccionados. Prueba a cambiar los filtros.",
+            "title": "Busqueda en red"
         }
     },
     "general": {
