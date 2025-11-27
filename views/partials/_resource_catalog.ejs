@@ -620,9 +620,7 @@
                 }else if(!puzzleObject.id) {
                     $('#associatedPuzzle').val($('#associatedPuzzle').children(":first").val()).change();
                 }
-
                 updateIframe();
-
                 $(".sections").scrollTop(0);
             });
         } else {
@@ -1062,7 +1060,7 @@
         window.addEventListener('change', function(e) {
             // Check if e.target is a child of .editDialog
             if ($(e.target).closest('.editDialog').length > 0) {
-                if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
+                if(e.target.id != "nameOfReusablePuzzle") {
                     updateIframe();
                 }
             }
@@ -1089,8 +1087,12 @@
         //Parse JSON settings
         const reusablePuzzleJSONsettings = form.querySelectorAll('input[type="hidden"].reusablePuzzleJSONSetting');
         reusablePuzzleJSONsettings.forEach(input => {
-            if((typeof input.name === "string")&&(typeof input.value === "string")){
-                reusablePuzzleInstanceConfig[input.name] = JSON.parse(input.value);
+            if((typeof input.name === "string")&&(typeof input.value === "string")&&(input.value.trim()!=="")){
+                try {
+                    reusablePuzzleInstanceConfig[input.name] = JSON.parse(input.value);
+                } catch(e) {
+                    console.error("Error parsing JSON of " + input.name + ": " + input.value);
+                }
             }
         });
 

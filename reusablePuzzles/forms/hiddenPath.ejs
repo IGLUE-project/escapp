@@ -1,0 +1,222 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<input type="hidden" class="reusablePuzzleJSONSetting" id="startPoint" name="startPoint"/>
+<input type="hidden" class="reusablePuzzleJSONSetting" id="endPoint" name="endPoint"/>
+
+<div>
+    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelect" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
+        <option value="TABLET"><%=i18n.reusablePuzzleApps.Common.skins.Tablet%></option>
+    </select>
+</div>
+
+<div>
+    <label for="mazeWidth"><%=i18n.reusablePuzzleApps.Common.Width%>:</label>
+    <select name="mazeWidth" id="mazeWidth">
+        <% for (let i = 3; i <= 16; i++) { %>
+            <option value="<%= i %>" <%= i === 8 ? "selected" : "" %>><%= i %></option>
+        <% } %>
+    </select>
+</div>
+
+<div>
+    <label for="mazeHeight"><%=i18n.reusablePuzzleApps.Common.Height%>:</label>
+    <select name="mazeHeight" id="mazeHeight">
+        <% for (let i = 3; i <= 16; i++) { %>
+            <option value="<%= i %>" <%= i === 4 ? "selected" : "" %>><%= i %></option>
+        <% } %>
+    </select>
+</div>
+
+<div>
+    <label for="showStart"><%=i18n.reusablePuzzleApps.HiddenPath.ShowStartingCell%>:</label>
+    <select name="showStart" id="showStartCell">
+        <option value="TRUE" selected><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
+    <label for="showEnd"><%=i18n.reusablePuzzleApps.HiddenPath.ShowEndingCell%>:</label>
+    <select name="showEnd" id="showEndCell">
+        <option value="TRUE" selected><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
+    <label for="mazeBgImg"><%=i18n.reusablePuzzleApps.HiddenPath.BackgroundGrid%>:</label>
+    <input type="text" id="mazeBgImgInput" name="mazeBgImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+
+<div class="onlyForGridBackground" style="display:none">
+    <label for="mazePaddingTop"><%=i18n.reusablePuzzleApps.HiddenPath.MarginTop%>:</label>
+    <input type="number" min="0" max="99" step="1" value="0" id="mazePaddingTopInput" name="mazePaddingTop" style="flex:1;" />&nbsp;%
+</div>
+
+<div class="onlyForGridBackground" style="display:none">
+    <label for="mazePaddingBottom"><%=i18n.reusablePuzzleApps.HiddenPath.MarginBottom%>:</label>
+    <input type="number" min="0" max="99" step="1" value="0" id="mazePaddingBottomInput" name="mazePaddingBottom" style="flex:1;" />&nbsp;%
+</div>
+
+<div class="onlyForGridBackground" style="display:none">
+    <label for="mazePaddingLeft"><%=i18n.reusablePuzzleApps.HiddenPath.MarginLeft%>:</label>
+    <input type="number" min="0" max="99" step="1" value="0" id="mazePaddingLeftInput" name="mazePaddingLeft" style="flex:1;" />&nbsp;%
+</div>
+
+<div class="onlyForGridBackground" style="display:none">
+    <label for="mazePaddingRight"><%=i18n.reusablePuzzleApps.HiddenPath.MarginRight%>:</label>
+    <input type="number" min="0" max="99" step="1" value="0" id="mazePaddingRightInput" name="mazePaddingRight" style="flex:1;" />&nbsp;%
+</div>
+
+<div id="lineColorWrapper">
+    <label><%=i18n.reusablePuzzleApps.HiddenPath.LineColor%>:</label>
+    <select id="lineColorType">
+        <option value="AUTO" selected><%=i18n.reusablePuzzleApps.Common.Auto%></option>
+        <option value="CUSTOM"><%=i18n.reusablePuzzleApps.Common.Custom%></option>
+    </select>
+    <div id="lineColorInputWrapper" style="display:none" >
+        <input type="text" id="lineColorInput" name="lineColorDisabled" data-jscolor='{ "closeButton": true, "closeText": "<%= i18n.common.ok %>", "backgroundColor": "#161938", "buttonColor": "#fff" }' style="flex:1;" />
+    </div>
+</div>
+
+<div>
+    <label for="actionValue"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionValue" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+    </select>
+</div>
+
+<div id="actionDiv">
+    <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+    <input id="messageInput" type="message" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div>
+    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<script>
+    var lineColorInput = document.getElementById("lineColorInput");
+
+    function updateGridPoints(){
+        var puzzleSolution = document.getElementById('puzzleSol').value;
+        //console.log("Update Grid Points " + puzzleSolution);
+
+        let cells = puzzleSolution.split(";");
+        if(cells.length < 2){
+            //Invalid solution
+            return resetGridPoints();
+        }
+
+        let startCell = cells[0];
+        let startCellCoordinates = startCell.split(",");
+        if(startCellCoordinates.length !== 2){
+            //Invalid solution
+            return resetGridPoints();
+        }
+        startCell = {x: parseInt(startCellCoordinates[0]), y: parseInt(startCellCoordinates[1])};
+        if(isNaN(startCell.x) || isNaN(startCell.y)){
+            //Invalid solution
+            return resetGridPoints();
+        }
+
+        let endCell = cells[cells.length-1];
+        let endCellCoordinates = endCell.split(",");
+        if(endCellCoordinates.length !== 2){
+            //Invalid solution
+            return resetGridPoints();
+        }
+        endCell = {x: parseInt(endCellCoordinates[0]), y: parseInt(endCellCoordinates[1])};
+        if(isNaN(endCell.x) || isNaN(endCell.y)){
+            //Invalid solution
+            return resetGridPoints();
+        }
+
+        //console.log("Grid Points updated:" + puzzleSolution);
+        document.getElementById("startPoint").value = JSON.stringify(startCell);
+        document.getElementById("endPoint").value = JSON.stringify(endCell);
+
+        updateIframe();
+    };
+
+    function resetGridPoints(){
+        document.getElementById("startPoint").value = "";
+        document.getElementById("endPoint").value = "";
+        updateIframe();
+    };
+
+    document.getElementById('puzzleSol').addEventListener('change', function() {
+        updateGridPoints();
+    });
+
+    document.getElementById('associatedPuzzle').addEventListener('change', function(e) {
+        setTimeout(function(){
+            updateGridPoints();
+        },0);
+    });
+
+    document.getElementById('mazeBgImgInput').addEventListener('change', function() {
+        if (this.value.trim() !== '') {
+            $("div.onlyForGridBackground").show();
+        } else {
+            $("div.onlyForGridBackground").hide();
+            $("div.onlyForGridBackground input").val(0);
+        }
+    });
+
+    document.getElementById('lineColorType').addEventListener('change', function() {
+        if (this.value === 'AUTO') {
+            document.getElementById("lineColorInputWrapper").style.display = 'none';
+            $("#lineColorInput").attr("name","lineColorDisabled");
+        } else {
+            document.getElementById("lineColorInputWrapper").style.display = 'block';
+            $("#lineColorInput").attr("name","lineColor");
+        }
+    });
+
+    document.getElementById('actionValue').addEventListener('change', function() {
+        if (this.value === 'SHOW_MESSAGE') {
+            document.getElementById("actionDiv").style.display = 'block';
+        } else {
+            document.getElementById("actionDiv").style.display = 'none';
+        }
+    });
+
+    document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById("mazeWidth").value =  window.currentOpenPuzzleConfig?.mazeWidth || 8;
+    document.getElementById("mazeHeight").value =  window.currentOpenPuzzleConfig?.mazeHeight || 4;
+    document.getElementById("showStartCell").value =  window.currentOpenPuzzleConfig?.showStart || "TRUE";
+    document.getElementById("showEndCell").value =  window.currentOpenPuzzleConfig?.showEnd || "TRUE";
+    document.getElementById("mazeBgImgInput").value =  window.currentOpenPuzzleConfig?.mazeBgImg || '';
+    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
+    document.getElementById("mazePaddingTopInput").value =  window.currentOpenPuzzleConfig?.mazePaddingTop || 0;
+    document.getElementById("mazePaddingBottomInput").value =  window.currentOpenPuzzleConfig?.mazePaddingBottom || 0;
+    document.getElementById("mazePaddingLeftInput").value =  window.currentOpenPuzzleConfig?.mazePaddingLeft || 0;
+    document.getElementById("mazePaddingRightInput").value =  window.currentOpenPuzzleConfig?.mazePaddingRight || 0;
+    if(window.currentOpenPuzzleConfig?.lineColor){
+        document.getElementById("lineColorType").value =  "CUSTOM";
+        lineColorInput.value =  window.currentOpenPuzzleConfig.lineColor;
+        lineColorInput.jscolor.fromString(lineColorInput.value); //Update picker
+    }
+    document.getElementById("actionValue").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    document.getElementById("messageInput").value =  window.currentOpenPuzzleConfig?.message || '';
+    
+    //Trigger change events
+    document.getElementById('mazeBgImgInput').dispatchEvent(new Event('change', { bubbles: true }));
+    document.getElementById('actionDiv').dispatchEvent(new Event('change', { bubbles: true }));
+    document.getElementById('lineColorType').dispatchEvent(new Event('change', { bubbles: true }));
+
+    setTimeout(function(){
+        updateGridPoints();
+    },0);
+</script>

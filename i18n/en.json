@@ -1398,7 +1398,8 @@
                 "Basic": "Basic",
                 "Retro": "Retro",
                 "Futuristic": "Futuristic",
-                "Realistic": "Realistic"
+                "Realistic": "Realistic",
+                "Tablet": "Tablet"
             },
             "actionAfterSolve": "Action after solving",
             "enabled": "Enabled",
@@ -1424,7 +1425,13 @@
             "Standard": "Standard",
             "None": "None",
             "NoneF": "None",
-            "warningPuzzleLink": "This puzzle is currently linked to another resource"
+            "Width": "Width",
+            "Height": "Height",
+            "warningPuzzleLink": "This puzzle is currently linked to another resource",
+            "Yes": "Yes",
+            "No": "No",
+            "Auto": "Automatic",
+            "Custom": "Custom"
         },
         "Keypad": {
             "name": "Keypad",
@@ -1473,6 +1480,18 @@
             "initialSetup_SPANISH_OPENING": "Spanish Opening",
             "initialSetup_ITALIAN_OPENING": "Italian Opening",
             "automaticReset": "Automatic reset"
+        },
+        "HiddenPath": {
+            "name": "Hidden path",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to follow a specific path on a grid.",
+            "ShowStartingCell": "Show starting cell",
+            "ShowEndingCell": "Show ending cell",
+            "BackgroundGrid": "Grid image",
+            "MarginTop": "Top margin",
+            "MarginBottom": "Bottom margin",
+            "MarginLeft": "Left margin",
+            "MarginRight": "Right margin",
+            "LineColor": "Line color"
         },
         "CodeEditor": {
             "name": "Code Editor",

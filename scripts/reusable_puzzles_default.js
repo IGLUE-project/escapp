@@ -70,6 +70,16 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_ES.pdf"
         }
+    },
+    {
+        "name": "HiddenPath",
+        "zip": "defaultReusablePuzzles/HiddenPath/HiddenPath_Puzzle.zip",
+        "form": "hiddenPath.ejs",
+        "thumbnail": "defaultReusablePuzzles/HiddenPath/HiddenPath_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/HiddenPath/HiddenPath_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/HiddenPath/HiddenPath_Instructions_ES.pdf"
+        }
     }
 
     // {

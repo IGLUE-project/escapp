@@ -1394,7 +1394,8 @@
                 "Basic": "Básica",
                 "Retro": "Retro",
                 "Futuristic": "Futurista",
-                "Realistic": "Realista"
+                "Realistic": "Realista",
+                "Tablet": "Tablet"
             },
             "actionAfterSolve": "Acción tras resolver",
             "enabled": "Habilitado",
@@ -1420,7 +1421,13 @@
             "Standard": "Estándar",
             "None": "Ninguno",
             "NoneF": "Ninguna",
-            "warningPuzzleLink": "Este reto está actualmente vinculado con otro recurso."
+            "Width": "Ancho",
+            "Height": "Alto",
+            "warningPuzzleLink": "Este reto está actualmente vinculado con otro recurso.",
+            "Yes": "Sí",
+            "No": "No",
+            "Auto": "Automático",
+            "Custom": "Personalizado"
         },
         "Keypad": {
             "name": "Panel de botones",
@@ -1469,6 +1476,18 @@
             "initialSetup_SPANISH_OPENING": "Apertura española",
             "initialSetup_ITALIAN_OPENING": "Apertura italiana",
             "automaticReset": "Reinicio automático"
+        },
+        "HiddenPath": {
+            "name": "Ruta oculta",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes realicen una ruta determinada sobre una cuadrícula.",
+            "ShowStartingCell": "Mostrar casilla inicial",
+            "ShowEndingCell": "Mostrar casilla final",
+            "BackgroundGrid": "Imagen de la cuadrícula",
+            "MarginTop": "Margen superior",
+            "MarginBottom": "Margen inferior",
+            "MarginLeft": "Margen izquierdo",
+            "MarginRight": "Margen derecho",
+            "LineColor": "Color de las líneas"
         },
         "CodeEditor": {
             "name": "Editor HTML/CSS/JS",
