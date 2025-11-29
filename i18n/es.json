@@ -1452,7 +1452,8 @@
             "numberOfWheels": "Número de ruedas",
             "wheel": "Rueda",
             "wheelType": "Tipo de rueda",
-            "wheelLength": "Número de elementos"
+            "wheelLength": "Número de elementos",
+            "Rotation": "Giro habilitado"
         },
         "Safebox": {
             "name": "Caja fuerte",

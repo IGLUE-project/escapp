@@ -1455,7 +1455,8 @@
             "numberOfWheels": "Number of wheels",
             "wheel": "Wheel",
             "wheelType": "Wheel type",
-            "wheelLength": "Number of elements"
+            "wheelLength": "Number of elements",
+            "Rotation": "Rotation enabled"
         },
         "Safebox": {
             "name": "Safe box",
