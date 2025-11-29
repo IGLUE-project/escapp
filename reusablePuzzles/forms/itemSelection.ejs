@@ -1,0 +1,147 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false} ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="numberOfRoundsISPInput"><%=i18n.reusablePuzzleApps.ItemSelection.NumberOfRounds%>:</label>
+    <select name="numberOfRounds" id="numberOfRoundsISPInput">
+      <option value="1" selected>1</option>
+      <% for (let i = 2; i <= 9; i++) { %>
+            <option value="<%= i %>"><%= i %></option>
+      <% } %>
+    </select>
+</div>
+
+<% for (let i = 1; i <= 9; i++) { %>
+  <%- include("_itemSelection_roundSettings", { roundNumber: i }) %>
+<% } %>
+
+<div id="failureMessageISPInputWrapper">
+    <label for="failureMessageISPInput"><%=i18n.reusablePuzzleApps.Common.FailureMessage%>:</label>
+    <input id="failureMessageISPInput" type="text" name="failureMessage" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="actionAfterSolveISPInput"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionAfterSolveISPInput" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+    </select>
+</div>
+
+<div id="successMessageISPInputWrapper">
+    <label for="successMessageISPInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+    <input id="successMessageISPInput" type="text" name="successMessage" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div>
+    <label for="backgroundISPInput"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundISPInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<input type="hidden" class="reusablePuzzleJSONSetting" id="roundsISPInput" name="rounds"/>
+
+<script type="text/javascript">
+    function updateRoundSettings(){
+        var nRounds = parseInt(document.getElementById("numberOfRoundsISPInput").value);
+        if((typeof nRounds === "number")&&(!Number.isNaN(nRounds))){
+            document.querySelectorAll('div.roundISPSettingsWrapper').forEach(div => {
+              const number = parseInt(div.getAttribute('roundNumber'), 10);
+              if (!isNaN(number) && number <= nRounds) {
+                div.style.display = 'block';
+              } else {
+                div.style.display = 'none';
+              }
+            });
+        }
+        updateRoundsISP();
+    };
+
+    function updateRoundsISP(){
+        var rounds = [];
+        var nRounds = parseInt(document.getElementById("numberOfRoundsISPInput").value);
+        if((typeof nRounds === "number")&&(!Number.isNaN(nRounds))){
+            document.querySelectorAll('div.roundISPSettingsWrapper').forEach(div => {
+              const number = parseInt(div.getAttribute('roundNumber'), 10);
+              if (!isNaN(number) && number <= nRounds) {
+                let round = {};
+                const inputRoundText = div.querySelector('input.roundTextISPInput');
+                const inputRoundImage = div.querySelector('input.roundImageISPInput');
+
+                round.title = inputRoundText.value;
+                round.img = inputRoundImage.value;
+                round.items = [];
+
+                $(div).find('.roundItemISPWrapper').each(function(index,roundItemISPWrapper) {
+                    $roundItemISPWrapper = $(roundItemISPWrapper);
+                    var item = {};
+                    item.label = $roundItemISPWrapper.find("input.inputItemText").val();
+                    item.img = $roundItemISPWrapper.find("input.inputItemImage").val();
+                    round.items.push(item);
+                });
+                rounds.push(round);
+              }
+            });
+        };
+        document.getElementById("roundsISPInput").value = JSON.stringify(rounds);
+    };
+
+    document.getElementById("numberOfRoundsISPInput").value =  window.currentOpenPuzzleConfig?.numberOfRounds || 1;
+    updateRoundSettings();
+    document.getElementById("failureMessageISPInput").value =  window.currentOpenPuzzleConfig?.failureMessage || '';
+    document.getElementById("actionAfterSolveISPInput").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    document.getElementById("successMessageISPInput").value =  window.currentOpenPuzzleConfig?.successMessage || '';
+    document.getElementById("backgroundISPInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
+
+    if(window.currentOpenPuzzleConfig?.rounds){
+        var rounds = window.currentOpenPuzzleConfig?.rounds;
+        if(typeof rounds !== "undefined"){
+            document.getElementById("roundsISPInput").value = JSON.stringify(rounds);
+            for(let i=0; i<rounds.length; i++){
+                const roundDiv = document.querySelector(`div.roundISPSettingsWrapper[roundNumber="${i+1}"]`);
+                if (roundDiv) {
+                    const inputRoundText = roundDiv.querySelector('input.roundTextISPInput');
+                    const inputRoundImage = roundDiv.querySelector('input.roundImageISPInput');
+                    if (inputRoundText) {
+                        inputRoundText.value = rounds[i].title;
+                    }
+                    if (inputRoundImage) {
+                        inputRoundImage.value = rounds[i].img;
+                    }
+                }
+                //Items
+                var roundItems = rounds[i].items;
+                if (Array.isArray(roundItems)) {
+                    var roundItemsWrapper = $(roundDiv).find("div.roundItemsISPWrapper");
+                    for(let j=0; j<roundItems.length; j++){
+                        if(j > 2){
+                            addNewItemForRoundISPToDiv(roundItemsWrapper);
+                        }
+                        var $roundItemDiv = $(roundItemsWrapper).find("div.roundItemISPWrapper[itemNumber='" + (j+1) + "']");
+                        $roundItemDiv.find("input.inputItemText").val(roundItems[j].label);
+                        $roundItemDiv.find("input.inputItemImage").val(roundItems[j].img);
+                    }
+                }
+            }
+        }
+    };
+
+    //Events
+    document.getElementById('actionAfterSolveISPInput').addEventListener('change', function() {
+        if (this.value === 'SHOW_MESSAGE') {
+            document.getElementById("successMessageISPInputWrapper").style.display = 'flex';
+        } else {
+            document.getElementById("successMessageISPInputWrapper").style.display = 'none';
+        }
+    });
+    document.getElementById('numberOfRoundsISPInput').addEventListener('change', updateRoundSettings);
+    $('div.roundISPSettingsWrapper').on('change',
+        'input.roundTextISPInput, input.roundImageISPInput, input.inputItemText, input.inputItemImage',
+        updateRoundsISP
+    );
+
+    //Trigger change events
+    document.getElementById('actionAfterSolveISPInput').dispatchEvent(new Event('change', { bubbles: true }));
+</script>

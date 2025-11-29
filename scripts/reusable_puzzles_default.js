@@ -80,6 +80,26 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/HiddenPath/HiddenPath_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/HiddenPath/HiddenPath_Instructions_ES.pdf"
         }
+    },
+    {
+        "name": "BasicTextBox",
+        "zip": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Puzzle.zip",
+        "form": "basicTextBox.ejs",
+        "thumbnail": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Thumbnail_EN.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Instructions_ES.pdf"
+        }
+    },
+    {
+        "name": "ItemSelection",
+        "zip": "defaultReusablePuzzles/ItemSelection/ItemSelection_Puzzle.zip",
+        "form": "itemSelection.ejs",
+        "thumbnail": "defaultReusablePuzzles/ItemSelection/ItemSelection_Thumbnail_EN.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/ItemSelection/ItemSelection_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/ItemSelection/ItemSelection_Instructions_ES.pdf"
+        }
     }
 
     // {
