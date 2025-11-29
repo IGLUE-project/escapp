@@ -85,7 +85,7 @@ const reusablePuzzlesList = [
         "name": "BasicTextBox",
         "zip": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Puzzle.zip",
         "form": "basicTextBox.ejs",
-        "thumbnail": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Thumbnail_EN.png",
+        "thumbnail": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Thumbnail.png",
         "instructions": {
             "en": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Instructions_ES.pdf"
