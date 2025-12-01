@@ -111,8 +111,8 @@ exports.editNetworkURLS = async (req, res) => {
         config.urls = JSON.stringify(parsedURLs);
         console.log(urls);
         await config.save();
+        res.redirect("/urls");
 
-        res.status(200).send();
     } catch (error) {
         console.error("Error updating network URLs: ", error);
         res.status(500).send();

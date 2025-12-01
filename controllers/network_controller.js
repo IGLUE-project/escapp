@@ -18,7 +18,6 @@ const getResultsFromInstance = async (value, before, after, lang, page = 1, limi
         for (let index = 0; index < results.length; index++) {
             const result = results[index];
 
-            console.log(fuzzy(value, result.title), fuzzy(value, result.description));
             if (fuzzy(value, result.title) > fuzzyThreshold || fuzzy(value, result.description) > fuzzyThreshold) {
                 filteredResults.push(result);
             } else {
@@ -35,12 +34,6 @@ const getResultsFromInstance = async (value, before, after, lang, page = 1, limi
 
 exports.searchInInstance = async (req, res, next) => { // Busqueda local
     try {
-        const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-        if (Math.random() < 0.5) {
-            console.log("Simulating delay...");
-            await wait(1000);
-        }
         const {query, before, after, lang, page, limit, participation, area, duration, format, level} = req.query || {};
         const results = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);
 
@@ -90,7 +83,6 @@ const timeoutPromise = (timeout, ogPromise) => new Promise((resolve, reject) => 
 
 
 const tryFetch = async (url) => { // El fetch falla si no hay nadie, wrapper
-    console.log(`Fetching from ${url}`);
     try {
         const response = await fetch(url);
 
@@ -114,7 +106,6 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
         console.warn("No valid URLs in DB, using default URLs.");
     }
     const urls = jsonUrlsDB || urlsDefault;
-    console.log(urls);
 
     try {
         localR = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);
