@@ -1,0 +1,342 @@
+<%- include ("../partials/_header.ejs") %>
+<div role="main" class="main">
+    <h1><%=i18n.network.search.title%></h1>
+    <div id="filterSearch" class="campoDeBusqueda">
+        <div class="headerBusqueda">
+            <div id="searchBarContainer" class="flex-row"></div>
+                <input id="search" type="text" placeholder="<%=i18n.network.search.inputPlaceholder%>">
+                <button id="searchButton"><%=i18n.network.search.searchButton%></button>
+            <div id="tags">
+            </div>
+        </div>
+
+        <div class="filtros" style="grid-column:1; grid-row:2;padding:1em;" id="filters">
+            <h2>Filtros</h2>
+            <div class="container">
+                <div class="flex-column item">
+                    <label class="label"><%=i18n.network.filters.after%></label>
+                    <input class="inputsBusqueda" type="date" id="after"/>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"><%=i18n.network.filters.before%></label>
+                    <input class="inputsBusqueda" type="date" id="before"/>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"><%=i18n.network.filters.language%></label>
+                    <select id="language">
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="es"><%=i18n.languages.es%></option>
+                        <option value="en"><%=i18n.languages.en%></option>
+                        <option value="sr"><%=i18n.languages.sr%></option>
+                    </select>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"><%=i18n.network.filters.eduLevel.filter%></label>
+                    <select id="level">
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="primary"><%=i18n.network.filters.eduLevel.primary%></option>
+                        <option value="secondary"><%=i18n.network.filters.eduLevel.secondary%></option>
+                        <option value="higher"><%=i18n.network.filters.eduLevel.higher%></option>
+                        <option value="vet"><%=i18n.network.filters.eduLevel.vet%></option>
+                    </select>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"><%=i18n.network.filters.area%></label>
+                    <select id="area">
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="00"><%=i18n.escapeRoom.fields["00"]%></option>
+                        <option value="01"><%=i18n.escapeRoom.fields["01"]%></option>
+                        <option value="02"><%=i18n.escapeRoom.fields["02"]%></option>
+                        <option value="03"><%=i18n.escapeRoom.fields["03"]%></option>
+                        <option value="04"><%=i18n.escapeRoom.fields["04"]%></option>
+                        <option value="05"><%=i18n.escapeRoom.fields["05"]%></option>
+                        <option value="06"><%=i18n.escapeRoom.fields["06"]%></option>
+                        <option value="07"><%=i18n.escapeRoom.fields["07"]%></option>
+                        <option value="08"><%=i18n.escapeRoom.fields["08"]%></option>
+                        <option value="09"><%=i18n.escapeRoom.fields["09"]%></option>
+                        <option value="10"><%=i18n.escapeRoom.fields["10"]%></option>
+                    </select>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"><%=i18n.network.filters.participation.filter%></label>
+                    <select id="participation">
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="individual"><%=i18n.network.filters.participation.individual%></option>
+                        <option value="teams"><%=i18n.network.filters.participation.team%></option>
+                    </select>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"> <%=i18n.network.filters.duration%></label>
+                    <input min="0" class="inputsBusqueda" type="number" id="duration"/>
+                </div>
+                <div class="flex-column item">
+                    <label class="label"> <%=i18n.network.filters.format.filter%></label>
+                    <select id="format">
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="online"><%=i18n.network.filters.format.online%></option>
+                        <option value="hybrid"><%=i18n.network.filters.format.hybrid%></option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div style="grid-column:2; grid-row:2;" class="Results empty flexBoxEscapeRooms">
+            <div id="first">
+                <p>Realize una busqueda.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/js/vendor/jquery-ui.min.js"></script>
+<script>
+
+    const colorTags = ["#7F7F4E", "#295261", "#2D6757", "#30437E", "#6C584A", "#5F3844", "#643461", "#512E6C" ];
+
+    const createMessage = (id, message)=>{
+        return `
+            <div id="${id}">
+                <p>${message}</p>
+            </div>
+            `;
+    }
+    const noResultsMessage = createMessage("noResults", "<%=i18n.network.search.noResults%>");
+    const noResultsMessageFilter = createMessage("noResults", "<%=i18n.network.search.filterPlaceholder%>");
+    const loadingMessage = createMessage("loading", "<%=i18n.network.search.loadingPlaceholder%>");
+
+    const tags = [];
+    let resultsToDraw = [];
+
+    const removeTagByCondition = (condition, selector) => {
+        const tag = $(`#tag-${condition}`);
+        if (tag) {
+            tag.remove();
+        }
+        tags.splice(tags.findIndex(t => t.condition === condition), 1);
+        selector.value = "";
+        rerenderResults();
+    };
+
+    const addTag = (color, condition, value, text, selector) => {
+        tags.push({condition, value});
+        const tag = $(`
+            <span class="tag" id="tag-${condition}" class="tag" style="background-color:${color};">
+                <span class="tagValue">
+                 ${text}
+                </span>
+                <span class="removeTag" style="margin-left:5px; cursor:pointer;">&times;</span>
+            </span>
+        `);
+        tag.find(".removeTag").on("click", () => {
+            removeTagByCondition(`tag-${condition}`, selector);
+            tag.remove();
+        });
+        $("#tags").append(tag);
+    };
+
+    const doestTagExist = (condition) => {
+        return tags.find(tag => tag.condition === condition);
+    };
+
+    const modifyOrInsertTag = (color, condition, value, text, selector) => {
+        if (doestTagExist(condition)) {
+            const tag = tags.find(tag => tag.condition === condition);
+            $(`#tag-${condition} .tagValue`).text(text);
+            tags.find(tag => tag.condition === condition).value = value;
+            if(value === ""){
+                removeTagByCondition(condition, selector);
+            }
+        } else {
+            addTag(color, condition, value, text, selector);
+        }
+        rerenderResults();
+    };
+
+    const rerenderResults = () => {
+        let parsedResults = "";
+        resultsToDraw.forEach((escapeRoom, i) => {
+            if(isEscapeRoomFilteredOut(escapeRoom)){
+                return;
+            }
+            const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
+            const imageURL = escapeRoom.attachment.url ? escapeRoom.attachment.url : "../images/puzzleorange.png";
+            parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
+        });
+        if(parsedResults === ""){
+            $("#noResults").show();
+            $(".Results").addClass("empty");
+            parsedResults = noResultsMessageFilter;
+        } else {
+            $(".Results").removeClass("empty");
+        }
+        document.querySelector(".Results").innerHTML = parsedResults;
+    };
+
+    const isEscapeRoomFilteredOut = (escapeRoom) =>{
+        let filteredOut = false;
+        for(let tag of tags){
+            if(tag.condition === "before"){
+                const beforeDate = new Date(tag.value);
+                const erDate = new Date(escapeRoom.createdAt);
+                if(erDate >= beforeDate){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "after"){
+                const afterDate = new Date(tag.value);
+                const erDate = new Date(escapeRoom.createdAt);
+                if(erDate <= afterDate){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "language"){
+                if(escapeRoom.language !== tag.value){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "format"){
+                if(escapeRoom.format !== tag.value){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "area"){
+                if(escapeRoom.area !== tag.value){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "duration"){
+                if(escapeRoom.duration >= parseInt(tag.value)){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "participation"){
+                if(escapeRoom.teamSize > 1 && tag.value === "individual"){
+                    filteredOut = true;
+                    break;
+                }else if(escapeRoom.teamSize === 1 && tag.value === "teams"){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "level"){
+                if(escapeRoom.level !== tag.value){
+                    filteredOut = true;
+                    break;
+                }
+            }
+        }
+        return filteredOut;
+
+    }
+
+    const before = document.getElementById("before");
+    before.addEventListener("change", (event) => {
+        modifyOrInsertTag(colorTags[0], "before", event.target.value,  "<" + event.target.value, event.target);
+    });
+
+    const after = document.getElementById("after");
+    after.addEventListener("change", (event) => {
+        modifyOrInsertTag(colorTags[1], "after",event.target.value,   ">" + event.target.value, event.target);
+    });
+
+    const lang = document.getElementById("language");
+    lang.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag(colorTags[2], "language",event.target.value,   selected, event.target);
+    });
+
+    const format = document.getElementById("format");
+    format.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag(colorTags[3], "format",event.target.value,   selected, event.target);
+    });
+
+    const area = document.getElementById("area");
+    area.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag(colorTags[4], "area",event.target.value,   selected, event.target);
+    });
+
+    const duration = document.getElementById("duration");
+    duration.addEventListener("change", (event) => {
+        modifyOrInsertTag(colorTags[5], "duration",event.target.value,   "<" + event.target.value + " min", event.target);
+    });
+
+    const participation = document.getElementById("participation");
+    participation.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag(colorTags[6], "participation",event.target.value,   selected, event.target);
+    });
+
+    const level  = document.getElementById("level");
+    level.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag(colorTags[7], "level",event.target.value,   selected, event.target);
+    });
+
+    const searchAndDisplay = async (query) => {
+        $(".Results").empty();
+        $(".Results").removeClass("empty");
+        $(".Results").append(loadingMessage);
+
+        let url = `/network/query?query=${encodeURIComponent(query)}`;
+
+        tags.forEach(tag =>{
+            url += `&${tag.condition}=${encodeURIComponent(tag.value)}`;
+        })
+
+        const response = await fetch(url);
+        const results = await response.text();
+        const jsonResults = JSON.parse(results);
+        let parsedResults = "";
+        $(".Results #loading").remove();
+        if ($("#first")){ $("#first").remove(); }
+        if(jsonResults.length === 0){
+            $("#noResults").show();
+            $(".Results").addClass("empty");
+            parsedResults = noResultsMessage;
+            resultsToDraw = [];
+            document.querySelector(".Results").innerHTML = parsedResults;
+            return;
+        }
+
+        resultsToDraw = jsonResults;
+        jsonResults.forEach((escapeRoom, i) => {
+            const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
+            const imageURL = escapeRoom.attachment.url ? escapeRoom.attachment.url : "../images/puzzleorange.png";
+            parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
+        });
+        document.querySelector(".Results").innerHTML = parsedResults;
+    };
+
+
+    document.getElementById("searchButton").addEventListener("click", async () => {
+        const query = document.getElementById("search").value;
+        tags.length = 0;
+        $("#tags").empty();
+        searchAndDisplay(query);
+    });
+
+
+    const newEscapeRoom = (href, imageURL, title) => {return `
+                <a href="${href}%>" class="escapeRoomItemWrapper animated bounceIn" title=${title} style="animation-delay: 100ms;" >
+                    <div class="escapeRoomItem">
+                        <div class="erFoto" style="text-align: center">
+                            <div class="bckgFoto" style="background-image: url( ${imageURL ? imageURL :  "../images/puzzleorange.png"})"></div>
+                            <h2 class="escapeRoomTitle">${title}</h2>
+                        </div>
+                    </div>
+                </a>
+    `;}
+
+    let params = new URLSearchParams(window.location.search);
+    if(params.get("query") !== null){
+        document.getElementById("search").value = params.get("query");
+        document.querySelector("button").click();
+    }
+
+
+    $("#searchButton").click();
+
+
+</script>

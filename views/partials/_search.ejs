@@ -1,9 +1,18 @@
 
 
-<form method="get" action="/escapeRooms<%=admin? 'Admin':''%>" class="escapeRoomSearch"> 
-     
+<form method="get" action="/escapeRooms<%=admin? 'Admin':''%>" class="escapeRoomSearch">
+
     <div class="escapeRoomFilters">
         <input type="text" title="<%=search%>" id="searchbar" name="search" placeholder="<%=i18n.common.search%>" value="<%=search%>" />
         <button type="submit" class="rounded filter-button"><span>search</span></button>
+        <button id="searchInNetwok" class="rounded filter-button" style="margin-left: 10px;"><span>language</span></button>
     </div>
-</form> 
+    <script>
+        document.getElementById("searchInNetwok").addEventListener("click", function(event) {
+            event.preventDefault();
+            const query = document.getElementById("searchbar").value;
+            let url = `/network/search?query=${encodeURIComponent(query)}`;
+            window.location.href = url;
+        });
+    </script>
+</form>

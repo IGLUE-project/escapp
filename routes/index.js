@@ -16,6 +16,7 @@ const apiController = require("../controllers/api_controller");
 const joinController = require("../controllers/join_controller");
 const reusablePuzzleController = require("../controllers/reusable_puzzle_controller");
 const managementController = require("../controllers/management_controller");
+const networkController = require("../controllers/network_controller");
 const sceneController = require("../controllers/scene_controller");
 const { instructions, thumbnails, hints, upload, hybridInstructions } = require("../controllers/multer_controller");
 
@@ -82,6 +83,8 @@ router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionControll
 router.get("/reports", sessionController.loginRequired, sessionController.adminRequired, managementController.showReports);
 router.post("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.editReport);
 router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
+router.get("/urls", sessionController.loginRequired, sessionController.adminRequired, managementController.getNetworkURLS);
+router.post("/urls", sessionController.loginRequired, sessionController.adminRequired, managementController.editNetworkURLS);
 
 // Routes for escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
@@ -228,7 +231,7 @@ router.get("/reusablePuzzlePreview/:reusablePuzzleId", sessionController.authCre
 
 // Routes for assets
 router.post("/escapeRooms/:escapeRoomId(\\d+)/assets/new", sessionController.loginRequired, sessionController.authEditEscapeRoom, upload.single("asset"), assetsController.uploadAsset);
-router.put("/escapeRooms/:escapeRoomId(\\d+)/assets/:assetId(\\d+)", sessionController.loginRequired, sessionController.authEditEscapeRoom, assetsController.editAsset);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/assets/:assetId(\\d+)", sessionController.authEditEscapeRoom, assetsController.editAsset); // No login to get thumbnails in remote instances
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/assets/:assetId(\\d+)", sessionController.loginRequired, sessionController.authEditEscapeRoom, assetsController.deleteAsset);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/browseResources", sessionController.loginRequired, sessionController.authEditEscapeRoom, assetsController.browseResources);
 router.get("/assets/:asset_id.:asset_extension", assetsController.getAsset);
@@ -237,5 +240,9 @@ router.get("/uploads/webapps/:file_id/:webapp_file_name(*)", assetsController.ge
 router.get("/uploads/instructions/:file_name", assetsController.returnInstructions);
 router.get("/uploads/hybrid/:file_name", assetsController.returnHybridInstructions);
 router.get("/uploads/:asset_id/:file_name?", assetsController.getAsset);
+
+router.get("/network/searchInInstance", networkController.searchInInstance);
+router.get("/network/search", sessionController.loginRequired, networkController.renderSearch);
+router.get("/network/query", sessionController.loginRequired, networkController.searchInNetwork);
 
 module.exports = router;

@@ -321,7 +321,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
     try {
         switch (puzzleValidator) {
         case "exact":
-            correctAnswer = (answer.toString().trim()) === (puzzleSol.toString().trim());
+            correctAnswer = answer.toString().trim() === puzzleSol.toString().trim();
             break;
         case "regex":
             correctAnswer = new RegExp(puzzleSol).test(removeDiacritics(answer.toString()));

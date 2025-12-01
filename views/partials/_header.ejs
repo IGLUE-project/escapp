@@ -3,7 +3,7 @@
         <% if (session.user) { %>
             <a title="<%=i18n.common.exit%>" href="/?_method=DELETE"><span class="navBarIcon material-icons">power_settings_new</span></a>
             <span style="display:inline-block;width:10px;"></span>
-            
+
             <% if(!session.user.anonymized) { %>
                 <a title="<%=i18n.common.mainPage%>" href="/escapeRooms"><span class="navBarIcon material-icons">home</span></a>
                 <span style="display:inline-block;width:10px;"></span>
@@ -12,6 +12,8 @@
                 <a title="<%=i18n.common.guide%>" href="/inspiration"><span class="navBarIcon material-icons">help_outline</span></a>
                 <span style="display:inline-block;width:10px;"></span>
             <% } %>
+            <span style="display:inline-block;width:10px;"></span>
+            <a title="<%=i18n.common.reports%>" href="/network/search?query="><span class="navBarIcon material-icons">language</span></a>
             <% if (session.user.isAdmin) { %>
                 <span style="display:inline-block;width:10px;"></span>
                 Admin
@@ -23,6 +25,8 @@
                 <a title="<%=i18n.common.reports%>" href="/reports"><span class="navBarIcon material-icons">report</span></a>
                 <span style="display:inline-block;width:10px;"></span>
                 <a title="<%=i18n.common.reports%>" href="/reusablePuzzles"><span class="navBarIcon material-icons">extension</span></a>
+                <span style="display:inline-block;width:10px;"></span>
+                <a title="<%=i18n.common.reports%>" href="/urls"><span class="navBarIcon material-icons">dns</span></a>
             <% } %>
         <% } %>
     </div>

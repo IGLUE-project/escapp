@@ -319,6 +319,59 @@ exports.forAll = (page = 1, limit = 10, search = "") => ({
     "order": [["id", "desc"]]
 });
 
+exports.public = (page = 1, limit = 10) => ({
+    "attributes": ["id", "title", "description"],
+    limit,
+    "where": {"status": "completed"},
+    "order": [["createdAt", "desc"]],
+    "offset": (page - 1) * limit
+});
+
+exports.text = (before, after, lang, participation, area, duration, format, level) => {
+    const conditions = {
+        "where": {"isNetworkAccesible": true},
+        "attributes": ["id", "title", "description", "lang", "teamSize", "field", "duration", "format", "level", "createdAt"],
+        "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}]
+    };
+
+    if (before && after) {
+        conditions.where.createdAt = {[Op.between]: [new Date(after), new Date(before)]};
+    } else {
+        if (before) {
+            conditions.where.createdAt = {[Op.lt]: new Date(before)};
+        }
+        if (after) {
+            conditions.where.createdAt = {[Op.gt]: new Date(after)};
+        }
+    }
+    if (lang) {
+        conditions.where.lang = lang;
+    }
+    if (participation) {
+        if (participation === "individual") {
+            conditions.where.teamSize = {[Op.eq]: 1};
+        } else if (participation === "team") {
+            conditions.where.teamSize = {[Op.gt]: 1};
+        }
+    }
+    if (area) {
+        conditions.where.field = area;
+    }
+
+    if (duration) {
+        conditions.where.duration = {[Op.lte]: duration};
+    }
+    if (format) {
+        conditions.where.format = format;
+    }
+    if (level) {
+        conditions.where.level = level;
+    }
+    console.log(conditions);
+
+    return conditions;
+};
+
 exports.loadExport = {
     "include": [
         {

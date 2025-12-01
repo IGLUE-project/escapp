@@ -150,6 +150,7 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
             },
+<<<<<<< HEAD
             "instructions": {
                 "type": DataTypes.TEXT
             },
@@ -184,6 +185,11 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
             }
+=======
+            "instructions": {"type": DataTypes.TEXT},
+            "hybridInstructions": {"type": DataTypes.TEXT},
+            "isNetworkAccesible": {"type": DataTypes.BOOLEAN}
+>>>>>>> EscappNetwork
         }
     );
 

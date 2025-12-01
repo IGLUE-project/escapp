@@ -43,3 +43,15 @@ exports.sendEmail = async (to, subject = "escapp", text, html) => {
     }
 };
 
+exports.contactEmail = (to, subject = "escapp", text, html) => {
+    const from = `noreply@${process.env.APP_NAME || "escapp.dit.upm.es"}`;
+    const msg = {
+        to,
+        from,
+        subject,
+        text,
+        html
+    };
+
+    return sgMail.send(msg);
+};
