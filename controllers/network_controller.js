@@ -1,7 +1,7 @@
 const queries = require("../queries");
 const {models} = require("../models");
 const {fuzzy} = require("fast-fuzzy");
-const urls = JSON.parse(process.env.URLS) || [];
+const urlsDefault = JSON.parse(process.env.URLS) || [];
 const mailer = require("../helpers/mailer");
 
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level) => {
@@ -106,6 +106,15 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
     const aggregated = [];
     const promises = [];
     let localR = [];
+    const dbUrls = await models.adminConfig.findOne({attributes: ["urls"]});
+    let jsonUrlsDB = [];
+    try {
+        jsonUrlsDB = JSON.parse(dbUrls.urls);
+    } catch (error) {
+        console.warn("No valid URLs in DB, using default URLs.");
+    }
+    const urls = jsonUrlsDB || urlsDefault;
+    console.log(urls);
 
     try {
         localR = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);

@@ -96,6 +96,17 @@
 
     const colorTags = ["#7F7F4E", "#295261", "#2D6757", "#30437E", "#6C584A", "#5F3844", "#643461", "#512E6C" ];
 
+    const createMessage = (id, message)=>{
+        return `
+            <div id="${id}">
+                <p>${message}</p>
+            </div>
+            `;
+    }
+    const noResultsMessage = createMessage("noResults", "<%=i18n.network.search.noResults%>");
+    const noResultsMessageFilter = createMessage("noResults", "<%=i18n.network.search.filterPlaceholder%>");
+    const loadingMessage = createMessage("loading", "<%=i18n.network.search.loadingPlaceholder%>");
+
     const tags = [];
     let resultsToDraw = [];
 
@@ -326,17 +337,7 @@
         document.querySelector("button").click();
     }
 
-    const createMessage = (id, message)=>{
-        return `
-            <div id="${id}">
-                <p>${message}</p>
-            </div>
-            `;
-    }
 
-    const noResultsMessage = createMessage("noResults", "<%=i18n.network.search.noResults%>");
-    const noResultsMessageFilter = createMessage("noResults", "<%=i18n.network.search.filterPlaceholder%>");
-    const loadingMessage = createMessage("loading", "<%=i18n.network.search.loadingPlaceholder%>");
     $("#searchButton").click();
 
 
