@@ -94,7 +94,7 @@
 <script src="/js/vendor/jquery-ui.min.js"></script>
 <script>
 
-    const colorTags = ["red", "green", "brown", "blue", "orange", "purple", "pink", "black" ];
+    const colorTags = ["#7F7F4E", "#295261", "#2D6757", "#30437E", "#6C584A", "#5F3844", "#643461", "#512E6C" ];
 
     const tags = [];
     let resultsToDraw = [];
@@ -175,7 +175,7 @@
                     break;
                 }
             } else if(tag.condition === "after"){
-                const afterDate = new Date(tag.vaNo escape rooms foundlue);
+                const afterDate = new Date(tag.value);
                 const erDate = new Date(escapeRoom.createdAt);
                 if(erDate <= afterDate){
                     filteredOut = true;

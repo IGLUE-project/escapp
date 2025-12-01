@@ -2,6 +2,7 @@ const queries = require("../queries");
 const {models} = require("../models");
 const {fuzzy} = require("fast-fuzzy");
 const urls = JSON.parse(process.env.URLS) || [];
+const mailer = require("../helpers/mailer");
 
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level) => {
     try {
@@ -139,3 +140,12 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
 
     res.json(aggregated);
 };
+
+exports.sendContactEmail = async (req, res, next) => {
+    const user = req.user;
+    const {message} = req.body;
+
+    const str = await renderEJS("views/emails/contact.ejs", {"i18n": res.locals.i18n, "message": message  }, {});
+    await mailer.resetPasswordEmail(user.username, "Reset password", str, str);
+    res.redirect("/");
+}
