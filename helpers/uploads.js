@@ -56,21 +56,21 @@ exports.deleteResource = async function (fileId, model, folderNameInsideUploads)
 };
 
 exports.getFields = (el) => ({
-    "public_id": el.public_id, 
-    "config": el.config, 
-    "url": el.url, 
-    "filename": el.filename, 
+    "public_id": el.public_id,
+    "config": el.config,
+    "url": el.url,
+    "filename": el.filename,
     "mime": el.mime
 });
 
 exports.getFieldsForAsset = (el) => ({
-    "assetType": el.assetType, 
+    "assetType": el.assetType,
     "mimetype": el.mimetype,
     "fileId": el.fileId,
     "filePath": el.filePath,
     "fileExtension": el.fileExtension,
-    "filename": el.filename, 
+    "filename": el.filename,
     "contentPath": el.contentPath,
-    "config": el.config, 
+    "config": el.config,
     "url": el.url
 });

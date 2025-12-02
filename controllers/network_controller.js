@@ -98,7 +98,7 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
     const aggregated = [];
     const promises = [];
     let localR = [];
-    const dbUrls = await models.adminConfig.findOne({attributes: ["urls"]});
+    const dbUrls = await models.adminConfig.findOne({attributes: ["urls"], where: {id:1}});
     let jsonUrlsDB = [];
     try {
         jsonUrlsDB = JSON.parse(dbUrls.urls);

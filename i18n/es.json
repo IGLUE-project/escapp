@@ -1569,6 +1569,9 @@
             "Tests": "Pruebas"
         }
     },
+    "general": {
+        "unspecified": "No especificado"
+    },
     "network": {
         "filters": {
             "any": "Cualquiera",
@@ -1603,9 +1606,6 @@
             "filterPlaceholder": "No se han encontrado escape rooms con los filtros seleccionados. Prueba a cambiar los filtros.",
             "title": "Busqueda en red"
         }
-    },
-    "general": {
-        "unspecified": "No especificado"
     },
     "languages": {
         "ab": "Abjasio",
