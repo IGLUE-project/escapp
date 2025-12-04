@@ -753,7 +753,7 @@
             "dismiss": "dismiss",
             "unverify": "unverify",
             "not_verified": "not verified",
-            "explanation": "Your escape room has been reviewed by the escapp team and meets the minimum quality requirements to be published on the network of educational escape rooms. If you make changes to the escape room, it will need to be re-verified before participants can play the updated version.",
+            "explanation": "Your escape room has been reviewed by the escapp team and meets the minimum quality requirements to be published on the network of educational escape rooms. If you make changes to the escape room, it will need to be re-verified before network participants can play the updated version.",
             "areYouSureVerify": "Do you want to verify this escape room? The escape room will become available in the network.",
             "areYouSureReVerify": "This escape room has changed since its last verification. Do you want to re-verify it or unverify it?",
             "areYouSureUnVerify": "This escape room is currently verified. Do you want to unverify it? The escape room will become unavailable in the network until you verify it again."
