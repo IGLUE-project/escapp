@@ -1,0 +1,84 @@
+<div class="roundISPSettingsWrapper" roundNumber="<%=roundNumber%>" style="display: none; flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px;">
+    <div>
+        <p><%=i18n.reusablePuzzleApps.ItemSelection.Round%> <%= roundNumber%></p>
+    </div>
+    <div>
+        <label><%=i18n.reusablePuzzleApps.Common.Text%>:</label>
+        <input class="roundTextISPInput" type="text" style="flex:1;"  />
+    </div>
+    <div style="margin: 10px 0px 10px 0px;">
+        <label><%=i18n.reusablePuzzleApps.Common.Image%>:</label>
+        <input class="roundImageISPInput" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" type="text" style="flex:1;"  />
+    </div>
+    <div style="margin: 10px 0px 10px 0px;">
+        <label><%=i18n.reusablePuzzleApps.ItemSelection.Items%>:</label>
+        <div class="roundItemsISPWrapper" style="flex-direction: column;">
+            <% for (let i = 1; i <= 2; i++) { %>
+                <div class="roundItemISPWrapper" itemNumber="<%=i%>" style="flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px; margin: 10px 0px 10px 0px;">
+                    <div style="position: relative;">
+                        <p style="margin: 7px 0px 5px 0px;"><%=i18n.reusablePuzzleApps.ItemSelection.Item + " " + i%></p>
+                        <button class="deleteItemOfRoundISP" type="button" style="display:none; border: none; background: none; position: absolute; right: 0; align-self: center; font-size: 22px;" onclick="deleteItemOfRoundISP(event)">
+                            <span style="color: rgb(185, 62, 68);" class="material-icons">delete_outline</span>
+                        </button>
+                    </div>
+                    <div>
+                        <label><%=i18n.reusablePuzzleApps.Common.Text%>:</label>
+                        <input class="inputItemText" type="text" style="flex:1;"  />
+                    </div>
+                    <div style="margin: 10px 0px 10px 0px;">
+                        <label><%=i18n.reusablePuzzleApps.Common.Image%>:</label>
+                        <input class="inputItemImage" type="text" style="flex:1;"  />
+                    </div>
+                </div>
+            <% } %>
+            <button class="rounded small addNewItemForRoundISP" type="button" onclick="addNewItemForRoundISP(event);" style="background-color: white;"><span class="material-icons" style="color: #161938">add</span> <%=i18n.reusablePuzzleApps.ItemSelection.addItem%></button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function addNewItemForRoundISPToDiv(roundItemsWrapper){
+        const $roundItemsWrapper = roundItemsWrapper;
+        if ($roundItemsWrapper.length === 0) return;
+        const $allItems = $roundItemsWrapper.find('.roundItemISPWrapper');
+        const $firstItem = $allItems.first();
+        if ($firstItem.length === 0) return;
+        var itemNumber = $allItems.length + 1;
+        if (itemNumber > 24) return;
+        const $newItem = $firstItem.clone();
+        $newItem.attr("itemNumber",itemNumber);
+        $newItem.find('p').first().html('<%=i18n.reusablePuzzleApps.ItemSelection.Item%> ' + itemNumber);
+        $newItem.find('button.deleteItemOfRoundISP').first().show();
+        $newItem.find('input.inputItemText').val('');
+        $newItem.find('input.inputItemImage').val('');
+        $roundItemsWrapper.find('button').last().before($newItem);
+        if(itemNumber === 24){
+            var $addNewItemButton = $roundItemsWrapper.find('button.addNewItemForRoundISP');
+            $addNewItemButton.attr("disabled","disabled");
+            $addNewItemButton.css("background-color", "#999");
+        }
+    };
+    function addNewItemForRoundISP(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const $roundItemsWrapper = $(e.target).closest('.roundItemsISPWrapper');
+        return addNewItemForRoundISPToDiv(roundItemsWrapper);
+    };
+    function deleteItemOfRoundISP(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const $roundItemWrapper = $(e.target).closest('.roundItemISPWrapper');
+        if ($roundItemWrapper.length !== 1) return;
+        const $roundItemsWrapper = $($roundItemWrapper).parent('.roundItemsISPWrapper');
+        if ($roundItemsWrapper.length !== 1) return;
+        $roundItemWrapper.remove();
+        $roundItemsWrapper.find('.roundItemISPWrapper').each(function(index) {
+            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.ItemSelection.Item%> ' + (index+1));
+        });
+        var $addNewItemButton = $roundItemsWrapper.find('button.addNewItemForRoundISP');
+        $addNewItemButton.removeAttr("disabled");
+        $addNewItemButton.css("background-color", "white");
+        updateRoundsISP();
+        updateIframe();
+    };
+</script>

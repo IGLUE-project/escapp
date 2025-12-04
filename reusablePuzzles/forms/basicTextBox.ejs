@@ -1,0 +1,118 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="messageBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.MainText%>:</label>
+    <input id="messageBTBInput" type="text" name="message" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="buttonLabelBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.ButtonText%>:</label>
+    <input id="buttonLabelBTBInput" type="text" name="buttonLabel" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="placeholderBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.Placeholder%>:</label>
+    <input id="placeholderBTBInput" type="text" name="placeholder" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="widthBTBInput"><%=i18n.reusablePuzzleApps.Common.WidthPercentage%>:</label>
+    <input id="widthBTBInput" type="number" min="1" max="100" step="1" name="width" value="66" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="fontSizeBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.TextSize%>:</label>
+    <input id="fontSizeBTBInput" type="number" min="1" max="99" step="1" name="fontSize" value="5" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="fontSizeMinBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.MinimumTextSize%>:</label>
+    <input id="fontSizeMinBTBInput" type="number" min="1" max="99" step="1" name="fontSizeMin" value="16" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="fontSizeMaxBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.MaximumTextSize%>:</label>
+    <input id="fontSizeMaxBTBInput" type="number" min="1" max="999" step="1" name="fontSizeMax" value="100" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="fontColorBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.TextColor%>:</label>
+    <input type="text" id="fontColorBTBInput" name="fontColor" data-jscolor='{ "closeButton": true, "closeText": "<%= i18n.common.ok %>", "backgroundColor": "#161938", "buttonColor": "#fff" }' style="flex:1;" />
+</div>
+
+<div>
+    <label for="fontColorSuccessMessageBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.SuccessMessageColor%>:</label>
+    <input type="text" id="fontColorSuccessMessageBTBInput" name="fontColorSuccessMessage" data-jscolor='{ "closeButton": true, "closeText": "<%= i18n.common.ok %>", "backgroundColor": "#161938", "buttonColor": "#fff" }' style="flex:1;" />
+</div>
+
+<div>
+    <label for="fontColorErrorMessageBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.FailureMessageColor%>:</label>
+    <input type="text" id="fontColorErrorMessageBTBInput" name="fontColorErrorMessage" data-jscolor='{ "closeButton": true, "closeText": "<%= i18n.common.ok %>", "backgroundColor": "#161938", "buttonColor": "#fff" }' style="flex:1;" />
+</div>
+
+<div>
+    <label for="xpositionBTBInput"><%=i18n.reusablePuzzleApps.Common.HorizontalAlignment%>:</label>
+    <select id="xpositionBTBInput" name="xposition">
+        <option value="LEFT"><%=i18n.reusablePuzzleApps.Common.Left%></option>
+        <option value="CENTER"><%=i18n.reusablePuzzleApps.Common.Center%></option>
+        <option value="RIGHT"><%=i18n.reusablePuzzleApps.Common.Right%></option>
+    </select>
+</div>
+
+<div>
+    <label for="ypositionBTBInput"><%=i18n.reusablePuzzleApps.Common.VerticalAlignment%>:</label>
+    <select id="ypositionBTBInput" name="yposition">
+        <option value="TOP"><%=i18n.reusablePuzzleApps.Common.Top%></option>
+        <option value="CENTER"><%=i18n.reusablePuzzleApps.Common.Center%></option>
+        <option value="BOTTOM"><%=i18n.reusablePuzzleApps.Common.Bottom%></option>
+    </select>
+</div>
+
+<div>
+    <label for="opacityBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.Opacity%>:</label>
+    <input id="opacityBTBInput" type="number" min="0" max="100" step="1" name="opacity" value="100" style="flex:1;" />
+</div>
+
+<div>
+    <label for="delayBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.MinimumSuccessMessageDuration%>:</label>
+    <input id="delayBTBInput" type="number" min="2" max="1000" step="1" name="delay" value="2" style="flex:1;" />
+</div>
+
+
+<div>
+    <label for="backgroundImgBTBInput"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundImgBTBInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<script>
+    document.getElementById("messageBTBInput").value =  window.currentOpenPuzzleConfig?.message || '';
+    document.getElementById("buttonLabelBTBInput").value =  window.currentOpenPuzzleConfig?.buttonLabel || '';
+    document.getElementById("placeholderBTBInput").value =  window.currentOpenPuzzleConfig?.placeholder || '';
+    document.getElementById("widthBTBInput").value =  window.currentOpenPuzzleConfig?.width || '';
+    document.getElementById("fontSizeBTBInput").value =  window.currentOpenPuzzleConfig?.fontSize || '';
+    document.getElementById("fontSizeMinBTBInput").value =  window.currentOpenPuzzleConfig?.fontSizeMin || '';
+    document.getElementById("fontSizeMaxBTBInput").value =  window.currentOpenPuzzleConfig?.fontSizeMax || '';
+    var fontColorBTBInputDOM = document.getElementById("fontColorBTBInput");
+    fontColorBTBInputDOM.value =  window.currentOpenPuzzleConfig?.fontColor || '#ffffff';
+    fontColorBTBInputDOM.jscolor.fromString(fontColorBTBInputDOM.value); //Update picker
+
+    var fontColorSuccessMessageBTBInputDOM = document.getElementById("fontColorSuccessMessageBTBInput");
+    fontColorSuccessMessageBTBInputDOM.value =  window.currentOpenPuzzleConfig?.fontColorSuccessMessage || '#49BD19';
+    fontColorSuccessMessageBTBInputDOM.jscolor.fromString(fontColorSuccessMessageBTBInputDOM.value);
+
+    var fontColorErrorMessageBTBInputDOM = document.getElementById("fontColorErrorMessageBTBInput");
+    fontColorErrorMessageBTBInputDOM.value =  window.currentOpenPuzzleConfig?.fontColorErrorMessage || '#EB3838';
+    fontColorErrorMessageBTBInputDOM.jscolor.fromString(fontColorErrorMessageBTBInputDOM.value);
+
+    document.getElementById("xpositionBTBInput").value =  window.currentOpenPuzzleConfig?.xposition || "CENTER";
+    document.getElementById("ypositionBTBInput").value =  window.currentOpenPuzzleConfig?.yposition || "CENTER"
+    ;
+    document.getElementById("opacityBTBInput").value =  window.currentOpenPuzzleConfig?.opacity || '';
+    document.getElementById("delayBTBInput").value =  window.currentOpenPuzzleConfig?.delay || '';
+
+    document.getElementById("backgroundImgBTBInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
+</script>
