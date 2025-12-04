@@ -1,33 +1,41 @@
 "use strict";
 
 module.exports = {
-    up (queryInterface, Sequelize) {
-        return queryInterface.createTable(
-            "reusablePuzzleInstancePuzzle",
-            {
-                "reusablePuzzleInstanceId": {
-                    "type": Sequelize.INTEGER,
-                    "primaryKey": true,
-                    "unique": "compositeKey",
-                    "allowNull": false
+    async up (queryInterface, Sequelize) {
+        try {
+            await queryInterface.describeTable('reusablePuzzleInstancePuzzle');
+            // If this succeeds, the table already exists
+            console.log('reusablePuzzleInstancePuzzle table already exists');
+        } catch (err) {
+            // If it throws, the table does not exist
+            console.log('reusablePuzzleInstancePuzzle table does not exist');
+            return queryInterface.createTable(
+                "reusablePuzzleInstancePuzzle",
+                {
+                    "reusablePuzzleInstanceId": {
+                        "type": Sequelize.INTEGER,
+                        "primaryKey": true,
+                        "unique": "compositeKey",
+                        "allowNull": false
+                    },
+                    "puzzleId": {
+                        "type": Sequelize.INTEGER,
+                        "primaryKey": true,
+                        "unique": "compositeKey",
+                        "allowNull": false
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "allowNull": false
+                    }
                 },
-                "puzzleId": {
-                    "type": Sequelize.INTEGER,
-                    "primaryKey": true,
-                    "unique": "compositeKey",
-                    "allowNull": false
-                },
-                "createdAt": {
-                    "type": Sequelize.DATE,
-                    "allowNull": false
-                },
-                "updatedAt": {
-                    "type": Sequelize.DATE,
-                    "allowNull": false
-                }
-            },
-            {"sync": {"force": true}}
-        );
+                {"sync": {"force": true}}
+            );
+        }
     },
 
     down (queryInterface) {

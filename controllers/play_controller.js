@@ -71,6 +71,7 @@ exports.results = async (req, res, next) => {
 
 // POST /escapeRooms/:escapeRoomId/play
 exports.startPlaying = async (req, res, next) => {
+    
     const {i18n} = res.locals;
 
     try {
