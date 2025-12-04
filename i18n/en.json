@@ -156,6 +156,7 @@
             "whoops": "Whoops!",
             "notFound": "It seems like we couldn't find the page you were looking for",
             "notEmpty": "cannot be empty",
+            "is_null": "cannot be empty",
             "len": "is too long",
             "min": "is too low",
             "max": "is too high",
@@ -232,7 +233,8 @@
             "successSendingReport":    "Report successfully sent",
             "successConfirmingCollaborator": "Confirmed as collaborator successfully",
             "youMustAcceptTerms": "You must accept the conditions in order to register",
-            "youHaveNotBeenAddedAsACollaborator": "You have not been added as a collaborator"
+            "youHaveNotBeenAddedAsACollaborator": "You have not been added as a collaborator",
+            "aliasAlreadyExists": "This alias is already taken. Please choose another one."
         },
         "guide": "User guide",
         "ideas": "Puzzle ideas",

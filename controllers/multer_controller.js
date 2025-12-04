@@ -10,7 +10,8 @@ const storageWithExtension = (destination) => multer.diskStorage({
         const extension = originalNameParts.length > 1 ? `.${originalNameParts.pop()}` : "";
         const timestamp = Math.floor(Date.now() / 1000);
         const random = crypto.randomBytes(8).toString("hex");
-        const fileId = timestamp+crypto.randomBytes(16).toString("hex");
+        const fileId = timestamp + crypto.randomBytes(16).toString("hex");
+
         cb(null, fileId + extension);
     }
 });

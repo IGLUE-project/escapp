@@ -27,6 +27,7 @@ router.all("*", sessionController.deleteExpiredUserSession);
 // Redirection to the saved restoration route.
 const redirectBack = (req, res) => {
     const url = req.session.backURL;
+
     delete req.session.backURL;
     res.redirect(url);
 };
@@ -94,7 +95,7 @@ router.put("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, 
 router.delete("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequired, sessionController.authDeleteEscapeRoom, escapeRoomController.destroy);
 router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.clone);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.test);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, sessionController.authPlayEscapeRoom, playController.startPlaying, playController.play);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.startPlaying, playController.play);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginRequired, sessionController.authShowEscapeRoom, escapeRoomController.export);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", escapeRoomController.returnThumbnail);
 
@@ -117,33 +118,33 @@ router.post("/escapeRooms/:escapeRoomId(\\d+)/evaluation", sessionController.log
 router.get("/escapeRooms/:escapeRoomId(\\d+)/sharing", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.sharing);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/sharing", sessionController.loginRequired, sessionController.authEditEscapeRoom, instructions.single("instructions"), escapeRoomController.sharingUpdate);
 
-//Manage escape rooms
-//Collaborators
+// Manage escape rooms
+// Collaborators
 router.get("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.showCollaborators);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.addCollaborators);
 router.put("/escapeRooms/:escapeRoomId(\\d+)/confirmCoAuthor", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.confirmCollaborators);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.deleteCollaborators);
-//Shifts
+// Shifts
 router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.turnos);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.turnosUpdate);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)/user/:userId(\\d+)", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, participantController.studentLeave);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)", sessionController.loginRequired, sessionController.authPlayEscapeRoom, participantController.studentLeave);
 router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)/reset", sessionController.loginRequired, sessionController.authEditEscapeRoom, teamController.resetProgress);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)", sessionController.loginRequired, sessionController.authEditEscapeRoom, teamController.delete);
-//Starting/stopping shifts
+// Starting/stopping shifts
 router.get("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.indexActivate);
 router.put("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.activate);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/new", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.create);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/reset", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.reset);
 router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.update);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.destroy);
-//Participants
+// Participants
 router.get("/escapeRooms/:escapeRoomId(\\d+)/participants", sessionController.loginRequired, sessionController.authEditEscapeRoom, participantController.index);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/teams", sessionController.loginRequired, sessionController.authEditEscapeRoom, teamController.index);
-//Reports
+// Reports
 router.get("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.showReportForm);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.generateReport);
-//Contact
+// Contact
 router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRequired, managementController.showContact);
 
 // Routes for hint app
@@ -193,7 +194,7 @@ router.get("/escapeRooms/:escapeRoomId/analytics/grading", sessionController.log
 router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.download);
 router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.downloadRaw);
 
-//Routes for scenes
+// Routes for scenes
 router.get("/escapeRooms/:escapeRoomId/scenes/new", sessionController.loginRequired, sessionController.authEditEscapeRoom, sceneController.newScene);
 router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId/framed", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, sceneController.show_framed);
 router.get("/escapeRooms/:escapeRoomId/scenes/:sceneId", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, sceneController.show);

@@ -1,7 +1,7 @@
 require("dotenv").config(); // Load environment variables from .env
 
 const sequelize = require("../models");
-const models = sequelize.models;
+const {models} = sequelize;
 const args = process.argv.slice(2);
 let email = null;
 let password = "1234";
@@ -22,15 +22,16 @@ if (!email || !password) {
     process.exit(1);
 }
 
-async function changePassword() {
+async function changePassword () {
     try {
         const user = await models.user.findOne({"where": {"username": email}});
-        if(!user){
-            throw new Error("User with email " + email + " not found.");
+
+        if (!user) {
+            throw new Error(`User with email ${email} not found.`);
         }
         user.password = password;
         await user.save();
-        console.log("✅ The password of user with email " + email + " has been changed to " + password);
+        console.log(`✅ The password of user with email ${email} has been changed to ${password}`);
     } catch (error) {
         console.error("❌ Error:", error);
         process.exit(1);

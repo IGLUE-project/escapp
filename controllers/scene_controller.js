@@ -1,17 +1,20 @@
 const {models} = require("../models");
 
-async function showScene(req, res, view, layout) {
-    const escapeRoomId = req.params.escapeRoomId;
+async function showScene (req, res, view, layout) {
+    const {escapeRoomId} = req.params;
+
     if (!escapeRoomId) {
         return res.status(400).send("Escape room ID must be specified.");
     }
 
-    const sceneId = req.params.sceneId;
+    const {sceneId} = req.params;
+
     if (!sceneId) {
         return res.status(400).send("Scene ID must be specified.");
     }
 
     let scene;
+
     try {
         scene = await models.scene.findByPk(sceneId);
         if (!scene) {
@@ -23,7 +26,7 @@ async function showScene(req, res, view, layout) {
     }
 
     const sceneJSON = scene.content;
-    const user = req.session.user;
+    const {user} = req.session;
     const lang = res.locals.i18n_lang;
     const referrer = req.get("Referrer");
     const preview = Boolean(referrer && referrer.match("/team$"));
@@ -33,7 +36,7 @@ async function showScene(req, res, view, layout) {
         sceneId,
         sceneJSON,
         escapeRoomId,
-        nPuzzles: undefined,
+        "nPuzzles": undefined,
         user,
         lang,
         preview
@@ -44,68 +47,75 @@ exports.show = (req, res) => showScene(req, res, "scenes/show", false);
 exports.show_framed = (req, res) => showScene(req, res, "scenes/show_framed", true);
 
 exports.newScene = async (req, res, _) => {
-    const escapeRoomId = req.params.escapeRoomId;
+    const {escapeRoomId} = req.params;
+
     if (!escapeRoomId) {
         return res.status(400).send("Escape room ID must be specified ");
     }
 
-    const puzzles = await models.puzzle.findAll({where: {escapeRoomId}});
+    const puzzles = await models.puzzle.findAll({"where": {escapeRoomId}});
     const nPuzzles = puzzles.length;
-    const user = req.session.user;
-    const lang =  res.locals.i18n_lang;
+    const {user} = req.session;
+    const lang = res.locals.i18n_lang;
 
-    res.render("scenes/edit", {sceneId: undefined, sceneJSON: undefined, escapeRoomId, nPuzzles, user, lang});
-}
+    res.render("scenes/edit", {"sceneId": undefined, "sceneJSON": undefined, escapeRoomId, nPuzzles, user, lang});
+};
 
 exports.editScene = async (req, res, _) => {
-    const escapeRoomId = req.params.escapeRoomId;
+    const {escapeRoomId} = req.params;
+
     if (!escapeRoomId) {
         return res.status(400).send("Escape room ID must be specified ");
     }
-    const sceneId = req.params.sceneId;
+    const {sceneId} = req.params;
+
     if (!sceneId) {
         return res.status(400).send("Scene ID must be specified ");
     }
 
     let scene;
-    try{
+
+    try {
         scene = await models.scene.findByPk(sceneId);
         if (!scene) {
             return res.status(404).send("Scene not found.");
         }
-    }catch(error){
+    } catch (error) {
         console.error(error);
-        return res.status(500).send('An error occurred while fetching the scene.');
+        return res.status(500).send("An error occurred while fetching the scene.");
     }
 
     const sceneJSON = scene.content;
-    const puzzles = await models.puzzle.findAll({where: {escapeRoomId}});
+    const puzzles = await models.puzzle.findAll({"where": {escapeRoomId}});
     const nPuzzles = puzzles.length;
-    const user = req.session.user;
-    const lang =  res.locals.i18n_lang;
+    const {user} = req.session;
+    const lang = res.locals.i18n_lang;
 
     res.render("scenes/edit", {sceneId, sceneJSON, escapeRoomId, nPuzzles, user, lang});
-}
+};
 
 exports.deleteScene = async (req, res, _) => {
-    const escapeRoomId = req.params.escapeRoomId;
+    const {escapeRoomId} = req.params;
+
     if (!escapeRoomId) {
         return res.status(400).send("Escape room ID must be specified ");
     }
-    const sceneId = req.params.sceneId;
+    const {sceneId} = req.params;
+
     if (!sceneId) {
         return res.status(400).send("Scene ID must be specified ");
     }
 
     let scene;
-    try{
+
+    try {
         scene = await models.scene.findByPk(sceneId);
         if (!scene) {
             return res.status(404).send("Scene not found.");
         }
-    }catch(error){
+    } catch (error) {
         console.error(error);
-        return res.status(500).send('An error occurred while fetching the scene.');
+        return res.status(500).send("An error occurred while fetching the scene.");
     }
 
     if (String(scene.escapeRoomId) !== String(escapeRoomId)) {
@@ -119,69 +129,69 @@ exports.deleteScene = async (req, res, _) => {
         console.error(error);
         return res.status(500).send("An error occurred while deleting the scene.");
     }
-}
+};
 
 exports.viewer = async (req, res, _) => {
-    res.render("scenes/viewer", { layout: false });
-}
+    res.render("scenes/viewer", { "layout": false });
+};
 
 exports.preview = async (req, res, _) => {
-    res.render("scenes/viewer", { layout: false });
-}
+    res.render("scenes/viewer", { "layout": false });
+};
 
 exports.editor = async (req, res, _) => {
-    res.render("scenes/editor", { layout: false });
-}
+    res.render("scenes/editor", { "layout": false });
+};
 
 exports.createScene = async (req, res, _) => {
-    const escapeRoomId = req.params.escapeRoomId;
+    const {escapeRoomId} = req.params;
     let sceneJSON;
+
     try {
         sceneJSON = JSON.parse(req.body.scene.json);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({error: 'Invalid scene JSON.'});
+        return res.status(500).json({"error": "Invalid scene JSON."});
     }
 
     try {
-        let scene = await models.scene.create({
+        const scene = await models.scene.create({
             escapeRoomId,
-            content: sceneJSON
+            "content": sceneJSON
         });
         const uploadPath = `/escapeRooms/${escapeRoomId}/scenes/${scene.id}/edit`;
-        return res.status(201).json({
-            "uploadPath": uploadPath
-        });
+
+        return res.status(201).json({uploadPath});
     } catch (error) {
         console.error(error);
-        return res.status(500).json({error: 'An error occurred while creating the scene.'});
+        return res.status(500).json({"error": "An error occurred while creating the scene."});
     }
 };
 
 exports.updateScene = async (req, res, _) => {
-    const escapeRoomId = req.params.escapeRoomId;
-    const sceneId = req.params.sceneId;
+    const {escapeRoomId} = req.params;
+    const {sceneId} = req.params;
 
     let sceneJSON;
+
     try {
         sceneJSON = JSON.parse(req.body.scene.json);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({error: 'Invalid scene JSON.'});
+        return res.status(500).json({"error": "Invalid scene JSON."});
     }
 
     let scene;
-    try{
+
+    try {
         scene = await models.scene.findByPk(sceneId);
         if (!scene) {
-            return res.status(404).json({ error: "Scene not found." });
+            return res.status(404).json({ "error": "Scene not found." });
         }
-        await scene.update({
-            content: sceneJSON
-        });
-        return res.status(200).json({ message: "Scene updated succesfully." });
-    }catch(error){
+        await scene.update({"content": sceneJSON});
+        return res.status(200).json({ "message": "Scene updated succesfully." });
+    } catch (error) {
         console.error(error);
-        return res.status(500).json({error: 'An error occurred while fetching the scene.'});
+        return res.status(500).json({"error": "An error occurred while fetching the scene."});
     }
-}
+};

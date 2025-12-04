@@ -9,7 +9,7 @@ module.exports = {
                 "type": Sequelize.INTEGER,
                 "primaryKey": true,
                 "unique": true,
-                "autoIncrement": true,
+                "autoIncrement": true
             },
             "escapeRoomId": {
                 "type": Sequelize.INTEGER,

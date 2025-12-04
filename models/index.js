@@ -286,7 +286,7 @@ user.hasMany(asset, {
 
 asset.belongsTo(user);
 
-//Reports
+// Reports
 escapeRoom.hasMany(report, {
     "onDelete": "CASCADE",
     "hooks": true,
@@ -325,7 +325,7 @@ reusablePuzzleInstance.belongsToMany(puzzle, {"through": "reusablePuzzleInstance
 puzzle.belongsToMany(reusablePuzzleInstance, {"through": "reusablePuzzleInstancePuzzle"});
 
 
-//Scenes
+// Scenes
 scene.belongsTo(escapeRoom);
 escapeRoom.hasMany(scene, {"foreignKey": "escapeRoomId"});
 
@@ -350,10 +350,12 @@ escapeRoom.hasMany(subject, {
     "hooks": true
 });
 
-//Hooks
+// Hooks
 const escapeRoomHooks = require(path.join(__dirname, "escapeRoomHooks"));
+
 escapeRoomHooks({ escapeRoom, turno });
 const sceneHooks = require(path.join(__dirname, "sceneHooks"));
+
 sceneHooks({ scene, puzzle });
 
 module.exports = sequelize;

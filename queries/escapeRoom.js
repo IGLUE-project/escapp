@@ -238,11 +238,11 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
 
     findOptions.where = { [Op.and]: [] };
 
-    if ((typeof search === "string")&&(search.trim()!=="")) {
+    if (typeof search === "string" && search.trim() !== "") {
         findOptions.where[Op.and].push({
             [Op.or]: [
-                { title: { [Op.iLike]: `%${search}%` }},
-                { description: { [Op.iLike]: `%${search}%` }}
+                { "title": { [Op.iLike]: `%${search}%` }},
+                { "description": { [Op.iLike]: `%${search}%` }}
             ]
         });
     }
@@ -252,9 +252,7 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
     }
 
     if (Array.isArray(ignoreERIds) && ignoreERIds.length > 0) {
-        findOptions.where[Op.and].push({
-            id: { [Op.notIn]: ignoreERIds }
-        });
+        findOptions.where[Op.and].push({"id": { [Op.notIn]: ignoreERIds }});
     }
 
     if (findOptions.where[Op.and].length === 0) {

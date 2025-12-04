@@ -47,16 +47,19 @@ exports.hintAppWrapper = async (req, res, next) => {
 exports.downloadQuiz = async (req, res) => {
     try {
         const hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
-        let fileUrl = hintApp.url;
+        const fileUrl = hintApp.url;
+
         if (fileUrl) {
-            const isAbsolute = /^https?:\/\//i.test(fileUrl);
+            const isAbsolute = (/^https?:\/\//i).test(fileUrl);
+
             if (!isAbsolute) {
                 const filePath = path.join(__dirname, "..", fileUrl);
-                res.setHeader('Content-Disposition', 'attachment; filename="' + hintApp.filename + '"');
+
+                res.setHeader("Content-Disposition", `attachment; filename="${hintApp.filename}"`);
                 res.sendFile(filePath);
             } else {
                 http.get(fileUrl, (resp) => {
-                    res.setHeader("content-disposition", "attachment; filename=\"" + hintApp.filename + "\"");
+                    res.setHeader("content-disposition", `attachment; filename="${hintApp.filename}"`);
                     resp.pipe(res);
                 });
             }
@@ -71,6 +74,7 @@ exports.downloadQuiz = async (req, res) => {
 exports.hints = async (req, res, next) => {
     try {
         const {escapeRoom} = req;
+
         req.escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
         res.render("escapeRooms/steps/hints", { escapeRoom, "progress": "hints" });
     } catch (e) {
@@ -102,22 +106,24 @@ exports.updateHints = async (req, res) => {
             // Delete/change old attachment.
             escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
             if (!req.file) {
-                //Delete old attachment
+                // Delete old attachment
                 if (escapeRoom.hintApp) {
                     await uploadsHelper.deleteResource(escapeRoom.hintApp.public_id, models.hintApp, "hints");
                     await escapeRoom.hintApp.destroy();
                 }
             } else {
                 try {
-                    let quizFilePath = "/" + req.file.path;
-                    let quizFilePathFull = path.join(__dirname, "..", quizFilePath);
-                    let quizFileType = await uploadsHelper.getDataForFile(quizFilePathFull);
-                    if(quizFileType.mimetype !== 'application/xml'){
+                    const quizFilePath = `/${req.file.path}`;
+                    const quizFilePathFull = path.join(__dirname, "..", quizFilePath);
+                    const quizFileType = await uploadsHelper.getDataForFile(quizFilePathFull);
+
+                    if (quizFileType.mimetype !== "application/xml") {
                         throw new Error("Quiz file must be a valid Moodle XML file.");
                     }
 
                     const oldFileId = escapeRoom.hintApp ? escapeRoom.hintApp.public_id : null;
                     let hintApp = await escapeRoom.getHintApp();
+
                     if (!hintApp) {
                         hintApp = models.hintApp.build({"escapeRoomId": escapeRoom.id});
                     }

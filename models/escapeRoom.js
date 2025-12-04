@@ -129,17 +129,17 @@ module.exports = function (sequelize, DataTypes) {
             },
             "field": {
                 "type": DataTypes.STRING,
-                "allowNull": true,
+                "allowNull": false,
                 "validate": {"isIn": [["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10"]]}
             },
             "level": {
                 "type": DataTypes.STRING,
-                "allowNull": true,
+                "allowNull": false,
                 "validate": {"isIn": [["primary", "secondary", "vet", "higher", "other"]]}
             },
             "format": {
                 "type": DataTypes.STRING,
-                "allowNull": true,
+                "allowNull": false,
                 "validate": {"isIn": [["none", "online", "hybrid"]]}
             },
             "publishedOnce": {
@@ -150,12 +150,8 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
             },
-            "instructions": {
-                "type": DataTypes.TEXT
-            },
-            "hybridInstructions": {
-                "type": DataTypes.TEXT
-            },
+            "instructions": {"type": DataTypes.TEXT},
+            "hybridInstructions": {"type": DataTypes.TEXT},
             "verified": {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
@@ -187,9 +183,10 @@ module.exports = function (sequelize, DataTypes) {
         }
     );
 
-    getColorForEscapeRoomThumbnail = function(id) {
+    getColorForEscapeRoomThumbnail = function (id) {
         const index = id % 5;
         let color = "red";
+
         if (index === 0) {
             color = "blue";
         } else if (index === 1) {
@@ -204,12 +201,11 @@ module.exports = function (sequelize, DataTypes) {
         return color;
     };
 
-    EscapeRoom.prototype.getThumbnailUrl = function (){
-        if(this.attachment){
+    EscapeRoom.prototype.getThumbnailUrl = function () {
+        if (this.attachment) {
             return this.attachment.getUrl();
-        } else {
-            return `/images/puzzle${getColorForEscapeRoomThumbnail(this.id)}.png`;
         }
+        return `/images/puzzle${getColorForEscapeRoomThumbnail(this.id)}.png`;
     };
 
     return EscapeRoom;

@@ -39,6 +39,12 @@ $focus: #4a90e2
   user-select: none
   white-space: nowrap
   font-weight: bold
+  max-width: 300px
+  overflow-x: hidden
+  text-overflow: ellipsis
+  display: inline
+  position: relative
+  padding-right: 25px
   .remove
     cursor: pointer
     font-weight: bold
@@ -46,6 +52,9 @@ $focus: #4a90e2
     color: $chip-fg !important
     opacity: .9
     transition: transform .1s ease, opacity .15s ease
+    right: 8px
+    top: 7px
+    position: absolute
     &:hover
       opacity: 1
       transform: scale(1.1)
@@ -60,6 +69,9 @@ $focus: #4a90e2
   color: white !important
   list-style: none
   padding-left: 5px
-
+  .ui-menu-item-wrapper
+    overflow-x: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
 .inputFormField .tags-box
   width: 100%

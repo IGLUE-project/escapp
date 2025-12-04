@@ -141,7 +141,12 @@ exports.joinAnonymous = async (req, res, next) => {
         next();
     } catch (error) {
         console.error(error);
-        req.flash("error", i18n.common.flash.errorCreatingUser);
-        res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
+        if (error && error.errors && error.errors.length > 0 && error.errors[0].message == "alias must be unique") {
+            req.flash("error", i18n.common.flash.aliasAlreadyExists);
+            res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
+        } else {
+            req.flash("error", i18n.common.flash.errorCreatingUser);
+            res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
+        }
     }
 };
