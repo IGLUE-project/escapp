@@ -6,13 +6,33 @@ $text-color: #1a1a1a
 #mainSection
   .main.escapeRoomShow
     background: none
+    
     .by-author
       font-family: Lato, sans-serif
       font-size: 20px
       padding: 0px 10px 0px 10px
       margin-top: -10px
+      position: relative
       a
         cursor: pointer
+      .verify-div
+        float: right
+        .overlay-trigger
+          right: 0px
+          &:after
+            left: 263px !important
+        .btn-verify
+          font-size: 16px
+          padding: 0.3em
+          &.verified
+            background-color: colors.$brightgreen
+            border-color: colors.$brightgreen
+          &.verified-update
+            background-color: colors.$brightorange
+            border-color: colors.$brightorange
+        .dismissButton
+          color: colors.$darkerpurple
+          border-color: colors.$darkerpurple
     .menuERShow
       display: flex
       .menuERShowRight

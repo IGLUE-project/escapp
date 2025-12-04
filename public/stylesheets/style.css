@@ -1137,9 +1137,35 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 20px;
   padding: 0px 10px 0px 10px;
   margin-top: -10px;
+  position: relative;
 }
 #mainSection .main.escapeRoomShow .by-author a {
   cursor: pointer;
+}
+#mainSection .main.escapeRoomShow .by-author .verify-div {
+  float: right;
+}
+#mainSection .main.escapeRoomShow .by-author .verify-div .overlay-trigger {
+  right: 0px;
+}
+#mainSection .main.escapeRoomShow .by-author .verify-div .overlay-trigger:after {
+  left: 263px !important;
+}
+#mainSection .main.escapeRoomShow .by-author .verify-div .btn-verify {
+  font-size: 16px;
+  padding: 0.3em;
+}
+#mainSection .main.escapeRoomShow .by-author .verify-div .btn-verify.verified {
+  background-color: #48C18E;
+  border-color: #48C18E;
+}
+#mainSection .main.escapeRoomShow .by-author .verify-div .btn-verify.verified-update {
+  background-color: #F3945E;
+  border-color: #F3945E;
+}
+#mainSection .main.escapeRoomShow .by-author .verify-div .dismissButton {
+  color: #161938;
+  border-color: #161938;
 }
 #mainSection .main.escapeRoomShow .menuERShow {
   display: flex;

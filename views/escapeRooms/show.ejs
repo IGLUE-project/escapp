@@ -113,12 +113,12 @@
                 
                 if (user.isAdmin){
                     continueButtonURL = "/escapeRooms/" + escapeRoom.id + "/test";
-                    continueButtonText = i18n.showPlayer.Play;
+                    continueButtonText = i18n.showPlayer.play;
                     continueButtonClass = "acceptButton";
                 } else {
                     if (isParticipant === false) {
                         continueButtonURL = "/escapeRooms/" + escapeRoom.id + "/join";
-                        continueButtonText = i18n.showPlayer.Play;
+                        continueButtonText = i18n.showPlayer.play;
                         continueButtonClass = "acceptButton";
                     } else {
                         continueButtonURL = "/escapeRooms/" + escapeRoom.id + "/ready";
@@ -148,7 +148,7 @@
                 </spa >
             <%}%>
         <%} else {%>
-            <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.Play%></button>
+            <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.play%></button>
             <div id="dialog-join-anon" title="Playing '<%=escapeRoom.title%>'" style="display: none;">
                 <p class="text-center"> 
                 <%=i18n.showPlayer.alreadyAccount%>
@@ -192,7 +192,7 @@
                 </div>
             </div>
             <p class="text-center">
-                <button class="rounded editButton acceptButton" type="submit"><%=i18n.showPlayer.Play%></button>
+                <button class="rounded editButton acceptButton" type="submit"><%=i18n.showPlayer.play%></button>
             </p>
             </form>
             </div>

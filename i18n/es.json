@@ -740,6 +740,18 @@
             "hintFailed": "La nota por pista no obtenida",
             "lang": "El idioma de la escape room",
             "forceLang": "El idioma de Escapp"
+        },
+        "verification": {
+            "verify": "verificar",
+            "verified": "verificada",
+            "reverify": "reverificar",
+            "dismiss": "cancelar",
+            "unverify": "desverificar",
+            "not_verified": "no verificada",
+            "explanation": "Tu escape room ha sido revisada por el equipo de escapp y cumple con los requisitos mínimos de calidad para ser publicada en la red de escape rooms educativas. Si realizas cambios en la escape room, deberá ser verificada de nuevo para que los participantes puedan jugar a la versión actualizada.",
+            "areYouSureVerify": "¿Estás seguro de que quieres verificar esta escape room?  La escape room pasará a estar disponible en la red.",
+            "areYouSureReVerify": "Esta escape room ha cambiado desde su última verificación ¿Deseas volver a verificarla o desverificarla?",
+            "areYouSureUnVerify": "¿Estás seguro de que quieres desverificar esta escape room? La escape room dejará de estar disponible en la red hasta que la verifiques de nuevo."
         }
     },
     "gallery": {

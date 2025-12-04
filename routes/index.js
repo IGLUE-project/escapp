@@ -82,6 +82,7 @@ router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionControll
 router.get("/reports", sessionController.loginRequired, sessionController.adminRequired, managementController.showReports);
 router.post("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.editReport);
 router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/verify", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.verify);
 
 // Routes for escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
