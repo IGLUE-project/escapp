@@ -61,9 +61,11 @@
                 let wheel = {};
                 const selectWheelType = div.querySelector('select.selectWheelType');
                 const selectWheelLength = div.querySelector('select.selectWheelLength');
-                if((selectWheelType)&&(selectWheelLength)){
+                const selectDisableWheel = div.querySelector('select.disableWheel');
+                if(selectWheelType&&selectWheelLength&&selectDisableWheel){
                     wheel.type = selectWheelType.value;
                     wheel.length = selectWheelLength.value;
+                    wheel.disabled = selectDisableWheel.value;
                     wheelsType.push(wheel);
                 }
               }
@@ -88,11 +90,15 @@ backgroundImg || '';
                 if (wheelDiv) {
                   const selectType = wheelDiv.querySelector('select.selectWheelType');
                   const selectLength = wheelDiv.querySelector('select.selectWheelLength');
+                  const selectDisableWheel = wheelDiv.querySelector('select.disableWheel');
                   if (selectType) {
                     selectType.value = wheelsType[i].type;
                   }
                   if (selectLength) {
                     selectLength.value = wheelsType[i].length;
+                  }
+                  if (selectDisableWheel) {
+                    selectDisableWheel.value = wheelsType[i].disabled;
                   }
                 }
             }
@@ -101,7 +107,9 @@ backgroundImg || '';
 
     //Events
     document.getElementById('numberOfWheels').addEventListener('change', updateWheelSettings);
-    document.querySelectorAll('select.selectWheelType, select.selectWheelLength').forEach(elem => {
-        elem.addEventListener('change', updateWheelsType);
-    });
+    $('div.wheelSettings').on('change',
+        'select.selectWheelType, select.selectWheelLength, select.disableWheel',
+        updateWheelsType
+    );
+
 </script>

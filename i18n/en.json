@@ -1400,7 +1400,8 @@
                 "Basic": "Basic",
                 "Retro": "Retro",
                 "Futuristic": "Futuristic",
-                "Realistic": "Realistic"
+                "Realistic": "Realistic",
+                "Tablet": "Tablet"
             },
             "actionAfterSolve": "Action after solving",
             "enabled": "Enabled",
@@ -1411,6 +1412,7 @@
             "playSound": "Play sound",
             "Message": "Message",
             "MessagePlaceholder": "Message to show after solving",
+            "FailureMessage" : "Failure message",
             "BackgroundURL": "Background",
             "BackgroundURLPlaceholder": "You can enter the URL of any image from your resource catalog",
             "soundURL": "Sound",
@@ -1426,7 +1428,23 @@
             "Standard": "Standard",
             "None": "None",
             "NoneF": "None",
-            "warningPuzzleLink": "This puzzle is currently linked to another resource"
+            "Width": "Width",
+            "WidthPercentage": "Width (%)",
+            "Height": "Height",
+            "warningPuzzleLink": "This puzzle is currently linked to another resource",
+            "Yes": "Yes",
+            "No": "No",
+            "Auto": "Automatic",
+            "Custom": "Custom",
+            "HorizontalAlignment": "Horizontal alignment",
+            "VerticalAlignment": "Vertical alignment",
+            "Left": "Left",
+            "Center": "Center",
+            "Right": "Right",
+            "Top": "Top",
+            "Bottom": "Bottom",
+            "Text": "Text",
+            "Image": "Image"
         },
         "Keypad": {
             "name": "Keypad",
@@ -1439,7 +1457,8 @@
             "numberOfWheels": "Number of wheels",
             "wheel": "Wheel",
             "wheelType": "Wheel type",
-            "wheelLength": "Number of elements"
+            "wheelLength": "Number of elements",
+            "Rotation": "Rotation enabled"
         },
         "Safebox": {
             "name": "Safe box",
@@ -1475,6 +1494,41 @@
             "initialSetup_SPANISH_OPENING": "Spanish Opening",
             "initialSetup_ITALIAN_OPENING": "Italian Opening",
             "automaticReset": "Automatic reset"
+        },
+        "HiddenPath": {
+            "name": "Hidden path",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to follow a specific path on a grid.",
+            "ShowStartingCell": "Show starting cell",
+            "ShowEndingCell": "Show ending cell",
+            "BackgroundGrid": "Grid image",
+            "MarginTop": "Top margin (%)",
+            "MarginBottom": "Bottom margin (%)",
+            "MarginLeft": "Left margin (%)",
+            "MarginRight": "Right margin (%)",
+            "LineColor": "Line color"
+        },
+        "BasicTextBox": {
+            "name": "Basic Text Box",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific text into a text input.",
+            "MainText": "Main text",
+            "ButtonText": "Button text",
+            "Placeholder": "Placeholder",
+            "TextSize": "Text size (vmin)",
+            "MinimumTextSize": "Minimum text size (px)",
+            "MaximumTextSize": "Maximum text size (px)",
+            "TextColor": "Text color",
+            "SuccessMessageColor": "Success message color",
+            "FailureMessageColor": "Failure message color",
+            "Opacity": "Opacity (%)",
+            "MinimumSuccessMessageDuration": "Minimum success message duration (in seconds)"
+        },
+        "ItemSelection": {
+            "name": "Item Selection",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to select a series of items from a given set on one or more occasions.",
+            "NumberOfRounds": "Number of rounds",
+            "Round": "Round",
+            "Item": "Item",
+            "Items": "Items"
         },
         "CodeEditor": {
             "name": "Code Editor",

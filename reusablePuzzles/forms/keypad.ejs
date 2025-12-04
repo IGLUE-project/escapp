@@ -32,12 +32,12 @@
 
 <div id="actionDiv">
     <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
-    <input id="messageInput" type="message" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>"  style="flex:1;"  />
+    <input id="messageInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>"  style="flex:1;"  />
 </div>
 
 <div>
-    <label for="background"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundInput" name="background" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
 </div>
 <br>
 
@@ -50,7 +50,7 @@
         }
     });
 
-    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.background || '';
+    document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
     document.getElementById("messageInput").value =  window.currentOpenPuzzleConfig?.message || '';
     document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
     document.getElementById("actionValue").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';

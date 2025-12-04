@@ -574,11 +574,14 @@
             fetch(config.url ? config.url : `/reusablePuzzlesInstances/${puzzle.id}/form`)
             .then(response => response.text())
             .then(textString => {
+                let newReusablePuzzleInstance = ((typeof puzzle === "undefined") || (typeof puzzle.id === "undefined"));
                 let elements = textString;
                 elements += '<div class="editDialogButtons">';
                 elements += `<input type="text" hidden value=${baseId} name="reusablePuzzleId"/>`;
                 elements += `<input type="submit" class="rounded acceptButton" value="<%=i18n.common.save%>"/>`;
-                elements += `<button type="button" class="rounded deleteButton" onclick="goBack()"><%=i18n.common.back%></button>`;
+                if(newReusablePuzzleInstance){
+                    elements += `<button type="button" class="rounded deleteButton" onclick="goBack()"><%=i18n.common.back%></button>`;
+                }
                 elements += `</div>`;
                 configForm.html(puzzleForm(config, puzzle, baseId, puzzleName, puzzle.id));
                 configForm.attr("action", config.url ? "reusablePuzzleInstance" : `./reusablePuzzleInstance/${puzzle.id}`);
@@ -620,9 +623,7 @@
                 }else if(!puzzleObject.id) {
                     $('#associatedPuzzle').val($('#associatedPuzzle').children(":first").val()).change();
                 }
-
                 updateIframe();
-
                 $(".sections").scrollTop(0);
             });
         } else {
@@ -635,7 +636,6 @@
             $(".sections").scrollTop(0);
             configForm.attr("action",  "reusablePuzzleInstance");
         }
-
     }
 
     function updateIframe() {
@@ -1062,7 +1062,7 @@
         window.addEventListener('change', function(e) {
             // Check if e.target is a child of .editDialog
             if ($(e.target).closest('.editDialog').length > 0) {
-                if(e.target.id != "nameOfReusablePuzzle" && e.target.id != "descOfReusablePuzzle") {
+                if(e.target.id != "nameOfReusablePuzzle") {
                     updateIframe();
                 }
             }
@@ -1089,8 +1089,12 @@
         //Parse JSON settings
         const reusablePuzzleJSONsettings = form.querySelectorAll('input[type="hidden"].reusablePuzzleJSONSetting');
         reusablePuzzleJSONsettings.forEach(input => {
-            if((typeof input.name === "string")&&(typeof input.value === "string")){
-                reusablePuzzleInstanceConfig[input.name] = JSON.parse(input.value);
+            if((typeof input.name === "string")&&(typeof input.value === "string")&&(input.value.trim()!=="")){
+                try {
+                    reusablePuzzleInstanceConfig[input.name] = JSON.parse(input.value);
+                } catch(e) {
+                    console.error("Error parsing JSON of " + input.name + ": " + input.value);
+                }
             }
         });
 

@@ -1397,7 +1397,8 @@
                 "Basic": "Básica",
                 "Retro": "Retro",
                 "Futuristic": "Futurista",
-                "Realistic": "Realista"
+                "Realistic": "Realista",
+                "Tablet": "Tablet"
             },
             "actionAfterSolve": "Acción tras resolver",
             "enabled": "Habilitado",
@@ -1408,6 +1409,7 @@
             "playSound": "Reproducir sonido",
             "Message": "Mensaje",
             "MessagePlaceholder": "Mensaje a mostrar tras resolver el reto",
+            "FailureMessage" : "Mensaje de fallo",
             "BackgroundURL": "Fondo",
             "BackgroundURLPlaceholder": "Puedes introducir la URL de cualquier imagen que tengas en tu catálogo de recursos",
             "soundURL": "Sonido",
@@ -1423,7 +1425,24 @@
             "Standard": "Estándar",
             "None": "Ninguno",
             "NoneF": "Ninguna",
-            "warningPuzzleLink": "Este reto está actualmente vinculado con otro recurso."
+            "Width": "Ancho",
+            "WidthPercentage": "Ancho (%)",
+            "Height": "Alto",
+            "Height": "Alto",
+            "warningPuzzleLink": "Este reto está actualmente vinculado con otro recurso.",
+            "Yes": "Sí",
+            "No": "No",
+            "Auto": "Automático",
+            "Custom": "Personalizado",
+            "HorizontalAlignment": "Alineación horizontal",
+            "VerticalAlignment": "Alineación vertical",
+            "Left": "Izquierda",
+            "Center": "Centrado",
+            "Right": "Derecha",
+            "Top": "Arriba",
+            "Bottom": "Abajo",
+            "Text": "Texto",
+            "Image": "Imagen"
         },
         "Keypad": {
             "name": "Panel de botones",
@@ -1436,7 +1455,8 @@
             "numberOfWheels": "Número de ruedas",
             "wheel": "Rueda",
             "wheelType": "Tipo de rueda",
-            "wheelLength": "Número de elementos"
+            "wheelLength": "Número de elementos",
+            "Rotation": "Giro habilitado"
         },
         "Safebox": {
             "name": "Caja fuerte",
@@ -1472,6 +1492,41 @@
             "initialSetup_SPANISH_OPENING": "Apertura española",
             "initialSetup_ITALIAN_OPENING": "Apertura italiana",
             "automaticReset": "Reinicio automático"
+        },
+        "HiddenPath": {
+            "name": "Ruta oculta",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes realicen una ruta determinada sobre una cuadrícula.",
+            "ShowStartingCell": "Mostrar casilla inicial",
+            "ShowEndingCell": "Mostrar casilla final",
+            "BackgroundGrid": "Imagen de la cuadrícula",
+            "MarginTop": "Margen superior (%)",
+            "MarginBottom": "Margen inferior (%)",
+            "MarginLeft": "Margen izquierdo (%)",
+            "MarginRight": "Margen derecho (%)",
+            "LineColor": "Color de las líneas"
+        },
+        "BasicTextBox": {
+            "name": "Caja de texto básica",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes introduzcan un texto determinado en una caja de texto.",
+            "MainText": "Texto principal",
+            "ButtonText": "Texto del botón",
+            "Placeholder": "Texto de ayuda",
+            "TextSize": "Tamaño del texto (vmin)",
+            "MinimumTextSize": "Tamaño mínimo del texto (px)",
+            "MaximumTextSize": "Tamaño máximo del texto (px)",
+            "TextColor": "Color del texto",
+            "SuccessMessageColor": "Color del mensaje de acierto",
+            "FailureMessageColor": "Color del mensaje de fallo",
+            "Opacity": "Opacidad (%)",
+            "MinimumSuccessMessageDuration": "Tiempo mínimo del mensaje de acierto (en segundos)"
+        },
+        "ItemSelection": {
+            "name": "Selección de elementos",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes seleccionen una serie de elementos de un conjunto determinado en una o más ocasiones.",
+            "NumberOfRounds": "Número de rondas",
+            "Round": "Ronda",
+            "Item": "Elemento",
+            "Items": "Elementos"
         },
         "CodeEditor": {
             "name": "Editor HTML/CSS/JS",
