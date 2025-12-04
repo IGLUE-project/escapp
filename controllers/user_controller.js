@@ -146,6 +146,7 @@ exports.update = (req, res, next) => {
         if (req.cookies && req.cookies.locale && (user.lang !== body.lang || req.cookies.locale !== body.lang)) {
             res.cookie("locale", body.lang);
             const i18n2 = require(`../i18n/${body.lang}`);
+
             scs = i18n2.user.sucessfullyUpdatedUser;
         }
     }
@@ -161,8 +162,8 @@ exports.update = (req, res, next) => {
 
     user.save({fields}).
         then((user_saved) => {
-            if(req.session.user.id === user_saved.id){
-                //Update session
+            if (req.session.user.id === user_saved.id) {
+                // Update session
                 req.session.user.name = user_saved.alias;
                 req.session.user.isAdmin = user_saved.isAdmin;
                 req.session.user.isStudent = user_saved.isStudent;

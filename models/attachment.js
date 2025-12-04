@@ -22,8 +22,9 @@ module.exports = function (sequelize, DataTypes) {
             }
         }
     );
+
     Attachment.prototype.getUrl = function () {
-        return `/escapeRooms/${this.escapeRoomId}/thumbnail`; 
+        return `/escapeRooms/${this.escapeRoomId}/thumbnail`;
     };
     return Attachment;
 };

@@ -31,6 +31,7 @@ exports.load = (req, res, next, teamId) => {
 exports.new = (req, res) => {
     const team = {"name": ""};
     const {escapeRoom} = req;
+
     res.render("teams/new", {team, escapeRoom, "token": req.token, "turno": req.turn});
 };
 
@@ -44,12 +45,14 @@ exports.create = async (req, res, next) => {
 
     try {
         const existsTeam = await models.team.findOne({"where": {"name": body.name, "turnoId": params.turnoId}}, {transaction});
+
         if (existsTeam && req.escapeRoom.teamSize !== 1) {
             req.flash("error", i18n.common.flash.errorCreatingTeamAlreadyExists);
             transaction.rollback();
             res.redirect("back");
         } else {
             const teamCreated = await models.team.create({ "name": body.name, "turnoId": params.turnoId}, {transaction});
+
             await teamCreated.addTeamMembers(user.id, {transaction});
             await models.participants.create({"attendance": false, "turnId": params.turnoId, "userId": user.id}, {transaction});
             transaction.commit();
@@ -97,6 +100,7 @@ exports.index = async (req, res, next) => {
     try {
         escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});
         const teams = await models.team.findAll(where);
+
         for (const team of teams) {
             team.connected = isTeamConnected(team.id);
             team.waiting = team.connected ? false : isTeamConnectedWaiting(team.id);
@@ -150,12 +154,14 @@ exports.resetProgress = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const userIds = [];
+
         for (const member of req.team.teamMembers) {
             userIds.push(member.id);
         }
         await models.participants.destroy({"where": {"userId": {[Op.in]: userIds}}});
         await req.team.destroy();
         const teams = await getRanking(req.escapeRoom.id, req.turn.id, true);
+
         sendLeaveTeam(req.team.id, req.turn.id, teams);
         req.flash("success", res.locals.i18n.team.deleteSuccess);
     } catch (e) {

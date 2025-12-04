@@ -149,6 +149,7 @@
             "whoops": "Ups!",
             "notFound": "No hemos encontrado la página que buscas",
             "notEmpty": "no puede ser un campo vacío",
+            "is_null": "no puede ser un campo vacío",
             "len": "tiene una longitud excesiva",
             "min": "es una cifra demasiado baja",
             "max": "es una cifra demasiado alta",
@@ -228,7 +229,9 @@
             "successImage": "Imagen subida con éxito",
             "successSendingReport": "Reporte enviado con éxito",
             "youMustAcceptTerms": "Debes aceptar los términos y condiciones para poder registrarte.",
-            "youHaveNotBeenAddedAsACollaborator": "No has sido añadido como colaborador de esta escape room."
+            "youHaveNotBeenAddedAsACollaborator": "No has sido añadido como colaborador de esta escape room.",
+            "aliasAlreadyExists": "Alguien con ese alias ya está registrado en Escapp"
+
         },
         "guide": "Manual de usuario",
         "ideas": "Ideas para retos",

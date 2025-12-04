@@ -1,12 +1,12 @@
-const getEmailWhitelist = function() {
+const getEmailWhitelist = function () {
     let emailWhiteList = [];
+
     try {
         emailWhiteList = process.env.WHITELIST_DOMAINS ? process.env.WHITELIST_DOMAINS.split(",").map((domain) => domain.trim()) : [];
-    } catch(e){}
+    } catch (e) {}
     return emailWhiteList;
 };
+
 exports.getEmailWhitelist = getEmailWhitelist;
 
-exports.isOpenRegistration = () => {
-    return ((getEmailWhitelist()).length===0);
-};
+exports.isOpenRegistration = () => getEmailWhitelist().length === 0;

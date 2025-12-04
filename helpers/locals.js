@@ -14,6 +14,7 @@ module.exports = function (app) {
     app.locals.zeroPadding = zeroPadding;
     app.locals.getFullDate = (date) => {
         const d = new Date(date.getTime());
+
         d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
         return `${zeroPadding(d.getDate())}-${zeroPadding(d.getMonth() + 1)}-${d.getFullYear()} ${zeroPadding(d.getHours())}:${zeroPadding(d.getMinutes())}`;
     };

@@ -243,12 +243,16 @@
         }
     };
     $(
-    ()=>{
-        $("#dialog-join-anon").dialog({...dialogOptions, height: screen.height * 0.8});
-         $( "#join-anon-btn" ).on( "click", function() {
-            $( "#dialog-join-anon" ).dialog( "open" );
-        });
-    }
+        ()=>{
+            $("#dialog-join-anon").dialog({...dialogOptions, height: screen.height * 0.8});
+            $( "#join-anon-btn" ).on( "click", function() {
+                $( "#dialog-join-anon" ).dialog( "open" );
+            });
+
+            if (window.location.hash === "#join-anon") {
+                $( "#dialog-join-anon" ).dialog( "open" );
+            }
+        }
     );
 
 </script>

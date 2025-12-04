@@ -1,25 +1,25 @@
 const nodemailer = require("nodemailer");
 
-function createTransport() {
+function createTransport () {
     const provider = process.env.MAIL_PROVIDER || "sendgrid";
 
     if (provider === "sendgrid") {
-        const sgMail = require("@sendgrid/mail"); 
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY); 
+        const sgMail = require("@sendgrid/mail");
 
-        return {sendMail: (msg) => sgMail.send(msg)};
-        
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+        return {"sendMail": (msg) => sgMail.send(msg)};
     }
 
     return nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT || 587),
-        secure: process.env.SMTP_SECURE === "true",
-        auth: process.env.SMTP_USER
-            ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+        "host": process.env.SMTP_HOST,
+        "port": Number(process.env.SMTP_PORT || 587),
+        "secure": process.env.SMTP_SECURE === "true",
+        "auth": process.env.SMTP_USER
+            ? { "user": process.env.SMTP_USER, "pass": process.env.SMTP_PASS }
             : undefined,
-        logger: true,
-        debug: true
+        "logger": true,
+        "debug": true
     });
 }
 
@@ -30,6 +30,7 @@ exports.sendEmail = async (to, subject = "escapp", text, html) => {
 
     try {
         const info = await transporter.sendMail({ to, from, subject, text, html });
+
         return info;
     } catch (err) {
         console.error("Email sending failed");
