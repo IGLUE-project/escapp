@@ -124,7 +124,7 @@
             //Invalid solution
             return resetGridPoints();
         }
-        startCell = {x: parseInt(startCellCoordinates[0]), y: parseInt(startCellCoordinates[1])};
+        startCell = {x: parseInt(startCellCoordinates[1]), y: parseInt(startCellCoordinates[0])};
         if(isNaN(startCell.x) || isNaN(startCell.y)){
             //Invalid solution
             return resetGridPoints();
@@ -136,7 +136,7 @@
             //Invalid solution
             return resetGridPoints();
         }
-        endCell = {x: parseInt(endCellCoordinates[0]), y: parseInt(endCellCoordinates[1])};
+        endCell = {x: parseInt(endCellCoordinates[1]), y: parseInt(endCellCoordinates[0])};
         if(isNaN(endCell.x) || isNaN(endCell.y)){
             //Invalid solution
             return resetGridPoints();
