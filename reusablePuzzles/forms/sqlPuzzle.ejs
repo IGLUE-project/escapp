@@ -1,0 +1,345 @@
+<style>
+    .test-block, .images-block {
+        display: block !important;
+          border: 1px solid white; padding: 10px; margin-bottom: 10px; border-radius: 5px;
+    }
+    .test-block input, .test-block label, .images-block input, .images-block label {
+        display: block !important;
+        width: 100%
+    }
+    .delete-test, .delete-image {
+        float: right;
+        padding: 2px;
+        font-size: 16px;;
+    }
+    hr.full {
+        display: block;
+         width: 100%;
+    }
+
+    #add-test, #add-image {
+        float: right;
+        padding: 2px;
+    }
+    .tests > label, .images > label {
+        display: block;
+        padding-bottom: 12px;
+        margin: 0px 1px;
+    }
+</style
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: true}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="theme"><%=i18n.reusablePuzzleApps.Common.skin%> <a target="_blank" href="https://bootswatch.com"><span class="material-icons">info</span></a>:</label>
+    <select id="theme" name="theme">
+        <%var themes = ["brite", "vapor", "morph", "quartz", "litera", "cerulean", "journal", "sketchy", "darkly", "cyborg", "cosmo", "flatly", "lumen", "lux", "materia", "minty", "pulse", "sandstone", "simplex", "slate", "solar", "spacelab", "united", "yeti", "superhero", "zephyr"];%>
+        <%for (var i in themes) { %>
+        <option value="<%=themes[i]%>" ><%=themes[i]%></option>
+        <%}%>
+    </select>
+</div>
+
+<div>
+    <label for="actionValue"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionValue" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+    </select>
+</div>
+
+<div id="actionDiv">
+    <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+    <input id="messageInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>"  style%>="flex:1;"  />
+</div>
+
+<div>
+    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style%>="flex:1;" />
+</div>
+<div>
+	<label for="dbUrl"><%=i18n.reusablePuzzleApps.sqlPuzzle.dbUrl%>:</label>
+	<input id="dbUrl" type="text" name="dbUrl" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.dbUrlPlaceholder%>" style="flex:1;"/>
+</div>
+<div>
+	<label for="question"><%=i18n.reusablePuzzleApps.sqlPuzzle.question%>:</label>
+	<input id="question" type="text" name="question" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.questionPlaceholder%>" style="flex:1;"/>
+</div>
+<div>
+	<label for="title"><%=i18n.reusablePuzzleApps.sqlPuzzle.title%>:</label>
+	<input id="title" type="text" name="title" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.titlePlaceholder%>" style="flex:1;"/>
+</div>
+<div>
+	<label for="initialQuery"><%=i18n.reusablePuzzleApps.sqlPuzzle.initialQuery%>:</label>
+	<input id="initialQuery" type="text" name="initialQuery" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.initialQueryPlaceholder%>" style="flex:1;"/>
+</div>
+<div>
+	<label for="queryCardTitle"><%=i18n.reusablePuzzleApps.sqlPuzzle.queryCardTitle%>:</label>
+	<input id="queryCardTitle" type="text" name="queryCardTitle" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.queryCardTitlePlaceholder%>" style="flex:1;"/>
+</div>
+<div>
+	<label for="queryPlaceholder"><%=i18n.reusablePuzzleApps.sqlPuzzle.queryPlaceholder%>:</label>
+	<input id="queryPlaceholder" type="text" name="queryPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.queryPlaceholderPlaceholder%>" style="flex:1;"/>
+</div>
+<div>
+	<label for="resultsCardTitle"><%=i18n.reusablePuzzleApps.sqlPuzzle.resultsCardTitle%>:</label>
+	<input id="resultsCardTitle" type="text" name="resultsCardTitle" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.resultsCardTitlePlaceholder%>" style="flex:1;"/>
+</div>
+<div>
+	<label for="resultsPlaceholder"><%=i18n.reusablePuzzleApps.sqlPuzzle.resultsPlaceholder%>:</label>
+	<input id="resultsPlaceholder" type="text" name="resultsPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.resultsPlaceholderPlaceholder%>" style="flex:1;"/>
+</div>
+<hr class="full"/>
+<div>
+	<label for="testsCardTitle"><%=i18n.reusablePuzzleApps.sqlPuzzle.testsCardTitle%>:</label>
+	<input id="testsCardTitle" type="text" name="testsCardTitle" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.testsCardTitlePlaceholder%>" style="flex:1;"/>
+</div>
+<div>
+	<label for="testsPlaceholder"><%=i18n.reusablePuzzleApps.sqlPuzzle.testsPlaceholder%>:</label>
+	<input id="testsPlaceholder" type="text" name="testsPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.testsPlaceholderPlaceholder%>" style="flex:1;"/>
+</div>
+<div class="tests" style="display: block;">
+    <label for="testsPlaceholder" id=><%=i18n.reusablePuzzleApps.sqlPuzzle.tests%>:
+    <button type="button" id="add-test"><i class="material-icons">add</i></button>
+    </label>
+    <div id="tests-container" style="display: flex; flex-direction: column;">
+    </div>
+       
+</div>
+<hr class="full"/>
+<div>
+	<label for="infoCardTitle"><%=i18n.reusablePuzzleApps.sqlPuzzle.infoCardTitle%>:</label>
+	<input id="infoCardTitle" type="text" name="infoCardTitle" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.infoCardTitlePlaceholder%>" style="flex:1;"/>
+    
+</div>
+<div class="images" style="display: block;">
+    <label for="images"><%=i18n.reusablePuzzleApps.sqlPuzzle.images%>:
+    <button type="button addButton" id="add-image"><i class="material-icons">add</i></button>
+    </label>
+    <div id="images-container" style="display: flex; flex-direction: column;">
+        
+    </div>
+   
+</div>
+<br>
+
+<script>
+    document.getElementById('actionValue').addEventListener('change', function() {
+        if (this.value === 'SHOW_MESSAGE') {
+            document.getElementById("actionDiv").style.display = 'flex';
+        } else {
+            document.getElementById("actionDiv").style.display = 'none';
+        }
+    });
+    var theme_default = "brite";
+    try {
+        theme_default = window.theme.match(/bootswatch\/([^/]+)\.bootstrap\.min\.css/)[1];
+    } catch(e) {}
+    document.getElementById("theme").value = window.currentOpenPuzzleConfig?.theme ||  theme_default
+    document.getElementById("actionValue").value = window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    document.getElementById("messageInput").value = window.currentOpenPuzzleConfig?.message || '';
+    document.getElementById("dbUrl").value = window.currentOpenPuzzleConfig?.dbUrl || '';
+    document.getElementById("question").value = window.currentOpenPuzzleConfig?.question || '';
+    document.getElementById("title").value = window.currentOpenPuzzleConfig?.title || '';
+    document.getElementById("initialQuery").value = window.currentOpenPuzzleConfig?.initialQuery || '';
+    document.getElementById("queryCardTitle").value = window.currentOpenPuzzleConfig?.queryCardTitle || "Query";
+    document.getElementById("queryPlaceholder").value = window.currentOpenPuzzleConfig?.queryPlaceholder || "SELECT * FROM ..."
+    document.getElementById("resultsCardTitle").value = window.currentOpenPuzzleConfig?.resultsCardTitle || "Results"
+    document.getElementById("resultsPlaceholder").value = window.currentOpenPuzzleConfig?.resultsPlaceholder || "The results will be shown here"
+    document.getElementById("testsCardTitle").value = window.currentOpenPuzzleConfig?.testsCardTitle || "Tests"
+    document.getElementById("testsPlaceholder").value = window.currentOpenPuzzleConfig?.testsPlaceholder || "Run the query to see the test results"
+    document.getElementById("infoCardTitle").value = window.currentOpenPuzzleConfig?.infoCardTitle || "Info";
+   
+    
+    if(window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
+        document.getElementById("actionDiv").style.display = 'block';
+    } else {
+        document.getElementById("actionDiv").style.display = 'none';
+    }
+    var testsContainer = document.getElementById("tests-container");
+    var addTestBtn = document.getElementById("add-test");
+    function htmlMarkupToNode(html){
+        let template = document.createElement("template");        
+        template.innerHTML = html ;
+        let node = template.content.cloneNode(true) ;        
+        return node ;   
+    }
+    function renumberTests() {
+        var blocks = testsContainer.querySelectorAll(".test-block");
+        blocks.forEach((block, index) => {
+            block.dataset.index = index;
+
+            var label = block.querySelector(".test-label");
+            if (label) {
+            label.textContent = `<%= i18n.reusablePuzzleApps.sqlPuzzle.test %> ${index + 1}:`;
+            }
+
+            var descInput = block.querySelector(".test-description");
+            var fnInput = block.querySelector(".test-fn");
+
+            if (descInput) {
+            descInput.name = `tests[${index}][description]`;
+            descInput.id = `test_description_${index}`;
+            descInput.placeholder = `Test ${index + 1}`;
+            if (label) {
+                label.setAttribute("for", descInput.id);
+            }
+            }
+
+            if (fnInput) {
+            fnInput.name = `tests[${index}][fn]`;
+            fnInput.id = `test_fn_${index}`;
+            var fnLabel = block.querySelector(`label[for^="test_fn_"]`);
+            if (fnLabel) {
+                fnLabel.setAttribute("for", fnInput.id);
+            }
+            }
+        });
+    }
+
+    function attachDeleteHandlers() {
+        var deleteButtons = testsContainer.querySelectorAll(".delete-test");
+        deleteButtons.forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();e.preventDefault();
+                var block = btn.closest(".test-block");
+                if (!block) return;
+
+                block.remove();
+                renumberTests();
+            };
+        });
+    }
+
+    function createTestBlock(description = "", fn = "") {
+        return ` 
+        <div class="test-block" data-index="0" "> 
+            <button type="button deleteButton" class="delete-test""><i class="material-icons">delete</i></button>
+            <label class="test-label" for="test_description_0"><%= i18n.reusablePuzzleApps.sqlPuzzle.test %> 1:</label>
+            <input
+            type="text"
+            id="test_description_0"
+            class="test-description"
+            name="tests[0][description]"
+            placeholder="Test 1"
+            style="flex:1;"
+            value="${description}"
+            /> 
+
+            <label for="test_fn_0"><%= i18n.reusablePuzzleApps.sqlPuzzle.code %>:</label>
+            <input
+            type="text"
+            id="test_fn_0"
+            class="test-fn"
+            name="tests[0][fn]"
+            placeholder="return true;"
+            value="${fn}"
+            style="flex:1;"
+            />
+        </div>
+    </div>
+        `;
+    }
+    addTestBtn.addEventListener("click", (e) => {
+        e.stopPropagation();e.preventDefault();
+        
+        var newBlock = createTestBlock();
+        testsContainer.appendChild(htmlMarkupToNode(newBlock));
+        renumberTests();
+        attachDeleteHandlers();
+    });
+
+    (window.currentOpenPuzzleConfig?.tests || []).map(test => {
+        var testsContainer = document.getElementById("tests-container");
+        var newBlock = createTestBlock(test.description, test.fn);
+        testsContainer.appendChild(htmlMarkupToNode(newBlock));
+    });
+    // Run once on page load so the initial block has a working delete button
+    attachDeleteHandlers();
+    renumberTests();
+
+
+
+    var imagesContainer = document.getElementById("images-container");
+    var addImagesBtn = document.getElementById("add-image");
+
+    function renumberImages() {
+        var blocks = imagesContainer.querySelectorAll(".images-block");
+        console.log("Renumbering images", blocks);
+        blocks.forEach((block, index) => {
+            block.dataset.index = index;
+
+            var label = block.querySelector(".images-label");
+            if (label) {
+            label.textContent = `<%= i18n.reusablePuzzleApps.sqlPuzzle.image %> ${index + 1}:`;
+            }
+
+            var descInput = block.querySelector(".image-description");
+            if (descInput) {
+            descInput.name = `images[${index}]`;
+            descInput.id = `image_description_${index}`;
+            descInput.placeholder = `Image ${index + 1}`;
+            if (label) {
+                label.setAttribute("for", descInput.id);
+            }
+            }
+
+             
+        });
+    }
+
+    function attachDeleteImageHandlers() {
+        var deleteButtons = imagesContainer.querySelectorAll(".delete-image");
+        deleteButtons.forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();e.preventDefault();
+                var block = btn.closest(".images-block");
+                if (!block) return;
+
+                block.remove();
+                renumberImages();
+            };
+        });
+    }
+
+    function createImageBlock(url = "") {
+        return ` 
+        <div class="images-block" data-index="0" style=""> 
+            <button type="button deleteButton" class="delete-image" ><i class="material-icons">delete</i></button>
+            <label class="images-label" for="image_description_0"><%= i18n.reusablePuzzleApps.sqlPuzzle.image %> 1:</label>
+            <input
+            type="text"
+            id="image_description_0"
+            class="image-description"
+            name="images[0]"
+            placeholder="Image 1"
+            value="${url}"
+            style="flex:1;"
+            /> 
+
+            
+        </div>`;
+    }
+    addImagesBtn.addEventListener("click", (e) => {
+        e.stopPropagation();e.preventDefault();
+        var newBlock = createImageBlock();
+
+        // Clear values in the cloned inputs
+        imagesContainer.appendChild(htmlMarkupToNode(newBlock));
+        renumberImages();
+        attachDeleteImageHandlers();
+    });
+     (window.currentOpenPuzzleConfig?.images || []).map(imgUrl => {
+        var imagesContainer = document.getElementById("images-container");
+        var newBlock = createImageBlock(imgUrl);
+        imagesContainer.appendChild(htmlMarkupToNode(newBlock));
+    });
+    // Run once on page load so the initial block has a working delete button
+    attachDeleteImageHandlers();
+    renumberImages();
+
+    
+
+</script>

@@ -1585,6 +1585,31 @@
             "readOnly": "Sólo lectura",
             "hidden": "Ocultar fichero",
             "Tests": "Pruebas"
+        },
+        "sqlPuzzle": {
+            "name": "Reto SQL",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes realicen consultas SQL sobre una base de datos determinada.",
+            "dbUrl": "URL de la base de datos",
+            "dbUrlPlaceholder": "Introduce la URL de cualquier base de datos sqlite",
+            "title": "Título",
+            "titlePlaceholder": "El título que se mostrará en el reto",
+            "question": "Pregunta",
+            "questionPlaceholder": "Las pregunta que los participantes deberán resolver usando SQL",
+            "initialQuery": "Consulta inicial",
+            "initialQueryPlaceholder": "Consulta SQL que se mostrará inicialmente a los participantes",
+            "queryCardTitle": "Título del área de consulta",
+            "queryPlaceholder": "Placeholder del área de consulta",
+            "resultsCardTitle": "Título del área de resultados",
+            "resultsPlaceholder": "Placeholder del área de resultados",
+            "testsCardTitle": "Título del área de pruebas",
+            "testsPlaceholder": "Placeholder del área de pruebas",
+            "infoCardTitle": "Título del área de información",
+            "theme": "Tema",
+            "test": "Prueba",
+            "tests": "Pruebas",
+            "image": "Imagen",
+            "images": "Imágenes",
+            "code": "Código"
         }
     },
     "general": {
