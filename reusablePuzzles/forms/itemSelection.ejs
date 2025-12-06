@@ -114,12 +114,13 @@
                 //Items
                 var roundItems = rounds[i].items;
                 if (Array.isArray(roundItems)) {
-                    var roundItemsWrapper = $(roundDiv).find("div.roundItemsISPWrapper");
+                    var $roundItemsWrapper = $(roundDiv).find("div.roundItemsISPWrapper");
                     for(let j=0; j<roundItems.length; j++){
-                        if(j > 2){
-                            addNewItemForRoundISPToDiv(roundItemsWrapper);
+                        var itemNumber = (j+1);
+                        if(itemNumber > 2){
+                            addNewItemForRoundISPToDiv($roundItemsWrapper);
                         }
-                        var $roundItemDiv = $(roundItemsWrapper).find("div.roundItemISPWrapper[itemNumber='" + (j+1) + "']");
+                        var $roundItemDiv = $roundItemsWrapper.find("div.roundItemISPWrapper[itemNumber='" + itemNumber + "']");
                         $roundItemDiv.find("input.inputItemText").val(roundItems[j].label);
                         $roundItemDiv.find("input.inputItemImage").val(roundItems[j].img);
                     }
