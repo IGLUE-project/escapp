@@ -1069,12 +1069,69 @@
         });
     }
 
+            
+ formDataToObject = function(fd) {
+  const result = {};
+
+  for (const [key, value] of fd.entries()) {
+    // 1) Simple keys: no brackets → store as plain properties
+    if (!key.includes("[")) {
+      if (key in result) {
+        // if the same simple key appears multiple times, turn it into an array
+        if (!Array.isArray(result[key])) {
+          result[key] = [result[key]];
+        }
+        result[key].push(value);
+      } else {
+        result[key] = value;
+      }
+      continue;
+    }
+
+    // 2) Keys with brackets → nested structure
+    const path = key.replace(/\]/g, "").split("["); 
+    // "items[0][name]" → ["items", "0", "name"]
+
+    let current = result;
+
+    for (let i = 0; i < path.length; i++) {
+      const segment = path[i];
+      const isLast = i === path.length - 1;
+
+      if (segment === "") {
+        // this handles weird cases like "items[][name]" – you can make this smarter if you need
+        continue;
+      }
+
+      if (isLast) {
+        // final step: assign value
+        current[segment] = value;
+      } else {
+        const nextSegment = path[i + 1];
+        const shouldBeArray = /^\d+$/.test(nextSegment); // if next is a number, this level is an array
+
+        if (
+          !(segment in current) ||
+          typeof current[segment] !== "object" ||
+          current[segment] === null
+        ) {
+          current[segment] = shouldBeArray ? [] : {};
+        }
+
+        current = current[segment];
+      }
+    }
+  }
+
+  return result;
+}
+
     generateReusablePuzzleInstanceConfigFromForm = function(form){
         if((typeof form === "undefined")||(form === null)){
             form = document.querySelector('form[class="reusablePuzzleInstanceForm"]');
         }
-        const formData = new FormData(form);
-        let reusablePuzzleInstanceConfig = Object.fromEntries(formData.entries());
+        const formData = formDataToObject(new FormData(form));
+        let reusablePuzzleInstanceConfig = formData; //Object.fromEntries(formData.entries());
 
         const sol = $("#puzzleSol").val();
         const validator = $("#inputValidator").val();

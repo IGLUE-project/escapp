@@ -6,10 +6,11 @@
 			<%=Math.round(index /labels.length * 100)%>% <%=i18n.common.completado%> 
 		</div>
 		<% var realLabels = labels.map(label=>i18n.escapeRoom.steps.list[label]) %>
-
+		
 		<div class="outterBar">
 	        <%for(var i in labels){%>
 			<button name="progress" value="<%=labels[i]%>" title="<%=realLabels[i]%>" 
+				aria-label="<%= (i) + '. ' + realLabels[i]%>" 
 				class="innerBar" 
 				style="opacity: <%= ( index > i) ? 1 : 0 %>; 
 				left: <%=  100/(labels.length)*i %>%;
