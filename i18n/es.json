@@ -1532,6 +1532,9 @@
             "TextColor": "Color del texto",
             "SuccessMessageColor": "Color del mensaje de acierto",
             "FailureMessageColor": "Color del mensaje de fallo",
+            "BackgroundColorPanel": "Color de fondo del panel",
+            "BorderWidthPanel": "Ancho del borde del panel (px)",
+            "BorderColorPanel": "Color del borde del panel",
             "Opacity": "Opacidad (%)",
             "MinimumSuccessMessageDuration": "Tiempo mínimo del mensaje de acierto (en segundos)"
         },

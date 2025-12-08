@@ -1,5 +1,5 @@
 <br>
-<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<%- include ("./_validator.ejs", {allowedValidators: ["all"], allowedNullPuzzle: false}, ) %>
 <br>
 <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
 
@@ -21,6 +21,24 @@
 <div>
     <label for="widthBTBInput"><%=i18n.reusablePuzzleApps.Common.WidthPercentage%>:</label>
     <input id="widthBTBInput" type="number" min="1" max="100" step="1" name="width" value="66" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="xpositionBTBInput"><%=i18n.reusablePuzzleApps.Common.HorizontalAlignment%>:</label>
+    <select id="xpositionBTBInput" name="xposition">
+        <option value="LEFT"><%=i18n.reusablePuzzleApps.Common.Left%></option>
+        <option value="CENTER"><%=i18n.reusablePuzzleApps.Common.Center%></option>
+        <option value="RIGHT"><%=i18n.reusablePuzzleApps.Common.Right%></option>
+    </select>
+</div>
+
+<div>
+    <label for="ypositionBTBInput"><%=i18n.reusablePuzzleApps.Common.VerticalAlignment%>:</label>
+    <select id="ypositionBTBInput" name="yposition">
+        <option value="TOP"><%=i18n.reusablePuzzleApps.Common.Top%></option>
+        <option value="CENTER"><%=i18n.reusablePuzzleApps.Common.Center%></option>
+        <option value="BOTTOM"><%=i18n.reusablePuzzleApps.Common.Bottom%></option>
+    </select>
 </div>
 
 <div>
@@ -54,21 +72,18 @@
 </div>
 
 <div>
-    <label for="xpositionBTBInput"><%=i18n.reusablePuzzleApps.Common.HorizontalAlignment%>:</label>
-    <select id="xpositionBTBInput" name="xposition">
-        <option value="LEFT"><%=i18n.reusablePuzzleApps.Common.Left%></option>
-        <option value="CENTER"><%=i18n.reusablePuzzleApps.Common.Center%></option>
-        <option value="RIGHT"><%=i18n.reusablePuzzleApps.Common.Right%></option>
-    </select>
+    <label for="backgroundColorPanelBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.BackgroundColorPanel%>:</label>
+    <input type="text" id="backgroundColorPanelBTBInput" name="backgroundColorPanel" data-jscolor='{ "closeButton": true, "closeText": "<%= i18n.common.ok %>", "backgroundColor": "#161938", "buttonColor": "#fff" }' style="flex:1;" />
 </div>
 
 <div>
-    <label for="ypositionBTBInput"><%=i18n.reusablePuzzleApps.Common.VerticalAlignment%>:</label>
-    <select id="ypositionBTBInput" name="yposition">
-        <option value="TOP"><%=i18n.reusablePuzzleApps.Common.Top%></option>
-        <option value="CENTER"><%=i18n.reusablePuzzleApps.Common.Center%></option>
-        <option value="BOTTOM"><%=i18n.reusablePuzzleApps.Common.Bottom%></option>
-    </select>
+    <label for="borderWidthPanelBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.BorderWidthPanel%>:</label>
+    <input id="borderWidthPanelBTBInput" type="number" min="0" max="99" step="1" name="borderWidthPanel" value="0" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="borderColorPanelBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.BorderColorPanel%>:</label>
+    <input type="text" id="borderColorPanelBTBInput" name="borderColorPanel" data-jscolor='{ "closeButton": true, "closeText": "<%= i18n.common.ok %>", "backgroundColor": "#161938", "buttonColor": "#fff" }' style="flex:1;" />
 </div>
 
 <div>
@@ -111,6 +126,18 @@
     document.getElementById("xpositionBTBInput").value =  window.currentOpenPuzzleConfig?.xposition || "CENTER";
     document.getElementById("ypositionBTBInput").value =  window.currentOpenPuzzleConfig?.yposition || "CENTER"
     ;
+
+    var backgroundColorPanelBTBInputDOM = document.getElementById("backgroundColorPanelBTBInput");
+    backgroundColorPanelBTBInputDOM.value =  window.currentOpenPuzzleConfig?.backgroundColorPanel || '#2a2a52';
+    backgroundColorPanelBTBInputDOM.jscolor.fromString(backgroundColorPanelBTBInputDOM.value);
+
+    document.getElementById("borderWidthPanelBTBInput").value =  window.currentOpenPuzzleConfig?.borderWidthPanel || '0';
+
+    var borderColorPanelBTBInputDOM = document.getElementById("borderColorPanelBTBInput");
+    borderColorPanelBTBInputDOM.value =  window.currentOpenPuzzleConfig?.borderColorPanel || '#ffffffff';
+    borderColorPanelBTBInputDOM.jscolor.fromString(borderColorPanelBTBInputDOM.value);
+
+
     document.getElementById("opacityBTBInput").value =  window.currentOpenPuzzleConfig?.opacity || '';
     document.getElementById("delayBTBInput").value =  window.currentOpenPuzzleConfig?.delay || '';
 

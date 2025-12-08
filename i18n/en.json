@@ -1534,6 +1534,9 @@
             "TextColor": "Text color",
             "SuccessMessageColor": "Success message color",
             "FailureMessageColor": "Failure message color",
+            "BackgroundColorPanel": "Panel background color",
+            "BorderWidthPanel": "Panel border width (px)",
+            "BorderColorPanel": "Panel border color",
             "Opacity": "Opacity (%)",
             "MinimumSuccessMessageDuration": "Minimum success message duration (in seconds)"
         },

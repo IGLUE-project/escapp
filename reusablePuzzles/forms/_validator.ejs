@@ -1,3 +1,12 @@
+<%if (typeof allowedValidators == "object") {
+    if(allowedValidators.includes("all")){
+        allowedValidators = ["exact", "caseinsensitive", "range", "regex"];
+    }
+} else {
+    allowedValidators = ["exact"];
+}
+%>
+
 <script src="/js/vendor/jscolor.min.js"></script>
 
 <div class="associatedPuzzle" style="padding:0px">
