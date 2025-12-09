@@ -175,7 +175,8 @@ module.exports = function (sequelize, DataTypes) {
             "isNetworkAccessible": {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
-            }
+            },
+            "isNetworkAccesible": {"type": DataTypes.BOOLEAN}
         }
     );
 

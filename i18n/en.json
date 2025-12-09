@@ -1620,6 +1620,41 @@
     "general": {
         "unspecified": "Unspecified"
     },
+    "network": {
+        "filters": {
+            "any": "Any",
+            "after": "After",
+            "before": "Before",
+            "language": "Language",
+            "eduLevel": {
+                "filter": "Educational level",
+                "primary": "Primary education",
+                "secondary": "Secondary education",
+                "vet": "Vocational education and training",
+                "higher": "Higher education"
+            },
+            "area": "Area",
+            "participation": {
+                "filter":"Participation",
+                "individual": "Individual",
+                "team": "Teams"
+            },
+            "duration": "Duration (min)",
+            "format": {
+                "filter":"Format",
+                "online": "Online",
+                "hybrid": "Hybrid"
+            }
+        },
+        "search": {
+            "searchButton": "Search",
+            "inputPlaceholder": "Search...",
+            "loadingPlaceholder": "Loading escape rooms...",
+            "noResults": "No escape rooms found",
+            "filterPlaceholder": "No escape rooms found with the selected filters. Try removing some filters.",
+            "title": "Network Search"
+        }
+    },
     "languages": {
         "ab" : "Abkhazian",
         "aa" : "Afar",
