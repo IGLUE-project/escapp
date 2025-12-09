@@ -1,7 +1,7 @@
 const fs = require("fs/promises");
 const fsSync = require("fs");
 const path = require("path");
-const { fileTypeFromFile } = require('file-type');
+const { fileTypeFromFile } = require("file-type");
 const mimeTypesRegexs = {
     "zip": new RegExp(/application\/(zip|x-zip-compressed|x-zip)/),
     "image": new RegExp("image\/.*"),
@@ -9,10 +9,10 @@ const mimeTypesRegexs = {
     "audio": new RegExp("audio\/.*"),
     "pdf": new RegExp("application\/pdf"),
     "xml": new RegExp("^application\\/xml$|\\+xml$|^text\\/xml$")
-}
+};
 const mimeTypesRegexsEntries = Object.entries(mimeTypesRegexs);
 
-const getAssetTypeFromMimeType = function(mimetype){
+const getAssetTypeFromMimeType = function (mimetype) {
     for (const [key, regex] of mimeTypesRegexsEntries) {
         if (regex.test(mimetype)) {
             return key;
@@ -20,11 +20,13 @@ const getAssetTypeFromMimeType = function(mimetype){
     }
     return "unknown";
 };
+
 exports.getAssetTypeFromMimeType = getAssetTypeFromMimeType;
 
-exports.getDataForFile = async function(filePathFull){
-    let fileType = await fileTypeFromFile(filePathFull);
-    if(typeof fileType === "undefined"){
+exports.getDataForFile = async function (filePathFull) {
+    const fileType = await fileTypeFromFile(filePathFull);
+
+    if (typeof fileType === "undefined") {
         return {
             "assetType": "unknown",
             "mimetype": "unknown",
@@ -32,7 +34,7 @@ exports.getDataForFile = async function(filePathFull){
         };
     }
     if (fileType && fileType.ext) {
-        fileType.ext = '.' + fileType.ext;
+        fileType.ext = `.${fileType.ext}`;
     }
     return {
         "assetType": getAssetTypeFromMimeType(fileType.mime),
@@ -43,13 +45,15 @@ exports.getDataForFile = async function(filePathFull){
 
 exports.deleteResource = async function (fileId, model, folderNameInsideUploads) {
     const inUse = await model.count({"where": {"public_id": fileId}});
+
     if (inUse > 1) {
         return;
     }
-    if(!folderNameInsideUploads || typeof folderNameInsideUploads !== "string" || folderNameInsideUploads.trim()===""){
+    if (!folderNameInsideUploads || typeof folderNameInsideUploads !== "string" || folderNameInsideUploads.trim() === "") {
         return;
     }
     const fileToDelete = path.resolve(path.join(__dirname, "..", "uploads", folderNameInsideUploads, fileId));
+
     if (fsSync.existsSync(fileToDelete)) {
         await fs.unlink(fileToDelete);
     }

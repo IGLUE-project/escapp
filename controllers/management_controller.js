@@ -15,12 +15,14 @@ exports.showReports = async (req, res) => {
 
 exports.showReportForm = (req, res) => {
     const {escapeRoom} = req;
+
     res.render("management/reportForm", {escapeRoom});
 };
 
 // GET /escapeRooms/:escapeRoomId/contact
 exports.showContact = (req, res) => {
     const {escapeRoom} = req;
+
     res.render("management/contact", {"title": escapeRoom.title, "author": escapeRoom.author.alias, "email": escapeRoom.author.username});
 };
 

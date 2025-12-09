@@ -71,11 +71,12 @@ exports.results = async (req, res, next) => {
 
 // POST /escapeRooms/:escapeRoomId/play
 exports.startPlaying = async (req, res, next) => {
+    
     const {i18n} = res.locals;
 
     try {
-        if(req.participant_is_admin === true) {
-            //TO DO
+        if (req.participant_is_admin === true) {
+            // TO DO
             throw new Error("Not implemented yet");
         }
 
@@ -106,7 +107,7 @@ exports.startPlaying = async (req, res, next) => {
 
         if (joinTeam) {
             const erState = await getERState(req.session.user, req.escapeRoom.id, team, team.turno.id, duration, hintLimit, puzzles.length, true, attendanceScore, scoreHintSuccess, scoreHintFail, true);
-            
+
             sendStartTeam(joinTeam.id, "OK", true, "PARTICIPANT", i18n.escapeRoom.api.participationStart.PARTICIPANT, erState);
             sendJoinTeam(joinTeam.id, joinTeam.turno.id, erState.ranking);
         }

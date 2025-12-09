@@ -1,5 +1,5 @@
 const {authenticate, findFirstAvailableFile} = require("../helpers/utils");
-//const userHelper = require("../helpers/users");
+// Const userHelper = require("../helpers/users");
 const {isAdmin, isStudent} = require("../helpers/users");
 const {isAuthor, isCoAuthor, isCoAuthorPending, getParticipant} = require("../helpers/escapeRooms");
 const sequelize = require("../models");
@@ -16,6 +16,7 @@ const path = require("path");
  * 5 minutes.
  */
 const maxIdleTime = 3 * 60 * 60 * 1000; /* * * Middleware used to destroy the user's session if the inactivity time * has been exceeded. * */
+
 exports.maxIdleTime = maxIdleTime;
 
 /*
@@ -45,23 +46,18 @@ exports.loginRequired = (req, res, next) => {
                 if (req.escapeRoom) {
                     if (req.escapeRoom.id == req.session.user.onlyForER) {
                         return next();
-                    } else {
-                        return res.redirect(`/escapeRooms/${req.session.user.onlyForER}`);
                     }
-                } else {
                     return res.redirect(`/escapeRooms/${req.session.user.onlyForER}`);
                 }
-            } else {
-                return res.redirect(`/?redir=${req.param("redir") || req.url}`);
+                return res.redirect(`/escapeRooms/${req.session.user.onlyForER}`);
             }
-        } else {
-            return next();
+            return res.redirect(`/?redir=${req.param("redir") || req.url}`);
         }
+        return next();
     } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes("/escapeRooms/")) {
         return next();
-    } else {
-        return res.redirect(`/?redir=${req.param("redir") || req.url}`);
     }
+    return res.redirect(`/?redir=${req.param("redir") || req.url}`);
 };
 
 exports.loginOrGuestAccessRequired = (req, res, next) => {
@@ -104,7 +100,8 @@ exports.deleteExpiredUserSession = (req, res, next) => {
 
 // MW that allows to pass only if the logged user in is admin.
 exports.adminRequired = (req, res, next) => {
-    const user = req.session.user;
+    const {user} = req.session;
+
     if (user && isAdmin(user)) {
         return next();
     }
@@ -114,8 +111,9 @@ exports.adminRequired = (req, res, next) => {
 
 // MW that allows to pass only if the logged user in is not a student.
 exports.authCreateEscapeRoom = (req, res, next) => {
-    const user = req.session.user;
-    if (user && (isStudent(user) === false)) {
+    const {user} = req.session;
+
+    if (user && isStudent(user) === false) {
         return next();
     }
     res.status(403);
@@ -124,7 +122,8 @@ exports.authCreateEscapeRoom = (req, res, next) => {
 
 // MW that allows to pass only if the logged user in is admin or student.
 exports.studentOrAdminRequired = (req, res, next) => {
-    const user = req.session.user;
+    const {user} = req.session;
+
     if (user && (isStudent(user) || isAdmin(user))) {
         return next();
     }
@@ -138,8 +137,9 @@ exports.studentOrAdminRequired = (req, res, next) => {
  * - or is the user to be managed.
  */
 exports.adminOrMyselfRequired = (req, res, next) => {
-    const user = req.session.user;
+    const {user} = req.session;
     const isMyself = req.user.id === user.id;
+
     if (user && (isMyself || isAdmin(user))) {
         return next();
     }
@@ -147,19 +147,21 @@ exports.adminOrMyselfRequired = (req, res, next) => {
     throw new Error(res.locals.i18n.api.forbidden);
 };
 
-exports.authShowEscapeRoom = async(req, res, next) => {
+exports.authShowEscapeRoom = async (req, res, next) => {
     const er = req.escapeRoom;
+
     if (er && er.isAccessibleToAllUsers) {
         return next();
     }
 
-    const user = req.session.user;
-    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
+    const {user} = req.session;
+
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         return next();
     }
 
-    req.participant = await getParticipant(user,er);
-    if(typeof req.participant !== "undefined"){
+    req.participant = await getParticipant(user, er);
+    if (typeof req.participant !== "undefined") {
         return next();
     }
 
@@ -168,9 +170,10 @@ exports.authShowEscapeRoom = async(req, res, next) => {
 };
 
 exports.authEditEscapeRoom = (req, res, next) => {
-    const user = req.session.user;
+    const {user} = req.session;
     const er = req.escapeRoom;
-    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
+
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         return next();
     }
     res.status(403);
@@ -179,8 +182,9 @@ exports.authEditEscapeRoom = (req, res, next) => {
 
 // MW that allows actions only if the user logged in is admin or is the author of the escape room.
 exports.authDeleteEscapeRoom = (req, res, next) => {
-    const user = req.session.user;
+    const {user} = req.session;
     const er = req.escapeRoom;
+
     if (user && (isAuthor(user, er) || isAdmin(user))) {
         return next();
     }
@@ -190,13 +194,14 @@ exports.authDeleteEscapeRoom = (req, res, next) => {
 
 // MW that allows actions only if the user logged in is admin, the author, or a participant of the escape room.
 exports.authEditOrPlayEscapeRoom = async (req, res, next) => {
-    const user = req.session.user;
+    const {user} = req.session;
     const er = req.escapeRoom;
-    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
+
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         return next();
     }
-    req.participant = await getParticipant(user,er);
-    if(typeof req.participant !== "undefined"){
+    req.participant = await getParticipant(user, er);
+    if (typeof req.participant !== "undefined") {
         return next();
     }
     return next(new Error(res.locals.i18n.api.forbidden));
@@ -204,14 +209,16 @@ exports.authEditOrPlayEscapeRoom = async (req, res, next) => {
 
 // MW that allows actions only if the user logged in is a participant of the escape room.
 exports.authPlayEscapeRoom = async (req, res, next) => {
-    const user = req.session.user;
+    const {user} = req.session;
+
     if (user && isAdmin(user)) {
         return next();
     }
 
     const er = req.escapeRoom;
-    req.participant = await getParticipant(user,er);
-    if(typeof req.participant !== "undefined"){
+
+    req.participant = await getParticipant(user, er);
+    if (typeof req.participant !== "undefined") {
         return next();
     }
 
@@ -219,9 +226,10 @@ exports.authPlayEscapeRoom = async (req, res, next) => {
 };
 
 exports.authJoinEscapeRoom = (req, res, next) => {
-    const user = req.session.user;
+    const {user} = req.session;
     const er = req.escapeRoom;
-    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user,er))) {
+
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         res.status(403);
         return next(new Error(res.locals.i18n.api.forbidden));
     }
@@ -232,6 +240,7 @@ exports.authJoinEscapeRoom = (req, res, next) => {
 exports.new = (req, res) => {
     // Page to go/show after login:
     const {redir} = req.query;
+
     if (req.session && req.session.user) {
         res.redirect(redir ? redir : "/escapeRooms");
         return;
@@ -246,6 +255,7 @@ exports.create = async (req, res, next) => {
 
     try {
         const user = await authenticate((login || "").toLowerCase(), password);
+
         if (user) {
             if (user.anonymized && !req.body.anonymous) {
                 req.flash("error", i18n.user.anonymizedCantLogin);
@@ -311,6 +321,7 @@ exports.terms = async (req, res, next) => {
     const rootPath = path.join(__dirname, "../public");
     const op = { "root": rootPath };
     const fileToServe = await findFirstAvailableFile(section, currentLang);
+
     if (fileToServe) {
         res.sendFile(fileToServe, op);
     } else {
@@ -329,6 +340,7 @@ exports.privacy = async (req, res, next) => {
     const rootPath = path.join(__dirname, "../public");
     const op = { "root": rootPath };
     const fileToServe = await findFirstAvailableFile(section, currentLang);
+
     if (fileToServe) {
         res.sendFile(fileToServe, op);
     } else {
@@ -347,6 +359,7 @@ exports.cookiePolicy = async (req, res, next) => {
     const rootPath = path.join(__dirname, "../public");
     const op = { "root": rootPath };
     const fileToServe = await findFirstAvailableFile(section, currentLang);
+
     if (fileToServe) {
         res.sendFile(fileToServe, op);
     } else {

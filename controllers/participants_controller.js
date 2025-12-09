@@ -140,6 +140,7 @@ exports.studentLeave = async (req, res, next) => {
     const {turn} = req;
     const {i18n} = res.locals;
     let redirectUrl = `/escapeRooms/${req.escapeRoom.id}`;
+
     try {
         if (req.user && req.user.id !== req.session.user.id && req.session.user.isStudent) {
             // If it's not myself and I am not a teacher
@@ -152,7 +153,7 @@ exports.studentLeave = async (req, res, next) => {
                 return;
             }
         }
-        if(!user){
+        if (!user) {
             user = await models.user.findByPk(req.session.user.id);
         }
         const userId = user.id;

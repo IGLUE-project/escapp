@@ -156,6 +156,7 @@
             "whoops": "Whoops!",
             "notFound": "It seems like we couldn't find the page you were looking for",
             "notEmpty": "cannot be empty",
+            "is_null": "cannot be empty",
             "len": "is too long",
             "min": "is too low",
             "max": "is too high",
@@ -232,7 +233,8 @@
             "successSendingReport":    "Report successfully sent",
             "successConfirmingCollaborator": "Confirmed as collaborator successfully",
             "youMustAcceptTerms": "You must accept the conditions in order to register",
-            "youHaveNotBeenAddedAsACollaborator": "You have not been added as a collaborator"
+            "youHaveNotBeenAddedAsACollaborator": "You have not been added as a collaborator",
+            "aliasAlreadyExists": "This alias is already taken. Please choose another one."
         },
         "guide": "User guide",
         "ideas": "Puzzle ideas",
@@ -587,11 +589,14 @@
             },
             "list": {
                 "edit":"Basic configuration",
+                "settings": "Basic configuration",
                 "evaluation": "Evaluation",
+                "sharing": "Publication",
                 "hints": "Hint management",
                 "assets": "Asset upload",
                 "team": "Team Interface",
                 "indications": "Pre-activity instructions",
+                "after": "Post-activity instructions",
                 "class": "Classroom Interface",
                 "participants": "Participants",
                 "puzzles": "Puzzles",
@@ -745,6 +750,18 @@
             "hintFailed": "The score per hint failed to obtain",
             "lang": "The escape room language",
             "forceLang": "The Escapp language"
+        },
+        "verification": {
+            "verify": "verify",
+            "verified": "verified",
+            "reverify": "re-verify",
+            "dismiss": "dismiss",
+            "unverify": "unverify",
+            "not_verified": "not verified",
+            "explanation": "Your escape room has been reviewed by the escapp team and meets the minimum quality requirements to be published on the network of educational escape rooms. If you make changes to the escape room, it will need to be re-verified before network participants can play the updated version.",
+            "areYouSureVerify": "Do you want to verify this escape room? The escape room will become available in the network.",
+            "areYouSureReVerify": "This escape room has changed since its last verification. Do you want to re-verify it or unverify it?",
+            "areYouSureUnVerify": "This escape room is currently verified. Do you want to unverify it? The escape room will become unavailable in the network until you verify it again."
         }
     },
     "gallery": {
@@ -1222,7 +1239,7 @@
             "iForgotMyPassword": "I forgot my password",
             "login": "login",
             "Login": "Login",
-            "ready": "Play",
+            "ready": "play",
             "notRegistered": "Don't have an account?",
             "register": "register",
             "Register": "Register",
@@ -1517,6 +1534,9 @@
             "TextColor": "Text color",
             "SuccessMessageColor": "Success message color",
             "FailureMessageColor": "Failure message color",
+            "BackgroundColorPanel": "Panel background color",
+            "BorderWidthPanel": "Panel border width (px)",
+            "BorderColorPanel": "Panel border color",
             "Opacity": "Opacity (%)",
             "MinimumSuccessMessageDuration": "Minimum success message duration (in seconds)"
         },
@@ -1570,6 +1590,31 @@
             "readOnly": "Read only",
             "hidden": "Hide file",
             "Tests": "Tests"
+        },
+        "sqlPuzzle": {
+            "name": "SQL challenge",
+            "description": "This resource allows you to create a challenge whose solution requires participants to run SQL queries against a given database.",
+            "dbUrl": "Database URL",
+            "dbUrlPlaceholder": "Enter the URL of any sqlite database",
+            "title": "Title",
+            "titlePlaceholder": "The title that will be shown in the challenge",
+            "question": "Question",
+            "questionPlaceholder": "The question participants must answer using SQL",
+            "initialQuery": "Initial query",
+            "initialQueryPlaceholder": "SQL query that will be shown initially to participants",
+            "queryCardTitle": "Query area title",
+            "queryPlaceholder": "Query area placeholder",
+            "resultsCardTitle": "Results area title",
+            "resultsPlaceholder": "Results area placeholder",
+            "testsCardTitle": "Tests area title",
+            "testsPlaceholder": "Tests area placeholder",
+            "infoCardTitle": "Info area title",
+            "test": "Test",
+            "tests": "Tests",
+            "theme": "Theme",
+            "image": "Image",
+            "images": "Images",
+            "code": "Code"
         }
     },
     "general": {

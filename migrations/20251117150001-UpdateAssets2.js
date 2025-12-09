@@ -1,17 +1,17 @@
 "use strict";
 
 module.exports = {
-    async up(queryInterface, Sequelize) {
+    async up (queryInterface, Sequelize) {
         await queryInterface.changeColumn("assets", "url", {
-          type: Sequelize.STRING,
-          allowNull: true
-        })
+            "type": Sequelize.STRING,
+            "allowNull": true
+        });
     },
 
-    async down(queryInterface, Sequelize) {
+    async down (queryInterface, Sequelize) {
         await queryInterface.changeColumn("assets", "url", {
-            type: Sequelize.STRING,
-            allowNull: false
+            "type": Sequelize.STRING,
+            "allowNull": false
         });
     }
 };

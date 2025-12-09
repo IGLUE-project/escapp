@@ -328,7 +328,11 @@ $(function(){
 
     // Initialize chips from pre-filled value
     initial.forEach(addTag);
-
+    $visible.on('focusout', function () {
+      var value = norm($visible.val() || '');
+      if (value) addTag(value);
+      $visible.val('');
+    });
     // Paste "a, b, c" to create multiple tags at once
     $visible.on('paste', function (e) {
       var text = (e.originalEvent || e).clipboardData && (e.originalEvent || e).clipboardData.getData('text');

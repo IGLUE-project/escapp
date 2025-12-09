@@ -100,7 +100,17 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/ItemSelection/ItemSelection_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/ItemSelection/ItemSelection_Instructions_ES.pdf"
         }
-    }
+    },
+     {
+        "name": "SQL Editor",
+        "zip": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle.zip",
+        "form": "sqlPuzzle.ejs",
+        "thumbnail": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_thumnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_Instructions_ES.pdf"
+        }
+    } 
 
     // {
     //     "name": "CodeEditor",

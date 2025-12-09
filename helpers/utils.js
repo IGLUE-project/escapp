@@ -330,6 +330,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             const splitArray = puzzleSol.toString().split("+");
             const solutionNum = Number(splitArray[0]);
             const range = Number(splitArray[1]);
+
             correctAnswer = answer > solutionNum - range && answer < solutionNum + range;
             break;
         }
@@ -519,13 +520,15 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
 </script>`;
 
 
-exports.validationError = ({instance, paths, validatorKey}, i18n) => {
+exports.validationError = ({instance, path, paths, validatorKey}, i18n) => {
+    const thePath = paths || path;
+ 
     try {
         if (i18n[instance.constructor.name] &&
             i18n[instance.constructor.name].attributes &&
-            i18n[instance.constructor.name].attributes[paths] &&
+            i18n[instance.constructor.name].attributes[thePath] &&
             i18n.common.error[validatorKey]) {
-            return `${i18n[instance.constructor.name].attributes[paths]} ${i18n.common.error[validatorKey]}`;
+            return `${i18n[instance.constructor.name].attributes[thePath]} ${i18n.common.error[validatorKey]}`;
         }
         throw new Error("Error during validation");
     } catch (e) {
@@ -669,10 +672,8 @@ exports.stepsCompleted = (escapeRoom) => {
     return [step1, step2, step3, step4, step5, step6, step7, step8, step9];
 };
 
-exports.getHostname = (req) => {
-    return process.env.APP_NAME? 
-    `${req.protocol}://${process.env.APP_NAME}${
-        process.env.PORT && process.env.PORT !== '80' && process.env.PORT !== '443' ? `:${process.env.PORT}` : ''
+exports.getHostname = (req) => process.env.APP_NAME
+    ? `${req.protocol}://${process.env.APP_NAME}${
+        process.env.PORT && process.env.PORT !== "80" && process.env.PORT !== "443" ? `:${process.env.PORT}` : ""
     }`
     : "http://localhost:3000";
-};
