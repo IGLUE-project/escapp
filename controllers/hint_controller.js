@@ -92,6 +92,7 @@ exports.updateHints = async (req, res) => {
     let pctgRight = numRight || 0;
 
     pctgRight = (numRight >= 0 && numRight <= numQuestions ? numRight : numQuestions) * 100 / (numQuestions || 1);
+    pctgRight = Math.floor(pctgRight);
     escapeRoom.hintLimit = !hintLimit && hintLimit != 0 || hintLimit === "" ? null : parseInt(hintLimit, 10);
     escapeRoom.numQuestions = numQuestions || 0;
     escapeRoom.numRight = pctgRight || 0;
