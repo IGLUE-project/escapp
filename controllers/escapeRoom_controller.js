@@ -979,29 +979,26 @@ exports.export = async (req, res, next) => {
         const toExport = escapeRoom.toJSON ? escapeRoom.toJSON() : escapeRoom.dataValues;
         const pathFields = ["attachment", "hintApp", "hybridInstructions", "instructions"];
 
-        const flatCandidates = pathFields.flatMap((field) => toArray(toExport[field]).map((p) => ({ field, "relKeys": [], "pathStr": p })));
-
-        const assetEntries = collectAssetEntries(toExport.assets, []);
-        const assetCandidates = assetEntries.map(({ relKeys, pathStr }) => ({
+        const flatCandidates = pathFields.flatMap((field) => toArray(toExport[field]).map((p) => ({ field,   "pathStr": p })));
+        const assetCandidates = toExport.assets.map((ast) => ({
             "field": "assets",
-            relKeys,
-            pathStr
+            pathStr: ast
         }));
-
         const all = [...flatCandidates, ...assetCandidates];
         const seen = new Set();
         const resolved = [];
+                 
 
-        for (const { field, relKeys, pathStr } of all) {
-            const [firstKey] = relKeys;
-            const baseDir = baseFor(field, firstKey);
+        /*for (const { field, pathStr } of all) {
+            
+            const baseDir = baseFor("../..");
             const abs = resolveUnder(baseDir, pathStr);
-
+            console.log()
             if (!abs) {
                 continue;
             }
 
-            const key = `${field}::${firstKey || ""}::${abs}`;
+            const key = `${field}::${""}::${abs}`;
 
             if (seen.has(key)) {
                 continue;
@@ -1011,7 +1008,7 @@ exports.export = async (req, res, next) => {
             const zipRoot = field === "assets" ? ["assets", ...relKeys].join("/") : field;
 
             resolved.push({ abs, baseDir, zipRoot });
-        }
+        }*/
 
         const zipName = `escape-room-${escapeRoom.id}.zip`;
 
@@ -1025,13 +1022,33 @@ exports.export = async (req, res, next) => {
         });
         archive.pipe(res);
 
-        for (const { abs, baseDir, zipRoot } of resolved) {
-            await addPath(archive, abs, zipRoot, baseDir);
+        for (const item of all) {
+            const folderName = item.field;              // e.g. "assets"
+            const idFolder = String(item.pathStr.id);   // e.g. "670"
+
+            // contentPath is relative to project root, possibly starting with "/"
+            console.log(item)
+            const filePathOriginal = (item.pathStr.contentPath) || ("/uploads/" + item.pathStr.public_id) ;
+            const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
+            const filePath = path.join(process.cwd(), relativeFromRoot);
+
+            const originalName = item.pathStr.filename || path.basename(filePath);
+            console.log(filePath)
+            if (fsSync.existsSync(filePath)) {
+            archive.file(filePath, {
+                // Path inside the zip: <field>/<id>/<filename>
+                name: `${folderName}/${idFolder}/${originalName}`
+            });
+            } else {
+            console.warn("File not found, skipping:", filePath);
+            }
         }
+
 
         archive.append(JSON.stringify(toExport, null, 2), { "name": "escape-room.json" });
         await archive.finalize();
     } catch (err) {
+        console.error(err)
         next(err);
     }
 };

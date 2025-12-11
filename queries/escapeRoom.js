@@ -343,8 +343,7 @@ exports.loadExport = {
         },
         models.hintApp,
         {
-            "model": models.asset,
-            "attributes": ["url", "filename", "mime"]
+            "model": models.asset 
         }
     ],
     "order": [
