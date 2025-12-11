@@ -303,19 +303,32 @@ exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
     "order": [["id", "desc"]]
 });
 
-exports.forAll = (page = 1, limit = 10, search = "") => ({
-    "attributes": ["id", "title", "invitation"],
-    "include": [models.attachment],
-    limit,
-    "where": {
-        [Op.or]: [
-            {"title": {[Op.iLike]: `%${search}%`}},
-            {"description": {[Op.iLike]: `%${search}%`}}
-        ]
-    },
-    "offset": (page - 1) * limit,
-    "order": [["id", "desc"]]
-});
+exports.forAll = (page = 1, limit = 10, search = "", verified) => {
+    const obj = {
+        "attributes": ["id", "title", "invitation"],
+        "include": [models.attachment],
+        limit,
+        "where": {
+            [Op.or]: [
+                {"title": {[Op.iLike]: `%${search}%`}},
+                {"description": {[Op.iLike]: `%${search}%`}}
+            ]
+        },
+        "offset": (page - 1) * limit,
+        "order": [["id", "desc"]]
+    };
+    if (verified === true) {
+        obj.where.verified = true;
+        obj.where.isLastVersionVerified = true;
+    } else if (verified === "changed") {
+        obj.where.verified = true;
+        obj.where.isLastVersionVerified = false;
+    } else if (verified === false) {
+        obj.where.verified = false;
+    }
+    return obj
+
+};
 
 exports.loadExport = {
     "include": [

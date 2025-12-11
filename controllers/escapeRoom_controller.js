@@ -943,6 +943,25 @@ exports.test = async (req, res) => {
 
 exports.showGuide = (req, res) => res.render("inspiration/inspiration");
 
+exports.verify = async (req, res, next) => {
+    try {
+        if (req.body.unverify === "stop") {
+            req.escapeRoom.verified = false;
+            req.escapeRoom.isLastVersionVerified = false;
+            req.escapeRoom.verified_at = null;
+        } else {
+            req.escapeRoom.verified = true;
+            req.escapeRoom.isLastVersionVerified = true;
+            req.escapeRoom.verified_at = new Date();
+        }
+        await req.escapeRoom.save( {"fields": ["verified", "verified_at","isLastVersionVerified"] });
+        res.redirect(`/escapeRooms/${req.escapeRoom.id}/edit`);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+} 
+
 
 // Work in progress
 

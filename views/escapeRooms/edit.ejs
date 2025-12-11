@@ -10,9 +10,19 @@
     </div>
     <br class="escapeRoomItem">
     <h1><%=i18n.escapeRoom.steps.settings.title%>:</h1>
-    <%if (session.user.isAdmin){%>
-    <h2 class="by-author"><%=i18n.common.see%> <a href="/users/<%=escapeRoom.authorId%>"><%=i18n.common.author%></a></h2>
-    <%}%>
+    
+        
+    <h2 class="by-author"> 
+        <%if (session.user.isAdmin){%>
+         <%=i18n.common.see%> <a href="/users/<%=escapeRoom.authorId%>"><%=i18n.common.author%></a>
+          <%-include("../partials/_verify",{escapeRoom})%>
+      
+        <%}else if(escapeRoom.verified) {%>
+         <%-include("../partials/_verify",{escapeRoom})%>
+        <%}%>
+       
+    </h2>
+   
 
     <div class="menuERShow">
         <div class="menuERShowLeft">

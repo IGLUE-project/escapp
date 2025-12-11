@@ -62,7 +62,7 @@
         e.stopPropagation();
         e.preventDefault();
         const $roundItemsWrapper = $(e.target).closest('.roundItemsISPWrapper');
-        return addNewItemForRoundISPToDiv(roundItemsWrapper);
+        return addNewItemForRoundISPToDiv($roundItemsWrapper);
     };
     function deleteItemOfRoundISP(e){
         e.stopPropagation();

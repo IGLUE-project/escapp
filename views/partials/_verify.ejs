@@ -1,0 +1,44 @@
+<div class="verify-div">
+    <button onclick="overlayTrigger('verify')" 
+    class="btn btn-verify <%if (escapeRoom.verified){%>verified  <%if (!escapeRoom.isLastVersionVerified){%>verified-update<%}%><%}%>" >
+        
+        <%if (escapeRoom.verified){%> 
+            <%if (escapeRoom.isLastVersionVerified || !session.user.isAdmin){%> 
+                <i class="material-icons">check</i>    
+            <%} else { %>
+                <i class="material-icons">warning</i>   
+            <%}%> <%=i18n.escapeRoom.verification.verified%>
+        <%} else { %>
+                <i class="material-icons">check</i>   
+            <%=i18n.escapeRoom.verification.not_verified%>
+        <%}%>
+        <i class="material-icons">arrow_drop_down</i>    
+    </button>
+    <div class="overlay-trigger align-right" data-id="verify">
+        <%if (session.user.isAdmin){%>
+        <form action="/escapeRooms/<%= escapeRoom.id %>/verify" method="POST">
+            
+                <%if (escapeRoom.verified){%> 
+                    <%if (escapeRoom.isLastVersionVerified){%> 
+                        <p><%=i18n.escapeRoom.verification.areYouSureUnVerify%></p>
+                        <button class="dismissButton" type="button" onclick="overlayTrigger('verify', true)"><%=i18n.escapeRoom.verification.dismiss%></button>
+                        <button class="stopButton" name="unverify" value="stop" type="submit"><%=i18n.escapeRoom.verification.unverify%></button>
+                    <%} else { %>
+                        <p><%=i18n.escapeRoom.verification.areYouSureReVerify%></p>
+                        <button class="dismissButton" type="button" onclick="overlayTrigger('verify', true)"><%=i18n.escapeRoom.verification.dismiss%></button>
+                        <button class="stopButton" name="unverify" value="stop" type="submit"><%=i18n.escapeRoom.verification.unverify%></button>
+                        <button class="acceptButton" type="submit"><%=i18n.escapeRoom.verification.reverify%></button>
+                    <%}%>  
+                <%} else { %>
+                        <p><%=i18n.escapeRoom.verification.areYouSureVerify%></p>
+                        <button class="dismissButton" type="button" onclick="overlayTrigger('verify', true)"><%=i18n.escapeRoom.verification.dismiss%></button>
+                        <button class="acceptButton" type="submit"><%=i18n.escapeRoom.verification.verify%></button>
+                <%}%>
+            
+        </form>
+        <%}else{%>
+         <p><%=i18n.escapeRoom.verification.explanation%></p>
+         <button class="dismissButton" type="button" onclick="overlayTrigger('verify', true)"><%=i18n.common.ok%></button>
+        <%}%>
+    </div>
+</div>

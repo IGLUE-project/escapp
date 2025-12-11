@@ -586,6 +586,7 @@
             },
             "list": {
             	"edit":"Configuración básica",
+            	"settings":"Configuración básica",
             	"turnos": "Turnos",
             	"puzzles": "Retos",
                 "hints": "Gestión de pistas",
@@ -593,7 +594,9 @@
                 "team": "Interfaz de equipo",
             	"class": "Interfaz de clase",
             	"indications": "Instrucciones",
-            	"evaluation": "Evaluación"
+                "after": "Instrucciones finales",
+                "evaluation": "Evaluación",
+                "sharing": "Publicación"
             },
             "puzzles": {
                 "explanation": "En este apartado puedes configurar los distintos retos que componen la escape room. Ten en cuenta que deben seguir una estructura lineal, es decir, para resolver un reto es necesario haber resuelto el anterior. Debes especificar el nombre y descripción de cada reto, así como su solución. Si seleccionas la opción de monitorización automática para algún reto, en la interfaz de equipo no se permitirá resolver ese reto sino que se deberá hacer mediante una aplicación que use la API de escapp. Puedes añadir pistas para cada reto, las cuales serán proporcionadas a los participantes de acuerdo a la configuración de pistas que establezcas en la siguiente sección.",
@@ -743,6 +746,18 @@
             "hintFailed": "La nota por pista no obtenida",
             "lang": "El idioma de la escape room",
             "forceLang": "El idioma de Escapp"
+        },
+        "verification": {
+            "verify": "verificar",
+            "verified": "verificada",
+            "reverify": "reverificar",
+            "dismiss": "cancelar",
+            "unverify": "desverificar",
+            "not_verified": "no verificada",
+            "explanation": "Tu escape room ha sido revisada por el equipo de escapp y cumple con los requisitos mínimos de calidad para ser publicada en la red de escape rooms educativas. Si realizas cambios en la escape room, deberá ser verificada de nuevo para que los participantes puedan jugar a la versión actualizada.",
+            "areYouSureVerify": "¿Estás seguro de que quieres verificar esta escape room?  La escape room pasará a estar disponible en la red.",
+            "areYouSureReVerify": "Esta escape room ha cambiado desde su última verificación ¿Deseas volver a verificarla o desverificarla?",
+            "areYouSureUnVerify": "¿Estás seguro de que quieres desverificar esta escape room? La escape room dejará de estar disponible en la red hasta que la verifiques de nuevo."
         }
     },
     "gallery": {
@@ -1221,7 +1236,7 @@
             "iForgotMyPassword": "He olvidado mi contraseña",
             "Login": "Iniciar sesión",
             "login": "entrar",
-            "ready": "Jugar",
+            "ready": "jugar",
             "notRegistered": "¿No tienes cuenta?",
             "register": "regístrate",
             "Register": "Regístrate",
@@ -1517,6 +1532,9 @@
             "TextColor": "Color del texto",
             "SuccessMessageColor": "Color del mensaje de acierto",
             "FailureMessageColor": "Color del mensaje de fallo",
+            "BackgroundColorPanel": "Color de fondo del panel",
+            "BorderWidthPanel": "Ancho del borde del panel (px)",
+            "BorderColorPanel": "Color del borde del panel",
             "Opacity": "Opacidad (%)",
             "MinimumSuccessMessageDuration": "Tiempo mínimo del mensaje de acierto (en segundos)"
         },
@@ -1570,6 +1588,31 @@
             "readOnly": "Sólo lectura",
             "hidden": "Ocultar fichero",
             "Tests": "Pruebas"
+        },
+        "sqlPuzzle": {
+            "name": "Reto SQL",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes realicen consultas SQL sobre una base de datos determinada.",
+            "dbUrl": "URL de la base de datos",
+            "dbUrlPlaceholder": "Introduce la URL de cualquier base de datos sqlite",
+            "title": "Título",
+            "titlePlaceholder": "El título que se mostrará en el reto",
+            "question": "Pregunta",
+            "questionPlaceholder": "Las pregunta que los participantes deberán resolver usando SQL",
+            "initialQuery": "Consulta inicial",
+            "initialQueryPlaceholder": "Consulta SQL que se mostrará inicialmente a los participantes",
+            "queryCardTitle": "Título del área de consulta",
+            "queryPlaceholder": "Placeholder del área de consulta",
+            "resultsCardTitle": "Título del área de resultados",
+            "resultsPlaceholder": "Placeholder del área de resultados",
+            "testsCardTitle": "Título del área de pruebas",
+            "testsPlaceholder": "Placeholder del área de pruebas",
+            "infoCardTitle": "Título del área de información",
+            "theme": "Tema",
+            "test": "Prueba",
+            "tests": "Pruebas",
+            "image": "Imagen",
+            "images": "Imágenes",
+            "code": "Código"
         }
     },
     "general": {
