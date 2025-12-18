@@ -7,7 +7,9 @@ exports.load = {
             "model": models.user,
             "as": "author"
         },
-        {"model": models.attachment},
+        {
+            "model": models.attachment
+        },
         {
             "model": models.user,
             "as": "userCoAuthor",
@@ -20,33 +22,23 @@ exports.loadShow = {
     "include": [
         {
             "model": models.turno,
+            "separate": true,
             "required": false,
-            "where": {"status": {[Op.not]: "test"}}
+            "where": {"status": {[Op.not]: "test"}},
+            "order": [["date", "asc"]]
         },
         {
             "model": models.puzzle,
-            "include": [{"model": models.hint}]
+            "separate": true,
+            "include": [{
+                "model": models.hint, 
+                "separate": true,
+                "order": [["order", "asc"]]
+            }],
+            "order": [["order", "asc"]]
         },
-        models.attachment,
-        models.hintApp
-    ],
-    "order": [
-        [
-            {"model": models.turno},
-            "date",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            "order",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            {"model": models.hint},
-            "order",
-            "asc"
-        ]
+        { "model": models.attachment },
+        { "model": models.hintApp }
     ]
 };
 
@@ -76,21 +68,30 @@ exports.loadComplete = {
     "include": [
         {
             "model": models.turno,
+            "separate": true,
             "required": false,
             "where": {"status": {[Op.not]: "test"}},
             "include": {
                 "model": models.team,
+                "separate": true,
                 "attributes": ["id"]
-            }
+            },
+            "order": [["date", "asc"]]
         },
         {
             "model": models.puzzle,
-            "include": [{"model": models.hint}]
+            "separate": true,
+            "include": [{
+                "model": models.hint, 
+                "separate": true,
+                "order": [["order", "asc"]]
+            }],
+            "order": [["order", "asc"]]
         },
-        models.attachment,
-        models.asset,
-        models.hintApp,
-        models.reusablePuzzleInstance,
+        { "model": models.attachment },
+        { "model": models.asset, "separate": true },
+        { "model": models.hintApp },
+        { "model": models.reusablePuzzleInstance, "separate": true },
         {
             "model": models.user,
             "as": "author"
@@ -100,24 +101,6 @@ exports.loadComplete = {
             "as": "userCoAuthor",
             "required": false
         }
-    ],
-    "order": [
-        [
-            {"model": models.turno},
-            "date",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            "order",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            {"model": models.hint},
-            "order",
-            "asc"
-        ]
     ]
 };
 
