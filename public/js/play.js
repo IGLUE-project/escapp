@@ -488,10 +488,8 @@ var insertContent =async (type, payload, puzzles, index, prevIndex) => {
   var content = "";
   switch(type){
     case "text":
-      //const text = (payload.text || "").toString();
       const replacedText = (payload.text || "").toString().replaceAll("__ESCAPP_USER__",encodeURIComponent(username)).replaceAll("__ESCAPP_TOKEN__",token).replaceAll("__ESCAPP_LOCALE__",ER.locale).replaceAll("__ESCAPP_ENDPOINT__",encodeURIComponent(ER.escappEndpoint))
       content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(replacedText)}</div>`;
-      //content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(text)}</div>`;
       break;
     case "reusablePuzzleInstance":
       content = reusablePuzzleTemplate(escapeUnsafeHtml(payload.url),payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
