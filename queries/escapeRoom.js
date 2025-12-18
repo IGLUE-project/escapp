@@ -46,21 +46,14 @@ exports.loadPuzzles = {
     "include": [
         {
             "model": models.puzzle,
-            "include": [{"model": models.hint}]
+            "separate": true,
+            "include": [{
+                "model": models.hint, 
+                "separate": true,
+                "order": [["order", "asc"]]
+            }],
+            "order": [["order", "asc"]]
         }
-    ],
-    "order": [
-        [
-            {"model": models.puzzle},
-            "order",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            {"model": models.hint},
-            "order",
-            "asc"
-        ]
     ]
 };
 
@@ -104,49 +97,6 @@ exports.loadComplete = {
     ]
 };
 
-exports.ids = (ids) => {
-    const findOptions = {
-        "attributes": [
-            "id",
-            "title",
-            "invitation",
-            "scope"
-        ],
-        "distinct": true,
-        "where": {"id": {[Op.in]: ids}},
-        "include": [
-            {
-                "model": models.turno,
-                "attributes": ["id", "date", "status", "capacity", "from", "to"],
-                "required": true,
-                "include": [
-                    {
-                        "model": models.user,
-                        "attributes": ["id"],
-                        "as": "students",
-                        "required": false
-                    }
-                ]
-            },
-            models.attachment,
-            {
-                "model": models.user,
-                "as": "author",
-                "required": false
-            },
-            {
-                "model": models.user,
-                "as": "userCoAuthor",
-                "duplicating": false,
-                "required": false
-            }
-        ],
-        "order": [["id", "desc"]]
-    };
-
-    return findOptions;
-};
-
 exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUsers = null, ignoreERIds = []) => {
     const findOptions = {
         "attributes": [
@@ -163,6 +113,7 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
                 "model": models.turno,
                 "attributes": ["status", "capacity", "from", "to", "startTime"],
                 "required": true,
+                "separate": true,
                 "where": {"status": {[Op.not]: "test" }},
                 "include": [
                     {
@@ -179,11 +130,13 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
             },
             {
                 "model": models.asset,
-                "required": false
+                "required": false,
+                "separate": true
             },
             {
                 "model": models.reusablePuzzleInstance,
-                "required": false
+                "required": false,
+                "separate": true
             }
         ]
     };
@@ -198,18 +151,28 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
             findOptions.include[0].include.push({
                 "model": models.team,
                 "required": false,
+                "separate": true,
                 "where": {"startTime": {[Op.lt]: new Date(new Date() - 24 * 60 * 60 * 1000)}},
                 "attributes": ["startTime"],
-                "include": {"model": models.user, "as": "teamMembers", "required": true}
+                "include": {
+                    "model": models.user, 
+                    "as": "teamMembers", 
+                    "required": true
+                }
             });
         } else if (finished === false) {
             findOptions.include[0].where = { "status": {[Op.or]: ["pending", "active"] }};
             findOptions.include[0].include.push({
                 "model": models.team,
                 "required": false,
+                "separate": true,
                 "where": {"startTime": {[Op.or]: [{[Op.gte]: new Date(new Date() - 24 * 60 * 60 * 1000)}, null]}},
                 "attributes": ["startTime"],
-                "include": {"model": models.user, "as": "teamMembers", "required": true}
+                "include": {
+                    "model": models.user, 
+                    "as": "teamMembers", 
+                    "required": true
+                }
             });
         }
     }
@@ -254,7 +217,6 @@ exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
             "model": models.user,
             "as": "author",
             "attributes": [],
-
             "required": false
         },
         {
@@ -279,7 +241,6 @@ exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
                 ]
             }
         ]
-
     },
     limit,
     "offset": (page - 1) * limit,
@@ -310,7 +271,6 @@ exports.forAll = (page = 1, limit = 10, search = "", verified) => {
         obj.where.verified = false;
     }
     return obj
-
 };
 
 exports.loadExport = {

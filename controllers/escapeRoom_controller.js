@@ -423,7 +423,6 @@ exports.returnThumbnail = async (req, res) => {
 exports.evaluation = async (req, res, next) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadPuzzles);
-
         escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
         res.render("escapeRooms/steps/evaluation", {escapeRoom, "progress": "evaluation"});
     } catch (e) {
@@ -757,16 +756,14 @@ exports.admin = async (req, res, next) => {
     let count = 0;
 
     try {
-        if (user && !user.isStudent) {
+        if (user && user.isAdmin) {
             ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll(page, limit, search)));
         }
         const pages = Math.ceil(count / limit);
-
         if (page > pages && pages !== 0) {
             res.redirect(`/escapeRoomsAdmin?page=${pages}`);
         } else {
             const pageArray = paginate(page, pages, 5);
-
             res.render("escapeRooms/index.ejs", {escapeRooms, user, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
         }
     } catch (error) {
