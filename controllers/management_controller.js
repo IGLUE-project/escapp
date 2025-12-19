@@ -23,7 +23,7 @@ exports.showReportForm = (req, res) => {
 exports.showContact = (req, res) => {
     const {escapeRoom} = req;
 
-    res.render("management/contact", {"title": escapeRoom.title, "author": escapeRoom.author.alias, "email": escapeRoom.author.username});
+    res.render("network/contactForm", {"title": escapeRoom.title, "escapeRoomId": escapeRoom.id, "author": escapeRoom.author.alias});
 };
 
 // POST /escapeRooms/:escapeRoomId/contact

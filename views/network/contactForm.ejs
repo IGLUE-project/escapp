@@ -1,0 +1,21 @@
+<style>
+#text {
+    width: 100%;
+    height: 300px;
+    box-sizing: border-box;
+}
+label, button, input {
+    margin: 20px
+}
+</style>
+<div class="main">
+    <h1>Contact with the author</h1>
+    <form method="POST" action="/network/<%=escapeRoomId%>/sendcontactemail" >
+        <label for="text">Message</label>
+        <input type="text" id="text" name="text" required />
+
+        <button type="submit">Send Message</button>
+    </form>
+
+<div>
+
