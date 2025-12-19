@@ -147,9 +147,12 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
 exports.sendContactEmail = async (req, res, next) => {
     const user = req.session.user;
     const escapeRoomTitle = req.escapeRoom.title;
+    const author = req.escapeRoom.author;
+    const lang = author.lang || "en";
     const {text} = req.body;
+    const i18n = require(`../i18n/${lang}`);
 
-    const str = await renderEJS("views/emails/contact.ejs", {"i18n": res.locals.i18n, "user": user.name, "message": text, "userEmail": user.username, escapeRoomTitle }, {});
-    await mailer.sendEmail(user.username, "Contact Message", str, str);
+    const str = await renderEJS("views/emails/contact.ejs", {"i18n": i18n, "user": user.name, "message": text, "userEmail": user.username, escapeRoomTitle }, {});
+    await mailer.sendEmail(author.username, "Contact Message", str, str);
     res.redirect("/");
 }

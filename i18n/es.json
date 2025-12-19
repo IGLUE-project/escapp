@@ -1651,6 +1651,17 @@
             "noResults": "No se han encontrado escape rooms que coincidan con los criterios de búsqueda.",
             "filterPlaceholder": "No se han encontrado escape rooms con los filtros seleccionados. Prueba a cambiar los filtros.",
             "title": "Busqueda en red"
+        },
+        "contact": {
+            "text1": "Mensaje de ",
+            "text2": " respecto a su escapeRoom: ",
+            "text3": "Email de contacto: "
+        },
+        "contactForm": {
+            "title": "Contactar con el autor",
+            "placeholder": "Escribe un mensaje al autor de la escape room",
+            "send": "Enviar mensaje",
+            "message": "Mensaje"
         }
     },
     "languages": {

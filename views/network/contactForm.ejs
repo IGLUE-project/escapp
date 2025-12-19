@@ -9,12 +9,12 @@ label, button, input {
 }
 </style>
 <div class="main">
-    <h1>Contact with the author</h1>
+    <h1><%=i18n.network.contactForm.title%></h1>
     <form method="POST" action="/network/<%=escapeRoomId%>/sendcontactemail" >
-        <label for="text">Message</label>
-        <input type="text" id="text" name="text" required />
+        <label for="text"><%=i18n.network.contactForm.message%></label>
+        <input placeholder="<%=i18n.network.contactForm.placeholder%>" type="text" id="text" name="text" required />
 
-        <button type="submit">Send Message</button>
+        <button type="submit"><%=i18n.network.contactForm.send%></button>
     </form>
 
 <div>

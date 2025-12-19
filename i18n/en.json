@@ -1653,6 +1653,17 @@
             "noResults": "No escape rooms found",
             "filterPlaceholder": "No escape rooms found with the selected filters. Try removing some filters.",
             "title": "Network Search"
+        },
+        "contact": {
+            "text1": "Message from",
+            "text2": "regarding your escape room: ",
+            "text3": "contact email: "
+        },
+        "contactForm": {
+            "title": "Contact the author",
+            "placeholder": "Send a message to the author of this escape room",
+            "send": "Send message",
+            "message": "Message"
         }
     },
     "languages": {
