@@ -111,10 +111,12 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
         localR = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);
     } catch (error) {
         console.error("Error getting local results: ", error);
-        localR = [];
+        localR = [{}];
     }
 
-    localR.forEach((r) => aggregated.push(r));
+    if (localR.length > 0) {
+        localR.forEach((r) => aggregated.push(r));
+    }
 
     for (const index in urls) {
         const url = urls[index];

@@ -340,7 +340,7 @@ exports.public = (page = 1, limit = 10) => ({
 
 exports.text = (before, after, lang, participation, area, duration, format, level) => {
     const conditions = {
-        "where": {"isNetworkAccesible": true},
+        "where": {"isNetworkAccessible": true},
         "attributes": ["id", "title", "description", "lang", "teamSize", "field", "duration", "format", "level", "createdAt"],
         "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}]
     };

@@ -303,7 +303,7 @@
         resultsToDraw = jsonResults;
         jsonResults.forEach((escapeRoom, i) => {
             const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
-            const imageURL = escapeRoom.attachment.url ? escapeRoom.attachment.url : "../images/puzzleorange.png";
+            const imageURL = (escapeRoom.attachment && escapeRoom.attachment.url) ? escapeRoom.attachment.url : "../images/puzzleorange.png";
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
         document.querySelector(".Results").innerHTML = parsedResults;

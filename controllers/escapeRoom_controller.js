@@ -523,7 +523,7 @@ exports.sharingUpdate = async (req, res) => {
                 console.error("Error deleting old instructions file:", e);
             }
             escapeRoom.instructions = instructionsFile.filename;
-        } else if (body.keepInstructions === "0") {
+        } else if (body.keepInstructions === "0" && escapeRoom.instructions) {
             try {
                 fsSync.unlinkSync(path.join(__dirname, "/../uploads/instructions/", escapeRoom.instructions));
             } catch (e) {
@@ -960,7 +960,7 @@ exports.verify = async (req, res, next) => {
         console.error(error);
         next(error);
     }
-} 
+}
 
 
 // Work in progress

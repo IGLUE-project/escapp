@@ -44,10 +44,10 @@ module.exports = ({ escapeRoom, turno }) => {
             publicShift.status = "pending";
             await publicShift.save({ "transaction": options.transaction });
         }
+       }
+    er.isAccessibleToAllUsers = er.status === "completed" && er.scope === "public";
+    er.isPubliclyAccessible = er.isAccessibleToAllUsers && (openRegistration || er.allowGuests);
+    er.isNetworkAccessible = er.isPubliclyAccessible && er.verified;
 
-        er.isAccessibleToAllUsers = er.status === "completed" && er.scope === "public";
-        er.isPubliclyAccessible = er.isAccessibleToAllUsers && (openRegistration || er.allowGuests);
-        er.isNetworkAccessible = er.isPubliclyAccessible && er.verified;
-      }
     });
 };
