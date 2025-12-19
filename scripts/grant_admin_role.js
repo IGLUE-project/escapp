@@ -18,17 +18,17 @@ if (!email) {
     process.exit(1);
 }
 
-async function grantAdminRole () {
+async function grantAdminRole(){
     try {
         const user = await models.user.findOne({"where": {"username": email}});
-
         if (!user) {
             throw new Error(`User with email ${email} not found.`);
         }
         if (user.isAdmin) {
-            throw new Error(`User with email ${email} is already an admin.`);
+            console.log(`User with email ${email} is already an admin.`);
         }
         user.isAdmin = true;
+        user.isStudent = false;
         await user.save();
         console.log(`✅ User with email ${email} is now an admin.`);
     } catch (error) {
