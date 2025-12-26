@@ -29,11 +29,14 @@
            <img  alt="thumbnail" src="<%=escapeRoom.getThumbnailUrl()%>">
 		</div>
 		<div class="flex-er-info animated fadeIn">
-            <h1><%=escapeRoom.title%> 
+            <h1><%=escapeRoom.title%>
             <br/>
         </h1>
             <p>
                 <span>by <%=escapeRoom.author.alias%></span>
+            </p>
+            <p>
+                <a href="/escapeRooms/<%=escapeRoom.id%>/contact">Contact</a>
             </p>
             <br/>
             <h3><%=i18n.showTeacher.titles.description%></h3>
@@ -67,7 +70,7 @@
                 <%if(escapeRoom.duration){%>
                     <div>
                         <h3><%=i18n.showTeacher.titles.duration%></h3>
-                        <p><%=escapeRoom.duration%> min.</p> 
+                        <p><%=escapeRoom.duration%> min.</p>
                     </div>
                 <%}%>
                 <%if(escapeRoom.format){%>
@@ -80,7 +83,7 @@
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.instructions%></h3>
                         <a href="/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
-                            <button class="rounded"><%=i18n.common.download%> 
+                            <button class="rounded"><%=i18n.common.download%>
                                 <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
                             </button>
                         </a>
@@ -106,11 +109,11 @@
    <br/>
     <div class="button-share">
         <% if (user) { %>
-            <% 
+            <%
                 let continueButtonURL;
                 let continueButtonText;
                 let continueButtonClass;
-                
+
                 if (user.isAdmin){
                     continueButtonURL = "/escapeRooms/" + escapeRoom.id + "/test";
                     continueButtonText = i18n.showPlayer.play;
@@ -125,7 +128,7 @@
                         continueButtonText = i18n.user.actions.ready;
                         continueButtonClass = "readyButton";
                     }
-                } 
+                }
             %>
             <% if (typeof continueButtonURL !== "undefined") { %>
                 <a href="<%= continueButtonURL %>">
@@ -150,21 +153,21 @@
         <%} else {%>
             <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.play%></button>
             <div id="dialog-join-anon" title="Playing '<%=escapeRoom.title%>'" style="display: none;">
-                <p class="text-center"> 
+                <p class="text-center">
                 <%=i18n.showPlayer.alreadyAccount%>
                 <br/><br/> <a href="/escapeRooms/<%=escapeRoom.id%>/join" >
                 <button class="rounded editButton acceptButton" ><%=i18n.user.actions.login%></button>
                 </a>
                 </p>
-                 <p class="text-center"> 
-                <%=i18n.showPlayer.registerNow%>    
+                 <p class="text-center">
+                <%=i18n.showPlayer.registerNow%>
                  <br/><br/><a href="/register?redir=/escapeRooms/<%=escapeRoom.id%>/play" >
                 <button class="rounded editButton editButton" ><%=i18n.user.actions.register%></button>
                 </a>
                 </p>
                 <hr/>
                 <p class="text-center">
-                <%=i18n.showPlayer.playAnonymously%>  
+                <%=i18n.showPlayer.playAnonymously%>
                 </p>
                 <form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/join-anon">
                     <p class="text-center">
@@ -181,7 +184,7 @@
                     <option value="vet" <%= escapeRoom.level === "vet" ? "selected" : ""%>><%=i18n.user.eduLevel.vet%></option>
                     <option value="other" <%= escapeRoom.level === "other" ? "selected" : ""%>><%=i18n.user.eduLevel.other%></option>
                     <option value="none" <%= escapeRoom.level === "none" ? "selected" : ""%>><%=i18n.user.eduLevel.none%></option>
-                </select> 
+                </select>
                 <div class="userField accept_terms">
                     <label for="accept_terms">
                         <p>
@@ -212,7 +215,7 @@
 		$('.overlay-trigger[data-id="' + id + '"]').show();
 	}
 
-    
+
 };
 
 </script>

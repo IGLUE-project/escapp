@@ -1,0 +1,172 @@
+@use "common/colors"
+.main
+  display: flex
+  flex-flow: column
+  height: 100vh !important
+
+.flex-row
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+
+.flex-column
+    display: flex
+    flex-direction: column
+    margin-bottom: 10px
+
+.campoDeBusqueda
+  display: grid
+  grid-template-columns: 2fr 5fr
+  grid-template-rows: 1fr 7fr
+  gap: 1rem
+  height: 100%
+  @media (hover: none)
+    overflow-y: auto
+
+  @media screen and (max-width: 900px)
+    display: flex
+    flex-flow: column nowrap
+    gap: 1rem
+
+  .headerBusqueda
+    gap: 1rem
+    grid-column: 2
+    grid-row: 1
+    #tags
+      margin-top: 1rem
+      display: flex
+      flex-flow: row wrap
+      .tag
+        background-color: red
+        border: solid 1px
+        border-radius: 5px
+        padding: 5px 10px
+        margin-right: 5px
+        margin-top: 5px
+    input
+      width: 100%
+      min-width: 5rem
+      text-align: start
+      padding: 1rem
+    #search
+      width:70%
+  .filtros
+    padding: 0 !important
+    display: flex
+    flex-flow: column
+    @media screen and (max-width: 900px)
+      overflow-x: auto
+    .container
+      display: flex
+      flex-flow: column nowrap
+      gap: .5rem
+      margin-bottom: 1rem
+      padding: 0
+      height: fit-content
+      @media screen and (max-width: 900px)
+        flex-flow: row nowrap
+        width: 100%
+        margin-bottom: 0rem
+      .item
+        width: 100%
+        @media screen and (max-width: 900px)
+          width: calc( 50% - .25rem )
+        .label
+          //padding-bottom: 0.5rem
+          font-size: 1.2rem
+          line-height: 2rem
+          color: #656683
+          width: 100%
+          @media screen and (max-width: 900px)
+            font-size: .8rem
+            line-height: 1.2rem
+        .inputsBusqueda
+          padding: 1rem
+          color: #656683
+          border-color: #656683
+          webkit-text-fill-color: #656683
+          @media screen and (max-width: 900px)
+            font-size: 1rem
+  .Results
+    // height: 100%
+  #language
+    width: 100%
+
+.flexBoxEscapeRooms
+  padding: 1em
+  border: 2px solid white
+  border-radius: 10px
+  display: grid
+  background-color: colors.$mainpurple
+  grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
+  gap: 1rem
+  &.empty
+    display: flex
+    justify-content: center
+    align-items: center
+
+  @media not (hover: none)
+    overflow-y: auto
+
+  &:after
+      content: ""
+      flex: 1
+  .escapeRoomItemWrapper
+    aspect-ratio: 1
+
+    &:before
+      content: ''
+      float: left
+      padding-top: 100%
+    .escapeRoomItem
+      background: white
+      color: black
+      width: 100%
+      height: 100%
+      display: flex
+      flex-direction: column
+      justify-content: flex-end
+      align-items: center
+      border-radius: 10px
+      padding: 0.5em
+      position: relative
+      &.disabled
+        opacity: 0.4
+        cursor: not-allowed
+      .sign
+        position: absolute
+        top: -2px
+        left: -2px
+        color: WHITE
+        padding: 9px
+        border-radius: 50%
+        line-height: 1px
+        border: 2px solid white
+        background-color: colors.$brightgreen
+        &.add
+          background-color: colors.$brightyellow
+        &.edit
+          background-color: colors.$brightblue
+        &.warning
+          background-color: colors.$brightorange
+      .erFoto
+        width: 100%
+        display: flex
+        flex-direction: column
+        flex: 1 auto
+        .bckgFoto
+          flex: 1
+          background-position: center
+          background-size: cover
+        .escapeRoomTitle
+          white-space: nowrap
+          width: 100%
+          text-overflow: ellipsis
+          overflow: hidden
+          padding-top: 5px
+          font-size: 16px
+          margin: 0px
+      &.addEscapeRoom
+        display: flex
+        flex-direction: column
+        justify-content: center

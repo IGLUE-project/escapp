@@ -9,7 +9,6 @@ module.exports = {
             "sol": "1234",
             "score": 20,
             "order": 0,
-            "desc": "El primer reto",
             "automatic": false,
             "createdAt": new Date(),
             "updatedAt": new Date()
@@ -21,7 +20,6 @@ module.exports = {
             "sol": "9101",
             "score": 20,
             "order": 1,
-            "desc": "El segundo reto",
             "automatic": false,
             "createdAt": new Date(),
             "updatedAt": new Date()
@@ -34,7 +32,6 @@ module.exports = {
             "score": 20,
             "order": 2,
             "automatic": false,
-            "desc": "El tercer reto",
             "createdAt": new Date(),
             "updatedAt": new Date()
         }

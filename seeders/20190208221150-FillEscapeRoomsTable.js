@@ -5,7 +5,6 @@ module.exports = {
         return queryInterface.bulkInsert("escapeRooms", [
             {
                 "title": "My first escape room",
-                "subject": "Programming",
                 "duration": 120,
                 "description": "Educational escape room",
                 "teamSize": 2,
@@ -14,7 +13,7 @@ module.exports = {
                 "authorId": 1,
                 "scoreParticipation": 40,
                 "createdAt": new Date(),
-                "updatedAt": new Date()
+                "updatedAt": new Date(),
             }
         ]);
     },

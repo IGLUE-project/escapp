@@ -1,4 +1,6 @@
 module.exports = {
     "up": (queryInterface, Sequelize) => queryInterface.
-        changeColumn("escapeRooms", "description", {"type": Sequelize.TEXT})
+        changeColumn("escapeRooms", "description", {"type": Sequelize.TEXT}),
+    "down": (queryInterface, Sequelize) => queryInterface.
+        changeColumn("escapeRooms", "description", {"type": Sequelize.STRING})
 };

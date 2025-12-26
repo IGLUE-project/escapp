@@ -1620,6 +1620,52 @@
     "general": {
         "unspecified": "Unspecified"
     },
+    "network": {
+        "filters": {
+            "any": "Any",
+            "after": "After",
+            "before": "Before",
+            "language": "Language",
+            "eduLevel": {
+                "filter": "Educational level",
+                "primary": "Primary education",
+                "secondary": "Secondary education",
+                "vet": "Vocational education and training",
+                "higher": "Higher education"
+            },
+            "area": "Area",
+            "participation": {
+                "filter":"Participation",
+                "individual": "Individual",
+                "team": "Teams"
+            },
+            "duration": "Duration (min)",
+            "format": {
+                "filter":"Format",
+                "online": "Online",
+                "hybrid": "Hybrid"
+            }
+        },
+        "search": {
+            "searchButton": "Search",
+            "inputPlaceholder": "Search...",
+            "loadingPlaceholder": "Loading escape rooms...",
+            "noResults": "No escape rooms found",
+            "filterPlaceholder": "No escape rooms found with the selected filters. Try removing some filters.",
+            "title": "Network Search"
+        },
+        "contact": {
+            "text1": "Message from",
+            "text2": "regarding your escape room: ",
+            "text3": "contact email: "
+        },
+        "contactForm": {
+            "title": "Contact the author",
+            "placeholder": "Send a message to the author of this escape room",
+            "send": "Send message",
+            "message": "Message"
+        }
+    },
     "languages": {
         "ab" : "Abkhazian",
         "aa" : "Afar",

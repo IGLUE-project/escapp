@@ -1,0 +1,21 @@
+<style>
+#text {
+    width: 100%;
+    height: 300px;
+    box-sizing: border-box;
+}
+label, button, input {
+    margin: 20px
+}
+</style>
+<div class="main">
+    <h1><%=i18n.network.contactForm.title%></h1>
+    <form method="POST" action="/network/<%=escapeRoomId%>/sendcontactemail" >
+        <label for="text"><%=i18n.network.contactForm.message%></label>
+        <input placeholder="<%=i18n.network.contactForm.placeholder%>" type="text" id="text" name="text" required />
+
+        <button type="submit"><%=i18n.network.contactForm.send%></button>
+    </form>
+
+<div>
+
