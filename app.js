@@ -20,6 +20,9 @@ const api = require("./routes/api");
 const index = require("./routes/index"),
 app = express();// View engine setup
 
+//Enable Certbot standalone
+app.use('/.well-known/acme-challenge',express.static('/var/www/certbot/.well-known/acme-challenge', { dotfiles: 'allow' }));
+
 // To compress all routes
 app.use(compression());
 // Security headers, commented because it fails with CSP

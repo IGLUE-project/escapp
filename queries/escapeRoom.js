@@ -7,7 +7,9 @@ exports.load = {
             "model": models.user,
             "as": "author"
         },
-        {"model": models.attachment},
+        {
+            "model": models.attachment
+        },
         {
             "model": models.user,
             "as": "userCoAuthor",
@@ -20,33 +22,23 @@ exports.loadShow = {
     "include": [
         {
             "model": models.turno,
+            "separate": true,
             "required": false,
-            "where": {"status": {[Op.not]: "test"}}
+            "where": {"status": {[Op.not]: "test"}},
+            "order": [["date", "asc"]]
         },
         {
             "model": models.puzzle,
-            "include": [{"model": models.hint}]
+            "separate": true,
+            "include": [{
+                "model": models.hint, 
+                "separate": true,
+                "order": [["order", "asc"]]
+            }],
+            "order": [["order", "asc"]]
         },
-        models.attachment,
-        models.hintApp
-    ],
-    "order": [
-        [
-            {"model": models.turno},
-            "date",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            "order",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            {"model": models.hint},
-            "order",
-            "asc"
-        ]
+        { "model": models.attachment },
+        { "model": models.hintApp }
     ]
 };
 
@@ -54,21 +46,14 @@ exports.loadPuzzles = {
     "include": [
         {
             "model": models.puzzle,
-            "include": [{"model": models.hint}]
+            "separate": true,
+            "include": [{
+                "model": models.hint, 
+                "separate": true,
+                "order": [["order", "asc"]]
+            }],
+            "order": [["order", "asc"]]
         }
-    ],
-    "order": [
-        [
-            {"model": models.puzzle},
-            "order",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            {"model": models.hint},
-            "order",
-            "asc"
-        ]
     ]
 };
 
@@ -76,21 +61,30 @@ exports.loadComplete = {
     "include": [
         {
             "model": models.turno,
+            "separate": true,
             "required": false,
             "where": {"status": {[Op.not]: "test"}},
             "include": {
                 "model": models.team,
+                "separate": true,
                 "attributes": ["id"]
-            }
+            },
+            "order": [["date", "asc"]]
         },
         {
             "model": models.puzzle,
-            "include": [{"model": models.hint}]
+            "separate": true,
+            "include": [{
+                "model": models.hint, 
+                "separate": true,
+                "order": [["order", "asc"]]
+            }],
+            "order": [["order", "asc"]]
         },
-        models.attachment,
-        models.asset,
-        models.hintApp,
-        models.reusablePuzzleInstance,
+        { "model": models.attachment },
+        { "model": models.asset, "separate": true },
+        { "model": models.hintApp },
+        { "model": models.reusablePuzzleInstance, "separate": true },
         {
             "model": models.user,
             "as": "author"
@@ -100,68 +94,7 @@ exports.loadComplete = {
             "as": "userCoAuthor",
             "required": false
         }
-    ],
-    "order": [
-        [
-            {"model": models.turno},
-            "date",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            "order",
-            "asc"
-        ],
-        [
-            {"model": models.puzzle},
-            {"model": models.hint},
-            "order",
-            "asc"
-        ]
     ]
-};
-
-exports.ids = (ids) => {
-    const findOptions = {
-        "attributes": [
-            "id",
-            "title",
-            "invitation",
-            "scope"
-        ],
-        "distinct": true,
-        "where": {"id": {[Op.in]: ids}},
-        "include": [
-            {
-                "model": models.turno,
-                "attributes": ["id", "date", "status", "capacity", "from", "to"],
-                "required": true,
-                "include": [
-                    {
-                        "model": models.user,
-                        "attributes": ["id"],
-                        "as": "students",
-                        "required": false
-                    }
-                ]
-            },
-            models.attachment,
-            {
-                "model": models.user,
-                "as": "author",
-                "required": false
-            },
-            {
-                "model": models.user,
-                "as": "userCoAuthor",
-                "duplicating": false,
-                "required": false
-            }
-        ],
-        "order": [["id", "desc"]]
-    };
-
-    return findOptions;
 };
 
 exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUsers = null, ignoreERIds = []) => {
@@ -180,6 +113,7 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
                 "model": models.turno,
                 "attributes": ["status", "capacity", "from", "to", "startTime"],
                 "required": true,
+                "separate": true,
                 "where": {"status": {[Op.not]: "test" }},
                 "include": [
                     {
@@ -196,11 +130,13 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
             },
             {
                 "model": models.asset,
-                "required": false
+                "required": false,
+                "separate": true
             },
             {
                 "model": models.reusablePuzzleInstance,
-                "required": false
+                "required": false,
+                "separate": true
             }
         ]
     };
@@ -215,18 +151,28 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
             findOptions.include[0].include.push({
                 "model": models.team,
                 "required": false,
+                "separate": true,
                 "where": {"startTime": {[Op.lt]: new Date(new Date() - 24 * 60 * 60 * 1000)}},
                 "attributes": ["startTime"],
-                "include": {"model": models.user, "as": "teamMembers", "required": true}
+                "include": {
+                    "model": models.user, 
+                    "as": "teamMembers", 
+                    "required": true
+                }
             });
         } else if (finished === false) {
             findOptions.include[0].where = { "status": {[Op.or]: ["pending", "active"] }};
             findOptions.include[0].include.push({
                 "model": models.team,
                 "required": false,
+                "separate": true,
                 "where": {"startTime": {[Op.or]: [{[Op.gte]: new Date(new Date() - 24 * 60 * 60 * 1000)}, null]}},
                 "attributes": ["startTime"],
-                "include": {"model": models.user, "as": "teamMembers", "required": true}
+                "include": {
+                    "model": models.user, 
+                    "as": "teamMembers", 
+                    "required": true
+                }
             });
         }
     }
@@ -271,7 +217,6 @@ exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
             "model": models.user,
             "as": "author",
             "attributes": [],
-
             "required": false
         },
         {
@@ -296,7 +241,6 @@ exports.forTeacher = (id, page = 1, limit = 10, search = "") => ({
                 ]
             }
         ]
-
     },
     limit,
     "offset": (page - 1) * limit,
@@ -327,7 +271,6 @@ exports.forAll = (page = 1, limit = 10, search = "", verified) => {
         obj.where.verified = false;
     }
     return obj
-
 };
 
 exports.loadExport = {
