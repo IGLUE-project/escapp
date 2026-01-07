@@ -151,7 +151,7 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRe
 // Routes for hint app
 router.get("/escapeRooms/:escapeRoomId(\\d+)/hintApp", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, hintController.hintApp);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/hintAppWrapper", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, hintController.hintAppWrapper);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/quizFile", sessionController.loginRequired, sessionController.authEditEscapeRoom, hintController.downloadQuiz);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/quizFile", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, hintController.downloadQuiz);
 
 // Routes for playing - student
 router.post("/escapeRooms/:escapeRoomId(\\d+)/play", sessionController.loginRequired, sessionController.authPlayEscapeRoom, turnoController.isTurnNotPending, playController.startPlaying, playController.play);
