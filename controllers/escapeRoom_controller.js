@@ -93,7 +93,6 @@ exports.index = async (req, res, next) => {
         // Pending
         ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, false)));
         const pagesPending = Math.ceil(countPending / limit);
-
         if (pagePending > pagesPending && pagesPending !== 0) {
             pagePending = pagesPending;
         }

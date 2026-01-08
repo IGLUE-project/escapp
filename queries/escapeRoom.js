@@ -1,6 +1,6 @@
 const {models} = require("../models");
 const {Op} = require("sequelize");
-
+const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 exports.load = {
     "include": [
         {
@@ -113,7 +113,7 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
                 "model": models.turno,
                 "attributes": ["status", "capacity", "from", "to", "startTime"],
                 "required": true,
-                "separate": true,
+                "separate": false,
                 "where": {"status": {[Op.not]: "test" }},
                 "include": [
                     {
@@ -141,40 +141,56 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
         ]
     };
 
+    findOptions.where = { [Op.and]: [] };
+
     if (user) {
         findOptions.include[0].include[0].where = {"id": user};
         findOptions.include[0].include[0].required = true;
         findOptions.attributes = ["id", "title"];
-        findOptions.distinct = false;
+        findOptions.subQuery = false;
+        findOptions.distinct = true;
+
+        // Ensure Turno include has an explicit alias, and teams is a normal JOIN include
+        findOptions.include[0].include = findOptions.include[0].include || [];
+        findOptions.include[0].include.push({
+            "model": models.team,
+            "as": "teams",
+            "required": true,
+            "separate": false,
+            // IMPORTANT: no separate: true here
+            "attributes": ["startTime"],
+            "include": [{
+                "model": models.user,
+                "as": "teamMembers",
+                "required": true,
+                "where": {"id": user}
+            }]
+        });
+
         if (finished === true) {
-            findOptions.include[0].where = { "status": "finished" };
-            findOptions.include[0].include.push({
-                "model": models.team,
-                "required": false,
-                "separate": true,
-                "where": {"startTime": {[Op.lt]: new Date(new Date() - 24 * 60 * 60 * 1000)}},
-                "attributes": ["startTime"],
-                "include": {
-                    "model": models.user, 
-                    "as": "teamMembers", 
-                    "required": true
-                }
-            });
-        } else if (finished === false) {
-            findOptions.include[0].where = { "status": {[Op.or]: ["pending", "active"] }};
-            findOptions.include[0].include.push({
-                "model": models.team,
-                "required": false,
-                "separate": true,
-                "where": {"startTime": {[Op.or]: [{[Op.gte]: new Date(new Date() - 24 * 60 * 60 * 1000)}, null]}},
-                "attributes": ["startTime"],
-                "include": {
-                    "model": models.user, 
-                    "as": "teamMembers", 
-                    "required": true
-                }
+            // finished OR (pending/active AND played more than 24h ago)
+            findOptions.where[Op.and].push({
+                [Op.or]: [
+                { "$turnos.status$": "finished" },
+                { "$turnos.teams.startTime$": { [Op.lt]: twentyFourHoursAgo } }
+                ]
             });
         }
+
+        if (finished === false) {
+            // pending/active AND (not played yet OR played in last 24h)
+            findOptions.where[Op.and].push({
+                [Op.and]: [
+                { "$turnos.status$": { [Op.in]: ["pending", "active"] } },
+                {
+                    [Op.or]: [
+                        { "$turnos.teams.startTime$": null },
+                        { "$turnos.teams.startTime$": { [Op.gte]: twentyFourHoursAgo } }
+                    ]
+                }
+                ]
+            });
+        }       
     }
 
     if (page !== null) {
@@ -182,7 +198,6 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
         findOptions.offset = (page - 1) * limit;
     }
 
-    findOptions.where = { [Op.and]: [] };
 
     if (typeof search === "string" && search.trim() !== "") {
         findOptions.where[Op.and].push({
