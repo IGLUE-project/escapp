@@ -77,6 +77,19 @@ module.exports = function (sequelize, DataTypes) {
         "lastAcceptedTermsDate": {
             "type": DataTypes.DATE,
             "allowNull": true
+        },
+        "confirmed": {
+            "type": DataTypes.BOOLEAN,
+            "allowNull": false,
+            "defaultValue": false
+        },
+        "confirmationCode": {
+            "type": DataTypes.STRING,
+            "allowNull": true,
+            set () {
+            // Random String used as salt.
+                this.setDataValue("confirmationCode", crypt.generateEmailConfirmationCode());
+            }
         }
     });
 

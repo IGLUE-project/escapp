@@ -76,6 +76,8 @@ router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, session
 router.put("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.update);
 router.delete("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.destroy);
 router.get("/users/:userId(\\d+)/escapeRooms", sessionController.loginRequired, sessionController.adminOrMyselfRequired, escapeRoomController.index);
+router.get("/users/resend-confirmation/:userId(\\d+)", userController.resendConfirmationEmail);
+router.get("/users/confirm/:userId(\\d+)", userController.confirmEmail);
 
 // Routes for admins
 router.get("/users/index", sessionController.loginRequired, sessionController.adminRequired, userController.index);
@@ -84,6 +86,7 @@ router.get("/reports", sessionController.loginRequired, sessionController.adminR
 router.post("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.editReport);
 router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/verify", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.verify);
+router.put("/users/:userId(\\d+)/confirm", sessionController.loginRequired, sessionController.adminRequired, userController.confirmAdmin);
 
 // Routes for escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);

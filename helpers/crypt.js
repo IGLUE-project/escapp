@@ -13,3 +13,9 @@ module.exports.generateToken = () => {
 
     return token;
 };
+
+module.exports.generateEmailConfirmationCode = () => {
+    const code = tokgen.generate();
+
+    return code;
+};

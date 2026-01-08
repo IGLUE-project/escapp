@@ -262,7 +262,7 @@ p {
 .instructions-button {
   text-align: center;
 }
-#flassmessages {
+.flassmessages {
   position: fixed;
   bottom: 0px;
   left: 10px;
