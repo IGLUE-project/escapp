@@ -612,6 +612,8 @@
                 "addNewCategory": "añadir categoría",
                 "addNewPuzzles": "añadir reto",
             	"automatic": "Recurso (reto reutilizable o externo)",
+                "calculateDuration": "calculate",
+                "calculateDurationTitle": "Calcula la duración esperada del reto basándote en los datos de intentos previos de otros equipos",
                 "clueName": "Nombre de la pista",
                 "description": "Descripción",
                 "expectedDuration": "Duración aproximada (mins)",
@@ -640,6 +642,8 @@
                     "range": "Numérica, con una tolerancia de ±"
                 },
                 "errors": {
+                    "durationCalculation": "Error calculando la duración esperada",
+                    "durationCalculationNotEnough": "Error calculando la duración esperada. No hay datos suficientes",
                     "invalidSolution": "La solución tiene que ser un número",
                     "invalidRange": "El rango debe ser un número mayor que 0",
                     "invalidRegex": "Expresión regular inválida"

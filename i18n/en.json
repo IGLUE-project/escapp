@@ -616,6 +616,8 @@
                 "addNewCategory": "add category",
                 "addNewPuzzles": "add puzzle",
             	"automatic": "Resource (reusable puzzle or external)",
+                "calculateDuration": "calculate",
+                "calculateDurationTitle": "Calculate the expected duration based on previous data from participants who have completed this puzzle",
                 "clueName": "Clue name",
                 "description": "Description",
                 "expectedDuration": "Expected Duration (mins)",
@@ -644,6 +646,8 @@
                     "range": "Numeric, with a tolerance of ±"
                 },
                 "errors": {
+                    "durationCalculation": "Error calculating expected duration",
+                    "durationCalculationNotEnough": "Error calculating expected duration. Not enough data",
                     "invalidSolution": "Range must be a number",
                     "invalidRange": "Range must be different than 0",
                     "invalidRegex": "Invalid regular expression"

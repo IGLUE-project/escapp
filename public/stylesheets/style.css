@@ -4161,7 +4161,24 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   justify-content: flex-start;
 }
 #mainSection .main .puzzle-card .flex-puzzle-card div {
-  margin-right: 0.5em©;
+  margin-right: 0.5em;
+}
+#mainSection .main .puzzle-card .btn-calculate-puzzle-dur {
+  font-size: 12px;
+  background-color: #161938;
+  color: white;
+  padding: 5px;
+}
+#mainSection .main .puzzle-card .btn-calculate-puzzle-dur .material-icons {
+  font-size: 12px;
+}
+#mainSection .main .puzzle-card .btn-calculate-puzzle-dur .spinner-compute {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 #mainSection .main .puzzle-card .delete-puzzle {
   position: absolute;
@@ -4206,6 +4223,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main .puzzle-card label {
   font-size: 18px;
+  vertical-align: middle;
 }
 #mainSection .main .puzzle-card .hint-list {
   list-style: none;

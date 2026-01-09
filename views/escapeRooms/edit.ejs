@@ -297,7 +297,7 @@
                                         <div class="retoTextArea hints-cell hints-cell-preview" data-reto="<%=puzzle.id%>" data-id="hint">
                                            
                                                 <%if (puzzle.hints && puzzle.hints.length > 0) {%>
-                                                     <ul class=" "></ul>
+                                                     <ul class=" ">
                                                     <% for (var p in puzzle.hints) { %>
                                                         <% var nCats = (new Set(puzzle.hints.map(h=> h.category))).size %>
                                                         <% var hint = puzzle.hints[p] %>

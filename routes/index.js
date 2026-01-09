@@ -196,6 +196,7 @@ router.get("/escapeRooms/:escapeRoomId/analytics/puzzles", sessionController.log
 router.get("/escapeRooms/:escapeRoomId/analytics/grading", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.grading);
 router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.download);
 router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.downloadRaw);
+router.get("/escapeRooms/:escapeRoomId/analytics/puzzles/:puzzleId/calculateDuration", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.calculatePuzzleDuration);
 
 // Routes for scenes
 router.get("/escapeRooms/:escapeRoomId/scenes/new", sessionController.loginRequired, sessionController.authEditEscapeRoom, sceneController.newScene);
