@@ -130,9 +130,7 @@
                 if (spinner) {
                     spinner.style.display = 'none';
                 }
-            }, 1000); // Timeout to hide spinner after 5 seconds in case of failure
-
-                
+            }, 1000); // Timeout to hide spinner after 5 seconds in case of failure           
     }
   $( function() {
     // Puzzle sortable
@@ -182,8 +180,6 @@
         }
     });
     // $('.handle').disableSelection();
-
-
 
     $(document).on('click', '.addHint', (e) => {
         const currentHintList = $(e.target.parentNode.parentNode).find('.hint-list');
@@ -295,8 +291,6 @@
                 el.find('.hint-category-name').attr('name',`puzzles[${puzzleId}][category][${catCount}]`);
             }
         });
-
-
     });
 
     $(document).on('click', '.delete-hint', (e) => {
@@ -339,13 +333,9 @@
             }
             return false;
         }
-
     });
 
     $("form input:visible, form select")[0].focus();
-
-
-    
 });
 </script>
 

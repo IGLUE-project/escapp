@@ -317,6 +317,7 @@
             }
         },
         "play": {
+            "aiHintAvailable": "Estás tardando bastante en resolver este reto. Deberías considerar pedir una pista para ayudarte a avanzar.",
             "check": "Comprobar solución",
             "correct": "¡Respuesta correcta!",
             "msg": "Mensaje",

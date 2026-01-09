@@ -22,6 +22,7 @@
     <% 
     var currentlyWorkingOn = null;
     var latestRetoSuperado =  null;
+    var latestRetoSuperadoTime = null;
     var reqHints = {};
     var customHints = 0;
     var reqHintsList = [];
@@ -36,6 +37,7 @@
     var content = JSON.parse(escapeRoom[endPoint + "Instructions"] || "[]").map((block, index) => ({...block, index}));
     var hintConditional  = (!escapeRoom.hintLimit && escapeRoom.hintLimit !== 0 ) || escapeRoom.hintLimit > 0;
     var hintAppConditional = hintConditional && Boolean(escapeRoom.hintApp);
+    
     retosSuperados = team.retos.map(a=>a.order);
     retosSuperadosIds = team.retos.map(a=>a.id);
     for (let h in hints) {
@@ -50,6 +52,7 @@
     progress = Math.round(retosSuperados.length / escapeRoom.puzzles.length * 100);
     finish = retosSuperados.length === escapeRoom.puzzles.length;
     latestRetoSuperado = retosSuperados.length ? Math.max(...retosSuperados) : null;
+    if(latestRetoSuperado !== null) latestRetoSuperadoTime = team.retos[latestRetoSuperado] ? team.retos[latestRetoSuperado].retosSuperados.createdAt : null;
     currentlyWorkingOn = retosSuperados.length ? (Math.max(...retosSuperados) + 1) : 0;
     if (finish) { 
         currentlyWorkingOn = null;
@@ -60,14 +63,14 @@
     }
     content = getContentForPuzzle(escapeRoom[endPoint + "Instructions"], currentlyWorkingOn === null ? "all": currentlyWorkingOn);
 
-    var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, hints, validator })=>{ 
+    var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, expectedDuration, hints, validator })=>{ 
         reqHints[order] = [];
         var noSuperado = retosSuperados.indexOf(order) === -1;
         if (noSuperado) {
             pending.push(order)
         }
         const categories = Array.from(new Set(hints.map(h=>h.category)));
-        return { id, title, order, score, correct, automatic, validator, categories, hints: hints.reduce((a,b) => {
+        return { id, title, order, score, correct, automatic, validator, categories, expectedDuration, hints: hints.reduce((a,b) => {
             if (reqHintsList.indexOf(b.id) === -1){
                 if ( a[b.category]) {
                     a[b.category].push(b.order)
@@ -291,6 +294,7 @@
             "retosSuperados": <%-JSON.stringify(retosSuperados)%>,
             "pending": <%=JSON.stringify(pending)%>,
             "latestRetoSuperado": <%=JSON.stringify(latestRetoSuperado)%>,
+            "latestRetoSuperadoTime": new Date("<%=latestRetoSuperadoTime%>"),
             "latestHintObtained":  <%if (hints.length) { %> new Date("<%=hints[hints.length-1].createdAt%>") <% } else { %>null <%}%>,
             "customHints": <%=customHints%>,
             "automaticHints":  <%=automaticHints%>,

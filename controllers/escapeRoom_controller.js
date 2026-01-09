@@ -712,7 +712,7 @@ exports.clone = async (req, res, next) => {
             "publishedOnce": false,
             format,
             level,
-            "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, score, hints}) => ({
+            "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, expectedDuration, validator, score, hints}) => ({
                 title,
                 sol,
                 desc,
@@ -720,6 +720,8 @@ exports.clone = async (req, res, next) => {
                 correct,
                 fail,
                 automatic,
+                dur,
+                validator,
                 score,
                 "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
             })),

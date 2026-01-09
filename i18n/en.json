@@ -321,6 +321,7 @@
 
         },
         "play": {
+            "aiHintAvailable": "You are taking quite a long to solve this puzzle. You should considering requesting a hint to help you move forward.",
             "correct": "Correct answer!",
             "check": "Check solution",
             "msg": "Message",
