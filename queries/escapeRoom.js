@@ -113,7 +113,7 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
                 "model": models.turno,
                 "attributes": ["status", "capacity", "from", "to", "startTime"],
                 "required": true,
-                "separate": false,
+                "separate": finished === null,
                 "where": {"status": {[Op.not]: "test" }},
                 "include": [
                     {

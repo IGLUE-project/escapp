@@ -27,7 +27,7 @@ function getTextsForLocale (locale) {
 }
 
 exports.getLocaleForEscapeRoom = (req, escapeRoom, editing) => {
-    if (editing !== true && isValidLocale(escapeRoom.forceLang)) {
+    if (editing !== true && isValidLocale(escapeRoom.forceLang) && req.route.path !== "/escapeRooms/:escapeRoomId(\\d+)/report") {
         return escapeRoom.forceLang;
     }
     if (req && req.cookies && isValidLocale(req.cookies.locale)) {

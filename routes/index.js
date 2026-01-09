@@ -21,7 +21,6 @@ const { instructions, thumbnails, hints, upload, hybridInstructions } = require(
 
 router.all("*", sessionController.deleteExpiredUserSession);
 
-
 // History: Restoration routes.
 
 // Redirection to the saved restoration route.
