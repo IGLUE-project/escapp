@@ -360,7 +360,7 @@ const rgb2hex = orig => {
 
 /************************HINT MANAGEMENT***************************/
 
-const hintReq = ()=>{
+const hintReq = (overrideQuiz = false)=>{
   $('#modal-title').html('<b>'+i18n.Hints+'<b>');
   let currentReto = ER.info.escapeRoomPuzzles.find(p=>p.order === ER.erState.currentlyWorkingOn);
   const categories = currentReto ? currentReto.categories : null;
@@ -369,7 +369,7 @@ const hintReq = ()=>{
   if (categories && categories.length > 1) {
     yesCat(categories, hints);
   } else {
-    noCat();
+    noCat(overrideQuiz);
   }
 }
 
@@ -672,8 +672,8 @@ const chooseCat = async (cat) =>  {
   }
 }
 
-const noCat = () => {
-  if (ER.info.hintAppConditional) {
+const noCat = (overrideQuiz) => {
+  if (!overrideQuiz && ER.info.hintAppConditional) {
     $( ".hints-modal-main-content").hide();
     $('.hints-modal-quiz').html(quizInstructionsTemplate());
   } else {
@@ -703,15 +703,32 @@ const setAIhintsTimers = (expectedDuration) => {
     clearTimeout(window.puzzleTimer);
   }
   if (expectedDuration && expectedDuration > 0) {
+
+    // Gets the date of the last solved puzzle or the start time if none solved yet
     const refDateTime = (ER.erState.latestRetoSuperadoTime && !isNaN(ER.erState.latestRetoSuperadoTime)) ? new Date(ER.erState.latestRetoSuperadoTime) : new Date(ER.erState.startTime);
-    const checkDateTime = new Date(refDateTime.getTime() + expectedDuration * 60 * 1000); // What is the time by which the puzzle is expected to be solved
-    let diffMs = checkDateTime.getTime() - new Date().getTime(); // How long remaining from now to that time
+    // What is the time by which the puzzle is expected to be solved?
+    const checkDateTime = new Date(refDateTime.getTime() + expectedDuration * 60 * 1000); 
+    // How long remaining from now to that time?
+    let diffMs = checkDateTime.getTime() - new Date().getTime(); 
+    // If already passed, set to 0 (so immediately now)
+    const GIVE_HINT = false;
     if (diffMs <= 0) {
       console.log("Estimated duration already passed");
-      diffMs = 0;
+      if(!GIVE_HINT) {
+        diffMs = 0;
+      } else {
+        return;
+      }
     }
     window.puzzleTimer = setTimeout(() => {
-      createAlert("info", i18n.aiHintAvailable);
+      if(GIVE_HINT) {
+        hintReq(true);
+        $('#hintModal').modal("show");
+         createAlert("info", i18n.aiHintAvailable);
+      } else {
+        createAlert("info", i18n.aiHintSuggested);
+      }
+      
       clearTimeout(window.puzzleTimer);
     }, diffMs);
   }

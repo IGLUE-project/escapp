@@ -153,8 +153,8 @@ exports.sendMessage = async (req, res) => {
             break;
         case "shift":
             // eslint-disable-next-line no-case-declarations
-            const turno = await models.turno.findOne({"where": {"id": turnId, "escapeRoomId": req.escapeRoom.id}, "attributes": []});
-
+            const turno = await models.turno.findOne({"where": {"id": turnId, "escapeRoomId": req.escapeRoom.id}, "attributes": ["id"]});
+           
             if (turno) {
                 sendTurnMessage(message, turnId);
                 if (waiting) {

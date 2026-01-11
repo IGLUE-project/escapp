@@ -317,9 +317,8 @@
             }
         },
         "play": {
-            "aiHintAvailable": "Estás tardando bastante en resolver este reto. Deberías considerar pedir una pista para ayudarte a avanzar.",
-            "check": "Comprobar solución",
-            "correct": "¡Respuesta correcta!",
+            "aiHintAvailable": "Estás tardando bastante en resolver este reto. Aquí tienes un poco de ayuda para que puedas avanzar.",
+            "aiHintSuggested": "Estás tardando bastante en resolver este reto. Deberías considerar pedir una pista para ayudarte a avanzar.",
             "msg": "Mensaje",
             "sol": "Solución",
             "autoPlayText": "Haz clic en el botón para empezar a ver el vídeo",
