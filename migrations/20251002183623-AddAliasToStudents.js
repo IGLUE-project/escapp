@@ -8,6 +8,6 @@ module.exports = {
     },
 
     async down (queryInterface) {
-        await queryInterface.removeColumn("users", "alias");
+        await queryInterface.removeColumn("users");
     }
 };
