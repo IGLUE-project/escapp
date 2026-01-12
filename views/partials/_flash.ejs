@@ -1,11 +1,11 @@
-<% if (messages.success || messages.info || messages.error) { %> 
+<% if (messages.success || messages.info || messages.error || messages.action) { %> 
     <% if (bs) { %>
-        <div class="alert alert-warning " id="flassmessages">
+        <div class="alert alert-warning flassmessages" id="flassmessages<%=messages.action ? 'action' : '' %>">
         <button type="button" class="close" id="close" data-dismiss="alert" aria-label="Close"> 
            <span aria-hidden="true">&times;</span>
              </button> 
     <% } else { %>
-        <div id="flassmessages">
+        <div class = "flassmessages"  id="flassmessages<%=messages.action ? 'action' : '' %>">
             <span class="close" id="close">&#x2716;</span>
      <% } %> 
             
@@ -41,6 +41,18 @@
                     </ul>
                 </article>
             <% } %>
+             <% if (messages.action) { %>
+                <article id='flashaction'>
+                     <ul>
+                    <% for (var i in messages.action) { %>
+                         <li class="gugi"> 
+                            <%- messages.action[i] %> 
+                             </li>
+                    <% } %>
+                    </ul>
+                </article>
+            <% } %>
+           
         </div>
    
     <script>

@@ -2,6 +2,7 @@
     <span title="<%=i18n.escapeRoom.steps.puzzles.reorder%>" maxlength="10000" class="material-icons handle showAlways">
         swap_vert
     </span>
+
     <input type="hidden" name="puzzles[<%=reto%>][order]" class="order" value="<%=puzzle.order%>"/>
     <input type="hidden" name="puzzles[<%=reto%>][id]" value="<%=puzzle.id%>"/>
     <h2 class="showAlways">
@@ -57,7 +58,15 @@
     </div>
     <h3>
         <span class="material-icons">av_timer</span>
-        <label for="puzzles[<%=reto%>][dur]"><%=i18n.escapeRoom.steps.puzzles.expectedDuration%></label>
+        <label for="puzzles[<%=reto%>][dur]"><%=i18n.escapeRoom.steps.puzzles.expectedDuration%> 
+            <% if(reto != "new") {%>
+            <button type="button" title="<%=i18n.escapeRoom.steps.puzzles.calculateDurationTitle%>" class="btn-calculate-puzzle-dur" data-puzzle-id="<%=puzzle.id%>" data-reto-id="<%=reto%>" onclick="calculateDuration(event)">
+                <span class="material-icons">query_stats</span>
+                <%=i18n.escapeRoom.steps.puzzles.calculateDuration%>
+                <span class="material-icons spinner-compute" style="display: none;">loop</span>
+            </button>
+            <%}%>
+        </label>
         <input type="text" placeholder="<%=i18n.escapeRoom.steps.puzzles.expectedDurationPlaceholder%>" class="light" name="puzzles[<%=reto%>][dur]" autocomplete="off" value="<%=puzzle.expectedDuration ? puzzle.expectedDuration : null%>" id="puzzles[<%=reto%>][dur]"/>
     </h3>
     <h3>

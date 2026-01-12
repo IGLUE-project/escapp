@@ -1,6 +1,14 @@
 @use "common/colors"
 @use 'common/mixins'
 
+=spin($duration: 1s)
+  animation: spin $duration linear infinite
+
+  @keyframes spin
+    to
+      transform: rotate(360deg)
+
+
 $card-background: colors.$textpurple
 #mainSection
   .main
@@ -66,7 +74,16 @@ $card-background: colors.$textpurple
         flex-wrap: nowrap
         justify-content: flex-start
         div
-          margin-right: 0.5em©
+          margin-right: 0.5em
+      .btn-calculate-puzzle-dur
+        font-size: 12px
+        background-color: colors.$darkerpurple
+        color: white
+        padding: 5px
+        .material-icons
+          font-size: 12px
+        .spinner-compute
+          +spin
       .delete-puzzle
         position: absolute
         right: 0
@@ -103,6 +120,7 @@ $card-background: colors.$textpurple
         span
           // font-weight: bold
         font-size: 18px
+        vertical-align: middle
       .hint-list
         list-style: none
         padding-left: 5px

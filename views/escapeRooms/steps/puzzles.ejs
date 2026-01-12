@@ -89,6 +89,49 @@
 
 </script>
 <script>
+
+
+    function calculateDuration(e) {
+        e.stopPropagation();
+        const puzzleId = e.target.dataset.puzzleId;
+        const durInput = e.target.dataset.retoId;
+        // Retrieve first child of target button with class spinner-compute
+        const spinner = e.target.querySelector('.spinner-compute');
+        if (spinner) {
+            spinner.style.display = 'inline-block';
+        }
+        fetch(`/escapeRooms/<%= escapeRoom.id %>/analytics/puzzles/${puzzleId}/calculateDuration`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json' },
+        }).then(response => response.json())
+        .then(data => {
+            console.log("Received data: ", data);
+            if (data.duration !== undefined) {
+                console.log("Duration calculated: ", data.duration);
+                $(`input[name='puzzles[${durInput}][dur]']`).val(data.duration);
+            } else {
+                if (data.error) {
+                    if (data.error === "no_data") {
+                        alert("<%=i18n.escapeRoom.steps.puzzles.errors.durationCalculationNotEnough%>");
+                    } else {
+                        alert(data.error);
+                    }
+                } else {
+                    alert("<%=i18n.escapeRoom.steps.puzzles.errors.durationCalculation%>");
+
+                }
+            }}).catch((error) => {
+                console.error('Error:', error);
+                alert("<%=i18n.escapeRoom.steps.puzzles.errors.durationCalculation%>");
+                
+            });     
+            setTimeout(() => {
+                if (spinner) {
+                    spinner.style.display = 'none';
+                }
+            }, 1000); // Timeout to hide spinner after 5 seconds in case of failure           
+    }
   $( function() {
     // Puzzle sortable
 
@@ -137,8 +180,6 @@
         }
     });
     // $('.handle').disableSelection();
-
-
 
     $(document).on('click', '.addHint', (e) => {
         const currentHintList = $(e.target.parentNode.parentNode).find('.hint-list');
@@ -250,8 +291,6 @@
                 el.find('.hint-category-name').attr('name',`puzzles[${puzzleId}][category][${catCount}]`);
             }
         });
-
-
     });
 
     $(document).on('click', '.delete-hint', (e) => {
@@ -294,7 +333,6 @@
             }
             return false;
         }
-
     });
 
     $("form input:visible, form select")[0].focus();

@@ -174,6 +174,7 @@ const onPuzzleResponse = async (RESPONSE) => {
         time = correct.split(" ").length*1100;
       } catch(e){}
       createAlert("success", `<b>${i18n.newRetoSuperado}</b><br/> ${correct}`, false, time);
+      
       const isLast = ER.erState.retosSuperados.length === ER.info.totalPuzzles;
       if (!isLast) {
         const puzzleIndex = ER.info.escapeRoomPuzzles.findIndex(puzzle => puzzle.order == puzzleOrder);
@@ -189,9 +190,9 @@ const onPuzzleResponse = async (RESPONSE) => {
       ER.erState.currentlyWorkingOn = nextPuzzleOrder;
       autoPlay(blockIndexes);
       setPuzzleLS(blockIndexes);
-
       await forMs(1000);
       updatePuzzle(nextPuzzleOrder, nextPuzzle, puzzleOrder);
+      setAIhintsTimers(nextPuzzle ? nextPuzzle.expectedDuration : undefined);
       if (isLast) {
         finish();
       }
@@ -290,6 +291,8 @@ const onInitialInfo = ({code, erState, participation}) => {
   if (erState && erState.ranking) {
     onRanking({ranking: erState.ranking})
   }
+  let currentReto = ER.info.escapeRoomPuzzles.find(p=>p.order === ER.erState.currentlyWorkingOn);
+  setAIhintsTimers(currentReto ? currentReto.expectedDuration : undefined);
 };
 
 const onMessage = ({msg}) => {
@@ -357,7 +360,7 @@ const rgb2hex = orig => {
 
 /************************HINT MANAGEMENT***************************/
 
-const hintReq = ()=>{
+const hintReq = (overrideQuiz = false)=>{
   $('#modal-title').html('<b>'+i18n.Hints+'<b>');
   let currentReto = ER.info.escapeRoomPuzzles.find(p=>p.order === ER.erState.currentlyWorkingOn);
   const categories = currentReto ? currentReto.categories : null;
@@ -366,7 +369,7 @@ const hintReq = ()=>{
   if (categories && categories.length > 1) {
     yesCat(categories, hints);
   } else {
-    noCat();
+    noCat(overrideQuiz);
   }
 }
 
@@ -482,14 +485,17 @@ const updateSuperados = (puzzleOrder) => {
   const pendingIndex = ER.erState.pending.indexOf(puzzleOrder);
   if (pendingIndex !== -1 ) {ER.erState.pending.splice(pendingIndex, 1);}
   ER.erState.latestRetoSuperado = ER.erState.retosSuperados.length ? Math.max(...ER.erState.retosSuperados) : null;
+  ER.erState.latestRetoSuperadoTime = new Date();
 }
 
 var insertContent =async (type, payload, puzzles, index, prevIndex) => {
   var content = "";
   switch(type){
     case "text":
+      //const text = (payload.text || "").toString();
       const replacedText = (payload.text || "").toString().replaceAll("__ESCAPP_USER__",encodeURIComponent(username)).replaceAll("__ESCAPP_TOKEN__",token).replaceAll("__ESCAPP_LOCALE__",ER.locale).replaceAll("__ESCAPP_ENDPOINT__",encodeURIComponent(ER.escappEndpoint))
       content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(replacedText)}</div>`;
+      //content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(text)}</div>`;
       break;
     case "reusablePuzzleInstance":
       content = reusablePuzzleTemplate(escapeUnsafeHtml(payload.url),payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
@@ -666,8 +672,8 @@ const chooseCat = async (cat) =>  {
   }
 }
 
-const noCat = () => {
-  if (ER.info.hintAppConditional) {
+const noCat = (overrideQuiz) => {
+  if (!overrideQuiz && ER.info.hintAppConditional) {
     $( ".hints-modal-main-content").hide();
     $('.hints-modal-quiz').html(quizInstructionsTemplate());
   } else {
@@ -689,6 +695,44 @@ window.requestHintFinish = (completion, score, status) => {
 const setPuzzleLS = (newBlocks = []) => setTimeout(()=>{
     localStorage["escapp_"+escapeRoomId] =  ER.erState.startTime.toString() + "_" + newBlocks.join(",");
 }, 3000);
+
+
+window.puzzleTimer = null;
+const setAIhintsTimers = (expectedDuration) => {
+  if (window.puzzleTimer) {
+    clearTimeout(window.puzzleTimer);
+  }
+  if (expectedDuration && expectedDuration > 0) {
+
+    // Gets the date of the last solved puzzle or the start time if none solved yet
+    const refDateTime = (ER.erState.latestRetoSuperadoTime && !isNaN(ER.erState.latestRetoSuperadoTime)) ? new Date(ER.erState.latestRetoSuperadoTime) : new Date(ER.erState.startTime);
+    // What is the time by which the puzzle is expected to be solved?
+    const checkDateTime = new Date(refDateTime.getTime() + expectedDuration * 60 * 1000); 
+    // How long remaining from now to that time?
+    let diffMs = checkDateTime.getTime() - new Date().getTime(); 
+    // If already passed, set to 0 (so immediately now)
+    const GIVE_HINT = false;
+    if (diffMs <= 0) {
+      console.log("Estimated duration already passed");
+      if(!GIVE_HINT) {
+        diffMs = 0;
+      } else {
+        return;
+      }
+    }
+    window.puzzleTimer = setTimeout(() => {
+      if(GIVE_HINT) {
+        hintReq(true);
+        $('#hintModal').modal("show");
+         createAlert("info", i18n.aiHintAvailable);
+      } else {
+        createAlert("info", i18n.aiHintSuggested);
+      }
+      
+      clearTimeout(window.puzzleTimer);
+    }, diffMs);
+  }
+}
 
 const autoPlay = (newBlocks = []) => {
     let ls = localStorage["escapp_" + escapeRoomId];

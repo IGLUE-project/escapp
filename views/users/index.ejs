@@ -7,7 +7,7 @@
 
     <table class="mainTable">
         <tr>
-            <th><%=i18n.user.user%></th><th><%=i18n.user.alias%></th><th><%=i18n.common.edit%></th><th><%=i18n.common.delete%></th>
+            <th><%=i18n.user.user%></th><th><%=i18n.user.alias%></th><th><%=i18n.common.edit%></th><th><%=i18n.common.delete%></th><th><%=i18n.common.confirmed%>?</th>
         </tr>
         <% for (var i in users) { %>
             <tr>
@@ -45,6 +45,17 @@
                                 </form>
                             </div>
                             
+                            <%  } %>
+                        </td>
+                        <td>
+                            <%if (users[i].confirmed){%>
+                                <i class="material-icons confirmedIcon" title="<%=i18n.common.confirmed%>">check_circle</i>
+                            <%}else{%>
+                                <% if (session.user.isAdmin && session.user.id !== users[i].id) { %>
+                                    <form method="POST" action='/users/<%= users[i].id %>/confirm?_method=PUT' >
+                                        <button class="confirmButton rounded""><%=i18n.common.confirm%></button>
+                                    </form>
+                                <%  } %>
                             <%  } %>
                         </td>
                 <% } %>

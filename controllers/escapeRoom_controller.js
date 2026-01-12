@@ -30,10 +30,10 @@ exports.load = async (req, res, next, escapeRoomId) => {
         if (escapeRoom && res.locals) {
             req.escapeRoom = escapeRoom;
             const editing = req.session && req.session.user && !req.session.user.isStudent;
-
             res.locals.i18n_lang = getLocaleForEscapeRoom(req, escapeRoom, editing);
             res.locals.i18n_texts = getTextsForLocale(res.locals.i18n_lang);
             res.locals.i18n = res.locals.i18n_texts;
+            
             next();
         } else {
             res.status(404);
@@ -93,7 +93,6 @@ exports.index = async (req, res, next) => {
         // Pending
         ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, false)));
         const pagesPending = Math.ceil(countPending / limit);
-
         if (pagePending > pagesPending && pagesPending !== 0) {
             pagePending = pagesPending;
         }
@@ -713,7 +712,7 @@ exports.clone = async (req, res, next) => {
             "publishedOnce": false,
             format,
             level,
-            "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, score, hints}) => ({
+            "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, expectedDuration, validator, score, hints}) => ({
                 title,
                 sol,
                 desc,
@@ -721,6 +720,8 @@ exports.clone = async (req, res, next) => {
                 correct,
                 fail,
                 automatic,
+                dur,
+                validator,
                 score,
                 "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
             })),

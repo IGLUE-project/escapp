@@ -1,6 +1,6 @@
 const {authenticate, findFirstAvailableFile} = require("../helpers/utils");
 // Const userHelper = require("../helpers/users");
-const {isAdmin, isStudent} = require("../helpers/users");
+const {isAdmin, isStudent, userNeedsConfirmation} = require("../helpers/users");
 const {isAuthor, isCoAuthor, isCoAuthorPending, getParticipant} = require("../helpers/escapeRooms");
 const sequelize = require("../models");
 const {models} = sequelize;
@@ -262,6 +262,18 @@ exports.create = async (req, res, next) => {
                 res.render("index", {redir});
                 return;
             }
+            if (!user.confirmed) {
+                const needstToBeConfirmed = userNeedsConfirmation(user);
+                console.log(needstToBeConfirmed, process.env.EMAIL_VALIDATION_TEACHER, user.isStudent);
+                if (needstToBeConfirmed) {
+                    req.flash("action",  i18n.common.flash.emailNotConfirmed +
+                        `<a href="/users/resend-confirmation/${user.id}"> <button class=" rounded editButton flash-button">` +
+                       i18n.common.flash.emailNotConfirmedSendAgain + "</button></a>.");
+                    res.render("index", {user: {username: login}, redir});
+                    return;
+                }
+            }
+
             req.session.user = {
                 "id": user.id,
                 "name": user.alias,
@@ -286,7 +298,7 @@ exports.create = async (req, res, next) => {
             });
         } else {
             req.flash("error", i18n.user.wrongCredentials);
-            res.render("index", {redir});
+            res.render("index", {user: {username: login}, redir});
         }
     } catch (error) {
         console.error(error);

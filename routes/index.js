@@ -22,7 +22,6 @@ const { instructions, thumbnails, hints, upload, hybridInstructions } = require(
 
 router.all("*", sessionController.deleteExpiredUserSession);
 
-
 // History: Restoration routes.
 
 // Redirection to the saved restoration route.
@@ -77,6 +76,8 @@ router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, session
 router.put("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.update);
 router.delete("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.destroy);
 router.get("/users/:userId(\\d+)/escapeRooms", sessionController.loginRequired, sessionController.adminOrMyselfRequired, escapeRoomController.index);
+router.get("/users/resend-confirmation/:userId(\\d+)", userController.resendConfirmationEmail);
+router.get("/users/confirm/:userId(\\d+)", userController.confirmEmail);
 
 // Routes for admins
 router.get("/users/index", sessionController.loginRequired, sessionController.adminRequired, userController.index);
@@ -87,6 +88,7 @@ router.delete("/reports/:reportId", sessionController.loginRequired, sessionCont
 router.get("/urls", sessionController.loginRequired, sessionController.adminRequired, managementController.getNetworkURLS);
 router.post("/urls", sessionController.loginRequired, sessionController.adminRequired, managementController.editNetworkURLS);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/verify", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.verify);
+router.put("/users/:userId(\\d+)/confirm", sessionController.loginRequired, sessionController.adminRequired, userController.confirmAdmin);
 
 // Routes for escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
@@ -197,6 +199,7 @@ router.get("/escapeRooms/:escapeRoomId/analytics/puzzles", sessionController.log
 router.get("/escapeRooms/:escapeRoomId/analytics/grading", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.grading);
 router.get("/escapeRooms/:escapeRoomId/analytics/download", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.download);
 router.get("/escapeRooms/:escapeRoomId/analytics/download_raw", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.downloadRaw);
+router.get("/escapeRooms/:escapeRoomId/analytics/puzzles/:puzzleId/calculateDuration", sessionController.loginRequired, sessionController.authEditEscapeRoom, analyticsController.calculatePuzzleDuration);
 
 // Routes for scenes
 router.get("/escapeRooms/:escapeRoomId/scenes/new", sessionController.loginRequired, sessionController.authEditEscapeRoom, sceneController.newScene);

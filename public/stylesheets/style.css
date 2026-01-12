@@ -193,6 +193,10 @@ button.inverse, input[type=submit].inverse, .aButton.inverse {
 button[type=submit], input[type=submit][type=submit], .aButton[type=submit] {
   cursor: pointer;
 }
+button.flash-button, input[type=submit].flash-button, .aButton.flash-button {
+  font-size: small;
+  padding: 2px !important;
+}
 
 #mainSection .main.teams .flex-table-wrapper .flex-table .operations-team .actions-team, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .edit-hints .hint-li .button-hint, #mainSection .main .flex-table-wrapper .flex-table .flex-row .flex-cell .retoTextArea.hints-cell .add-hint:hover i, #mainSection .main .flex-table-wrapper .flex-table .operations-reto form .delete-reto, #mainSection .main #add-reto, #mainSection .main.participants .flex-table-wrapper .flex-table .operations-participant .delete-participant, #mainSection #mainHeader .navBarIcon, #mainSection #mainFooter .navBarIcon {
   transition: 0.1s all ease-in;
@@ -2050,7 +2054,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 1em;
 }
 
-#flassmessages {
+.flassmessages {
   position: fixed;
   bottom: 0;
   font-size: 1em !important;
@@ -2064,7 +2068,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   left: 0px;
   z-index: 99999;
 }
-#flassmessages .close {
+.flassmessages .close {
   content: "✖";
   top: 0;
   right: 0;
@@ -4157,7 +4161,24 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   justify-content: flex-start;
 }
 #mainSection .main .puzzle-card .flex-puzzle-card div {
-  margin-right: 0.5em©;
+  margin-right: 0.5em;
+}
+#mainSection .main .puzzle-card .btn-calculate-puzzle-dur {
+  font-size: 12px;
+  background-color: #161938;
+  color: white;
+  padding: 5px;
+}
+#mainSection .main .puzzle-card .btn-calculate-puzzle-dur .material-icons {
+  font-size: 12px;
+}
+#mainSection .main .puzzle-card .btn-calculate-puzzle-dur .spinner-compute {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 #mainSection .main .puzzle-card .delete-puzzle {
   position: absolute;
@@ -4202,6 +4223,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main .puzzle-card label {
   font-size: 18px;
+  vertical-align: middle;
 }
 #mainSection .main .puzzle-card .hint-list {
   list-style: none;

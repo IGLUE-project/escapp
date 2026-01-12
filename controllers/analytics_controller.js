@@ -730,3 +730,47 @@ exports.downloadRaw = async (req, res) => {
         res.send("Error");
     }
 };
+
+
+exports.calculatePuzzleDuration = async (req, res, next) => {
+    const {escapeRoom, puzzle} = req;
+    const resultSingle = {};
+
+    try {
+        escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
+        escapeRoom.turnos = await getERTurnos(escapeRoom.id);
+        const teamList = await models.team.findAll(queries.team.teamComplete(escapeRoom.id, undefined, "order"));
+
+        if (teamList) {
+            teamList.map((team) => {
+                const {turno, startTime} = team;
+
+                const actualStartTime = turno.startTime || startTime;
+                const retosSuperados = getRetosSuperadosIdTime(team.retos, actualStartTime);
+                let lastTime = 0;
+
+                for (const r in retosSuperados) {
+                    const reto = retosSuperados[r];
+                    const puzzleId = reto.id;
+
+                    resultSingle[puzzleId] = [...resultSingle[puzzleId] || [], Math.max(0, reto.time - lastTime)];
+                    lastTime = Math.max(lastTime, reto.time);
+                }
+
+                return {"id": team.id, retosSuperados};
+            });
+        }
+        // See if there are enough data to compute a median
+        if (resultSingle[puzzle.id] === undefined || resultSingle[puzzle.id].length == 0) {
+            res.status(423)
+            res.json({error: "no_data"});
+            return;
+        }
+        // Return median duration in minutes
+        res.json({duration: resultSingle[puzzle.id] ? Math.ceil(stats.median(resultSingle[puzzle.id]) / 60) : 0});
+    } catch (e) {
+        console.error(e);
+        res.status(500);
+        res.json({error: "error"});
+    }
+};

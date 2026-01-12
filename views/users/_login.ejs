@@ -8,10 +8,11 @@
 <form method='POST' action='/'>
 
     <input type='hidden' name='redir' value='<%= redir %>'>
-
     <div>
         <label for="login"><span><%=i18n.user.username%></span>
-            <input type="email" id="login" name="login" size="30" autofocus placeholder="<%=i18n.user.inputs.usernamePlaceHolder%>" autocomplete="off"/>
+            <input type="email" id="login" name="login" size="30" autofocus 
+            value="<%= locals.user ? locals.user.username : ''%>"
+            placeholder="<%=i18n.user.inputs.usernamePlaceHolder%>" autocomplete="off"/>
         </label>
     </div>
     <br />
