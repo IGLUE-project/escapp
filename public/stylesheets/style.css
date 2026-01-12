@@ -6182,10 +6182,9 @@ div#scene_maker_container iframe#scene_maker_iframe {
   display: block;
 }
 
-.main {
+.main .network {
   display: flex;
   flex-flow: column;
-  height: 100vh !important;
 }
 
 .flex-row {
@@ -6310,9 +6309,11 @@ div#scene_maker_container iframe#scene_maker_iframe {
   padding: 1em;
   border: 2px solid white;
   border-radius: 10px;
-  display: grid;
+  display: flex;
   background-color: #232850;
-  grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: flex-start;
   gap: 1rem;
 }
 .flexBoxEscapeRooms.empty {
@@ -6349,6 +6350,8 @@ div#scene_maker_container iframe#scene_maker_iframe {
   border-radius: 10px;
   padding: 0.5em;
   position: relative;
+  height: 8em;
+  width: 8em;
 }
 .flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem.disabled {
   opacity: 0.4;

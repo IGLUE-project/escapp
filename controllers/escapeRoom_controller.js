@@ -33,7 +33,7 @@ exports.load = async (req, res, next, escapeRoomId) => {
             res.locals.i18n_lang = getLocaleForEscapeRoom(req, escapeRoom, editing);
             res.locals.i18n_texts = getTextsForLocale(res.locals.i18n_lang);
             res.locals.i18n = res.locals.i18n_texts;
-            
+
             next();
         } else {
             res.status(404);
@@ -952,7 +952,7 @@ exports.verify = async (req, res, next) => {
             req.escapeRoom.isLastVersionVerified = true;
             req.escapeRoom.verified_at = new Date();
         }
-        await req.escapeRoom.save( {"fields": ["verified", "verified_at","isLastVersionVerified"] });
+        await req.escapeRoom.save( {"fields": ["verified", "verified_at","isLastVersionVerified","isNetworkAccessible"] });
         res.redirect(`/escapeRooms/${req.escapeRoom.id}/edit`);
     } catch (error) {
         console.error(error);
@@ -985,10 +985,10 @@ exports.export = async (req, res, next) => {
         const all = [...flatCandidates, ...assetCandidates];
         const seen = new Set();
         const resolved = [];
-                 
+
 
         /*for (const { field, pathStr } of all) {
-            
+
             const baseDir = baseFor("../..");
             const abs = resolveUnder(baseDir, pathStr);
             console.log()

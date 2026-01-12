@@ -31,7 +31,7 @@ exports.loadShow = {
             "model": models.puzzle,
             "separate": true,
             "include": [{
-                "model": models.hint, 
+                "model": models.hint,
                 "separate": true,
                 "order": [["order", "asc"]]
             }],
@@ -48,7 +48,7 @@ exports.loadPuzzles = {
             "model": models.puzzle,
             "separate": true,
             "include": [{
-                "model": models.hint, 
+                "model": models.hint,
                 "separate": true,
                 "order": [["order", "asc"]]
             }],
@@ -75,7 +75,7 @@ exports.loadComplete = {
             "model": models.puzzle,
             "separate": true,
             "include": [{
-                "model": models.hint, 
+                "model": models.hint,
                 "separate": true,
                 "order": [["order", "asc"]]
             }],
@@ -190,7 +190,7 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
                 }
                 ]
             });
-        }       
+        }
     }
 
     if (page !== null) {
@@ -299,7 +299,7 @@ exports.public = (page = 1, limit = 10) => ({
 exports.text = (before, after, lang, participation, area, duration, format, level) => {
     const conditions = {
         "where": {"isNetworkAccessible": true},
-        "attributes": ["id", "title", "description", "lang", "teamSize", "field", "duration", "format", "level", "createdAt"],
+        "attributes": ["isNetworkAccessible", "id", "title", "description", "lang", "teamSize", "field", "duration", "format", "level", "createdAt"],
         "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}]
     };
 
@@ -354,7 +354,7 @@ exports.loadExport = {
         },
         models.hintApp,
         {
-            "model": models.asset 
+            "model": models.asset
         }
     ],
     "order": [

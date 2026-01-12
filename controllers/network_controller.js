@@ -8,7 +8,9 @@ const {renderEJS} = require("../helpers/utils");
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level) => {
     try {
         const queryToExecute = queries.escapeRoom.text(before, after, lang, participation, area, duration, format, level);
+        console.log("Query to execute: ", queryToExecute);
         let results = await models.escapeRoom.findAll(queryToExecute);
+        console.log(results);
         // Fuzzy finding of escaperooms
         const fuzzyThreshold = 0.4;
         const filteredResults = [];

@@ -30,9 +30,18 @@ button {
         <label> Semicolon separated urls: https://url:port/;https:...</label>
         <input type="text" name="urls" value="<%= urlsDBText%>"/>
         <button type="submit" ">Set URLs</button>
-        <span id="defaultURLs"> <%= urlsText%></span>
+        <br/>
+        Default URLs from config file:
+        <span id="defaultURLs" style="display:none;">  <%= urlsText%></span>
+        <div style="overflow:auto;height:200px">
+            <% const textArray = urlsText.split(';')
+            textArray.forEach(url =>  { %>
+                <div><%=url%></div>
+            <%})%>
 
-        <button onclick="setDefaults(event)">Set Default URLs</button>
+        </div>
+
+        <button onclick="setDefaults(event)">Copy default URLs</button>
     </form>
 
     <script>

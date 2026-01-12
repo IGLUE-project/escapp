@@ -1,5 +1,5 @@
 <%- include ("../partials/_header.ejs") %>
-<div role="main" class="main">
+<div role="main" class="main network">
     <h1><%=i18n.network.search.title%></h1>
     <div id="filterSearch" class="campoDeBusqueda">
         <div class="headerBusqueda">
@@ -160,7 +160,7 @@
                 return;
             }
             const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
-            const imageURL = escapeRoom.attachment.url ? escapeRoom.attachment.url : "../images/puzzleorange.png";
+            const imageURL = (escapeRoom.attachment && escapeRoom.attachment.url) ? escapeRoom.attachment.url : "../images/puzzleorange.png";
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
         if(parsedResults === ""){
@@ -334,6 +334,8 @@
         document.getElementById("search").value = params.get("query");
         document.querySelector("button").click();
     }
+
+
 
 
     $("#searchButton").click();

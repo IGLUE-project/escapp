@@ -48,6 +48,7 @@ module.exports = ({ escapeRoom, turno }) => {
     er.isAccessibleToAllUsers = er.status === "completed" && er.scope === "public";
     er.isPubliclyAccessible = er.isAccessibleToAllUsers && (openRegistration || er.allowGuests);
     er.isNetworkAccessible = er.isPubliclyAccessible && er.verified;
+    console.log(er.isNetworkAccessible);
 
     });
 };

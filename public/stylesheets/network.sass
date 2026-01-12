@@ -1,8 +1,7 @@
 @use "common/colors"
-.main
+.main .network
   display: flex
   flex-flow: column
-  height: 100vh !important
 
 .flex-row
   display: flex
@@ -96,9 +95,11 @@
   padding: 1em
   border: 2px solid white
   border-radius: 10px
-  display: grid
+  display: flex
   background-color: colors.$mainpurple
-  grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
+  flex-wrap: wrap
+  flex-direction: row
+  align-content: flex-start
   gap: 1rem
   &.empty
     display: flex
@@ -130,6 +131,8 @@
       border-radius: 10px
       padding: 0.5em
       position: relative
+      height: 8em
+      width: 8em
       &.disabled
         opacity: 0.4
         cursor: not-allowed
