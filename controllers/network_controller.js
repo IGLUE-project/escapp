@@ -1,16 +1,14 @@
 const queries = require("../queries");
 const {models} = require("../models");
 const {fuzzy} = require("fast-fuzzy");
-const urlsDefault = JSON.parse(process.env.URLS) || [];
+const urlsDefault = JSON.parse(process.env.NETWORK_URLS) || [];
 const mailer = require("../helpers/mailer");
 const {renderEJS} = require("../helpers/utils");
 
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level) => {
     try {
         const queryToExecute = queries.escapeRoom.text(before, after, lang, participation, area, duration, format, level);
-        console.log("Query to execute: ", queryToExecute);
         let results = await models.escapeRoom.findAll(queryToExecute);
-        console.log(results);
         // Fuzzy finding of escaperooms
         const fuzzyThreshold = 0.4;
         const filteredResults = [];
@@ -101,8 +99,9 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
     const aggregated = [];
     const promises = [];
     let localR = [];
-    const dbUrls = await models.adminConfig.findOne({attributes: ["urls"], where: {id:1}});
+    const dbUrls = await models.adminConfig.findOne({"attributes": ["urls"], "where": {"id": 1}});
     let jsonUrlsDB = [];
+
     try {
         jsonUrlsDB = JSON.parse(dbUrls.urls);
     } catch (error) {
@@ -148,18 +147,19 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
 
 exports.sendContactEmail = async (req, res, next) => {
     try {
-        const user = req.session.user;
+        const {user} = req.session;
         const escapeRoomTitle = req.escapeRoom.title;
-        const author = req.escapeRoom.author;
+        const {author} = req.escapeRoom;
         const lang = author.lang || "en";
         const {text} = req.body;
         const i18n = require(`../i18n/${lang}`);
 
-        const str = await renderEJS("views/emails/contact.ejs", {"i18n": i18n, "user": user.name, "message": text, "userEmail": user.username, escapeRoomTitle }, {});
+        const str = await renderEJS("views/emails/contact.ejs", {i18n, "user": user.name, "message": text, "userEmail": user.username, escapeRoomTitle }, {});
+
         await mailer.sendEmail(author.username, "Contact Message", str, str);
         res.redirect("/");
-    }catch (error) {
+    } catch (error) {
         console.error(error);
         next(error);
     }
-}
+};

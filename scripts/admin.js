@@ -32,7 +32,7 @@ if (!name || !surname || !email || !password) {
 
 const fullName = `${name} ${surname}`;
 
-async function createAdmin() {
+async function createAdmin () {
     try {
         const [, created] = await sequelize.models.user.findOrCreate({
             "where": { "username": email },

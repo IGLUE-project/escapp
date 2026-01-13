@@ -85,10 +85,11 @@ exports.collectAssetEntries = (node, prefix = []) => {
             } else if (item && typeof item === "object") {
                 out.push(...exports.collectAssetEntries(item, prefix));
             }
-        }}
+        }
+    }
     // } else if (node && typeof node === "object") {
-    //     for (const [k, v] of Object.entries(node)) {
-    //         out.push(...exports.collectAssetEntries(v, [...prefix, k]));
+    //     For (const [k, v] of Object.entries(node)) {
+    //         Out.push(...exports.collectAssetEntries(v, [...prefix, k]));
     //     }
     // }
     return out;

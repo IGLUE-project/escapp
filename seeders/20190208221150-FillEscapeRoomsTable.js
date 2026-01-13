@@ -13,7 +13,7 @@ module.exports = {
                 "authorId": 1,
                 "scoreParticipation": 40,
                 "createdAt": new Date(),
-                "updatedAt": new Date(),
+                "updatedAt": new Date()
             }
         ]);
     },

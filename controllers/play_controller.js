@@ -71,7 +71,6 @@ exports.results = async (req, res, next) => {
 
 // POST /escapeRooms/:escapeRoomId/play
 exports.startPlaying = async (req, res, next) => {
-    
     const {i18n} = res.locals;
 
     try {
@@ -154,7 +153,7 @@ exports.sendMessage = async (req, res) => {
         case "shift":
             // eslint-disable-next-line no-case-declarations
             const turno = await models.turno.findOne({"where": {"id": turnId, "escapeRoomId": req.escapeRoom.id}, "attributes": ["id"]});
-           
+
             if (turno) {
                 sendTurnMessage(message, turnId);
                 if (waiting) {

@@ -264,12 +264,13 @@ exports.create = async (req, res, next) => {
             }
             if (!user.confirmed) {
                 const needstToBeConfirmed = userNeedsConfirmation(user);
+
                 console.log(needstToBeConfirmed, process.env.EMAIL_VALIDATION_TEACHER, user.isStudent);
                 if (needstToBeConfirmed) {
-                    req.flash("action",  i18n.common.flash.emailNotConfirmed +
-                        `<a href="/users/resend-confirmation/${user.id}"> <button class=" rounded editButton flash-button">` +
-                       i18n.common.flash.emailNotConfirmedSendAgain + "</button></a>.");
-                    res.render("index", {user: {username: login}, redir});
+                    req.flash("action", `${i18n.common.flash.emailNotConfirmed
+                    }<a href="/users/resend-confirmation/${user.id}"> <button class=" rounded editButton flash-button">${
+                        i18n.common.flash.emailNotConfirmedSendAgain}</button></a>.`);
+                    res.render("index", {"user": {"username": login}, redir});
                     return;
                 }
             }
@@ -298,7 +299,7 @@ exports.create = async (req, res, next) => {
             });
         } else {
             req.flash("error", i18n.user.wrongCredentials);
-            res.render("index", {user: {username: login}, redir});
+            res.render("index", {"user": {"username": login}, redir});
         }
     } catch (error) {
         console.error(error);

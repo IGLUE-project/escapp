@@ -151,7 +151,7 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/teams", sessionController.loginRequ
 router.get("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.showReportForm);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.generateReport);
 // Contact
-router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRequired,  managementController.showContact);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRequired, managementController.showContact);
 
 // Routes for hint app
 router.get("/escapeRooms/:escapeRoomId(\\d+)/hintApp", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, hintController.hintApp);
@@ -247,7 +247,7 @@ router.get("/uploads/hybrid/:file_name", assetsController.returnHybridInstructio
 router.get("/uploads/:asset_id/:file_name?", assetsController.getAsset);
 
 router.get("/network/searchInInstance", networkController.searchInInstance);
-router.get("/network/search", sessionController.loginRequired, networkController.renderSearch);
+router.get("/network/search", networkController.renderSearch);
 router.get("/network/query", sessionController.loginRequired, networkController.searchInNetwork);
 router.post("/network/:escapeRoomId(\\d+)/sendcontactemail", networkController.sendContactEmail);
 

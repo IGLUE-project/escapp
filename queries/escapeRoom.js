@@ -1,15 +1,14 @@
 const {models} = require("../models");
 const {Op} = require("sequelize");
 const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
 exports.load = {
     "include": [
         {
             "model": models.user,
             "as": "author"
         },
-        {
-            "model": models.attachment
-        },
+        {"model": models.attachment},
         {
             "model": models.user,
             "as": "userCoAuthor",
@@ -30,11 +29,13 @@ exports.loadShow = {
         {
             "model": models.puzzle,
             "separate": true,
-            "include": [{
-                "model": models.hint,
-                "separate": true,
-                "order": [["order", "asc"]]
-            }],
+            "include": [
+                {
+                    "model": models.hint,
+                    "separate": true,
+                    "order": [["order", "asc"]]
+                }
+            ],
             "order": [["order", "asc"]]
         },
         { "model": models.attachment },
@@ -47,11 +48,13 @@ exports.loadPuzzles = {
         {
             "model": models.puzzle,
             "separate": true,
-            "include": [{
-                "model": models.hint,
-                "separate": true,
-                "order": [["order", "asc"]]
-            }],
+            "include": [
+                {
+                    "model": models.hint,
+                    "separate": true,
+                    "order": [["order", "asc"]]
+                }
+            ],
             "order": [["order", "asc"]]
         }
     ]
@@ -74,11 +77,13 @@ exports.loadComplete = {
         {
             "model": models.puzzle,
             "separate": true,
-            "include": [{
-                "model": models.hint,
-                "separate": true,
-                "order": [["order", "asc"]]
-            }],
+            "include": [
+                {
+                    "model": models.hint,
+                    "separate": true,
+                    "order": [["order", "asc"]]
+                }
+            ],
             "order": [["order", "asc"]]
         },
         { "model": models.attachment },
@@ -159,35 +164,37 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
             "separate": false,
             // IMPORTANT: no separate: true here
             "attributes": ["startTime"],
-            "include": [{
-                "model": models.user,
-                "as": "teamMembers",
-                "required": true,
-                "where": {"id": user}
-            }]
+            "include": [
+                {
+                    "model": models.user,
+                    "as": "teamMembers",
+                    "required": true,
+                    "where": {"id": user}
+                }
+            ]
         });
 
         if (finished === true) {
-            // finished OR (pending/active AND played more than 24h ago)
+            // Finished OR (pending/active AND played more than 24h ago)
             findOptions.where[Op.and].push({
                 [Op.or]: [
-                { "$turnos.status$": "finished" },
-                { "$turnos.teams.startTime$": { [Op.lt]: twentyFourHoursAgo } }
+                    { "$turnos.status$": "finished" },
+                    { "$turnos.teams.startTime$": { [Op.lt]: twentyFourHoursAgo } }
                 ]
             });
         }
 
         if (finished === false) {
-            // pending/active AND (not played yet OR played in last 24h)
+            // Pending/active AND (not played yet OR played in last 24h)
             findOptions.where[Op.and].push({
                 [Op.and]: [
-                { "$turnos.status$": { [Op.in]: ["pending", "active"] } },
-                {
-                    [Op.or]: [
-                        { "$turnos.teams.startTime$": null },
-                        { "$turnos.teams.startTime$": { [Op.gte]: twentyFourHoursAgo } }
-                    ]
-                }
+                    { "$turnos.status$": { [Op.in]: ["pending", "active"] } },
+                    {
+                        [Op.or]: [
+                            { "$turnos.teams.startTime$": null },
+                            { "$turnos.teams.startTime$": { [Op.gte]: twentyFourHoursAgo } }
+                        ]
+                    }
                 ]
             });
         }
@@ -276,6 +283,7 @@ exports.forAll = (page = 1, limit = 10, search = "", verified) => {
         "offset": (page - 1) * limit,
         "order": [["id", "desc"]]
     };
+
     if (verified === true) {
         obj.where.verified = true;
         obj.where.isLastVersionVerified = true;
@@ -285,7 +293,7 @@ exports.forAll = (page = 1, limit = 10, search = "", verified) => {
     } else if (verified === false) {
         obj.where.verified = false;
     }
-    return obj
+    return obj;
 };
 
 exports.public = (page = 1, limit = 10) => ({
@@ -299,7 +307,7 @@ exports.public = (page = 1, limit = 10) => ({
 exports.text = (before, after, lang, participation, area, duration, format, level) => {
     const conditions = {
         "where": {"isNetworkAccessible": true},
-        "attributes": ["isNetworkAccessible", "id", "title", "description", "lang", "teamSize", "field", "duration", "format", "level", "createdAt"],
+        "attributes": ["id", "title", "description", "lang", "teamSize", "field", "duration", "format", "level", "createdAt"],
         "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}]
     };
 
@@ -336,7 +344,6 @@ exports.text = (before, after, lang, participation, area, duration, format, leve
     if (level) {
         conditions.where.level = level;
     }
-    console.log(conditions);
 
     return conditions;
 };
@@ -353,9 +360,7 @@ exports.loadExport = {
             "attributes": ["subject"]
         },
         models.hintApp,
-        {
-            "model": models.asset
-        }
+        {"model": models.asset}
     ],
     "order": [
         [

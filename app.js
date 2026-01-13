@@ -18,10 +18,10 @@ const compression = require("compression");
 dotenv.config();
 const api = require("./routes/api");
 const index = require("./routes/index"),
-app = express();// View engine setup
+    app = express();// View engine setup
 
-//Enable Certbot standalone
-app.use('/.well-known/acme-challenge',express.static('/var/www/certbot/.well-known/acme-challenge', { dotfiles: 'allow' }));
+// Enable Certbot standalone
+app.use("/.well-known/acme-challenge", express.static("/var/www/certbot/.well-known/acme-challenge", { "dotfiles": "allow" }));
 
 // To compress all routes
 app.use(compression());
@@ -29,8 +29,8 @@ app.use(compression());
 // TODO, study options and configure accordingly
 // App.use(helmet());
 
-app.use(express.json({ limit: "20mb" }));
-app.use(express.urlencoded({ limit: "20mb", extended: true }));
+app.use(express.json({ "limit": "20mb" }));
+app.use(express.urlencoded({ "limit": "20mb", "extended": true }));
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

@@ -30,6 +30,7 @@ exports.load = async (req, res, next, escapeRoomId) => {
         if (escapeRoom && res.locals) {
             req.escapeRoom = escapeRoom;
             const editing = req.session && req.session.user && !req.session.user.isStudent;
+
             res.locals.i18n_lang = getLocaleForEscapeRoom(req, escapeRoom, editing);
             res.locals.i18n_texts = getTextsForLocale(res.locals.i18n_lang);
             res.locals.i18n = res.locals.i18n_texts;
@@ -93,6 +94,7 @@ exports.index = async (req, res, next) => {
         // Pending
         ({"count": countPending, "rows": pending} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pagePending, limit, search, false)));
         const pagesPending = Math.ceil(countPending / limit);
+
         if (pagePending > pagesPending && pagesPending !== 0) {
             pagePending = pagesPending;
         }
@@ -422,6 +424,7 @@ exports.returnThumbnail = async (req, res) => {
 exports.evaluation = async (req, res, next) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadPuzzles);
+
         escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
         res.render("escapeRooms/steps/evaluation", {escapeRoom, "progress": "evaluation"});
     } catch (e) {
@@ -761,10 +764,12 @@ exports.admin = async (req, res, next) => {
             ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll(page, limit, search)));
         }
         const pages = Math.ceil(count / limit);
+
         if (page > pages && pages !== 0) {
             res.redirect(`/escapeRoomsAdmin?page=${pages}`);
         } else {
             const pageArray = paginate(page, pages, 5);
+
             res.render("escapeRooms/index.ejs", {escapeRooms, user, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
         }
     } catch (error) {
@@ -952,13 +957,13 @@ exports.verify = async (req, res, next) => {
             req.escapeRoom.isLastVersionVerified = true;
             req.escapeRoom.verified_at = new Date();
         }
-        await req.escapeRoom.save( {"fields": ["verified", "verified_at","isLastVersionVerified","isNetworkAccessible"] });
+        await req.escapeRoom.save({"fields": ["verified", "verified_at", "isLastVersionVerified", "isNetworkAccessible"] });
         res.redirect(`/escapeRooms/${req.escapeRoom.id}/edit`);
     } catch (error) {
         console.error(error);
         next(error);
     }
-}
+};
 
 
 // Work in progress
@@ -977,17 +982,17 @@ exports.export = async (req, res, next) => {
         const toExport = escapeRoom.toJSON ? escapeRoom.toJSON() : escapeRoom.dataValues;
         const pathFields = ["attachment", "hintApp", "hybridInstructions", "instructions"];
 
-        const flatCandidates = pathFields.flatMap((field) => toArray(toExport[field]).map((p) => ({ field,   "pathStr": p })));
+        const flatCandidates = pathFields.flatMap((field) => toArray(toExport[field]).map((p) => ({ field, "pathStr": p })));
         const assetCandidates = toExport.assets.map((ast) => ({
             "field": "assets",
-            pathStr: ast
+            "pathStr": ast
         }));
         const all = [...flatCandidates, ...assetCandidates];
         const seen = new Set();
         const resolved = [];
 
 
-        /*for (const { field, pathStr } of all) {
+        /* For (const { field, pathStr } of all) {
 
             const baseDir = baseFor("../..");
             const abs = resolveUnder(baseDir, pathStr);
@@ -1021,24 +1026,25 @@ exports.export = async (req, res, next) => {
         archive.pipe(res);
 
         for (const item of all) {
-            const folderName = item.field;              // e.g. "assets"
-            const idFolder = String(item.pathStr.id);   // e.g. "670"
+            const folderName = item.field; // E.g. "assets"
+            const idFolder = String(item.pathStr.id); // E.g. "670"
 
-            // contentPath is relative to project root, possibly starting with "/"
-            console.log(item)
-            const filePathOriginal = (item.pathStr.contentPath) || ("/uploads/" + item.pathStr.public_id) ;
+            // ContentPath is relative to project root, possibly starting with "/"
+            console.log(item);
+            const filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
             const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
             const filePath = path.join(process.cwd(), relativeFromRoot);
 
             const originalName = item.pathStr.filename || path.basename(filePath);
-            console.log(filePath)
+
+            console.log(filePath);
             if (fsSync.existsSync(filePath)) {
-            archive.file(filePath, {
+                archive.file(filePath, {
                 // Path inside the zip: <field>/<id>/<filename>
-                name: `${folderName}/${idFolder}/${originalName}`
-            });
+                    "name": `${folderName}/${idFolder}/${originalName}`
+                });
             } else {
-            console.warn("File not found, skipping:", filePath);
+                console.warn("File not found, skipping:", filePath);
             }
         }
 
@@ -1046,7 +1052,7 @@ exports.export = async (req, res, next) => {
         archive.append(JSON.stringify(toExport, null, 2), { "name": "escape-room.json" });
         await archive.finalize();
     } catch (err) {
-        console.error(err)
+        console.error(err);
         next(err);
     }
 };

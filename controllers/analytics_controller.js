@@ -762,15 +762,15 @@ exports.calculatePuzzleDuration = async (req, res, next) => {
         }
         // See if there are enough data to compute a median
         if (resultSingle[puzzle.id] === undefined || resultSingle[puzzle.id].length == 0) {
-            res.status(423)
-            res.json({error: "no_data"});
+            res.status(423);
+            res.json({"error": "no_data"});
             return;
         }
         // Return median duration in minutes
-        res.json({duration: resultSingle[puzzle.id] ? Math.ceil(stats.median(resultSingle[puzzle.id]) / 60) : 0});
+        res.json({"duration": resultSingle[puzzle.id] ? Math.ceil(stats.median(resultSingle[puzzle.id]) / 60) : 0});
     } catch (e) {
         console.error(e);
         res.status(500);
-        res.json({error: "error"});
+        res.json({"error": "error"});
     }
 };

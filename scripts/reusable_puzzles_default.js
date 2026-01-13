@@ -101,7 +101,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/ItemSelection/ItemSelection_Instructions_ES.pdf"
         }
     },
-     {
+    {
         "name": "SQL Editor",
         "zip": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle.zip",
         "form": "sqlPuzzle.ejs",
@@ -110,7 +110,7 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_Instructions_ES.pdf"
         }
-    } 
+    }
 
     // {
     //     "name": "CodeEditor",

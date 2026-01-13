@@ -29,11 +29,19 @@ button {
     <form style="display:flex; flex-direction:column;" action="/urls" method="POST">
         <label> Semicolon separated urls: https://url:port/;https:...</label>
         <input type="text" name="urls" value="<%= urlsDBText%>"/>
+        Current URLs from database:
+        <div style="overflow:auto;height:150px">
+            <% const textArrayDB = urlsDBText.split(';')
+            textArrayDB.forEach(url =>  { %>
+                <div><%=url%></div>
+            <%})%>
+
+        </div>
         <button type="submit" ">Set URLs</button>
         <br/>
         Default URLs from config file:
         <span id="defaultURLs" style="display:none;">  <%= urlsText%></span>
-        <div style="overflow:auto;height:200px">
+        <div style="overflow:auto;height:150px">
             <% const textArray = urlsText.split(';')
             textArray.forEach(url =>  { %>
                 <div><%=url%></div>
@@ -41,7 +49,7 @@ button {
 
         </div>
 
-        <button onclick="setDefaults(event)">Copy default URLs</button>
+        <button onclick="setDefaults(event)">Copy default URLs to input</button>
     </form>
 
     <script>

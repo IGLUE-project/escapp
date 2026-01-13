@@ -3,12 +3,12 @@
 module.exports = {
     async up (queryInterface, Sequelize) {
         try {
-            await queryInterface.describeTable('reusablePuzzleInstancePuzzle');
+            await queryInterface.describeTable("reusablePuzzleInstancePuzzle");
             // If this succeeds, the table already exists
-            console.log('reusablePuzzleInstancePuzzle table already exists');
+            console.log("reusablePuzzleInstancePuzzle table already exists");
         } catch (err) {
             // If it throws, the table does not exist
-            console.log('reusablePuzzleInstancePuzzle table does not exist');
+            console.log("reusablePuzzleInstancePuzzle table does not exist");
             return queryInterface.createTable(
                 "reusablePuzzleInstancePuzzle",
                 {

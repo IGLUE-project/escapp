@@ -67,15 +67,14 @@ exports.create = async (req, res, next) => {
         eduLevel,
         "username": (username || "").toLowerCase(),
         password,
-        confirmed: false,
+        "confirmed": false,
         lang,
-        confirmationCode: null,
+        "confirmationCode": null,
         "lastAcceptedTermsDate": new Date()
     });
 
     let role_override = role;
 
-    
 
     try {
         role_override = getRole(role, username, i18n);
@@ -88,7 +87,7 @@ exports.create = async (req, res, next) => {
         });
         return;
     }
-    
+
 
     const isStudent = role_override === "student";
 
@@ -96,23 +95,23 @@ exports.create = async (req, res, next) => {
 
     // Save into the data base
     try {
-        const savedUser = await user.save({"fields": ["name", "surname", "alias", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate","confirmed","confirmationCode"]});
+        const savedUser = await user.save({"fields": ["name", "surname", "alias", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate", "confirmed", "confirmationCode"]});
         const needstToBeConfirmed = userNeedsConfirmation(user);
-        
+
         const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${savedUser.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName": process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000"}, {});
+
         mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str);
-        
-        if (needstToBeConfirmed) {  
+
+        if (needstToBeConfirmed) {
             req.flash("success", i18n.common.flash.emailMustBeConfirmed);
             res.render("index", {user, redir});
-
         } else {
             req.flash("success", i18n.common.flash.successCreatingUser);
             req.body.login = username;
             req.body.redir = redir;
             next();
         }
-    } catch(error)  {
+    } catch (error) {
         if (error instanceof Sequelize.UniqueConstraintError) {
             req.flash("error", i18n.common.flash.errorExistingUser);
             res.render("index", {user, "register": true, redir});
@@ -369,16 +368,17 @@ exports.resendConfirmationEmail = async (req, res) => {
     const {user} = req;
 
     const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${user.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName": process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000"}, {});
-    
+
     mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str);
     req.flash("success", i18n.common.flash.confirmationEmailResent);
     res.redirect("back");
-}
+};
 // GET /users/:userId/confirm
 exports.confirmEmail = async (req, res, next) => {
     const {user, query} = req;
     const {code, email} = query;
     const {i18n} = res.locals;
+
     if (user && user.confirmationCode === code && user.username === email) {
         user.confirmed = true;
         try {
@@ -389,7 +389,7 @@ exports.confirmEmail = async (req, res, next) => {
                 "admin": false,
                 "redir": "/"
             });
-        } catch (error) { 
+        } catch (error) {
             next(error);
         }
     } else {
@@ -397,13 +397,14 @@ exports.confirmEmail = async (req, res, next) => {
         req.flash("error", i18n.common.flash.invalidConfirmationCode);
         res.redirect("/");
     }
-}  
+};
 
 
 // PUT /users/:userId/confirm
 exports.confirmAdmin = (req, res, next) => {
     const {user, query} = req;
     const {code} = query;
+
     user.confirmed = true;
     user.save({"fields": ["confirmed"]}).
         then(() => {
@@ -413,5 +414,4 @@ exports.confirmAdmin = (req, res, next) => {
         catch((error) => {
             next(error);
         });
-    
 };

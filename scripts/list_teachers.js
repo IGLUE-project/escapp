@@ -1,17 +1,16 @@
 require("dotenv").config(); // Load environment variables from .env
 const sequelize = require("../models");
-const models = sequelize.models;
+const {models} = sequelize;
 
-async function listTeachers() {
+async function listTeachers () {
     try {
-        const users = await models.user.findAll({
-            where: { isStudent: false }
-        });
+        const users = await models.user.findAll({"where": { "isStudent": false }});
+
         if (users.length === 0) {
             console.log("No teachers found.");
         } else {
             console.log("Teachers:");
-            users.forEach(user => {
+            users.forEach((user) => {
                 console.log(`- ${user.username}`);
             });
         }

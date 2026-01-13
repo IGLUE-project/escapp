@@ -12,10 +12,8 @@ exports.isStudent = isStudent;
 
 
 exports.userNeedsConfirmation = function (user) {
-    
     if (isStudent(user)) {
         return process.env.EMAIL_VALIDATION_STUDENT === "true";
-    } else {
-        return process.env.EMAIL_VALIDATION_TEACHER === "true" ;
     }
+    return process.env.EMAIL_VALIDATION_TEACHER === "true";
 };

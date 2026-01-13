@@ -10,7 +10,7 @@
     <input type='hidden' name='redir' value='<%= redir %>'>
     <div>
         <label for="login"><span><%=i18n.user.username%></span>
-            <input type="email" id="login" name="login" size="30" autofocus 
+            <input type="email" id="login" name="login" size="30" autofocus
             value="<%= locals.user ? locals.user.username : ''%>"
             placeholder="<%=i18n.user.inputs.usernamePlaceHolder%>" autocomplete="off"/>
         </label>
@@ -27,6 +27,10 @@
         <br />
     </div>
 </form>
+<br />
+<div>
+    <button class="login" value="Network"><%=i18n.user.actions.accessNetwork%></button>
+</div>
 <br />
 <a class="login" href="/register?redir=<%=redir%>%>"><%=i18n.user.actions.notRegistered%></a><br/><br/>
 <a class="login" href="/users/password-reset%>"><%=i18n.user.actions.iForgotMyPassword%></a>
