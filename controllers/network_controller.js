@@ -1,7 +1,7 @@
 const queries = require("../queries");
 const {models} = require("../models");
 const {fuzzy} = require("fast-fuzzy");
-const urlsDefault = JSON.parse(process.env.NETWORK_URLS) || [];
+const urlsDefault = JSON.parse(process.env.NETWORK_URLS || "[]") || [];
 const mailer = require("../helpers/mailer");
 const {renderEJS} = require("../helpers/utils");
 

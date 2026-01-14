@@ -6281,7 +6281,7 @@ div#scene_maker_container iframe#scene_maker_iframe {
 .campoDeBusqueda .filtros .container .item .label {
   font-size: 1.2rem;
   line-height: 2rem;
-  color: #656683;
+  color: #9292B0;
   width: 100%;
 }
 @media screen and (max-width: 900px) {
@@ -6292,9 +6292,9 @@ div#scene_maker_container iframe#scene_maker_iframe {
 }
 .campoDeBusqueda .filtros .container .item .inputsBusqueda {
   padding: 1rem;
-  color: #656683;
-  border-color: #656683;
-  webkit-text-fill-color: #656683;
+  color: #9292B0;
+  border-color: #9292B0;
+  webkit-text-fill-color: #9292B0;
 }
 @media screen and (max-width: 900px) {
   .campoDeBusqueda .filtros .container .item .inputsBusqueda {
@@ -6305,7 +6305,7 @@ div#scene_maker_container iframe#scene_maker_iframe {
   width: 100%;
 }
 
-.flexBoxEscapeRooms {
+.flexBoxEscapeRooms.network {
   padding: 1em;
   border: 2px solid white;
   border-radius: 10px;
@@ -6316,30 +6316,30 @@ div#scene_maker_container iframe#scene_maker_iframe {
   align-content: flex-start;
   gap: 1rem;
 }
-.flexBoxEscapeRooms.empty {
+.flexBoxEscapeRooms.network.empty {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 @media not (hover: none) {
-  .flexBoxEscapeRooms {
+  .flexBoxEscapeRooms.network {
     overflow-y: auto;
   }
 }
-.flexBoxEscapeRooms:after {
+.flexBoxEscapeRooms.network:after {
   content: "";
   flex: 1;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper {
   aspect-ratio: 1;
   width: calc(25% - 0.65em);
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper:before {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper:before {
   content: "";
   float: left;
   padding-top: 100%;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem {
   background: white;
   color: black;
   width: 100%;
@@ -6354,11 +6354,11 @@ div#scene_maker_container iframe#scene_maker_iframe {
   width: 100%;
   height: 100%;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem.disabled {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem.disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem .sign {
   position: absolute;
   top: -2px;
   left: -2px;
@@ -6369,27 +6369,27 @@ div#scene_maker_container iframe#scene_maker_iframe {
   border: 2px solid white;
   background-color: #48C18E;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.add {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem .sign.add {
   background-color: #FAC855;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.edit {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem .sign.edit {
   background-color: #36A2EB;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .sign.warning {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem .sign.warning {
   background-color: #F3945E;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .erFoto {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem .erFoto {
   width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1 auto;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .erFoto .bckgFoto {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem .erFoto .bckgFoto {
   flex: 1;
   background-position: center;
   background-size: cover;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem .erFoto .escapeRoomTitle {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem .erFoto .escapeRoomTitle {
   white-space: nowrap;
   width: 100%;
   text-overflow: ellipsis;
@@ -6398,7 +6398,7 @@ div#scene_maker_container iframe#scene_maker_iframe {
   font-size: 16px;
   margin: 0px;
 }
-.flexBoxEscapeRooms .escapeRoomItemWrapper .escapeRoomItem.addEscapeRoom {
+.flexBoxEscapeRooms.network .escapeRoomItemWrapper .escapeRoomItem.addEscapeRoom {
   display: flex;
   flex-direction: column;
   justify-content: center;
