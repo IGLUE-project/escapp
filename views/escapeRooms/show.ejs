@@ -10,9 +10,11 @@
         </div>
 	</div>
     <% } %>
+    <%if(!locals.fromNetwork){%>
     <div class="reporting">
         <a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
     </div>
+    <%}%>
     <%var isCollaborator = (user && escapeRoom.userCoAuthor?.some(u => u.id === user.id)) %>
     <%var isUnconfirmedCollaborator = (isCollaborator && !isCollaborator.coAuthors.confirmed) %>
     <%if(isUnconfirmedCollaborator){%>
@@ -35,9 +37,11 @@
             <p>
                 <span>by <%=escapeRoom.author.alias%></span>
             </p>
+            <%if(!locals.fromNetwork){%>
             <p>
                 <a href="/escapeRooms/<%=escapeRoom.id%>/contact">Contact</a>
             </p>
+            <%}%>
             <br/>
             <h3><%=i18n.showTeacher.titles.description%></h3>
             <p><%-escapeRoom.description%></p>
@@ -137,12 +141,12 @@
             <% } %>
 
             <%if(!user.isStudent && !isUnconfirmedCollaborator){%>
-                <span>
+                <span style="display: inline-block;position: relative;">
                     <button class="rounded cloneButton" title="<%=i18n.escapeRoom.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
                         <%=i18n.showTeacher.actionList.clone%>
                     </button>
                     <div class="overlay-trigger" data-id="clone-<%=escapeRoom.id%>">
-                        <form method="POST" action='/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT' >
+                        <form method="POST" action='<%=locals.fromNetwork ? (locals.networkUrl + "/escapeRooms/" + escapeRoom.id + "/import"):"/escapeRooms/" + escapeRoom.id + "/clone?_method=PUT"%>' >
                             <p><%=i18n.escapeRoom.general.areYouSureClone%></p>
                             <button class="deleteButton" type="button" onclick="overlayTrigger('clone-<%=escapeRoom.id%>', true)"><%=i18n.common.cancel%></button>
                             <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>

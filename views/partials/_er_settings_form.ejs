@@ -300,7 +300,7 @@ $(function(){
     function makeChip(text) {
       var safe = $('<div>').text(text).html();
       var $chip = $(
-        '<span class="tag-chip" data-tag="' + safe + '">' +
+        '<span class="tag-chip tag-chip-edit" data-tag="' + safe + '">' +
           safe +
           '<span class="remove" aria-label="Remove tag" title="Remove">×</span>' +
         '</span>'

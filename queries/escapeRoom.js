@@ -43,6 +43,13 @@ exports.loadShow = {
     ]
 };
 
+exports.loadPreview = {
+    "include": [
+        { "model": models.user, "as": "author", attributes: ["id", "alias"] },
+        { "model": models.attachment }
+    ]
+};
+
 exports.loadPuzzles = {
     "include": [
         {
@@ -87,8 +94,18 @@ exports.loadComplete = {
             "order": [["order", "asc"]]
         },
         { "model": models.attachment },
+        {
+            "model": models.subject,
+            "attributes": ["subject"]
+        },
         { "model": models.asset, "separate": true },
         { "model": models.hintApp },
+        { "model": models.scene, 
+            "separate": true, 
+            "include": [
+                { "model": models.reusablePuzzleInstance, "separate": true },
+                { "model": models.puzzle, "separate": true }
+        ]}, 
         { "model": models.reusablePuzzleInstance, "separate": true },
         {
             "model": models.user,
@@ -310,7 +327,6 @@ exports.text = (before, after, lang, participation, area, duration, format, leve
         "attributes": ["id", "title", "description", "lang", "teamSize", "field", "duration", "format", "level", "createdAt"],
         "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}]
     };
-
     if (before && after) {
         conditions.where.createdAt = {[Op.between]: [new Date(after), new Date(before)]};
     } else {

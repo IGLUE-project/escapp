@@ -8,18 +8,18 @@ const {renderEJS} = require("../helpers/utils");
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level) => {
     try {
         const queryToExecute = queries.escapeRoom.text(before, after, lang, participation, area, duration, format, level);
+        
         let results = await models.escapeRoom.findAll(queryToExecute);
         // Fuzzy finding of escaperooms
         const fuzzyThreshold = 0.4;
         const filteredResults = [];
-
-        results = results.sort((a, b) => -fuzzy(value, a.title) - fuzzy(value, a.description) * 0.7 + fuzzy(value, b.title) + fuzzy(value, b.description) * 0.7);
+        results = results.sort((a, b) => -fuzzy(value, a.title || "") - fuzzy(value, a.description || "") * 0.7 + fuzzy(value, b.title || "") + fuzzy(value, b.description || "") * 0.7);
         results = results.slice((page - 1) * limit, page * limit);
 
         for (let index = 0; index < results.length; index++) {
             const result = results[index];
 
-            if (fuzzy(value, result.title) > fuzzyThreshold || fuzzy(value, result.description) > fuzzyThreshold) {
+            if (fuzzy(value, result.title || "") > fuzzyThreshold || fuzzy(value, result.description || "") > fuzzyThreshold) {
                 filteredResults.push(result);
             } else {
                 break;
@@ -37,6 +37,7 @@ exports.searchInInstance = async (req, res, next) => { // Busqueda local
     try {
         const {query, before, after, lang, page, limit, participation, area, duration, format, level} = req.query || {};
         const results = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);
+        console.log(results)
 
         res.json(results);
     } catch (error) {
@@ -101,7 +102,6 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
     let localR = [];
     const dbUrls = await models.adminConfig.findOne({"attributes": ["urls"], "where": {"id": 1}});
     let jsonUrlsDB = [];
-
     try {
         jsonUrlsDB = JSON.parse(dbUrls.urls);
     } catch (error) {
@@ -135,7 +135,8 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
     for (let i = 0; i < values.length; i++) {
         const data = values[i];
 
-        if (data.status === "fulfilled") {
+        if (data.status === "fulfilled" && data.value && data.value instanceof Array) {
+            console.log(data)
             data.value.forEach((v) => {
                 aggregated.push({...v, "url": urls[i]});
             });
@@ -160,6 +161,38 @@ exports.sendContactEmail = async (req, res, next) => {
         res.redirect("/");
     } catch (error) {
         console.error(error);
+        next(error);
+    }
+};
+
+// GET /network/:escapeRoomId/json
+exports.getPreviewData = async (req, res) => {
+    try {
+    const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPreview);
+    console.log(escapeRoom.toJSON())
+    return res.json(escapeRoom.toJSON());    
+    } catch (error) {
+        console.error("Error fetching preview data:", error);
+        res.status(500).json({"error": "Error fetching preview data"});
+    }
+};
+
+// GET /network/:escapeRoomId/preview?url=...&id=...
+exports.servePreviewRender = async (req, res) => {
+    try {
+        const data = await tryFetch(`${req.query.url}/network/${req.params.escapeRoomId}/json`);
+        if (!data || !data.ok) {
+            throw new Error("Failed to fetch preview data");
+        }
+        const escapeRoomData = await data.json();
+        
+        const escapeRoom = await models.escapeRoom.build(escapeRoomData);
+        escapeRoom.author = await models.user.build(escapeRoomData.author);
+
+        return res.render("escapeRooms/show", {"escapeRoom":  escapeRoom, "user": req.session.user, "isParticipant": false, fromNetwork: true, networkUrl: req.query.url});
+
+    } catch (error) {
+        console.error("Error fetching preview data:", error);
         next(error);
     }
 };

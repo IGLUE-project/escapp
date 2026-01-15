@@ -5096,6 +5096,8 @@ table.mainTable tr td .icon {
   text-overflow: ellipsis;
   display: inline;
   position: relative;
+}
+.tag-chip.tag-chip-edit {
   padding-right: 25px;
 }
 .tag-chip .remove {
@@ -6242,6 +6244,9 @@ div#scene_maker_container iframe#scene_maker_iframe {
   text-align: start;
   padding: 1rem;
 }
+.campoDeBusqueda .headerBusqueda #searchButton {
+  vertical-align: middle;
+}
 .campoDeBusqueda .headerBusqueda #search {
   width: 70%;
 }
@@ -6254,6 +6259,9 @@ div#scene_maker_container iframe#scene_maker_iframe {
   .campoDeBusqueda .filtros {
     overflow-x: auto;
   }
+}
+.campoDeBusqueda .filtros h2 {
+  margin-top: 0px;
 }
 .campoDeBusqueda .filtros .container {
   display: flex;
@@ -6300,6 +6308,12 @@ div#scene_maker_container iframe#scene_maker_iframe {
   .campoDeBusqueda .filtros .container .item .inputsBusqueda {
     font-size: 1rem;
   }
+}
+.campoDeBusqueda .filtros .container .item input[type=date]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+}
+.campoDeBusqueda .filtros .container .item input[type=date]:focus::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 .campoDeBusqueda #language {
   width: 100%;

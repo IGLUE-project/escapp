@@ -1637,6 +1637,7 @@
     },
     "network": {
         "filters": {
+            "Filters": "Filters",
             "any": "Any",
             "after": "After",
             "before": "Before",
@@ -1662,8 +1663,8 @@
             }
         },
         "search": {
-            "searchButton": "Search",
-            "inputPlaceholder": "Search...",
+            "searchButton": "search",
+            "inputPlaceholder": "search...",
             "loadingPlaceholder": "Loading escape rooms...",
             "noResults": "No escape rooms found",
             "filterPlaceholder": "No escape rooms found with the selected filters. Try removing some filters.",

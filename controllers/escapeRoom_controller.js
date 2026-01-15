@@ -21,6 +21,7 @@ const fsSync = require("fs");
 const fs = require("fs/promises");
 const path = require("path");
 const archiver = require("archiver");
+const { replaceSceneUrls } = require("../helpers/reusablePuzzles");
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -659,7 +660,7 @@ exports.clone = async (req, res, next) => {
     const transaction = await sequelize.transaction();
 
     try {
-        let {"title": oldTitle, subject, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, publishedOnce} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
+        let {"title": oldTitle, subjects, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${oldTitle}`;
         const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -667,19 +668,29 @@ exports.clone = async (req, res, next) => {
         if (hintApp) {
             include.push(models.hintApp);
         }
-        if (assets && assets.length) {
-            include.push(models.asset);
-        }
         if (attachment) {
             include.push(models.attachment);
         }
+        if (subjects) {
+            include.push(models.subject);
+        }
+        if (reusablePuzzleInstances && reusablePuzzleInstances.length) {
+            include.push({
+                "model": models.reusablePuzzleInstance,
+                "include": [models.reusablePuzzle]
+            });
+        }
 
+       
         lang = lang || "en";
-        assets = assets && assets.length ? [...assets].filter((a) => a.assetType).map((asset) => ({...uploadsHelper.getFieldsForAsset(asset), "userId": authorId})) : undefined;
-
+        const theReusablePuzzleInstances = reusablePuzzleInstances ? reusablePuzzleInstances.map((instance) => ({
+                "name": instance.name,
+                "config": instance.config,
+                "reusablePuzzleId": instance.reusablePuzzleId
+            })) : undefined
         const escapeRoom = models.escapeRoom.build({
             "title": newTitle,
-            subject,
+            subjects: subjects ? subjects.map((s) => ({ "subject": s.subject })) : [],
             duration,
             description,
             scope,
@@ -695,6 +706,8 @@ exports.clone = async (req, res, next) => {
             posttest,
             numQuestions,
             invitation,
+            hybridInstructions, 
+            instructions,
             numRight,
             feedback,
             forbiddenLateSubmissions,
@@ -723,19 +736,81 @@ exports.clone = async (req, res, next) => {
                 correct,
                 fail,
                 automatic,
-                dur,
+                expectedDuration,
                 validator,
                 score,
                 "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
             })),
             "hintApp": hintApp ? uploadsHelper.getFields(hintApp) : undefined,
-            assets,
+            "reusablePuzzleInstances": theReusablePuzzleInstances,
             "attachment": attachment ? uploadsHelper.getFields(attachment) : undefined
         }, {include});
 
         const saved = await escapeRoom.save({transaction});
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});
+        for (let rpi in reusablePuzzleInstances) {
+            const oldRPI = reusablePuzzleInstances[rpi];
+            const newRPI = saved.reusablePuzzleInstances[rpi];
+            saved.teamInstructions = saved.teamInstructions.replaceAll(
+                "/escapeRooms/"+req.escapeRoom.id+"/reusablePuzzleInstances/"+oldRPI.id, 
+                "/escapeRooms/"+saved.id+"/reusablePuzzleInstances/"+newRPI.id);
+        }
+        const theAssets = assets && assets.length ? [...assets].
+            filter((a) => a.assetType).
+            map((asset) => ({...uploadsHelper.getFieldsForAssetNoURL(asset), "userId": authorId, "escapeRoomId": saved.id})) : undefined;
+
+        const savedAssets = await models.asset.bulkCreate(theAssets, {transaction});
+        for (let asset in assets) {
+            const oldAsset = assets[asset];
+            const newAsset = savedAssets[asset];
+            saved.description = description.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
+            saved.indicationsInstructions = indicationsInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
+            saved.teamInstructions = teamInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
+            saved.classInstructions = classInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
+            saved.afterInstructions = afterInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
+            if (theReusablePuzzleInstances && theReusablePuzzleInstances.length > 0) {
+                for (let rpi in saved.reusablePuzzleInstances) {
+                    const newRPI = saved.reusablePuzzleInstances[rpi];
+                    newRPI.config = newRPI.config.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
+                    saved.reusablePuzzleInstances[rpi] = newRPI;
+                }
+            }
+            if(oldAsset.url) {
+                savedAssets[asset].url = oldAsset.url.replaceAll("/assets/" + oldAsset.id, "/assets/" + newAsset.id);
+            }
+            await savedAssets[asset].save({transaction});
+        }
+        
+        saved.save({transaction});
+        if (scenes) {
+            const newScenes = [];
+            for (let scene in scenes) {
+                const oldScene = scenes[scene];
+                const oldERid = req.escapeRoom.id;
+                const newERid = saved.id;
+                const oldAssetsIds = assets.map(a=>a.id);
+                const newAssetsIds = savedAssets.map(a=>a.id);
+                const oldReusablePuzzleInstances = reusablePuzzleInstances.map(rpi=>rpi.id);
+                const newReusablePuzzleInstances = saved.reusablePuzzleInstances.map(rpi=>rpi.id);
+                const newScene = replaceSceneUrls(oldScene.toJSON(), oldERid, newERid, oldAssetsIds, newAssetsIds, oldReusablePuzzleInstances, newReusablePuzzleInstances); 
+                newScenes.push(newScene)
+            
+            }
+            if (newScenes.length > 0) {
+                const savedScenes = await models.scene.bulkCreate(newScenes, {transaction});
+                for (let scene in scenes) { 
+                    const oldScene = scenes[scene];
+                    const oldERid = req.escapeRoom.id;
+                    const newERid = saved.id;
+                    const newSceneid = savedScenes[scene].id;
+                    saved.teamInstructions = saved.teamInstructions.replaceAll(oldERid + "/scenes/" + oldScene.id, newERid + "/scenes/" + newSceneid);
+                }
+                saved.save({transaction});
+             }                            
+
+        }
+ 
 
         await teamCreated.addTeamMembers(req.session.user.id, {transaction});
         await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": req.session.user.id}, {transaction});
@@ -1030,7 +1105,6 @@ exports.export = async (req, res, next) => {
             const idFolder = String(item.pathStr.id); // E.g. "670"
 
             // ContentPath is relative to project root, possibly starting with "/"
-            console.log(item);
             const filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
             const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
             const filePath = path.join(process.cwd(), relativeFromRoot);
@@ -1047,7 +1121,6 @@ exports.export = async (req, res, next) => {
                 console.warn("File not found, skipping:", filePath);
             }
         }
-
 
         archive.append(JSON.stringify(toExport, null, 2), { "name": "escape-room.json" });
         await archive.finalize();

@@ -1633,6 +1633,7 @@
     },
     "network": {
         "filters": {
+            "Filters": "Filtros",
             "any": "Cualquiera",
             "after": "Después de",
             "before": "Antes de",
@@ -1658,8 +1659,8 @@
             }
         },
         "search": {
-            "searchButton": "Buscar",
-            "inputPlaceholder": "Buscar...",
+            "searchButton": "buscar",
+            "inputPlaceholder": "buscar...",
             "loadingPlaceholder": "Cargando escape rooms...",
             "noResults": "No se han encontrado escape rooms que coincidan con los criterios de búsqueda.",
             "filterPlaceholder": "No se han encontrado escape rooms con los filtros seleccionados. Prueba a cambiar los filtros.",

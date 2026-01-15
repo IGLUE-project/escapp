@@ -76,7 +76,7 @@ exports.deleteReport = async (req, res) => {
 
 exports.getNetworkURLS = async (_, res) => {
     try {
-        const envURLS = JSON.parse(process.env.NETWORK_URLS) || [];
+        const envURLS = JSON.parse(process.env.NETWORK_URLS || "[]") || [];
         const config = await models.adminConfig.findOne({"attributes": ["urls"], "where": {"id": 1}}) || {};
         const dbURLs = config.urls ? JSON.parse(config.urls) : [];
         let urlsText = "";

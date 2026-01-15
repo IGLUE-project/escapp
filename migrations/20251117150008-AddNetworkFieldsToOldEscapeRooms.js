@@ -14,6 +14,7 @@ module.exports = {
                     if (er.status === null) {
                         er.status = "draft"; // For old escape rooms
                     }
+                    
                     await er.save({ transaction });
                 } catch (err) {
                     nErrors++;

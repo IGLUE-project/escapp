@@ -47,6 +47,8 @@
       min-width: 5rem
       text-align: start
       padding: 1rem
+    #searchButton
+      vertical-align: middle
     #search
       width:70%
   .filtros
@@ -55,6 +57,8 @@
     flex-flow: column
     @media screen and (max-width: 900px)
       overflow-x: auto
+    h2
+      margin-top: 0px
     .container
       display: flex
       flex-flow: column nowrap
@@ -84,8 +88,13 @@
           color: colors.$textpurple
           border-color: colors.$textpurple
           webkit-text-fill-color: colors.$textpurple
+
           @media screen and (max-width: 900px)
             font-size: 1rem
+        input[type="date"]::-webkit-calendar-picker-indicator
+          filter: invert(.5)
+        input[type="date"]:focus::-webkit-calendar-picker-indicator
+          filter: invert(1)
   .Results
     // height: 100%
   #language

@@ -78,3 +78,14 @@ exports.getFieldsForAsset = (el) => ({
     "config": el.config,
     "url": el.url
 });
+
+exports.getFieldsForAssetNoURL = (el) => ({
+    "assetType": el.assetType,
+    "mimetype": el.mimetype,
+    "fileId": el.fileId,
+    "filePath": el.filePath,
+    "fileExtension": el.fileExtension,
+    "filename": el.filename,
+    "contentPath": el.contentPath,
+    "config": el.config
+});

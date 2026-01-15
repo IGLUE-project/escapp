@@ -5,13 +5,13 @@
         <div class="headerBusqueda">
             <div id="searchBarContainer" class="flex-row"></div>
                 <input id="search" type="text" placeholder="<%=i18n.network.search.inputPlaceholder%>">
-                <button id="searchButton"><%=i18n.network.search.searchButton%></button>
+                <button id="searchButton" class="btn rounded playButton white"><%=i18n.network.search.searchButton%></button>
             <div id="tags">
             </div>
         </div>
 
         <div class="filtros" style="grid-column:1; grid-row:2;padding:1em;" id="filters">
-            <h2>Filtros</h2>
+            <h2><%=i18n.network.filters.Filters%></h2>
             <div class="container">
                 <div class="flex-column item">
                     <label class="label"><%=i18n.network.filters.after%></label>
@@ -159,6 +159,7 @@
             if(isEscapeRoomFilteredOut(escapeRoom)){
                 return;
             }
+            
             const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
             const imageURL = (escapeRoom.attachment && escapeRoom.attachment.url) ? escapeRoom.attachment.url : "../images/puzzleorange.png";
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
@@ -302,7 +303,9 @@
 
         resultsToDraw = jsonResults;
         jsonResults.forEach((escapeRoom, i) => {
-            const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
+            console.log(escapeRoom)
+            // const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
+            const href = escapeRoom.url ?  ("/network/" + escapeRoom.id + "/preview?url=" + escapeRoom.url) : "../escapeRooms/" + escapeRoom.id;
             const imageURL = (escapeRoom.attachment && escapeRoom.attachment.url) ? escapeRoom.attachment.url : "../images/puzzleorange.png";
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
