@@ -18,7 +18,7 @@ const reusablePuzzleController = require("../controllers/reusable_puzzle_control
 const managementController = require("../controllers/management_controller");
 const networkController = require("../controllers/network_controller");
 const sceneController = require("../controllers/scene_controller");
-const { instructions, thumbnails, hints, upload, hybridInstructions } = require("../controllers/multer_controller");
+const { instructions, thumbnails, hints, upload, hybridInstructions, memoryStorage } = require("../controllers/multer_controller");
 
 router.all("*", sessionController.deleteExpiredUserSession);
 
@@ -103,6 +103,8 @@ router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequ
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.test);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.startPlaying, playController.play);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginRequired, sessionController.authShowEscapeRoom, escapeRoomController.export);
+router.get("/escapeRooms/import", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.importView);
+router.post("/escapeRooms/import", sessionController.loginRequired, memoryStorage.single("fileInput"), escapeRoomController.import);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", escapeRoomController.returnThumbnail);
 
 // Edit escape room steps
@@ -251,6 +253,6 @@ router.get("/network/search", networkController.renderSearch);
 router.get("/network/query", sessionController.loginRequired, networkController.searchInNetwork);
 router.post("/network/:escapeRoomId(\\d+)/sendcontactemail", networkController.sendContactEmail);
 router.get("/network/:escapeRoomId(\\d+)/json", networkController.getPreviewData);
-router.get("/network/:escapeRoomId/preview", sessionController.loginRequired, networkController.servePreviewRender);
+router.get("/network/:escapeRoomId/preview", sessionController.loginRequired, networkController.renderSearch);
 
 module.exports = router;

@@ -5084,8 +5084,8 @@ table.mainTable tr td .icon {
   gap: 8px;
   padding: 4px 10px;
   border-radius: 999px;
-  background: white;
-  color: #161938 !important;
+  background: transparent;
+  color: white !important;
   font-size: 0.8em;
   line-height: 1.15;
   user-select: none;
@@ -5096,6 +5096,7 @@ table.mainTable tr td .icon {
   text-overflow: ellipsis;
   display: inline;
   position: relative;
+  border: 2px solid white;
 }
 .tag-chip.tag-chip-edit {
   padding-right: 25px;
@@ -5104,7 +5105,7 @@ table.mainTable tr td .icon {
   cursor: pointer;
   font-weight: bold;
   line-height: 1;
-  color: #161938 !important;
+  color: white !important;
   opacity: 0.9;
   transition: transform 0.1s ease, opacity 0.15s ease;
   right: 8px;

@@ -1,11 +1,12 @@
 const Sequelize = require("sequelize");
 const {QueryTypes} = require("sequelize");
+const AdmZip = require("adm-zip");
 const sequelize = require("../models");
 const {models} = sequelize;
 const query = require("../queries");
 const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {isAuthor, isCoAuthor, isCoAuthorPending, isParticipant, getParticipant} = require("../helpers/escapeRooms");
+const {isAuthor, isCoAuthor, isCoAuthorPending, isParticipant, getParticipant, cloneER, getFilePathsForER} = require("../helpers/escapeRooms");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname} = require("../helpers/utils");
 const {
     toArray,
@@ -21,7 +22,6 @@ const fsSync = require("fs");
 const fs = require("fs/promises");
 const path = require("path");
 const archiver = require("archiver");
-const { replaceSceneUrls } = require("../helpers/reusablePuzzles");
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -660,161 +660,12 @@ exports.clone = async (req, res, next) => {
     const transaction = await sequelize.transaction();
 
     try {
-        let {"title": oldTitle, subjects, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
+        const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
         const authorId = req.session && req.session.user && req.session.user.id || 0;
-        const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${oldTitle}`;
-        const include = [{"model": models.puzzle, "include": [models.hint]}];
+        const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${escapeRoom.title}`;
+        const currentUser = req.session.user;
+        const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, undefined, transaction);
 
-        if (hintApp) {
-            include.push(models.hintApp);
-        }
-        if (attachment) {
-            include.push(models.attachment);
-        }
-        if (subjects) {
-            include.push(models.subject);
-        }
-        if (reusablePuzzleInstances && reusablePuzzleInstances.length) {
-            include.push({
-                "model": models.reusablePuzzleInstance,
-                "include": [models.reusablePuzzle]
-            });
-        }
-
-       
-        lang = lang || "en";
-        const theReusablePuzzleInstances = reusablePuzzleInstances ? reusablePuzzleInstances.map((instance) => ({
-                "name": instance.name,
-                "config": instance.config,
-                "reusablePuzzleId": instance.reusablePuzzleId
-            })) : undefined
-        const escapeRoom = models.escapeRoom.build({
-            "title": newTitle,
-            subjects: subjects ? subjects.map((s) => ({ "subject": s.subject })) : [],
-            duration,
-            description,
-            scope,
-            teamSize,
-            lang,
-            forceLang,
-            teamAppearance,
-            classAppearance,
-            allowCustomHints,
-            hintInterval,
-            survey,
-            pretest,
-            posttest,
-            numQuestions,
-            invitation,
-            hybridInstructions, 
-            instructions,
-            numRight,
-            feedback,
-            forbiddenLateSubmissions,
-            classInstructions,
-            teamInstructions,
-            indicationsInstructions,
-            afterInstructions,
-            scoreParticipation,
-            hintLimit,
-            hintSuccess,
-            hintFailed,
-            authorId,
-            supportLink,
-            automaticAttendance,
-            "status": "draft",
-            license,
-            field,
-            "publishedOnce": false,
-            format,
-            level,
-            "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, expectedDuration, validator, score, hints}) => ({
-                title,
-                sol,
-                desc,
-                order,
-                correct,
-                fail,
-                automatic,
-                expectedDuration,
-                validator,
-                score,
-                "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
-            })),
-            "hintApp": hintApp ? uploadsHelper.getFields(hintApp) : undefined,
-            "reusablePuzzleInstances": theReusablePuzzleInstances,
-            "attachment": attachment ? uploadsHelper.getFields(attachment) : undefined
-        }, {include});
-
-        const saved = await escapeRoom.save({transaction});
-        const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
-        const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});
-        for (let rpi in reusablePuzzleInstances) {
-            const oldRPI = reusablePuzzleInstances[rpi];
-            const newRPI = saved.reusablePuzzleInstances[rpi];
-            saved.teamInstructions = saved.teamInstructions.replaceAll(
-                "/escapeRooms/"+req.escapeRoom.id+"/reusablePuzzleInstances/"+oldRPI.id, 
-                "/escapeRooms/"+saved.id+"/reusablePuzzleInstances/"+newRPI.id);
-        }
-        const theAssets = assets && assets.length ? [...assets].
-            filter((a) => a.assetType).
-            map((asset) => ({...uploadsHelper.getFieldsForAssetNoURL(asset), "userId": authorId, "escapeRoomId": saved.id})) : undefined;
-
-        const savedAssets = await models.asset.bulkCreate(theAssets, {transaction});
-        for (let asset in assets) {
-            const oldAsset = assets[asset];
-            const newAsset = savedAssets[asset];
-            saved.description = description.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-            saved.indicationsInstructions = indicationsInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-            saved.teamInstructions = teamInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-            saved.classInstructions = classInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-            saved.afterInstructions = afterInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-            if (theReusablePuzzleInstances && theReusablePuzzleInstances.length > 0) {
-                for (let rpi in saved.reusablePuzzleInstances) {
-                    const newRPI = saved.reusablePuzzleInstances[rpi];
-                    newRPI.config = newRPI.config.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-                    saved.reusablePuzzleInstances[rpi] = newRPI;
-                }
-            }
-            if(oldAsset.url) {
-                savedAssets[asset].url = oldAsset.url.replaceAll("/assets/" + oldAsset.id, "/assets/" + newAsset.id);
-            }
-            await savedAssets[asset].save({transaction});
-        }
-        
-        saved.save({transaction});
-        if (scenes) {
-            const newScenes = [];
-            for (let scene in scenes) {
-                const oldScene = scenes[scene];
-                const oldERid = req.escapeRoom.id;
-                const newERid = saved.id;
-                const oldAssetsIds = assets.map(a=>a.id);
-                const newAssetsIds = savedAssets.map(a=>a.id);
-                const oldReusablePuzzleInstances = reusablePuzzleInstances.map(rpi=>rpi.id);
-                const newReusablePuzzleInstances = saved.reusablePuzzleInstances.map(rpi=>rpi.id);
-                const newScene = replaceSceneUrls(oldScene.toJSON(), oldERid, newERid, oldAssetsIds, newAssetsIds, oldReusablePuzzleInstances, newReusablePuzzleInstances); 
-                newScenes.push(newScene)
-            
-            }
-            if (newScenes.length > 0) {
-                const savedScenes = await models.scene.bulkCreate(newScenes, {transaction});
-                for (let scene in scenes) { 
-                    const oldScene = scenes[scene];
-                    const oldERid = req.escapeRoom.id;
-                    const newERid = saved.id;
-                    const newSceneid = savedScenes[scene].id;
-                    saved.teamInstructions = saved.teamInstructions.replaceAll(oldERid + "/scenes/" + oldScene.id, newERid + "/scenes/" + newSceneid);
-                }
-                saved.save({transaction});
-             }                            
-
-        }
- 
-
-        await teamCreated.addTeamMembers(req.session.user.id, {transaction});
-        await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": req.session.user.id}, {transaction});
-        transaction.commit();
         res.redirect(`/escapeRooms/${saved.id}/edit`);
     } catch (err) {
         await transaction.rollback();
@@ -1055,38 +906,10 @@ exports.export = async (req, res, next) => {
         }
 
         const toExport = escapeRoom.toJSON ? escapeRoom.toJSON() : escapeRoom.dataValues;
-        const pathFields = ["attachment", "hintApp", "hybridInstructions", "instructions"];
-
-        const flatCandidates = pathFields.flatMap((field) => toArray(toExport[field]).map((p) => ({ field, "pathStr": p })));
-        const assetCandidates = toExport.assets.map((ast) => ({
-            "field": "assets",
-            "pathStr": ast
-        }));
-        const all = [...flatCandidates, ...assetCandidates];
+        const all = getFilePathsForER(toExport);
         const seen = new Set();
         const resolved = [];
-
-
-        /* For (const { field, pathStr } of all) {
-
-            const baseDir = baseFor("../..");
-            const abs = resolveUnder(baseDir, pathStr);
-            console.log()
-            if (!abs) {
-                continue;
-            }
-
-            const key = `${field}::${""}::${abs}`;
-
-            if (seen.has(key)) {
-                continue;
-            }
-            seen.add(key);
-
-            const zipRoot = field === "assets" ? ["assets", ...relKeys].join("/") : field;
-
-            resolved.push({ abs, baseDir, zipRoot });
-        }*/
+        toExport.server =  process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
 
         const zipName = `escape-room-${escapeRoom.id}.zip`;
 
@@ -1102,21 +925,27 @@ exports.export = async (req, res, next) => {
 
         for (const item of all) {
             const folderName = item.field; // E.g. "assets"
-            const idFolder = String(item.pathStr.id); // E.g. "670"
+            const idFolder = item.pathStr.id && String(item.pathStr.id); // E.g. "670"
 
             // ContentPath is relative to project root, possibly starting with "/"
             const filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
             const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
             const filePath = path.join(process.cwd(), relativeFromRoot);
+            const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
 
-            const originalName = item.pathStr.filename || path.basename(filePath);
-
-            console.log(filePath);
             if (fsSync.existsSync(filePath)) {
-                archive.file(filePath, {
-                // Path inside the zip: <field>/<id>/<filename>
-                    "name": `${folderName}/${idFolder}/${originalName}`
-                });
+                if (idFolder) {
+                    archive.file(filePath, {
+                        // Path inside the zip: <field>/<id>/<filename>
+                        "name": `${folderName}/${idFolder}/${originalName}`
+                    });
+                } else {
+                    archive.file(filePath, {
+                        // Path inside the zip: <field>/<id>/<filename>
+                        "name": `${folderName}/${originalName}`
+                    });
+                }
+                
             } else {
                 console.warn("File not found, skipping:", filePath);
             }
@@ -1128,4 +957,69 @@ exports.export = async (req, res, next) => {
         console.error(err);
         next(err);
     }
+};
+
+exports.importView = async (req, res, next) => {
+    res.render("escapeRooms/import");
+}
+
+exports.import = async (req, res, next) => {
+  let escapeRoom;
+  const transaction = await sequelize.transaction();
+  // TO-DO Important: Missing: webaps, hintapps, name colission, escapp version, reusable puzzles id does not match between instances
+  try {
+    const zip = new AdmZip(req.file.path);
+
+    // Try to get escapeRoom.json from the root
+    const entry = zip.getEntry("escape-room.json");
+
+    if (!entry || entry.isDirectory) {
+      return res.status(400).send("escape-room.json not found at ZIP root");
+    }
+
+    const rawJson = entry.getData().toString("utf8");
+
+    escapeRoom = JSON.parse(rawJson);
+    const all = getFilePathsForER(escapeRoom);
+
+    for (const fi in all) {
+        const item = all[fi];
+        const folderName = item.field; // E.g. "assets"
+        const idFolder = item.pathStr.id && String(item.pathStr.id); // E.g. "670"
+        const filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
+        const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
+        const filePath = path.join(process.cwd(), relativeFromRoot);
+        const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
+        const route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
+        console.log(route)
+        const newRoute = item.pathStr.contentPath;
+        const fileZip = zip.getEntry(route)
+        if (fileZip) {
+            const data = fileZip.getData();
+
+            // Absolute or relative path on your server
+            let targetPath = path.join(__dirname, "..", newRoute);
+
+            // Make sure the destination folder exists
+            fsSync.mkdirSync(path.dirname(targetPath), { recursive: true });
+
+            // Write file to disk
+            fsSync.writeFileSync(targetPath, data);
+        }
+        
+        
+    }
+    const authorId = req.session && req.session.user && req.session.user.id || 0;
+    const newTitle = escapeRoom.title;
+    const currentUser = req.session.user;
+    const prevUrl = escapeRoom.server;
+    const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, prevUrl, transaction);
+    console.log(saved)
+    res.redirect("/escapeRooms/" + saved.id)
+
+  } catch (err) {
+    console.error(err)
+    next(err)
+  }
+
 };

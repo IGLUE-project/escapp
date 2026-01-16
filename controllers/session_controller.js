@@ -265,7 +265,6 @@ exports.create = async (req, res, next) => {
             if (!user.confirmed) {
                 const needstToBeConfirmed = userNeedsConfirmation(user);
 
-                console.log(needstToBeConfirmed, process.env.EMAIL_VALIDATION_TEACHER, user.isStudent);
                 if (needstToBeConfirmed) {
                     req.flash("action", `${i18n.common.flash.emailNotConfirmed
                     }<a href="/users/resend-confirmation/${user.id}"> <button class=" rounded editButton flash-button">${

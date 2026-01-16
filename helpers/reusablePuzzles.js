@@ -52,14 +52,16 @@ exports.getPuzzlesSolutionLength = (puzzles) => {
  * Only applies replacements on values whose key is one of:
  *   avatar, image, body, background, thumbnail
  */
-exports.replaceSceneUrls = function replaceSceneUrls(
+exports.replaceSceneUrls = function (
   oldScene,
   oldEscapeId,
   newEscapeId,
   oldAssetIds,
   newAssetIds,
   oldReusablePuzzleIds,
-  newReusablePuzzleIds
+  newReusablePuzzleIds,
+  oldServerUrl,
+  newServerUrl
 ) {
   const targetKeys = new Set(["avatar", "image", "body", "background", "thumbnail"]);
 
@@ -95,11 +97,25 @@ exports.replaceSceneUrls = function replaceSceneUrls(
     "g"
   );
 
+ const hasServerRewrite =
+    typeof oldServerUrl === "string" &&
+    oldServerUrl.length > 0 &&
+    typeof newServerUrl === "string" &&
+    newServerUrl.length > 0;
+
+  const normalizedOldServer = hasServerRewrite ? normalizeBaseUrl(oldServerUrl) : null;
+  const normalizedNewServer = hasServerRewrite ? normalizeBaseUrl(newServerUrl) : null;
+
+  const serverRegex = hasServerRewrite ? new RegExp(escapeRegExp(normalizedOldServer), "g") : null;
+
   function transformValue(key, value) {
     if (!targetKeys.has(key) || typeof value !== "string") return value;
 
     let out = value;
-
+    
+    if (serverRegex) {
+      out = out.replace(serverRegex, normalizedNewServer);
+    }
     out = out.replace(assetRegex, (match, id) => {
       const mapped = assetMap.get(id);
       return mapped ? `/assets/${mapped}` : match;
@@ -184,4 +200,8 @@ exports.replaceSceneUrls = function replaceSceneUrls(
 
 function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function normalizeBaseUrl(url) {
+  // Remove trailing slashes so "http://x/" and "http://x" match consistently
+  return url.replace(/\/+$/, "");
 }

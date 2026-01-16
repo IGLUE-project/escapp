@@ -151,7 +151,6 @@ exports.getAsset = async (req, res, next) => {
     let asset;
 
     try {
-        console.log(asset_id)
         asset = await models.asset.findOne({"where": { "id": asset_id }});
         if (!asset) {
             res.status(404).send("Asset not found.");

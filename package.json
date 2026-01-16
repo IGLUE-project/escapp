@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.4",
+    "adm-zip": "^0.5.16",
     "archiver": "^7.0.1",
     "body-parser": "^1.19.2",
     "coffeescript": "^2.7.0",

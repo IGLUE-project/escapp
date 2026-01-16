@@ -368,15 +368,28 @@ exports.loadExport = {
     "include": [
         {
             "model": models.puzzle,
-            "include": [{"model": models.hint}]
+            "include": [
+                {
+                    "model": models.hint,
+                    "order": [["order", "asc"]]
+                }
+            ],
+            "order": [["order", "asc"]]
         },
-        models.attachment,
+    { "model": models.attachment },
         {
             "model": models.subject,
             "attributes": ["subject"]
         },
-        models.hintApp,
-        {"model": models.asset}
+        { "model": models.asset, "separate": true },
+        { "model": models.hintApp },
+        { "model": models.scene, 
+            "separate": true, 
+            "include": [
+                { "model": models.reusablePuzzleInstance, "separate": true },
+                { "model": models.puzzle, "separate": true }
+        ]}, 
+        { "model": models.reusablePuzzleInstance, "separate": true }
     ],
     "order": [
         [
@@ -390,5 +403,58 @@ exports.loadExport = {
             "order",
             "asc"
         ]
+    ]
+};
+
+
+exports.loadComplete = {
+    "include": [
+        {
+            "model": models.turno,
+            "separate": true,
+            "required": false,
+            "where": {"status": {[Op.not]: "test"}},
+            "include": {
+                "model": models.team,
+                "separate": true,
+                "attributes": ["id"]
+            },
+            "order": [["date", "asc"]]
+        },
+        {
+            "model": models.puzzle,
+            "separate": true,
+            "include": [
+                {
+                    "model": models.hint,
+                    "separate": true,
+                    "order": [["order", "asc"]]
+                }
+            ],
+            "order": [["order", "asc"]]
+        },
+        { "model": models.attachment },
+        {
+            "model": models.subject,
+            "attributes": ["subject"]
+        },
+        { "model": models.asset, "separate": true },
+        { "model": models.hintApp },
+        { "model": models.scene, 
+            "separate": true, 
+            "include": [
+                { "model": models.reusablePuzzleInstance, "separate": true },
+                { "model": models.puzzle, "separate": true }
+        ]}, 
+        { "model": models.reusablePuzzleInstance, "separate": true },
+        {
+            "model": models.user,
+            "as": "author"
+        },
+        {
+            "model": models.user,
+            "as": "userCoAuthor",
+            "required": false
+        }
     ]
 };

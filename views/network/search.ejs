@@ -303,7 +303,6 @@
 
         resultsToDraw = jsonResults;
         jsonResults.forEach((escapeRoom, i) => {
-            console.log(escapeRoom)
             // const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
             const href = escapeRoom.url ?  ("/network/" + escapeRoom.id + "/preview?url=" + escapeRoom.url) : "../escapeRooms/" + escapeRoom.id;
             const imageURL = (escapeRoom.attachment && escapeRoom.attachment.url) ? escapeRoom.attachment.url : "../images/puzzleorange.png";

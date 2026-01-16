@@ -1,0 +1,11 @@
+<%- include ("../partials/_header.ejs") %>
+<div role="main" class="main escapeRooms" >
+    <form action="/escapeRooms/import" method="POST" enctype="multipart/form-data">
+        <label for="fileInput">Upload File:</label>
+        <input type="file" id="fileInput" name="fileInput" required>
+        <button type="submit">Submit</button>
+    </form>
+   </br>
+    </br>
+    <%- include ("../partials/_footer") %>
+</div>
