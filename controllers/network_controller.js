@@ -37,7 +37,6 @@ exports.searchInInstance = async (req, res, next) => { // Busqueda local
     try {
         const {query, before, after, lang, page, limit, participation, area, duration, format, level} = req.query || {};
         const results = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);
-        console.log(results)
 
         res.json(results);
     } catch (error) {
@@ -136,7 +135,6 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
         const data = values[i];
 
         if (data.status === "fulfilled" && data.value && data.value instanceof Array) {
-            console.log(data)
             data.value.forEach((v) => {
                 aggregated.push({...v, "url": urls[i]});
             });
@@ -169,7 +167,6 @@ exports.sendContactEmail = async (req, res, next) => {
 exports.getPreviewData = async (req, res) => {
     try {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPreview);
-    console.log(escapeRoom.toJSON())
     return res.json(escapeRoom.toJSON());    
     } catch (error) {
         console.error("Error fetching preview data:", error);

@@ -1,11 +1,71 @@
 <%- include ("../partials/_header.ejs") %>
-<div role="main" class="main escapeRooms" >
-    <form action="/escapeRooms/import" method="POST" enctype="multipart/form-data">
-        <label for="fileInput">Upload File:</label>
-        <input type="file" id="fileInput" name="fileInput" required>
-        <button type="submit">Submit</button>
+<div role="main" class="main steps steps-new">
+    <div class="breadcrumbs-container">
+        <div class="breadcrumbs">
+            <a href="/escapeRooms"><%=i18n.common.my%></a>
+            <span class="material-icons">chevron_right</span>
+            <span><%=i18n.escapeRoom.import.Import%></span>
+        </div>
+    </div>
+
+    <h1><%=i18n.escapeRoom.import.importER%></h1>
+
+    <form id="import-form" class="basicConfig" action="/escapeRooms/import" method="POST" enctype="multipart/form-data">
+        <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 200ms;">
+            <label for="fileInput" class="itemNarrow"><%=i18n.escapeRoom.import.selectFile%>:</label>
+            <p class="note-up animated slideInUp" style="animation-delay: 200ms;">
+                <%=i18n.escapeRoom.import.selectFromEscapp %>
+            </p>
+            <input class="attach" type="file" id="fileInput" name="fileInput" accept=".zip" required/>
+            <label for="fileInput" class="fileUpload customInput itemWide">
+                <span id="fileLabel" style="vertical-align:middle;">
+                    <%=i18n.escapeRoom.steps.settings.noFileUploaded%>
+                </span>
+                <span id="upload" class="fileUploadButton" style="vertical-align:middle;">
+                    <span class="material-icons">file_upload</span>
+                </span>
+                <span id="delete" style="display: none; vertical-align:middle;" class="fileUploadButton">
+                    <span class="material-icons">delete</span>
+                </span>
+            </label>
+        </div>
+
+        <div class="align-right flex-buttons buttons_before_progressbar">
+            <a href="/escapeRooms">
+                <button class="progress-buttons" id="exit" type="button"><%=i18n.common.cancel%></button>
+            </a>
+            <button class="progress-buttons" type="submit" id="import-submit"><%=i18n.escapeRoom.import.import%></button>
+        </div>
     </form>
-   </br>
-    </br>
+
+    <script type="text/javascript">
+    $(function(){
+        $('#fileInput').on("change", function(e){
+            let path = $(this).val();
+            try {
+                let fileNameArr = path.split("\\");
+                let fileName = fileNameArr[fileNameArr.length - 1];
+                if(fileName) {
+                    $('#delete').show();
+                    $('#upload').hide();
+                    $('#fileLabel').html(fileName);
+                }
+            } catch (e) {
+                $('#delete').hide();
+                $('#upload').show();
+                $('#fileLabel').html("<%=i18n.escapeRoom.steps.settings.noFileUploaded || 'No file selected'%>");
+            }
+        });
+
+        $('#delete').on('click', function(e){
+            e.preventDefault();
+            $('#fileInput').val('');
+            $('#delete').hide();
+            $('#upload').show();
+            $('#fileLabel').html("<%=i18n.escapeRoom.steps.settings.noFileUploaded || 'No file selected'%>");
+        });
+    });
+    </script>
+
     <%- include ("../partials/_footer") %>
 </div>

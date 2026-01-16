@@ -51,8 +51,17 @@ const getParticipant = async function (user, er, includeTest = false) {
 
 exports.getParticipant = getParticipant;
 
+const getReusablePuzzleIdByName = async (rpName) => {
+    try {
+        const reus = await models.reusablePuzzle.findOne({where: {name: rpName}});
+        return reus.id;
+    } catch(e) {
+        throw new Error("No reusable puzzle with the name " + rpName)
+    }
+}
+
 exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, transaction) {
-    let {"title": oldTitle, subjects, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = er;
+    let {subjects, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = er;
 
     const include = [{"model": models.puzzle, "include": [models.hint]}];
 
@@ -74,11 +83,19 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
 
     
     lang = lang || "en";
-    const theReusablePuzzleInstances = reusablePuzzleInstances ? reusablePuzzleInstances.map((instance) => ({
-        "name": instance.name,
-        "config": instance.config,
-        "reusablePuzzleId": instance.reusablePuzzleId
-    })) : undefined;
+    let theReusablePuzzleInstances = undefined;
+
+    if (reusablePuzzleInstances) {
+        theReusablePuzzleInstances = [];
+
+        for (const instance of reusablePuzzleInstances) {
+            theReusablePuzzleInstances.push({
+                name: instance.name,
+                config: instance.config,
+                reusablePuzzleId: await getReusablePuzzleIdByName(instance.reusablePuzzle.name)
+            });
+        }
+    }
 
     const escapeRoom = models.escapeRoom.build({
         "title": newTitle,

@@ -40,18 +40,6 @@ exports.getPuzzlesSolutionLength = (puzzles) => {
     return puzzles.length === 1 ? solutionLength[0] : solutionLength;
 };
 
-
-/**
- * Deeply clones + updates URLs in specific fields of a scene-like object.
- *
- * Replaces:
- *  1) /escapeRooms/OLD_ESCAPE/reusablePuzzleInstances/OLD_REUS  -> /escapeRooms/NEW_ESCAPE/reusablePuzzleInstances/NEW_REUS
- *     (works even if the original has extra segments after OLD_REUS, e.g. "/render")
- *  2) /assets/OLD_ASSET_ID -> /assets/NEW_ASSET_ID
- *
- * Only applies replacements on values whose key is one of:
- *   avatar, image, body, background, thumbnail
- */
 exports.replaceSceneUrls = function (
   oldScene,
   oldEscapeId,

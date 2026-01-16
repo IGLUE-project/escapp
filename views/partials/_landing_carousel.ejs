@@ -1,4 +1,16 @@
-        <% if(title){%><h2 id="<%=whichMenu%>"><%=title%></h2><%}%>
+        <% if(title){%>
+            <h2 id="<%=whichMenu%>" class="escapeRoomLandingTitle">
+                <%=title%>
+                <%if (whichMenu === "created") {%>
+                    <a href="/escapeRooms/import">
+                        <button class="rounded importButton">
+                            <span class="material-icons">file_upload</span>
+                            <%=i18n.escapeRoom.import.import%>
+                        </button>
+                    </a>
+                <%}%>
+            </h2>
+        <%}%>
         <div class="flexBoxEscapeRooms">
             <% if (escapeRoomsList.length == 0) { %>
                 <% if (user && (whichMenu == "public")) { %>

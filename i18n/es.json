@@ -409,6 +409,13 @@
             "yesERTeacher": "Escape rooms",
             "notAvailable": "Escape room no disponible"
         },
+        "import": {
+            "import": "importar",
+            "Import": "Importar",
+            "importER": "Importar Escape Room",
+            "selectFile": "Selecciona un fichero",
+            "selectFromEscapp": "Selecciona un fichero .zip exportado de Escapp"
+        },
         "steps": {
             "appearance": {
                 "title": "Apariencia"
@@ -1030,6 +1037,7 @@
             "teamInterface": "Interfaz de equipo",
             "classInterface": "Interfaz de clase",
             "evaluation": "Evaluación",
+            "export": "exportar",
             "clone": "clonar",
             "delete": "borrar",
             "edit": "Editar",
@@ -1632,6 +1640,7 @@
         "unspecified": "No especificado"
     },
     "network": {
+        "conductSearch": "Realize una busqueda",
         "filters": {
             "Filters": "Filtros",
             "any": "Cualquiera",

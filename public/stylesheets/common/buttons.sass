@@ -69,7 +69,13 @@ button, input[type="submit"], .aButton
     background-color: colors.$textpurple
     border-color: colors.$textpurple
     color: colors.$darkerpurple
-    
+
+  &.exportButton
+    @include common-button
+    background-color: #dcd0ec
+    border-color: #dcd0ec
+    color: colors.$darkerpurple
+        
   &.deleteButton
     @include common-button
     background-color: colors.$lightred

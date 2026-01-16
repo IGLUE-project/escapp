@@ -386,10 +386,16 @@ exports.loadExport = {
         { "model": models.scene, 
             "separate": true, 
             "include": [
-                { "model": models.reusablePuzzleInstance, "separate": true },
+                { 
+                    "model": models.reusablePuzzleInstance, "separate": true, 
+                    "include": [{"model": models.reusablePuzzle }]
+                },
                 { "model": models.puzzle, "separate": true }
         ]}, 
-        { "model": models.reusablePuzzleInstance, "separate": true }
+        { 
+            "model": models.reusablePuzzleInstance, "separate": true,
+            "include": [{"model": models.reusablePuzzle }]
+         }
     ],
     "order": [
         [

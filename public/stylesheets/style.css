@@ -123,6 +123,20 @@ button.cloneButton, input[type=submit].cloneButton, .aButton.cloneButton {
   border-color: #9292B0;
   color: #161938;
 }
+button.exportButton, input[type=submit].exportButton, .aButton.exportButton {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 22px "Gugi", "Lucida Grande", Helvetica, Arial, sans-serif;
+  border-radius: 5px;
+  border-style: solid;
+  padding: 10px;
+  text-align: center;
+  outline: 0;
+  background-color: #dcd0ec;
+  border-color: #dcd0ec;
+  color: #161938;
+}
 button.deleteButton, input[type=submit].deleteButton, .aButton.deleteButton {
   margin: 0;
   padding: 0;
@@ -1613,6 +1627,18 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.escapeRooms .escapeRoomLandingTitle {
+  position: relative;
+}
+.escapeRooms .escapeRoomLandingTitle .importButton {
+  position: absolute;
+  right: 0;
+  font-size: 16px;
+  padding: 5px 10px !important;
+}
+.escapeRooms .escapeRoomLandingTitle .importButton .material-icons {
+  font-size: 16px;
 }
 .escapeRooms .escapeRoomSearch .escapeRoomFilters {
   text-align: right;

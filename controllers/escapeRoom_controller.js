@@ -920,7 +920,7 @@ exports.export = async (req, res, next) => {
 
         archive.on("error", (err) => {
             throw err;
-        });
+        });1768572897ea2689e1dd8f4dc77cb0ff1d7c5752da.zip
         archive.pipe(res);
 
         for (const item of all) {
@@ -966,7 +966,7 @@ exports.importView = async (req, res, next) => {
 exports.import = async (req, res, next) => {
   let escapeRoom;
   const transaction = await sequelize.transaction();
-  // TO-DO Important: Missing: webaps, hintapps, name colission, escapp version, reusable puzzles id does not match between instances
+  // TO-DO Important: Missing: webaps, hintapps, name colission, escapp version
   try {
     const zip = new AdmZip(req.file.path);
 
@@ -978,7 +978,11 @@ exports.import = async (req, res, next) => {
     }
 
     const rawJson = entry.getData().toString("utf8");
-
+    zip.getEntries().forEach(entry => {
+        if (!entry.isDirectory) {
+        console.log("File:", entry.entryName);
+        }
+    });
     escapeRoom = JSON.parse(rawJson);
     const all = getFilePathsForER(escapeRoom);
 
@@ -991,9 +995,10 @@ exports.import = async (req, res, next) => {
         const filePath = path.join(process.cwd(), relativeFromRoot);
         const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
         const route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
-        console.log(route)
         const newRoute = item.pathStr.contentPath;
         const fileZip = zip.getEntry(route)
+        
+
         if (fileZip) {
             const data = fileZip.getData();
 
@@ -1006,18 +1011,16 @@ exports.import = async (req, res, next) => {
             // Write file to disk
             fsSync.writeFileSync(targetPath, data);
         }
-        
-        
     }
     const authorId = req.session && req.session.user && req.session.user.id || 0;
     const newTitle = escapeRoom.title;
     const currentUser = req.session.user;
     const prevUrl = escapeRoom.server;
     const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, prevUrl, transaction);
-    console.log(saved)
-    res.redirect("/escapeRooms/" + saved.id)
+    res.redirect("/escapeRooms/" + saved.id);
 
   } catch (err) {
+    req.flash("error",err)
     console.error(err)
     next(err)
   }

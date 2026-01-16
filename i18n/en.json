@@ -413,6 +413,13 @@
             "yesERTeacher": "Escape rooms",
             "notAvailable": "Escape room not available"
         },
+        "import": {
+            "import": "import",
+            "Import": "Import",
+            "importER": "Import Escape Room",
+            "selectFile": "Select a file",
+            "selectFromEscapp": "Select a .zip file exported from Escapp"
+        },
         "steps": {
             "appearance": {
                 "title": "Appearance"
@@ -1036,6 +1043,7 @@
             "teamInterface": "Team interface",
             "classInterface": "Class interface",
             "evaluation": "Evaluation",
+            "export": "export",
             "clone": "clone",
             "delete": "delete",
             "edit": "Edit",

@@ -9,13 +9,12 @@
     </a>
     <table class="mainTable">
         <tr>
-            <th><%=i18n.reusablePuzzles.name%><th><%=i18n.reusablePuzzles.description%></th><th><%=i18n.reusablePuzzles.config%></th><th><%=i18n.common.edit%></th><th><%=i18n.common.delete%></th>
+            <th><%=i18n.reusablePuzzles.name%> <th><%=i18n.reusablePuzzles.config%></th><th><%=i18n.common.edit%></th><th><%=i18n.common.delete%></th>
         </tr>
 <% reusablePuzzles.forEach((puzzle)=>{%>
         <tr class="puzzle">
             <td><h2><%=puzzle.name%></h2></td>
-            <td><h2><%=puzzle.description%></h2></td>
-            <td><p><%=JSON.stringify(puzzle.config)%></p></td>
+            <td><div style="max-width: 40vw; overflow: auto;height: 45px;"><code ><%= (puzzle.config)%></code></div></td>
             <td> <button class="acceptButton" type="button"><a href="reusablePuzzles/<%=puzzle.id%>">Edit</></button> </td>
             <td>
             <form method="POST" action="reusablePuzzles/<%=puzzle.id%>?_method=DELETE">
