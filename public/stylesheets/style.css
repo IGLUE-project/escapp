@@ -6281,6 +6281,10 @@ div#scene_maker_container iframe#scene_maker_iframe {
   padding: 0 !important;
   display: flex;
   flex-flow: column;
+  background: #161938;
+  padding: 18px !important;
+  border: 2px solid white;
+  border-radius: 10px;
 }
 @media screen and (max-width: 900px) {
   .campoDeBusqueda .filtros {
@@ -6312,6 +6316,9 @@ div#scene_maker_container iframe#scene_maker_iframe {
   .campoDeBusqueda .filtros .container .item {
     width: calc(50% - 0.25rem);
   }
+}
+.campoDeBusqueda .filtros .container .item:focus-within .label {
+  color: white;
 }
 .campoDeBusqueda .filtros .container .item .label {
   font-size: 1.2rem;
