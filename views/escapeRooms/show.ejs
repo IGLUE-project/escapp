@@ -28,7 +28,7 @@
     <%}%>
     <div class="flex ">
 		<div class="flex-thumb attachmentShow animated">
-           <img  alt="thumbnail" src="<%=fromNetwork?networkUrl:""%>/escapeRooms/<%=escapeRoom.id%>/thumbnail">
+           <img  alt="thumbnail" src="<%=locals.fromNetwork? locals.networkUrl:""%>/escapeRooms/<%=escapeRoom.id%>/thumbnail">
 		</div>
 		<div class="flex-er-info animated fadeIn">
             <h1><%=escapeRoom.title%>
@@ -39,7 +39,7 @@
             </p>
             <%if(!locals.fromNetwork){%>
             <p>
-                <a href="<%=fromNetwork?networkUrl:""%>/escapeRooms/<%=escapeRoom.id%>/contact">Contact</a>
+                <a href="<%=locals.fromNetwork? locals.networkUrl:""%>/escapeRooms/<%=escapeRoom.id%>/contact">Contact</a>
             </p>
             <%}%>
             <br/>
@@ -86,7 +86,7 @@
                 <%if(escapeRoom.instructions && user && !user.isStudent){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.instructions%></h3>
-                        <a href="<%=fromNetwork?networkUrl:""%>/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
+                        <a href="<%=locals.fromNetwork? locals.networkUrl : ""%>/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
                             <button class="rounded"><%=i18n.common.download%>
                                 <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
                             </button>
