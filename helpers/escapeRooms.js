@@ -3,6 +3,7 @@ const {models} = sequelize;
 const query = require("../queries");
 const uploadsHelper = require("./uploads");
 const { replaceSceneUrls } = require("./reusablePuzzles");
+const { getHostname } = require("./utils");
 
 const isAuthor = function (user, er) {
     return user.id === er.authorId;
@@ -60,7 +61,7 @@ const getReusablePuzzleIdByName = async (rpName) => {
     }
 }
 
-exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, transaction) {
+exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, currentUrl, transaction) {
     let {subjects, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = er;
 
     const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -194,8 +195,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     await saved.save({transaction});
     if (scenes) {
         const newScenes = [];
-        const hostName =  getHostname(req);
-        console.log(saved)
+        const hostName =  currentUrl;
         for (let scene in scenes) {
             let oldScene = scenes[scene];
             const oldERid = er.id;

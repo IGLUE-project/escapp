@@ -664,7 +664,7 @@ exports.clone = async (req, res, next) => {
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${escapeRoom.title}`;
         const currentUser = req.session.user;
-        const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, undefined, transaction);
+        const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, undefined, undefined, transaction);
 
         res.redirect(`/escapeRooms/${saved.id}/edit`);
     } catch (err) {
@@ -1011,7 +1011,8 @@ exports.import = async (req, res, next) => {
     const newTitle = escapeRoom.title;
     const currentUser = req.session.user;
     const prevUrl = escapeRoom.server;
-    const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, prevUrl, transaction);
+    const currentUrl = getHostname(req);
+    const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, prevUrl, currentUrl, transaction);
     res.redirect("/escapeRooms/" + saved.id);
 
   } catch (err) {
