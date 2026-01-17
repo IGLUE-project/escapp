@@ -101,7 +101,11 @@ exports.getNetworkURLS = async (_, res) => {
 exports.editNetworkURLS = async (req, res) => {
     try {
         const {urls} = req.body;
-        const parsedURLs = urls.split(";").map((url) => url.trim()).filter((url) => url.length > 0 && url.includes("http"));
+        const parsedURLs = urls
+                            .split(";")
+                            .map((url) => url.trim())
+                            .filter((url) => url.length > 0 && url.includes("http"))
+                            .map((url) => url.replace(/\/$/, ""));
 
         let config = await models.adminConfig.findOne({"attributes": ["urls", "id"], "where": {"id": 1}});
 
