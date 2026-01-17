@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const mailer = require("../helpers/mailer");
-const {renderEJS, validationError, getRole, generatePassword} = require("../helpers/utils");
+const {renderEJS, validationError, getRole, generatePassword, getHostname} = require("../helpers/utils");
 const {userNeedsConfirmation} = require("../helpers/users");
 
 // Autoload the user with id equals to :userId
@@ -97,8 +97,8 @@ exports.create = async (req, res, next) => {
     try {
         const savedUser = await user.save({"fields": ["name", "surname", "alias", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate", "confirmed", "confirmationCode"]});
         const needstToBeConfirmed = userNeedsConfirmation(user);
-
-        const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${savedUser.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName": process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000"}, {});
+        const hostName = getHostname(req);
+        const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${savedUser.confirmationCode}&email=${encodeURIComponent(user.username)}`, hostName}, {});
 
         mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str);
 
@@ -367,7 +367,7 @@ exports.resendConfirmationEmail = async (req, res) => {
     const {i18n} = res.locals;
     const {user} = req;
 
-    const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${user.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName": process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000"}, {});
+    const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${user.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName":  getHostname(req)}, {});
 
     mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str);
     req.flash("success", i18n.common.flash.confirmationEmailResent);

@@ -904,7 +904,7 @@ exports.export = async (req, res, next) => {
 
         const toExport = escapeRoom.toJSON ? escapeRoom.toJSON() : escapeRoom.dataValues;
         const all = getFilePathsForER(toExport);
-        toExport.server =  process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+        toExport.server =  getHostname(req);
 
         const zipName = `escape-room-${escapeRoom.id}.zip`;
 
@@ -961,7 +961,7 @@ exports.importView = async (req, res, next) => {
 exports.import = async (req, res, next) => {
   let escapeRoom;
   const transaction = await sequelize.transaction();
-  // TO-DO Important: Missing: webaps, hintapps, name colission, escapp version
+  // TO-DO Important: Missing: webaps, name colission, escapp version¿
   try {
     const zip = new AdmZip(req.tmpPath || req.file.path);
 

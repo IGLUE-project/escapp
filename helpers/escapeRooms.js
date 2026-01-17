@@ -194,7 +194,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     await saved.save({transaction});
     if (scenes) {
         const newScenes = [];
-        const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+        const hostName =  getHostname(req);
         console.log(saved)
         for (let scene in scenes) {
             let oldScene = scenes[scene];
@@ -208,7 +208,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
             const newScene = replaceSceneUrls(oldScene, oldERid, newERid, oldAssetsIds, newAssetsIds, oldReusablePuzzleInstances, newReusablePuzzleInstances, prevUrl, hostName); 
             newScenes.push(newScene)
         }
-        // TO-DO replace prevUrl with current server URL
+
         if (newScenes.length > 0) {
             const savedScenes = await models.scene.bulkCreate(newScenes, {transaction});
             for (let scene in scenes) { 

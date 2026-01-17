@@ -88,7 +88,7 @@ exports.playInterface = async (name, req, res, next) => {
             "isStudent": false,
             "status": req.turn.status,
             "endPoint": name,
-            "hostName": process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000",
+            "hostName":  getHostname(req),
             token,
             "layout": false
         });
@@ -147,7 +147,7 @@ exports.playInterface = async (name, req, res, next) => {
             await exports.automaticallySetAttendance(team, req.session.user.id, req.escapeRoom.automaticAttendance);
             const hints = await models.requestedHint.findAll({"where": {"teamId": team.id, "success": true}, "include": [{"model": models.hint, "include": [{"model": models.puzzle, "attributes": ["order"]}]}], "order": [["createdAt", "ASC"]]});
 
-            res.render("escapeRooms/play/play", {"escapeRoom": req.escapeRoom, "hostName": process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000", "teams": [], team, token, "userId": req.session.user.id, "turnoId": team.turno.id, "teamId": team.id, "isStudent": true, "hints": hints || [], "endPoint": name, "layout": false });
+            res.render("escapeRooms/play/play", {"escapeRoom": req.escapeRoom, "hostName": this.getHostname(req), "teams": [], team, token, "userId": req.session.user.id, "turnoId": team.turno.id, "teamId": team.id, "isStudent": true, "hints": hints || [], "endPoint": name, "layout": false });
         } catch (err) {
             next(err);
         }
@@ -676,4 +676,4 @@ exports.getHostname = (req) => process.env.APP_NAME
     ? `${req.protocol}://${process.env.APP_NAME}${
         process.env.PORT && process.env.PORT !== "80" && process.env.PORT !== "443" ? `:${process.env.PORT}` : ""
     }`
-    : "http://localhost:3000";
+    : ("http://localhost:" + (process.env.PORT || 3000));

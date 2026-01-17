@@ -102,14 +102,14 @@ exports.replaceSceneUrls = function (
     let out = value;
     
     if (serverRegex) {
-      out = out.replace(serverRegex, normalizedNewServer);
+      out = out.replaceAll(serverRegex, normalizedNewServer);
     }
-    out = out.replace(assetRegex, (match, id) => {
+    out = out.replaceAll(assetRegex, (match, id) => {
       const mapped = assetMap.get(id);
       return mapped ? `/assets/${mapped}` : match;
     });
 
-    out = out.replace(reusableRegex, (match, id) => {
+    out = out.replaceAll(reusableRegex, (match, id) => {
       const mapped = reusableMap.get(id);
       return mapped
         ? `/escapeRooms/${newEscapeStr}/reusablePuzzleInstances/${mapped}`
