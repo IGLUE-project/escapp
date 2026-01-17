@@ -920,7 +920,7 @@ exports.export = async (req, res, next) => {
 
         archive.on("error", (err) => {
             throw err;
-        }); 
+        });
         archive.pipe(res);
 
         for (const item of all) {
