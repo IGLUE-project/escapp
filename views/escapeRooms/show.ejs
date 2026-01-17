@@ -112,7 +112,20 @@
     <br/>
    <br/>
     <div class="button-share">
-        <% if (user) { %>
+        <% if (locals.fromNetwork) {%>
+        <div class="network-play">
+            <p class="text-center">This escape room is hosted at: 
+                <a href="<%=locals.networkUrl%>" target="_blank"><%=locals.networkUrl%></a>.
+                Click on the button below to play in their site:</p>
+            <a href="<%=locals.networkUrl%>/escapeRooms/<%=escapeRoom.id%>" target="_blank"><button class="save acceptButton rounded" type="submit"><%=i18n.showPlayer.play%></button></a>
+            <% if (user && !user.isStudent) { %><br/>
+                <form action="/network/<%=escapeRoom.id%>/import?url=<%=locals.networkUrl%>" method="POST">
+                    <p class="text-center">...or click on the button below to import it to your profile and use it as a teacher</p>
+                    <button class="cloneButton rounded" type="submit"><%=i18n.showTeacher.actionList.clone%></button>
+                </form>
+            <%}%>
+        </div>
+        <% } else if (user) { %>
             <%
                 let continueButtonURL;
                 let continueButtonText;
@@ -142,7 +155,7 @@
 
             <%if(!user.isStudent && !isUnconfirmedCollaborator){%>
                 <span style="display: inline-block;position: relative;">
-                    <button class="rounded cloneButton" title="<%=i18n.escapeRoom.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
+                    <button class="rounded cloneButton" title="<%=i18n.showTeacher.actionList.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
                         <%=i18n.showTeacher.actionList.clone%>
                     </button>
                     <div class="overlay-trigger" data-id="clone-<%=escapeRoom.id%>">
@@ -155,6 +168,7 @@
                 </spa >
             <%}%>
         <%} else {%>
+           
             <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.play%></button>
             <div id="dialog-join-anon" title="Playing '<%=escapeRoom.title%>'" style="display: none;">
                 <p class="text-center">
@@ -203,6 +217,7 @@
             </p>
             </form>
             </div>
+
         <%}%>
     </div>
    <br/>

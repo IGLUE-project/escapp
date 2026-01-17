@@ -891,9 +891,6 @@ exports.verify = async (req, res, next) => {
     }
 };
 
-
-// Work in progress
-
 exports.export = async (req, res, next) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(
@@ -968,7 +965,7 @@ exports.import = async (req, res, next) => {
   const transaction = await sequelize.transaction();
   // TO-DO Important: Missing: webaps, hintapps, name colission, escapp version
   try {
-    const zip = new AdmZip(req.file.path);
+    const zip = new AdmZip(req.tmpPath || req.file.path);
 
     // Try to get escapeRoom.json from the root
     const entry = zip.getEntry("escape-room.json");

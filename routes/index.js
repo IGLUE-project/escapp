@@ -102,7 +102,7 @@ router.delete("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequire
 router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.clone);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.test);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.startPlaying, playController.play);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginRequired, sessionController.authShowEscapeRoom, escapeRoomController.export);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginOrGuestAccessRequired, sessionController.authShowEscapeRoom, escapeRoomController.export);
 router.get("/escapeRooms/import", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.importView);
 router.post("/escapeRooms/import", sessionController.loginRequired, memoryStorage.single("fileInput"), escapeRoomController.import);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", escapeRoomController.returnThumbnail);
@@ -252,7 +252,8 @@ router.get("/network/searchInInstance", networkController.searchInInstance);
 router.get("/network/search", networkController.renderSearch);
 router.get("/network/query", sessionController.loginRequired, networkController.searchInNetwork);
 router.post("/network/:escapeRoomId(\\d+)/sendcontactemail", networkController.sendContactEmail);
-router.get("/network/:escapeRoomId(\\d+)/json", networkController.getPreviewData);
+router.get("/network/:escapeRoomId(\\d+)/json", sessionController.loginOrGuestAccessRequired, sessionController.authShowEscapeRoom, networkController.getPreviewData);
 router.get("/network/:escapeRoomId/preview", sessionController.loginRequired, networkController.servePreviewRender);
+router.post("/network/:escapeRoomId/import", sessionController.loginRequired, networkController.importFromNetwork, escapeRoomController.import);
 
 module.exports = router;

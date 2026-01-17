@@ -6445,6 +6445,14 @@ div#scene_maker_container iframe#scene_maker_iframe {
   justify-content: center;
 }
 
+.network-play {
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 1em;
+  max-width: 600px;
+  margin: auto;
+}
+
 :root {
   --mainpurple: #232850;
   --darkerpurple: #161938;

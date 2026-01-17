@@ -4,6 +4,10 @@ const {fuzzy} = require("fast-fuzzy");
 const urlsDefault = JSON.parse(process.env.NETWORK_URLS || "[]") || [];
 const mailer = require("../helpers/mailer");
 const {renderEJS} = require("../helpers/utils");
+const path = require("path");
+const crypto = require("crypto");
+const os = require("os");
+const fs = require("fs/promises");
 
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level) => {
     try {
@@ -177,7 +181,6 @@ exports.getPreviewData = async (req, res) => {
 // GET /network/:escapeRoomId/preview?url=...&id=...
 exports.servePreviewRender = async (req, res) => {
     try {
-        console.log(req)
         const data = await tryFetch(`${req.query.url}/network/${req.params.escapeRoomId}/json`);
         if (!data || !data.ok) {
             throw new Error("Failed to fetch preview data");
@@ -194,3 +197,30 @@ exports.servePreviewRender = async (req, res) => {
         next(error);
     }
 };
+
+
+exports.importFromNetwork = async (req, res, next) => {
+
+    try {
+    const { url } = req.query;
+        const { escapeRoomId } = req.params;
+
+        if (!url) throw new Error("No url in query params");
+        if (!escapeRoomId) throw new Error("No escape room id");
+        const urlFetch = `${url}/escapeRooms/${escapeRoomId}/export`;
+        const exportRes = await fetch(urlFetch);
+        console.log(urlFetch)
+        if (!exportRes.ok) throw new Error("Fail to fetch");
+        console.log(exportRes)
+        const arrayBuffer = await exportRes.arrayBuffer();
+        const zipBuffer = Buffer.from(arrayBuffer);
+
+        tmpPath = path.join(os.tmpdir(), `escapeRoom-${escapeRoomId}-${crypto.randomUUID()}.zip`);
+        await fs.writeFile(tmpPath, zipBuffer);
+        req.tmpPath = tmpPath;
+        next();
+    }  catch(e) {
+        next(e);
+    }
+
+}
