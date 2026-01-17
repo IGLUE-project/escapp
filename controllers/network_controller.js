@@ -190,7 +190,7 @@ exports.servePreviewRender = async (req, res) => {
         const escapeRoom = await models.escapeRoom.build(escapeRoomData);
         escapeRoom.author = await models.user.build(escapeRoomData.author);
 
-        return res.render("escapeRooms/show", {"escapeRoom":  escapeRoom, "user": req.session.user, "isParticipant": false, fromNetwork: true, networkUrl: req.query.url});
+        return res.render("escapeRooms/show", {"escapeRoom":  escapeRoom, "user": req.session.user, "isParticipant": false, fromNetwork: true, networkUrl: req.query.url, referer: req.get('referer')});
 
     } catch (error) {
         console.error("Error fetching preview data:", error);

@@ -1640,6 +1640,7 @@
         "unspecified": "No especificado"
     },
     "network": {
+        "Network": "Red",
         "conductSearch": "Realize una busqueda",
         "filters": {
             "Filters": "Filtros",

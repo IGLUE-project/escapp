@@ -4,7 +4,11 @@
 	 <% if (user && !user.anonymized) { %>
     <div class="breadcrumbs-container">
         <div class="breadcrumbs">
-			<a href="/escapeRooms"><%=i18n.common.escapeRooms%></a>
+            <%if (locals.fromNetwork){%>
+			    <a href="<%=locals.referer? referer : '/network/search'%>"><%=i18n.network.Network%></a>
+            <%}else{%>
+    			<a href="/escapeRooms"><%=i18n.common.escapeRooms%></a>            
+            <%}%>
 				<span class="material-icons">chevron_right</span>
                 <span><%=escapeRoom.title%></span>
         </div>

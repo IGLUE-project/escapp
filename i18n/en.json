@@ -1644,6 +1644,7 @@
         "unspecified": "Unspecified"
     },
     "network": {
+        "Network": "Network",
         "filters": {
             "Filters": "Filters",
             "any": "Any",
