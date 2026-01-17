@@ -195,14 +195,15 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     if (scenes) {
         const newScenes = [];
         const hostName = process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
+        console.log(saved)
         for (let scene in scenes) {
             let oldScene = scenes[scene];
             const oldERid = er.id;
             const newERid = saved.id;
-            const oldAssetsIds = assets.map(a=>a.id);
-            const newAssetsIds = savedAssets.map(a=>a.id);
-            const oldReusablePuzzleInstances = reusablePuzzleInstances.map(rpi=>rpi.id);
-            const newReusablePuzzleInstances = saved.reusablePuzzleInstances.map(rpi=>rpi.id);
+            const oldAssetsIds = assets ? assets.map(a=>a.id): [];
+            const newAssetsIds = savedAssets ? savedAssets.map(a=>a.id) : [];
+            const oldReusablePuzzleInstances = reusablePuzzleInstances ? reusablePuzzleInstances.map(rpi=>rpi.id) : [];
+            const newReusablePuzzleInstances = saved.reusablePuzzleInstances ? saved.reusablePuzzleInstances.map(rpi=>rpi.id) : [];
             oldScene = oldScene.toJSON? oldScene.toJSON() : oldScene;
             const newScene = replaceSceneUrls(oldScene, oldERid, newERid, oldAssetsIds, newAssetsIds, oldReusablePuzzleInstances, newReusablePuzzleInstances, prevUrl, hostName); 
             newScenes.push(newScene)

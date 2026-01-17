@@ -904,8 +904,6 @@ exports.export = async (req, res, next) => {
 
         const toExport = escapeRoom.toJSON ? escapeRoom.toJSON() : escapeRoom.dataValues;
         const all = getFilePathsForER(toExport);
-        const seen = new Set();
-        const resolved = [];
         toExport.server =  process.env.APP_NAME ? `https://${process.env.APP_NAME}` : "http://localhost:3000";
 
         const zipName = `escape-room-${escapeRoom.id}.zip`;
