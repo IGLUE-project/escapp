@@ -20,6 +20,7 @@ const getResultsFromInstance = async (value, before, after, lang, page = 1, limi
             const result = results[index];
 
             if (fuzzy(value, result.title || "") > fuzzyThreshold || fuzzy(value, result.description || "") > fuzzyThreshold) {
+               
                 filteredResults.push(result);
             } else {
                 break;
@@ -140,7 +141,6 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
             });
         }
     }
-
     res.json(aggregated);
 };
 
@@ -177,6 +177,7 @@ exports.getPreviewData = async (req, res) => {
 // GET /network/:escapeRoomId/preview?url=...&id=...
 exports.servePreviewRender = async (req, res) => {
     try {
+        console.log(req)
         const data = await tryFetch(`${req.query.url}/network/${req.params.escapeRoomId}/json`);
         if (!data || !data.ok) {
             throw new Error("Failed to fetch preview data");

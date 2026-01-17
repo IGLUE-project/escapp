@@ -228,7 +228,7 @@ exports.getAsset = async (req, res, next) => {
             res.sendFile(filePath);
         }
     } catch (err) {
-        console.error(err);
+        // console.error(err);
         res.status(404).send("Error loading asset");
     }
 };

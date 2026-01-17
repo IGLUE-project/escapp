@@ -253,6 +253,6 @@ router.get("/network/search", networkController.renderSearch);
 router.get("/network/query", sessionController.loginRequired, networkController.searchInNetwork);
 router.post("/network/:escapeRoomId(\\d+)/sendcontactemail", networkController.sendContactEmail);
 router.get("/network/:escapeRoomId(\\d+)/json", networkController.getPreviewData);
-router.get("/network/:escapeRoomId/preview", sessionController.loginRequired, networkController.renderSearch);
+router.get("/network/:escapeRoomId/preview", sessionController.loginRequired, networkController.servePreviewRender);
 
 module.exports = router;

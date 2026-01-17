@@ -411,7 +411,7 @@ exports.update = async (req, res) => {
     }
 };
 
-exports.returnThumbnail = async (req, res) => {
+exports.returnThumbnail = async (req, res, next) => {
     try {
         const thumbnail = await models.attachment.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
 
@@ -920,7 +920,7 @@ exports.export = async (req, res, next) => {
 
         archive.on("error", (err) => {
             throw err;
-        });1768572897ea2689e1dd8f4dc77cb0ff1d7c5752da.zip
+        }); 
         archive.pipe(res);
 
         for (const item of all) {

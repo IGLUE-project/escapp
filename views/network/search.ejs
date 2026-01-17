@@ -161,7 +161,9 @@
             }
             
             const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
-            const imageURL = (escapeRoom.attachment && escapeRoom.attachment.url) ? escapeRoom.attachment.url : "../images/puzzleorange.png";
+            // const imageURL = (escapeRoom.attachment && escapeRoom.attachment.url) ? escapeRoom.attachment.url : "../images/puzzleorange.png";
+            const imageURL = escapeRoom.url + "/escapeRooms/" + escapeRoom.id + "/thumbnail";
+            console.log(escapeRoom)
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
         if(parsedResults === ""){
@@ -303,9 +305,8 @@
 
         resultsToDraw = jsonResults;
         jsonResults.forEach((escapeRoom, i) => {
-            // const href = escapeRoom.url ? escapeRoom.url + "/escapeRooms/" + escapeRoom.id : "../escapeRooms/" + escapeRoom.id;
             const href = escapeRoom.url ?  ("/network/" + escapeRoom.id + "/preview?url=" + escapeRoom.url) : "../escapeRooms/" + escapeRoom.id;
-            const imageURL = (escapeRoom.attachment && escapeRoom.attachment.url) ? escapeRoom.attachment.url : "../images/puzzleorange.png";
+            const imageURL =  (escapeRoom.url ? escapeRoom.url : "") + "/escapeRooms/"+escapeRoom.id +"/thumbnail";
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
         document.querySelector(".Results").innerHTML = parsedResults;
@@ -320,7 +321,8 @@
     });
 
 
-    const newEscapeRoom = (href, imageURL, title) => {return `
+    const newEscapeRoom = (href, imageURL, title) => {
+        return `
                 <a href="${href}%>" class="escapeRoomItemWrapper animated bounceIn" title=${title} style="animation-delay: 100ms;" >
                     <div class="escapeRoomItem">
                         <div class="erFoto" style="text-align: center">
