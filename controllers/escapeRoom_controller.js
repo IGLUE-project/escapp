@@ -795,7 +795,7 @@ exports.confirmCollaborators = async (req, res, next) => {
 
         await transaction.commit();
         req.flash("success", i18n.common.flash.successConfirmingCollaborator);
-        res.redirect(`/escapeRooms/${escapeRoom.id}`);
+        res.redirect(`/escapeRooms/${escapeRoom.id}/edit`);
     } catch (error) {
         await transaction.rollback();
         console.error(error);
@@ -833,7 +833,11 @@ exports.deleteCollaborators = async (req, res, next) => {
             });
 
             await transaction.commit();
-            res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
+            if (collab.id === req.session.user.id) {
+                res.redirect(`/escapeRooms/${escapeRoom.id}`);
+            } else {
+                res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);                
+            }
         } catch (error) {
             await transaction.rollback();
             req.flash("error", `${error.message}`);

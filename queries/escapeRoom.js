@@ -39,7 +39,12 @@ exports.loadShow = {
             "order": [["order", "asc"]]
         },
         { "model": models.attachment },
-        { "model": models.hintApp }
+        { "model": models.hintApp },
+        {
+            "model": models.user,
+            "as": "userCoAuthor",
+            "required": false
+        }
     ]
 };
 

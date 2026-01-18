@@ -14,13 +14,12 @@
         </div>
 	</div>
     <% } %>
-    <%if(!locals.fromNetwork){%>
-    <div class="reporting">
-        <a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
-    </div>
-    <%}%>
-    <%var isCollaborator = (user && escapeRoom.userCoAuthor?.some(u => u.id === user.id)) %>
+
+    <%var isCollaborator = (user && escapeRoom.userCoAuthor?.find(u => u.id === user.id)) %>
     <%var isUnconfirmedCollaborator = (isCollaborator && !isCollaborator.coAuthors.confirmed) %>
+
+    <%console.log(isCollaborator)%>
+    <%console.log(escapeRoom.userCoAuthor)%>
     <%if(isUnconfirmedCollaborator){%>
             <div class="flex-er-collaborator fadeIn">
                 <p><%=i18n.collaborators.invitation%></p>
@@ -29,6 +28,11 @@
                     <button class="stopButton rounded" style="font-size:medium;" type="submit" name="confirm" value=""><%=i18n.collaborators.cancelCollaboration%></button>
                 </form>
             </div>
+    <%}%>
+     <%if(!locals.fromNetwork){%>
+    <div class="reporting">
+        <a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
+    </div>
     <%}%>
     <div class="flex ">
 		<div class="flex-thumb attachmentShow animated">
