@@ -191,7 +191,7 @@ $(function(){
       } catch (e) {
           $('#delete').hide();
           $('#upload').show();
-          $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noImageUploaded%>");
+          $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noFileUploaded%>");
       }
     });
 
@@ -199,7 +199,7 @@ $(function(){
         e.preventDefault();
         $('#delete').hide();
         $('#upload').show();
-        $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noImageUploaded%>");
+        $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noFileUploaded%>");
         $('#keepInstructions').val("0");
     })
 

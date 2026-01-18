@@ -1642,6 +1642,10 @@
     "network": {
         "Network": "Red",
         "conductSearch": "Realize una busqueda",
+        "clickToPlay": "Haz clic en el botón de abajo para jugar en su sitio:",
+        "clickToClone": "...o haz clic en el botón de abajo para importar la escape room a tu perfil y usarla como profe",
+        "view": "visitar",
+        "hostedAt": "Esta escape room está alojada en:",
         "filters": {
             "Filters": "Filtros",
             "any": "Cualquiera",

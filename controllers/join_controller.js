@@ -130,11 +130,12 @@ exports.joinAnonymous = async (req, res, next) => {
         "lang": currentLang,
         "anonymized": true,
         "isStudent": true,
+        "confirmed": true,
         "lastAcceptedTermsDate": new Date()
     });
 
     try {
-        await user.save({"fields": ["name", "surname", "alias", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate", "anonymized"]});
+        await user.save({"fields": ["name", "surname", "alias", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate", "confirmed", "anonymized"]});
 
         req.body.login = user.username;
 

@@ -38,10 +38,11 @@
             <h1><%=escapeRoom.title%>
             <br/>
         </h1>
+            <%if(!locals.fromNetwork){%>
             <p>
                 <span>by <%=escapeRoom.author.alias%></span>
             </p>
-            <%if(!locals.fromNetwork){%>
+             
             <p>
                 <a href="<%=locals.fromNetwork? locals.networkUrl:""%>/escapeRooms/<%=escapeRoom.id%>/contact">Contact</a>
             </p>
@@ -87,7 +88,7 @@
                         <p><%=i18n.escapeRoom.format[escapeRoom.format]%></p>
                     </div>
                 <%}%>
-                <%if(escapeRoom.instructions && user && !user.isStudent){%>
+                <%if(!locals.fromNetwork && escapeRoom.instructions && user && !user.isStudent){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.instructions%></h3>
                         <a href="<%=locals.fromNetwork? locals.networkUrl : ""%>/uploads/instructions/<%=escapeRoom.instructions%>" target="_blank">
@@ -118,13 +119,19 @@
     <div class="button-share">
         <% if (locals.fromNetwork) {%>
         <div class="network-play">
-            <p class="text-center">This escape room is hosted at: 
+            <p class="text-center"><%=i18n.network.hostedAt%>
                 <a href="<%=locals.networkUrl%>" target="_blank"><%=locals.networkUrl%></a>.
-                Click on the button below to play in their site:</p>
-            <a href="<%=locals.networkUrl%>/escapeRooms/<%=escapeRoom.id%>" target="_blank"><button class="save acceptButton rounded" type="submit"><%=i18n.showPlayer.play%></button></a>
-            <% if (user && !user.isStudent) { %><br/>
+                <%=i18n.network.cliclToPlay%></p>
+            <a href="<%=locals.networkUrl%>/escapeRooms/<%=escapeRoom.id%>" target="_blank">
+                <button class="save acceptButton rounded" type="submit">
+                    <%=i18n.network.view%>
+                    <span class="material-icons" >open_in_new</span>
+
+                </button>
+            </a>
+            <% if (false && user && !user.isStudent) { %><br/>
                 <form action="/network/<%=escapeRoom.id%>/import?url=<%=locals.networkUrl%>" method="POST">
-                    <p class="text-center">...or click on the button below to import it to your profile and use it as a teacher</p>
+                    <p class="text-center"><%=i18n.network.clickToClone%></p>
                     <button class="cloneButton rounded" type="submit"><%=i18n.showTeacher.actionList.clone%></button>
                 </form>
             <%}%>
