@@ -1,9 +1,11 @@
+const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const {getCurrentPuzzle} = require("./utils");
 
 exports.calculateNextHint = async (escapeRoom, team, status, score, category, messages, userId) => {
     const success = status === "completed" || status === "passed";
+    const transaction = await sequelize.transaction({isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED});
 
     try {
         const teamId = team.id;
@@ -29,19 +31,18 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                     }
                 ],
                 "order": [["createdAt", "ASC"]]
-            });
+            }, {transaction});
 
             if (escapeRoom.hintLimit !== undefined && escapeRoom.hintLimit !== null && hints.length >= escapeRoom.hintLimit) {
                 return { "msg": messages.tooMany, "ok": false };
             }
-
-            if (escapeRoom.hintInterval && hints.length > 0) {
+            const hintInterval = escapeRoom.hintInterval ? escapeRoom.hintInterval : 0.1; 
+            if (hintInterval && hints.length > 0) {
                 const latestHint = hints[hints.length - 1].createdAt;
                 const now = new Date();
                 const timeSinceLastHint = (now - latestHint) / 1000 / 60;
-
-                if (timeSinceLastHint < escapeRoom.hintInterval) {
-                    const timeAhead = escapeRoom.hintInterval - timeSinceLastHint;
+                if (timeSinceLastHint < hintInterval) {
+                    const timeAhead = hintInterval - timeSinceLastHint;
                     const each = timeAhead < 1 ? `${Math.round(timeAhead * 60)} s.` : `${Math.round(timeAhead)} min.`;
 
                     return { "msg": `${messages.notUntil} ${each}`, "ok": false };
@@ -88,17 +89,25 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
             }
             if (hintOrder || escapeRoom.allowCustomHints) {
                 const reqHint = models.requestedHint.build({hintId, teamId, success, score, userId});
-
-                await reqHint.save();
-                return {"ok": true, msg, hintOrder, puzzleOrder, category};
+                const exists = await models.requestedHint.findOne({"where": {hintId, teamId}}, {transaction})
+                if (!exists) {
+                    await reqHint.save({transaction});
+                    transaction.commit();
+                    return {"ok": true, msg, hintOrder, puzzleOrder, category};
+                }
+                 transaction.commit();
+                return {"ok": false}
             }
+            transaction.commit();
             return {"ok": false, "msg": messages.cantRequestMoreThis, hintOrder, puzzleOrder, category};
         }
         const reqHint = models.requestedHint.build({"hintId": null, teamId, success, score, userId});
-
-        await reqHint.save();
+        
+        await reqHint.save({transaction});
+        transaction.commit();
         return { "ok": false, "msg": messages.failed};
     } catch (e) {
+        transaction.rollback();
         return {"ok": false, "msg": e.message};
     }
 };
