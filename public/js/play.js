@@ -108,7 +108,7 @@ const error = (msg) => ({type: "ERROR", payload: {msg}});
 
 const solvePuzzle = (puzzleOrder, sol) => socket.emit("SOLVE_PUZZLE", {"puzzleOrder": parseInt(puzzleOrder, 10) + 1, sol});
 
-const requestHint = (score, status, category) => socket.emit("REQUEST_HINT", {score, status, category});
+const requestHint = (score, status, category, ai = false) => socket.emit("REQUEST_HINT", {score, status, category, ai});
 
 /** INCOMING MESSAGES **/
 const onConnect = () => {
@@ -369,7 +369,7 @@ const hintReq = (overrideQuiz = false, fromAI = false)=>{
   if (!fromAI && categories && categories.length > 1) {
     yesCat(categories, hints);
   } else {
-    noCat(overrideQuiz);
+    noCat(overrideQuiz, fromAI);
   }
 }
 
@@ -672,14 +672,14 @@ const chooseCat = async (cat) =>  {
   }
 }
 
-const noCat = (overrideQuiz) => {
+const noCat = (overrideQuiz, ai = false) => {
   if (!overrideQuiz && ER.info.hintAppConditional) {
     $( ".hints-modal-main-content").hide();
     $('.hints-modal-quiz').html(quizInstructionsTemplate());
   } else {
     ER.erState.waitingForHintReply = true;
     $('html').css('cursor','wait');
-    requestHint(100, "completed");
+    requestHint(100, "completed", undefined, ai);
   }
 }
 

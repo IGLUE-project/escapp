@@ -137,7 +137,7 @@ exports.isTeamConnectedWaiting = (teamId) => {
         return false;
     }
     try {
-        const room = global.io.sockets.adapter.rooms[`teamId_waiting_${teamId}`];
+        const room = global.io.sockets.adapter.rooms.get(`teamId_waiting_${teamId}`);
 
         if (room) {
             for (const socketId in room.sockets) {
@@ -214,7 +214,7 @@ exports.isParticipantTeamConnectedWaiting = (participantId, teamId) => {
         return false;
     }
     try {
-        const room = global.io.sockets.adapter.rooms[`teamId_waiting_${teamId}`];
+        const room = global.io.sockets.adapter.rooms.get(`teamId_waiting_${teamId}`);
 
         if (room) {
             for (const socketId in room.sockets) {
@@ -237,28 +237,46 @@ exports.isParticipantTeamConnectedWaiting = (participantId, teamId) => {
 /**
  * Get team members connected to ER
  */
-
 exports.getConnectedMembers = (teamId) => {
-    if (!teamId) {
-        return [];
-    }
-    try {
-        const room = global.io.sockets.adapter.rooms[`teamId_${teamId}`];
-        const connectedMembers = new Set();
+  if (!teamId) return [];
 
-        if (room) {
-            for (const socketId in room.sockets) {
-                if (global.io.sockets.connected[socketId]) {
-                    const {username} = global.io.sockets.connected[socketId].handshake;
+  const io = global.io;
+  if (!io) return [];
 
-                    connectedMembers.add(username);
-                }
-            }
-        }
-        return Array.from(connectedMembers);
-    } catch (e) {
-        return [];
-    }
+  const room = io.sockets.adapter.rooms.get(`teamId_${teamId}`);
+  if (!room) return [];
+  const ids = Array.from(room);
+    const members = new Set();
+
+  for (i of ids) {
+    const socket = io.sockets.sockets.get(i);
+    const {username} = socket.handshake
+    if (username) members.add(username);
+
+  }
+
+  return [...members];
+};
+
+exports.getConnectedMembersIds = (teamId) => {
+  if (!teamId) return [];
+
+  const io = global.io;
+  if (!io) return [];
+
+  const room = io.sockets.adapter.rooms.get(`teamId_${teamId}`);
+  if (!room) return [];
+  const ids = Array.from(room);
+    const members = new Set();
+
+  for (i of ids) {
+    const socket = io.sockets.sockets.get(i);
+    const {userId} = socket.handshake
+    if (userId) members.add(userId);
+
+  }
+
+  return [...members];
 };
 
 /**
@@ -495,11 +513,16 @@ exports.sendLeaveTeam = (teamId, turnId, teams) => {
 /**
  * Request a hint
  */
-const requestHint = async (escapeRoomId, teamId, userId, status, score, category, i18n) => {
+const requestHint = async (escapeRoomId, teamId, userId, status, score, category, ai, i18n) => {
     const team = await models.team.findByPk(teamId, queries.team.puzzlesAndHints(teamId));
-
+    
     if (team && team.turno && team.turno.escapeRoom) {
-        const result = await calculateNextHint(team.turno.escapeRoom, team, status, score, category, i18n.escapeRoom.play, userId);
+        if (ai) {
+            const teamMembers = this.getConnectedMembersIds(teamId);
+            const leader = this.getLeader(teamMembers);
+            if (leader != userId) {return;}
+        }
+        const result = await calculateNextHint(team.turno.escapeRoom, team, status, score, category, i18n.escapeRoom.play, userId, ai);
 
         if (result) { // TODO participation, auth...
             const {msg, ok, hintOrder, puzzleOrder, "category": newCat} = result;
@@ -508,6 +531,20 @@ const requestHint = async (escapeRoomId, teamId, userId, status, score, category
         }
     }
 };
+
+
+exports.getLeader = (ids) => {
+    if (ids.length === 0) {
+        return null;
+    }
+
+    let leader = ids[0];
+    for (let i = 1; i < ids.length; i++) {
+        if (ids[i] < leader) leader = ids[i];
+    }
+
+    return leader;
+}
 
 exports.requestHint = requestHint;
 
@@ -535,7 +572,7 @@ exports.initializeListeners = (escapeRoomId, turnId, teamId, user, waiting, i18n
         if (teamId) {
             socket.on(CHECK_PUZZLE, ({puzzleOrder, sol}) => exports.checkPuzzle(escapeRoomId, teamId, user.id, puzzleOrder, sol, i18n));
             socket.on(SOLVE_PUZZLE, ({puzzleOrder, sol}) => exports.solvePuzzle(escapeRoomId, teamId, user.id, puzzleOrder, sol, i18n, teamInstructions));
-            socket.on(REQUEST_HINT, ({status, score, category}) => requestHint(escapeRoomId, teamId, user.id, status, score, category, i18n));
+            socket.on(REQUEST_HINT, ({status, score, category, ai}) => requestHint(escapeRoomId, teamId, user.id, status, score, category, ai, i18n));
             socket.on(START_PLAYING, () => exports.startPlaying(user, teamId, turnId, escapeRoomId, i18n));
             socket.on("disconnect", () => exports.leave(teamId, user.username));
             socket.join(`teamId_${teamId}`);

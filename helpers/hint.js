@@ -3,7 +3,7 @@ const sequelize = require("../models");
 const {models} = sequelize;
 const {getCurrentPuzzle} = require("./utils");
 
-exports.calculateNextHint = async (escapeRoom, team, status, score, category, messages, userId) => {
+exports.calculateNextHint = async (escapeRoom, team, status, score, category, messages, userId, ai) => {
     const success = status === "completed" || status === "passed";
     const transaction = await sequelize.transaction({isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED});
 
@@ -36,7 +36,7 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
             if (escapeRoom.hintLimit !== undefined && escapeRoom.hintLimit !== null && hints.length >= escapeRoom.hintLimit) {
                 return { "msg": messages.tooMany, "ok": false };
             }
-            const hintInterval = escapeRoom.hintInterval ? escapeRoom.hintInterval : 0.1; 
+            const hintInterval = ai ? 0 : escapeRoom.hintInterval ;
             if (hintInterval && hints.length > 0) {
                 const latestHint = hints[hints.length - 1].createdAt;
                 const now = new Date();
@@ -95,7 +95,7 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                     transaction.commit();
                     return {"ok": true, msg, hintOrder, puzzleOrder, category};
                 }
-                 transaction.commit();
+                transaction.commit();
                 return {"ok": false}
             }
             transaction.commit();
