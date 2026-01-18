@@ -923,27 +923,39 @@ exports.export = async (req, res, next) => {
             const idFolder = item.pathStr.id && String(item.pathStr.id); // E.g. "670"
 
             // ContentPath is relative to project root, possibly starting with "/"
-            const filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
+            let filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
+
+            if (item.pathStr && item.pathStr.assetType === "webapp") {
+                filePathOriginal = item.pathStr.contentPath.replace("/index.html","");
+            }
             const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
             const filePath = path.join(process.cwd(), relativeFromRoot);
             const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
-
             if (fsSync.existsSync(filePath)) {
-                if (idFolder) {
+                const stats = fsSync.statSync(filePath);
+
+                if (stats.isDirectory()) {
+                    const targetPath = idFolder
+                        ? `${folderName}/${idFolder}`
+                        : `${folderName}`;
+
+                    archive.directory(filePath, targetPath);
+
+                } else if (stats.isFile()) {
+                    const targetPath = idFolder
+                        ? `${folderName}/${idFolder}/${originalName}`
+                        : `${folderName}/${originalName}`;
+
                     archive.file(filePath, {
-                        // Path inside the zip: <field>/<id>/<filename>
-                        "name": `${folderName}/${idFolder}/${originalName}`
+                        name: targetPath
                     });
                 } else {
-                    archive.file(filePath, {
-                        // Path inside the zip: <field>/<id>/<filename>
-                        "name": `${folderName}/${originalName}`
-                    });
+                    console.warn("Path exists but is neither file nor directory, skipping:", filePath);
                 }
-                
             } else {
                 console.warn("File not found, skipping:", filePath);
             }
+
         }
 
         archive.append(JSON.stringify(toExport, null, 2), { "name": "escape-room.json" });
@@ -985,26 +997,54 @@ exports.import = async (req, res, next) => {
         const item = all[fi];
         const folderName = item.field; // E.g. "assets"
         const idFolder = item.pathStr.id && String(item.pathStr.id); // E.g. "670"
-        const filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
+        let filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
+        if (item.pathStr && item.pathStr.assetType === "webapp") {
+            filePathOriginal = item.pathStr.contentPath.replace("/index.html", "");
+        }
         const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
         const filePath = path.join(process.cwd(), relativeFromRoot);
         const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
         const route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
-        const newRoute = item.pathStr.contentPath;
+        let newRoute = item.pathStr.contentPath;
+        if (item.pathStr && item.pathStr.assetType === "webapp") {
+            newRoute = item.pathStr.contentPath.replace("/index.html", "");
+        }
         const fileZip = zip.getEntry(route)
-        
+        const newRouteRelative = newRoute.replace(/^[/\\]+/, "");
 
-        if (fileZip) {
+
+        if (fileZip && !fileZip.isDirectory) {
+            // Single-file case
             const data = fileZip.getData();
 
-            // Absolute or relative path on your server
-            let targetPath = path.join(__dirname, "..", newRoute);
-
-            // Make sure the destination folder exists
+            const targetPath = path.join(__dirname, "..", newRouteRelative);
             fsSync.mkdirSync(path.dirname(targetPath), { recursive: true });
-
-            // Write file to disk
             fsSync.writeFileSync(targetPath, data);
+
+        } else {
+            // Directory case: extract everything under route/
+            const prefix = route.endsWith("/") ? route : `${route}/`;
+
+            const entries = zip.getEntries().filter(e => e.entryName.startsWith(prefix));
+
+            if (entries.length === 0) {
+                console.warn("No file or folder entries found in zip for:", route);
+            } else {
+                for (const entry of entries) {
+                if (entry.isDirectory) continue;
+
+                const data = entry.getData();
+
+                // Path inside the folder, relative to `route/`
+                const innerRel = entry.entryName.slice(prefix.length);
+
+                // Write into the destination folder path (newRouteRelative)
+                const targetPath = path.join(__dirname, "..", newRouteRelative, innerRel);
+
+                fsSync.mkdirSync(path.dirname(targetPath), { recursive: true });
+                fsSync.writeFileSync(targetPath, data);
+                }
+            }
         }
     }
     const authorId = req.session && req.session.user && req.session.user.id || 0;
