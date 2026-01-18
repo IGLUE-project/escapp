@@ -114,11 +114,11 @@ exports.isTeamConnected = (teamId) => {
         return false;
     }
     try {
-        const room = global.io.sockets.adapter.rooms[`teamId_${teamId}`];
+        const room = global.io.sockets.adapter.rooms.get(`teamId_${teamId}`);
 
         if (room) {
-            for (const socketId in room.sockets) {
-                if (global.io.sockets.connected[socketId]) {
+            for (const socketId of room) {
+                if (global.io.sockets.sockets.get(socketId)) {
                     return true;
                 }
             }
@@ -140,8 +140,8 @@ exports.isTeamConnectedWaiting = (teamId) => {
         const room = global.io.sockets.adapter.rooms.get(`teamId_waiting_${teamId}`);
 
         if (room) {
-            for (const socketId in room.sockets) {
-                if (global.io.sockets.connected[socketId]) {
+            for (const socketId of room) {
+                if (global.io.sockets.sockets.get(socketId)) {
                     return true;
                 }
             }
@@ -160,12 +160,13 @@ exports.isParticipantTurnConnected = (userId, turnId) => {
         return false;
     }
     try {
-        const room = global.io.sockets.adapter.rooms[`turnId_${turnId}`];
+        const room = global.io.sockets.adapter.room.get(`turnId_${turnId}`);
 
         if (room) {
-            for (const socketId in room.sockets) {
-                if (global.io.sockets.connected[socketId]) {
-                    const {id} = global.io.sockets.connected[socketId].handshake;
+            for (const socketId of room) {
+                if (global.io.sockets.sockets.get(socketId)) {
+                    const sock = global.io.sockets.sockets.get(socketId);
+                    const {id} = sock.handshake;
 
                     if (id === userId) {
                         return true;
@@ -187,12 +188,13 @@ exports.isParticipantTeamConnected = (participantId, teamId) => {
         return false;
     }
     try {
-        const room = global.io.sockets.adapter.rooms[`teamId_${teamId}`];
+        const room = global.io.sockets.adapter.rooms.get(`teamId_${teamId}`);
 
         if (room) {
-            for (const socketId in room.sockets) {
-                if (global.io.sockets.connected[socketId]) {
-                    const {userId} = global.io.sockets.connected[socketId].handshake;
+            for (const socketId of room) {
+                if (global.io.sockets.sockets.get(socketId)) {
+                    const sock = global.io.sockets.sockets.get(socketId);
+                    const {userId} = sock.handshake;
 
                     if (participantId === userId) {
                         return true;
@@ -217,9 +219,10 @@ exports.isParticipantTeamConnectedWaiting = (participantId, teamId) => {
         const room = global.io.sockets.adapter.rooms.get(`teamId_waiting_${teamId}`);
 
         if (room) {
-            for (const socketId in room.sockets) {
-                if (global.io.sockets.connected[socketId]) {
-                    const {userId} = global.io.sockets.connected[socketId].handshake;
+            for (const socketId of room) {
+                if (global.io.sockets.sockets.get(socketId)) {
+                    const sock = global.io.sockets.sockets.get(socketId);
+                    const {userId} = sock.handshake;
 
                     if (participantId === userId) {
                         return true;
