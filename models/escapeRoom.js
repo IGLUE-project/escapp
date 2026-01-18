@@ -108,6 +108,14 @@ module.exports = function (sequelize, DataTypes) {
                     "max": 100
                 }
             },
+            "automatedHints": {
+                "type": DataTypes.ENUM(
+                    "NO_AUTOMATED_HINTS",
+                    "AUTOMATED_SUGGESTION",
+                    "AUTOMATED_HINTS"
+                ),
+                "allowNull": true
+            },
             "forceLang": {
                 "type": DataTypes.STRING,
                 "allowNull": true,

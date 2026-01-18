@@ -973,7 +973,7 @@ exports.importView = async (req, res, next) => {
 exports.import = async (req, res, next) => {
   let escapeRoom;
   const transaction = await sequelize.transaction();
-  // TO-DO Important: Missing: webaps, name colission, escapp version¿
+  // TO-DO Important: name colission, escapp version¿
   try {
     const zip = new AdmZip(req.tmpPath || req.file.path);
 

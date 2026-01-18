@@ -285,6 +285,7 @@
             "hintConditional": <%= hintConditional || false %>,
             "hintAppConditional":  <%= hintAppConditional || false%>,
             "hintInterval":  <%= escapeRoom.hintInterval || 0%>,
+            "automatedHints": "<%=   hintConditional ? (escapeRoom.automatedHints || "NO_AUTOMATED_HINTS") : "NO_AUTOMATED_HINTS" %>",
             "allowCustomHints": <%= escapeRoom.allowCustomHints ? "true" : "false"%>,
             "escapeRoomHintLimit": <%= (escapeRoom.hintLimit === undefined || escapeRoom.hintLimit === null ) ? "undefined" : escapeRoom.hintLimit %>
         },

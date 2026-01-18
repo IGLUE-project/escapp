@@ -88,7 +88,7 @@ exports.updateHints = async (req, res) => {
     const isPrevious = Boolean(body.previous);
     const progressBar = body.progress;
     const {i18n} = res.locals;
-    const {numQuestions, numRight, feedback, hintLimit, allowCustomHints, hintInterval} = body;
+    const {numQuestions, numRight, feedback, hintLimit, allowCustomHints, hintInterval, automatedHints} = body;
     let pctgRight = numRight || 0;
 
     pctgRight = (numRight >= 0 && numRight <= numQuestions ? numRight : numQuestions) * 100 / (numQuestions || 1);
@@ -97,12 +97,13 @@ exports.updateHints = async (req, res) => {
     escapeRoom.numQuestions = numQuestions || 0;
     escapeRoom.numRight = pctgRight || 0;
     escapeRoom.feedback = Boolean(feedback);
+    escapeRoom.automatedHints = automatedHints;
     escapeRoom.hintInterval = hintInterval || null;
     escapeRoom.allowCustomHints = Boolean(allowCustomHints);
     const back = `/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("hints") : progressBar || nextStep("hints")}`;
 
     try {
-        await escapeRoom.save({"fields": ["numQuestions", "hintLimit", "numRight", "feedback", "allowCustomHints", "hintInterval"]});
+        await escapeRoom.save({"fields": ["numQuestions", "hintLimit", "numRight", "feedback", "allowCustomHints", "hintInterval", "automatedHints"]});
         if (body.keepAttachment === "0") {
             // Delete/change old attachment.
             escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});

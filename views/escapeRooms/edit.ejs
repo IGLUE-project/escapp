@@ -344,7 +344,10 @@
                             <a class="show_link" href="/escapeRooms/<%= escapeRoom.id%>/quizFile"><%=escapeRoom.hintApp.filename%></a>
                             <button class="preview-icon" onclick="previewHintApp()"><span class="material-icons">remove_red_eye</span></button>
                         <% } else if (hintConditional) { %>
-                            <%=i18n.showTeacher.messages.freeHintsStrategy%>
+                            <%=i18n.showTeacher.messages.freeHintsStrategy%>.
+                            <%if (escapeRoom.automatedHints &&  escapeRoom.automatedHints !== "NO_AUTOMATED_HINTS") {%>
+                                 <%=escapeRoom.automatedHints ? i18n.showTeacher.messages.withAutomatedSuggestions : i18n.showTeacher.messages.withAutomatedHints %>
+                            <%}%>
                         <% } else { %>
                             <%=i18n.showTeacher.messages.noHintsStrategy%>
                         <% } %>

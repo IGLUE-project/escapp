@@ -699,6 +699,9 @@ const setPuzzleLS = (newBlocks = []) => setTimeout(()=>{
 
 window.puzzleTimer = null;
 const setAIhintsTimers = (expectedDuration) => {
+  if (!ER.info.automatedHints || ER.info.automatedHints != "NO_AUTOMATED_HINTS") {
+      return;
+  }
   if (window.puzzleTimer) {
     clearTimeout(window.puzzleTimer);
   }
@@ -711,7 +714,8 @@ const setAIhintsTimers = (expectedDuration) => {
     // How long remaining from now to that time?
     let diffMs = checkDateTime.getTime() - new Date().getTime(); 
     // If already passed, set to 0 (so immediately now)
-    const GIVE_HINT = false;
+    
+    const GIVE_HINT = ER.info.automatedHints && ER.info.automatedHints === "AUTOMATED_HINTS";
     if (diffMs <= 0) {
       console.log("Estimated duration already passed");
       if(!GIVE_HINT) {

@@ -62,7 +62,7 @@ const getReusablePuzzleIdByName = async (rpName) => {
 }
 
 exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, currentUrl, transaction) {
-    let {subjects, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = er;
+    let {subjects, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, automatedHints, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = er;
 
     const include = [{"model": models.puzzle, "include": [models.hint]}];
 
@@ -111,6 +111,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
         classAppearance,
         allowCustomHints,
         hintInterval,
+        automatedHints,
         survey,
         pretest,
         posttest,

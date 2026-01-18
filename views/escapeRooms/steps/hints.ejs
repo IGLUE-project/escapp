@@ -45,8 +45,18 @@
 			<p class="explanation"><%=i18n.escapeRoom.steps.hints.allowCustomHintsExplanation%></p>
 			</label>
 		</div>
+			<div class="inputFormField erFormField animated slideInUp hintConditional" style="<%=hintConditional ? '':'display: none;'%> animation-delay:500ms;" >
+			<label for="automatedHints"  class="itemNarrow">5. <%=i18n.escapeRoom.steps.hints.automatedHintStrategy%>:
+				<p class="explanation"><%=i18n.escapeRoom.steps.hints.automatedHintsExplanation%></p>
+				<select autofocus class="customInput itemWide" id="automatedHints" name="automatedHints" >
+					<option value="NO_AUTOMATED_HINTS"    <%= !escapeRoom.automatedHints || escapeRoom.automatedHints === "NO_AUTOMATED_HINTS"   ? "selected" : "" %> ><%=i18n.escapeRoom.steps.hints.noAutomatedHints%></option>
+					<option value="AUTOMATED_SUGGESTION"  <%= escapeRoom.automatedHints === "AUTOMATED_SUGGESTION" ? "selected" : "" %> ><%=i18n.escapeRoom.steps.hints.automatedSuggestions%></option>
+					<option value="AUTOMATED_HINTS"  <%= escapeRoom.automatedHints === "AUTOMATED_HINTS" ? "selected" : "" %> ><%=i18n.escapeRoom.steps.hints.automatedHints%></option>
+				</select>
+			</label>
+		</div>
 		<div class="inputFormField erFormField animated slideInUp hintConditional hintAppConditional" style="<%= hintAppConditional ? '':'display: none;'%> animation-delay:600ms;">
-		    <label for="hints" class="itemNarrow">5. <%=i18n.escapeRoom.steps.hints.MoodleXML%>:</label>
+		    <label for="hints" class="itemNarrow">6. <%=i18n.escapeRoom.steps.hints.MoodleXML%>:</label>
 		    <p class="explanation"><%=i18n.escapeRoom.steps.hints.moodleXMLexplanation%></p>
 		  	<input class="attach" style="display: none;" type="file" id="hints" name="hints" tabindex="0" accept="text/xml"/>
 		  	<label for="hints" class="fileUpload customInput itemWide">
@@ -76,18 +86,18 @@
 		  	</label>
 	  	</div>
 		<div class="inputFormField erFormField animated slideInUp hintConditional hintAppConditional" style="<%=hintAppConditional ? '':'display: none;'%> animation-delay:700ms;">
-		  <label for="numQuestions"  class="itemNarrow">6. <%=i18n.escapeRoom.steps.hints.questionNumber%>:</label>
+		  <label for="numQuestions"  class="itemNarrow">7. <%=i18n.escapeRoom.steps.hints.questionNumber%>:</label>
 		  <p class="explanation"><%=i18n.escapeRoom.steps.hints.questionNumberExplanation%></p>
 		  <input type="number" min="0" max="10000" class="customInput itemWide" id="numQuestions" name="numQuestions" value="<%= escapeRoom.numQuestions %>" placeholder="<%=i18n.escapeRoom.steps.hints.questionNumberPlaceHolder%>" autocomplete="off"/>
 		</div>
 
 		<div class="inputFormField erFormField animated slideInUp hintConditional hintAppConditional" style="<%=hintAppConditional ? '':'display: none;'%> animation-delay:800ms;">
-		    <label for="numRight"  class="itemNarrow">7. <%=i18n.escapeRoom.steps.hints.correctNumber%>:</label>
+		    <label for="numRight"  class="itemNarrow">8. <%=i18n.escapeRoom.steps.hints.correctNumber%>:</label>
 		    <input type="number" min="0" max="10000" class="customInput itemWide" id="numRight" name="numRight" value="<%= Math.round(escapeRoom.numRight/100*escapeRoom.numQuestions)  %>" placeholder="<%=i18n.escapeRoom.steps.hints.correctNumberPlaceHolder%>" autocomplete="off"/>
 		</div>
 		
 		<div class="inputFormField erFormField animated slideInUp hintConditional hintAppConditional" style="<%=hintAppConditional ? '':'display: none;'%> animation-delay:900ms;">
-		    <label for="feedback"  class="itemNarrow">8. <%=i18n.escapeRoom.steps.hints.feedback%>:
+		    <label for="feedback"  class="itemNarrow">9. <%=i18n.escapeRoom.steps.hints.feedback%>:
 		    <input type="checkbox" class="customCheckbox" id="feedback" name="feedback" <%= escapeRoom.feedback ? "checked" : "" %> autocomplete="off"/></label>
 		    <p class="explanation"><%=i18n.escapeRoom.steps.hints.feedbackExplanation%></p>
 		</div>		
