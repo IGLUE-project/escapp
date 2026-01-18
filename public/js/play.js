@@ -360,13 +360,13 @@ const rgb2hex = orig => {
 
 /************************HINT MANAGEMENT***************************/
 
-const hintReq = (overrideQuiz = false)=>{
+const hintReq = (overrideQuiz = false, fromAI = false)=>{
   $('#modal-title').html('<b>'+i18n.Hints+'<b>');
   let currentReto = ER.info.escapeRoomPuzzles.find(p=>p.order === ER.erState.currentlyWorkingOn);
   const categories = currentReto ? currentReto.categories : null;
   const hints = currentReto ? currentReto.hints : null;
   $('#hintModal .animated').removeClass('animated')
-  if (categories && categories.length > 1) {
+  if (!fromAI && categories && categories.length > 1) {
     yesCat(categories, hints);
   } else {
     noCat(overrideQuiz);
@@ -699,7 +699,7 @@ const setPuzzleLS = (newBlocks = []) => setTimeout(()=>{
 
 window.puzzleTimer = null;
 const setAIhintsTimers = (expectedDuration) => {
-  if (!ER.info.automatedHints || ER.info.automatedHints != "NO_AUTOMATED_HINTS") {
+  if (!ER.info.automatedHints || (ER.info.automatedHints === "NO_AUTOMATED_HINTS")) {
       return;
   }
   if (window.puzzleTimer) {
@@ -726,7 +726,7 @@ const setAIhintsTimers = (expectedDuration) => {
     }
     window.puzzleTimer = setTimeout(() => {
       if(GIVE_HINT) {
-        hintReq(true);
+        hintReq(true, true);
         $('#hintModal').modal("show");
          createAlert("info", i18n.aiHintAvailable);
       } else {
