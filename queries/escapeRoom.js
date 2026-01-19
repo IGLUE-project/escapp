@@ -72,58 +72,7 @@ exports.loadPuzzles = {
     ]
 };
 
-exports.loadComplete = {
-    "include": [
-        {
-            "model": models.turno,
-            "separate": true,
-            "required": false,
-            "where": {"status": {[Op.not]: "test"}},
-            "include": {
-                "model": models.team,
-                "separate": true,
-                "attributes": ["id"]
-            },
-            "order": [["date", "asc"]]
-        },
-        {
-            "model": models.puzzle,
-            "separate": true,
-            "include": [
-                {
-                    "model": models.hint,
-                    "separate": true,
-                    "order": [["order", "asc"]]
-                }
-            ],
-            "order": [["order", "asc"]]
-        },
-        { "model": models.attachment },
-        {
-            "model": models.subject,
-            "attributes": ["subject"]
-        },
-        { "model": models.asset, "separate": true },
-        { "model": models.hintApp },
-        { "model": models.scene, 
-            "separate": true, 
-            "include": [
-                { "model": models.reusablePuzzleInstance, "separate": true },
-                { "model": models.puzzle, "separate": true }
-        ]}, 
-        { "model": models.reusablePuzzleInstance, "separate": true },
-        {
-            "model": models.user,
-            "as": "author"
-        },
-        {
-            "model": models.user,
-            "as": "userCoAuthor",
-            "required": false
-        }
-    ]
-};
-
+ 
 exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUsers = null, ignoreERIds = []) => {
     const findOptions = {
         "attributes": [
@@ -154,16 +103,6 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
             {
                 "model": models.attachment,
                 "required": false
-            },
-            {
-                "model": models.asset,
-                "required": false,
-                "separate": true
-            },
-            {
-                "model": models.reusablePuzzleInstance,
-                "required": false,
-                "separate": true
             }
         ]
     };
@@ -393,13 +332,19 @@ exports.loadExport = {
             "include": [
                 { 
                     "model": models.reusablePuzzleInstance, "separate": true, 
-                    "include": [{"model": models.reusablePuzzle }]
+                    "include": [
+                        {"model": models.reusablePuzzle },
+                        {"model": models.puzzle }
+                    ]
                 },
                 { "model": models.puzzle, "separate": true }
         ]}, 
         { 
             "model": models.reusablePuzzleInstance, "separate": true,
-            "include": [{"model": models.reusablePuzzle }]
+            "include": [
+                {"model": models.reusablePuzzle },
+                {"model": models.puzzle }
+            ]
          }
     ],
     "order": [
@@ -454,10 +399,16 @@ exports.loadComplete = {
         { "model": models.scene, 
             "separate": true, 
             "include": [
-                { "model": models.reusablePuzzleInstance, "separate": true },
+                { 
+                    "model": models.reusablePuzzleInstance, "separate": true,
+                    "include": [{ "model": models.reusablePuzzle }]
+                 },
                 { "model": models.puzzle, "separate": true }
         ]}, 
-        { "model": models.reusablePuzzleInstance, "separate": true },
+        { 
+            "model": models.reusablePuzzleInstance, "separate": true,
+            "include": [{ "model": models.reusablePuzzle }]
+         },
         {
             "model": models.user,
             "as": "author"

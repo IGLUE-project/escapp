@@ -1,0 +1,60 @@
+.main.environment
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+    color: white
+
+    form 
+        width: 50%;
+        min-width: 300px;
+
+    input[type="text"] 
+        margin: 10px 0;
+        padding: 8px;
+        font-size: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    label
+        color: white 
+    button 
+        padding: 10px;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+
+    .settings-section 
+        margin-top: 30px;
+        border-bottom: 1px solid #ccc;
+        padding-top: 20px;
+        width: 100%;
+
+    .setting-row 
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+
+        label 
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: white
+        .env-default 
+            font-size: 12px;
+            color: #999;
+            margin-top: 3px;
+
+        select 
+            padding: 8px;
+            font-size: 14px;
+
+        input[type=radio] + label
+            font-family: Lato
+    .tri-state 
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+    .tri-state label 
+        font-weight: normal;

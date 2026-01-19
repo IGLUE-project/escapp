@@ -19,6 +19,7 @@ const managementController = require("../controllers/management_controller");
 const networkController = require("../controllers/network_controller");
 const sceneController = require("../controllers/scene_controller");
 const { instructions, thumbnails, hints, upload, hybridInstructions, memoryStorage } = require("../controllers/multer_controller");
+const globalConfigMiddleware = require("../middleware/globalConfigMiddleware");
 
 router.all("*", sessionController.deleteExpiredUserSession);
 
@@ -57,7 +58,7 @@ router.param("teamId", teamController.load);
 router.get("/", sessionController.new); // Login form
 router.post("/", sessionController.create); // Create sesion
 router.delete("/", sessionController.destroy); // Close sesion
-router.get("/register", sessionController.logoutRequired, userController.new);
+router.get("/register", sessionController.logoutRequired, globalConfigMiddleware, userController.new);
 router.post("/accept-cookies", sessionController.cookieAccept);
 router.get("/terms", sessionController.terms);
 router.get("/privacy", sessionController.privacy);
@@ -71,8 +72,8 @@ router.get("/users/password-reset", sessionController.logoutRequired, userContro
 router.get("/users/password-reset/:userId(\\d+)", sessionController.logoutRequired, userController.resetPasswordHash);
 router.post("/users/password-reset", sessionController.logoutRequired, userController.newResetPassword);
 router.post("/users/password-reset/:userId(\\d+)", sessionController.logoutRequired, userController.newResetPasswordHash);
-router.post("/users", sessionController.logoutRequired, userController.create, sessionController.create);
-router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.edit);
+router.post("/users", sessionController.logoutRequired, globalConfigMiddleware, userController.create, sessionController.create);
+router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrMyselfRequired, globalConfigMiddleware, userController.edit);
 router.put("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.update);
 router.delete("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.destroy);
 router.get("/users/:userId(\\d+)/escapeRooms", sessionController.loginRequired, sessionController.adminOrMyselfRequired, escapeRoomController.index);
@@ -85,8 +86,8 @@ router.get("/escapeRoomsAdmin", sessionController.loginRequired, sessionControll
 router.get("/reports", sessionController.loginRequired, sessionController.adminRequired, managementController.showReports);
 router.post("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.editReport);
 router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
-router.get("/urls", sessionController.loginRequired, sessionController.adminRequired, managementController.getNetworkURLS);
-router.post("/urls", sessionController.loginRequired, sessionController.adminRequired, managementController.editNetworkURLS);
+router.get("/environment", sessionController.loginRequired, sessionController.adminRequired, managementController.getEnvironmentSettings);
+router.post("/environment", sessionController.loginRequired, sessionController.adminRequired, managementController.setEnvironmentSettings);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/verify", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.verify);
 router.put("/users/:userId(\\d+)/confirm", sessionController.loginRequired, sessionController.adminRequired, userController.confirmAdmin);
 

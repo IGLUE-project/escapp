@@ -1890,5 +1890,31 @@
         "yo" : "Yoruba",
         "za" : "Zhuang, Chuang",
         "zu" : "Zulu"
+    },
+    "admin": {
+        "environmentSettings": {
+            "title": "Environment Settings",
+            "domainSettings": "Domain Settings",
+            "whitelistDomains": "Whitelist Domains (comma separated)",
+            "teacherDomains": "Teacher Domains (comma separated)",
+            "leaveEmptyForDefault": "Leave empty to use .env default",
+            "defaultFromEnv": "Default from .env",
+            "notSet": "(not set)",
+            "registrationSettings": "Registration Settings",
+            "disableChoosingRole": "Disable Choosing Role",
+            "enableTeacherPersonalInfo": "Enable Teacher Personal Info",
+            "emailValidationSettings": "Email Validation Settings",
+            "emailValidationStudent": "Email Validation for Students",
+            "emailValidationTeacher": "Email Validation for Teachers",
+            "useEnvDefault": "Use .env default",
+            "true": "True",
+            "false": "False",
+            "networkUrls": "Network URLs",
+            "urlsHelp": "Semicolon separated urls: https://url:port/;https:...",
+            "currentUrlsFromDb": "Current URLs from database",
+            "defaultUrlsFromConfig": "Default URLs from config file",
+            "copyDefaultUrls": "Copy default URLs to input",
+            "saveAllSettings": "Save All Settings"
+        }
     }
 }

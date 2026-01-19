@@ -39,7 +39,7 @@
 <% } %>
 
 <%if (registrationForm || isAdmin) {%>
-    <%if (!JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false") || isAdmin) {%>
+    <%if (!locals.globalConfig?.disableChoosingRole || isAdmin) {%>
         <div class="userField">
             <label for="roleField"><span><%=i18n.user.roleField%></span>
             <select class="customInput" id="role" name="role"  autocomplete="off" required>

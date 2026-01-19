@@ -586,10 +586,13 @@ exports.isValidEmail = (email, whitelist = []) => {
     return cleanedWhitelist.includes(domain);
 };
 
-exports.getRole = (role, username = "", i18n) => {
-    const whitelist = process.env.WHITELIST_DOMAINS ? process.env.WHITELIST_DOMAINS.split(",").map((domain) => domain.trim()) : undefined;
-    const teacherWhitelist = process.env.TEACHER_DOMAINS ? process.env.TEACHER_DOMAINS.split(",").map((domain) => domain.trim()) : undefined;
-    const disableChoosingRole = JSON.parse(process.env.DISABLE_CHOOSING_ROLE || "false"); // Default to false
+exports.getRole = async (role, username = "", i18n) => {
+    const globalConfig = require("./globalInstanceConfig");
+    const whitelistArray = await globalConfig.getEmailWhitelist();
+    const whitelist = whitelistArray.length > 0 ? whitelistArray : undefined;
+    const teacherWhitelistArray = await globalConfig.getTeacherDomainsArray();
+    const teacherWhitelist = teacherWhitelistArray.length > 0 ? teacherWhitelistArray : undefined;
+    const disableChoosingRole = await globalConfig.getDisableChoosingRole();
 
     if ((!role || role === "teacher") && exports.isValidEmail(username, teacherWhitelist)) {
         if (disableChoosingRole) {

@@ -1887,5 +1887,31 @@
         "yo": "Yoruba",
         "za": "Zhuang, Chuang",
         "zu": "Zulú"
+    },
+    "admin": {
+        "environmentSettings": {
+            "title": "Configuración del Entorno",
+            "domainSettings": "Configuración de Dominios",
+            "whitelistDomains": "Dominios permitidos (separados por coma)",
+            "teacherDomains": "Dominios de profesores (separados por coma)",
+            "leaveEmptyForDefault": "Dejar vacío para usar el valor de .env",
+            "defaultFromEnv": "Valor por defecto de .env",
+            "notSet": "(no definido)",
+            "registrationSettings": "Configuración de Registro",
+            "disableChoosingRole": "Deshabilitar elección de rol",
+            "enableTeacherPersonalInfo": "Habilitar información personal del profesor",
+            "emailValidationSettings": "Configuración de Validación de Email",
+            "emailValidationStudent": "Validación de email para estudiantes",
+            "emailValidationTeacher": "Validación de email para profesores",
+            "useEnvDefault": "Usar valor de .env",
+            "true": "Verdadero",
+            "false": "Falso",
+            "networkUrls": "URLs de Red",
+            "urlsHelp": "URLs separadas por punto y coma: https://url:puerto/;https:...",
+            "currentUrlsFromDb": "URLs actuales de la base de datos",
+            "defaultUrlsFromConfig": "URLs por defecto del fichero de configuración",
+            "copyDefaultUrls": "Copiar URLs por defecto al campo",
+            "saveAllSettings": "Guardar toda la configuración"
+        }
     }
 }

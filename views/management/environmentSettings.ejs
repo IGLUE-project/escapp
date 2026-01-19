@@ -1,0 +1,136 @@
+<%- include ("../partials/_header.ejs") %>
+<% const t = i18n.admin.environmentSettings; %>
+<div class="main environment">
+    <h1><%= t.title %></h1>
+    <form style="display:flex; flex-direction:column;" action="/environment" method="POST">
+
+        <div class="settings-section">
+            <h2><%= t.domainSettings %></h2>
+
+            <div class="setting-row">
+                <label for="whitelistDomains"><%= t.whitelistDomains %></label>
+                <input type="text" name="whitelistDomains" id="whitelistDomains"
+                    value="<%= dbSettings.whitelistDomains !== null ? dbSettings.whitelistDomains : '' %>"
+                    placeholder="<%= t.leaveEmptyForDefault %>"/>
+                <span class="env-default"><%= t.defaultFromEnv %>: <%= envSettings.whitelistDomains || t.notSet %></span>
+            </div>
+
+            <div class="setting-row">
+                <label for="teacherDomains"><%= t.teacherDomains %></label>
+                <input type="text" name="teacherDomains" id="teacherDomains"
+                    value="<%= dbSettings.teacherDomains !== null ? dbSettings.teacherDomains : '' %>"
+                    placeholder="<%= t.leaveEmptyForDefault %>"/>
+                <span class="env-default"><%= t.defaultFromEnv %>: <%= envSettings.teacherDomains || t.notSet %></span>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2><%= t.registrationSettings %></h2>
+
+            <div class="setting-row">
+                <label><%= t.disableChoosingRole %></label>
+                <div class="tri-state">
+                    <input type="radio" name="disableChoosingRole" id="disableChoosingRole_default" value=""
+                        <%= dbSettings.disableChoosingRole === null ? 'checked' : '' %>>
+                    <label for="disableChoosingRole_default"><%= t.useEnvDefault %> (<%= envSettings.disableChoosingRole ? t.true : t.false %>)</label>
+
+                    <input type="radio" name="disableChoosingRole" id="disableChoosingRole_true" value="true"
+                        <%= dbSettings.disableChoosingRole === true ? 'checked' : '' %>>
+                    <label for="disableChoosingRole_true"><%= t.true %></label>
+
+                    <input type="radio" name="disableChoosingRole" id="disableChoosingRole_false" value="false"
+                        <%= dbSettings.disableChoosingRole === false ? 'checked' : '' %>>
+                    <label for="disableChoosingRole_false"><%= t.false %></label>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <label><%= t.enableTeacherPersonalInfo %></label>
+                <div class="tri-state">
+                    <input type="radio" name="enableTeacherPersonalInfo" id="enableTeacherPersonalInfo_default" value=""
+                        <%= dbSettings.enableTeacherPersonalInfo === null ? 'checked' : '' %>>
+                    <label for="enableTeacherPersonalInfo_default"><%= t.useEnvDefault %> (<%= envSettings.enableTeacherPersonalInfo ? t.true : t.false %>)</label>
+
+                    <input type="radio" name="enableTeacherPersonalInfo" id="enableTeacherPersonalInfo_true" value="true"
+                        <%= dbSettings.enableTeacherPersonalInfo === true ? 'checked' : '' %>>
+                    <label for="enableTeacherPersonalInfo_true"><%= t.true %></label>
+
+                    <input type="radio" name="enableTeacherPersonalInfo" id="enableTeacherPersonalInfo_false" value="false"
+                        <%= dbSettings.enableTeacherPersonalInfo === false ? 'checked' : '' %>>
+                    <label for="enableTeacherPersonalInfo_false"><%= t.false %></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2><%= t.emailValidationSettings %></h2>
+
+            <div class="setting-row">
+                <label><%= t.emailValidationStudent %></label>
+                <div class="tri-state">
+                    <input type="radio" name="emailValidationStudent" id="emailValidationStudent_default" value=""
+                        <%= dbSettings.emailValidationStudent === null ? 'checked' : '' %>>
+                    <label for="emailValidationStudent_default"><%= t.useEnvDefault %> (<%= envSettings.emailValidationStudent ? t.true : t.false %>)</label>
+
+                    <input type="radio" name="emailValidationStudent" id="emailValidationStudent_true" value="true"
+                        <%= dbSettings.emailValidationStudent === true ? 'checked' : '' %>>
+                    <label for="emailValidationStudent_true"><%= t.true %></label>
+
+                    <input type="radio" name="emailValidationStudent" id="emailValidationStudent_false" value="false"
+                        <%= dbSettings.emailValidationStudent === false ? 'checked' : '' %>>
+                    <label for="emailValidationStudent_false"><%= t.false %></label>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <label><%= t.emailValidationTeacher %></label>
+                <div class="tri-state">
+                    <input type="radio" name="emailValidationTeacher" id="emailValidationTeacher_default" value=""
+                        <%= dbSettings.emailValidationTeacher === null ? 'checked' : '' %>>
+                    <label for="emailValidationTeacher_default"><%= t.useEnvDefault %> (<%= envSettings.emailValidationTeacher ? t.true : t.false %>)</label>
+
+                    <input type="radio" name="emailValidationTeacher" id="emailValidationTeacher_true" value="true"
+                        <%= dbSettings.emailValidationTeacher === true ? 'checked' : '' %>>
+                    <label for="emailValidationTeacher_true"><%= t.true %></label>
+
+                    <input type="radio" name="emailValidationTeacher" id="emailValidationTeacher_false" value="false"
+                        <%= dbSettings.emailValidationTeacher === false ? 'checked' : '' %>>
+                    <label for="emailValidationTeacher_false"><%= t.false %></label>
+                </div>
+            </div>
+        </div>
+         <h2><%= t.networkUrls %></h2>
+        <label><%= t.urlsHelp %></label>
+        <input type="text" name="urls" value="<%= urlsDBText%>"/>
+        <%= t.currentUrlsFromDb %>:
+        <div style="overflow:auto;height:150px">
+            <% const textArrayDB = urlsDBText.split(';')
+            textArrayDB.forEach(url =>  { %>
+                <div><%=url%></div>
+            <%})%>
+
+        </div>
+        <br/>
+        <%= t.defaultUrlsFromConfig %>:
+        <span id="defaultURLs" style="display:none;"><%= urlsText%></span>
+        <div style="overflow:auto;height:150px">
+            <% const textArray = urlsText.split(';')
+            textArray.forEach(url =>  { %>
+                <div><%=url%></div>
+            <%})%>
+
+        </div>
+        <button type="button" onclick="setDefaults(event)"><%= t.copyDefaultUrls %></button>
+
+        <button type="submit" style="margin-top: 20px;"><%= t.saveAllSettings %></button>
+    </form>
+
+    <script>
+        function setDefaults(event) {
+            event.preventDefault();
+            document.querySelector('input[name="urls"]').value = document.getElementById('defaultURLs').innerText;
+        }
+    </script>
+
+<div>
+

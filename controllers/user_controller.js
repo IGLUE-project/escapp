@@ -77,7 +77,7 @@ exports.create = async (req, res, next) => {
 
 
     try {
-        role_override = getRole(role, username, i18n);
+        role_override = await getRole(role, username, i18n);
     } catch (e) {
         req.flash("error", e);
         res.render("index", {
@@ -96,7 +96,7 @@ exports.create = async (req, res, next) => {
     // Save into the data base
     try {
         const savedUser = await user.save({"fields": ["name", "surname", "alias", "eduLevel", "username", "password", "isStudent", "salt", "token", "lang", "lastAcceptedTermsDate", "confirmed", "confirmationCode"]});
-        const needstToBeConfirmed = userNeedsConfirmation(user);
+        const needstToBeConfirmed = await userNeedsConfirmation(user);
         const hostName = getHostname(req);
         const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${savedUser.confirmationCode}&email=${encodeURIComponent(user.username)}`, hostName}, {});
 

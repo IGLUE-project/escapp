@@ -263,7 +263,7 @@ exports.create = async (req, res, next) => {
                 return;
             }
             if (!user.confirmed) {
-                const needstToBeConfirmed = userNeedsConfirmation(user);
+                const needstToBeConfirmed = await userNeedsConfirmation(user);
 
                 if (needstToBeConfirmed) {
                     req.flash("action", `${i18n.common.flash.emailNotConfirmed

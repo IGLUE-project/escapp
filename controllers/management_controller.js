@@ -74,10 +74,10 @@ exports.deleteReport = async (req, res) => {
     }
 };
 
-exports.getNetworkURLS = async (_, res) => {
+exports.getEnvironmentSettings = async (_, res) => {
     try {
         const envURLS = JSON.parse(process.env.NETWORK_URLS || "[]") || [];
-        const config = await models.adminConfig.findOne({"attributes": ["urls"], "where": {"id": 1}}) || {};
+        const config = await models.adminConfig.findOne({"where": {"id": 1}}) || {};
         const dbURLs = config.urls ? JSON.parse(config.urls) : [];
         let urlsText = "";
         let urlsDBText = "";
@@ -91,35 +91,89 @@ exports.getNetworkURLS = async (_, res) => {
         urlsText = urlsText.slice(0, -1); // Ultimo ;
         urlsDBText = urlsDBText.slice(0, -1); // Ultimo ;
 
-        res.render("management/networkURLs", {urlsText, urlsDBText});
+        // Environment settings from .env
+        const envSettings = {
+            "whitelistDomains": process.env.WHITELIST_DOMAINS || "",
+            "teacherDomains": process.env.TEACHER_DOMAINS || "",
+            "disableChoosingRole": process.env.DISABLE_CHOOSING_ROLE === "true",
+            "enableTeacherPersonalInfo": process.env.ENABLE_TEACHER_PERSONAL_INFO === "true",
+            "emailValidationStudent": process.env.EMAIL_VALIDATION_STUDENT === "true",
+            "emailValidationTeacher": process.env.EMAIL_VALIDATION_TEACHER === "true"
+        };
+
+        // Database settings (overrides)
+        const dbSettings = {
+            "whitelistDomains": config.whitelistDomains ?? null,
+            "teacherDomains": config.teacherDomains ?? null,
+            "disableChoosingRole": config.disableChoosingRole ?? null,
+            "enableTeacherPersonalInfo": config.enableTeacherPersonalInfo ?? null,
+            "emailValidationStudent": config.emailValidationStudent ?? null,
+            "emailValidationTeacher": config.emailValidationTeacher ?? null
+        };
+
+        res.render("management/environmentSettings", {urlsText, urlsDBText, envSettings, dbSettings});
     } catch (error) {
         console.error("Error fetching URLS");
         res.status(500).send();
     }
 };
 
-exports.editNetworkURLS = async (req, res) => {
+exports.setEnvironmentSettings = async (req, res) => {
     try {
-        const {urls} = req.body;
-        const parsedURLs = urls
-                            .split(";")
-                            .map((url) => url.trim())
-                            .filter((url) => url.length > 0 && url.includes("http"))
-                            .map((url) => url.replace(/\/$/, ""));
+        const {
+            urls,
+            whitelistDomains,
+            teacherDomains,
+            disableChoosingRole,
+            enableTeacherPersonalInfo,
+            emailValidationStudent,
+            emailValidationTeacher
+        } = req.body;
 
-        let config = await models.adminConfig.findOne({"attributes": ["urls", "id"], "where": {"id": 1}});
+        const parsedURLs = urls
+            .split(";")
+            .map((url) => url.trim())
+            .filter((url) => url.length > 0 && url.includes("http"))
+            .map((url) => url.replace(/\/$/, ""));
+
+        // Parse boolean values (empty string means use .env default, otherwise use the checkbox value)
+        const parseBooleanField = (value) => {
+            if (value === "" || value === undefined) {
+                return null; // Use .env default
+            }
+            return value === "true" || value === "on";
+        };
+
+        // Parse domain fields (empty string means use .env default)
+        const parseDomainField = (value) => {
+            if (value === "" || value === undefined) {
+                return null; // Use .env default
+            }
+            return value.trim();
+        };
+
+        let config = await models.adminConfig.findOne({"where": {"id": 1}});
+
+        const configData = {
+            "urls": JSON.stringify(parsedURLs),
+            "whitelistDomains": parseDomainField(whitelistDomains),
+            "teacherDomains": parseDomainField(teacherDomains),
+            "disableChoosingRole": parseBooleanField(disableChoosingRole),
+            "enableTeacherPersonalInfo": parseBooleanField(enableTeacherPersonalInfo),
+            "emailValidationStudent": parseBooleanField(emailValidationStudent),
+            "emailValidationTeacher": parseBooleanField(emailValidationTeacher)
+        };
 
         if (!config) { // First setup
-            config = {"urls": JSON.stringify(parsedURLs), "id": 1};
-            config = models.adminConfig.build(config);
+            config = models.adminConfig.build({...configData, "id": 1});
             await config.save();
-            res.redirect("/urls");
+            res.redirect("/environment");
             return;
         }
 
-        config.urls = JSON.stringify(parsedURLs);
+        Object.assign(config, configData);
         await config.save();
-        res.redirect("/urls");
+        res.redirect("/environment");
     } catch (error) {
         console.error("Error updating network URLs: ", error);
         res.status(500).send();

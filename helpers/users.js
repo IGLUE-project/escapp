@@ -1,3 +1,5 @@
+const globalConfig = require("./globalInstanceConfig");
+
 const isAdmin = function (user) {
     return Boolean(user.isAdmin);
 };
@@ -11,9 +13,9 @@ const isStudent = function (user) {
 exports.isStudent = isStudent;
 
 
-exports.userNeedsConfirmation = function (user) {
+exports.userNeedsConfirmation = async function (user) {
     if (isStudent(user)) {
-        return process.env.EMAIL_VALIDATION_STUDENT === "true";
+        return globalConfig.getEmailValidationStudent();
     }
-    return process.env.EMAIL_VALIDATION_TEACHER === "true";
+    return globalConfig.getEmailValidationTeacher();
 };
