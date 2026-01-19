@@ -12,6 +12,8 @@ module.exports = {
                 "teamInstructions": "[{\"type\":\"text\",\"puzzles\":[\"0\",\"all\"],\"payload\":{\"text\":\"You can add a custom message, images, links... Do not forget to setup when you want to display this information by clicking in the eye icon on the left.</p>\"}}]",
                 "authorId": 1,
                 "scoreParticipation": 40,
+                "status": "completed",
+                "publishedOnce": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date()
             }

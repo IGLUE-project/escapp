@@ -69,7 +69,7 @@ exports.playInterface = async (name, req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
         isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
-
+     
     req.escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPuzzles);
     req.escapeRoom.hintApp = await models.hintApp.findOne({"where": { "escapeRoomId": req.escapeRoom.id }});
     const {token} = await models.user.findByPk(req.session.user.id);
@@ -88,7 +88,7 @@ exports.playInterface = async (name, req, res, next) => {
             "isStudent": false,
             "status": req.turn.status,
             "endPoint": name,
-            "hostName":  getHostname(req),
+            "hostName":  this.getHostname(req),
             token,
             "layout": false
         });

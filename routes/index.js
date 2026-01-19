@@ -63,8 +63,8 @@ router.post("/accept-cookies", sessionController.cookieAccept);
 router.get("/terms", sessionController.terms);
 router.get("/privacy", sessionController.privacy);
 router.get("/cookies", sessionController.cookiePolicy);
-router.get("/accept-new", sessionController.acceptNewShow);
-router.post("/accept-new", sessionController.acceptNew);
+router.get("/accept-new", sessionController.loginRequired, sessionController.acceptNewShow);
+router.post("/accept-new", sessionController.loginRequired, sessionController.acceptNew);
 
 // Routes for users
 router.get("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.show);
@@ -103,7 +103,7 @@ router.delete("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequire
 router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.clone);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.test);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.startPlaying, playController.play);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginOrGuestAccessRequired, sessionController.authShowEscapeRoom, escapeRoomController.export);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.export);
 router.get("/escapeRooms/import", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.importView);
 router.post("/escapeRooms/import", sessionController.loginRequired, memoryStorage.single("fileInput"), escapeRoomController.import);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", escapeRoomController.returnThumbnail);
@@ -134,8 +134,6 @@ router.post("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.
 router.put("/escapeRooms/:escapeRoomId(\\d+)/confirmCoAuthor", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.confirmCollaborators);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.deleteCollaborators);
 // Shifts
-router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.turnos);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/turnos", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.turnosUpdate);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)/user/:userId(\\d+)", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, participantController.studentLeave);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)", sessionController.loginRequired, sessionController.authPlayEscapeRoom, participantController.studentLeave);
 router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)/reset", sessionController.loginRequired, sessionController.authEditEscapeRoom, teamController.resetProgress);
@@ -170,7 +168,6 @@ router.get("/escapeRooms/:escapeRoomId(\\d+)/results", sessionController.loginRe
 // Routes for playing - teacher
 router.get("/escapeRooms/:escapeRoomId(\\d+)/message", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.ranking, playController.writeMessage);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/message", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.ranking, playController.sendMessage);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/project", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.ranking, playController.classInterface);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/play", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.ranking, playController.classInterface);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/finish", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.ranking, playController.finish, playController.results);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/confirm", sessionController.loginRequired, sessionController.authEditEscapeRoom, participantController.confirmAttendance);

@@ -65,20 +65,7 @@ exports.isTurnStarted = (req, res, next) => {
     next();
 };
 
-// GET /escapeRooms/:escapeRoomId/turnos
-exports.turnos = async (req, res, next) => {
-    const {escapeRoom} = req;
 
-    res.redirect(`/escapeRooms/${escapeRoom.id}/activate`);
-    try {
-        escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}, "order": [["date", "ASC NULLS LAST"]]});
-        const {turnos} = escapeRoom;
-
-        res.render("escapeRooms/steps/turnos", {escapeRoom, turnos, "progress": "turnos"});
-    } catch (e) {
-        next(e);
-    }
-};
 
 // GET /escapeRooms/:escapeRoomId/activate
 exports.indexActivate = async (req, res, next) => {
@@ -256,16 +243,6 @@ exports.destroy = async (req, res, next) => {
     }
 };
 
-
-// POST /escapeRooms/:escapeRoomId/turnos
-exports.turnosUpdate = (req, res /* , next*/) => {
-    const {escapeRoom, body} = req;
-
-    const isPrevious = Boolean(body.previous);
-    const progressBar = body.progress;
-
-    res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("turnos") : progressBar || nextStep("turnos")}`);
-};
 
 // POST /escapeRooms/:escapeRoomId/turnos/:turnoId/reset
 exports.reset = async (req, res, next) => {

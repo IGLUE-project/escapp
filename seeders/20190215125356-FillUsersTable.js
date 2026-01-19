@@ -1,7 +1,6 @@
 "use strict";
 
 const crypt = require("../helpers/crypt");
-
 module.exports = {
     up (queryInterface) {
         return queryInterface.bulkInsert("users", [
@@ -15,6 +14,7 @@ module.exports = {
                 "isAdmin": !process.env.TEST,
                 "dni": "xxxxxxxxx",
                 "eduLevel": "higher",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()
@@ -29,6 +29,7 @@ module.exports = {
                 "isStudent": true,
                 "dni": "79881145Y",
                 "eduLevel": "higher",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()
@@ -43,6 +44,7 @@ module.exports = {
                 "isStudent": true,
                 "eduLevel": "higher",
                 "dni": "67172247B",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()
@@ -57,6 +59,7 @@ module.exports = {
                 "isStudent": true,
                 "dni": "83477468A",
                 "eduLevel": "higher",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()
@@ -71,6 +74,7 @@ module.exports = {
                 "isStudent": true,
                 "dni": "12166084G",
                 "eduLevel": "higher",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()
@@ -85,6 +89,7 @@ module.exports = {
                 "isStudent": true,
                 "dni": "01605680G",
                 "eduLevel": "higher",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()
@@ -99,6 +104,7 @@ module.exports = {
                 "isStudent": true,
                 "eduLevel": "higher",
                 "dni": "82311181T",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()
@@ -113,6 +119,7 @@ module.exports = {
                 "isStudent": true,
                 "eduLevel": "higher",
                 "dni": "03637194C",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()
@@ -127,6 +134,7 @@ module.exports = {
                 "isStudent": true,
                 "eduLevel": "higher",
                 "dni": "26077434B",
+                "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),
                 "lastAcceptedTermsDate": new Date()

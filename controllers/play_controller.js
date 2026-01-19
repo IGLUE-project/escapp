@@ -10,7 +10,6 @@ const {sendJoinTeam, sendStartTeam, sendTurnMessage, sendTeamMessage} = require(
 // GET /escapeRooms/:escapeRoomId/play
 exports.play = (req, res, next) => playInterface("team", req, res, next);
 
-// GET /escapeRooms/:escapeRoomId/project
 exports.classInterface = (req, res, next) => playInterface("class", req, res, next);
 
 // GET /escapeRooms/:escapeRoomId/ranking

@@ -2,23 +2,26 @@
 
 module.exports = {
     async up (queryInterface, Sequelize) {
-        const { models } = require("../models");
         const transaction = await queryInterface.sequelize.transaction();
         let nErrors = 0;
 
         try {
-            const rooms = await models.escapeRoom.findAll({ transaction });
+            const rooms = await queryInterface.sequelize.query(
+                'SELECT id, status FROM "escapeRooms"',
+                { transaction, type: Sequelize.QueryTypes.SELECT }
+            );
 
-            for (const er of rooms) {
+            for (const room of rooms) {
                 try {
-                    if (er.status === null) {
-                        er.status = "draft"; // For old escape rooms
+                    if (room.status === null) {
+                        await queryInterface.sequelize.query(
+                            'UPDATE "escapeRooms" SET status = ? WHERE id = ?',
+                            { replacements: ['draft', room.id], transaction }
+                        );
                     }
-                    
-                    await er.save({ transaction });
                 } catch (err) {
                     nErrors++;
-                    console.error(`Error saving escapeRoom ${er.id}:`);
+                    console.error(`Error updating escapeRoom ${room.id}:`);
                 }
             }
             await transaction.commit();
@@ -32,6 +35,6 @@ module.exports = {
             console.log("Migration 'AddNetworkFieldsToOldEscapeRooms' completed successfully.");
         }
     },
-    async down (queryInterface, Sequelize) {
+    async down () {
     }
 };

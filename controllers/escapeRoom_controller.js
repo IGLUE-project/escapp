@@ -415,7 +415,17 @@ exports.returnThumbnail = async (req, res, next) => {
     try {
         const thumbnail = await models.attachment.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
 
-        res.sendFile(path.join(__dirname, `../uploads/thumbnails/${thumbnail.public_id}`));
+        if (thumbnail && thumbnail.public_id) {
+            res.sendFile(path.join(__dirname, `../uploads/thumbnails/${thumbnail.public_id}`));
+            return;
+        } else {
+            const alt = req.escapeRoom.getThumbnailUrl();
+            if (alt){
+                res.sendFile(path.join(__dirname, "..", "public", alt));
+                return;
+            }
+            throw new Error();
+        }
     } catch (e) {
         next(e);
     }
