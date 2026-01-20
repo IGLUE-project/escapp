@@ -1447,7 +1447,8 @@
                 "Retro": "Retro",
                 "Futuristic": "Futuristic",
                 "Realistic": "Realistic",
-                "Tablet": "Tablet"
+                "Tablet": "Tablet",
+                "Framed": "Framed"
             },
             "actionAfterSolve": "Action after solving",
             "enabled": "Enabled",
@@ -1584,6 +1585,12 @@
             "description": "This resource allows you to create a puzzle whose solution requires participants to set a specific time on a clock.",
             "SecondHand": "Second hand",
             "InitialTime": "Initial time"
+        },
+        "Jigsaw": {
+            "name": "Jigsaw",
+            "description": "This resource allows you to create an escape room puzzle whose solution requires participants to complete a jigsaw puzzle by placing each fragment of a given image in its correct position.",
+            "solutionImage": "Solution image",
+            "solutionImageReverse": "Reverse side of the solution image"
         },
         "CodeEditor": {
             "name": "Code Editor",

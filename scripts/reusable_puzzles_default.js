@@ -125,7 +125,7 @@ const reusablePuzzlesList = [
     {
         "name": "Jigsaw",
         "zip": "defaultReusablePuzzles/Jigsaw/Jigsaw_Puzzle.zip",
-        "form": "clock.ejs",
+        "form": "jigsaw.ejs",
         "thumbnail": "defaultReusablePuzzles/Jigsaw/Jigsaw_Thumbnail_EN.jpg",
         "instructions": {
             "en": "defaultReusablePuzzles/Jigsaw/Jigsaw_Instructions_EN.pdf",
@@ -136,7 +136,7 @@ const reusablePuzzlesList = [
     {
         "name": "WiredBomb",
         "zip": "defaultReusablePuzzles/WiredBomb/WiredBomb_Puzzle.zip",
-        "form": "clock.ejs",
+        "form": "wiredBomb.ejs",
         "thumbnail": "defaultReusablePuzzles/WiredBomb/WiredBomb_Thumbnail.jpg",
         "instructions": {
             "en": "defaultReusablePuzzles/WiredBomb/WiredBomb_Instructions_EN.pdf",
@@ -147,7 +147,7 @@ const reusablePuzzlesList = [
     {
         "name": "Login",
         "zip": "defaultReusablePuzzles/Login/Login_Puzzle.zip",
-        "form": "clock.ejs",
+        "form": "login.ejs",
         "thumbnail": "defaultReusablePuzzles/Login/Login_Thumbnail_EN.jpg",
         "instructions": {
             "en": "defaultReusablePuzzles/Login/Login_Instructions_EN.pdf",
@@ -158,7 +158,7 @@ const reusablePuzzlesList = [
     {
         "name": "Video",
         "zip": "defaultReusablePuzzles/Video/Video_Puzzle.zip",
-        "form": "clock.ejs",
+        "form": "video.ejs",
         "thumbnail": "defaultReusablePuzzles/Video/Video_Thumbnail.jpg",
         "instructions": {
             "en": "defaultReusablePuzzles/Video/Video_Instructions_EN.pdf",

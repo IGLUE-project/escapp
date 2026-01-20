@@ -1445,7 +1445,8 @@
                 "Retro": "Retro",
                 "Futuristic": "Futurista",
                 "Realistic": "Realista",
-                "Tablet": "Tablet"
+                "Tablet": "Tablet",
+                "Framed": "Enmarcado"
             },
             "actionAfterSolve": "Acción tras resolver",
             "enabled": "Habilitado",
@@ -1583,6 +1584,12 @@
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes establezcan una determinada hora en un reloj.",
             "SecondHand": "Segundero",
             "InitialTime": "Hora inicial"
+        },
+        "Jigsaw": {
+            "name": "Rompecabezas",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes completen un rompecabezas colocando cada fragmento de una determinada imagen en su posición correcta.",
+            "solutionImage": "Imagen solución",
+            "solutionImageReverse": "Reverso de la imagen solución"
         },
         "CodeEditor": {
             "name": "Editor HTML/CSS/JS",
