@@ -1591,6 +1591,12 @@
             "solutionImage": "Imagen solución",
             "solutionImageReverse": "Reverso de la imagen solución"
         },
+        "WiredBomb": {
+            "name": "Bomba con cables",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes desactiven una bomba cortando una serie de cables en un orden determinado.",
+            "numberOfWires": "Número de cables",
+            "timer": "Temporizador"
+        },
         "CodeEditor": {
             "name": "Editor HTML/CSS/JS",
             "skins": {

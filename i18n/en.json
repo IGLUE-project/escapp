@@ -1592,6 +1592,12 @@
             "solutionImage": "Solution image",
             "solutionImageReverse": "Reverse side of the solution image"
         },
+        "WiredBomb": {
+            "name": "Wired Bomb",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to defuse a bomb by cutting a series of wires in a specific order.",
+            "numberOfWires": "Number of wires",
+            "timer": "Timer"
+        },
         "CodeEditor": {
             "name": "Code Editor",
             "skins": {
