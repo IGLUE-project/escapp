@@ -93,7 +93,7 @@ router.put("/users/:userId(\\d+)/confirm", sessionController.loginRequired, sess
 
 // Routes for escapeRooms
 router.get("/escapeRooms", sessionController.loginRequired, escapeRoomController.index);
-router.get("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginOrGuestAccessRequired, sessionController.authShowEscapeRoom, escapeRoomController.show);
+router.get("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginOrGuestAccessRequired, sessionController.authShowEscapeRoomOrPending, escapeRoomController.show);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/ready", sessionController.loginOrGuestAccessRequired, sessionController.authPlayEscapeRoom, escapeRoomController.ready);
 router.get("/escapeRooms/new", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.new);
 router.post("/escapeRooms", sessionController.loginRequired, sessionController.authCreateEscapeRoom, thumbnails.single("image"), escapeRoomController.create);

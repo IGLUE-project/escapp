@@ -35,6 +35,7 @@
                 <% var attachment = escapeRoom.attachment; %>
                 <% var disabled = (user && (whichMenu == "public") && escapeRoom.disabled); %>
                 <% var href = "/escapeRooms/" + escapeRoom.id;
+                
                 if (user && !admin && (whichMenu == "public")) {
                     if (escapeRoom.isSignedUp) {
                         href += "/play";
@@ -46,11 +47,11 @@
                         }
                     }
                 }
-                if (whichMenu === "created") {
+                var tobeConfirmed = escapeRoom.tobeConfirmed || (escapeRoom.userCoAuthor && escapeRoom.userCoAuthor.find(e=>(e.id == user.id) && !e.coAuthors.confirmed) )
+                if (!tobeConfirmed && (whichMenu === "created")) {
                     href += "/edit";
                 }
                 %>
-                <%var tobeConfirmed = escapeRoom.tobeConfirmed || (escapeRoom.userCoAuthor && escapeRoom.userCoAuthor.find(e=>(e.id == user.id) && !e.coAuthors.confirmed) )%>
                 <a href="<%=href%>" <%-disabled ? "onclick='return false;'":'' %> class="escapeRoomItemWrapper animated bounceIn" title="<%=disabled ? i18n.escapeRoom.main.notAvailable :  (escapeRoom.title||"").replace("\"","'")%>"style="animation-delay: <%=100*i%>ms;"  >
                     <div class="escapeRoomItem <%= disabled ?' disabled':'' %>">
                         <div class="erFoto" style="text-align: center">

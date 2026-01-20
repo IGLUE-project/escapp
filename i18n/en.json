@@ -240,6 +240,7 @@
             "successImage": "Picture successfully uploaded",
             "successSendingReport":    "Report successfully sent",
             "successConfirmingCollaborator": "Confirmed as collaborator successfully",
+            "successCancellingCollaborator": "Removed as collaborator successfully",
             "youMustAcceptTerms": "You must accept the conditions in order to register",
             "youHaveNotBeenAddedAsACollaborator": "You have not been added as a collaborator",
             "aliasAlreadyExists": "This alias is already taken. Please choose another one."

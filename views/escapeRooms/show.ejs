@@ -18,8 +18,6 @@
     <%var isCollaborator = (user && escapeRoom.userCoAuthor?.find(u => u.id === user.id)) %>
     <%var isUnconfirmedCollaborator = (isCollaborator && !isCollaborator.coAuthors.confirmed) %>
 
-    <%console.log(isCollaborator)%>
-    <%console.log(escapeRoom.userCoAuthor)%>
     <%if(isUnconfirmedCollaborator){%>
             <div class="flex-er-collaborator fadeIn">
                 <p><%=i18n.collaborators.invitation%></p>
@@ -162,10 +160,12 @@
                     }
                 }
             %>
-            <% if (typeof continueButtonURL !== "undefined") { %>
-                <a href="<%= continueButtonURL %>">
-                    <button class="rounded editButton <%= continueButtonClass %>"><%=continueButtonText%></button>
-                </a>
+            <% if(!(!escapeRoom.isAccessibleToAllUsers && !user.isAdmin && !user.isStudent && isUnconfirmedCollaborator)) {%>
+                <% if (typeof continueButtonURL !== "undefined") { %>
+                    <a href="<%= continueButtonURL %>">
+                        <button class="rounded editButton <%= continueButtonClass %>"><%=continueButtonText%></button>
+                    </a>
+                <% } %>
             <% } %>
 
             <%if(!user.isStudent && !isUnconfirmedCollaborator){%>
@@ -182,8 +182,8 @@
                     </div>
                 </spa >
             <%}%>
-        <%} else {%>
-           
+        
+        <%} else { %>
             <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.play%></button>
             <div id="dialog-join-anon" title="Playing '<%=escapeRoom.title%>'" style="display: none;">
                 <p class="text-center">

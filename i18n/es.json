@@ -234,6 +234,7 @@
             "successEditingUser": "Usuario editado con éxito",
             "successAddingCollaborator": "Colaborador añadido con éxito. Se le notificará para que confirme su colaboración",
             "successConfirmingCollaborator": "Confirmado como colaborador con éxito",
+            "successCancellingCollaborator": "Eliminado como colaborador con éxito",
             "successImage": "Imagen subida con éxito",
             "successSendingReport": "Reporte enviado con éxito",
             "youMustAcceptTerms": "Debes aceptar los términos y condiciones para poder registrarte.",

@@ -209,9 +209,7 @@ exports.importFromNetwork = async (req, res, next) => {
         if (!escapeRoomId) throw new Error("No escape room id");
         const urlFetch = `${url}/escapeRooms/${escapeRoomId}/export`;
         const exportRes = await fetch(urlFetch);
-        console.log(urlFetch)
         if (!exportRes.ok) throw new Error("Fail to fetch");
-        console.log(exportRes)
         const arrayBuffer = await exportRes.arrayBuffer();
         const zipBuffer = Buffer.from(arrayBuffer);
 

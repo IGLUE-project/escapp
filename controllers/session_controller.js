@@ -169,6 +169,30 @@ exports.authShowEscapeRoom = async (req, res, next) => {
     return next(new Error(res.locals.i18n.api.forbidden));
 };
 
+
+exports.authShowEscapeRoomOrPending = async (req, res, next) => {
+    const er = req.escapeRoom;
+
+    if (er && er.isAccessibleToAllUsers) {
+        return next();
+    }
+
+    const {user} = req.session;
+
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er) || isCoAuthorPending(user, er))) {
+        return next();
+    }
+
+    req.participant = await getParticipant(user, er);
+    if (typeof req.participant !== "undefined") {
+        return next();
+    }
+
+    res.status(403);
+    return next(new Error(res.locals.i18n.api.forbidden));
+};
+
+
 exports.authEditEscapeRoom = (req, res, next) => {
     const {user} = req.session;
     const er = req.escapeRoom;

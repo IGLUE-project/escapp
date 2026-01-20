@@ -784,6 +784,9 @@ exports.confirmCollaborators = async (req, res, next) => {
         }
         if (!body.confirm) { // Cancel collaboration
             await escapeRoom.removeUserCoAuthor(req.session.user.id, {transaction});
+            await transaction.commit();
+            req.flash("success", i18n.common.flash.successCancellingCollaborator);
+            res.redirect(`/escapeRooms`);
         } else { // Accept collaboration
             await models.coAuthors.update(
                 { "confirmed": true },
@@ -801,11 +804,12 @@ exports.confirmCollaborators = async (req, res, next) => {
 
             await teamCreated.addTeamMembers(user.id, {transaction});
             await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": req.session.user.id}, {transaction});
+            await transaction.commit();
+            req.flash("success", i18n.common.flash.successConfirmingCollaborator);
+            res.redirect(`/escapeRooms/${escapeRoom.id}/edit`);
         }
 
-        await transaction.commit();
-        req.flash("success", i18n.common.flash.successConfirmingCollaborator);
-        res.redirect(`/escapeRooms/${escapeRoom.id}/edit`);
+        
     } catch (error) {
         await transaction.rollback();
         console.error(error);
