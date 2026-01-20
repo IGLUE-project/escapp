@@ -4,7 +4,10 @@
     "description": "Plataforma para gestionar escape rooms educativas",
     "analytics": {
         "charts": {
-            "titles": { "retosSuperadosTeam": "Retos superados", "hintsByTeam":"Pistas solicitadas"}
+            "titles": { 
+                "retosSuperadosTeam": "Retos superados", 
+                "hintsByTeam":"Pistas solicitadas"
+            }
         },
         "grading": {
             "config": "Modificar rúbrica",
@@ -1442,7 +1445,8 @@
                 "Retro": "Retro",
                 "Futuristic": "Futurista",
                 "Realistic": "Realista",
-                "Tablet": "Tablet"
+                "Tablet": "Tablet",
+                "Framed": "Enmarcado"
             },
             "actionAfterSolve": "Acción tras resolver",
             "enabled": "Habilitado",
@@ -1573,6 +1577,24 @@
             "Round": "Ronda",
             "Item": "Elemento",
             "Items": "Elementos"
+        },
+        "Clock": {
+            "name": "Reloj",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes establezcan una determinada hora en un reloj.",
+            "SecondHand": "Segundero",
+            "InitialTime": "Hora inicial"
+        },
+        "Jigsaw": {
+            "name": "Rompecabezas",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes completen un rompecabezas colocando cada fragmento de una determinada imagen en su posición correcta.",
+            "solutionImage": "Imagen solución",
+            "solutionImageReverse": "Reverso de la imagen solución"
+        },
+        "WiredBomb": {
+            "name": "Bomba con cables",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes desactiven una bomba cortando una serie de cables en un orden determinado.",
+            "numberOfWires": "Número de cables",
+            "timer": "Temporizador"
         },
         "CodeEditor": {
             "name": "Editor HTML/CSS/JS",

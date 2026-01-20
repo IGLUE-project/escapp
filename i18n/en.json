@@ -1447,7 +1447,8 @@
                 "Retro": "Retro",
                 "Futuristic": "Futuristic",
                 "Realistic": "Realistic",
-                "Tablet": "Tablet"
+                "Tablet": "Tablet",
+                "Framed": "Framed"
             },
             "actionAfterSolve": "Action after solving",
             "enabled": "Enabled",
@@ -1578,6 +1579,24 @@
             "Round": "Round",
             "Item": "Item",
             "Items": "Items"
+        },
+        "Clock": {
+            "name": "Clock",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to set a specific time on a clock.",
+            "SecondHand": "Second hand",
+            "InitialTime": "Initial time"
+        },
+        "Jigsaw": {
+            "name": "Jigsaw",
+            "description": "This resource allows you to create an escape room puzzle whose solution requires participants to complete a jigsaw puzzle by placing each fragment of a given image in its correct position.",
+            "solutionImage": "Solution image",
+            "solutionImageReverse": "Reverse side of the solution image"
+        },
+        "WiredBomb": {
+            "name": "Wired Bomb",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to defuse a bomb by cutting a series of wires in a specific order.",
+            "numberOfWires": "Number of wires",
+            "timer": "Timer"
         },
         "CodeEditor": {
             "name": "Code Editor",

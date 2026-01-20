@@ -1,0 +1,33 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="numberOfWiresWiredBomb"><%=i18n.reusablePuzzleApps.WiredBomb.numberOfWires%>:</label>
+    <select name="numberOfWires" id="numberOfWiresWiredBomb">
+        <% for (let i = 1; i <= 8; i++) { %>
+            <option value="<%= i %>"><%= i %></option>
+        <% } %>
+    </select>
+</div>
+
+<div>
+    <label for="timerWiredBomb"><%=i18n.reusablePuzzleApps.WiredBomb.timer%>:</label>
+    <select id="timerWiredBomb" name="timer">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
+    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundImgInput" name="background" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<script>
+    document.getElementById("numberOfWiresWiredBomb").value =  window.currentOpenPuzzleConfig?.numberOfWires || 4;
+    document.getElementById("timerWiredBomb").value =  window.currentOpenPuzzleConfig?.timer || "FALSE";
+    document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.background || '';
+</script>
