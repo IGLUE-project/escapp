@@ -4,7 +4,10 @@
     "description": "Plataforma para gestionar escape rooms educativas",
     "analytics": {
         "charts": {
-            "titles": { "retosSuperadosTeam": "Retos superados", "hintsByTeam":"Pistas solicitadas"}
+            "titles": { 
+                "retosSuperadosTeam": "Retos superados", 
+                "hintsByTeam":"Pistas solicitadas"
+            }
         },
         "grading": {
             "config": "Modificar rúbrica",
@@ -1574,6 +1577,12 @@
             "Round": "Ronda",
             "Item": "Elemento",
             "Items": "Elementos"
+        },
+        "Clock": {
+            "name": "Reloj",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes establezcan una determinada hora en un reloj.",
+            "SecondHand": "Segundero",
+            "InitialTime": "Hora inicial"
         },
         "CodeEditor": {
             "name": "Editor HTML/CSS/JS",

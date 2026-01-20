@@ -1579,6 +1579,12 @@
             "Item": "Item",
             "Items": "Items"
         },
+        "Clock": {
+            "name": "Clock",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to set a specific time on a clock.",
+            "SecondHand": "Second hand",
+            "InitialTime": "Initial time"
+        },
         "CodeEditor": {
             "name": "Code Editor",
             "skins": {
