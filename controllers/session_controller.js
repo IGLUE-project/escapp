@@ -4,7 +4,6 @@ const {isAdmin, isStudent, userNeedsConfirmation} = require("../helpers/users");
 const {isAuthor, isCoAuthor, isCoAuthorPending, getParticipant} = require("../helpers/escapeRooms");
 const sequelize = require("../models");
 const {models} = sequelize;
-const query = require("../queries");
 const path = require("path");
 
 /*
@@ -340,7 +339,7 @@ exports.destroy = (req, res) => {
 };
 
 // POST ACCEPT COOKIES
-exports.cookieAccept = (req, res) => {
+exports.cookieAccept = (_, res) => {
     res.cookie("cookieAccepted", "true", {
         "httpOnly": true,
         "secure": process.env.NODE_ENV === "production",
@@ -350,7 +349,7 @@ exports.cookieAccept = (req, res) => {
     res.sendStatus(200);
 };
 
-exports.terms = async (req, res, next) => {
+exports.terms = async (_, res, next) => {
     const { i18n } = res.locals;
     const currentLang = i18n.lang;
     const section = "terms";
@@ -369,7 +368,7 @@ exports.terms = async (req, res, next) => {
     }
 };
 
-exports.privacy = async (req, res, next) => {
+exports.privacy = async (_, res, next) => {
     const { i18n } = res.locals;
     const currentLang = i18n.lang;
     const section = "privacy";
@@ -388,7 +387,7 @@ exports.privacy = async (req, res, next) => {
     }
 };
 
-exports.cookiePolicy = async (req, res, next) => {
+exports.cookiePolicy = async (_, res, next) => {
     const { i18n } = res.locals;
     const currentLang = i18n.lang;
     const section = "cookies";
@@ -407,7 +406,7 @@ exports.cookiePolicy = async (req, res, next) => {
     }
 };
 
-exports.acceptNewShow = (req, res) => {
+exports.acceptNewShow = (_, res) => {
     res.render("users/new_terms", {});
 };
 

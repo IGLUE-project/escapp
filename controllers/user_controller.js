@@ -215,7 +215,7 @@ exports.destroy = async (req, res, next) => {
     if (req.session.user.isAdmin && req.query.total) {
         try {
             await req.user.destroy({}, {transaction});// Deleting logged user.
-            transaction.commit();
+            await transaction.commit();
             if (req.session.user && req.session.user.id === req.user.id) {
                 // Close the user session
                 delete req.session.user;
@@ -224,7 +224,7 @@ exports.destroy = async (req, res, next) => {
             req.flash("success", i18n.common.flash.successDeletingUser);
             res.redirect("/goback");
         } catch (error) {
-            transaction.rollback();
+            await transaction.rollback();
             next(error);
         }
     } else {
@@ -259,7 +259,7 @@ exports.destroy = async (req, res, next) => {
             }, {transaction});
 
             await Promise.all(teams.map((team) => team.update({ "name": `Anonymous ${team.id}`}, { transaction })));
-            transaction.commit();
+            await transaction.commit();
             if (req.session.user && req.session.user.id === req.user.id) {
                 // Close the user session
                 delete req.session.user;
@@ -268,12 +268,12 @@ exports.destroy = async (req, res, next) => {
             req.flash("success", i18n.common.flash.successDeletingUser);
             res.redirect("/goback");
         } catch (error) {
-            transaction.rollback();
+            await transaction.rollback();
             next(error);
         }
     }
 };
-exports.index = (req, res, next) => {
+exports.index = (_, res, next) => {
     models.user.count().
         then(() => {
             const findOptions = {"order": ["username"]};
@@ -320,7 +320,7 @@ exports.newResetPassword = async (req, res) => {
 };
 
 // POST /users/password-reset
-exports.resetPassword = (req, res) => {
+exports.resetPassword = (_, res) => {
     res.render("index", {"resetPassword": true});
 };
 
@@ -403,7 +403,6 @@ exports.confirmEmail = async (req, res, next) => {
 // PUT /users/:userId/confirm
 exports.confirmAdmin = (req, res, next) => {
     const {user, query} = req;
-    const {code} = query;
 
     user.confirmed = true;
     user.save({"fields": ["confirmed"]}).

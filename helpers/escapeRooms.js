@@ -3,7 +3,6 @@ const {models} = sequelize;
 const query = require("../queries");
 const uploadsHelper = require("./uploads");
 const { replaceSceneUrls } = require("./reusablePuzzles");
-const { getHostname } = require("./utils");
 
 const isAuthor = function (user, er) {
     return user.id === er.authorId;
@@ -55,9 +54,12 @@ exports.getParticipant = getParticipant;
 const getReusablePuzzleIdByName = async (rpName) => {
     try {
         const reus = await models.reusablePuzzle.findOne({where: {name: rpName}});
-        return reus.id;
-    } catch(e) {
+        if (reus) {
+            return reus.id;
+        }
         throw new Error("No reusable puzzle with the name " + rpName)
+    } catch(e) {
+        throw new Error(e);
     }
 }
 
