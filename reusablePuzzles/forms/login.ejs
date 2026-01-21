@@ -4,12 +4,56 @@
 <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
 
 <div>
-    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
-    <select id="skinSelect" name="skin">
-        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
-        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
-        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
+    <label for="usernameRequiredLogin"><%=i18n.reusablePuzzleApps.Login.requireUsername%>:</label>
+    <select id="usernameRequiredLogin" name="usernameRequired">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
     </select>
+</div>
+
+<div>
+    <label for="usernameLogin"><%=i18n.reusablePuzzleApps.Login.username%>:</label>
+    <input type="text" id="usernameLogin" name="username" style="flex:1;" />
+</div>
+
+<div>
+    <label for="passwordPlaceholderLogin"><%=i18n.reusablePuzzleApps.Login.passwordPlaceholder%>:</label>
+    <input type="text" id="passwordPlaceholderLogin" name="passwordPlaceholder" style="flex:1;" />
+</div>
+
+<div>
+    <label for="avatarLogin"><%=i18n.reusablePuzzleApps.Login.avatar%>:</label>
+    <input type="text" id="avatarLogin" name="avatarImg" style="flex:1;" />
+</div>
+
+<div>
+    <label for="hintLogin"><%=i18n.reusablePuzzleApps.Login.helpMessage%>:</label>
+    <input type="text" id="hintLogin" name="hint" style="flex:1;" />
+</div>
+
+<div>
+    <label for="actionLogin"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionLogin" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+        <option value="SHOW_WEB"><%=i18n.reusablePuzzleApps.Common.showWeb%></option>
+        <option value="SHOW_VIDEO"><%=i18n.reusablePuzzleApps.Common.showVideo%></option>
+    </select>
+</div>
+
+<div id="messageActionLogin" class="actionLogin" data-action="SHOW_MESSAGE">
+    <label for="messageActionLoginInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+    <input id="messageActionLoginInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>"  style="flex:1;"  />
+</div>
+
+<div id="webActionLogin" class="actionLogin" data-action="SHOW_WEB">
+    <label for="webActionLoginInput"><%=i18n.reusablePuzzleApps.Common.Web%>:</label>
+    <input id="webActionLoginInput" type="text" name="webURL" style="flex:1;"  />
+</div>
+
+<div id="videoActionLogin" class="actionLogin" data-action="SHOW_VIDEO">
+    <label for="videoActionLoginInput"><%=i18n.reusablePuzzleApps.Common.Video%>:</label>
+    <input id="videoActionLoginInput" type="text" name="videoURL" style="flex:1;"  />
 </div>
 
 <div>
@@ -19,6 +63,23 @@
 <br>
 
 <script>
-    document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById('actionLogin').addEventListener('change', function() {
+        $(".actionLogin[data-action!='" + this.value + "']").hide();
+        $(".actionLogin[data-action='" + this.value + "']").show();
+    });
+
+    document.getElementById("usernameRequiredLogin").value =  window.currentOpenPuzzleConfig?.usernameRequired || 'FALSE';
+    document.getElementById("usernameLogin").value =  window.currentOpenPuzzleConfig?.username || '';
+    document.getElementById("passwordPlaceholderLogin").value =  window.currentOpenPuzzleConfig?.passwordPlaceholder || '';
+    document.getElementById("avatarLogin").value =  window.currentOpenPuzzleConfig?.avatarImg || '';
+    document.getElementById("hintLogin").value =  window.currentOpenPuzzleConfig?.hint || '';
+    document.getElementById("actionLogin").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    document.getElementById("messageActionLoginInput").value =  window.currentOpenPuzzleConfig?.message || '';
+    document.getElementById("webActionLoginInput").value =  window.currentOpenPuzzleConfig?.webURL || '';
+    document.getElementById("videoActionLoginInput").value =  window.currentOpenPuzzleConfig?.videoURL || '';
     document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
+
+
+
+    document.getElementById('actionLogin').dispatchEvent(new Event('change'));
 </script>

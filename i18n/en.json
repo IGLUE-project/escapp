@@ -1456,9 +1456,13 @@
             "enabledF": "Enabled",
             "disabledF": "Disabled",
             "showMessage": "Show message",
+            "showVideo": "Show video",
+            "showWeb": "Show web",
             "playSound": "Play sound",
             "Message": "Message",
             "MessagePlaceholder": "Message to show after solving",
+            "Web": "Web",
+            "Video": "Video",
             "FailureMessage" : "Failure message",
             "BackgroundURL": "Background",
             "BackgroundURLPlaceholder": "You can enter the URL of any image from your resource catalog",
@@ -1597,6 +1601,15 @@
             "description": "This resource allows you to create a puzzle whose solution requires participants to defuse a bomb by cutting a series of wires in a specific order.",
             "numberOfWires": "Number of wires",
             "timer": "Timer"
+        },
+        "Login": {
+            "name": "Login",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to log in using a username and/or a password.",
+            "requireUsername": "Require username",
+            "username": "Username",
+            "passwordPlaceholder": "Password placeholder",
+            "avatar": "Avatar",
+            "helpMessage": "Help message"
         },
         "CodeEditor": {
             "name": "Code Editor",

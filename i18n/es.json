@@ -1454,9 +1454,13 @@
             "enabledF": "Habilitada",
             "disabledF": "Deshabilitada",
             "showMessage": "Mostrar mensaje",
+            "showVideo": "Mostrar vídeo",
+            "showWeb": "Mostrar web",
             "playSound": "Reproducir sonido",
             "Message": "Mensaje",
             "MessagePlaceholder": "Mensaje a mostrar tras resolver el reto",
+            "Web": "Web",
+            "Video": "Vídeo",
             "FailureMessage" : "Mensaje de fallo",
             "BackgroundURL": "Fondo",
             "BackgroundURLPlaceholder": "Puedes introducir la URL de cualquier imagen que tengas en tu catálogo de recursos",
@@ -1596,6 +1600,15 @@
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes desactiven una bomba cortando una serie de cables en un orden determinado.",
             "numberOfWires": "Número de cables",
             "timer": "Temporizador"
+        },
+        "Login": {
+            "name": "Inicio de sesión",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes inicien sesión utilizando un nombre de usuario y/o una contraseña.",
+            "requireUsername": "Requerir nombre de usuario",
+            "username": "Nombre de usuario",
+            "passwordPlaceholder": "Texto de ayuda de la contraseña",
+            "avatar": "Avatar",
+            "helpMessage": "Mensaje de ayuda"
         },
         "CodeEditor": {
             "name": "Editor HTML/CSS/JS",
