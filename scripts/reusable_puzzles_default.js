@@ -167,14 +167,14 @@ const reusablePuzzlesList = [
         }
     },
     {
-        "name": "SQL Editor",
-        "zip": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle.zip",
-        "form": "sqlPuzzle.ejs",
-        "thumbnail": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_thumnail.png",
+        "name": "SQLChallenge",
+        "zip": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Puzzle.zip",
+        "form": "SQLChallenge.ejs",
+        "thumbnail": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Thumnail.png",
         "instructions": {
-            "en": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/SQLPuzzle/SQL_Puzzle_Instructions_SR.pdf"
+            "en": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Instructions_SR.pdf"
         }
     }
 

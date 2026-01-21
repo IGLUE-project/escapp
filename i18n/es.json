@@ -558,7 +558,7 @@
                             "webapp": "Aplicación web",
                             "other": "Archivo"
                         },
-                        "newPuzzle": "nuevo puzzle",
+                        "newPuzzle": "nuevo reto",
                         "uploadFile": "subir fichero",
                         "selectFile": "Selecciona un fichero",
                         "addResource": "añadir recurso",
@@ -602,7 +602,7 @@
                             "solutionLength": "Longitud de la solución",
                             "reusablePuzzleInstructions": "instrucciones",
                             "noPuzzle": "Ninguno",
-                            "puzzlePlaceholder": "Seleccione el puzzle"
+                            "puzzlePlaceholder": "Seleccione el reto"
 
                         }
                     }
@@ -1618,7 +1618,7 @@
             "allowSkippingVideo": "Permitir omitir vídeo",
             "skipVideoButtonLabel": "Texto del botón omitir vídeo"
         },
-        "sqlPuzzle": {
+        "SQLChallenge": {
             "name": "Reto SQL",
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes realicen consultas SQL sobre una base de datos determinada.",
             "dbUrl": "URL de la base de datos",
@@ -1633,8 +1633,10 @@
             "queryPlaceholder": "Placeholder del área de consulta",
             "resultsCardTitle": "Título del área de resultados",
             "resultsPlaceholder": "Placeholder del área de resultados",
+            "resultsPlaceholderDefault": "Los resultados se mostrarán aquí",
             "testsCardTitle": "Título del área de pruebas",
             "testsPlaceholder": "Placeholder del área de pruebas",
+            "testsPlaceholderDefault": "Ejecute la consulta para ver los resultados de la prueba",
             "infoCardTitle": "Título del área de información",
             "theme": "Tema",
             "test": "Prueba",

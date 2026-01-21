@@ -1,7 +1,7 @@
 <style>
     .test-block, .images-block {
         display: block !important;
-          border: 1px solid white; padding: 10px; margin-bottom: 10px; border-radius: 5px;
+        border: 1px solid white; padding: 10px; margin-bottom: 10px; border-radius: 5px;
     }
     .test-block input, .test-block label, .images-block input, .images-block label {
         display: block !important;
@@ -14,9 +14,8 @@
     }
     hr.full {
         display: block;
-         width: 100%;
+        width: 100%;
     }
-
     #add-test, #add-image {
         float: right;
         padding: 2px;
@@ -26,11 +25,11 @@
         padding-bottom: 12px;
         margin: 0px 1px;
     }
-</style
+</style>
 <br>
 <%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: true}, ) %>
 <br>
-<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+<h4 class="titleLabelEdit"><%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%></h4>
 
 <div>
     <label for="theme"><%=i18n.reusablePuzzleApps.Common.skin%> <a target="_blank" href="https://bootswatch.com"><span class="material-icons">info</span></a>:</label>
@@ -60,48 +59,48 @@
     <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style%>="flex:1;" />
 </div>
 <div>
-	<label for="dbUrl"><%=i18n.reusablePuzzleApps.sqlPuzzle.dbUrl%><a target="_blank" href="https://iglue-project.github.io/sql_puzzle"><span class="material-icons">info</span></a>:</label>
-	<input id="dbUrl" type="text" name="dbUrl" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.dbUrlPlaceholder%>" style="flex:1;"/>
+	<label for="dbUrl"><%=i18n.reusablePuzzleApps.SQLChallenge.dbUrl%><a target="_blank" href="https://iglue-project.github.io/sql_puzzle"><span class="material-icons">info</span></a>:</label>
+	<input id="dbUrl" type="text" name="dbUrl" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.dbUrlPlaceholder%>" style="flex:1;"/>
 </div>
 <div>
-	<label for="question"><%=i18n.reusablePuzzleApps.sqlPuzzle.question%>:</label>
-	<input id="question" type="text" name="question" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.questionPlaceholder%>" style="flex:1;"/>
+	<label for="question"><%=i18n.reusablePuzzleApps.SQLChallenge.question%>:</label>
+	<input id="question" type="text" name="question" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.questionPlaceholder%>" style="flex:1;"/>
 </div>
 <div>
-	<label for="title"><%=i18n.reusablePuzzleApps.sqlPuzzle.title%>:</label>
-	<input id="title" type="text" name="title" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.titlePlaceholder%>" style="flex:1;"/>
+	<label for="title"><%=i18n.reusablePuzzleApps.SQLChallenge.title%>:</label>
+	<input id="title" type="text" name="title" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.titlePlaceholder%>" style="flex:1;"/>
 </div>
 <div>
-	<label for="initialQuery"><%=i18n.reusablePuzzleApps.sqlPuzzle.initialQuery%>:</label>
-	<input id="initialQuery" type="text" name="initialQuery" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.initialQueryPlaceholder%>" style="flex:1;"/>
+	<label for="initialQuery"><%=i18n.reusablePuzzleApps.SQLChallenge.initialQuery%>:</label>
+	<input id="initialQuery" type="text" name="initialQuery" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.initialQueryPlaceholder%>" style="flex:1;"/>
 </div>
 <div>
-	<label for="queryCardTitle"><%=i18n.reusablePuzzleApps.sqlPuzzle.queryCardTitle%>:</label>
-	<input id="queryCardTitle" type="text" name="queryCardTitle" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.queryCardTitlePlaceholder%>" style="flex:1;"/>
+	<label for="queryCardTitle"><%=i18n.reusablePuzzleApps.SQLChallenge.queryCardTitle%>:</label>
+	<input id="queryCardTitle" type="text" name="queryCardTitle" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.queryCardTitlePlaceholder%>" style="flex:1;"/>
 </div>
 <div>
-	<label for="queryPlaceholder"><%=i18n.reusablePuzzleApps.sqlPuzzle.queryPlaceholder%>:</label>
-	<input id="queryPlaceholder" type="text" name="queryPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.queryPlaceholderPlaceholder%>" style="flex:1;"/>
+	<label for="queryPlaceholder"><%=i18n.reusablePuzzleApps.SQLChallenge.queryPlaceholder%>:</label>
+	<input id="queryPlaceholder" type="text" name="queryPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.queryPlaceholderPlaceholder%>" style="flex:1;"/>
 </div>
 <div>
-	<label for="resultsCardTitle"><%=i18n.reusablePuzzleApps.sqlPuzzle.resultsCardTitle%>:</label>
-	<input id="resultsCardTitle" type="text" name="resultsCardTitle" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.resultsCardTitlePlaceholder%>" style="flex:1;"/>
+	<label for="resultsCardTitle"><%=i18n.reusablePuzzleApps.SQLChallenge.resultsCardTitle%>:</label>
+	<input id="resultsCardTitle" type="text" name="resultsCardTitle" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.resultsCardTitlePlaceholder%>" style="flex:1;"/>
 </div>
 <div>
-	<label for="resultsPlaceholder"><%=i18n.reusablePuzzleApps.sqlPuzzle.resultsPlaceholder%>:</label>
-	<input id="resultsPlaceholder" type="text" name="resultsPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.resultsPlaceholderPlaceholder%>" style="flex:1;"/>
+	<label for="resultsPlaceholder"><%=i18n.reusablePuzzleApps.SQLChallenge.resultsPlaceholder%>:</label>
+	<input id="resultsPlaceholder" type="text" name="resultsPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.resultsPlaceholderPlaceholder%>" style="flex:1;"/>
 </div>
 <hr class="full"/>
 <div>
-	<label for="testsCardTitle"><%=i18n.reusablePuzzleApps.sqlPuzzle.testsCardTitle%>:</label>
-	<input id="testsCardTitle" type="text" name="testsCardTitle" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.testsCardTitlePlaceholder%>" style="flex:1;"/>
+	<label for="testsCardTitle"><%=i18n.reusablePuzzleApps.SQLChallenge.testsCardTitle%>:</label>
+	<input id="testsCardTitle" type="text" name="testsCardTitle" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.testsCardTitlePlaceholder%>" style="flex:1;"/>
 </div>
 <div>
-	<label for="testsPlaceholder"><%=i18n.reusablePuzzleApps.sqlPuzzle.testsPlaceholder%>:</label>
-	<input id="testsPlaceholder" type="text" name="testsPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.testsPlaceholderPlaceholder%>" style="flex:1;"/>
+	<label for="testsPlaceholder"><%=i18n.reusablePuzzleApps.SQLChallenge.testsPlaceholder%>:</label>
+	<input id="testsPlaceholder" type="text" name="testsPlaceholder" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.testsPlaceholderPlaceholder%>" style="flex:1;"/>
 </div>
 <div class="tests" style="display: block;">
-    <label for="testsPlaceholder" id=><%=i18n.reusablePuzzleApps.sqlPuzzle.tests%>:
+    <label for="testsPlaceholder" id=><%=i18n.reusablePuzzleApps.SQLChallenge.tests%>:
     <button type="button" id="add-test"><i class="material-icons">add</i></button>
     </label>
     <div id="tests-container" style="display: flex; flex-direction: column;">
@@ -110,12 +109,12 @@
 </div>
 <hr class="full"/>
 <div>
-	<label for="infoCardTitle"><%=i18n.reusablePuzzleApps.sqlPuzzle.infoCardTitle%>:</label>
-	<input id="infoCardTitle" type="text" name="infoCardTitle" placeholder="<%=i18n.reusablePuzzleApps.sqlPuzzle.infoCardTitlePlaceholder%>" style="flex:1;"/>
+	<label for="infoCardTitle"><%=i18n.reusablePuzzleApps.SQLChallenge.infoCardTitle%>:</label>
+	<input id="infoCardTitle" type="text" name="infoCardTitle" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.infoCardTitlePlaceholder%>" style="flex:1;"/>
     
 </div>
 <div class="images" style="display: block;">
-    <label for="images"><%=i18n.reusablePuzzleApps.sqlPuzzle.images%>:
+    <label for="images"><%=i18n.reusablePuzzleApps.SQLChallenge.images%>:
     <button type="button addButton" id="add-image"><i class="material-icons">add</i></button>
     </label>
     <div id="images-container" style="display: flex; flex-direction: column;">
@@ -147,12 +146,11 @@
     document.getElementById("queryCardTitle").value = window.currentOpenPuzzleConfig?.queryCardTitle || "Query";
     document.getElementById("queryPlaceholder").value = window.currentOpenPuzzleConfig?.queryPlaceholder || "SELECT * FROM ..."
     document.getElementById("resultsCardTitle").value = window.currentOpenPuzzleConfig?.resultsCardTitle || "Results"
-    document.getElementById("resultsPlaceholder").value = window.currentOpenPuzzleConfig?.resultsPlaceholder || "The results will be shown here"
+    document.getElementById("resultsPlaceholder").value = window.currentOpenPuzzleConfig?.resultsPlaceholder || "<%=i18n.reusablePuzzleApps.SQLChallenge.resultsPlaceholderDefault%>";
     document.getElementById("testsCardTitle").value = window.currentOpenPuzzleConfig?.testsCardTitle || "Tests"
-    document.getElementById("testsPlaceholder").value = window.currentOpenPuzzleConfig?.testsPlaceholder || "Run the query to see the test results"
+    document.getElementById("testsPlaceholder").value = window.currentOpenPuzzleConfig?.testsPlaceholder || "<%=i18n.reusablePuzzleApps.SQLChallenge.testsPlaceholderDefault%>";
     document.getElementById("infoCardTitle").value = window.currentOpenPuzzleConfig?.infoCardTitle || "Info";
    
-    
     if(window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
         document.getElementById("actionDiv").style.display = 'block';
     } else {
@@ -173,7 +171,7 @@
 
             var label = block.querySelector(".test-label");
             if (label) {
-            label.textContent = `<%= i18n.reusablePuzzleApps.sqlPuzzle.test %> ${index + 1}:`;
+            label.textContent = `<%= i18n.reusablePuzzleApps.SQLChallenge.test %> ${index + 1}:`;
             }
 
             var descInput = block.querySelector(".test-description");
@@ -217,7 +215,7 @@
         return ` 
         <div class="test-block" data-index="0" "> 
             <button type="button deleteButton" class="delete-test""><i class="material-icons">delete</i></button>
-            <label class="test-label" for="test_description_0"><%= i18n.reusablePuzzleApps.sqlPuzzle.test %> 1:</label>
+            <label class="test-label" for="test_description_0"><%= i18n.reusablePuzzleApps.SQLChallenge.test %> 1:</label>
             <input
             type="text"
             id="test_description_0"
@@ -228,7 +226,7 @@
             value="${description}"
             /> 
 
-            <label for="test_fn_0"><%= i18n.reusablePuzzleApps.sqlPuzzle.code %>:</label>
+            <label for="test_fn_0"><%= i18n.reusablePuzzleApps.SQLChallenge.code %>:</label>
             <input
             type="text"
             id="test_fn_0"
@@ -267,26 +265,21 @@
 
     function renumberImages() {
         var blocks = imagesContainer.querySelectorAll(".images-block");
-        console.log("Renumbering images", blocks);
         blocks.forEach((block, index) => {
             block.dataset.index = index;
-
             var label = block.querySelector(".images-label");
             if (label) {
-            label.textContent = `<%= i18n.reusablePuzzleApps.sqlPuzzle.image %> ${index + 1}:`;
+                label.textContent = `<%= i18n.reusablePuzzleApps.SQLChallenge.image %> ${index + 1}:`;
             }
-
             var descInput = block.querySelector(".image-description");
             if (descInput) {
-            descInput.name = `images[${index}]`;
-            descInput.id = `image_description_${index}`;
-            descInput.placeholder = `Image ${index + 1}`;
-            if (label) {
-                label.setAttribute("for", descInput.id);
+                descInput.name = `images[${index}]`;
+                descInput.id = `image_description_${index}`;
+                descInput.placeholder = `Image ${index + 1}`;
+                if (label) {
+                    label.setAttribute("for", descInput.id);
+                }
             }
-            }
-
-             
         });
     }
 
@@ -297,7 +290,6 @@
                 e.stopPropagation();e.preventDefault();
                 var block = btn.closest(".images-block");
                 if (!block) return;
-
                 block.remove();
                 renumberImages();
             };
@@ -308,7 +300,7 @@
         return ` 
         <div class="images-block" data-index="0" style=""> 
             <button type="button deleteButton" class="delete-image" ><i class="material-icons">delete</i></button>
-            <label class="images-label" for="image_description_0"><%= i18n.reusablePuzzleApps.sqlPuzzle.image %> 1:</label>
+            <label class="images-label" for="image_description_0"><%= i18n.reusablePuzzleApps.SQLChallenge.image %> 1:</label>
             <input
             type="text"
             id="image_description_0"
@@ -339,7 +331,4 @@
     // Run once on page load so the initial block has a working delete button
     attachDeleteImageHandlers();
     renumberImages();
-
-    
-
 </script>

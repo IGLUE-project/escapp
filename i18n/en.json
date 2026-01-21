@@ -1620,7 +1620,7 @@
             "allowSkippingVideo": "Allow skipping video",
             "skipVideoButtonLabel": "Skip video button label"
         },
-        "sqlPuzzle": {
+        "SQLChallenge": {
             "name": "SQL Challenge",
             "description": "This resource allows you to create a challenge whose solution requires participants to run SQL queries against a given database.",
             "dbUrl": "Database URL",
@@ -1635,8 +1635,10 @@
             "queryPlaceholder": "Query area placeholder",
             "resultsCardTitle": "Results area title",
             "resultsPlaceholder": "Results area placeholder",
+            "resultsPlaceholderDefault": "The results will be shown here",
             "testsCardTitle": "Tests area title",
             "testsPlaceholder": "Tests area placeholder",
+            "testsPlaceholderDefault": "Run the query to see the test results",
             "infoCardTitle": "Info area title",
             "test": "Test",
             "tests": "Tests",
