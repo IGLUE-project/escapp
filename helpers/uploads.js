@@ -2,6 +2,7 @@ const fs = require("fs/promises");
 const fsSync = require("fs");
 const path = require("path");
 const { fileTypeFromFile, fromFile } = require("file-type");
+const fileFunction =  fileTypeFromFile || fromFile;
 const mimeTypesRegexs = {
     "zip": new RegExp(/application\/(zip|x-zip-compressed|x-zip)/),
     "image": new RegExp("image\/.*"),
@@ -24,8 +25,8 @@ const getAssetTypeFromMimeType = function (mimetype) {
 exports.getAssetTypeFromMimeType = getAssetTypeFromMimeType;
 
 exports.getDataForFile = async function (filePathFull) {
-    console.log(filePathFull)
-    const fileType = await fromFile(filePathFull);
+
+    const fileType = await fileFunction(filePathFull);
 
     if (typeof fileType === "undefined") {
         return {
