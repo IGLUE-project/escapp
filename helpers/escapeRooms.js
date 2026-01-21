@@ -2,6 +2,7 @@ const sequelize = require("../models");
 const {models} = sequelize;
 const query = require("../queries");
 const uploadsHelper = require("./uploads");
+const path = require("path");
 const { replaceSceneUrls } = require("./reusablePuzzles");
 
 const isAuthor = function (user, er) {
@@ -63,7 +64,7 @@ const getReusablePuzzleIdByName = async (rpName) => {
     }
 }
 
-exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, currentUrl, transaction) {
+exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, currentUrl, fileMapping, transaction) {
     let {subjects, duration, license, field, format, level, description, scope, invitation, teamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, automatedHints, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = er;
 
     const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -119,8 +120,8 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
         posttest,
         numQuestions,
         invitation,
-        hybridInstructions, 
-        instructions,
+        hybridInstructions: (fileMapping["hybridInstructions"] && fileMapping["hybridInstructions"][hybridInstructions]) ? fileMapping["hybridInstructions"][hybridInstructions] : hybridInstructions, 
+        instructions: (fileMapping["instructions"] && fileMapping["instructions"][instructions]) ? fileMapping["instructions"][instructions] : instructions, 
         numRight,
         feedback,
         forbiddenLateSubmissions,
@@ -154,11 +155,11 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
             score,
             "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
         })),
-        "hintApp": hintApp ? uploadsHelper.getFields(hintApp) : undefined,
+        "hintApp": hintApp ? uploadsHelper.getFields(hintApp, fileMapping["hintApp"]) : undefined,
         "reusablePuzzleInstances": theReusablePuzzleInstances,
-        "attachment": attachment ?  uploadsHelper.getFields(attachment) : undefined
+        "attachment": attachment ?  uploadsHelper.getFields(attachment, fileMapping["attachment"]) : undefined
     }, {include});
-
+ 
     const saved = await escapeRoom.save({transaction});
     const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
     const teamCreated = await models.team.create({ "name": currentUser.name, "turnoId": testShift.id}, {transaction});
@@ -171,7 +172,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     }
     const theAssets = assets && assets.length ? [...assets].
         filter((a) => a.assetType).
-        map((asset) => ({...uploadsHelper.getFieldsForAssetNoURL(asset), "userId": authorId, "escapeRoomId": saved.id})) : undefined;
+        map((asset) => ({...uploadsHelper.getFieldsForAssetNoURL(asset, fileMapping["assets"]), "userId": authorId, "escapeRoomId": saved.id})) : undefined;
 
     const savedAssets = await models.asset.bulkCreate(theAssets, {transaction});
     for (let asset in assets) {
@@ -234,39 +235,44 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
 
 exports.getFilePathsForER = function(toExport) {
 
+
     const assetCandidates = toExport.assets.map((ast) => ({
         "field": "assets",
-        "pathStr": ast
+        "pathStr": ast,
+        "old":  ast.fileId
     }));
     const thumbnailCandidate = toExport.attachment ? [{
         "field": "attachment",
         "pathStr": {...toExport.attachment, 
             contentPath: toExport.attachment.url,
             filename : toExport.attachment.public_id
-        }
-    }] : [];
+        },
+        "old": toExport.attachment.public_id
+    }]: [];
     const hybridInstructionsCandidate = toExport.hybridInstructions ? [{
         "field": "hybridInstructions",
         "pathStr": {
             filename: toExport.hybridInstructions, 
             contentPath: `/uploads/hybrid/${toExport.hybridInstructions}`
-        }
-    }] : [];
+        },
+        "old": toExport.hybridInstructions
+    }]: [];
     const instructionsCandidate = toExport.instructions ? [{
         "field": "instructions",
         "pathStr": {
             filename: toExport.instructions, 
             contentPath: `/uploads/instructions/${toExport.instructions}`
-        }
-    }] : [];     
+        },
+        "old": toExport.instructions
+    }]: [];     
     const hintAppCandidate = toExport.hintApp ? [{
         "field": "hintApp",
         "pathStr": {
             ...toExport.hintApp, 
             contentPath: toExport.hintApp.url,
             filename : toExport.hintApp.public_id
-        }
-    }] : [];      
-    const all = [...thumbnailCandidate, ...assetCandidates, ...hybridInstructionsCandidate, ...instructionsCandidate, ...hintAppCandidate];
-    return all;
+        },
+        "old": toExport.hintApp.public_id
+    }]: [];      
+    return [...thumbnailCandidate, ...assetCandidates, ...hybridInstructionsCandidate, ...instructionsCandidate, ...hintAppCandidate];
 }

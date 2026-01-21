@@ -51,6 +51,5 @@ module.exports = ({ escapeRoom, turno }) =>  {
         const openRegistration = await isOpenRegistration();
         er.isPubliclyAccessible = er.isAccessibleToAllUsers && (openRegistration || er.allowGuests);
         er.isNetworkAccessible = er.isPubliclyAccessible && er.verified;
-        console.log(er.isNetworkAccessible);
     });
 };

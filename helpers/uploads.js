@@ -1,7 +1,7 @@
 const fs = require("fs/promises");
 const fsSync = require("fs");
 const path = require("path");
-const { fileTypeFromFile } = require("file-type");
+const { fileTypeFromFile, fromFile } = require("file-type");
 const mimeTypesRegexs = {
     "zip": new RegExp(/application\/(zip|x-zip-compressed|x-zip)/),
     "image": new RegExp("image\/.*"),
@@ -24,7 +24,8 @@ const getAssetTypeFromMimeType = function (mimetype) {
 exports.getAssetTypeFromMimeType = getAssetTypeFromMimeType;
 
 exports.getDataForFile = async function (filePathFull) {
-    const fileType = await fileTypeFromFile(filePathFull);
+    console.log(filePathFull)
+    const fileType = await fromFile(filePathFull);
 
     if (typeof fileType === "undefined") {
         return {
@@ -59,33 +60,33 @@ exports.deleteResource = async function (fileId, model, folderNameInsideUploads)
     }
 };
 
-exports.getFields = (el) => ({
-    "public_id": el.public_id,
+exports.getFields = (el, mapping) => ({
+    "public_id": (mapping && el.public_id && mapping[el.public_id]) ? mapping[el.public_id] : el.public_id,
     "config": el.config,
-    "url": el.url,
+    "url": (mapping && el.public_id && mapping[el.public_id]) ? mapping[el.public_id] : el.url.replace(el.public_id, mapping[el.public_id]),
     "filename": el.filename,
     "mime": el.mime
 });
 
-exports.getFieldsForAsset = (el) => ({
+exports.getFieldsForAsset = (el, mapping) => ({
     "assetType": el.assetType,
     "mimetype": el.mimetype,
-    "fileId": el.fileId,
-    "filePath": el.filePath,
+    "fileId": (mapping && el.fileId && mapping[el.fileId]) ? mapping[el.fileId] : el.fileId,
+    "filePath": (mapping && el.filePath && mapping[el.filePath]) ? mapping[el.filePath] : el.filePath,
     "fileExtension": el.fileExtension,
     "filename": el.filename,
-    "contentPath": el.contentPath,
+    "contentPath": (mapping && mapping[el.contentPath]) ? mapping[el.contentPath] : el.contentPath,
     "config": el.config,
     "url": el.url
 });
 
-exports.getFieldsForAssetNoURL = (el) => ({
+exports.getFieldsForAssetNoURL = (el, mapping) => ({
     "assetType": el.assetType,
     "mimetype": el.mimetype,
-    "fileId": el.fileId,
-    "filePath": el.filePath,
+    "fileId": (mapping && el.fileId && mapping[el.fileId]) ? mapping[el.fileId] : el.fileId,
+    "filePath": (mapping && el.filePath && mapping[el.filePath]) ? mapping[el.filePath] : el.filePath,
     "fileExtension": el.fileExtension,
     "filename": el.filename,
-    "contentPath": el.contentPath,
+    "contentPath": (mapping && el.contentPath && mapping[el.contentPath]) ? mapping[el.contentPath] : el.contentPath,
     "config": el.config
 });

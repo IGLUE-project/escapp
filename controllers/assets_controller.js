@@ -9,7 +9,6 @@ const queries = require("../queries");
 const path = require("path");
 const fs = require("fs/promises");
 const fsSync = require("fs");
-const { fileTypeFromFile } = require("file-type");
 const StreamZip = require("node-stream-zip");
 
 

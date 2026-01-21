@@ -61,8 +61,6 @@ module.exports = {
                 if (!downloadOk || !fsSync.existsSync(downloadFilePathFull)) {
                     console.log(`Error downloading ${asset.url}`);
                     continue;
-                } else {
-                    // Console.log(`File downloaded to: ${downloadFilePathFull}`);
                 }
 
                 const assetFileType = await fileTypeFromFile(downloadFilePathFull);

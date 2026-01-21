@@ -663,7 +663,7 @@ exports.clone = async (req, res, next) => {
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${escapeRoom.title}`;
         const currentUser = req.session.user;
-        const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, undefined, undefined, transaction);
+        const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, undefined, undefined, undefined, transaction);
 
         res.redirect(`/escapeRooms/${saved.id}/edit`);
     } catch (err) {
@@ -977,10 +977,25 @@ exports.importView = async (_, res) => {
     res.render("escapeRooms/import");
 }
 
+const getReplacements = function(all) {
+    const currentDate = Date.now();
+
+    const mapping = { };
+    for (let item of all) {
+        const {old} = item;
+        let newName = Date.now() + "_" + ((old.length > 200) ? old.slice(60) : old);
+
+        if(mapping[item.field]) {
+            mapping[item.field][old] =  newName
+        } else {
+            mapping[item.field] = {[old]:  newName}
+        }
+    }
+    return mapping;
+}
+
 exports.import = async (req, res, next) => {
-  let escapeRoom;
   const transaction = await sequelize.transaction();
-  // TO-DO Important: name colission, escapp version¿
   try {
     const zip = new AdmZip(req.tmpPath || req.file.path);
 
@@ -992,14 +1007,10 @@ exports.import = async (req, res, next) => {
     }
 
     const rawJson = entry.getData().toString("utf8");
-    zip.getEntries().forEach(entry => {
-        if (!entry.isDirectory) {
-        console.log("File:", entry.entryName);
-        }
-    });
-    escapeRoom = JSON.parse(rawJson);
-    const all = getFilePathsForER(escapeRoom);
 
+    const escapeRoom = JSON.parse(rawJson);
+    const all = getFilePathsForER(escapeRoom);
+    const replacements = getReplacements(all); 
     for (const fi in all) {
         const item = all[fi];
         const folderName = item.field; // E.g. "assets"
@@ -1011,11 +1022,16 @@ exports.import = async (req, res, next) => {
         const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
         const filePath = path.join(process.cwd(), relativeFromRoot);
         const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
+        let replacementName = originalName;
+        if (replacements[folderName] && replacements[folderName][originalName]) {
+            replacementName = replacements[folderName][originalName];
+        }
         const route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
         let newRoute = item.pathStr.contentPath;
         if (item.pathStr && item.pathStr.assetType === "webapp") {
             newRoute = item.pathStr.contentPath.replace("/index.html", "");
         }
+        newRoute = newRoute.replace(item.old,replacementName);
         const fileZip = zip.getEntry(route)
         const newRouteRelative = newRoute.replace(/^[/\\]+/, "");
 
@@ -1025,6 +1041,7 @@ exports.import = async (req, res, next) => {
             const data = fileZip.getData();
 
             const targetPath = path.join(__dirname, "..", newRouteRelative);
+            
             fsSync.mkdirSync(path.dirname(targetPath), { recursive: true });
             fsSync.writeFileSync(targetPath, data);
 
@@ -1059,7 +1076,7 @@ exports.import = async (req, res, next) => {
     const currentUser = req.session.user;
     const prevUrl = escapeRoom.server;
     const currentUrl = getHostname(req);
-    const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, prevUrl, currentUrl, transaction);
+    const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, prevUrl, currentUrl, replacements, transaction);
     res.redirect("/escapeRooms/" + saved.id);
 
   } catch (err) {

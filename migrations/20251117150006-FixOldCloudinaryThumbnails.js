@@ -4,7 +4,6 @@ const { exec } = require("child_process");
 const path = require("path");
 const fs = require("fs/promises");
 const fsSync = require("fs");
-const { fileTypeFromFile } = require("file-type");
 const {getDataForFile} = require("../helpers/uploads");
 
 function downloadWithWget (url, destPath) {

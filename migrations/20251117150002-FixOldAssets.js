@@ -123,7 +123,7 @@ module.exports = {
                 asset.url = newAssetUrl;
             }
 
-            // Console.log("Update asset", asset);
+            // console.log("Update asset", asset);
 
             await queryInterface.bulkUpdate(
                 "assets",
