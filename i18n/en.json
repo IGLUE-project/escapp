@@ -1620,6 +1620,31 @@
             "allowSkippingVideo": "Allow skipping video",
             "skipVideoButtonLabel": "Skip video button label"
         },
+        "sqlPuzzle": {
+            "name": "SQL Challenge",
+            "description": "This resource allows you to create a challenge whose solution requires participants to run SQL queries against a given database.",
+            "dbUrl": "Database URL",
+            "dbUrlPlaceholder": "Enter the URL of any sqlite database",
+            "title": "Title",
+            "titlePlaceholder": "The title that will be shown in the challenge",
+            "question": "Question",
+            "questionPlaceholder": "The question participants must answer using SQL",
+            "initialQuery": "Initial query",
+            "initialQueryPlaceholder": "SQL query that will be shown initially to participants",
+            "queryCardTitle": "Query area title",
+            "queryPlaceholder": "Query area placeholder",
+            "resultsCardTitle": "Results area title",
+            "resultsPlaceholder": "Results area placeholder",
+            "testsCardTitle": "Tests area title",
+            "testsPlaceholder": "Tests area placeholder",
+            "infoCardTitle": "Info area title",
+            "test": "Test",
+            "tests": "Tests",
+            "theme": "Theme",
+            "image": "Image",
+            "images": "Images",
+            "code": "Code"
+        },
         "CodeEditor": {
             "name": "Code Editor",
             "skins": {
@@ -1662,31 +1687,6 @@
             "readOnly": "Read only",
             "hidden": "Hide file",
             "Tests": "Tests"
-        },
-        "sqlPuzzle": {
-            "name": "SQL challenge",
-            "description": "This resource allows you to create a challenge whose solution requires participants to run SQL queries against a given database.",
-            "dbUrl": "Database URL",
-            "dbUrlPlaceholder": "Enter the URL of any sqlite database",
-            "title": "Title",
-            "titlePlaceholder": "The title that will be shown in the challenge",
-            "question": "Question",
-            "questionPlaceholder": "The question participants must answer using SQL",
-            "initialQuery": "Initial query",
-            "initialQueryPlaceholder": "SQL query that will be shown initially to participants",
-            "queryCardTitle": "Query area title",
-            "queryPlaceholder": "Query area placeholder",
-            "resultsCardTitle": "Results area title",
-            "resultsPlaceholder": "Results area placeholder",
-            "testsCardTitle": "Tests area title",
-            "testsPlaceholder": "Tests area placeholder",
-            "infoCardTitle": "Info area title",
-            "test": "Test",
-            "tests": "Tests",
-            "theme": "Theme",
-            "image": "Image",
-            "images": "Images",
-            "code": "Code"
         }
     },
     "general": {
