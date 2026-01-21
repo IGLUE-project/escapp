@@ -1,0 +1,69 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div id="videoURLVideo">
+    <label for="videoURLVideoInput"><%=i18n.reusablePuzzleApps.Common.Video%>:</label>
+    <input id="videoURLVideoInput" type="text" name="videoURL" style="flex:1;"  />
+</div>
+
+<div id="posterURLVideo">
+    <label for="posterURLVideoInput"><%=i18n.reusablePuzzleApps.Video.poster%>:</label>
+    <input id="posterURLVideoInput" type="text" name="posterURL" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="showControlsVideo"><%=i18n.reusablePuzzleApps.Video.showControls%>:</label>
+    <select id="showControlsVideo" name="enableControls">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
+    <label for="showPlayButtonVideo"><%=i18n.reusablePuzzleApps.Video.showPlayButton%>:</label>
+    <select id="showPlayButtonVideo" name="showPlayButton">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
+    <label for="allowSkipVideo"><%=i18n.reusablePuzzleApps.Video.allowSkippingVideo%>:</label>
+    <select id="allowSkipVideo" name="allowSkipVideo">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div id="skipVideoButtonLabelVideo">
+    <label for="skipVideoButtonLabelVideoInput"><%=i18n.reusablePuzzleApps.Video.skipVideoButtonLabel%>:</label>
+    <input id="skipVideoButtonLabelVideoInput" type="text" name="skipVideoText" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
+    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<script>
+    document.getElementById('allowSkipVideo').addEventListener('change', function() {
+        if(this.value === "FALSE"){
+            $("#skipVideoButtonLabelVideo").hide();
+        } else {
+            $("#skipVideoButtonLabelVideo").show();
+        }
+    });
+
+    document.getElementById("videoURLVideoInput").value =  window.currentOpenPuzzleConfig?.videoURL || '';
+    document.getElementById("posterURLVideoInput").value =  window.currentOpenPuzzleConfig?.posterURL || '';
+    document.getElementById("showControlsVideo").value =  window.currentOpenPuzzleConfig?.enableControls || 'TRUE';
+    document.getElementById("showPlayButtonVideo").value =  window.currentOpenPuzzleConfig?.showPlayButton || 'FALSE';
+    document.getElementById("allowSkipVideo").value =  window.currentOpenPuzzleConfig?.allowSkipVideo || 'TRUE';
+    document.getElementById("skipVideoButtonLabelVideoInput").value =  window.currentOpenPuzzleConfig?.skipVideoText || '';
+    document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
+
+    document.getElementById('allowSkipVideo').dispatchEvent(new Event('change'));
+</script>

@@ -1611,6 +1611,15 @@
             "avatar": "Avatar",
             "helpMessage": "Help message"
         },
+        "Video": {
+            "name": "Video",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to watch a specific video.",
+            "poster": "Poster",
+            "showControls": "Show controls",
+            "showPlayButton": "Show play button",
+            "allowSkippingVideo": "Allow skipping video",
+            "skipVideoButtonLabel": "Skip video button label"
+        },
         "CodeEditor": {
             "name": "Code Editor",
             "skins": {

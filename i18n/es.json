@@ -1609,6 +1609,15 @@
             "avatar": "Avatar",
             "helpMessage": "Mensaje de ayuda"
         },
+        "Video": {
+            "name": "Vídeo",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes vean un vídeo determinado.",
+            "poster": "Póster",
+            "showControls": "Mostrar controles",
+            "showPlayButton": "Mostrar botón de reproducción",
+            "allowSkippingVideo": "Permitir omitir vídeo",
+            "skipVideoButtonLabel": "Texto del botón omitir vídeo"
+        },
         "CodeEditor": {
             "name": "Editor HTML/CSS/JS",
             "skins": {
