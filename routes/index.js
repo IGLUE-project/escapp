@@ -34,7 +34,7 @@ const redirectBack = (req, res) => {
 };
 
 // Save the route that will be the current restoration route.
-const saveBack = (req, res, next) => {
+const saveBack = (req, _, next) => {
     req.session.backURL = req.url;
     next();
 };
@@ -104,8 +104,8 @@ router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequ
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.test);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.startPlaying, playController.play);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.export);
-router.get("/escapeRooms/import", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.importView);
-router.post("/escapeRooms/import", sessionController.loginRequired, memoryStorage.single("fileInput"), escapeRoomController.import);
+router.get("/escapeRooms/import", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.importView);
+router.post("/escapeRooms/import", sessionController.loginRequired, sessionController.authCreateEscapeRoom, memoryStorage.single("fileInput"), escapeRoomController.import);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", escapeRoomController.returnThumbnail);
 
 // Edit escape room steps

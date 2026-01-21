@@ -92,22 +92,22 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                 const exists = await models.requestedHint.findOne({"where": {hintId, teamId}}, {transaction})
                 if (!exists) {
                     await reqHint.save({transaction});
-                    transaction.commit();
+                    await transaction.commit();
                     return {"ok": true, msg, hintOrder, puzzleOrder, category};
                 }
-                transaction.commit();
+                await transaction.commit();
                 return {"ok": false}
             }
-            transaction.commit();
+            await transaction.commit();
             return {"ok": false, "msg": messages.cantRequestMoreThis, hintOrder, puzzleOrder, category};
         }
         const reqHint = models.requestedHint.build({"hintId": null, teamId, success, score, userId});
         
         await reqHint.save({transaction});
-        transaction.commit();
+        await transaction.commit();
         return { "ok": false, "msg": messages.failed};
     } catch (e) {
-        transaction.rollback();
+        await transaction.rollback();
         return {"ok": false, "msg": e.message};
     }
 };

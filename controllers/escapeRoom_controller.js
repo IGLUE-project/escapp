@@ -1,22 +1,12 @@
 const Sequelize = require("sequelize");
-const {QueryTypes} = require("sequelize");
 const AdmZip = require("adm-zip");
 const sequelize = require("../models");
 const {models} = sequelize;
 const query = require("../queries");
 const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {isAuthor, isCoAuthor, isCoAuthorPending, isParticipant, getParticipant, cloneER, getFilePathsForER} = require("../helpers/escapeRooms");
+const {isAuthor, isParticipant, cloneER, getFilePathsForER} = require("../helpers/escapeRooms");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname} = require("../helpers/utils");
-const {
-    toArray,
-    statSafe,
-    baseFor,
-    resolveUnder,
-    zipEntryPath,
-    addPath,
-    collectAssetEntries
-} = require("../helpers/archive");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 const fsSync = require("fs");
 const fs = require("fs/promises");
@@ -103,7 +93,7 @@ exports.index = async (req, res, next) => {
 
         // Finished
         ({"count": countFinished, "rows": finished} = await models.escapeRoom.findAndCountAll(query.escapeRoom.all(user.id, pageFinished, limit, search, true)));
-        const pagesFinished = Math.ceil(countPending / limit);
+        const pagesFinished = Math.ceil(countFinished / limit);
 
         if (pageFinished > pagesFinished && pagesFinished !== 0) {
             pageFinished = pagesFinished;
@@ -180,7 +170,7 @@ exports.new = (_req, res) => {
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, lang, scope, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, lang, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
     const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
@@ -335,7 +325,7 @@ exports.update = async (req, res) => {
                     await uploadsHelper.deleteResource(er.attachment.public_id, models.attachment, "thumbnails");
                     await er.attachment.destroy();
                 }
-                transaction.commit();
+                await transaction.commit();
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("settings")}`);
                 return;
             }
@@ -379,7 +369,7 @@ exports.update = async (req, res) => {
                     await uploadsHelper.deleteResource(oldFileId, models.attachment, "thumbnails");
                 }
 
-                transaction.commit();
+                await transaction.commit();
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("settings")}`);
                 return;
             } catch (error) {
@@ -390,10 +380,10 @@ exports.update = async (req, res) => {
                 req.flash("error", i18n.common.flash.errorFile);
             }
         }
-        transaction.commit();
+        await transaction.commit();
         res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("settings")}`);
     } catch (error) {
-        transaction.rollback();
+        await transaction.rollback();
         console.error(error);
         console.error(req.body.field);
         if (error instanceof Sequelize.ValidationError) {
@@ -888,7 +878,7 @@ exports.test = async (req, res) => {
 };
 
 
-exports.showGuide = (req, res) => res.render("inspiration/inspiration");
+exports.showGuide = (_, res) => res.render("inspiration/inspiration");
 
 exports.verify = async (req, res, next) => {
     try {
@@ -984,7 +974,7 @@ exports.export = async (req, res, next) => {
     }
 };
 
-exports.importView = async (req, res, next) => {
+exports.importView = async (_, res) => {
     res.render("escapeRooms/import");
 }
 

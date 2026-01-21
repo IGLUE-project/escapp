@@ -76,7 +76,7 @@ exports.checkTeamAvailable = (req, res, next) => {
         req.flash("error", i18n.team.fullTeam);
         res.redirect("back");
     } else if (team.startTime && new Date(team.startTime.getTime() + escapeRoom.duration * 60000) < new Date()) {
-        req.flash("error", i18n.team.alreadyFinished);
+        req.flash("error", i18n.team.alreadyFinishedChoose);
         res.redirect("back");
     } else {
         next();
