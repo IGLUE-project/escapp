@@ -7,7 +7,7 @@ const StreamZip = require("node-stream-zip");
 const sequelize = require("../models"); // Adjust as needed
 const {models} = sequelize;
 
-exports.reusablePuzzles = async function (name, form, zipPath, thumbnailPath, instructions = {}) {
+exports.addReusablePuzzle = async function (name, form, zipPath, thumbnailPath, instructions = {}, order) {
     const t = await sequelize.transaction();
 
     try {
@@ -34,48 +34,56 @@ exports.reusablePuzzles = async function (name, form, zipPath, thumbnailPath, in
         }
 
         if (await models.reusablePuzzle.findOne({ "where": { name } }) !== null) {
-            console.warn(`⚠️ Puzzle with name "${name}" already exists. It will be overwritten.`);
+            console.warn(`⚠️ Reusable puzzle with name "${name}" already exists. It will be overwritten.`);
         }
 
-        const [puzzle] = await models.reusablePuzzle.upsert({ name }, { "transaction": t });
-        const puzzleDir = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
+        const [reusablePuzzle] = await models.reusablePuzzle.upsert({ name }, { "transaction": t });
+        const reusablePuzzleDir = path.join(__dirname, `../reusablePuzzles/installed/${reusablePuzzle.name}`);
+        const reusablePuzzleInstructionsDir = path.join(reusablePuzzleDir, `instructions`);
 
-        if (!fs.existsSync(puzzleDir)) {
-            fs.mkdirSync(puzzleDir, { "recursive": true });
+        if (!fs.existsSync(reusablePuzzleDir)) {
+            fs.mkdirSync(reusablePuzzleDir, { "recursive": true });
+        }
+
+        if (!fs.existsSync(reusablePuzzleInstructionsDir)) {
+            fs.mkdirSync(reusablePuzzleInstructionsDir, { "recursive": true });
         }
 
         if (thumbnailPath && fs.existsSync(thumbnailPath)) {
-            fs.copyFileSync(thumbnailPath, path.join(puzzleDir, thumbnailName));
+            fs.copyFileSync(thumbnailPath, path.join(reusablePuzzleDir, thumbnailName));
         }
 
-        await zip.extract(null, puzzleDir);
+        await zip.extract(null, reusablePuzzleDir);
         await zip.close();
 
         let instructionsText = "";
-
         if (Object.keys(instructions).length > 0) {
             for (const [lang, instruction] of Object.entries(instructions)) {
-                fs.copyFileSync(instruction, path.join(puzzleDir, `${lang}.pdf`));
+                fs.copyFileSync(instruction, path.join(reusablePuzzleInstructionsDir, `${lang}.pdf`));
                 instructionsText += `${lang},`;
             }
-            puzzle.instructions = instructionsText;
+            reusablePuzzle.instructions = instructionsText;
+        }
+
+        if((typeof order === "number")&&(order > 0)){
+            reusablePuzzle.order = order;
         }
 
         const config = {
             "url": hasForm
-                ? `/reusablePuzzles/installed/${puzzle.id}/form.ejs`
+                ? `/reusablePuzzles/installed/${reusablePuzzle.id}/form.ejs`
                 : `/reusablePuzzles/forms/${form || "default"}`,
             "thumbnail": thumbnailName
         };
 
-        puzzle.config = JSON.stringify(config);
-        await puzzle.save({ "transaction": t });
+        reusablePuzzle.config = JSON.stringify(config);
+        await reusablePuzzle.save({ "transaction": t });
         await t.commit();
 
         console.log("✅ Reusable puzzle created successfully.");
     } catch (e) {
         await t.rollback();
-        console.error("❌ Failed to create puzzle:", e.message);
+        console.error("❌ Failed to create reusable puzzle:", e.message);
         if (require.main === module) {
             process.exit(1);
         }
@@ -126,7 +134,7 @@ if (require.main === module) {
             --instructions:es \"Instructions for es\"`);
         process.exit(1);
     }
-    exports.reusablePuzzles(name, form, zipPath, thumbnailPath, instructions);
+    exports.addReusablePuzzle(name, form, zipPath, thumbnailPath, instructions);
 }
 
 

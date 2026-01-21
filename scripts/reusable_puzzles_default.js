@@ -1,4 +1,4 @@
-const {reusablePuzzles} = require("./reusable_puzzle.js");
+const {addReusablePuzzle} = require("./reusable_puzzle.js");
 
 const reusablePuzzlesList = [
     {
@@ -10,7 +10,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Keypad/Keypad_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Keypad/Keypad_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Keypad/Keypad_Instructions_SR.pdf",
-        }
+        },
+        "order": 1
     },
     {
         "name": "DecoderDisk",
@@ -21,7 +22,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/DecoderDisk/DecoderDisk_Instructions_SR.pdf"
-        }
+        },
+        "order": 2
     },
     {
         "name": "Safebox",
@@ -32,7 +34,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Safebox/Safebox_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Safebox/Safebox_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Safebox/Safebox_Instructions_SR.pdf"
-        }
+        },
+        "order": 3
     },
     {
         "name": "Switches",
@@ -43,7 +46,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Switches/Switches_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Switches/Switches_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Switches/Switches_Instructions_SR.pdf"
-        }
+        },
+        "order": 4
     },
     {
         "name": "WireConnection",
@@ -54,7 +58,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/WireConnection/WireConnection_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/WireConnection/WireConnection_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/WireConnection/WireConnection_Instructions_SR.pdf"
-        }
+        },
+        "order": 5
     },
     {
         "name": "SignalGenerator",
@@ -65,7 +70,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/SignalGenerator/SignalGenerator_Instructions_SR.pdf"
-        }
+        },
+        "order": 6
     },
     {
         "name": "Chessboard",
@@ -76,7 +82,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Chessboard/Chessboard_Instructions_SR.pdf"
-        }
+        },
+        "order": 7
     },
     {
         "name": "HiddenPath",
@@ -87,7 +94,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/HiddenPath/HiddenPath_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/HiddenPath/HiddenPath_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/HiddenPath/HiddenPath_Instructions_SR.pdf"
-        }
+        },
+        "order": 8
     },
     {
         "name": "BasicTextBox",
@@ -98,7 +106,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/BasicTextBox/BasicTextBox_Instructions_SR.pdf"
-        }
+        },
+        "order": 9
     },
     {
         "name": "ItemSelection",
@@ -109,7 +118,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/ItemSelection/ItemSelection_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/ItemSelection/ItemSelection_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/ItemSelection/ItemSelection_Instructions_SR.pdf"
-        }
+        },
+        "order": 10
     },
     {
         "name": "Clock",
@@ -120,7 +130,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Clock/Clock_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Clock/Clock_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Clock/Clock_Instructions_SR.pdf"
-        }
+        },
+        "order": 11
     },
     {
         "name": "Jigsaw",
@@ -131,7 +142,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Jigsaw/Jigsaw_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Jigsaw/Jigsaw_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Jigsaw/Jigsaw_Instructions_SR.pdf"
-        }
+        },
+        "order": 12
     },
     {
         "name": "WiredBomb",
@@ -142,7 +154,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/WiredBomb/WiredBomb_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/WiredBomb/WiredBomb_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/WiredBomb/WiredBomb_Instructions_SR.pdf"
-        }
+        },
+        "order": 13
     },
     {
         "name": "Login",
@@ -153,7 +166,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Login/Login_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Login/Login_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Login/Login_Instructions_SR.pdf"
-        }
+        },
+        "order": 14
     },
     {
         "name": "Video",
@@ -164,7 +178,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/Video/Video_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Video/Video_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Video/Video_Instructions_SR.pdf",
-        }
+        },
+        "order": 15
     },
     {
         "name": "SQLChallenge",
@@ -175,7 +190,8 @@ const reusablePuzzlesList = [
             "en": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Instructions_SR.pdf"
-        }
+        },
+        "order": 16
     }
 
     // {
@@ -192,7 +208,7 @@ const reusablePuzzlesList = [
 
 async function addReusablePuzzles () {
     for (const puz of reusablePuzzlesList) {
-        await reusablePuzzles(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions);
+        await addReusablePuzzle(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions, puz.order);
     }
     console.log("✅ Task succesfully completed");
 }

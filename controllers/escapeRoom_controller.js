@@ -576,7 +576,6 @@ exports.teamInterface = async (req, res, next) => {
         const scenes = await getERScenes(escapeRoom.id);
 
         const availableReusablePuzzles = await getReusablePuzzles();
-
         let reusablePuzzlesInstances = await getReusablePuzzlesInstances(escapeRoom.id);
 
         reusablePuzzlesInstances = reusablePuzzlesInstances.map((puzzleInstance) => ({
