@@ -163,16 +163,16 @@ exports.edit = async (req, res) => {
 
 // GET /escapeRooms/new
 exports.new = (_req, res) => {
-    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "lang": "", "forceLang": ""};
+    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "minTeamSize": "", "lang": "", "forceLang": ""};
 
     res.render("escapeRooms/new", {escapeRoom, "progress": "settings"});
 };
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, lang, teamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, lang, teamSize, minTeamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
-    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, minTeamSize, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
@@ -183,7 +183,7 @@ exports.create = async (req, res) => {
         filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "teacher", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "lang", "forceLang", "format", "level", "field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "teacher", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "minTeamSize", "authorId", "supportLink", "invitation", "lang", "forceLang", "format", "level", "field"], transaction});
         const newSubjects = subjects.map((s) => ({
             "subject": s,
             "escapeRoomId": er.id
@@ -295,6 +295,7 @@ exports.update = async (req, res) => {
     escapeRoom.format = body.format;
     escapeRoom.lang = body.lang;
     escapeRoom.teamSize = body.teamSize || 0;
+    escapeRoom.minTeamSize = body.minTeamSize;
     escapeRoom.forceLang = isValidLocale(body.forceLang) ? body.forceLang : null;
 
     const progressBar = body.progress;
@@ -305,7 +306,7 @@ exports.update = async (req, res) => {
         filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "duration", "forbiddenLateSubmissions", "description", "teamSize", "supportLink", "lang", "forceLang", "format", "level", "field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "duration", "forbiddenLateSubmissions", "description", "teamSize", "minTeamSize", "supportLink", "lang", "forceLang", "format", "level", "field"], transaction});
 
         // Remove all previous subjects for this escape room
         await models.subject.destroy({ "where": { "escapeRoomId": er.id } }, {transaction});

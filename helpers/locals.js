@@ -109,4 +109,34 @@ module.exports = function (app) {
             "icon": "school"
         }
     });
+
+    app.locals.formatTeamSize = function(minTeamSize, teamSize, i18n) {
+        const hasMin = Number.isInteger(minTeamSize) && minTeamSize > 0;
+        const hasMax = Number.isInteger(teamSize) && teamSize > 0;
+
+        if (hasMin && !hasMax) {
+            return `${minTeamSize}+`;
+        }
+
+        if (!hasMin && hasMax) {
+            return teamSize === 1
+            ? i18n.network.filters.participation.individual
+            : `${i18n.common.upTo} ${teamSize}`;
+        }
+
+        if (hasMin && hasMax) {
+            if (minTeamSize === teamSize) {
+            return `${teamSize}`;
+            }
+
+            if (minTeamSize <= 1) {
+            return `${i18n.common.upTo} ${teamSize}`;
+            }
+
+            return `${minTeamSize}-${teamSize}`;
+        }
+
+        return ""
+    }
+    
 };

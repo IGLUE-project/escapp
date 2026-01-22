@@ -112,6 +112,15 @@
                         <p><%=i18n.user.eduLevel[escapeRoom.level]%></p>
                     </div>
                 <%}%>
+                <%if(escapeRoom.teamSize || escapeRoom.minTeamSize){%>
+                    <div>
+                        <h3><%=i18n.escapeRoom.steps.sharing.teamSize%></h3>
+                        <p><%=formatTeamSize(escapeRoom.minTeamSize, escapeRoom.teamSize, i18n)%></p>
+                    </div>
+                <%}%>
+
+
+                
             </div>
         </div>
 

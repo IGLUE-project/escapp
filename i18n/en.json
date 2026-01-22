@@ -262,7 +262,8 @@
         "previous": "back",
         "profile": "Profile",
         "total": "total",
-        "Total": "Total"
+        "Total": "Total",
+        "upTo": "Up to"
     },
     "escapeRoom": {
         "api":{
@@ -441,6 +442,7 @@
                 "subjectNote": "What topic is covered in the activity? Introduce multiple topics separated by commas.",
                 "subjectPlaceHolder": "Type here",
                 "teamSizePlaceHolder": "How many members can each team have? Leave it blank if you don't want to limit it.",
+                "minTeamSizePlaceHolder": "What is the minimum number of team members? Leave it blank if you don't want to limit it.",
                 "supportLinkPlaceHolder": "You can provide a URL for participants to use in case they encounter problems.",
                 "title": "Escape Room basic configuration",
                 "titlePlaceHolder": "What is the escape room's name?",
@@ -687,6 +689,7 @@
                 "level": "Educational level",
                 "field": "Knowledge area",
                 "format": "Format",
+                "teamSize": "Team size",
                 "licenseExplanation": "Under which license do you want to publish your escape room?",
                 "licenseExplanationAlreadyPublished": "You cannot change the license anymore since your escape room has already been published before.",
                 "invitationExplanation": "Do you want participants to enter a password to join the escape room? If so, enter it in the text field below.",
@@ -749,7 +752,8 @@
             "duration": "The duration",
             "description": "The description",
             "hintInterval": "The time between hints",
-            "teamSize": "The team size",
+            "teamSize": "The maximum team size",
+            "minTeamSize": "The minimum team size",
             "scope": "The visibility",
             "invitation": "The password",
             "field": "The field",
@@ -1107,6 +1111,7 @@
             "subject": "Subject",
             "survey": "Survey",
             "teamSize": "Maximum team size",
+            "minTeamSize": "Minimum team size",
             "scope": "Visibility",
             "supportLink": "Link to get support during the escape room",
             "thumbnail": "Thumbnail",

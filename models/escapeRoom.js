@@ -23,6 +23,10 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.INTEGER,
                 "validate": {"max": 10000, "notEmpty": {"msg": "El tamaño de los equipos no puede estar vacío."}}
             },
+            "minTeamSize": {
+                "type": DataTypes.INTEGER,
+                "validate": {"max": 10000}
+            },
             "scope": {"type": DataTypes.STRING},
             "invitation": {"type": DataTypes.STRING},
             "teamAppearance": {

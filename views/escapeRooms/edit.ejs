@@ -186,8 +186,18 @@
                         <%= escapeRoom.duration %> min.
                     </div>
                 </div>
+                <%if(escapeRoom.teamSize || escapeRoom.minTeamSize){%>
+                 <div class="flexRow animated slideInUp" style="animation-delay: 60ms;">
+                    <div class="flexShowLeft">
+                        <%=i18n.escapeRoom.steps.sharing.teamSize%>
+                    </div>
+                    <div class="flexShowRight">
+                        <%=formatTeamSize(escapeRoom.minTeamSize, escapeRoom.teamSize, i18n)%>
+                    </div>
+                </div>
+                <%}%>
                 <%if(escapeRoom.field) {%>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 60ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 70ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.field%>:
                     </div>
@@ -197,7 +207,7 @@
                 </div>
                 <%}%>
                 <%if(escapeRoom.level) {%>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 70ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 80ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.level%>:
                     </div>
@@ -207,7 +217,7 @@
                 </div>
                 <%}%>
                 <%if(escapeRoom.format) {%>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 80ms;">
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 90ms;">
                     <div class="flexShowLeft">
                         <%=i18n.showTeacher.titles.format%>:
                     </div>
@@ -217,7 +227,7 @@
                 </div>
                 <%}%>
                 <%if(escapeRoom.instructions){%>
-                    <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 90ms;">
+                    <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 100ms;">
                         <div class="flexShowLeft">
                             <%=i18n.showTeacher.titles.instructions%>:
                         </div>
@@ -230,7 +240,7 @@
                         </div>
                     </div>
                 <%}%>
-                <%var delay = 150%>
+                <%var delay = 110%>
                 <% if (escapeRoom.description){ %>
                     <% delay += 50 %>
 
@@ -243,17 +253,8 @@
                         </div>
                     </div>
                 <% } %>
-                <% if (escapeRoom.teamSize) { %>
-                <div class="flexRow animated slideInUp" style="animation-delay: <%=delay%>ms;">
-                    <% delay += 50 %>
-                    <div class="flexShowLeft">
-                        <%=i18n.showTeacher.titles.teamSize%>:
-                    </div>
-                    <div class="flexShowRight">
-                        <%= escapeRoom.teamSize %>
-                    </div>
-                </div>
-                <%}%>
+
+                
                 <% if (escapeRoom.turnos && escapeRoom.turnos.length) { %>
                 <div class="flexRow animated slideInUp" style="animation-delay: <%=delay%>ms;">
                     <% delay += 50 %>

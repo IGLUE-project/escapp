@@ -30,7 +30,17 @@
          min: 1,
          max: 10000,
          value: escapeRoom.teamSize || null
-     },{
+     },
+     {
+         name: "minTeamSize",
+         id: "minTeamSize",
+         i18n: "minTeamSize",
+         number: true,
+         min: 1,
+         max: 10000,
+         value: escapeRoom.minTeamSize || null
+     },
+     {
          name: "supportLink",
          id: "supportLink",
          maxlength: 200,
