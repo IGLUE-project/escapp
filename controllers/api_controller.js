@@ -1,11 +1,11 @@
 const {models} = require("../models");
 const Sequelize = require("sequelize");
-
+const {getAvailableLocales} = require("../helpers/I18n")
+const availableLanguages = getAvailableLocales();
 const { authenticate, checkPuzzle, checkTurnoAccess, getERState, automaticallySetAttendance, getRanking, getCurrentPuzzle, getContentForPuzzle, getERPuzzles} = require("../helpers/utils");
 const {puzzleResponse, puzzleChecked, broadcastRanking, sendJoinTeam, sendStartTeam} = require("../helpers/sockets");
 const queries = require("../queries");
 const {OK, PARTICIPANT, NOK, NOT_STARTED, AUTHOR, TOO_LATE, getAuthMessageAndCode} = require("../helpers/apiCodes");
-
 
 exports.checkParticipant = async (req, res, next) => {
     const {body} = req;
@@ -44,9 +44,9 @@ exports.checkParticipantSafe = async (req, res, next) => {
         const user = await authenticate(email, password, token);
 
         if (user) {
-            if (!req.escapeRoom.forceLang && user.lang && i18n.lang !== user.lang && (user.lang === "es" || user.lang === "en")) {
+            if (!req.escapeRoom.forceLang && user.lang && i18n.lang !== user.lang && availableLanguages.some(l => l === user.lang)) {
                 // eslint-disable-next-line global-require
-                res.locals.i18n_lang = user.lang === "es" ? "es" : "en";
+                res.locals.i18n_lang = user.lang;
                 // eslint-disable-next-line global-require
                 res.locals.i18n_texts = require(`../i18n/${res.locals.i18n_lang}`);
                 res.locals.i18n = res.locals.i18n_texts;

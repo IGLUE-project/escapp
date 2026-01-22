@@ -143,8 +143,12 @@
   <label for="<%=field.id%>"  class="itemNarrow">10. <%=i18n.showTeacher.titles["forceLang"]%>:</label>
   <select class="customInput itemWide" id="forceLang" name="forceLang" autocomplete="off">
     <option value="" <%=escapeRoom.forceLang  ? "" : "selected" %>><%=i18n.langs["dontForce"]%> </option>
-    <option value="en" <%=escapeRoom.forceLang == "en"  ? "selected" : "" %>><%=i18n.langs["en"]%></option>
-    <option value="es"<%=escapeRoom.forceLang == "es" ? "selected" : "" %>><%=i18n.langs["es"]%></option>
+    <% var langs = locals.availableLanguages || ["en", "es"]; %>
+      <% for (var l in langs) {
+          var ll = langs[l];
+          %>
+              <option value="<%=ll%>" <%=escapeRoom.forceLang == ll  ? "selected" : "" %>><%=i18n.langs[ll]%></option>
+      <%}%>
   </select>
 </div>
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">

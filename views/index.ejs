@@ -14,8 +14,13 @@
                 <%- include("users/_login.ejs") %>
            <% } %>
           <ul class="langs">
-               <li><a class="<%=(lang=="en"?"active":"")%>" href="/?clang=en">en</a></li> /
-               <li><a class="<%=(lang=="es"?"active":"")%>" href="/?clang=es">es</a></li>
+               <% var langs = locals.availableLanguages || ["en", "es"]; %>
+               <% for (var l in langs) {
+                    var ll = langs[l];
+                    %>
+               <% if (l != 0) { %> / <%}%>
+                    <li><a class="<%=(i18n.lang==ll?"active":"")%>" href="/?clang=<%=ll%>"><%=ll%></a></li> 
+               <%}%>
           </ul>
         </div>
     </div>

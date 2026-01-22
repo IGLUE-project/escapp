@@ -1,13 +1,20 @@
 const ES_LOCALES = require("../i18n/es");
 const EN_LOCALES = require("../i18n/en");
+const SR_LOCALES = require("../i18n/sr");
 
 const LOCALES = {
     "en": EN_LOCALES,
-    "es": ES_LOCALES
+    "es": ES_LOCALES,
+    "sr": SR_LOCALES
 };
 
+function getAvailableLocales () {
+    return ["en","es","sr"];
+}
+
+
 function isValidLocale (locale) {
-    return typeof locale === "string" && ["en", "es"].includes(locale);
+    return typeof locale === "string" && getAvailableLocales().includes(locale);
 }
 
 function getBrowserLocale (req) {
@@ -21,6 +28,8 @@ function getBrowserLocale (req) {
 function getDefaultLocale () {
     return "en";
 }
+
+
 
 function getTextsForLocale (locale) {
     return LOCALES[isValidLocale(locale) ? locale : getDefaultLocale()];
@@ -44,3 +53,4 @@ exports.getLocaleForEscapeRoom = (req, escapeRoom, editing) => {
 exports.isValidLocale = isValidLocale;
 exports.getDefaultLocale = getDefaultLocale;
 exports.getTextsForLocale = getTextsForLocale;
+exports.getAvailableLocales = getAvailableLocales;

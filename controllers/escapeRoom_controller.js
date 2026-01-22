@@ -7,11 +7,13 @@ const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {isAuthor, isParticipant, cloneER, getFilePathsForER} = require("../helpers/escapeRooms");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname} = require("../helpers/utils");
-const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
+const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale, getAvailableLocales} = require("../helpers/I18n");
 const fsSync = require("fs");
 const fs = require("fs/promises");
 const path = require("path");
 const archiver = require("archiver");
+const availableLanguages = getAvailableLocales();
+const { Server } = require("socket.io");
 
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
@@ -165,7 +167,7 @@ exports.edit = async (req, res) => {
 exports.new = (_req, res) => {
     const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "teamSize": "", "minTeamSize": "", "lang": "", "forceLang": ""};
 
-    res.render("escapeRooms/new", {escapeRoom, "progress": "settings"});
+    res.render("escapeRooms/new", {escapeRoom, availableLanguages, "progress": "settings"});
 };
 
 // POST /escapeRooms/create
@@ -241,14 +243,14 @@ exports.create = async (req, res) => {
                 await transaction.rollback();
                 req.flash("error", i18n.common.flash.errorImage);
                 fsSync.unlinkSync(req.file.path);
-                res.render("escapeRooms/new", {escapeRoom, "progress": "settings"});
+                res.render("escapeRooms/new", {escapeRoom, availableLanguages, "progress": "settings"});
                 return;
             }
         } catch (error) {
             console.error(error);
             await transaction.rollback();
             req.flash("error", i18n.common.flash.errorFile);
-            res.render("escapeRooms/new", {escapeRoom, "progress": "settings"});
+            res.render("escapeRooms/new", {escapeRoom, availableLanguages, "progress": "settings"});
             return;
         }
         res.redirect(`/escapeRooms/${escapeRoom.id}/${progress || nextStep("settings")}`);
@@ -264,7 +266,7 @@ exports.create = async (req, res) => {
             console.error(error.message);
             req.flash("error", i18n.common.flash.errorCreatingER);
         }
-        res.render("escapeRooms/new", {escapeRoom, "progress": "settings"});
+        res.render("escapeRooms/new", {escapeRoom, availableLanguages, "progress": "settings"});
     }
 };
 
@@ -273,7 +275,7 @@ exports.settings = async (req, res, next) => {
     try {
         req.escapeRoom.attachment = await models.attachment.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
         req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
-        res.render("escapeRooms/steps/settings", {"escapeRoom": req.escapeRoom, "progress": "settings"});
+        res.render("escapeRooms/steps/settings", {"escapeRoom": req.escapeRoom, availableLanguages, "progress": "settings"});
     } catch (error) {
         console.error(error);
         next(error);
@@ -398,7 +400,7 @@ exports.update = async (req, res) => {
             req.flash("error", i18n.common.flash.errorEditingER);
         }
         escapeRoom.subject = subjects.map((ss) => ({"subject": ss}));
-        res.render("escapeRooms/steps/settings", {escapeRoom, "progress": "settings"});
+        res.render("escapeRooms/steps/settings", {escapeRoom, availableLanguages, "progress": "settings"});
     }
 };
 

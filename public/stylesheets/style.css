@@ -4166,6 +4166,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   padding-right: 2%;
   color: #656683;
 }
+.portada .contenedor .loginRight .langs .active {
+  color: white !important;
+}
 .portada .contenedor .loginRight .langs a:hover {
   color: white;
   font-weight: bold;
