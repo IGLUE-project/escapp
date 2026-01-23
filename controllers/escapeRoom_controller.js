@@ -453,7 +453,8 @@ exports.evaluationUpdate = async (req, res) => {
         escapeRoom.hintSuccess = body.hintSuccess;
         escapeRoom.hintFailed = body.hintFailed;
         escapeRoom.automaticAttendance = body.automaticAttendance;
-        await escapeRoom.save({"fields": ["survey", "pretest", "posttest", "scoreParticipation", "hintSuccess", "hintFailed", "automaticAttendance"]});
+        escapeRoom.allowUserToResetTeamProgress = body.allowUserToResetTeamProgress === "true";
+        await escapeRoom.save({"fields": ["survey", "pretest", "posttest", "scoreParticipation", "hintSuccess", "hintFailed", "automaticAttendance", "allowUserToResetTeamProgress"]});
         if (body.scores && body.scores.length !== escapeRoom.puzzles.length) {
             throw new Error("");
         }

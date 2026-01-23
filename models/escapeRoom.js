@@ -187,6 +187,10 @@ module.exports = function (sequelize, DataTypes) {
             "isNetworkAccessible": {
                 "type": DataTypes.BOOLEAN,
                 "defaultValue": false
+            },
+            "allowUserToResetTeamProgress": {
+                "type": DataTypes.BOOLEAN,
+                "defaultValue": false
             }
         }
     );

@@ -135,7 +135,7 @@ router.delete("/escapeRooms/:escapeRoomId(\\d+)/collaborators", sessionControlle
 // Shifts
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)/user/:userId(\\d+)", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, participantController.studentLeave);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turno/:turnoId(\\d+)/team/:teamId(\\d+)", sessionController.loginRequired, sessionController.authPlayEscapeRoom, participantController.studentLeave);
-router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)/reset", sessionController.loginRequired, sessionController.authEditEscapeRoom, teamController.resetProgress);
+router.put("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)/reset", sessionController.loginRequired, sessionController.authResetTeamProgress, teamController.resetProgress);
 router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)/teams/:teamId(\\d+)", sessionController.loginRequired, sessionController.authEditEscapeRoom, teamController.delete);
 // Starting/stopping shifts
 router.get("/escapeRooms/:escapeRoomId(\\d+)/activate", sessionController.loginRequired, sessionController.authEditEscapeRoom, turnoController.indexActivate);

@@ -256,6 +256,7 @@
             "page": "Página"
         },
         "next": "siguiente",
+        "no": "No",
         "orderBy": "Ordenar por",
         "previous": "anterior",
         "profile": "Mi perfil",
@@ -263,8 +264,8 @@
         "see": "ver",
         "total": "total",
         "Total": "Total",
-        "save": "guardar"
-
+        "save": "guardar",
+        "yes": "Sí"
     },
     "escapeRoom": {
         "api":{
@@ -470,7 +471,8 @@
                 "automaticAttendance": "Registro de participación. Cuando un participante accede a la escape room en su turno",
                 "automaticAttendanceNone": "No se registra automáticamente su participación",
                 "automaticAttendanceParticipant": "Se registra automáticamente su participación",
-                "automaticAttendanceTeam": "Se registra automáticamente su participación y la de sus compañeros de equipo"
+                "automaticAttendanceTeam": "Se registra automáticamente su participación y la de sus compañeros de equipo",
+                "allowUserToResetTeamProgress": "Permitir a los participantes reiniciar el progreso de su equipo"
             },
             "hints": {
                 "explanation": "En este apartado puedes configurar la estrategia de pistas a seguir durante la escape room. Hay tres estragias disponibles: no permitir pistas; permitir que el alumno obtenga una pista cuando la necesite sin proporcionar nada a cambio, y permitir que el alumno obtenga una pista tras responder correctamente a un cuestionario. Si habilitas las pistas, puedes configurar el límite de pistas que puede recibir cada equipo durante la escape room. Si eliges la última estrategia, sólo tienes que subir un fichero MoodleXML con una batería de preguntas e indicar cuántas se les muestran cada intento, cuántas deben acertar para lograr una pista y si se les muestra la respuesta correcta al finalizar cada intento.",

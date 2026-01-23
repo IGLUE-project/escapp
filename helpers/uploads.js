@@ -64,7 +64,7 @@ exports.deleteResource = async function (fileId, model, folderNameInsideUploads)
 exports.getFields = (el, mapping) => ({
     "public_id": (mapping && el.public_id && mapping[el.public_id]) ? mapping[el.public_id] : el.public_id,
     "config": el.config,
-    "url": (mapping && el.public_id && mapping[el.public_id]) ? mapping[el.public_id] : el.url.replace(el.public_id, mapping[el.public_id]),
+    "url": (mapping && el.public_id && mapping[el.public_id]) ? el.url.replace(el.public_id, mapping[el.public_id]) : el.url,
     "filename": el.filename,
     "mime": el.mime
 });

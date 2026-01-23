@@ -117,12 +117,12 @@
 					<button class="rounded editButton" type="button"><%=i18n.showPlayer.results%></button>
 				</a>
 			<% } %>
-			<% if (turno.status === "test" && team.startTime) { %>
+			<% if ((turno.status === "test" && team.startTime) || (escapeRoom.allowUserToResetTeamProgress && team.startTime && turno.status !== "finished")) { %>
 				<div id="reset" method="post" style="display: inline-block;">
-					<button class="rounded deleteButton" onclick="overlayTrigger('unjoin')">
+					<button class="rounded deleteButton" onclick="overlayTrigger('reset')">
 						<%=i18n.showPlayer.reset%>
 					</button>
-					<div class="overlay-trigger" data-id="unjoin">
+					<div class="overlay-trigger" data-id="reset">
 						<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/turnos/<%=turno.id%>/teams/<%=team.id%>/reset?_method=put">
 							<p><%=i18n.showPlayer.sureReset%></p>
 							<button class="deleteButton" type="button" onclick="overlayTrigger('reset', true)"><%=i18n.common.cancel%></button>

@@ -255,6 +255,7 @@
             "page": "Page"
         },
         "next": "next",
+        "no": "No",
         "save": "save",
         "search": "search",
         "see": "see",
@@ -263,7 +264,8 @@
         "profile": "Profile",
         "total": "total",
         "Total": "Total",
-        "upTo": "Up to"
+        "upTo": "Up to",
+        "yes": "Yes"
     },
     "escapeRoom": {
         "api":{
@@ -472,7 +474,8 @@
                 "automaticAttendance": "Participation record. When a participant accesses the escape room during their turn",
                 "automaticAttendanceNone": "Participation is not recorded automatically",
                 "automaticAttendanceParticipant": "Participation is recorded automatically for the participant",
-                "automaticAttendanceTeam": "Participation is recorded automatically for the participant and their teammates"
+                "automaticAttendanceTeam": "Participation is recorded automatically for the participant and their teammates",
+                "allowUserToResetTeamProgress": "Allow participants to reset their own team progress"
             },
             "hints": {
                 "correctNumber": "Number of correct answers",

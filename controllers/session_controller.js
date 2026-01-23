@@ -202,6 +202,24 @@ exports.authEditEscapeRoom = (req, res, next) => {
     next(new Error(res.locals.i18n.api.forbidden));
 };
 
+// MW that allows reset team progress if user is author/admin/coauthor, or participant when allowUserToResetTeamProgress is enabled.
+exports.authResetTeamProgress = async (req, res, next) => {
+    const {user} = req.session;
+    const er = req.escapeRoom;
+
+    if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
+        return next();
+    }
+    if (er.allowUserToResetTeamProgress) {
+        req.participant = await getParticipant(user, er);
+        if (typeof req.participant !== "undefined") {
+            return next();
+        }
+    }
+    res.status(403);
+    next(new Error(res.locals.i18n.api.forbidden));
+};
+
 // MW that allows actions only if the user logged in is admin or is the author of the escape room.
 exports.authDeleteEscapeRoom = (req, res, next) => {
     const {user} = req.session;
