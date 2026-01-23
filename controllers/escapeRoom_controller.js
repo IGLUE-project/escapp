@@ -174,7 +174,7 @@ exports.new = (_req, res) => {
 exports.create = async (req, res) => {
     const {title, subject, duration, forbiddenLateSubmissions, description, lang, teamSize, minTeamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
-    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, minTeamSize, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, "minTeamSize": minTeamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
@@ -297,7 +297,7 @@ exports.update = async (req, res) => {
     escapeRoom.format = body.format;
     escapeRoom.lang = body.lang;
     escapeRoom.teamSize = body.teamSize || 0;
-    escapeRoom.minTeamSize = body.minTeamSize;
+    escapeRoom.minTeamSize = body.minTeamSize || 0;
     escapeRoom.forceLang = isValidLocale(body.forceLang) ? body.forceLang : null;
 
     const progressBar = body.progress;

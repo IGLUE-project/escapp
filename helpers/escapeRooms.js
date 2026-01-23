@@ -64,7 +64,7 @@ const getReusablePuzzleIdByName = async (rpName) => {
     }
 }
 
-exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, currentUrl, fileMapping, transaction) {
+exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, currentUrl, fileMapping = {}, transaction) {
     let {subjects, duration, license, field, format, level, description, scope, invitation, teamSize, minTeamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, automatedHints, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes} = er;
 
     const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -100,7 +100,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
             });
         }
     }
-
+    console.log(hybridInstructions)
     const escapeRoom = models.escapeRoom.build({
         "title": newTitle,
         subjects: subjects ? subjects.map((s) => ({ "subject": s.subject })) : [],
@@ -121,8 +121,8 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
         posttest,
         numQuestions,
         invitation,
-        hybridInstructions: (fileMapping["hybridInstructions"] && fileMapping["hybridInstructions"][hybridInstructions]) ? fileMapping["hybridInstructions"][hybridInstructions] : hybridInstructions, 
-        instructions: (fileMapping["instructions"] && fileMapping["instructions"][instructions]) ? fileMapping["instructions"][instructions] : instructions, 
+        hybridInstructions: (fileMapping["hybridInstructions"] && hybridInstructions && fileMapping["hybridInstructions"][hybridInstructions]) ? fileMapping["hybridInstructions"][hybridInstructions] : hybridInstructions, 
+        instructions: (fileMapping["instructions"] && instructions && fileMapping["instructions"][instructions]) ? fileMapping["instructions"][instructions] : instructions, 
         numRight,
         feedback,
         forbiddenLateSubmissions,
