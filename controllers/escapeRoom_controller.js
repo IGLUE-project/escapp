@@ -682,6 +682,21 @@ exports.admin = async (req, res, next) => {
     const user = req.user || req.session.user;
     let page = parseInt(req.query.page || 1, 10);
 
+    // Parse verified filter: "all", "verified", "notVerified", "needsReverification"
+    // verified=true means verified AND isLastVersionVerified (truly verified)
+    // verified="changed" means verified but NOT isLastVersionVerified (needs re-verification)
+    // verified=false means not verified at all
+    let verifiedFilter = req.query.verified;
+    let verifiedParam;
+    if (verifiedFilter === "verified") {
+        verifiedParam = true; // verified=true AND isLastVersionVerified=true
+    } else if (verifiedFilter === "notVerified") {
+        verifiedParam = false; // verified=false
+    } else if (verifiedFilter === "needsReverification") {
+        verifiedParam = "changed"; // verified=true AND isLastVersionVerified=false
+    }
+    // If "all" or undefined, verifiedParam stays undefined (no filter)
+
     page = isNaN(page) || page < 1 ? 1 : page;
     const limit = 10;
     let escapeRooms = [];
@@ -689,16 +704,24 @@ exports.admin = async (req, res, next) => {
 
     try {
         if (user && user.isAdmin) {
-            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll(page, limit, search)));
+            ({count, "rows": escapeRooms} = await models.escapeRoom.findAndCountAll(query.escapeRoom.forAll(page, limit, search, verifiedParam)));
         }
         const pages = Math.ceil(count / limit);
 
         if (page > pages && pages !== 0) {
-            res.redirect(`/escapeRoomsAdmin?page=${pages}`);
+            const params = new URLSearchParams();
+            params.set("page", pages);
+            if (search) {
+                params.set("search", search);
+            }
+            if (verifiedFilter) {
+                params.set("verified", verifiedFilter);
+            }
+            res.redirect(`/escapeRoomsAdmin?${params.toString()}`);
         } else {
             const pageArray = paginate(page, pages, 5);
 
-            res.render("escapeRooms/index.ejs", {escapeRooms, user, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search});
+            res.render("escapeRooms/index.ejs", {escapeRooms, user, page, pages, pageArray, "isPublic": false, "isOwn": false, "whichMenu": "public", "admin": true, search, verifiedFilter});
         }
     } catch (error) {
         next(error);

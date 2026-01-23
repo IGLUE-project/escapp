@@ -965,6 +965,12 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: #999;
   margin-top: 3px;
 }
+.main.environment .setting-row .supported-hint {
+  font-size: 12px;
+  color: #7cb342;
+  margin-top: 3px;
+  font-style: italic;
+}
 .main.environment .setting-row select {
   padding: 8px;
   font-size: 14px;
@@ -1191,6 +1197,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: #9292B0;
   font-size: 0.6em;
   padding-left: 30px;
+  font-family: "Lato", sans-serif;
+}
+#mainSection .main .basicConfig .erFormField .field-hint {
+  display: block;
+  font-size: 0.55em;
+  padding-left: 30px;
+  padding-top: 8px;
   font-family: "Lato", sans-serif;
 }
 #mainSection .main .note {
@@ -1599,6 +1612,20 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 .escapeRooms .escapeRoomFilters .filter-button:hover {
   transform: scale(1.5);
+}
+.escapeRooms .escapeRoomFilters .verified-filter {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background: #161938;
+  border: 2px solid #9292B0;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+.escapeRooms .escapeRoomFilters .verified-filter:focus {
+  outline: none;
+  border-color: #36A2EB;
 }
 .escapeRooms .flexBoxEscapeRooms {
   padding: 1em;
@@ -6935,6 +6962,7 @@ html body select {
   background-repeat: no-repeat;
   -moz-appearance: none;
   padding-right: 1.15em;
+  padding-left: 0.5em;
 }
 html body footer {
   display: flex;

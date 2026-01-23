@@ -1,12 +1,25 @@
 
-
 <form method="get" action="/escapeRooms<%=admin? 'Admin':''%>" class="escapeRoomSearch">
 
     <div class="escapeRoomFilters">
         <input type="text" title="<%=search%>" id="searchbar" name="search" placeholder="<%=i18n.common.search%>" value="<%=search%>" />
+        <% if (admin) { %>
+        <select name="verified" class="verdified-filter">
+            <option value="all" <%= !verifiedFilter || verifiedFilter === 'all' ? 'selected' : '' %>><%= i18n.admin.verificationFilter.all %></option>
+            <option value="verified" <%= verifiedFilter === 'verified' ? 'selected' : '' %>><%= i18n.admin.verificationFilter.verified %></option>
+            <option value="notVerified" <%= verifiedFilter === 'notVerified' ? 'selected' : '' %>><%= i18n.admin.verificationFilter.notVerified %></option>
+            <option value="needsReverification" <%= verifiedFilter === 'needsReverification' ? 'selected' : '' %>><%= i18n.admin.verificationFilter.needsReverification %></option>
+        </select>
+       
+        <% } %>
         <button type="submit" class="rounded filter-button"><span>search</span></button>
+        <% if (!admin) { %>
         <button id="searchInNetwok" class="rounded filter-button" style="margin-left: 10px;"><span>language</span></button>
+        
+        <% } %>
     </div>
+     <br/>
+    <% if (!admin) { %>
     <script>
         document.getElementById("searchInNetwok").addEventListener("click", function(event) {
             event.preventDefault();
@@ -15,4 +28,5 @@
             window.location.href = url;
         });
     </script>
+    <% } %>
 </form>

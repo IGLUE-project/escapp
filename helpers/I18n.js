@@ -8,6 +8,9 @@ const LOCALES = {
     "sr": SR_LOCALES
 };
 
+// Languages that have i18n files and can be enabled
+const SUPPORTED_LANGUAGES = Object.keys(LOCALES);
+
 function getAvailableLocales () {
     const envLanguages = process.env.AVAILABLE_LANGUAGES;
     if (envLanguages) {
@@ -58,3 +61,4 @@ exports.isValidLocale = isValidLocale;
 exports.getDefaultLocale = getDefaultLocale;
 exports.getTextsForLocale = getTextsForLocale;
 exports.getAvailableLocales = getAvailableLocales;
+exports.SUPPORTED_LANGUAGES = SUPPORTED_LANGUAGES;

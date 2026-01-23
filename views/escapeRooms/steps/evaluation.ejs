@@ -27,6 +27,7 @@
 				<option value="false" <%= !escapeRoom.allowUserToResetTeamProgress ? "selected" : "" %>><%=i18n.common.no%></option>
 				<option value="true" <%= escapeRoom.allowUserToResetTeamProgress ? "selected" : "" %>><%=i18n.common.yes%></option>
 			</select>
+			<span class="field-hint"><%=i18n.escapeRoom.steps.evaluation.allowUserToResetTeamProgressHint%></span>
 		</div>
 
 		<div class="inputFormField erFormField animated slideInUp" style="animation-delay:200ms;">

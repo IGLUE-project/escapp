@@ -2,6 +2,7 @@ const {models} = require("../models");
 const {EXPORT_ALLOWED_OPTIONS, getExportAllowed, refreshConfig} = require("../helpers/globalInstanceConfig");
 const {isAuthor, isCoAuthor} = require("../helpers/escapeRooms");
 const {isAdmin, isStudent} = require("../helpers/users");
+const {SUPPORTED_LANGUAGES} = require("../helpers/I18n");
 
 exports.showReports = async (req, res) => {
     const reports = await models.report.findAll({
@@ -184,7 +185,7 @@ exports.getEnvironmentSettings = async (_, res) => {
             "exportAllowed": config.exportAllowed ?? null
         };
 
-        res.render("management/environmentSettings", {urlsText, urlsDBText, envSettings, dbSettings, EXPORT_ALLOWED_OPTIONS});
+        res.render("management/environmentSettings", {urlsText, urlsDBText, envSettings, dbSettings, EXPORT_ALLOWED_OPTIONS, SUPPORTED_LANGUAGES});
     } catch (error) {
         console.error("Error fetching URLS");
         res.status(500).send();
@@ -237,6 +238,17 @@ exports.setEnvironmentSettings = async (req, res) => {
             return value.trim();
         };
 
+        // Parse and validate available languages (only allow supported languages)
+        const parseAvailableLanguages = (value) => {
+            if (value === "" || value === undefined) {
+                return null; // Use .env default
+            }
+            const languages = value.split(",")
+                .map((l) => l.trim().toLowerCase())
+                .filter((l) => l.length > 0 && SUPPORTED_LANGUAGES.includes(l));
+            return languages.length > 0 ? languages.join(",") : null;
+        };
+
         const configData = {
             "urls": JSON.stringify(parsedURLs),
             "whitelistDomains": parseDomainField(whitelistDomains),
@@ -245,7 +257,7 @@ exports.setEnvironmentSettings = async (req, res) => {
             "enableTeacherPersonalInfo": parseBooleanField(enableTeacherPersonalInfo),
             "emailValidationStudent": parseBooleanField(emailValidationStudent),
             "emailValidationTeacher": parseBooleanField(emailValidationTeacher),
-            "availableLanguages": parseDomainField(availableLanguages),
+            "availableLanguages": parseAvailableLanguages(availableLanguages),
             "exportAllowed": parseStringField(exportAllowed)
         };
 

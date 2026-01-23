@@ -475,7 +475,8 @@
                 "automaticAttendanceNone": "Participation is not recorded automatically",
                 "automaticAttendanceParticipant": "Participation is recorded automatically for the participant",
                 "automaticAttendanceTeam": "Participation is recorded automatically for the participant and their teammates",
-                "allowUserToResetTeamProgress": "Allow participants to reset their own team progress"
+                "allowUserToResetTeamProgress": "Allow participants to reset their own team progress",
+                "allowUserToResetTeamProgressHint": "When students reset their progress, all information related to their previous attempt (answers, hints used, time, etc.) is permanently deleted."
             },
             "hints": {
                 "correctNumber": "Number of correct answers",
@@ -2000,11 +2001,18 @@
             "saveAllSettings": "Save All Settings",
             "languageAndExportSettings": "Language and Export Settings",
             "availableLanguages": "Available Languages (comma separated)",
+            "supportedLanguages": "Supported languages",
             "exportAllowed": "Export Allowed",
             "exportOnlyOwner": "Only Owner",
             "exportOnlyTeachers": "Only Teachers",
             "exportOnlyUsers": "Only Registered Users",
             "exportAll": "Everyone (including guests)"
+        },
+        "verificationFilter": {
+            "all": "All",
+            "verified": "Verified",
+            "notVerified": "Not verified",
+            "needsReverification": "Needs re-verification"
         }
     }
 }

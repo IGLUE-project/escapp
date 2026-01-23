@@ -472,7 +472,8 @@
                 "automaticAttendanceNone": "No se registra automáticamente su participación",
                 "automaticAttendanceParticipant": "Se registra automáticamente su participación",
                 "automaticAttendanceTeam": "Se registra automáticamente su participación y la de sus compañeros de equipo",
-                "allowUserToResetTeamProgress": "Permitir a los participantes reiniciar el progreso de su equipo"
+                "allowUserToResetTeamProgress": "Permitir a los participantes reiniciar el progreso de su equipo",
+                "allowUserToResetTeamProgressHint": "Cuando los estudiantes reinician su progreso, toda la información relacionada con su intento anterior (respuestas, pistas usadas, tiempo, etc.) se elimina permanentemente."
             },
             "hints": {
                 "explanation": "En este apartado puedes configurar la estrategia de pistas a seguir durante la escape room. Hay tres estragias disponibles: no permitir pistas; permitir que el alumno obtenga una pista cuando la necesite sin proporcionar nada a cambio, y permitir que el alumno obtenga una pista tras responder correctamente a un cuestionario. Si habilitas las pistas, puedes configurar el límite de pistas que puede recibir cada equipo durante la escape room. Si eliges la última estrategia, sólo tienes que subir un fichero MoodleXML con una batería de preguntas e indicar cuántas se les muestran cada intento, cuántas deben acertar para lograr una pista y si se les muestra la respuesta correcta al finalizar cada intento.",
@@ -1997,11 +1998,18 @@
             "saveAllSettings": "Guardar toda la configuración",
             "languageAndExportSettings": "Configuración de Idiomas y Exportación",
             "availableLanguages": "Idiomas disponibles (separados por coma)",
+            "supportedLanguages": "Idiomas soportados",
             "exportAllowed": "Exportación permitida",
             "exportOnlyOwner": "Solo el propietario",
             "exportOnlyTeachers": "Solo profesores",
             "exportOnlyUsers": "Solo usuarios registrados",
             "exportAll": "Todos (incluidos invitados)"
+        },
+        "verificationFilter": {
+            "all": "Todas",
+            "verified": "Verificadas",
+            "notVerified": "No verificadas",
+            "needsReverification": "Pendientes de re-verificar"
         }
     }
 }
