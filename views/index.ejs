@@ -14,7 +14,7 @@
                 <%- include("users/_login.ejs") %>
            <% } %>
           <ul class="langs">
-               <% var langs = locals.availableLanguages || ["en", "es"]; %>
+               <% var langs = locals.globalConfig.availableLanguages || ["en", "es"]; %>
                <% for (var l in langs) {
                     var ll = langs[l];
                     %>

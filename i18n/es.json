@@ -1963,7 +1963,14 @@
             "currentUrlsFromDb": "URLs actuales de la base de datos",
             "defaultUrlsFromConfig": "URLs por defecto del fichero de configuración",
             "copyDefaultUrls": "Copiar URLs por defecto al campo",
-            "saveAllSettings": "Guardar toda la configuración"
+            "saveAllSettings": "Guardar toda la configuración",
+            "languageAndExportSettings": "Configuración de Idiomas y Exportación",
+            "availableLanguages": "Idiomas disponibles (separados por coma)",
+            "exportAllowed": "Exportación permitida",
+            "exportOnlyOwner": "Solo el propietario",
+            "exportOnlyTeachers": "Solo profesores",
+            "exportOnlyUsers": "Solo usuarios registrados",
+            "exportAll": "Todos (incluidos invitados)"
         }
     }
 }

@@ -62,7 +62,7 @@
     <div class="userField">
         <label for="user_confirm_password"><span><%=i18n.user.lang%></span>
         <select  class="customInput" id="lang" name="lang" required autocomplete="off">
-               <% var langs = locals.availableLanguages || ["en", "es"]; %>
+               <% var langs = locals.globalConfig.availableLanguages || ["en", "es"]; %>
                <% for (var l in langs) {
                     var ll = langs[l];
                     %>

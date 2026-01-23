@@ -4,8 +4,8 @@ const {models} = sequelize;
 const mailer = require("../helpers/mailer");
 const {renderEJS, validationError, getRole, generatePassword, getHostname} = require("../helpers/utils");
 const {userNeedsConfirmation} = require("../helpers/users");
-const {getAvailableLocales} = require("../helpers/I18n")
-const availableLanguages = getAvailableLocales();
+const {getAvailableLanguagesArray} = require("../helpers/globalInstanceConfig");
+
 // Autoload the user with id equals to :userId
 exports.load = (req, res, next, userId) => {
     const {i18n} = res.locals;
@@ -27,7 +27,7 @@ exports.load = (req, res, next, userId) => {
 exports.show = (req, res) => {
     const {user} = req;
 
-    res.render("users/show", {user, availableLanguages});
+    res.render("users/show", {user});
 };
 
 // GET /register
@@ -38,7 +38,7 @@ exports.new = (req, res) => {
         user,
         "register": true,
         "redir": req.query.redir,
-        availableLanguages,
+        
         "admin": false
     });
 };
@@ -54,7 +54,7 @@ exports.create = async (req, res, next) => {
         res.render("index", {
             "user": req.body,
             "register": true,
-            availableLanguages,
+            
             redir
         });
         return;
@@ -85,7 +85,7 @@ exports.create = async (req, res, next) => {
         req.flash("error", e);
         res.render("index", {
             user,
-            availableLanguages,
+            
             "register": true,
             redir
         });
@@ -108,7 +108,7 @@ exports.create = async (req, res, next) => {
 
         if (needstToBeConfirmed) {
             req.flash("success", i18n.common.flash.emailMustBeConfirmed);
-            res.render("index", {user, availableLanguages, redir});
+            res.render("index", {user, redir});
         } else {
             req.flash("success", i18n.common.flash.successCreatingUser);
             req.body.login = username;
@@ -118,14 +118,14 @@ exports.create = async (req, res, next) => {
     } catch (error) {
         if (error instanceof Sequelize.UniqueConstraintError) {
             req.flash("error", i18n.common.flash.errorExistingUser);
-            res.render("index", {user, availableLanguages, "register": true, redir});
+            res.render("index", {user, "register": true, redir});
         } else if (error instanceof Sequelize.ValidationError) {
             req.flash("error", i18n.common.validationError);
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));
             });
 
-            res.render("index", {user, "register": true, availableLanguages, redir});
+            res.render("index", {user, "register": true, redir});
         } else {
             next(error);
         }
@@ -136,12 +136,12 @@ exports.create = async (req, res, next) => {
 exports.edit = (req, res) => {
     const {user} = req;
 
-    res.render("users/edit", {user, availableLanguages, "admin": Boolean(req.session.user.isAdmin)});
+    res.render("users/edit", {user, "admin": Boolean(req.session.user.isAdmin)});
 };
 
 
 // PUT /users/:userId
-exports.update = (req, res, next) => {
+exports.update = async (req, res, next) => {
     const {user, body} = req;
     // User.username  = body.user.username; // edition not allowed
     const {i18n} = res.locals;
@@ -161,6 +161,7 @@ exports.update = (req, res, next) => {
     user.eduLevel = body.eduLevel;
     let scs = i18n.common.flash.successEditingUser;
 
+    const availableLanguages = await getAvailableLanguagesArray();
     if (availableLanguages.some(l=>l===body.lang)) {
         user.lang = body.lang;
         if (req.cookies && req.cookies.locale && (user.lang !== body.lang || req.cookies.locale !== body.lang)) {
@@ -203,7 +204,7 @@ exports.update = (req, res, next) => {
         catch((error) => {
             if (error instanceof Sequelize.ValidationError) {
                 error.errors.forEach((err) => req.flash("error", validationError(err, i18n)));
-                res.render("users/edit", {user, availableLanguages});
+                res.render("users/edit", {user});
             } else {
                 next(error);
             }
@@ -325,7 +326,7 @@ exports.newResetPassword = async (req, res) => {
 
 // POST /users/password-reset
 exports.resetPassword = (_, res) => {
-    res.render("index", {"resetPassword": true, availableLanguages});
+    res.render("index", {"resetPassword": true});
 };
 
 // GET /users/password-reset/:hash
@@ -334,7 +335,7 @@ exports.resetPasswordHash = (req, res, next) => {
     const {code, email} = query;
 
     if (user && user.password === code && user.username === email) {
-        res.render("index", { availableLanguages, "resetPasswordHash": true, user });
+        res.render("index", {  "resetPasswordHash": true, user });
     } else {
         next();
     }
@@ -390,7 +391,7 @@ exports.confirmEmail = async (req, res, next) => {
             req.flash("success", i18n.common.flash.emailSuccessfullyConfirmed);
             res.render("index", {
                 user,
-                availableLanguages,
+                
                 "admin": false,
                 "redir": "/"
             });

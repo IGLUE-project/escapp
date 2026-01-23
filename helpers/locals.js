@@ -1,5 +1,7 @@
 const {steps} = require("./progress");
 const {getContentForPuzzle} = require("./utils");
+const {isAdmin, isStudent} = require("./users");
+const {isAuthor, isCoAuthor} = require("./escapeRooms");
 
 module.exports = function (app) {
     app.locals.FULL_APP_NAME = process.env.FULL_APP_NAME || "https://escapp.es";
@@ -138,5 +140,30 @@ module.exports = function (app) {
 
         return ""
     }
-    
+
+    /**
+     * Check if user can export an escape room based on exportAllowed setting
+     * @param {Object} user - Session user object
+     * @param {Object} escapeRoom - Escape room object
+     * @param {Object} globalConfig - Global config with exportAllowed and EXPORT_ALLOWED_OPTIONS
+     * @returns {boolean}
+     */
+    app.locals.canExport = function(user, escapeRoom, globalConfig) {
+        const {exportAllowed, EXPORT_ALLOWED_OPTIONS} = globalConfig;
+        console.log(user, escapeRoom, globalConfig)
+        switch (exportAllowed) {
+        case EXPORT_ALLOWED_OPTIONS.ALL:
+            return true;
+
+        case EXPORT_ALLOWED_OPTIONS.ONLY_USERS:
+            return !!user;
+
+        case EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS:
+            return user && (isAdmin(user) || !isStudent(user));
+
+        case EXPORT_ALLOWED_OPTIONS.ONLY_OWNER:
+        default:
+            return user && (isAdmin(user) || isAuthor(user, escapeRoom) || isCoAuthor(user, escapeRoom));
+        }
+    };
 };

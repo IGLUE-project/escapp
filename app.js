@@ -17,8 +17,9 @@ const compression = require("compression");
 
 dotenv.config();
 const api = require("./routes/api");
-const index = require("./routes/index"),
-    app = express();// View engine setup
+const index = require("./routes/index");
+const globalConfigMiddleware = require("./middleware/globalConfigMiddleware");
+const app = express();// View engine setup
 
 // Enable Certbot standalone
 app.use("/.well-known/acme-challenge", express.static("/var/www/certbot/.well-known/acme-challenge", { "dotfiles": "allow" }));
@@ -133,6 +134,9 @@ app.use((req, res, next) => {
     res.locals.cookieAccepted = req && req.cookies ? req.cookies.cookieAccepted === "true" : false;
     next();
 });
+
+// Global config middleware for accessing config in views
+app.use(globalConfigMiddleware);
 
 app.use("/", index);
 

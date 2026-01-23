@@ -9,7 +9,11 @@ const LOCALES = {
 };
 
 function getAvailableLocales () {
-    return ["en","es","sr"];
+    const envLanguages = process.env.AVAILABLE_LANGUAGES;
+    if (envLanguages) {
+        return envLanguages.split(",").map((l) => l.trim()).filter((l) => l.length > 0);
+    }
+    return ["en", "es", "sr"];
 }
 
 

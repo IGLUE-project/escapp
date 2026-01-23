@@ -137,7 +137,6 @@
                 <button class="save acceptButton rounded" type="submit">
                     <%=i18n.network.view%>
                     <span class="material-icons" >open_in_new</span>
-
                 </button>
             </a>
             <% if (false && user && !user.isStudent) { %><br/>
@@ -147,7 +146,8 @@
                 </form>
             <%}%>
         </div>
-        <% } else if (user) { %>
+        <% } else {
+        if (user) { %>
             <%
                 let continueButtonURL;
                 let continueButtonText;
@@ -189,7 +189,7 @@
                             <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
                         </form>
                     </div>
-                </spa >
+                </span >
             <%}%>
         
         <%} else { %>
@@ -242,6 +242,15 @@
             </form>
             </div>
 
+        <%}%>
+        <% if (canExport(user, escapeRoom, globalConfig)) { %>
+        <a href="/escapeRooms/<%=escapeRoom.id%>/export" target="_blank">
+                <button class="rounded editButton exportButton" type="submit">
+                    <%=i18n.showTeacher.actionList.export%>
+                    <span class="material-icons" style="font-size: 18px;">download</span>
+                </button>
+         </a>
+        <% } %>
         <%}%>
     </div>
    <br/>

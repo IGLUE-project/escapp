@@ -1964,7 +1964,14 @@
             "currentUrlsFromDb": "Current URLs from database",
             "defaultUrlsFromConfig": "Default URLs from config file",
             "copyDefaultUrls": "Copy default URLs to input",
-            "saveAllSettings": "Save All Settings"
+            "saveAllSettings": "Save All Settings",
+            "languageAndExportSettings": "Language and Export Settings",
+            "availableLanguages": "Available Languages (comma separated)",
+            "exportAllowed": "Export Allowed",
+            "exportOnlyOwner": "Only Owner",
+            "exportOnlyTeachers": "Only Teachers",
+            "exportOnlyUsers": "Only Registered Users",
+            "exportAll": "Everyone (including guests)"
         }
     }
 }

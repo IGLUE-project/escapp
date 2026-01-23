@@ -99,6 +99,31 @@
                 </div>
             </div>
         </div>
+
+        <div class="settings-section">
+            <h2><%= t.languageAndExportSettings %></h2>
+
+            <div class="setting-row">
+                <label for="availableLanguages"><%= t.availableLanguages %></label>
+                <input type="text" name="availableLanguages" id="availableLanguages"
+                    value="<%= dbSettings.availableLanguages !== null ? dbSettings.availableLanguages : '' %>"
+                    placeholder="<%= t.leaveEmptyForDefault %>"/>
+                <span class="env-default"><%= t.defaultFromEnv %>: <%= envSettings.availableLanguages || t.notSet %></span>
+            </div>
+
+            <div class="setting-row">
+                <label for="exportAllowed"><%= t.exportAllowed %></label>
+                <select name="exportAllowed" id="exportAllowed">
+                    <option value="" <%= dbSettings.exportAllowed === null ? 'selected' : '' %>><%= t.useEnvDefault %> (<%= envSettings.exportAllowed %>)</option>
+                    <option value="<%= EXPORT_ALLOWED_OPTIONS.ONLY_OWNER %>" <%= dbSettings.exportAllowed === EXPORT_ALLOWED_OPTIONS.ONLY_OWNER ? 'selected' : '' %>><%= t.exportOnlyOwner %></option>
+                    <option value="<%= EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS %>" <%= dbSettings.exportAllowed === EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS ? 'selected' : '' %>><%= t.exportOnlyTeachers %></option>
+                    <option value="<%= EXPORT_ALLOWED_OPTIONS.ONLY_USERS %>" <%= dbSettings.exportAllowed === EXPORT_ALLOWED_OPTIONS.ONLY_USERS ? 'selected' : '' %>><%= t.exportOnlyUsers %></option>
+                    <option value="<%= EXPORT_ALLOWED_OPTIONS.ALL %>" <%= dbSettings.exportAllowed === EXPORT_ALLOWED_OPTIONS.ALL ? 'selected' : '' %>><%= t.exportAll %></option>
+                </select>
+                <span class="env-default"><%= t.defaultFromEnv %>: <%= envSettings.exportAllowed || t.notSet %></span>
+            </div>
+        </div>
+
          <h2><%= t.networkUrls %></h2>
         <label><%= t.urlsHelp %></label>
         <input type="text" name="urls" value="<%= urlsDBText%>"/>

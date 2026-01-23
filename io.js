@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
-const {getAvailableLocales} = require("./helpers/I18n")
-const availableLanguages = getAvailableLocales();
+const {getAvailableLanguagesArray} = require("./helpers/globalInstanceConfig");
 const { Server } = require("socket.io");
 
 const {checkAccess, getInfoFromSocket, socketAuthenticate, sendInitialInfo, initializeListeners } = require("./helpers/sockets");
@@ -16,9 +15,10 @@ exports.createServer = (server, sessionMiddleware) => {
     // TODO Discover what happens when server disconnects. Reconnection same socket id?
     io.on("connection", async (socket) => {
         try {
+            const availableLanguages = await getAvailableLanguagesArray();
             const user = await socketAuthenticate(socket);
 
-            const {escapeRoomId, lang, waiting, "turnId": teacherTurnId, preview} = getInfoFromSocket(socket);
+            const {escapeRoomId, lang, waiting, "turnId": teacherTurnId, preview} = getInfoFromSocket(socket, availableLanguages);
 
             let forceLanguage = "en";
 

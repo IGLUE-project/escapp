@@ -19,7 +19,6 @@ const managementController = require("../controllers/management_controller");
 const networkController = require("../controllers/network_controller");
 const sceneController = require("../controllers/scene_controller");
 const { instructions, thumbnails, hints, upload, hybridInstructions, memoryStorage } = require("../controllers/multer_controller");
-const globalConfigMiddleware = require("../middleware/globalConfigMiddleware");
 
 router.all("*", sessionController.deleteExpiredUserSession);
 
@@ -58,7 +57,7 @@ router.param("teamId", teamController.load);
 router.get("/", sessionController.new); // Login form
 router.post("/", sessionController.create); // Create sesion
 router.delete("/", sessionController.destroy); // Close sesion
-router.get("/register", sessionController.logoutRequired, globalConfigMiddleware, userController.new);
+router.get("/register", sessionController.logoutRequired, userController.new);
 router.post("/accept-cookies", sessionController.cookieAccept);
 router.get("/terms", sessionController.terms);
 router.get("/privacy", sessionController.privacy);
@@ -72,8 +71,8 @@ router.get("/users/password-reset", sessionController.logoutRequired, userContro
 router.get("/users/password-reset/:userId(\\d+)", sessionController.logoutRequired, userController.resetPasswordHash);
 router.post("/users/password-reset", sessionController.logoutRequired, userController.newResetPassword);
 router.post("/users/password-reset/:userId(\\d+)", sessionController.logoutRequired, userController.newResetPasswordHash);
-router.post("/users", sessionController.logoutRequired, globalConfigMiddleware, userController.create, sessionController.create);
-router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrMyselfRequired, globalConfigMiddleware, userController.edit);
+router.post("/users", sessionController.logoutRequired, userController.create, sessionController.create);
+router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.edit);
 router.put("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.update);
 router.delete("/users/:userId(\\d+)", sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.destroy);
 router.get("/users/:userId(\\d+)/escapeRooms", sessionController.loginRequired, sessionController.adminOrMyselfRequired, escapeRoomController.index);
@@ -103,7 +102,7 @@ router.delete("/escapeRooms/:escapeRoomId(\\d+)", sessionController.loginRequire
 router.put("/escapeRooms/:escapeRoomId(\\d+)/clone", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.clone);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.test);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/test", sessionController.loginRequired, sessionController.authEditEscapeRoom, playController.startPlaying, playController.play);
-router.get("/escapeRooms/:escapeRoomId(\\d+)/export", sessionController.loginRequired, sessionController.authEditEscapeRoom, escapeRoomController.export);
+router.get("/escapeRooms/:escapeRoomId(\\d+)/export", managementController.exportAuth, escapeRoomController.export);
 router.get("/escapeRooms/import", sessionController.loginRequired, sessionController.authCreateEscapeRoom, escapeRoomController.importView);
 router.post("/escapeRooms/import", sessionController.loginRequired, sessionController.authCreateEscapeRoom, memoryStorage.single("fileInput"), escapeRoomController.import);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/thumbnail", escapeRoomController.returnThumbnail);

@@ -179,7 +179,7 @@ exports.getPreviewData = async (req, res) => {
 };
 
 // GET /network/:escapeRoomId/preview?url=...&id=...
-exports.servePreviewRender = async (req, res) => {
+exports.servePreviewRender = async (req, res, next) => {
     try {
         const data = await tryFetch(`${req.query.url}/network/${req.params.escapeRoomId}/json`);
         if (!data || !data.ok) {
@@ -213,7 +213,7 @@ exports.importFromNetwork = async (req, res, next) => {
         const arrayBuffer = await exportRes.arrayBuffer();
         const zipBuffer = Buffer.from(arrayBuffer);
 
-        tmpPath = path.join(os.tmpdir(), `escapeRoom-${escapeRoomId}-${crypto.randomUUID()}.zip`);
+        const tmpPath = path.join(os.tmpdir(), `escapeRoom-${escapeRoomId}-${crypto.randomUUID()}.zip`);
         await fs.writeFile(tmpPath, zipBuffer);
         req.tmpPath = tmpPath;
         next();

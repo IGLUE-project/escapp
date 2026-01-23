@@ -4,8 +4,6 @@ const {models} = sequelize;
 const {calculateNextHint} = require("./hint");
 const {checkPuzzle, getRanking, authenticate, checkTurnoAccess, getERState, automaticallySetAttendance, getCurrentPuzzle, getContentForPuzzle, getERPuzzles} = require("./utils");
 const {getAuthMessageAndCode, OK, NOK, PARTICIPANT, TOO_LATE, NOT_STARTED, ERROR, HINT_RESPONSE, TEAM_STARTED, PUZZLE_RESPONSE, TEAM_PROGRESS, INITIAL_INFO, START_PLAYING, REQUEST_HINT, CHECK_PUZZLE, SOLVE_PUZZLE, PUZZLE_CHECKED, START, STOP, JOIN, JOIN_TEAM, JOIN_PARTICIPANT, LEAVE, LEAVE_TEAM, LEAVE_PARTICIPANT} = require("./apiCodes");
-const {getAvailableLocales} = require("./I18n")
-const availableLanguages = getAvailableLocales();
 /**
  * Send message to the whole team
  * @param {*} msg Message to send
@@ -81,7 +79,7 @@ const leaveTeam = (teamId, turnId, ranking) => sendTurnMessage({"type": LEAVE_TE
 /**
  * Get socket query params
  */
-exports.getInfoFromSocket = ({handshake}) => {
+exports.getInfoFromSocket = ({handshake}, availableLanguages = ["en", "es", "sr"]) => {
     const lang = (handshake.headers["accept-language"] && availableLanguages.find(l => l == handshake.headers["accept-language"].substring(0, 2))) || "en";
     const escapeRoomId = parseInt(handshake.query.escapeRoom, 10) || undefined;
     const turnId = parseInt(handshake.query.turn, 10) || undefined;
@@ -252,7 +250,7 @@ exports.getConnectedMembers = (teamId) => {
   const ids = Array.from(room);
     const members = new Set();
 
-  for (i of ids) {
+  for (const i of ids) {
     const socket = io.sockets.sockets.get(i);
     const {username} = socket.handshake
     if (username) members.add(username);
@@ -273,7 +271,7 @@ exports.getConnectedMembersIds = (teamId) => {
   const ids = Array.from(room);
     const members = new Set();
 
-  for (i of ids) {
+  for (const i of ids) {
     const socket = io.sockets.sockets.get(i);
     const {userId} = socket.handshake
     if (userId) members.add(userId);

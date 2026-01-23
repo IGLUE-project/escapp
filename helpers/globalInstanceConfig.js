@@ -135,3 +135,53 @@ exports.getEmailValidationTeacher = async function () {
     }
     return process.env.EMAIL_VALIDATION_TEACHER === "true";
 };
+
+/**
+ * Export permission levels
+ */
+exports.EXPORT_ALLOWED_OPTIONS = {
+    "ONLY_OWNER": "ONLY_OWNER",
+    "ONLY_TEACHERS": "ONLY_TEACHERS",
+    "ONLY_USERS": "ONLY_USERS",
+    "ALL": "ALL"
+};
+
+/**
+ * Get availableLanguages setting (DB override or .env fallback)
+ * Returns a comma-separated string of language codes
+ */
+exports.getAvailableLanguages = async function () {
+    const config = await getConfig();
+    if (config && config.availableLanguages !== null && config.availableLanguages !== undefined) {
+        return config.availableLanguages;
+    }
+    return process.env.AVAILABLE_LANGUAGES || "en,es,sr";
+};
+
+/**
+ * Get availableLanguages as array
+ */
+exports.getAvailableLanguagesArray = async function () {
+    const languages = await exports.getAvailableLanguages();
+    if (!languages) {
+        return ["en", "es", "sr"];
+    }
+    return languages.split(",").map((lang) => lang.trim()).filter((l) => l.length > 0);
+};
+
+/**
+ * Get exportAllowed setting (DB override or .env fallback)
+ * Valid values: ONLY_OWNER, ONLY_TEACHERS, ONLY_USERS, ALL
+ */
+exports.getExportAllowed = async function () {
+    const config = await getConfig();
+    if (config && config.exportAllowed !== null && config.exportAllowed !== undefined) {
+        return config.exportAllowed;
+    }
+    const envValue = process.env.EXPORT_ALLOWED || "ONLY_OWNER";
+    // Validate the value is one of the allowed options
+    if (Object.values(exports.EXPORT_ALLOWED_OPTIONS).includes(envValue)) {
+        return envValue;
+    }
+    return "ONLY_OWNER";
+};

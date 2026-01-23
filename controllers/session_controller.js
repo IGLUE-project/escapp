@@ -5,8 +5,6 @@ const {isAuthor, isCoAuthor, isCoAuthorPending, getParticipant} = require("../he
 const sequelize = require("../models");
 const {models} = sequelize;
 const path = require("path");
-const {getAvailableLocales} = require("../helpers/I18n")
-const availableLanguages = getAvailableLocales();
 /*
  * This variable contains the maximum inactivity time allowed without
  * Making requests.
@@ -269,7 +267,7 @@ exports.new = (req, res) => {
         res.redirect(redir ? redir : "/escapeRooms");
         return;
     }
-    res.render("index", {redir, availableLanguages});
+    res.render("index", {redir});
 };
 
 // POST /   -- Create the session if the user authenticates successfully
@@ -322,7 +320,7 @@ exports.create = async (req, res, next) => {
             });
         } else {
             req.flash("error", i18n.user.wrongCredentials);
-            res.render("index", {"user": {"username": login}, redir, availableLanguages});
+            res.render("index", {"user": {"username": login}, redir});
         }
     } catch (error) {
         console.error(error);

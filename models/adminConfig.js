@@ -31,6 +31,14 @@ module.exports = function (sequelize, DataTypes) {
             "emailValidationTeacher": {
                 "type": DataTypes.BOOLEAN,
                 "allowNull": true
+            },
+            "availableLanguages": {
+                "type": DataTypes.TEXT,
+                "allowNull": true
+            },
+            "exportAllowed": {
+                "type": DataTypes.STRING,
+                "allowNull": true
             }
         }
     );

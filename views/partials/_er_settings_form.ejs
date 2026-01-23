@@ -143,7 +143,7 @@
   <label for="<%=field.id%>"  class="itemNarrow">10. <%=i18n.showTeacher.titles["forceLang"]%>:</label>
   <select class="customInput itemWide" id="forceLang" name="forceLang" autocomplete="off">
     <option value="" <%=escapeRoom.forceLang  ? "" : "selected" %>><%=i18n.langs["dontForce"]%> </option>
-    <% var langs = locals.availableLanguages || ["en", "es"]; %>
+    <% var langs = globalConfig.availableLanguages || ["en", "es"]; %>
       <% for (var l in langs) {
           var ll = langs[l];
           %>
