@@ -2146,6 +2146,104 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-size: 1em;
 }
 
+.contact-form {
+  max-width: 600px;
+  padding: 20px;
+}
+.contact-form .form-group {
+  margin-bottom: 20px;
+}
+.contact-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #9292B0;
+  font-size: 14px;
+}
+.contact-form input[type=text], .contact-form input[type=email], .contact-form input[type=number] {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 15px;
+  box-sizing: border-box;
+  background: #161938;
+  border: 2px solid #9292B0;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.contact-form input[type=text]:focus, .contact-form input[type=email]:focus, .contact-form input[type=number]:focus {
+  outline: none;
+  border-color: #36A2EB;
+  box-shadow: 0 0 0 3px rgba(54, 162, 235, 0.2);
+}
+.contact-form input[type=text]::placeholder, .contact-form input[type=email]::placeholder, .contact-form input[type=number]::placeholder {
+  color: #a1a3af;
+  opacity: 0.7;
+}
+.contact-form textarea {
+  width: 100%;
+  height: 180px;
+  padding: 12px 15px;
+  box-sizing: border-box;
+  background: #161938;
+  border: 2px solid #9292B0;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #36A2EB;
+  box-shadow: 0 0 0 3px rgba(54, 162, 235, 0.2);
+}
+.contact-form textarea::placeholder {
+  color: #a1a3af;
+  opacity: 0.7;
+}
+.contact-form .captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+.contact-form .captcha-question {
+  font-weight: bold;
+  background: #232850;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: #FAC855;
+  border: 2px solid #FAC855;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+.contact-form .captcha-input {
+  width: 100px !important;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+.contact-form button[type=submit] {
+  margin-top: 10px;
+  padding: 12px 30px;
+  background: #48C18E;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.contact-form button[type=submit]:hover {
+  transform: translateY(-1px);
+}
+.contact-form button[type=submit]:active {
+  transform: translateY(0);
+}
+
 .flassmessages {
   position: fixed;
   bottom: 0;
@@ -4840,38 +4938,139 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
     width: 35%;
   }
 }
-.report .report-body {
+.report-form {
+  max-width: 600px;
+  padding: 20px;
+}
+.report-form .report-description {
+  color: #a1a3af;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.report-form .form-group {
+  margin-bottom: 20px;
+}
+.report-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #9292B0;
+  font-size: 14px;
+}
+.report-form input[type=text], .report-form input[type=email], .report-form input[type=number] {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 15px;
+  box-sizing: border-box;
+  background: #161938;
+  border: 2px solid #9292B0;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.report-form input[type=text]:focus, .report-form input[type=email]:focus, .report-form input[type=number]:focus {
+  outline: none;
+  border-color: #36A2EB;
+  box-shadow: 0 0 0 3px rgba(54, 162, 235, 0.2);
+}
+.report-form input[type=text]::placeholder, .report-form input[type=email]::placeholder, .report-form input[type=number]::placeholder {
+  color: #a1a3af;
+  opacity: 0.7;
+}
+.report-form textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 15px;
+  box-sizing: border-box;
+  background: #161938;
+  border: 2px solid #9292B0;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.report-form textarea:focus {
+  outline: none;
+  border-color: #36A2EB;
+  box-shadow: 0 0 0 3px rgba(54, 162, 235, 0.2);
+}
+.report-form textarea::placeholder {
+  color: #a1a3af;
+  opacity: 0.7;
+}
+.report-form .reason-options {
   display: flex;
   flex-direction: column;
-  align-items: baseline;
+  gap: 10px;
+  margin-top: 10px;
 }
-.report .report-body label {
+.report-form .reason-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  background: #161938;
+  border: 2px solid #9292B0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
   color: white;
+  font-family: "Lato", sans-serif;
 }
-.report .report-body #reason {
-  width: 100%;
-  margin: 1vw 0;
-  text-align: left;
-  padding: 0.5em;
-  color: white !important;
-  border-color: white;
+.report-form .reason-option:hover {
+  border-color: #36A2EB;
+  background: rgb(29.1923076923, 33.1730769231, 74.3076923077);
 }
-.report .report-body #reason label {
-  font-family: "Lato" !important;
-  vertical-align: middle;
+.report-form .reason-option input[type=radio] {
+  width: 18px;
+  height: 18px;
+  accent-color: #36A2EB;
+  cursor: pointer;
 }
-.report .report-body #reason input[type=radio] {
-  vertical-align: bottom;
+.report-form .reason-option span {
+  flex: 1;
 }
-.report .report-body textarea {
-  width: 100%;
-  height: 20vh;
-  min-height: 100px;
-  margin: 1vw 0;
-  text-align: left;
-  padding: 0.5em;
-  font-family: "Lato" !important;
-  border-color: white;
+.report-form .captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+.report-form .captcha-question {
+  font-weight: bold;
+  background: #232850;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: #FAC855;
+  border: 2px solid #FAC855;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+.report-form .captcha-input {
+  width: 100px !important;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+.report-form button[type=submit] {
+  margin-top: 10px;
+  padding: 12px 30px;
+  background: #48C18E;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.report-form button[type=submit]:hover {
+  transform: translateY(-1px);
+}
+.report-form button[type=submit]:active {
+  transform: translateY(0);
 }
 
 .reportList .tableHeader {

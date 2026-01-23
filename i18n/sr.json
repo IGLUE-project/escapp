@@ -1445,17 +1445,25 @@
             "subject": "Consulta sobre la escape room"
         },
         "report": {
-            "title": "Report",
-            "pageTitle": "Report content",
-            "description": "Report the escape room for inappropriate content",
-            "send": "send",
-            "reason": "Reason",
-            "additionalComments": "Additional comments",
+            "title": "Prijavi",
+            "pageTitle": "Prijavi sadržaj",
+            "description": "Prijavi escape room zbog neprikladnog sadržaja",
+            "send": "pošalji",
+            "reason": "Razlog",
+            "additionalComments": "Dodatni komentari",
+            "name": "Tvoje ime",
+            "namePlaceholder": "Unesi svoje ime",
+            "email": "Tvoj email",
+            "emailPlaceholder": "Unesi svoj email",
+            "optional": "opciono",
+            "captchaLabel": "Reši ovo da potvrdiš da si čovek",
+            "captchaError": "Netačan odgovor na captcha. Pokušaj ponovo.",
+            "commentsPlaceholder": "Navedi dodatne detalje o prijavi...",
             "reasons": {
-                "inappropriateContent": "Inappropriate content for the target audience.",
-                "copyrightViolation": "Copyright infringement.",
-                "policyViolation": "Content that violates the <a target='_blank' href='/terms'>terms of use and legal conditions</a> of the platform.",
-                "other": "Other"
+                "inappropriateContent": "Neprikladan sadržaj za ciljnu publiku.",
+                "copyrightViolation": "Kršenje autorskih prava.",
+                "policyViolation": "Sadržaj koji krši <a target='_blank' href='/terms'>uslove korišćenja i pravne uslove</a> platforme.",
+                "other": "Ostalo"
             }
         }
     },
@@ -1758,13 +1766,23 @@
         "contact": {
             "text1": "Message from",
             "text2": "regarding your escape room: ",
-            "text3": "contact email: "
+            "text3": "contact email: ",
+            "text4": "in Escapp.",
+            "subject": "New message about your escape room"
         },
         "contactForm": {
             "title": "Contact the author",
             "placeholder": "Send a message to the author of this escape room",
-            "send": "Send message",
-            "message": "Message"
+            "send": "send",
+            "message": "Message",
+            "name": "Your name",
+            "namePlaceholder": "Enter your name",
+            "email": "Your email",
+            "emailPlaceholder": "Enter your email address",
+            "optional": "optional",
+            "captchaLabel": "Please solve this simple math problem to verify you are human",
+            "captchaError": "Incorrect captcha answer. Please try again.",
+            "success": "Your message has been sent successfully."
         }
     },
     "languages": {

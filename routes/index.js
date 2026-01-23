@@ -147,11 +147,11 @@ router.delete("/escapeRooms/:escapeRoomId(\\d+)/turnos/:turnoId(\\d+)", sessionC
 // Participants
 router.get("/escapeRooms/:escapeRoomId(\\d+)/participants", sessionController.loginRequired, sessionController.authEditEscapeRoom, participantController.index);
 router.get("/escapeRooms/:escapeRoomId(\\d+)/teams", sessionController.loginRequired, sessionController.authEditEscapeRoom, teamController.index);
-// Reports
-router.get("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.showReportForm);
-router.post("/escapeRooms/:escapeRoomId(\\d+)/report", sessionController.loginRequired, managementController.generateReport);
-// Contact
-router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", sessionController.loginRequired, managementController.showContact);
+// Reports (public)
+router.get("/escapeRooms/:escapeRoomId(\\d+)/report", managementController.showReportForm);
+router.post("/escapeRooms/:escapeRoomId(\\d+)/report", managementController.generateReport);
+// Contact (public)
+router.get("/escapeRooms/:escapeRoomId(\\d+)/contact", managementController.showContact);
 
 // Routes for hint app
 router.get("/escapeRooms/:escapeRoomId(\\d+)/hintApp", sessionController.loginRequired, sessionController.authEditOrPlayEscapeRoom, hintController.hintApp);

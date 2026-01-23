@@ -18,37 +18,103 @@ exports.showReports = async (req, res) => {
 
 exports.showReportForm = (req, res) => {
     const {escapeRoom} = req;
+    const {user} = req.session;
 
-    res.render("management/reportForm", {escapeRoom});
+    // Generate simple math captcha
+    const captchaNum1 = Math.floor(Math.random() * 10) + 1;
+    const captchaNum2 = Math.floor(Math.random() * 10) + 1;
+    const captchaExpected = captchaNum1 + captchaNum2;
+
+    res.render("management/reportForm", {
+        escapeRoom,
+        "reporterName": user ? `${user.name}`.trim() : "",
+        "reporterEmail": user ? user.username : "",
+        captchaNum1,
+        captchaNum2,
+        captchaExpected
+    });
 };
 
 // GET /escapeRooms/:escapeRoomId/contact
 exports.showContact = (req, res) => {
     const {escapeRoom} = req;
+    const {user} = req.session;
 
-    res.render("network/contactForm", {"title": escapeRoom.title, "escapeRoomId": escapeRoom.id, "author": escapeRoom.author.alias});
+    // Generate simple math captcha
+    const captchaNum1 = Math.floor(Math.random() * 10) + 1;
+    const captchaNum2 = Math.floor(Math.random() * 10) + 1;
+    const captchaExpected = captchaNum1 + captchaNum2;
+
+    res.render("network/contactForm", {
+        "title": escapeRoom.title,
+        "escapeRoomId": escapeRoom.id,
+        "author": escapeRoom.author.alias,
+        "contactName": user ? `${user.name}`.trim() : "",
+        "contactEmail": user ? user.username : "",
+        captchaNum1,
+        captchaNum2,
+        captchaExpected
+    });
 };
 
-// POST /escapeRooms/:escapeRoomId/contact
+// POST /escapeRooms/:escapeRoomId/report
 exports.generateReport = async (req, res) => {
     const {escapeRoom} = req;
     const {i18n} = res.locals;
-    const {reason, comments} = req.body;
-    const sessionId = req.session.user.id;
+    const {user} = req.session;
+    const {reason, comments, reporterName, reporterEmail, captchaAnswer, captchaExpected} = req.body;
+
+    // Validate captcha
+    if (parseInt(captchaAnswer, 10) !== parseInt(captchaExpected, 10)) {
+        req.flash("error", i18n.management.report.captchaError || "Incorrect captcha answer");
+        // Regenerate captcha for retry
+        const captchaNum1 = Math.floor(Math.random() * 10) + 1;
+        const captchaNum2 = Math.floor(Math.random() * 10) + 1;
+        const newCaptchaExpected = captchaNum1 + captchaNum2;
+        return res.render("management/reportForm", {
+            escapeRoom,
+            reporterName,
+            reporterEmail,
+            captchaNum1,
+            captchaNum2,
+            "captchaExpected": newCaptchaExpected
+        });
+    }
+
+    let msg = comments || "";
+    // Build reporter info string
+     if (!user && (reporterName || reporterEmail)) {
+        msg += "\n" + `${reporterName || "Anonymous"} <${reporterEmail || "no-email"}>`;
+    }
+
     const report = models.report.build({
         reason,
-        comments,
+        comments: msg,
         "escapeRoomId": escapeRoom.id,
-        "reportAuthor": sessionId
+        reportAuthor: user
     });
 
     try {
-        req.flash("success", i18n.common.flash.successSendingReport);
+        
         await report.save();
+        req.flash("success", i18n.common.flash.successSendingReport);
         res.redirect(`/escapeRooms/${escapeRoom.id}`);
     } catch (err) {
-        req.flash("success", i18n.common.flash.errorSendingReport);
-        res.render("management/reportForm", {escapeRoom, report});
+        console.error(err)
+        req.flash("error", i18n.common.flash.errorSendingReport);
+        // Regenerate captcha for retry
+        const captchaNum1 = Math.floor(Math.random() * 10) + 1;
+        const captchaNum2 = Math.floor(Math.random() * 10) + 1;
+        const newCaptchaExpected = captchaNum1 + captchaNum2;
+        res.render("management/reportForm", {
+            escapeRoom,
+            report,
+            reporterName,
+            reporterEmail,
+            captchaNum1,
+            captchaNum2,
+            "captchaExpected": newCaptchaExpected
+        });
     }
 };
 

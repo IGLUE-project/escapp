@@ -1447,6 +1447,14 @@
             "markAsUnread": "Marcar como no leído",
             "markAsRead": "Marcar como leído",
             "delete": "Eliminar",
+            "name": "Tu nombre",
+            "namePlaceholder": "Introduce tu nombre",
+            "email": "Tu email",
+            "emailPlaceholder": "Introduce tu email",
+            "optional": "opcional",
+            "captchaLabel": "Resuelve esto para verificar que eres humano",
+            "captchaError": "Respuesta de captcha incorrecta. Inténtalo de nuevo.",
+            "commentsPlaceholder": "Proporciona detalles adicionales sobre tu reporte...",
             "reasons": {
                 "inappropriateContent": "Contenido inapropiado para el público al que va dirigido.",
                 "copyrightViolation": "Infracción de copyright.",
@@ -1755,13 +1763,23 @@
         "contact": {
             "text1": "Mensaje de ",
             "text2": " respecto a su escapeRoom: ",
-            "text3": "Email de contacto: "
+            "text3": "Email de contacto: ",
+            "text4": "en Escapp.",
+            "subject": "Nuevo mensaje sobre tu escape room"
         },
         "contactForm": {
             "title": "Contactar con el autor",
             "placeholder": "Escribe un mensaje al autor de la escape room",
-            "send": "Enviar mensaje",
-            "message": "Mensaje"
+            "send": "enviar",
+            "message": "Mensaje",
+            "name": "Tu nombre",
+            "namePlaceholder": "Introduce tu nombre",
+            "email": "Tu email",
+            "emailPlaceholder": "Introduce tu dirección de email",
+            "optional": "opcional",
+            "captchaLabel": "Por favor, resuelve este problema matemático para verificar que eres humano",
+            "captchaError": "Respuesta del captcha incorrecta. Por favor, inténtalo de nuevo.",
+            "success": "Tu mensaje ha sido enviado correctamente."
         }
     },
     "languages": {

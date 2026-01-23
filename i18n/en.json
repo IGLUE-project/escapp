@@ -1451,6 +1451,14 @@
             "send": "send",
             "reason": "Reason",
             "additionalComments": "Additional comments",
+            "name": "Your name",
+            "namePlaceholder": "Enter your name",
+            "email": "Your email",
+            "emailPlaceholder": "Enter your email",
+            "optional": "optional",
+            "captchaLabel": "Solve this to verify you are human",
+            "captchaError": "Incorrect captcha answer. Please try again.",
+            "commentsPlaceholder": "Provide additional details about your report...",
             "reasons": {
                 "inappropriateContent": "Inappropriate content for the target audience.",
                 "copyrightViolation": "Copyright infringement.",
@@ -1758,13 +1766,23 @@
         "contact": {
             "text1": "Message from",
             "text2": "regarding your escape room: ",
-            "text3": "contact email: "
+            "text3": "contact email: ",
+            "text4": "in Escapp.",
+            "subject": "New message about your escape room"
         },
         "contactForm": {
             "title": "Contact the author",
             "placeholder": "Send a message to the author of this escape room",
-            "send": "Send message",
-            "message": "Message"
+            "send": "send",
+            "message": "Message",
+            "name": "Your name",
+            "namePlaceholder": "Enter your name",
+            "email": "Your email",
+            "emailPlaceholder": "Enter your email address",
+            "optional": "optional",
+            "captchaLabel": "Please solve this simple math problem to verify you are human",
+            "captchaError": "Incorrect captcha answer. Please try again.",
+            "success": "Your message has been sent successfully."
         }
     },
     "languages": {

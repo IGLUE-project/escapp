@@ -1,34 +1,65 @@
 <%- include ("../partials/_header.ejs") %>
-<div role="main" class="main">
+
+<div class="main">
     <div class="breadcrumbs-container">
         <div class="breadcrumbs">
-			<a href="/escapeRooms"><%=i18n.common.my%></a>
-				<span class="material-icons">chevron_right</span>
-					<a href="/escapeRooms/<%=escapeRoom.id%>">
-						 <%=escapeRoom.title%>
-					</a>
-                    <span class="material-icons">chevron_right</span>
-					<span>Report</span>
-					
+            <a href="/escapeRooms"><%=i18n.common.my%></a>
+            <span class="material-icons">chevron_right</span>
+            <a href="/escapeRooms/<%=escapeRoom.id%>"><%=escapeRoom.title%></a>
         </div>
-	</div>
-    <h1> <%=i18n.management.report.title%></h1>
-    <form class="report" method="POST" >
-            <p><%=i18n.management.report.description%></p>
-            <div class ="report-body"">
-                <label for="reason"><%=i18n.management.report.reason%></label>
-                <div id="reason"> 
-                    <label><input type="radio" name="reason" value="inappropriateContent" required> <%=i18n.management.report.reasons["inappropriateContent"]%></label><br>
-                    <label><input type="radio" name="reason" value="copyrightViolation"> <%=i18n.management.report.reasons["copyrightViolation"]%></label><br>
-                    <label><input type="radio" name="reason" value="policyViolation"> <%- i18n.management.report.reasons["policyViolation"]%></label><br>
-                    <label><input type="radio" name="reason" value="other"> <%=i18n.management.report.reasons["other"]%></label><br>
-                </div>
-                <label for="comments" ><%=i18n.management.report.additionalComments%></label>
-                <textarea class="textarea" id="comments" name="comments" ></textarea>
-                <button class="rounded editButton" type="submit"> <%=i18n.management.report.send%> </button>
+    </div>
+    <h1><%=i18n.management.report.title%></h1>
+    <form class="report-form" method="POST" action="/escapeRooms/<%=escapeRoom.id%>/report">
+        <p class="report-description"><%=i18n.management.report.description%></p>
+
+        <div class="form-group">
+            <label for="reporterName"><%=i18n.management.report.name%> (<%=i18n.management.report.optional%>)</label>
+            <input type="text" id="reporterName" name="reporterName" value="<%= reporterName || '' %>" placeholder="<%=i18n.management.report.namePlaceholder%>" />
+        </div>
+
+        <div class="form-group">
+            <label for="reporterEmail"><%=i18n.management.report.email%> (<%=i18n.management.report.optional%>)</label>
+            <input type="email" id="reporterEmail" name="reporterEmail" value="<%= reporterEmail || '' %>" placeholder="<%=i18n.management.report.emailPlaceholder%>" />
+        </div>
+
+        <div class="form-group">
+            <label><%=i18n.management.report.reason%></label>
+            <div class="reason-options">
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="inappropriateContent" required>
+                    <span><%=i18n.management.report.reasons["inappropriateContent"]%></span>
+                </label>
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="copyrightViolation">
+                    <span><%=i18n.management.report.reasons["copyrightViolation"]%></span>
+                </label>
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="policyViolation">
+                    <span><%- i18n.management.report.reasons["policyViolation"]%></span>
+                </label>
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="other">
+                    <span><%=i18n.management.report.reasons["other"]%></span>
+                </label>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label for="comments"><%=i18n.management.report.additionalComments%></label>
+            <textarea id="comments" name="comments" placeholder="<%=i18n.management.report.commentsPlaceholder%>"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label><%=i18n.management.report.captchaLabel%></label>
+            <div class="captcha-container">
+                <span class="captcha-question"><%= captchaNum1 %> + <%= captchaNum2 %> = ?</span>
+                <input type="number" class="captcha-input" id="captchaAnswer" name="captchaAnswer" required />
+            </div>
+            <input type="hidden" name="captchaExpected" value="<%= captchaExpected %>" />
+        </div>
+
+        <button type="submit" class="acceptButton rounded"><%=i18n.management.report.send%></button>
     </form>
 </div>
-<br/>
-<br/>
+
 <%- include ("../partials/_footer.ejs") %>

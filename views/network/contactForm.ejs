@@ -1,21 +1,41 @@
-<style>
-#text {
-    width: 100%;
-    height: 300px;
-    box-sizing: border-box;
-}
-label, button, input {
-    margin: 20px
-}
-</style>
+<%- include ("../partials/_header.ejs") %>
+
 <div class="main">
+    <div class="breadcrumbs-container">
+        <div class="breadcrumbs">
+            <a href="/escapeRooms"><%=i18n.common.my%></a>
+            <span class="material-icons">chevron_right</span>
+            <a href="/escapeRooms/<%=escapeRoomId%>"><%=title%></a> 
+            <span class="material-icons">chevron_right</span>
+            <span><%=i18n.network.contactForm.title%></span>
+        </div>
+    </div>
     <h1><%=i18n.network.contactForm.title%></h1>
-    <form method="POST" action="/network/<%=escapeRoomId%>/sendcontactemail" >
-        <label for="text"><%=i18n.network.contactForm.message%></label>
-        <input placeholder="<%=i18n.network.contactForm.placeholder%>" type="text" id="text" name="text" required />
+    <form method="POST" action="/network/<%=escapeRoomId%>/sendcontactemail" class="contact-form">
+        <div class="form-group">
+            <label for="contactName"><%=i18n.network.contactForm.name%> (<%=i18n.network.contactForm.optional%>)</label>
+            <input type="text" id="contactName" name="contactName" value="<%= contactName || '' %>" placeholder="<%=i18n.network.contactForm.namePlaceholder%>" />
+        </div>
 
-        <button type="submit"><%=i18n.network.contactForm.send%></button>
+        <div class="form-group">
+            <label for="contactEmail"><%=i18n.network.contactForm.email%> (<%=i18n.network.contactForm.optional%>)</label>
+            <input type="email" id="contactEmail" name="contactEmail" value="<%= contactEmail || '' %>" placeholder="<%=i18n.network.contactForm.emailPlaceholder%>" />
+        </div>
+
+        <div class="form-group">
+            <label for="text"><%=i18n.network.contactForm.message%></label>
+            <textarea placeholder="<%=i18n.network.contactForm.placeholder%>" id="text" name="text" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label><%=i18n.network.contactForm.captchaLabel%></label>
+            <div class="captcha-container">
+                <span class="captcha-question"><%= captchaNum1 %> + <%= captchaNum2 %> = ?</span>
+                <input type="number" class="captcha-input" id="captchaAnswer" name="captchaAnswer" required />
+            </div>
+            <input type="hidden" name="captchaExpected" value="<%= captchaExpected %>" />
+        </div>
+
+        <button type="submit" class="acceptButton rounded"><%=i18n.network.contactForm.send%></button>
     </form>
-
-<div>
-
+</div>

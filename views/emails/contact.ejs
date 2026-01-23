@@ -1,6 +1,8 @@
-<%=i18n.network.contact.text1%> <%=user%> <%=i18n.network.contact.text2%> "<%=escapeRoomTitle%>"
+<%=i18n.network.contact.text1%> <%=user%> <%=i18n.network.contact.text2%> "<%=escapeRoomTitle%>" <%=i18n.network.contact.text4%>
+
 <br/>
 <%= message %>
 <br/>
+<%if(userEmail){%>
 <%=i18n.network.contact.text3%> <%= userEmail %>
-
+<%}%>

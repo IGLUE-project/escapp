@@ -154,12 +154,24 @@ exports.sendContactEmail = async (req, res, next) => {
         const escapeRoomTitle = req.escapeRoom.title;
         const {author} = req.escapeRoom;
         const lang = author.lang || "en";
-        const {text} = req.body;
+        const {text, contactName, contactEmail, captchaAnswer, captchaExpected} = req.body;
         const i18n = require(`../i18n/${lang}`);
+        const localI18n = res.locals.i18n;
 
-        const str = await renderEJS("views/emails/contact.ejs", {i18n, "user": user.name, "message": text, "userEmail": user.username, escapeRoomTitle }, {});
+        // Validate captcha
+        if (parseInt(captchaAnswer, 10) !== parseInt(captchaExpected, 10)) {
+            req.flash("error", localI18n.network.contactForm.captchaError);
+            return res.redirect("back");
+        }
 
-        await mailer.sendEmail(author.username, "Contact Message", str, str);
+        // Use provided contact info or fall back to user data
+        const senderName = contactName ||  "Anonymous";
+        const senderEmail = contactEmail | "No email provided";
+
+        const str = await renderEJS("views/emails/contact.ejs", {i18n, "user": senderName, "message": text, "userEmail": senderEmail, escapeRoomTitle }, {});
+
+        await mailer.sendEmail(author.username, "Escapp: " + i18n.network.contact.subject, str, str);
+        req.flash("success", localI18n.network.contactForm.success);
         res.redirect("/");
     } catch (error) {
         console.error(error);
