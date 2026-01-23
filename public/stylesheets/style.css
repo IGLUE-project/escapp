@@ -2208,7 +2208,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.inspiration a.resources {
   color: #FAC855;
 }
-#mainSection .main.inspiration *:not(i):not(h2) {
+#mainSection .main.inspiration *:not(i):not(h2):not(.material-icons) {
   font-family: Lato, sans-serif;
 }
 #mainSection .main.inspiration h3 {
@@ -2314,6 +2314,57 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-family: "Gugi", "Lucida Grande";
   font-size: 18px;
   display: inline-block;
+}
+#mainSection .main.inspiration .guides-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 40px;
+}
+#mainSection .main.inspiration .guides-container .guide-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #161938 0%, #161938 100%);
+  border-radius: 12px;
+  width: 280px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #3a3a5a;
+}
+#mainSection .main.inspiration .guides-container .guide-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-color: #5a5a7a;
+}
+#mainSection .main.inspiration .guides-container .guide-card .guide-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4a4a7a 0%, #3a3a5a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+#mainSection .main.inspiration .guides-container .guide-card .guide-icon .material-icons {
+  font-size: 40px;
+  color: #FAC855;
+}
+#mainSection .main.inspiration .guides-container .guide-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  color: #FAC855;
+  text-align: center;
+}
+#mainSection .main.inspiration .guides-container .guide-card p {
+  margin: 0;
+  text-align: center;
+  color: #cccccc;
+  font-size: 14px;
 }
 
 @media (max-width: 800px) {

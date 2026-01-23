@@ -956,6 +956,18 @@
         "intro": "The collection of puzzles below allows you to connect digital puzzle applications with the puzzle outline that you defined for your escapp escape room. You can customize their settings and share them with your students as a part of your escape room.",
         "resourceCatalog": "Resource catalog"
     },
+    "guides": {
+        "title": "Guides",
+        "description": "Select a guide to help you create and manage your escape rooms.",
+        "inspiration": {
+            "title": "Best Practices guide",
+            "description": "A Comprehensive Step-by-step guide for escape room design."
+        },
+        "manual": {
+            "title": "Escapp User Manual",
+            "description": "Comprehensive manual on how to use the Escapp platform."
+        }
+    },
     "participant": {
         "attendanceSaved": "Attendance successfully saved",
         "areYouSureDelete": "Are you sure you wish to delete this participant?",

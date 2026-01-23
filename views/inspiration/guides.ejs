@@ -1,0 +1,23 @@
+<%- include ("../partials/_header.ejs") %>
+<div id="mainSection">
+    <div class="main inspiration">
+        <h2><%= i18n.guides.title %></h2>
+        <p><%= i18n.guides.description %></p>
+        <div class="guides-container">
+            <a href="/inspiration" class="guide-card">
+                <div class="guide-icon">
+                    <span class="material-icons">lightbulb</span>
+                </div>
+                <h3><%= i18n.guides.inspiration.title %></h3>
+                <p><%= i18n.guides.inspiration.description %></p>
+            </a>
+            <a href="/manual" class="guide-card">
+                <div class="guide-icon">
+                    <span class="material-icons">menu_book</span>
+                </div>
+                <h3><%= i18n.guides.manual.title %></h3>
+                <p><%= i18n.guides.manual.description %></p>
+            </a>
+        </div>
+    </div>
+</div>

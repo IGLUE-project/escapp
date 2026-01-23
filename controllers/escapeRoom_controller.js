@@ -881,6 +881,10 @@ exports.test = async (req, res) => {
 
 exports.showGuide = (_, res) => res.render("inspiration/inspiration");
 
+exports.showManual = (_, res) => res.render("inspiration/manual");
+
+exports.showGuides = (_, res) => res.render("inspiration/guides");
+
 exports.verify = async (req, res, next) => {
     try {
         if (req.body.unverify === "stop") {

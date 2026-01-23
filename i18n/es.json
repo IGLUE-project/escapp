@@ -951,7 +951,18 @@
         "fullscreen": "Compartir en pantalla completa",
         "intro": "La siguiente colección de recursos se integra con los retos de tu escape room de escapp. Puedes personalizar distintos aspectos de los mismos y obtener un enlace para compartirlos con tus alumnos como parte de la escape room.",
         "resourceCatalog": "Catálogo de recursos"
-
+    },
+    "guides": {
+        "title": "Guías",
+        "description": "Selecciona una guía para ayudarte a crear y gestionar tus escape rooms.",
+        "inspiration": {
+            "title": "Guía de buenas prácticas",
+            "description": "Guía completa paso a paso para el diseño de escape rooms."
+        },
+        "manual": {
+            "title": "Manual de usuario de Escapp",
+            "description": "Manual completo sobre cómo usar la plataforma Escapp."
+        }
     },
     "participant": {
         "attendanceSaved": "Asistencia guardada correctamente",

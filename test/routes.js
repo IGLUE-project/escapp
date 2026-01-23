@@ -14,7 +14,9 @@ exports.publicRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": `/users/password-reset/${userId}`, "statusCode": 404, "description": "Password reset with hash - user not found"},
 
     // Public resources
+    {"route": "/guides", "statusCode": 200, "description": "Guides selection page"},
     {"route": "/inspiration", "statusCode": 200, "description": "Inspiration/guide page"},
+    {"route": "/manual", "statusCode": 200, "description": "User manual page"},
     {"route": `/escapeRooms/${escapeRoomId}/thumbnail`, "statusCode": 200, "description": "Escape room thumbnail"},
 
     // Routes that require login - should redirect (302)
@@ -101,7 +103,9 @@ exports.studentRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": "/terms", "statusCode": 301, "description": "Terms page"},
     {"route": "/privacy", "statusCode": 301, "description": "Privacy page"},
     {"route": "/cookies", "statusCode": 301, "description": "Cookie policy page"},
+    {"route": "/guides", "statusCode": 200, "description": "Guides selection page"},
     {"route": "/inspiration", "statusCode": 200, "description": "Inspiration/guide page"},
+    {"route": "/manual", "statusCode": 200, "description": "User manual page"},
 
     // User routes - own profile
     {"route": `/users/${userId}`, "statusCode": 200, "description": "Own profile"},
@@ -200,7 +204,9 @@ exports.teacherRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": "/terms", "statusCode": 301, "description": "Terms page"},
     {"route": "/privacy", "statusCode": 301, "description": "Privacy page"},
     {"route": "/cookies", "statusCode": 301, "description": "Cookie policy page"},
+    {"route": "/guides", "statusCode": 200, "description": "Guides selection page"},
     {"route": "/inspiration", "statusCode": 200, "description": "Inspiration/guide page"},
+    {"route": "/manual", "statusCode": 200, "description": "User manual page"},
 
     // User routes - own profile
     {"route": `/users/${userId}`, "statusCode": 200, "description": "Own profile"},
@@ -305,7 +311,9 @@ exports.adminRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": "/terms", "statusCode": 301, "description": "Terms page"},
     {"route": "/privacy", "statusCode": 301, "description": "Privacy page"},
     {"route": "/cookies", "statusCode": 301, "description": "Cookie policy page"},
+    {"route": "/guides", "statusCode": 200, "description": "Guides selection page"},
     {"route": "/inspiration", "statusCode": 200, "description": "Inspiration/guide page"},
+    {"route": "/manual", "statusCode": 200, "description": "User manual page"},
 
     // User routes - admin can access all users
     {"route": `/users/${userId}`, "statusCode": 200, "description": "User profile"},
