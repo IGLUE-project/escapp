@@ -67,11 +67,11 @@
                 <option value="private" <%=(escapeRoom.scope == "private") ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["private"]%></option>
             </select>
             <br/>
-            <br/>
+            <!-- <br/>
             <br/>
             <label class="note" style="padding-left:30px;" for="allowGuests" ><%=i18n.escapeRoom.steps.sharing.allowGuests%>
                 <input class="customCheckbox" type="checkbox" name="allowGuests" id="allowGuests" <%= escapeRoom.allowGuests ? "checked" : "" %> />
-            </label>
+            </label> -->
         </div>
 
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms; <%=(escapeRoom.scope == 'private') ?  '' : 'display: none;'%>" id = "invitationBlock"   ">
