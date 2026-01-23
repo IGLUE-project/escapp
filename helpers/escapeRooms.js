@@ -81,7 +81,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     if (reusablePuzzleInstances && reusablePuzzleInstances.length) {
         include.push({
             "model": models.reusablePuzzleInstance,
-            "include": [models.reusablePuzzle]
+            "include": [models.reusablePuzzle,  models.puzzle]
         });
     }
 
@@ -100,7 +100,6 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
             });
         }
     }
-    console.log(hybridInstructions)
     const escapeRoom = models.escapeRoom.build({
         "title": newTitle,
         subjects: subjects ? subjects.map((s) => ({ "subject": s.subject })) : [],
@@ -160,43 +159,114 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
         "reusablePuzzleInstances": theReusablePuzzleInstances,
         "attachment": attachment ?  uploadsHelper.getFields(attachment, fileMapping["attachment"]) : undefined
     }, {include});
- 
+    
     const saved = await escapeRoom.save({transaction});
     const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
     const teamCreated = await models.team.create({ "name": currentUser.name, "turnoId": testShift.id}, {transaction});
+    // Convert to strings for consistent comparison
+    const oldPuzzleIds = er.puzzles ? er.puzzles.map(p => String(p.id)): [];
+    const newPuzzleIds = saved.puzzles ? saved.puzzles.map(p => String(p.id)): [];
+
+    // Update puzzles on reusablePuzzleInstances to point to new puzzle IDs
     for (let rpi in reusablePuzzleInstances) {
         const oldRPI = reusablePuzzleInstances[rpi];
         const newRPI = saved.reusablePuzzleInstances[rpi];
+
+        if (oldRPI.puzzles && oldRPI.puzzles.length) {
+            const newPuzzlesForRPI = [];
+            for (const oldPuzzle of oldRPI.puzzles) {
+                const puzzleIndex = oldPuzzleIds.indexOf(String(oldPuzzle.id));
+                if (puzzleIndex !== -1) {
+                    newPuzzlesForRPI.push(saved.puzzles[puzzleIndex]);
+                    if (newRPI.config) {
+                        newRPI.config = newRPI.config.replaceAll(
+                            '\\"puzzle\\":\\"' + String(oldPuzzle.id) + '\\"',
+                            '\\"puzzle\\":\\"' + String(saved.puzzles[puzzleIndex].id) + '\\"'
+                        );
+                    }
+                }
+            }
+            await newRPI.setPuzzles(newPuzzlesForRPI, { transaction });
+            await newRPI.save({ transaction });
+        }
+
         saved.teamInstructions = saved.teamInstructions.replaceAll(
-            "/escapeRooms/"+er.id+"/reusablePuzzleInstances/"+oldRPI.id, 
+            "/escapeRooms/"+er.id+"/reusablePuzzleInstances/"+oldRPI.id,
             "/escapeRooms/"+saved.id+"/reusablePuzzleInstances/"+newRPI.id);
     }
-    const theAssets = assets && assets.length ? [...assets].
-        filter((a) => a.assetType).
-        map((asset) => ({...uploadsHelper.getFieldsForAssetNoURL(asset, fileMapping["assets"]), "userId": authorId, "escapeRoomId": saved.id})) : undefined;
+    const filteredAssets = Array.isArray(assets)
+    ? assets.filter(a => a?.assetType)
+    : [];
 
-    const savedAssets = await models.asset.bulkCreate(theAssets, {transaction});
-    for (let asset in assets) {
-        const oldAsset = assets[asset];
-        const newAsset = savedAssets[asset];
-        saved.description = description.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-        saved.indicationsInstructions = saved.indicationsInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-        saved.teamInstructions = saved.teamInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-        saved.classInstructions = saved.classInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-        saved.afterInstructions = saved.afterInstructions.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-        if (theReusablePuzzleInstances && theReusablePuzzleInstances.length > 0) {
-            for (let rpi in saved.reusablePuzzleInstances) {
-                const newRPI = saved.reusablePuzzleInstances[rpi];
-                newRPI.config = newRPI.config.replaceAll("assets/" + oldAsset.id, "assets/" + newAsset.id);
-                saved.reusablePuzzleInstances[rpi] = newRPI;
+    const theAssets = filteredAssets.length
+    ? filteredAssets.map(asset => ({
+        ...uploadsHelper.getFieldsForAssetNoURL(asset, fileMapping["assets"]),
+        userId: authorId,
+        escapeRoomId: saved.id
+        }))
+    : undefined;
+
+    const savedAssets = theAssets
+    ? await models.asset.bulkCreate(theAssets, { transaction })
+    : [];
+
+
+    for (const [i, oldAsset] of filteredAssets.entries()) {
+        const newAsset = savedAssets[i];
+        if (!newAsset) continue;
+        
+        // Update relative references too, if those exist in configs
+        const fromRel = `/assets/${oldAsset.id}.`;
+        const toRel   = `/assets/${newAsset.id}.`;
+       
+        if (typeof saved.description === "string") {
+            saved.description = saved.description.replaceAll(fromRel, toRel);
+        }
+        if (typeof saved.indicationsInstructions === "string") {
+            saved.indicationsInstructions = saved.indicationsInstructions.replaceAll(fromRel, toRel);
+        }
+        if (typeof saved.teamInstructions === "string") {
+            saved.teamInstructions = saved.teamInstructions.replaceAll(fromRel, toRel);
+        }
+        if (typeof saved.classInstructions === "string") {
+            saved.classInstructions = saved.classInstructions.replaceAll(fromRel, toRel);
+        }
+        if (typeof saved.afterInstructions === "string") {
+            saved.afterInstructions = saved.afterInstructions.replaceAll(fromRel, toRel);
+        }
+
+        if (Array.isArray(saved.reusablePuzzleInstances) && saved.reusablePuzzleInstances.length) {
+            for (const rpi of saved.reusablePuzzleInstances) {
+                if (typeof rpi?.config === "string") {
+                    rpi.config = rpi.config.replaceAll(fromRel, toRel);
+                }
             }
         }
-        if (oldAsset.url) {
-            savedAssets[asset].url = oldAsset.url.replaceAll("/assets/" + oldAsset.id, "/assets/" + newAsset.id);
+
+        if (oldAsset.url && typeof oldAsset.url === "string") {
+            newAsset.url = oldAsset.url.replaceAll(fromRel, toRel);
+            await newAsset.save({ transaction });
         }
-        await savedAssets[asset].save({transaction});
     }
+         
     
+
+    if (typeof saved.description === "string") {
+        saved.description = saved.description.replaceAll(prevUrl, currentUrl);
+    }
+    if (typeof saved.indicationsInstructions === "string") {
+        saved.indicationsInstructions = saved.indicationsInstructions.replaceAll(prevUrl, currentUrl);
+    }
+    if (typeof saved.teamInstructions === "string") {
+        saved.teamInstructions = saved.teamInstructions.replaceAll(prevUrl, currentUrl);
+    }
+    if (typeof saved.classInstructions === "string") {
+        saved.classInstructions = saved.classInstructions.replaceAll(prevUrl, currentUrl);
+    }
+    if (typeof saved.afterInstructions === "string") {
+        saved.afterInstructions = saved.afterInstructions.replaceAll(prevUrl, currentUrl);
+    }
+
     await saved.save({transaction});
     if (scenes) {
         const newScenes = [];
@@ -221,7 +291,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
                 const oldERid = er.id;
                 const newERid = saved.id;
                 const newSceneid = savedScenes[scene].id;
-                saved.teamInstructions = saved.teamInstructions.replaceAll(oldERid + "/scenes/" + oldScene.id, newERid + "/scenes/" + newSceneid);
+                saved.teamInstructions = saved.teamInstructions.replaceAll("/" + oldERid + "/scenes/" + oldScene.id, "/" + newERid + "/scenes/" + newSceneid);
             }
             await saved.save({transaction});
         }                            
@@ -231,6 +301,8 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     await teamCreated.addTeamMembers(currentUser.id, {transaction});
     await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": currentUser.id}, {transaction});
     await transaction.commit();
+    console.log(JSON.stringify(saved, null, 5));
+
     return saved;
 }
 

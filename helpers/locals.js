@@ -150,7 +150,6 @@ module.exports = function (app) {
      */
     app.locals.canExport = function(user, escapeRoom, globalConfig) {
         const {exportAllowed, EXPORT_ALLOWED_OPTIONS} = globalConfig;
-        console.log(user, escapeRoom, globalConfig)
         switch (exportAllowed) {
         case EXPORT_ALLOWED_OPTIONS.ALL:
             return true;

@@ -672,7 +672,7 @@ exports.findFirstAvailableFile = async (section, lang) => {
 };
 
 exports.stepsCompleted = (escapeRoom) => {
-    const step1 = Boolean(escapeRoom.title);
+    const step1 = Boolean(escapeRoom.title && escapeRoom.field && escapeRoom.description && escapeRoom.level && escapeRoom.duration);
     const step2 = escapeRoom.puzzles && escapeRoom.puzzles.length > 0;
     const step3 = escapeRoom.hintLimit === 0 || escapeRoom.puzzles.map((p) => p.hints ? p.hints.length : 0).reduce((a, b) => a + b, 0) > 0;
     const step4 = Boolean(escapeRoom.indicationsInstructions);

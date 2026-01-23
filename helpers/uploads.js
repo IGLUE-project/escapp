@@ -73,10 +73,10 @@ exports.getFieldsForAsset = (el, mapping) => ({
     "assetType": el.assetType,
     "mimetype": el.mimetype,
     "fileId": (mapping && el.fileId && mapping[el.fileId]) ? mapping[el.fileId] : el.fileId,
-    "filePath": (mapping && el.filePath && mapping[el.filePath]) ? mapping[el.filePath] : el.filePath,
+    "filePath": (mapping && el.fileId && mapping[el.fileId]) ? el.filePath.replace(el.fileId, mapping[el.fileId]) : el.filePath,
     "fileExtension": el.fileExtension,
     "filename": el.filename,
-    "contentPath": (mapping && mapping[el.contentPath]) ? mapping[el.contentPath] : el.contentPath,
+    "contentPath": (mapping && el.fileId && mapping[el.fileId]) ? el.contentPath.replace(el.fileId, mapping[el.fileId]) : el.contentPath,
     "config": el.config,
     "url": el.url
 });
@@ -85,9 +85,9 @@ exports.getFieldsForAssetNoURL = (el, mapping) => ({
     "assetType": el.assetType,
     "mimetype": el.mimetype,
     "fileId": (mapping && el.fileId && mapping[el.fileId]) ? mapping[el.fileId] : el.fileId,
-    "filePath": (mapping && el.filePath && mapping[el.filePath]) ? mapping[el.filePath] : el.filePath,
+    "filePath": (mapping && el.fileId && mapping[el.fileId]) ? el.filePath.replace(el.fileId, mapping[el.fileId]) : el.filePath,
     "fileExtension": el.fileExtension,
     "filename": el.filename,
-    "contentPath": (mapping && el.contentPath && mapping[el.contentPath]) ? mapping[el.contentPath] : el.contentPath,
+    "contentPath": (mapping && el.fileId && mapping[el.fileId]) ? el.contentPath.replace(el.fileId, mapping[el.fileId]) : el.contentPath,
     "config": el.config
 });
