@@ -14,7 +14,7 @@ This software is co-funded by the European Union through the <a href="https://ig
 
 ## 📖 Documentation for users
 
-Check out the [user manual]([https://github.com/IGLUE-project/escapp/wiki/Installation](https://github.com/IGLUE-project/escapp/blob/master/public/pdf/Escapp_manual_EN.pdf)) to learn how to use Escapp.
+Check out the [user manual](https://github.com/IGLUE-project/escapp/blob/master/public/pdf/Escapp_manual_EN.pdf) to learn how to use Escapp.
 
 
 ## 📦 Documentation for developers
