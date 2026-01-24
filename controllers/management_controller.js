@@ -294,18 +294,20 @@ exports.exportAuth = async (req, res, next) => {
         switch (exportAllowed) {
         case EXPORT_ALLOWED_OPTIONS.ALL:
             // Everyone can export
-            return next();
+            if (er.completed) {
+                return next();
+            }
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_USERS:
             // Only logged-in users can export
-            if (user) {
+            if (user && er.completed) {
                 return next();
             }
             break;
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS:
             // Only teachers (non-students) and admins can export
-            if (user && (isAdmin(user) || !isStudent(user))) {
+            if (user && (isAdmin(user) || !isStudent(user)) && er.completed) {
                 return next();
             }
             break;
