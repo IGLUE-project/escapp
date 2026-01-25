@@ -481,6 +481,7 @@
             "hints": {
                 "correctNumber": "Number of correct answers",
                 "correctNumberPlaceHolder": "How many correct answers do participants need to obtain a hint?",
+                "moodleXMLExplanation": "If you want participants to answer a series of questions to obtain a hint, upload a MoodleXML file that includes a battery of questions",
                 "explanation": "In this step you can select the hint strategy of your escape room. There are three strategies available: not allowing hints, allowing free hints, and requiring participants to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that participants can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt.",
                 "moodleExplanation": "If you want participants to answer a quiz in order to get a hint, please upload a MoodleXML with a battery of questions",
                 "feedback": "Feedback",
@@ -557,6 +558,7 @@
                     "Center": "Center",
                     "Right": "Right",
                     "aspectRatio": "Aspect ratio",
+                    "resourceCatalog": "Resource catalog",
                     "catalog": {
                         "assets": {
                             "image": "Image",
@@ -1452,6 +1454,9 @@
             "send": "send",
             "reason": "Reason",
             "additionalComments": "Additional comments",
+            "markAsUnread": "Mark as unread",
+            "markAsRead": "Mark as read",
+            "delete": "Delete",
             "name": "Your name",
             "namePlaceholder": "Enter your name",
             "email": "Your email",
@@ -1724,68 +1729,7 @@
     "general": {
         "unspecified": "Unspecified"
     },
-    "network": {
-        "Network": "Network",
-        "clickToPlay": "Click on the button below to play in their site:",
-        "clickToClone": "...or click on the button below to import it to your profile and use it as a teacher",
-        "view": "visit",
-        "hostedAt": "This escape room is hosted at:",
-        "filters": {
-            "Filters": "Filters",
-            "any": "Any",
-            "after": "After",
-            "before": "Before",
-            "language": "Language",
-            "eduLevel": {
-                "filter": "Educational level",
-                "primary": "Primary education",
-                "secondary": "Secondary education",
-                "vet": "Vocational education and training",
-                "higher": "Higher education"
-            },
-            "area": "Area",
-            "participation": {
-                "filter":"Participation",
-                "individual": "Individual",
-                "team": "Teams"
-            },
-            "duration": "Duration (min)",
-            "format": {
-                "filter":"Format",
-                "online": "Online",
-                "hybrid": "Hybrid"
-            }
-        },
-        "search": {
-            "searchButton": "search",
-            "inputPlaceholder": "search...",
-            "loadingPlaceholder": "Loading escape rooms...",
-            "noResults": "No escape rooms found",
-            "filterPlaceholder": "No escape rooms found with the selected filters. Try removing some filters.",
-            "title": "Network Search"
-        },
-        "contact": {
-            "text1": "Message from",
-            "text2": "regarding your escape room: ",
-            "text3": "contact email: ",
-            "text4": "in Escapp.",
-            "subject": "New message about your escape room"
-        },
-        "contactForm": {
-            "title": "Contact the author",
-            "placeholder": "Send a message to the author of this escape room",
-            "send": "send",
-            "message": "Message",
-            "name": "Your name",
-            "namePlaceholder": "Enter your name",
-            "email": "Your email",
-            "emailPlaceholder": "Enter your email address",
-            "optional": "optional",
-            "captchaLabel": "Please solve this simple math problem to verify you are human",
-            "captchaError": "Incorrect captcha answer. Please try again.",
-            "success": "Your message has been sent successfully."
-        }
-    },
+
     "languages": {
         "ab" : "Abkhazian",
         "aa" : "Afar",
@@ -2013,6 +1957,69 @@
             "verified": "Verified",
             "notVerified": "Not verified",
             "needsReverification": "Needs re-verification"
+        }
+    },
+    "network": {
+        "Network": "Network",
+        "conductSearch": "Conduct a search",
+        "clickToPlay": "Click on the button below to play in their site:",
+        "clickToClone": "...or click on the button below to import it to your profile and use it as a teacher",
+        "view": "visit",
+        "hostedAt": "This escape room is hosted at:",
+        "filters": {
+            "Filters": "Filters",
+            "any": "Any",
+            "after": "After",
+            "before": "Before",
+            "language": "Language",
+            "eduLevel": {
+                "filter": "Educational level",
+                "primary": "Primary education",
+                "secondary": "Secondary education",
+                "vet": "Vocational education and training",
+                "higher": "Higher education"
+            },
+            "area": "Area",
+            "participation": {
+                "filter":"Participation",
+                "individual": "Individual",
+                "team": "Teams"
+            },
+            "duration": "Duration (min)",
+            "format": {
+                "filter":"Format",
+                "online": "Online",
+                "hybrid": "Hybrid"
+            }
+        },
+        "search": {
+            "searchButton": "search",
+            "inputPlaceholder": "search...",
+            "loadingPlaceholder": "Loading escape rooms...",
+            "noResults": "No escape rooms found",
+            "filterPlaceholder": "No escape rooms found with the selected filters. Try removing some filters.",
+            "title": "Network Search"
+        },
+        "contact": {
+            "text1": "Message from",
+            "text2": "regarding your escape room: ",
+            "text3": "contact email: ",
+            "text4": "in Escapp.",
+            "subject": "New message about your escape room"
+        },
+        "contactForm": {
+            "title": "Contact the author",
+            "placeholder": "Send a message to the author of this escape room",
+            "send": "send",
+            "message": "Message",
+            "name": "Your name",
+            "namePlaceholder": "Enter your name",
+            "email": "Your email",
+            "emailPlaceholder": "Enter your email address",
+            "optional": "optional",
+            "captchaLabel": "Please solve this simple math problem to verify you are human",
+            "captchaError": "Incorrect captcha answer. Please try again.",
+            "success": "Your message has been sent successfully."
         }
     }
 }
