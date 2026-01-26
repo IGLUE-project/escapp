@@ -119,11 +119,15 @@ exports.joinAnonymous = async (req, res, next) => {
     req.body.username = `${req.escapeRoom.id}_${req.body.alias}_${Date.now()}@anonymous.org`;
     req.body.redir = `/escapeRooms/${req.escapeRoom.id}/join`;
     req.body.anonymous = true;
-
+    if (req.body.accept_terms != "on") {
+        req.flash("error", i18n.common.flash.youMustAcceptTerms);
+        res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
+        return;
+    }
     const user = models.user.build({
         "name": "Anonymous",
         "surname": "Anonymous",
-        "alias": req.body.alias || "Anonymous",
+        "alias": req.body.alias,
         "eduLevel": req.body.eduLevel || "other",
         "username": req.body.username,
         "password": req.body.password,
@@ -147,7 +151,7 @@ exports.joinAnonymous = async (req, res, next) => {
             res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
         } else {
             req.flash("error", i18n.common.flash.errorCreatingUser);
-            res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
+            res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
         }
     }
 };
