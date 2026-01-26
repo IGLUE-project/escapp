@@ -117,25 +117,25 @@ module.exports = function (app) {
         const hasMax = Number.isInteger(teamSize) && teamSize > 0;
 
         if (hasMin && !hasMax) {
-            return `${minTeamSize}+`;
+            return `${i18n.common.teams} ${i18n.common.of} ${minTeamSize}+ ${i18n.common.players}`;
         }
 
         if (!hasMin && hasMax) {
             return teamSize === 1
             ? i18n.network.filters.participation.individual
-            : `${i18n.common.upTo} ${teamSize}`;
+            : `${i18n.common.teams} ${i18n.common.upTo} ${teamSize} ${i18n.common.players}`;
         }
 
         if (hasMin && hasMax) {
             if (minTeamSize === teamSize) {
-            return `${teamSize}`;
+            return `${i18n.common.teams} ${i18n.common.of} ${teamSize} ${i18n.common.players}`;
             }
 
             if (minTeamSize <= 1) {
-            return `${i18n.common.upTo} ${teamSize}`;
+            return `${i18n.common.teams} ${i18n.common.upTo} ${teamSize} ${i18n.common.players}`;
             }
 
-            return `${minTeamSize}-${teamSize}`;
+            return `${i18n.common.teams} ${i18n.common.of} ${minTeamSize}-${teamSize} ${i18n.common.players}`;
         }
 
         return ""

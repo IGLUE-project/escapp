@@ -266,6 +266,9 @@
     "total": "ukupno",
     "Total": "Ukupno",
     "upTo": "Do",
+    "teams": "Timovi",
+    "of": "od",
+    "players": "igrača",
     "no": "Ne",
     "yes": "Da"
 
@@ -699,6 +702,7 @@
         "field": "Oblast znanja",
         "format": "Format",
         "teamSize": "Veličina tima",
+        "participationMode": "Način učešća",
         "licenseExplanation": "Pod kojom licencom želite da objavite svoju escape sobu?",
         "licenseExplanationAlreadyPublished": "Više ne možete menjati licencu jer je vaša escape soba već objavljena ranije.",
         "invitationExplanation": "Da li želite da učesnici unesu lozinku da bi se pridružili sobi za bekstvo? Ako jeste, unesite je u tekstualno polje ispod.",

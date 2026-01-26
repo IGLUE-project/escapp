@@ -264,7 +264,11 @@
         "profile": "Profile",
         "total": "total",
         "Total": "Total",
-        "upTo": "Up to",
+        "teamsOf": "Teams of",
+        "teams": "Teams",
+        "of": " of",
+        "players": "players",
+        "upTo": "up to",
         "yes": "Yes"
     },
     "escapeRoom": {
@@ -696,6 +700,7 @@
                 "field": "Knowledge area",
                 "format": "Format",
                 "teamSize": "Team size",
+                "participationMode": "Participation mode",
                 "licenseExplanation": "Under which license do you want to publish your escape room?",
                 "licenseExplanationAlreadyPublished": "You cannot change the license anymore since your escape room has already been published before.",
                 "invitationExplanation": "Do you want participants to enter a password to join the escape room? If so, enter it in the text field below.",
