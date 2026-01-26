@@ -193,7 +193,10 @@ exports.getPreviewData = async (req, res) => {
 // GET /network/:escapeRoomId/preview?url=...&id=...
 exports.servePreviewRender = async (req, res, next) => {
     try {
-        const data = await tryFetch(`${req.query.url}/network/${req.params.escapeRoomId}/json`);
+        const escapeRoomId = req.params.nescapeRoomId
+        console.log(`${req.query.url}/network/${escapeRoomId}/json`)
+
+        const data = await tryFetch(`${req.query.url}/network/${escapeRoomId}/json`);
         if (!data || !data.ok) {
             throw new Error("Failed to fetch preview data");
         }
@@ -215,17 +218,17 @@ exports.importFromNetwork = async (req, res, next) => {
 
     try {
     const { url } = req.query;
-        const { escapeRoomId } = req.params;
+        const { nescapeRoomId } = req.params;
 
         if (!url) throw new Error("No url in query params");
-        if (!escapeRoomId) throw new Error("No escape room id");
-        const urlFetch = `${url}/escapeRooms/${escapeRoomId}/export`;
+        if (!nescapeRoomId) throw new Error("No escape room id");
+        const urlFetch = `${url}/escapeRooms/${nescapeRoomId}/export`;
         const exportRes = await fetch(urlFetch);
         if (!exportRes.ok) throw new Error("Fail to fetch");
         const arrayBuffer = await exportRes.arrayBuffer();
         const zipBuffer = Buffer.from(arrayBuffer);
 
-        const tmpPath = path.join(os.tmpdir(), `escapeRoom-${escapeRoomId}-${crypto.randomUUID()}.zip`);
+        const tmpPath = path.join(os.tmpdir(), `escapeRoom-${nescapeRoomId}-${crypto.randomUUID()}.zip`);
         await fs.writeFile(tmpPath, zipBuffer);
         req.tmpPath = tmpPath;
         next();
