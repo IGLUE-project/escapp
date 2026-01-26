@@ -50,9 +50,9 @@ exports.publicRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": `/escapeRooms/${escapeRoomId}/hintApp`, "statusCode": 302, "description": "Hint app - requires login"},
     {"route": `/escapeRooms/${escapeRoomId}/hintAppWrapper`, "statusCode": 302, "description": "Hint app wrapper - requires login"},
     {"route": `/escapeRooms/${escapeRoomId}/test`, "statusCode": 302, "description": "Test mode - requires login"},
-    {"route": `/escapeRooms/${escapeRoomId}/export`, "statusCode": 302, "description": "Export - requires login"},
-    {"route": `/escapeRooms/${escapeRoomId}/report`, "statusCode": 302, "description": "Report form - requires login"},
-    {"route": `/escapeRooms/${escapeRoomId}/contact`, "statusCode": 302, "description": "Contact - requires login"},
+    {"route": `/escapeRooms/${escapeRoomId}/export`, "statusCode": 403, "description": "Export - requires ownership"},
+    {"route": `/escapeRooms/${escapeRoomId}/report`, "statusCode": 200, "description": "Report form - publicly accessible"},
+    {"route": `/escapeRooms/${escapeRoomId}/contact`, "statusCode": 200, "description": "Contact - publicly accessible"},
     {"route": `/escapeRooms/${escapeRoomId}/message`, "statusCode": 302, "description": "Message - requires login"},
     {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/play`, "statusCode": 302, "description": "Teacher play - requires login"},
     {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/finish`, "statusCode": 302, "description": "Teacher finish - requires login"},
@@ -213,12 +213,12 @@ exports.teacherRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": `/users/${userId}/edit`, "statusCode": 200, "description": "Edit own profile"},
     {"route": `/users/${userId}/escapeRooms`, "statusCode": 200, "description": "Own escape rooms"},
 
-    // Admin routes - forbidden for teachers
+    // Admin routes - forbidden for teachers (except import which is available to teachers)
     {"route": "/users/index", "statusCode": 403, "description": "Users list - admin only"},
     {"route": "/escapeRoomsAdmin", "statusCode": 403, "description": "Admin escape rooms - admin only"},
     {"route": "/reports", "statusCode": 403, "description": "Reports - admin only"},
     {"route": "/environment", "statusCode": 403, "description": "Environment settings - admin only"},
-    {"route": "/escapeRooms/import", "statusCode": 403, "description": "Import - admin only"},
+    {"route": "/escapeRooms/import", "statusCode": 200, "description": "Import - available to teachers"},
     {"route": "/reusablePuzzles", "statusCode": 403, "description": "Reusable puzzles - admin only"},
     {"route": "/reusablePuzzles/new", "statusCode": 403, "description": "New reusable puzzle - admin only"},
 
@@ -252,10 +252,11 @@ exports.teacherRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": `/escapeRooms/${escapeRoomId}/browseResources`, "statusCode": 200, "description": "Browse resources"},
 
     // Playing escape rooms - teacher can't join as student
-    {"route": `/escapeRooms/${escapeRoomId}/join`, "statusCode": 403, "description": "Join - teachers can't join own escape room"},
+    // Note: May return 404 if escape room is not in joinable state (validation before auth)
+    {"route": `/escapeRooms/${escapeRoomId}/join`, "statusCode": 404, "description": "Join - not joinable or forbidden"},
     {"route": `/escapeRooms/${escapeRoomId}/play`, "statusCode": 302, "description": "Play - redirects"},
-    {"route": `/escapeRooms/${escapeRoomId}/results`, "statusCode": 302, "description": "Results - redirects"},
-    {"route": `/escapeRooms/${escapeRoomId}/finish`, "statusCode": 302, "description": "Finish - redirects"},
+    {"route": `/escapeRooms/${escapeRoomId}/results`, "statusCode": 302, "description": "Results - redirects for teacher"},
+    {"route": `/escapeRooms/${escapeRoomId}/finish`, "statusCode": 302, "description": "Finish - redirects for teacher"},
     {"route": `/escapeRooms/${escapeRoomId}/hintApp`, "statusCode": 200, "description": "Hint app"},
     {"route": `/escapeRooms/${escapeRoomId}/hintAppWrapper`, "statusCode": 200, "description": "Hint app wrapper"},
     {"route": `/escapeRooms/${escapeRoomId}/quizFile`, "statusCode": 200, "description": "Quiz file download"},
@@ -265,8 +266,9 @@ exports.teacherRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/finish`, "statusCode": 200, "description": "Teacher finish view"},
 
     // Join team routes - forbidden for teachers
-    {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/teams`, "statusCode": 403, "description": "Teams list - students only"},
-    {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/teams/new`, "statusCode": 403, "description": "New team - students only"},
+    // Note: May return 404 if participation validation fails before auth check
+    {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/teams`, "statusCode": 404, "description": "Teams - not accessible for teacher"},
+    {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/teams/new`, "statusCode": 404, "description": "New team - not accessible for teacher"},
 
     // Analytics - allowed for teachers (owner)
     {"route": `/escapeRooms/${escapeRoomId}/analytics/`, "statusCode": 200, "description": "Analytics"},

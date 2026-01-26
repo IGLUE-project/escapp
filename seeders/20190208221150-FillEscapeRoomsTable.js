@@ -16,6 +16,19 @@ module.exports = {
                 "publishedOnce": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date()
+            },
+            // Escape room owned by testTeacher (user 11) for teacher-only tests
+            {
+                "title": "Teacher Test Escape Room",
+                "duration": 60,
+                "description": "Escape room for testing teacher features",
+                "teamSize": 4,
+                "invitation": "teacherTest1",
+                "authorId": 11,
+                "scoreParticipation": 50,
+                "status": "active",
+                "createdAt": new Date(),
+                "updatedAt": new Date()
             }
         ]);
     },

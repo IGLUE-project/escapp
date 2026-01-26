@@ -4,6 +4,7 @@ const arrDates = [
     new Date(),
     new Date(),
     new Date(),
+    new Date(),
     new Date()
 ];
 
@@ -20,6 +21,11 @@ arrDates[2].setMinutes(0);
 arrDates[3].setDate(arrDates[3].getDate() + 1);
 arrDates[3].setHours(11);
 arrDates[3].setMinutes(0);
+
+// Date for escape room 2 turno
+arrDates[4].setDate(arrDates[4].getDate() + 2);
+arrDates[4].setHours(14);
+arrDates[4].setMinutes(0);
 
 module.exports = {
     "up": (queryInterface) => queryInterface.bulkInsert("turnos", [
@@ -55,6 +61,16 @@ module.exports = {
             "date": arrDates[3],
             "status": "pending",
             "place": "Lab",
+            "createdAt": new Date(),
+            "updatedAt": new Date()
+        },
+        // Turno for escape room 2 (owned by testTeacher)
+        {
+            "escapeRoomId": 2,
+            "date": arrDates[4],
+            "startTime": arrDates[4],
+            "status": "pending",
+            "place": "Online",
             "createdAt": new Date(),
             "updatedAt": new Date()
         }
