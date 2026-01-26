@@ -145,8 +145,7 @@ async function updateSceneMaker () {
     // Stylesheets
     const cssFiles = [
         "dist/scene_maker_editor.min.css",
-        "dist/scene_maker_viewer.min.css",
-        "stylesheets/language/es.css"
+        "dist/scene_maker_viewer.min.css"
     ];
 
     const stylesheetsDestDir = path.join(targetPath, "stylesheets");

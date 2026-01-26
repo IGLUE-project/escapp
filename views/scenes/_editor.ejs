@@ -2,17 +2,16 @@
 
 		<!-- Force browser to preload some Editor icons -->
 		<img src="/scene_maker/images/thumbs/text_hover.png" style="display:none"/>
-		<img src="/scene_maker/images/thumbs/image_hover.png" style="display:none"/>
 		<img src="/scene_maker/images/thumbs/object_hover.png" style="display:none"/>
 		<img src="/scene_maker/images/thumbs/video_hover.png" style="display:none"/>
-		<img src="/scene_maker/images/icons/ve_delete_hover.png" style="display:none"/>
 		<img src="/scene_maker/images/icons/delete_content_hover.png" style="display:none"/>
 		<img src="/scene_maker/images/vicons/close.png" style="display:none"/>
 		<img src="/scene_maker/images/vicons/close2.png" style="display:none"/>
 		<img src="/scene_maker/images/vicons/close2_hover.png" style="display:none"/>
 		<img src="/scene_maker/images/icons/slide_add_background_hover.png" style="display:none"/>
 		<img src="/scene_maker/images/libs/jquery.carouFredSel/carousel_sprite.png" style="display:none"/>
-		<img src="/scene_maker/images/slidesthumbs/screen_templateh.png" style="display:none"/>
+		<img src="/scene_maker/images/slidesthumbs/screen_template_4-3_hover.png" style="display:none"/>
+		<img src="/scene_maker/images/slidesthumbs/screen_template_16-9_hover.png" style="display:none"/>
 		<img src="/scene_maker/images/slidesthumbs/view_content_templateh.png" style="display:none"/>
 
 		<!-- Toolbar -->
@@ -22,7 +21,7 @@
 				<ul id="menu" style="display:none">
 					<li class="current">
 						<a class="menu_option_main" href="#">
-							<img id="menuButton" src="/scene_maker/images/toolbar/menu_button.png"/>
+							<div id="menuButton"></div>
 						</a>
 						<ul class="menu_option_main">
 							<li>
@@ -32,7 +31,7 @@
 								</a>
 							</li>
  							<li>
-								<a class="menu_option menu_action" action="onSaveButtonClicked">
+								<a class="menu_option menu_action" action="saveScene">
 									<i class="icon-button icon-save"></i>
 									<span i18n-key="i.Save">Save</span>
 								</a>
@@ -53,6 +52,18 @@
 								<a class="menu_option menu_action" action="addView">
 									<i class="icon-button icon-plus"></i> 
 									<span i18n-key="i.AddView">Add View</span>
+								</a>
+							</li>
+							<li>
+								<a class="menu_option menu_action" action="exportToJSON">
+									<i class="icon-button icon-rotate-360 icon-download-alt"></i> 
+									<span i18n-key="i.Export">Exportar</span>
+								</a>
+							</li>
+							<li>
+								<a class="menu_option menu_action" action="importFromJSON">
+									<i class="icon-button icon-rotate-180 icon-download-alt"></i> 
+									<span i18n-key="i.Import">Importar</span>
 								</a>
 							</li>
 							<li>
@@ -160,12 +171,14 @@
 	</section>
 
 	<div id="hidden_links" style="display: none;">
+		<!-- Hidden link to open scene settings -->
+		<a id="edit_scene_details" href="#scene_details"></a>
 		<!-- Hidden link to open preview -->
 		<a id="preview_action"></a>
 		<!-- Hidden link to open fancybox when adding a view -->
 		<a id="addViewFancybox" href="#thumbcontent"></a>
-		<!-- Hidden link to open scene settings -->
-		<a id="edit_scene_details" href="#scene_details"></a>
+		<!-- Hidden link to open fancybox when importing a scene -->
+		<a id="importSceneFancybox" href="#import_fancybox"></a>
 		<!-- Hidden link for loading fancybox -->
 		<a id="fancyLoad" href="#loading_fancy"></a>
 		<!-- Hidden link to open notification template -->
@@ -244,9 +257,6 @@
 
 	<div style='display:none'>
 		<div id='menuselect' class="menuselect_hide">
-			<!-- <a class="addpicture" href="#picture_fancybox">
-				<div class='thumbicon picthumb' i18n-key="i.Image" title="Image"></div>
-			</a> -->
 			<a class="addobject" href="#object_fancybox">
 				<div class='thumbicon objectthumb' i18n-key="i.Web" title="Web"></div>
 			</a>
@@ -335,7 +345,7 @@
 			<div id='tab_video_from_url_content' class="fancy_tab_content">
 				<div id="box1" class="box1 box1fancy1">
 					<div class="box1_section1">
-						<p class="textfancy"><span i18n-key="i.AddMultimediaURL">Add video or audio URL (YouTube or HTML5)</span></p>
+						<p class="textfancy"><span i18n-key="i.AddMultimediaURL">Add video or audio URL (HTML5 or YouTube)</span></p>
 					</div>
 					<div class="box1_section2">
 						<img id="image_add_url" class="image_add_url" src="/scene_maker/images/icons/url_img.png"/>
@@ -350,6 +360,24 @@
 						<button i18n-key="i.AddContent" type="button" class="button button_addContent">Add Content</button>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Import JSON files -->
+	<div style='display:none'>
+		<div id='import_fancybox'>
+			<div class='fancy_tabs' id='import_fancybox_tabs'>
+				<ul>
+					<li>
+						<a href="#" id="tab_import" class="fancy_tab tabbable" i18n-key="i.Import">Import</a>
+					</li>
+				</ul>
+			</div> 
+			<div id='tab_import_content' class="fancy_tab_content" style='display:none'> 
+				<p class="textfancy" i18n-key="i.ImportText">You can import a scene from a JSON file. If you do so, the current scene will be replaced by the imported one.</p>
+				<input id="import_file_input" type="file" name="file" accept=".json,application/json" />
+				<button id="import_file_button" type="button" class="button previewButton" i18n-key="i.Import">Import</button>
 			</div>
 		</div>
 	</div>
@@ -557,6 +585,10 @@
 			<label i18n-key="i.ActionParamsPuzzleSolution">Puzzle solution:</label>
 			<input type="text" readonly>
 		</div>
+		<div class="settings_element_wrapper actionParamsDelay" style='display:none'>
+			<label i18n-key="i.ActionParamsDelay">Delay:</label>
+			<input type="number" min="0" value="0" step="1">
+		</div>
 	</div>
 
 	<!-- Caption fancybox -->
@@ -605,7 +637,7 @@
 	<!-- Loading fancybox -->
 	<div id='loading_fancy_wrapper' style='display:none'>
 		<div id='loading_fancy' class="loading_fancy">
-			<img class="loading_fancy_img" src='/scene_maker/images/lightbox-ico-loading.gif'></img>
+			<img class="loading_fancy_img" src='/scene_maker/images/icon_loader.gif'></img>
 		</div>
 	</div>
 
