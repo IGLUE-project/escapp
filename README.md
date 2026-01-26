@@ -15,9 +15,9 @@ This software is co-funded by the European Union through the <a href="https://ig
 
 ## 📦 Documentation for developers
 
-Check out the [installation guide](https://github.com/IGLUE-project/escapp/wiki/Installation) to learn how to deploy your own instance of Escapp.
+Check out the [installation and deployment guide](https://github.com/IGLUE-project/escapp/wiki/Installation) to learn how to set up Escapp and deploy your own instance.
 
-Check out the [API documentation](https://github.com/IGLUE-project/escapp/wiki/API-Documentation) to learn how to use Escapp's API to develop your own puzzles connected with Escapp.
+Check out the [API documentation](https://github.com/IGLUE-project/escapp/wiki/API-Documentation) to learn how to use Escapp's API to connect your own resources with Escapp.
 
 <br> 
 
