@@ -1,7 +1,7 @@
 # Escapp
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Escapp is an open-source web platform for creating, conducting, and sharing educational escape rooms. The source code is publicly available under a free software licence (GNU General Public License v3.0). The last releases can be seen [here]([https://github.com/IGLUE-project/escapp/releases)). More detailed information about this software is available in the [Wiki]([https://github.com/IGLUE-project/escapp/blob/master/public/pdf/Escapp_manual_EN.pdf](https://github.com/IGLUE-project/escapp/wiki)). 
+Escapp is an open-source web platform for creating, conducting, and sharing educational escape rooms. Its source code is publicly available under a free software licence (GNU General Public License v3.0). The last releases can be found [here](https://github.com/IGLUE-project/escapp/releases). More detailed information about this software is available in the [wiki](https://github.com/IGLUE-project/escapp/wiki). 
 
 <br>  
   
