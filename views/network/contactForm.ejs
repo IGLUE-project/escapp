@@ -3,8 +3,10 @@
 <div class="main">
     <div class="breadcrumbs-container">
         <div class="breadcrumbs">
+            <%if(session.user && !session.user.anonymized){%>
             <a href="/escapeRooms"><%=i18n.common.my%></a>
             <span class="material-icons">chevron_right</span>
+            <%}%>
             <a href="/escapeRooms/<%=escapeRoomId%>"><%=title%></a> 
             <span class="material-icons">chevron_right</span>
             <span><%=i18n.network.contactForm.title%></span>

@@ -1459,13 +1459,13 @@
         "markAsRead": "Označi kao pročitano",
         "delete": "Obriši",
         "name": "Vaše ime",
-        "namePlaceholder": "Unesite svoje ime",
-        "email": "Vaša e-pošta",
-        "emailPlaceholder": "Unesite svoju e-poštu",
+        "namePlaceholder": "Unesite vaše ime ",
+        "email": "Vaš email",
+        "emailPlaceholder": "Unesite vaš email",
         "optional": "opciono",
         "captchaLabel": "Rešite ovo da biste potvrdili da ste čovek",
-        "captchaError": "Pogrešan odgovor captche. Molimo vas pokušajte ponovo.",
-        "commentsPlaceholder": "Navedite dodatne detalje o vašoj prijavi...",
+        "captchaError": "Netačan odgovor na captch-u. Molimo pokušajte ponovo..",
+        "commentsPlaceholder": "Navedite dodatne detalje o vašem izveštaju...",
         "reasons": {
           "inappropriateContent": "Neprikladan sadržaj za ciljnu publiku.",
           "copyrightViolation": "Kršenje autorskih prava.",
@@ -1484,7 +1484,7 @@
           "Futuristic": "Futuristički",
           "Realistic": "Realističan",
           "Tablet": "Tablet",
-          "Framed": "U okviru"
+          "Framed": "Frejmovan"
         },
         "actionAfterSolve": "Akcija nakon rešavanja",
         "enabled": "Omogućeno",
@@ -1667,7 +1667,7 @@
       "Clock": {
         "name": "Sat",
         "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da postave određeno vreme na satu.",
-        "SecondHand": "Sekunda",
+        "SecondHand": "Kazaljka za sekunde",
         "InitialTime": "Početno vreme"
       },
       "Jigsaw": {
@@ -1689,7 +1689,7 @@
         "username": "Korisničko ime",
         "passwordPlaceholder": "Plejsholder lozinke",
         "avatar": "Avatar",
-        "helpMessage": "Pomoćna poruka"
+        "helpMessage":  "Poruka za pomoć"
       },
       "Video": {
         "name": "Video",
@@ -1932,14 +1932,14 @@
             "registrationSettings": "Podešavanja registracije",
             "disableChoosingRole": "Onemogući izbor uloge",
             "enableTeacherPersonalInfo": "Omogući lične podatke nastavnika",
-            "emailValidationSettings": "Podešavanja validacije e-pošte",
-            "emailValidationStudent": "Validacija e-pošte za učenike",
-            "emailValidationTeacher": "Validacija e-pošte za nastavnike",
+            "emailValidationSettings": "Podešavanja validacije email-a",
+            "emailValidationStudent": "Validacija email-a za učenike",
+            "emailValidationTeacher": "Validacija email-a za nastavnike",
             "useEnvDefault": "Koristi podrazumevanu vrednost iz .env",
             "true": "Tačno",
             "false": "Netačno",
             "networkUrls": "URL-ovi mreže",
-            "urlsHelp": "URL-ovi odvojeni sa točka-zareza: https://url:port/;https:...",
+            "urlsHelp": "URL-ovi odvojeni tačka-zarezom: https://url:port/;https:...",
             "currentUrlsFromDb": "Trenutni URL-ovi iz baze podataka",
             "defaultUrlsFromConfig": "Podrazumevani URL-ovi iz konfiguracionog fajla",
             "copyDefaultUrls": "Kopiraj podrazumevane URL-ove u polje za unos",
@@ -1957,7 +1957,7 @@
             "all": "Sve",
             "verified": "Verifikovano",
             "notVerified": "Nije verifikovano",
-            "needsReverification": "Treba ponovna verifikacija"
+            "needsReverification": "Potrebna ponovna verifikacija"
         }
     },
     "network": {
@@ -2004,7 +2004,7 @@
         "contact": {
             "text1": "Poruka od",
             "text2": "vezano za vašu escape sobu: ",
-            "text3": "kontakt e-pošta: ",
+            "text3": "kontakt email: ",
             "text4": "u Escapp-u.",
             "subject": "Nova poruka o vašoj escape sobi"
         },
@@ -2015,8 +2015,8 @@
             "message": "Poruka",
             "name": "Vaše ime",
             "namePlaceholder": "Unesite svoje ime",
-            "email": "Vaša e-pošta",
-            "emailPlaceholder": "Unesite svoju e-mail adresu",
+            "email": "Vaš email",
+            "emailPlaceholder": "Unesite svoju email adresu",
             "optional": "opciono",
             "captchaLabel": "Molimo vas rešite ovaj jednostavni matematički problem da biste potvrdili da ste čovek",
             "captchaError": "Pogrešan odgovor captche. Molimo vas pokušajte ponovo.",

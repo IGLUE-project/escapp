@@ -3847,7 +3847,17 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   position: relative;
   margin: 0;
   color: #9292B0;
+  font-family: "Gugi" !important;
+}
+#mainSection #mainHeader .langs.legal, #mainSection #mainHeader .legal.legal, #mainSection #mainFooter .langs.legal, #mainSection #mainFooter .legal.legal {
   margin-bottom: 5px;
+}
+#mainSection #mainHeader .langs .active, #mainSection #mainHeader .legal .active, #mainSection #mainFooter .langs .active, #mainSection #mainFooter .legal .active {
+  color: white !important;
+}
+#mainSection #mainHeader .langs a:hover, #mainSection #mainHeader .legal a:hover, #mainSection #mainFooter .langs a:hover, #mainSection #mainFooter .legal a:hover {
+  color: white;
+  font-weight: bold;
 }
 #mainSection #mainHeader {
   height: 50px;
@@ -4333,21 +4343,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: white;
   font-weight: bold;
 }
-.portada .contenedor .loginRight .langs {
+.portada .contenedor .langs {
   position: absolute;
   top: 0px;
   right: 0px;
   text-align: right;
   justify-content: right;
   padding-right: 2%;
-  color: #656683;
-}
-.portada .contenedor .loginRight .langs .active {
-  color: white !important;
-}
-.portada .contenedor .loginRight .langs a:hover {
-  color: white;
-  font-weight: bold;
 }
 .portada .contenedor #imagenPortada {
   width: auto;

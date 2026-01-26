@@ -160,7 +160,7 @@
                 return;
             }
             
-            const href = escapeRoom.url ?  ("/network/" + escapeRoom.id + "/preview?url=" + escapeRoom.url) : "../escapeRooms/" + escapeRoom.id;
+            const href = escapeRoom.url ?  ("/network/preview?url=" + escapeRoom.url + "&escapeRoomId=" + escapeRoom.id) : "../escapeRooms/" + escapeRoom.id;
             const imageURL =  escapeRoom.attachment ? ((escapeRoom.url ? escapeRoom.url : "") + "/escapeRooms/"+escapeRoom.id +"/thumbnail") : `/images/puzzle${getColorForEscapeRoomThumbnail(escapeRoom.id)}.png`;
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
@@ -321,7 +321,7 @@
 
         resultsToDraw = jsonResults;
         jsonResults.forEach((escapeRoom, i) => {
-            const href = escapeRoom.url ?  ("/network/" + escapeRoom.id + "/preview?url=" + escapeRoom.url) : "../escapeRooms/" + escapeRoom.id;
+            const href = escapeRoom.url ?  ("/network/preview?url=" + escapeRoom.url + "&escapeRoomId=" + escapeRoom.id) : "../escapeRooms/" + escapeRoom.id;
             const imageURL =  escapeRoom.attachment ? ((escapeRoom.url ? escapeRoom.url : "") + "/escapeRooms/"+escapeRoom.id +"/thumbnail") : `/images/puzzle${getColorForEscapeRoomThumbnail(escapeRoom.id)}.png`;
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });

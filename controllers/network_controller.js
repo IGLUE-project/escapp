@@ -166,13 +166,12 @@ exports.sendContactEmail = async (req, res, next) => {
 
         // Use provided contact info or fall back to user data
         const senderName = contactName ||  "Anonymous";
-        const senderEmail = contactEmail | "No email provided";
-
-        const str = await renderEJS("views/emails/contact.ejs", {i18n, "user": senderName, "message": text, "userEmail": senderEmail, escapeRoomTitle }, {});
-
+        const senderEmail = contactEmail || "No email provided";
+        
+        const str =  await renderEJS("views/emails/contact.ejs", {i18n, "user": senderName, "message": text, "userEmail": senderEmail, escapeRoomTitle }, {});
         await mailer.sendEmail(author.username, "Escapp: " + i18n.network.contact.subject, str, str);
         req.flash("success", localI18n.network.contactForm.success);
-        res.redirect("/");
+        res.redirect("/escapeRooms/"+req.escapeRoom.id);
     } catch (error) {
         console.error(error);
         next(error);
@@ -190,13 +189,11 @@ exports.getPreviewData = async (req, res) => {
     }
 };
 
-// GET /network/:escapeRoomId/preview?url=...&id=...
+// GET /network/preview?url=...&escapeRoomId=...
 exports.servePreviewRender = async (req, res, next) => {
     try {
-        const escapeRoomId = req.params.nescapeRoomId
-        console.log(`${req.query.url}/network/${escapeRoomId}/json`)
-
-        const data = await tryFetch(`${req.query.url}/network/${escapeRoomId}/json`);
+        const {url, escapeRoomId} = req.query;
+        const data = await tryFetch(`${url}/network/${escapeRoomId}/json`);
         if (!data || !data.ok) {
             throw new Error("Failed to fetch preview data");
         }
@@ -205,7 +202,7 @@ exports.servePreviewRender = async (req, res, next) => {
         const escapeRoom = await models.escapeRoom.build(escapeRoomData);
         escapeRoom.author = await models.user.build(escapeRoomData.author);
 
-        return res.render("escapeRooms/show", {"escapeRoom":  escapeRoom, "user": req.session.user, "isParticipant": false, fromNetwork: true, networkUrl: req.query.url, referer: req.get('referer')});
+        return res.render("escapeRooms/show", {"escapeRoom":  escapeRoom, "user": req.session.user, "isParticipant": false, fromNetwork: true, networkUrl: url, referer: req.get('referer')});
 
     } catch (error) {
         console.error("Error fetching preview data:", error);
@@ -217,18 +214,17 @@ exports.servePreviewRender = async (req, res, next) => {
 exports.importFromNetwork = async (req, res, next) => {
 
     try {
-    const { url } = req.query;
-        const { nescapeRoomId } = req.params;
+    const { url, escapeRoomId } = req.query;
 
         if (!url) throw new Error("No url in query params");
-        if (!nescapeRoomId) throw new Error("No escape room id");
-        const urlFetch = `${url}/escapeRooms/${nescapeRoomId}/export`;
+        if (!escapeRoomId) throw new Error("No escape room id");
+        const urlFetch = `${url}/escapeRooms/${escapeRoomId}/export`;
         const exportRes = await fetch(urlFetch);
         if (!exportRes.ok) throw new Error("Fail to fetch");
         const arrayBuffer = await exportRes.arrayBuffer();
         const zipBuffer = Buffer.from(arrayBuffer);
 
-        const tmpPath = path.join(os.tmpdir(), `escapeRoom-${nescapeRoomId}-${crypto.randomUUID()}.zip`);
+        const tmpPath = path.join(os.tmpdir(), `escapeRoom-${escapeRoomId}-${crypto.randomUUID()}.zip`);
         await fs.writeFile(tmpPath, zipBuffer);
         req.tmpPath = tmpPath;
         next();
