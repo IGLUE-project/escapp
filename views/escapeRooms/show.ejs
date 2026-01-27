@@ -1,19 +1,20 @@
 <%- include ("../partials/_header.ejs") %>
 
 <div role="main" class="main showPlayer preview">
-	 <% if (user && !user.anonymized) { %>
+	
     <div class="breadcrumbs-container">
         <div class="breadcrumbs">
             <%if (locals.fromNetwork){%>
 			    <a href="<%=locals.referer? referer : '/network/search'%>"><%=i18n.network.Network%></a>
-            <%}else{%>
+            <%} else if (user && !user.anonymized) { %>
     			<a href="/escapeRooms"><%=i18n.common.escapeRooms%></a>            
             <%}%>
 				<span class="material-icons">chevron_right</span>
                 <span><%=escapeRoom.title%></span>
+            
         </div>
 	</div>
-    <% } %>
+    
 
     <%var isCollaborator = (user && escapeRoom.userCoAuthor?.find(u => u.id === user.id)) %>
     <%var isUnconfirmedCollaborator = (isCollaborator && !isCollaborator.coAuthors.confirmed) %>
@@ -130,9 +131,13 @@
     <div class="button-share">
         <% if (locals.fromNetwork) {%>
         <div class="network-play">
-            <p class="text-center"><%=i18n.network.hostedAt%>
-                <a href="<%=locals.networkUrl%>" target="_blank"><%=locals.networkUrl%></a>.
-                <%=i18n.network.cliclToPlay%></p>
+            <p class="text-center"><%=i18n.network.hostedAt%>   
+                    <%if(locals.networkUrl){%>
+                        <a href="<%=locals.networkUrl%>" target="_blank"> <%=locals.networkUrl%></a>
+                    <%} else {%>
+                        <%= i18n.network.currentInstance %>
+                    <%}%>
+               </p>
             <a href="<%=locals.networkUrl%>/escapeRooms/<%=escapeRoom.id%>" target="_blank">
                 <button class="save acceptButton rounded" type="submit">
                     <%=i18n.network.view%>
@@ -177,20 +182,7 @@
                 <% } %>
             <% } %>
 
-            <%if(!user.isStudent && !isUnconfirmedCollaborator){%>
-                <span style="display: inline-block;position: relative;">
-                    <button class="rounded cloneButton" title="<%=i18n.showTeacher.actionList.clone%>" onclick="overlayTrigger('clone-<%=escapeRoom.id%>')">
-                        <%=i18n.showTeacher.actionList.clone%>
-                    </button>
-                    <div class="overlay-trigger" data-id="clone-<%=escapeRoom.id%>">
-                        <form method="POST" action='<%=locals.fromNetwork ? (locals.networkUrl + "/escapeRooms/" + escapeRoom.id + "/import"):"/escapeRooms/" + escapeRoom.id + "/clone?_method=PUT"%>' >
-                            <p><%=i18n.escapeRoom.general.areYouSureClone%></p>
-                            <button class="deleteButton" type="button" onclick="overlayTrigger('clone-<%=escapeRoom.id%>', true)"><%=i18n.common.cancel%></button>
-                            <button class="acceptButton" type="submit"><%=i18n.common.accept%></button>
-                        </form>
-                    </div>
-                </span >
-            <%}%>
+           
         
         <%} else { %>
             <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.play%></button>

@@ -1969,8 +1969,9 @@
         "conductSearch": "Izvršite pretragu",
         "clickToPlay": "Kliknite na dugme ispod da biste igrali na njihovoj stranici:",
         "clickToClone": "...ili kliknite na dugme ispod da biste je uvezli u vaš profil i koristili je kao nastavnik",
+        "currentInstance": "trenutna Escapp instanca",
         "view": "poseti",
-        "hostedAt": "Ova escape soba je hostovana na:",
+        "hostedAt": "Ova escape soba je hostovana na",
         "filters": {
             "Filters": "Filteri",
             "any": "Bilo koji",
@@ -1995,7 +1996,9 @@
                 "filter":"Format",
                 "online": "Virtuelno",
                 "hybrid": "Hibridno"
-            }
+            },
+            "license": "Licenca",
+            "instance": "Escapp URL"
         },
         "search": {
             "searchButton": "pretraga",

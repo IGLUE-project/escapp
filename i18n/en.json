@@ -1969,8 +1969,9 @@
         "conductSearch": "Conduct a search",
         "clickToPlay": "Click on the button below to play in their site:",
         "clickToClone": "...or click on the button below to import it to your profile and use it as a teacher",
+        "currentInstance": "the current Escapp instance",
         "view": "visit",
-        "hostedAt": "This escape room is hosted at:",
+        "hostedAt": "This escape room is hosted at",
         "filters": {
             "Filters": "Filters",
             "any": "Any",
@@ -1995,7 +1996,10 @@
                 "filter":"Format",
                 "online": "Online",
                 "hybrid": "Hybrid"
-            }
+            },
+            "license": "License",
+            "instance": "Escapp instance"
+            
         },
         "search": {
             "searchButton": "search",

@@ -1739,8 +1739,9 @@
         "conductSearch": "Realize una busqueda",
         "clickToPlay": "Haz clic en el botón de abajo para jugar en su sitio:",
         "clickToClone": "...o haz clic en el botón de abajo para importar la escape room a tu perfil y usarla como profe",
+        "currentInstance": "la instancia actual de Escapp",
         "view": "visitar",
-        "hostedAt": "Esta escape room está alojada en:",
+        "hostedAt": "Esta escape room está alojada en",
         "filters": {
             "Filters": "Filtros",
             "any": "Cualquiera",
@@ -1765,7 +1766,10 @@
                 "filter":"Formato",
                 "online": "Online",
                 "hybrid": "Híbrido"
-            }
+            },
+            "license": "Licencia",
+            "instance": "Instancia de Escapp"
+
         },
         "search": {
             "searchButton": "buscar",

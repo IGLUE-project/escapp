@@ -77,6 +77,26 @@
                         <option value="hybrid"><%=i18n.network.filters.format.hybrid%></option>
                     </select>
                 </div>
+                 <div class="flex-column item">
+                    <label class="label"> <%=i18n.network.filters.license%></label>
+                    <select id="license">
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="CC BY"> CC BY </option>
+                        <option value="CC BY-SA"> CC BY-SA </option>
+                        <option value="CC BY-NC"> CC BY-NC </option>
+                        <option value="CC BY-NC-SA"> CC BY-NC-SA </option>
+                        <option value="CC0"> CC0 </option>
+                    </select>
+                </div>
+                 <div class="flex-column item">
+                    <label class="label"> <%=i18n.network.filters.instance%></label>
+                    <select id="instance">
+                        <option value=""><%=i18n.network.filters.any%></option>
+                        <% (locals.instances || []).forEach(function(url) { %>
+                            <option value="<%=url%>"><%= url.replace(/^https?:\/\//, '') %></option>
+                        <% }); %>
+                    </select>
+                </div>
 
             </div>
         </div>
@@ -86,8 +106,13 @@
             </div>
         </div>
     </div>
-</div>
 
+<%- include ("../partials/_footer.ejs") %>
+<br/>
+<br/>
+<br/>
+<br/>
+</div>
 <script src="/js/vendor/jquery-1.12.4.min.js"></script>
 <script src="/js/vendor/jquery-ui.min.js"></script>
 <script>
@@ -159,8 +184,7 @@
             if(isEscapeRoomFilteredOut(escapeRoom)){
                 return;
             }
-            
-            const href = escapeRoom.url ?  ("/network/preview?url=" + escapeRoom.url + "&escapeRoomId=" + escapeRoom.id) : "../escapeRooms/" + escapeRoom.id;
+            const href =  ("/network/preview?url=" +  (escapeRoom.url || "") + "&escapeRoomId=" + escapeRoom.id) 
             const imageURL =  escapeRoom.attachment ? ((escapeRoom.url ? escapeRoom.url : "") + "/escapeRooms/"+escapeRoom.id +"/thumbnail") : `/images/puzzle${getColorForEscapeRoomThumbnail(escapeRoom.id)}.png`;
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
@@ -175,6 +199,7 @@
     };
 
     const isEscapeRoomFilteredOut = (escapeRoom) =>{
+
         let filteredOut = false;
         for(let tag of tags){
             if(tag.condition === "before"){
@@ -198,6 +223,16 @@
                 }
             } else if(tag.condition === "format"){
                 if(escapeRoom.format !== tag.value){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "license"){
+                if(escapeRoom.license !== tag.value){
+                    filteredOut = true;
+                    break;
+                }
+            } else if(tag.condition === "instance"){
+                if(escapeRoom.url !== tag.value){
                     filteredOut = true;
                     break;
                 }
@@ -257,22 +292,31 @@
         const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
         modifyOrInsertTag(colorTags[4], "area",event.target.value,   selected, event.target);
     });
-
+    const instance = document.getElementById("instance");
+    instance.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag(colorTags[5], "instance",event.target.value,   selected, event.target);
+    });
+    const license = document.getElementById("license");
+    license.addEventListener("change", (event) => {
+        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        modifyOrInsertTag(colorTags[6], "license", event.target.value,   selected, event.target);
+    });    
     const duration = document.getElementById("duration");
     duration.addEventListener("change", (event) => {
-        modifyOrInsertTag(colorTags[5], "duration",event.target.value,   "<" + event.target.value + " min", event.target);
+        modifyOrInsertTag(colorTags[7], "duration", event.target.value,   "<" + event.target.value + " min", event.target);
     });
 
     const participation = document.getElementById("participation");
     participation.addEventListener("change", (event) => {
         const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
-        modifyOrInsertTag(colorTags[6], "participation",event.target.value,   selected, event.target);
+        modifyOrInsertTag(colorTags[1], "participation", event.target.value,   selected, event.target);
     });
 
     const level  = document.getElementById("level");
     level.addEventListener("change", (event) => {
         const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
-        modifyOrInsertTag(colorTags[7], "level",event.target.value,   selected, event.target);
+        modifyOrInsertTag(colorTags[0], "level", event.target.value,   selected, event.target);
     });
 
     const getColorForEscapeRoomThumbnail = function (id) {
@@ -321,7 +365,7 @@
 
         resultsToDraw = jsonResults;
         jsonResults.forEach((escapeRoom, i) => {
-            const href = escapeRoom.url ?  ("/network/preview?url=" + escapeRoom.url + "&escapeRoomId=" + escapeRoom.id) : "../escapeRooms/" + escapeRoom.id;
+            const href =  ("/network/preview?url=" +  (escapeRoom.url || "") + "&escapeRoomId=" + escapeRoom.id) 
             const imageURL =  escapeRoom.attachment ? ((escapeRoom.url ? escapeRoom.url : "") + "/escapeRooms/"+escapeRoom.id +"/thumbnail") : `/images/puzzle${getColorForEscapeRoomThumbnail(escapeRoom.id)}.png`;
             parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
         });
@@ -362,3 +406,4 @@
 
 
 </script>
+

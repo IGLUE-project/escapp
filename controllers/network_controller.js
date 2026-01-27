@@ -3,15 +3,15 @@ const {models} = require("../models");
 const {fuzzy} = require("fast-fuzzy");
 const urlsDefault = JSON.parse(process.env.NETWORK_URLS || "[]") || [];
 const mailer = require("../helpers/mailer");
-const {renderEJS} = require("../helpers/utils");
+const {renderEJS, getHostname} = require("../helpers/utils");
 const path = require("path");
 const crypto = require("crypto");
 const os = require("os");
 const fs = require("fs/promises");
 
-const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level) => {
+const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level, license) => {
     try {
-        const queryToExecute = queries.escapeRoom.text(before, after, lang, participation, area, duration, format, level);
+        const queryToExecute = queries.escapeRoom.text(before, after, lang, participation, area, duration, format, level, license);
         
         let results = await models.escapeRoom.findAll(queryToExecute);
         // Fuzzy finding of escaperooms
@@ -40,8 +40,8 @@ const getResultsFromInstance = async (value, before, after, lang, page = 1, limi
 
 exports.searchInInstance = async (req, res, next) => { // Busqueda local
     try {
-        const {query, before, after, lang, page, limit, participation, area, duration, format, level} = req.query || {};
-        const results = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);
+        const {query, before, after, lang, page, limit, participation, area, duration, format, level, license} = req.query || {};
+        const results = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level, license);
 
         res.json(results);
     } catch (error) {
@@ -50,8 +50,15 @@ exports.searchInInstance = async (req, res, next) => { // Busqueda local
     }
 };
 
-exports.renderSearch = (req, res) => {
-    res.render("network/search", {"user": req.user});
+exports.renderSearch = async (req, res) => {
+    let instances = [];
+    try {
+        const dbUrls = await models.adminConfig.findOne({"attributes": ["urls"], "where": {"id": 1}});
+        instances = JSON.parse(dbUrls.urls);
+    } catch (error) {
+        instances = urlsDefault;
+    }
+    res.render("network/search", {"user": req.user, instances});
 };
 
 
@@ -100,7 +107,7 @@ const tryFetch = async (url) => { // El fetch falla si no hay nadie, wrapper
 };
 
 exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira querys contra el resto de instancias y agrega
-    const {query, before, after, lang, page, limit, participation, area, duration, format, level} = req.query;
+    const {query, before, after, lang, page, limit, participation, area, duration, format, level, license, instance} = req.query;
     const aggregated = [];
     const promises = [];
     let localR = [];
@@ -111,10 +118,10 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
     } catch (error) {
         console.warn("No valid URLs in DB, using default URLs.");
     }
-    const urls = jsonUrlsDB || urlsDefault;
+    const urls = instance ? [instance] : (jsonUrlsDB || urlsDefault);
 
     try {
-        localR = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level);
+        localR = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level, license);
     } catch (error) {
         console.error("Error getting local results: ", error);
         localR = [{}];
@@ -193,7 +200,8 @@ exports.getPreviewData = async (req, res) => {
 exports.servePreviewRender = async (req, res, next) => {
     try {
         const {url, escapeRoomId} = req.query;
-        const data = await tryFetch(`${url}/network/${escapeRoomId}/json`);
+        const hostname = getHostname();
+        const data = await tryFetch(`${url || hostname}/network/${escapeRoomId}/json`);
         if (!data || !data.ok) {
             throw new Error("Failed to fetch preview data");
         }
