@@ -200,7 +200,7 @@ exports.getPreviewData = async (req, res) => {
 exports.servePreviewRender = async (req, res, next) => {
     try {
         const {url, escapeRoomId} = req.query;
-        const hostname = getHostname();
+        const hostname = getHostname(req);
         const data = await tryFetch(`${url || hostname}/network/${escapeRoomId}/json`);
         if (!data || !data.ok) {
             throw new Error("Failed to fetch preview data");
