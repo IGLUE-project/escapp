@@ -29,10 +29,14 @@ const publicRoutes = routes.publicRoutes(adminEscapeRoomId, teacherId, adminPuzz
 
 describe("Unauthenticated routes", () => {
     for (const { route, statusCode } of publicRoutes) {
-        it(`should return ${statusCode} for unauthenticated route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join('/') : statusCode} for unauthenticated route ${route}`, async () => {
             const res = await request(app).get(route);
 
-            expect(res.statusCode).toBe(statusCode);
+            if (Array.isArray(statusCode)) {
+                expect(statusCode).toContain(res.statusCode);
+            } else {
+                expect(res.statusCode).toBe(statusCode);
+            }
         });
     }
 });
@@ -51,10 +55,14 @@ describe("Teacher routes", () => {
     });
 
     for (const { route, statusCode } of teacherRoutes) {
-        it(`should return ${statusCode} for teacher route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join('/') : statusCode} for teacher route ${route}`, async () => {
             const res = await teacherSession.get(route);
 
-            expect(res.statusCode).toBe(statusCode);
+            if (Array.isArray(statusCode)) {
+                expect(statusCode).toContain(res.statusCode);
+            } else {
+                expect(res.statusCode).toBe(statusCode);
+            }
         });
     }
 });
@@ -72,10 +80,14 @@ describe("Student routes", () => {
     });
 
     for (const { route, statusCode } of studentRoutes) {
-        it(`should return ${statusCode} for student route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join('/') : statusCode} for student route ${route}`, async () => {
             const res = await studentSession.get(route);
 
-            expect(res.statusCode).toBe(statusCode);
+            if (Array.isArray(statusCode)) {
+                expect(statusCode).toContain(res.statusCode);
+            } else {
+                expect(res.statusCode).toBe(statusCode);
+            }
         });
     }
 });

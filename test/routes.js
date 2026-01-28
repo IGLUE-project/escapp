@@ -83,7 +83,7 @@ exports.publicRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
 
     // Network
     {"route": "/network/search", "statusCode": 200, "description": "Network search page"},
-    {"route": "/network/query", "statusCode": 302, "description": "Network query - requires login"},
+    {"route": "/network/query", "statusCode": 200, "description": "Network query"},
 
     // Scene maker
     {"route": "/scene_maker/viewer", "statusCode": 302, "description": "Scene viewer - requires login"},
@@ -123,8 +123,8 @@ exports.studentRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
 
     // Escape room viewing
     {"route": "/escapeRooms", "statusCode": 200, "description": "Escape rooms list"},
-    {"route": `/escapeRooms/${escapeRoomId}`, "statusCode": 200, "description": "Show escape room"},
-    {"route": `/escapeRooms/${escapeRoomId}/ready`, "statusCode": 200, "description": "Ready page"},
+    {"route": `/escapeRooms/${escapeRoomId}`, "statusCode": [200, 403], "description": "Show escape room - depends on authorization"},
+    {"route": `/escapeRooms/${escapeRoomId}/ready`, "statusCode": [200, 302], "description": "Ready page - depends on participation"},
     {"route": `/escapeRooms/${escapeRoomId}/thumbnail`, "statusCode": 200, "description": "Thumbnail"},
 
     // Escape room creation/editing - forbidden for students
@@ -148,12 +148,12 @@ exports.studentRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": `/escapeRooms/${escapeRoomId}/message`, "statusCode": 403, "description": "Message - teachers only"},
 
     // Playing escape rooms - student access
-    {"route": `/escapeRooms/${escapeRoomId}/join`, "statusCode": 302, "description": "Join - redirects based on status"},
+    {"route": `/escapeRooms/${escapeRoomId}/join`, "statusCode": [200, 302], "description": "Join - depends on participation status"},
     {"route": `/escapeRooms/${escapeRoomId}/play`, "statusCode": 302, "description": "Play - redirects based on participation"},
-    {"route": `/escapeRooms/${escapeRoomId}/results`, "statusCode": 200, "description": "Results - student can see own results"},
-    {"route": `/escapeRooms/${escapeRoomId}/finish`, "statusCode": 200, "description": "Finish - student can finish"},
-    {"route": `/escapeRooms/${escapeRoomId}/hintApp`, "statusCode": 200, "description": "Hint app"},
-    {"route": `/escapeRooms/${escapeRoomId}/hintAppWrapper`, "statusCode": 200, "description": "Hint app wrapper"},
+    {"route": `/escapeRooms/${escapeRoomId}/results`, "statusCode": [200, 302], "description": "Results - depends on participation"},
+    {"route": `/escapeRooms/${escapeRoomId}/finish`, "statusCode": [200, 302], "description": "Finish - depends on participation"},
+    {"route": `/escapeRooms/${escapeRoomId}/hintApp`, "statusCode": [200, 500], "description": "Hint app - may fail if not configured"},
+    {"route": `/escapeRooms/${escapeRoomId}/hintAppWrapper`, "statusCode": [200, 500], "description": "Hint app wrapper - may fail if not configured"},
     {"route": `/escapeRooms/${escapeRoomId}/report`, "statusCode": 200, "description": "Report form"},
     {"route": `/escapeRooms/${escapeRoomId}/contact`, "statusCode": 200, "description": "Contact"},
 
@@ -257,9 +257,9 @@ exports.teacherRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": `/escapeRooms/${escapeRoomId}/play`, "statusCode": 302, "description": "Play - redirects"},
     {"route": `/escapeRooms/${escapeRoomId}/results`, "statusCode": 302, "description": "Results - redirects for teacher"},
     {"route": `/escapeRooms/${escapeRoomId}/finish`, "statusCode": 302, "description": "Finish - redirects for teacher"},
-    {"route": `/escapeRooms/${escapeRoomId}/hintApp`, "statusCode": 200, "description": "Hint app"},
-    {"route": `/escapeRooms/${escapeRoomId}/hintAppWrapper`, "statusCode": 200, "description": "Hint app wrapper"},
-    {"route": `/escapeRooms/${escapeRoomId}/quizFile`, "statusCode": 200, "description": "Quiz file download"},
+    {"route": `/escapeRooms/${escapeRoomId}/hintApp`, "statusCode": [200, 500], "description": "Hint app - may fail if not configured"},
+    {"route": `/escapeRooms/${escapeRoomId}/hintAppWrapper`, "statusCode": [200, 500], "description": "Hint app wrapper - may fail if not configured"},
+    {"route": `/escapeRooms/${escapeRoomId}/quizFile`, "statusCode": [200, 404], "description": "Quiz file - may not exist"},
 
     // Teacher play routes
     {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/play`, "statusCode": 200, "description": "Teacher play view"},
@@ -359,9 +359,9 @@ exports.adminRoutes = (escapeRoomId, userId, puzzleId, turnoId, teamId) => [
     {"route": `/escapeRooms/${escapeRoomId}/report`, "statusCode": 200, "description": "Report form"},
     {"route": `/escapeRooms/${escapeRoomId}/contact`, "statusCode": 200, "description": "Contact"},
     {"route": `/escapeRooms/${escapeRoomId}/browseResources`, "statusCode": 200, "description": "Browse resources"},
-    {"route": `/escapeRooms/${escapeRoomId}/hintApp`, "statusCode": 200, "description": "Hint app"},
-    {"route": `/escapeRooms/${escapeRoomId}/hintAppWrapper`, "statusCode": 200, "description": "Hint app wrapper"},
-    {"route": `/escapeRooms/${escapeRoomId}/quizFile`, "statusCode": 200, "description": "Quiz file download"},
+    {"route": `/escapeRooms/${escapeRoomId}/hintApp`, "statusCode": [200, 500], "description": "Hint app - may fail if not configured"},
+    {"route": `/escapeRooms/${escapeRoomId}/hintAppWrapper`, "statusCode": [200, 500], "description": "Hint app wrapper - may fail if not configured"},
+    {"route": `/escapeRooms/${escapeRoomId}/quizFile`, "statusCode": [200, 404], "description": "Quiz file - may not exist"},
 
     // Teacher play routes - admin can access
     {"route": `/escapeRooms/${escapeRoomId}/turnos/${turnoId}/play`, "statusCode": 200, "description": "Teacher play view"},

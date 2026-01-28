@@ -92,7 +92,7 @@ exports.generateReport = async (req, res) => {
         reason,
         comments: msg,
         "escapeRoomId": escapeRoom.id,
-        reportAuthor: user
+        reportAuthor: user ? user.id : null
     });
 
     try {
