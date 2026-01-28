@@ -775,6 +775,10 @@ exports.addCollaborators = async (req, res, next) => {
                 req.flash("error", i18n.common.flash.errorUserNotExists);
                 res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
             }
+        } else {
+            await transaction.rollback();
+            req.flash("error", i18n.common.flash.errorUserNotExists);
+            res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
         }
     } catch (error) {
         await transaction.rollback();

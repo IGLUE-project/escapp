@@ -49,12 +49,22 @@ exports.create = async (req, res, next) => {
     const {redir} = req.query;
     const {i18n} = res.locals;
 
+    if (!password) {
+        req.flash("error", i18n.common.validationError);
+        res.render("index", {
+            "user": req.body,
+            "register": true,
+            redir
+        });
+        return;
+    }
+
     if (password !== confirm_password) {
         req.flash("error", i18n.common.flash.passwordsDoNotMatch);
         res.render("index", {
             "user": req.body,
             "register": true,
-            
+
             redir
         });
         return;
