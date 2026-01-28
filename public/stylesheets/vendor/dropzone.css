@@ -183,7 +183,7 @@
 .dropzone.dz-clickable * {
     cursor: default; }
 .dropzone.dz-clickable .dz-message, .dropzone.dz-clickable .dz-message::after {
-    background-image: url("/images/inspiration/cards.png");
+    background-image: url("/images/cards.png");
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
