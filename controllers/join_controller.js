@@ -115,8 +115,13 @@ exports.joinAnonymous = async (req, res, next) => {
     const { i18n } = res.locals;
     const currentLang = i18n.lang;
 
+    if (!req.body.alias) {
+        req.flash("error", i18n.common.flash.errorCreatingUser);
+        res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
+        return;
+    }
     req.body.password = Math.random().toString(36).slice(-8);
-    req.body.username = `${req.escapeRoom.id}_${req.body.alias}_${Date.now()}@anonymous.org`;
+    req.body.username = `${req.escapeRoom.id}_${String(req.body.alias).toLowerCase()}_${Date.now()}@anonymous.org`;
     req.body.redir = `/escapeRooms/${req.escapeRoom.id}/join`;
     req.body.anonymous = true;
     if (req.body.accept_terms != "on") {

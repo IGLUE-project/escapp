@@ -5275,6 +5275,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   text-align: center;
   min-width: 40%;
   max-width: 90%;
+  text-align-last: center;
 }
 #mainSection .main.preview option {
   text-align: center;
