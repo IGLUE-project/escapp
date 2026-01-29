@@ -1235,6 +1235,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   padding: 0px 10px 0px 10px;
   margin-top: -10px;
   position: relative;
+  min-height: 25px;
 }
 #mainSection .main.escapeRoomShow .by-author a {
   cursor: pointer;

@@ -67,11 +67,14 @@
                 <option value="private" <%=(escapeRoom.scope == "private") ? "selected" : "" %>><%=i18n.escapeRoom.invitation.scopes["private"]%></option>
             </select>
             <br/>
-            <!-- <br/>
             <br/>
-            <label class="note" style="padding-left:30px;" for="allowGuests" ><%=i18n.escapeRoom.steps.sharing.allowGuests%>
+            <br/>
+            
+            <label class="note" style="padding-left:30px;<%if(escapeRoom.scope == 'public'){%>display:none;<%}%>" for="allowGuests" id="allowGuestsLabel" ><%=i18n.escapeRoom.steps.sharing.allowGuests%>
                 <input class="customCheckbox" type="checkbox" name="allowGuests" id="allowGuests" <%= escapeRoom.allowGuests ? "checked" : "" %> />
-            </label> -->
+            </label> 
+            
+            
         </div>
 
         <div class="inputFormField erFormField animated slideInUp" style="animation-delay:600ms; <%=(escapeRoom.scope == 'private') ?  '' : 'display: none;'%>" id = "invitationBlock"   ">
@@ -143,9 +146,11 @@ $('#scope').on('change', function(e){
 		switch(option) {
 			case 'public':
             case 'escapp':
+                $('#allowGuestsLabel').hide();
 				$('#invitationBlock').hide();
                 break;
             case 'private':
+                $('#allowGuestsLabel').show();
 				$('#invitationBlock').show();
                 break;
             default:
@@ -202,6 +207,7 @@ $(function(){
         $('#imgLabel').html("<%=i18n.escapeRoom.steps.settings.noFileUploaded%>");
         $('#keepInstructions').val("0");
     })
+    
 
 })
 

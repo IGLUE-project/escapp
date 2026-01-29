@@ -18,6 +18,8 @@
           <%-include("../partials/_verify",{escapeRoom})%>
       
         <%}else if(escapeRoom.verified) {%>
+            <div></div>
+            <div></div>
          <%-include("../partials/_verify",{escapeRoom})%>
         <%}%>
        
@@ -212,7 +214,7 @@
                         <%=i18n.showTeacher.titles.level%>:
                     </div>
                     <div class="flexShowRight">
-                        <%= i18n.user.eduLevel[escapeRoom.level] %> 
+                        <%= i18n.network.filters.eduLevel[escapeRoom.level] %> 
                     </div>
                 </div>
                 <%}%>

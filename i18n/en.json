@@ -502,9 +502,9 @@
                 "noHintsStrategy": "No hints allowed",
                 "freeHintsStrategy": "Students can obtain free hints",
                 "quizHintsStrategy": "Students can obtain hints by passing a quiz",
-                "automatedHintStrategy": "Automated hints",
+                "automatedHintStrategy": "Proactive hints",
                 "automatedHintsExplanation": "You can choose for participants to receive automatic help if they get stuck on a puzzle longer than the estimated duration from the previous step",
-                "noAutomatedHints": "Do not provide automated hints",
+                "noAutomatedHints": "Do not provide proactive hints",
                 "automatedSuggestions": "Send a message to participants suggesting them to request a hint if they exceed the estimated duration on a specific puzzle",
                 "automatedHints": "Send a hint automatically if participants exceed the estimated duration on a specific puzzle",
                 "MoodleXML": "MoodleXML",
@@ -1983,7 +1983,11 @@
                 "primary": "Primary education",
                 "secondary": "Secondary education",
                 "vet": "Vocational education and training",
-                "higher": "Higher education"
+                "higher": "Higher education",
+                "adult": "Adult education",
+                "general": "General public",
+                "other": "Other",
+                "unspecified": "Unspecified"
             },
             "area": "Area",
             "participation": {

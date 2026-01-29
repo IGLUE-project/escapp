@@ -170,8 +170,7 @@ exports.authShowEscapeRoom = async (req, res, next) => {
 
 exports.authShowEscapeRoomOrPending = async (req, res, next) => {
     const er = req.escapeRoom;
-
-    if (er && er.isAccessibleToAllUsers) {
+    if (er && (er.isAccessibleToAllUsers || er.allowGuests)) {
         return next();
     }
 

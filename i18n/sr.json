@@ -504,9 +504,9 @@
         "noHintsStrategy": "Saveti nisu dozvoljeni",
         "freeHintsStrategy": "Studenti mogu dobiti besplatne savete",
         "quizHintsStrategy": "Studenti mogu dobiti savete polaganjem kviza",
-        "automatedHintStrategy": "Automatizovani saveti",
+        "automatedHintStrategy": "Proaktivni saveti",
         "automatedHintsExplanation": "Možete odabrati da učesnici dobijaju automatizovanu pomoć ako se zadrže na zagonetki duže od procenjenog trajanja iz prethodnog koraka",
-        "noAutomatedHints": "Ne pružaj automatizovane savete",
+        "noAutomatedHints": "Ne pružaj proaktivne savete",
         "automatedSuggestions": "Pošaljite poruku učesnicima sugerišući im da zatraže savetako premaše procenjeno trajanje na određenoj zagonetki",
         "automatedHints": "Automatski pošaljite savetako učesnici premaše procenjeno trajanje na određenoj zagonetki",
         "MoodleXML": "MoodleXML",
@@ -1979,11 +1979,15 @@
             "before": "Pre",
             "language": "Jezik",
             "eduLevel": {
-                "filter": "Obrazovni nivo",
-                "primary": "Osnovno obrazovanje",
-                "secondary": "Srednje obrazovanje",
-                "vet": "Stručno obrazovanje i obuka",
-                "higher": "Visoko obrazovanje"
+              "filter": "Obrazovni nivo",
+              "primary": "Osnovno obrazovanje",
+              "secondary": "Srednje obrazovanje",
+              "vet": "Stručno obrazovanje i obuka",
+              "higher": "Visoko obrazovanje",
+              "adult": "Odraslo obrazovanje",
+              "general": "Opšta javnost",
+              "other": "Ostalo",
+              "unspecified": "Nespecifikovano"
             },
             "area": "Oblast",
             "participation": {

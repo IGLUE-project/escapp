@@ -80,12 +80,14 @@
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
   <label for="level" class="itemNarrow">4. <%=i18n.escapeRoom.steps.sharing.level%>:</label>
   <select class="customInput itemWide" id="level" name="level" autocomplete="off">
-    <option value="" <%=!escapeRoom.level ? "selected" : "" %>><%=i18n.general.unspecified%></option>
-    <option value="higher" <%=escapeRoom.level == "higher" ? "selected" : "" %>><%=i18n.user.eduLevel["higher"]%></option>
-    <option value="secondary" <%=escapeRoom.level == "secondary" ? "selected" : "" %>><%=i18n.user.eduLevel["secondary"]%></option>
-    <option value="primary" <%=escapeRoom.level == "primary" ? "selected" : "" %>><%=i18n.user.eduLevel["primary"]%></option>
-    <option value="vet" <%=escapeRoom.level == "vet" ? "selected" : "" %>><%=i18n.user.eduLevel["vet"]%></option>
-    <option value="other" <%=escapeRoom.level == "other" ? "selected" : "" %>><%=i18n.user.eduLevel["other"]%></option>
+    <option value="unspecified" <%=!escapeRoom.level ? "selected" : "" %>><%=i18n.network.filters.eduLevel.unspecified%></option>
+    <option value="higher" <%= escapeRoom.level === "higher" ? "selected" : ""%>><%=i18n.network.filters.eduLevel.higher%></option>
+    <option value="secondary" <%= escapeRoom.level === "secondary" ? "selected" : ""%>><%=i18n.network.filters.eduLevel.secondary%></option>
+    <option value="primary" <%= escapeRoom.level === "primary" ? "selected" : ""%>><%=i18n.network.filters.eduLevel.primary%></option>
+    <option value="vet" <%= escapeRoom.level === "vet" ? "selected" : ""%>><%=i18n.network.filters.eduLevel.vet%></option>
+    <option value="adult" <%= escapeRoom.level === "adult" ? "selected" : ""%>><%=i18n.network.filters.eduLevel.adult%></option>
+    <option value="general" <%= escapeRoom.level === "general" ? "selected" : ""%>><%=i18n.network.filters.eduLevel.general%></option>
+    <option value="other" <%= escapeRoom.level === "other" ? "selected" : ""%>><%=i18n.network.filters.eduLevel.other%></option>
   </select>
 </div>
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">

@@ -505,10 +505,13 @@ exports.sharingUpdate = async (req, res) => {
 
     try {
         escapeRoom.scope = body.scope;
+        escapeRoom.allowGuests = body.allowGuests === "on";
+
         if (escapeRoom.scope === "private") { // Only private rooms  can have a password
             escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
         } else {
             escapeRoom.invitation = null;
+            escapeRoom.allowGuests = true;
         }
         if (!escapeRoom.publishedOnce) { // Cannot change the license of a published room
             escapeRoom.license = body.license;
@@ -519,7 +522,6 @@ exports.sharingUpdate = async (req, res) => {
         if (typeof body.status !== "undefined") {
             escapeRoom.status = body.status;
         }
-        escapeRoom.allowGuests = body.allowGuests === "on";
 
         const instructionsFile = req.file;
 
