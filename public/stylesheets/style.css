@@ -3984,7 +3984,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin: 0;
   margin-bottom: 10px;
   color: #161938;
-  font-size: 0.6em;
+  font-size: 14px;
 }
 #mainSection .main .overlay-trigger::after {
   background: transparent;
@@ -4012,7 +4012,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   outline: 0;
   cursor: pointer;
   border-radius: 20px;
-  padding: 10px;
+  padding: 5px 10px;
   text-align: center;
   font-size: 16px;
   border-width: 2px;
@@ -6891,6 +6891,7 @@ html body input, html body select, html body .textarea {
   color: #9292B0;
   font-size: large;
   text-align: center;
+  text-align-last: center;
   border-color: #9292B0;
   border-radius: 20px;
   border-style: solid;
