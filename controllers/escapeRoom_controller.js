@@ -171,9 +171,10 @@ exports.new = (_req, res) => {
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, lang, teamSize, minTeamSize, supportLink, forceLang, field, format, level, invitation, progress} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, lang, teamSize, minTeamSize, supportLink, forceLang, field, format, level, invitation, progress, allowUserToResetTeamProgress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
-    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": "private", "teamSize": teamSize || 0, "minTeamSize": minTeamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
+
+    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, "allowUserToResetTeamProgress": allowUserToResetTeamProgress === "true", description, supportLink, "scope": "private", "teamSize": teamSize || 0, "minTeamSize": minTeamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
@@ -184,11 +185,13 @@ exports.create = async (req, res) => {
         filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "teacher", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "minTeamSize", "authorId", "supportLink", "invitation", "lang", "forceLang", "format", "level", "field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "teacher", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "minTeamSize", "authorId", "supportLink", "invitation", "lang", "forceLang", "format", "level", "field", "allowUserToResetTeamProgress"], transaction});
         const newSubjects = subjects.map((s) => ({
             "subject": s,
             "escapeRoomId": er.id
         }));
+
+
 
         await models.subject.bulkCreate(newSubjects, {transaction});
 
@@ -298,7 +301,7 @@ exports.update = async (req, res) => {
     escapeRoom.teamSize = body.teamSize || 0;
     escapeRoom.minTeamSize = body.minTeamSize || 0;
     escapeRoom.forceLang = isValidLocale(body.forceLang) ? body.forceLang : null;
-
+    escapeRoom.allowUserToResetTeamProgress = body.allowUserToResetTeamProgress === "true";
     const progressBar = body.progress;
     const transaction = await sequelize.transaction();
     const subjects = body.subject.
@@ -307,7 +310,7 @@ exports.update = async (req, res) => {
         filter(Boolean);
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "duration", "forbiddenLateSubmissions", "description", "teamSize", "minTeamSize", "supportLink", "lang", "forceLang", "format", "level", "field"], transaction});
+        const er = await escapeRoom.save({"fields": ["title", "duration", "forbiddenLateSubmissions", "description", "teamSize", "minTeamSize", "supportLink", "lang", "forceLang", "format", "level", "field", "allowUserToResetTeamProgress"], transaction});
 
         // Remove all previous subjects for this escape room
         await models.subject.destroy({ "where": { "escapeRoomId": er.id } }, {transaction});
@@ -453,8 +456,7 @@ exports.evaluationUpdate = async (req, res) => {
         escapeRoom.hintSuccess = body.hintSuccess;
         escapeRoom.hintFailed = body.hintFailed;
         escapeRoom.automaticAttendance = body.automaticAttendance;
-        escapeRoom.allowUserToResetTeamProgress = body.allowUserToResetTeamProgress === "true";
-        await escapeRoom.save({"fields": ["survey", "pretest", "posttest", "scoreParticipation", "hintSuccess", "hintFailed", "automaticAttendance", "allowUserToResetTeamProgress"]});
+        await escapeRoom.save({"fields": ["survey", "pretest", "posttest", "scoreParticipation", "hintSuccess", "hintFailed", "automaticAttendance"]});
         if (body.scores && body.scores.length !== escapeRoom.puzzles.length) {
             throw new Error("");
         }

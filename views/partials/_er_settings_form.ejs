@@ -151,8 +151,16 @@
       <%}%>
   </select>
 </div>
+  <div class="inputFormField erFormField animated slideInUp" style="animation-delay:0ms;">
+    <label for="allowUserToResetTeamProgress" class="itemNarrow">11. <%=i18n.escapeRoom.steps.evaluation.allowUserToResetTeamProgress%>:</label>
+    <select class="customInput itemWide" id="allowUserToResetTeamProgress" name="allowUserToResetTeamProgress">
+      <option value="false" <%= !escapeRoom.allowUserToResetTeamProgress ? "selected" : "" %>><%=i18n.common.no%></option>
+      <option value="true" <%= escapeRoom.allowUserToResetTeamProgress ? "selected" : "" %>><%=i18n.common.yes%></option>
+    </select>
+    <span class="field-hint"><%=i18n.escapeRoom.steps.evaluation.allowUserToResetTeamProgressHint%></span>
+  </div>
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">
-    <label class="itemNarrow">11. <%=i18n.showTeacher.titles.thumbnail%>:</label>
+    <label class="itemNarrow">12. <%=i18n.showTeacher.titles.thumbnail%>:</label>
     <input class="attach" type="file" id="img" name="image"/>
     <label for="img" class="fileUpload customInput itemWide">
       <span id="imgLabel" >

@@ -21,17 +21,10 @@
 			<input type="text" class="customInput itemWide" id="survey" name="survey" value="<%= escapeRoom.survey %>" placeholder="<%=i18n.escapeRoom.steps.evaluation.surveyPlaceHolder%>" autocomplete="off"/>
 		</div> -->
 
-		<div class="inputFormField erFormField animated slideInUp" style="animation-delay:0ms;">
-			<label for="allowUserToResetTeamProgress" class="itemNarrow">1. <%=i18n.escapeRoom.steps.evaluation.allowUserToResetTeamProgress%>:</label>
-			<select class="customInput itemWide" id="allowUserToResetTeamProgress" name="allowUserToResetTeamProgress">
-				<option value="false" <%= !escapeRoom.allowUserToResetTeamProgress ? "selected" : "" %>><%=i18n.common.no%></option>
-				<option value="true" <%= escapeRoom.allowUserToResetTeamProgress ? "selected" : "" %>><%=i18n.common.yes%></option>
-			</select>
-			<span class="field-hint"><%=i18n.escapeRoom.steps.evaluation.allowUserToResetTeamProgressHint%></span>
-		</div>
+
 
 		<div class="inputFormField erFormField animated slideInUp" style="animation-delay:200ms;">
-			<label for="automaticAttendance"  class="itemNarrow">2. <%=i18n.escapeRoom.steps.evaluation.automaticAttendance%>:</label>
+			<label for="automaticAttendance"  class="itemNarrow">1. <%=i18n.escapeRoom.steps.evaluation.automaticAttendance%>:</label>
 			<select class="customInput itemWide" id="automaticAttendance" name="automaticAttendance" >
 				<option value="none" <%= (!escapeRoom.automaticAttendance || escapeRoom.automaticAttendance === "none") ? "selected" : "" %> ><%=i18n.escapeRoom.steps.evaluation.automaticAttendanceNone%></option>
 				<option value="participant" <%= escapeRoom.automaticAttendance === "participant" ? "selected" : "" %>><%=i18n.escapeRoom.steps.evaluation.automaticAttendanceParticipant%></option>
@@ -41,14 +34,14 @@
 
 		<div class="inputFormField erFormField animated slideInUp" style="animation-delay:400ms;">
 			<label for="score-participation" class="itemNarrow">
-				3. <%=i18n.escapeRoom.steps.evaluation.justParticipating%>
+				2. <%=i18n.escapeRoom.steps.evaluation.justParticipating%>
 			</label>
 			<input autofocus type="number" min="0" max="100" placeholder="0" value="<%=escapeRoom.scoreParticipation || 0%>" name="scoreParticipation" class="customInput scoreInput itemWide"  id="score-participation"/>
 		</div>
 
 	  	<div class=" erFormField disallow animated slideInUp" style="animation-delay:600ms;">
 		  	<label for="tit"  class="itemNarrow">
-			  4. <%=i18n.escapeRoom.steps.evaluation.eachPuzzle%>:
+			  3. <%=i18n.escapeRoom.steps.evaluation.eachPuzzle%>:
 			</label>
 			<input type="hidden"/>
 			<table class="scorePuzzles">
@@ -72,7 +65,7 @@
 		<% var hintAppConditional = hintConditional && escapeRoom.hintApp; // Hint app methodology %>
 		<% if (hintAppConditional) {%>
 			<div class="erFormField disallow animated slideInUp" style="animation-delay:800ms;">
-				<label for="tit"  class="itemNarrow">5. <%=i18n.escapeRoom.steps.evaluation.eachHint%>:</label>
+				<label for="tit"  class="itemNarrow">4. <%=i18n.escapeRoom.steps.evaluation.eachHint%>:</label>
 				  <table class="scorePuzzles">
 					<tr>
 						<td><label for="hintSuccess"><%=i18n.escapeRoom.steps.evaluation.hintSuccess%>(%)</label></td>
@@ -86,7 +79,7 @@
 			  </div>
 		<% } else if (hintConditional) { %>
 			<div class="erFormField disallow animated slideInUp" style="animation-delay:800ms;">
-				<label for="tit"  class="itemNarrow">5. <%=i18n.escapeRoom.steps.evaluation.eachHintObtain%>:</label>
+				<label for="tit"  class="itemNarrow">4. <%=i18n.escapeRoom.steps.evaluation.eachHintObtain%>:</label>
 				<input  type="number" min="-100" max="100" placeholder="0" value="<%=escapeRoom.hintSuccess || 0%>" name="hintSuccess" class="customInput itemWide"  id="hintSuccess"/>
 				<input type="hidden" value=" 0"  id="hintFailed" name="hintFailed"/></td>
 			  </div>
