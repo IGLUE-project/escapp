@@ -42,7 +42,7 @@ exports.loginRequired = (req, res, next) => {
         } else if (req.session.user.anonymized) {
             if (req.session.user.onlyForER) {
                 if (req.escapeRoom) {
-                    if (req.escapeRoom.id == req.session.user.onlyForER) {
+                    if ((req.escapeRoom.id == req.session.user.onlyForER) || req.escapeRoom.isPubliclyAccessible) {
                         return next();
                     }
                     return res.redirect(`/escapeRooms/${req.session.user.onlyForER}`);
