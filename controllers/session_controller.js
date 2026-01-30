@@ -281,7 +281,7 @@ exports.authJoinEscapeRoom = (req, res, next) => {
     if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         res.status(403);
         req.flash("error", i18n.user.teacherCannotJoin);
-        res.redirect("/escapeRooms/" + er.id);
+        return res.redirect("/escapeRooms/" + er.id);
     }
     next();
 };

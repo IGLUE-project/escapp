@@ -74,8 +74,8 @@ describe("Team Formation", () => {
 
         it("should deny teacher from accessing student team creation", async () => {
             const res = await teacherSession.get(`/escapeRooms/${escapeRoomId}/turnos/${turnoId}/teams`);
-            // 403 if denied, 404 if turno not found
-            expect([403, 404]).toContain(res.statusCode);
+            // 302 if teacher redirect, 404 if escape room status is not "completed"
+            expect([302, 404]).toContain(res.statusCode);
         });
     });
 
@@ -101,16 +101,15 @@ describe("Team Formation", () => {
     });
 
     describe("Team Member Addition", () => {
-        it.skip("should handle team join based on participation status (skipped - route may hang)", async () => {
+        it("should handle team join based on participation status", async () => {
             // PUT route is for adding members to a team
-            // Note: This test is skipped because the route may hang in test environment
             const res = await studentSession
                 .put(`/escapeRooms/${escapeRoomId}/turnos/${turnoId}/teams/1`)
                 .send({});
 
             // 302 if redirect, 404 if turno/team not found
             expect([302, 404]).toContain(res.statusCode);
-        }, 10000);
+        });
     });
 
     describe("Teacher Team Management", () => {
