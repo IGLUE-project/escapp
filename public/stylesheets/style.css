@@ -2809,7 +2809,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.step-instructions countdown {
   font-family: "Digital", monospace;
-  font-size: 15vw;
+  font-size: 14vw;
   display: block;
   text-align: center;
   cursor: move;

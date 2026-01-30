@@ -1363,6 +1363,7 @@
       "name": "Ime",
       "anonymous": "Anoniman",
       "anonymizedCantLogin": "Ovaj nalog je anonimizovan i više se ne možete prijaviti pomoću njega.",
+      "teacherCannotJoin": "Koristili ste link namenjen učesnicima escape sobe. Ako želite da testirate svoju escape sobu, kliknite na dugme 'test'.",
       "password": "Lozinka",
       "passwordConfirm": "Potvrdite lozinku",
       "passLeaveBlank": "Ako želite da promenite lozinku, popunite sledeća polja. U suprotnom, ostavite ih prazna.",

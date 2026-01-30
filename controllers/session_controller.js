@@ -32,8 +32,8 @@ exports.maxIdleTime = maxIdleTime;
  */
 exports.loginRequired = (req, res, next) => {
     if (req.session.user) {
-        if (!req.session.user.lastAcceptedTermsDate ||
-            req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY) {
+        if ((req.path != "/accept-new") && (!req.session.user.lastAcceptedTermsDate ||
+            req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY)) {
             return res.redirect("/accept-new");
         } else if (req.route.path === "/uploads/thumbnails/:file_name") { // Allows to access thumbnails...
             return next();
@@ -54,6 +54,15 @@ exports.loginRequired = (req, res, next) => {
         return next();
     } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes("/escapeRooms/")) {
         return next();
+    } else if (req.route.path === "/escapeRooms/:escapeRoomId(\\d+)/join") {
+        if (req.escapeRoom.allowGuests) {
+            if (req.query && req.query.token) {
+                return res.redirect(`/escapeRooms/${req.escapeRoom.id}?token=${req.query.token}`);
+            }
+            return res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
+        } else {
+            return res.redirect(`/?redir=${req.param("redir") || req.url}`);
+        }    
     }
     return res.redirect(`/?redir=${req.param("redir") || req.url}`);
 };
@@ -267,10 +276,12 @@ exports.authPlayEscapeRoom = async (req, res, next) => {
 exports.authJoinEscapeRoom = (req, res, next) => {
     const {user} = req.session;
     const er = req.escapeRoom;
+    const {i18n} = res.locals;
 
     if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         res.status(403);
-        return next(new Error(res.locals.i18n.api.forbidden));
+        req.flash("error", i18n.user.teacherCannotJoin);
+        res.redirect("/escapeRooms/" + er.id);
     }
     next();
 };

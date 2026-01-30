@@ -1364,6 +1364,7 @@
         "name": "Nombre",
         "anonymous": "Anónimo",
         "anonymizedCantLogin": "Esta cuenta ha sido eliminada y no puedes iniciar sesión",
+        "teacherCannotJoin": "Has usado un enlace destinado a los participants de la escape room. Si quieres probar tu escape room haz click en el botón 'test'.",
         "password": "Contraseña",
         "passLeaveBlank": "Si deseas cambiar la contraseña, rellena los siguientes campos, sino déjalos en blanco",
         "passwordConfirm": "Confirmar contraseña",

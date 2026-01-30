@@ -36,25 +36,25 @@ exports.new = (req, res) => {
 };
 
 
-// POST /escapeRooms/:escapeRoomId/turnos/:turnId/teams
+// POST /escapeRooms/:escapeRoomId/turnos/:turnoId/teams
 exports.create = async (req, res, next) => {
     const {params, body} = req;
     const {user} = req.session;
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
-
+    const turnoId = params.turnoId || ((req.turn) ? req.turn.id : undefined)
     try {
-        const existsTeam = await models.team.findOne({"where": {"name": body.name, "turnoId": params.turnoId}}, {transaction});
+        const existsTeam = await models.team.findOne({"where": {"name": body.name, turnoId}}, {transaction});
 
         if (existsTeam && req.escapeRoom.teamSize !== 1) {
             req.flash("error", i18n.common.flash.errorCreatingTeamAlreadyExists);
             await transaction.rollback();
             res.redirect("back");
         } else {
-            const teamCreated = await models.team.create({ "name": body.name, "turnoId": params.turnoId}, {transaction});
+            const teamCreated = await models.team.create({ "name": body.name, turnoId}, {transaction});
 
             await teamCreated.addTeamMembers(user.id, {transaction});
-            await models.participants.create({"attendance": false, "turnId": params.turnoId, "userId": user.id}, {transaction});
+            await models.participants.create({"attendance": false, "turnId": turnoId, "userId": user.id}, {transaction});
             await transaction.commit();
             req.flash("success", req.escapeRoom.teamSize === 1 ? i18n.common.flash.successCreatingTeamSingle : i18n.common.flash.successCreatingTeam);
             res.redirect(`/escapeRooms/${params.escapeRoomId}/ready`);

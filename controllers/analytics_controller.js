@@ -114,7 +114,7 @@ exports.puzzlesByParticipants = async (req, res, next) => {
                 return {id, teamId, teamName, alias, ...rs, total};
             });
 
-            createCsvFile(res, resultsCsv);
+            createCsvFile(res, resultsCsv,`puzzles-er-${escapeRoom.id}-${turnId?`turn-${turnId}-`:""}${Date.now()}`);
         }
     } catch (e) {
         console.error(e);
@@ -166,7 +166,7 @@ exports.puzzlesByTeams = async (req, res, next) => {
                 return {id, name, ...rs, total};
             });
 
-            createCsvFile(res, resultsCsv);
+            createCsvFile(res, resultsCsv,`puzzle-teams-er-${escapeRoom.id}-${turnId?`turn-${turnId}-`:""}${Date.now()}`);
         }
     } catch (e) {
         console.error(e);
@@ -240,7 +240,7 @@ exports.hintsByParticipants = async (req, res, next) => {
                 }
             }
 
-            createCsvFile(res, resultsCsv);
+            createCsvFile(res, resultsCsv, `hints-participant-${escapeRoom.id}-${turnId?`turn-${turnId}-`:""}${Date.now()}`);
         }
     } catch (e) {
         console.error(e);
@@ -290,7 +290,7 @@ exports.hintsByTeams = async (req, res, next) => {
                 }
             }
 
-            createCsvFile(res, resultsCsv);
+            createCsvFile(res, resultsCsv, `hints-teams-er-${escapeRoom.id}-${turnId?`turn-${turnId}-`:""}${Date.now()}`);
         }
     } catch (e) {
         console.error(e);
@@ -556,7 +556,7 @@ exports.grading = async (req, res, next) => {
                 return result;
             });
 
-            createCsvFile(res, resultsCsv);
+            createCsvFile(res, resultsCsv, `grades-er-${escapeRoom.id}-${turnId?`turn-${turnId}-`:""}${Date.now()}`);
         } else {
             res.render("escapeRooms/analytics/grading", {escapeRoom, turnos, puzzles, results, turnId, orderBy, hintConditional, hintAppConditional});
         }
@@ -612,7 +612,7 @@ exports.download = async (req, res) => {
             return {alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
         });
 
-        createCsvFile(res, results);
+        createCsvFile(res, results,`donwload-er-${escapeRoom.id}-${turnId?`turn-${turnId}-`:""}${Date.now()}`);
     } catch (e) {
         console.error(e);
         res.send("Error");
@@ -724,7 +724,7 @@ exports.downloadRaw = async (req, res) => {
             }
         }
         // Res.json(logs);
-        createCsvFile(res, logs);
+        createCsvFile(res, logs, `raw-er-${escapeRoom.id}-${turnId?`turn-${turnId}-`:""}${Date.now()}`);
     } catch (e) {
         console.error(e);
         res.send("Error");

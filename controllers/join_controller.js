@@ -115,18 +115,24 @@ exports.joinAnonymous = async (req, res, next) => {
     const { i18n } = res.locals;
     const currentLang = i18n.lang;
 
+    let  redirURL = `/escapeRooms/${req.escapeRoom.id}`
+    if(req.query.token) {
+        redirURL +=  "?token=" + req.query.token;
+    } 
+    redirURL+= "#join-anon"
+
     if (!req.body.alias) {
         req.flash("error", i18n.common.flash.errorCreatingUser);
-        res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
+        res.redirect(redirURL);
         return;
     }
     req.body.password = Math.random().toString(36).slice(-8);
     req.body.username = `${req.escapeRoom.id}_${String(req.body.alias).toLowerCase()}_${Date.now()}@anonymous.org`;
-    req.body.redir = `/escapeRooms/${req.escapeRoom.id}/join`;
+    req.body.redir = redirURL // `/escapeRooms/${req.escapeRoom.id}/join`;
     req.body.anonymous = true;
     if (req.body.accept_terms != "on") {
         req.flash("error", i18n.common.flash.youMustAcceptTerms);
-        res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
+        res.redirect(redirURL);
         return;
     }
     const user = models.user.build({
@@ -153,10 +159,9 @@ exports.joinAnonymous = async (req, res, next) => {
         console.error(error);
         if (error && error.errors && error.errors.length > 0 && error.errors[0].message == "alias must be unique") {
             req.flash("error", i18n.common.flash.aliasAlreadyExists);
-            res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
         } else {
             req.flash("error", i18n.common.flash.errorCreatingUser);
-            res.redirect(`/escapeRooms/${req.escapeRoom.id}?#join-anon`);
-        }
+        }           
+        res.redirect(redirURL);
     }
 };

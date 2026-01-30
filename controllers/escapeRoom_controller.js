@@ -134,7 +134,7 @@ exports.show = async (req, res) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
     const isUserParticipant = await isParticipant(req.session.user, escapeRoom);
 
-    return res.render("escapeRooms/show", {"escapeRoom": req.escapeRoom, "user": req.session.user, "isParticipant": isUserParticipant});
+    return res.render("escapeRooms/show", {"escapeRoom": req.escapeRoom, "user": req.session.user, "isParticipant": isUserParticipant, "token": req.query.token});
 };
 
 // GET /escapeRooms/:escapeRoomId/ready
