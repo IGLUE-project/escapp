@@ -438,6 +438,9 @@ exports.renderReusablePuzzle = async (req, res, _) => {
                     "email": req.session.user.username,
                     token
                 },
+                "restoreState": "AUTO",
+                "notifications": false,
+                "silent": true,
                 "I18n": {"locale": localeForReusablePuzzle}
             }
         };
@@ -501,6 +504,9 @@ exports.renderReusablePuzzlePreview = async (req, res) => {
                     "email": req.session.user.username,
                     token
                 },
+                "restoreState": "NEVER",
+                "notifications": false,
+                "silent": true,
                 "I18n": {"locale": localeForReusablePuzzle}
             }
         };
