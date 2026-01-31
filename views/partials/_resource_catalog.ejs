@@ -14,7 +14,7 @@
                 <div style="display:flex; flex-direction:column; justify-content:space-around; align-items:center;width:100%;height:100%">
                     <input type="hidden" name="escapeRoomId" value="<%=escapeRoom.id%>">
                     <div class="resource-group">
-                    <button type="button" onclick="triggerClick()">
+                    <button type="button">
                         <label for="fileInput" style="color:black;">
                             <span class="material-icons">upload</span>
                              <%=i18n.escapeRoom.steps.indications.front.catalog.selectFile%></label>
@@ -629,14 +629,14 @@
                 $(".sections").scrollTop(0);
             });
         } else {
-            elements = generateConfig(config);
-            elements += `<input type="text"  hidden value=${reusablePuzzleId} name="reusablePuzzleId"/>`;
-            elements += `<button type="button" class="editButton" onclick="goBack()"><%=i18n.common.back%></button>`;
-            elements += `<button type="reset" class="editButton" ><%=i18n.common.reset%></button>`;
-            elements += `<input type="submit" class="acceptButton" value="<%=i18n.common.save%>"/>`;
-            configForm.html(elements);
+            let rpiElements = generateConfig(config);
+            rpiElements += `<input type="text"  hidden value=${reusablePuzzleId} name="reusablePuzzleId"/>`;
+            rpiElements += `<button type="button" class="editButton" onclick="goBack()"><%=i18n.common.back%></button>`;
+            rpiElements += `<button type="reset" class="editButton" ><%=i18n.common.reset%></button>`;
+            rpiElements += `<input type="submit" class="acceptButton" value="<%=i18n.common.save%>"/>`;
+            configForm.html(rpiElements);
             $(".sections").scrollTop(0);
-            configForm.attr("action",  "reusablePuzzleInstance");
+            configForm.attr("action", "reusablePuzzleInstance");
         }
     }
 
@@ -719,7 +719,7 @@
         } else {
             let depthN = depth + 1;
             if(isArray){
-                inputNameIndex = `${inputNameN}-0`;
+                let inputNameIndex = `${inputNameN}-0`;
                 if(arraySubtype === "text" || arraySubtype === "number" || arraySubtype === "checkbox"){
                     returnVal = `<div id=${inputNameN}>
                     ${item.name}
@@ -770,7 +770,7 @@
                     /^\d+$/.test(v)
                 );
                 if(linkedPuzzles.length === 0){
-                    errorsInReusablePuzzleInstanceForm.push("<%= i18n.reusablePuzzles.errors.nullPuzzle%>",);
+                    errorsInReusablePuzzleInstanceForm.push("<%= i18n.reusablePuzzles.errors.nullPuzzle%>");
                 }
             }
             if(errorsInReusablePuzzleInstanceForm.length > 0){
@@ -1350,7 +1350,7 @@
                             <span class="edit_catalog_item building-block-icon material-icons"> edit
                             </span>
                         </button>
-                        <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")''>
+                        <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")'>
                             <span class="link_catalog_item building-block-icon material-icons"> link
                             </span>
                         </button>
@@ -1445,10 +1445,6 @@
                     </div>
             </td>
         </tr>`
-    }
-
-    function triggerClick() {
-        $("#inputFile").click();
     }
 
     function changeName(e){
