@@ -603,7 +603,7 @@ exports.getRole = async (role, username = "", i18n) => {
     const teacherWhitelist = teacherWhitelistArray.length > 0 ? teacherWhitelistArray : undefined;
     const disableChoosingRole = await globalConfig.getDisableChoosingRole();
 
-    if ((!role || role === "teacher") && exports.isValidEmail(username, teacherWhitelist)) {
+    if ((!role || (role === "teacher")) && exports.isValidEmail(username, teacherWhitelist)) {
         if (disableChoosingRole) {
             return "teacher";
         }
@@ -624,10 +624,12 @@ exports.getRole = async (role, username = "", i18n) => {
         }
     } else if (disableChoosingRole && !whitelist) {
         return "student";
-    } else if (disableChoosingRole && whitelist && whitelist.length > 0) {
+    } else if (whitelist || teacherWhitelist) {
+        // Whitelists exist but email doesn't match any - reject registration
         throw new Error(i18n.user.messages.notAllowedEmail);
     } else if (role === "student" || role === "teacher") {
-        return role; // Allow any role if role selection is enabled
+        // No whitelists configured - allow any role
+        return role;
     } else {
         throw new Error(i18n.api.unauthorized);
     }

@@ -17,11 +17,17 @@
 </div>
 <script src="/pdf/js/html2canvas.min.js"></script>
 <script src="/pdf/js/three.min.js"></script>
-<script src="/pdf/js/pdf.min.js"></script>
+<script src="/pdf/js/pdf.js"></script>
 
 <script src="/pdf/js/3dflipbook.min.js"></script>
 
 <script type="text/javascript">
+  window.PDFJS_LOCALE = {
+    pdfJsWorker: 'js/pdf.worker.js',
+    pdfJsCMapUrl: 'cmaps',
+    pdfJsCMapPacked: true
+  };
+
   const params = new URLSearchParams(window.location.search);
   const lang = params.get('lang');
 
