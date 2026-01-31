@@ -180,9 +180,7 @@
                 <th></th>
             </tr>
             <tr class="catalogItem" id="noResources">
-                <td colspan="3" style="text-align: center; height:200px
-                <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
-                       <%}else{%>; display: none;<%}%>">
+                <td colspan="3" style="text-align: center; height:200px;<% if(!(assets.length === 0 && reusablePuzzlesInstances.length === 0)) { %> display: none;<% } %>">
                     <p class="title" style="text-align: center;">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
                     </p>
@@ -394,7 +392,7 @@
         form.attr('method', "PUT");
         form.empty();
         form.append('<label> <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%> </label>');
-        form.append(`<input type="text" name="filename" value=${asset.filename} required>`);
+        form.append(`<input type="text" name="filename" value="${asset.filename}" required>`);
         form.append(`<input class="rounded acceptButton" type="submit" value="<%=i18n.common.save%>">`);
         $('.previewReusablePuzzle').hide();
 
