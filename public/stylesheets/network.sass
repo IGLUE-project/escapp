@@ -1,4 +1,19 @@
 @use "common/colors"
+
+#networkTitle
+  width: 100%
+  text-align: center
+  h1
+    font-size: 70px
+    margin-bottom: 40px
+  h2
+    font-family: Lato, Gugi, sans-serif
+    font-size: 23px;
+    font-weight: 200;
+    
+#mainSection .main.network
+  background-image: none !important
+
 .main .network
   display: flex
   flex-flow: column
@@ -13,10 +28,39 @@
     flex-direction: column
     margin-bottom: 10px
 
-.campoDeBusqueda
+
+#networkSearchInputWrapper
+  width: 100%
+  text-align: center;
+  margin-top: 80px
+  margin-bottom: 55px
+  #search
+    width: 60%
+    min-width: 300px
+    text-align: start
+    padding: 20px
+  #searchButton
+    vertical-align: middle
+
+  #tags
+    margin-top: 1rem
+    display: flex
+    flex-flow: row wrap
+    .tag
+      background-color: red
+      border: solid 1px
+      border-radius: 5px
+      padding: 5px 10px
+      margin-right: 5px
+      margin-top: 5px
+
+
+
+
+#filterSearch
   display: grid
   grid-template-columns: 2fr 5fr
-  grid-template-rows: 1fr 7fr
+  grid-template-rows: 1fr
   gap: 1rem
   height: 100%
   @media (hover: none)
@@ -27,30 +71,6 @@
     flex-flow: column nowrap
     gap: 1rem
 
-  .headerBusqueda
-    gap: 1rem
-    grid-column: 2
-    grid-row: 1
-    #tags
-      margin-top: 1rem
-      display: flex
-      flex-flow: row wrap
-      .tag
-        background-color: red
-        border: solid 1px
-        border-radius: 5px
-        padding: 5px 10px
-        margin-right: 5px
-        margin-top: 5px
-    input
-      width: 100%
-      min-width: 5rem
-      text-align: start
-      padding: 1rem
-    #searchButton
-      vertical-align: middle
-    #search
-      width:70%
   .filtros
     padding: 0 !important
     display: flex

@@ -1738,8 +1738,10 @@
         "unspecified": "No especificado"
     },
     "network": {
+        "title": "EscappNet",
+        "subtitle": "Una red abierta y descentralizada de escape rooms educativas basada en la plataforma Escapp",
         "Network": "Red",
-        "conductSearch": "Realize una busqueda",
+        "conductSearch": "Realize una búsqueda",
         "clickToPlay": "Haz clic en el botón de abajo para jugar en su sitio:",
         "clickToClone": "...o haz clic en el botón de abajo para importar la escape room a tu perfil y usarla como profe",
         "currentInstance": "la instancia actual de Escapp",
@@ -1749,8 +1751,8 @@
         "filters": {
             "Filters": "Filtros",
             "any": "Cualquiera",
-            "after": "Después de",
-            "before": "Antes de",
+            "after": "Desde",
+            "before": "Hasta",
             "language": "Idioma",
             "eduLevel": {
                 "filter": "Nivel educativo",
@@ -1763,9 +1765,9 @@
                 "other": "Otro",
                 "unspecified": "Sin especificar"
             },
-            "area": "Área",
+            "area": "Área de conocimiento",
             "participation": {
-                "filter":"Participación",
+                "filter":"Modo de participación",
                 "individual": "Individual",
                 "team": "Por equipos"
             },
@@ -1784,8 +1786,7 @@
             "inputPlaceholder": "buscar...",
             "loadingPlaceholder": "Cargando escape rooms...",
             "noResults": "No se han encontrado escape rooms que coincidan con los criterios de búsqueda.",
-            "filterPlaceholder": "No se han encontrado escape rooms con los filtros seleccionados. Prueba a cambiar los filtros.",
-            "title": "Busqueda en red"
+            "filterPlaceholder": "No se han encontrado escape rooms con los filtros seleccionados. Prueba a cambiar los filtros."
         },
         "contact": {
             "text1": "Mensaje de ",

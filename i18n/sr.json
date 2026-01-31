@@ -1968,6 +1968,8 @@
         }
     },
     "network": {
+        "title": "EscappNet",
+        "subtitle": "Otvorena i decentralizovana mreža edukativnih escape room-ova zasnovana na platformi Escapp",
         "Network": "Mreža",
         "conductSearch": "Izvršite pretragu",
         "clickToPlay": "Kliknite na dugme ispod da biste igrali na njihovoj stranici:",
@@ -1979,8 +1981,8 @@
         "filters": {
             "Filters": "Filteri",
             "any": "Bilo koji",
-            "after": "Nakon",
-            "before": "Pre",
+            "after": "Od",
+            "before": "Do",
             "language": "Jezik",
             "eduLevel": {
               "filter": "Obrazovni nivo",
@@ -1993,9 +1995,9 @@
               "other": "Ostalo",
               "unspecified": "Nespecifikovano"
             },
-            "area": "Oblast",
+            "area": "Oblast znanja",
             "participation": {
-                "filter":"Učešće",
+                "filter":"Način učešća",
                 "individual": "Individualno",
                 "team": "Timovi"
             },
