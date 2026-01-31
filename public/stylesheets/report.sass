@@ -1,5 +1,5 @@
 @use "common/colors"
-
+@use "sass:color";
 .report-form
     max-width: 600px
     padding: 20px
@@ -78,7 +78,7 @@
         font-family: 'Lato', sans-serif
         &:hover
             border-color: colors.$brightblue
-            background: lighten(colors.$darkerpurple, 5%)
+            background: color.adjust(colors.$darkerpurple, $lightness: 5%)
         input[type="radio"]
             width: 18px
             height: 18px

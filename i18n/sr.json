@@ -1973,6 +1973,7 @@
         "currentInstance": "trenutna Escapp instanca",
         "view": "poseti",
         "hostedAt": "Ova escape soba je hostovana na",
+        "Local": "Lokalno",
         "filters": {
             "Filters": "Filteri",
             "any": "Bilo koji",

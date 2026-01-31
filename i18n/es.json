@@ -1743,6 +1743,7 @@
         "currentInstance": "la instancia actual de Escapp",
         "view": "visitar",
         "hostedAt": "Esta escape room está alojada en",
+        "Local": "Local",
         "filters": {
             "Filters": "Filtros",
             "any": "Cualquiera",

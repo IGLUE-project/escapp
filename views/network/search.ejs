@@ -96,6 +96,7 @@
                     <label class="label"> <%=i18n.network.filters.instance%></label>
                     <select id="instance">
                         <option value=""><%=i18n.network.filters.any%></option>
+                        <option value="local"><%=i18n.network.Local%></option>
                         <% (locals.instances || []).forEach(function(url) { %>
                             <option value="<%=url%>"><%= url.replace(/^https?:\/\//, '') %></option>
                         <% }); %>
@@ -236,7 +237,12 @@
                     break;
                 }
             } else if(tag.condition === "instance"){
-                if(escapeRoom.url !== tag.value){
+                if (!escapeRoom.url) {
+                    if (tag.value != "local") {
+                        filteredOut = true;
+                        break;
+                    }
+                } else if (escapeRoom.url !== tag.value){
                     filteredOut = true;
                     break;
                 }
