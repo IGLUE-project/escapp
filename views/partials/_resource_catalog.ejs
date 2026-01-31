@@ -14,7 +14,7 @@
                 <div style="display:flex; flex-direction:column; justify-content:space-around; align-items:center;width:100%;height:100%">
                     <input type="hidden" name="escapeRoomId" value="<%=escapeRoom.id%>">
                     <div class="resource-group">
-                    <button type="button" onclick="triggerClick()">
+                    <button type="button">
                         <label for="fileInput" style="color:black;">
                             <span class="material-icons">upload</span>
                              <%=i18n.escapeRoom.steps.indications.front.catalog.selectFile%></label>
@@ -182,9 +182,7 @@
                 <th></th>
             </tr>
             <tr class="catalogItem" id="noResources">
-                <td colspan="3" style="text-align: center; height:200px
-                <% if(assets.length === 0 && reusablePuzzlesInstances.length === 0) {%>
-                       <%}else{%>; display: none;<%}%>">
+                <td colspan="3" style="text-align: center; height:200px;<% if(!(assets.length === 0 && reusablePuzzlesInstances.length === 0)) { %> display: none;<% } %>">
                     <p class="title" style="text-align: center;">
                         <%=i18n.escapeRoom.steps.indications.front.catalog.table.noResources%>
                     </p>
@@ -285,18 +283,18 @@
         const instructions = (reusablePuzzle && reusablePuzzle.instructions) ? reusablePuzzle.instructions.split(",") : [];
         let instructionsLang = instructions.includes(window.lang) ? window.lang : "en";
         let hasInstructions = instructions.includes(instructionsLang) ? true : false;
-        const instructionsUrl =  `/reusablePuzzles/${reusablePuzzleId}/instructions/${instructionsLang}.pdf`
-
+        const instructionsUrl =  `/reusablePuzzles/${reusablePuzzleId}/instructions/${instructionsLang}.pdf`;
         const value = selectedPuzzle.sol ? selectedPuzzle.validator === "range" ? selectedPuzzle.sol.split("+")[0] : selectedPuzzle.sol : "";
+        
         return `
-         <div style="right: 0; margin-top: 10px;text-align:right;">
-                  ${hasInstructions ? `<a href="${instructionsUrl}" target="_blank">
-                    <button "disabled" : null} class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
-                        <%=i18n.escapeRoom.steps.indications.front.catalog.config.reusablePuzzleInstructions%>
-                        <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
-                    </button>
-                </a>`:''}
-            </div>
+        <div style="right: 0; margin-top: 10px;text-align:right;">
+            ${hasInstructions ? `<a href="${instructionsUrl}" target="_blank">
+                <button class="rounded small" style="font-size: 75%;padding: 3px 15px !important;" type="button">
+                    <%=i18n.escapeRoom.steps.indications.front.catalog.config.reusablePuzzleInstructions%>
+                    <span class="material-icons" style="color: #F40F02;">picture_as_pdf</span>
+                </button>
+            </a>`:''}
+        </div>
         <div class="editDialog" id="appendFormElementsHere">
             <h3 class="reusablePuzzleInstanceTitle"> ${ puzzleName } </h3>
             <div>
@@ -396,7 +394,7 @@
         form.attr('method', "PUT");
         form.empty();
         form.append('<label> <%=i18n.escapeRoom.steps.indications.front.catalog.config.name%> </label>');
-        form.append(`<input type="text" name="filename" value=${asset.filename} required>`);
+        form.append(`<input type="text" name="filename" value="${asset.filename}" required>`);
         form.append(`<input class="rounded acceptButton" type="submit" value="<%=i18n.common.save%>">`);
         $('.previewReusablePuzzle').hide();
 
@@ -530,9 +528,15 @@
         } else if(type === "countdown" || type === "progress" || type === "ranking" || type === "text") {
             payload = id;
         } else {
-            type = "asset";
+            //Assets
             const asset = window.assets.find(p => p.id == id);
             payload = asset;
+            
+            if(asset && asset.assetType === 'webapp'){
+                type = asset.assetType;
+            } else {
+                type = "asset";
+            }
         }
 
         if(payload.url){
@@ -631,14 +635,14 @@
                 $(".sections").scrollTop(0);
             });
         } else {
-            elements = generateConfig(config);
-            elements += `<input type="text"  hidden value=${reusablePuzzleId} name="reusablePuzzleId"/>`;
-            elements += `<button type="button" class="editButton" onclick="goBack()"><%=i18n.common.back%></button>`;
-            elements += `<button type="reset" class="editButton" ><%=i18n.common.reset%></button>`;
-            elements += `<input type="submit" class="acceptButton" value="<%=i18n.common.save%>"/>`;
-            configForm.html(elements);
+            let rpiElements = generateConfig(config);
+            rpiElements += `<input type="text"  hidden value=${reusablePuzzleId} name="reusablePuzzleId"/>`;
+            rpiElements += `<button type="button" class="editButton" onclick="goBack()"><%=i18n.common.back%></button>`;
+            rpiElements += `<button type="reset" class="editButton" ><%=i18n.common.reset%></button>`;
+            rpiElements += `<input type="submit" class="acceptButton" value="<%=i18n.common.save%>"/>`;
+            configForm.html(rpiElements);
             $(".sections").scrollTop(0);
-            configForm.attr("action",  "reusablePuzzleInstance");
+            configForm.attr("action", "reusablePuzzleInstance");
         }
     }
 
@@ -721,7 +725,7 @@
         } else {
             let depthN = depth + 1;
             if(isArray){
-                inputNameIndex = `${inputNameN}-0`;
+                let inputNameIndex = `${inputNameN}-0`;
                 if(arraySubtype === "text" || arraySubtype === "number" || arraySubtype === "checkbox"){
                     returnVal = `<div id=${inputNameN}>
                     ${item.name}
@@ -772,7 +776,7 @@
                     /^\d+$/.test(v)
                 );
                 if(linkedPuzzles.length === 0){
-                    errorsInReusablePuzzleInstanceForm.push("<%= i18n.reusablePuzzles.errors.nullPuzzle%>",);
+                    errorsInReusablePuzzleInstanceForm.push("<%= i18n.reusablePuzzles.errors.nullPuzzle%>");
                 }
             }
             if(errorsInReusablePuzzleInstanceForm.length > 0){
@@ -1352,7 +1356,7 @@
                             <span class="edit_catalog_item building-block-icon material-icons"> edit
                             </span>
                         </button>
-                        <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")''>
+                        <button class="listButton linkButton" onclick='openClipboardModal("${asset.url}","${regexType}")'>
                             <span class="link_catalog_item building-block-icon material-icons"> link
                             </span>
                         </button>
@@ -1447,10 +1451,6 @@
                     </div>
             </td>
         </tr>`
-    }
-
-    function triggerClick() {
-        $("#inputFile").click();
     }
 
     function changeName(e){
