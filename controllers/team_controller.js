@@ -42,7 +42,8 @@ exports.create = async (req, res, next) => {
     const {user} = req.session;
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
-    const turnoId = params.turnoId || ((req.turn) ? req.turn.id : undefined)
+    const turnoId = params.turnoId || (req.turn ? req.turn.id : undefined);
+
     try {
         const existsTeam = await models.team.findOne({"where": {"name": body.name, turnoId}}, {transaction});
 

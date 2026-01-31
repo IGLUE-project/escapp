@@ -4,7 +4,7 @@ const { exec } = require("child_process");
 const path = require("path");
 const fs = require("fs/promises");
 const fsSync = require("fs");
-const {  fileTypeFromFile, fromFile  } = require("file-type");
+const { fileTypeFromFile, fromFile } = require("file-type");
 
 function downloadWithWget (url, destPath) {
     return new Promise((resolve) => {
@@ -62,7 +62,7 @@ module.exports = {
                     console.log(`Error downloading ${asset.url}`);
                     continue;
                 }
-                const fileFunction =  fileTypeFromFile || fromFile;
+                const fileFunction = fileTypeFromFile || fromFile;
                 const assetFileType = await fileFunction(downloadFilePathFull);
                 let assetMimetype;
 

@@ -148,7 +148,7 @@ exports.browseResources = async (req, res, next) => {
 exports.getAsset = async (req, res, next) => {
     const {asset_id, asset_extension} = req.params;
     let asset;
-    
+
 
     try {
         asset = await models.asset.findOne({"where": { "id": asset_id }});
@@ -156,8 +156,9 @@ exports.getAsset = async (req, res, next) => {
             res.status(404).send("Asset not found.");
             return;
         }
-        
+
         const filePath = path.join(__dirname, "..", asset.filePath);
+
         switch (asset.assetType) {
         case "video":
             const stat = fsSync.statSync(filePath);
@@ -228,7 +229,7 @@ exports.getAsset = async (req, res, next) => {
             res.sendFile(filePath);
         }
     } catch (err) {
-        // console.error(err);
+        // Console.error(err);
         res.status(404).send("Error loading asset");
     }
 };

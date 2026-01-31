@@ -10,7 +10,7 @@ let models;
  * Initialize models (call after app is loaded)
  * Returns the sequelize instance with models property
  */
-function initModels() {
+function initModels () {
     if (!models) {
         models = require("../../models");
     }
@@ -21,8 +21,9 @@ function initModels() {
  * Get all models from sequelize.models
  * @returns {Object} Object containing all Sequelize models
  */
-function getModels() {
+function getModels () {
     const sequelize = initModels();
+
     return sequelize.models;
 }
 
@@ -31,10 +32,13 @@ function getModels() {
  * @param {string} email - User email
  * @returns {Object} User instance or null
  */
-async function findUserByEmail(email) {
+async function findUserByEmail (email) {
     const { user } = getModels();
-    if (!user) return null;
-    return await user.findOne({ where: { username: email } });
+
+    if (!user) {
+        return null;
+    }
+    return await user.findOne({ "where": { "username": email } });
 }
 
 /**
@@ -42,9 +46,12 @@ async function findUserByEmail(email) {
  * @param {number} id - User ID
  * @returns {Object} User instance or null
  */
-async function findUserById(id) {
+async function findUserById (id) {
     const { user } = getModels();
-    if (!user) return null;
+
+    if (!user) {
+        return null;
+    }
     return await user.findByPk(id);
 }
 
@@ -53,9 +60,12 @@ async function findUserById(id) {
  * @param {Object} userData - User data
  * @returns {Object} Created user instance
  */
-async function createUser(userData) {
+async function createUser (userData) {
     const { user } = getModels();
-    if (!user) return null;
+
+    if (!user) {
+        return null;
+    }
     return await user.create(userData);
 }
 
@@ -64,9 +74,10 @@ async function createUser(userData) {
  * @param {number} id - User ID
  * @returns {number} Number of rows deleted
  */
-async function deleteUser(id) {
+async function deleteUser (id) {
     const { user } = getModels();
-    return await user.destroy({ where: { id } });
+
+    return await user.destroy({ "where": { id } });
 }
 
 /**
@@ -74,12 +85,13 @@ async function deleteUser(id) {
  * @param {number} id - Escape room ID
  * @returns {Object} Escape room instance or null
  */
-async function findEscapeRoomById(id) {
+async function findEscapeRoomById (id) {
     const { escapeRoom } = getModels();
-    if (!escapeRoom) return null;
-    return await escapeRoom.findByPk(id, {
-        include: ["puzzles", "hints", "turnos"]
-    });
+
+    if (!escapeRoom) {
+        return null;
+    }
+    return await escapeRoom.findByPk(id, {"include": ["puzzles", "hints", "turnos"]});
 }
 
 /**
@@ -87,9 +99,12 @@ async function findEscapeRoomById(id) {
  * @param {Object} escapeRoomData - Escape room data
  * @returns {Object} Created escape room instance
  */
-async function createEscapeRoomDB(escapeRoomData) {
+async function createEscapeRoomDB (escapeRoomData) {
     const { escapeRoom } = getModels();
-    if (!escapeRoom) return null;
+
+    if (!escapeRoom) {
+        return null;
+    }
     return await escapeRoom.create(escapeRoomData);
 }
 
@@ -98,10 +113,13 @@ async function createEscapeRoomDB(escapeRoomData) {
  * @param {number} id - Escape room ID
  * @returns {number} Number of rows deleted
  */
-async function deleteEscapeRoom(id) {
+async function deleteEscapeRoom (id) {
     const { escapeRoom } = getModels();
-    if (!escapeRoom) return 0;
-    return await escapeRoom.destroy({ where: { id } });
+
+    if (!escapeRoom) {
+        return 0;
+    }
+    return await escapeRoom.destroy({ "where": { id } });
 }
 
 /**
@@ -109,12 +127,13 @@ async function deleteEscapeRoom(id) {
  * @param {number} id - Team ID
  * @returns {Object} Team instance or null
  */
-async function findTeamById(id) {
+async function findTeamById (id) {
     const { team } = getModels();
-    if (!team) return null;
-    return await team.findByPk(id, {
-        include: ["teamMembers", "retos"]
-    });
+
+    if (!team) {
+        return null;
+    }
+    return await team.findByPk(id, {"include": ["teamMembers", "retos"]});
 }
 
 /**
@@ -122,9 +141,12 @@ async function findTeamById(id) {
  * @param {number} id - Puzzle ID
  * @returns {Object} Puzzle instance or null
  */
-async function findPuzzleById(id) {
+async function findPuzzleById (id) {
     const { puzzle } = getModels();
-    if (!puzzle) return null;
+
+    if (!puzzle) {
+        return null;
+    }
     return await puzzle.findByPk(id);
 }
 
@@ -133,10 +155,13 @@ async function findPuzzleById(id) {
  * @param {number} teamId - Team ID
  * @returns {Array} Array of solved puzzle records
  */
-async function findSolvedPuzzles(teamId) {
+async function findSolvedPuzzles (teamId) {
     const { retosSuperados } = getModels();
-    if (!retosSuperados) return [];
-    return await retosSuperados.findAll({ where: { teamId } });
+
+    if (!retosSuperados) {
+        return [];
+    }
+    return await retosSuperados.findAll({ "where": { teamId } });
 }
 
 /**
@@ -144,10 +169,13 @@ async function findSolvedPuzzles(teamId) {
  * @param {number} participantId - Participant ID
  * @returns {Array} Array of requested hint records
  */
-async function findRequestedHints(participantId) {
+async function findRequestedHints (participantId) {
     const { requestedHint } = getModels();
-    if (!requestedHint) return [];
-    return await requestedHint.findAll({ where: { participantId } });
+
+    if (!requestedHint) {
+        return [];
+    }
+    return await requestedHint.findAll({ "where": { participantId } });
 }
 
 /**
@@ -156,18 +184,22 @@ async function findRequestedHints(participantId) {
  * @param {number} turnoId - Turno ID
  * @returns {Object} Participant instance or null
  */
-async function findParticipant(oderId, turnoId) {
+async function findParticipant (oderId, turnoId) {
     const { participant } = getModels();
-    if (!participant) return null;
-    return await participant.findOne({ where: { oderId, turnoId } });
+
+    if (!participant) {
+        return null;
+    }
+    return await participant.findOne({ "where": { oderId, turnoId } });
 }
 
 /**
  * Count users in database
  * @returns {number} User count
  */
-async function countUsers() {
+async function countUsers () {
     const { User } = initModels();
+
     return await User.count();
 }
 
@@ -175,8 +207,9 @@ async function countUsers() {
  * Count escape rooms in database
  * @returns {number} Escape room count
  */
-async function countEscapeRooms() {
+async function countEscapeRooms () {
     const { EscapeRoom } = initModels();
+
     return await EscapeRoom.count();
 }
 
@@ -185,24 +218,24 @@ async function countEscapeRooms() {
  * Use with caution - only for cleanup after tests
  * @param {Object} options - Cleanup options
  */
-async function cleanupTestData(options = {}) {
+async function cleanupTestData (options = {}) {
     const m = initModels();
 
     if (options.users) {
         for (const email of options.users) {
-            await m.User.destroy({ where: { email } });
+            await m.User.destroy({ "where": { email } });
         }
     }
 
     if (options.escapeRooms) {
         for (const id of options.escapeRooms) {
-            await m.EscapeRoom.destroy({ where: { id } });
+            await m.EscapeRoom.destroy({ "where": { id } });
         }
     }
 
     if (options.teams) {
         for (const id of options.teams) {
-            await m.Team.destroy({ where: { id } });
+            await m.Team.destroy({ "where": { id } });
         }
     }
 }
@@ -211,7 +244,7 @@ async function cleanupTestData(options = {}) {
  * Reset test database to initial seed state
  * WARNING: This will delete all data and re-seed
  */
-async function resetDatabase() {
+async function resetDatabase () {
     // This would need to run the seed scripts
     // For now, we rely on the pretest script to handle this
     console.warn("Database reset should be done via npm run pretest");
@@ -221,8 +254,9 @@ async function resetDatabase() {
  * Close database connection
  * Call this in afterAll to properly close connections
  */
-async function closeConnection() {
+async function closeConnection () {
     const sequelize = initModels();
+
     if (sequelize && typeof sequelize.close === "function") {
         await sequelize.close();
     }
@@ -232,7 +266,7 @@ async function closeConnection() {
  * Get the Sequelize instance
  * @returns {Object} Sequelize instance
  */
-function getSequelize() {
+function getSequelize () {
     return initModels();
 }
 

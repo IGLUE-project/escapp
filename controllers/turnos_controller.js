@@ -66,7 +66,6 @@ exports.isTurnStarted = (req, res, next) => {
 };
 
 
-
 // GET /escapeRooms/:escapeRoomId/activate
 exports.indexActivate = async (req, res, next) => {
     const {escapeRoom} = req;

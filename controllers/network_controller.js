@@ -12,11 +12,12 @@ const fs = require("fs/promises");
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level, license) => {
     try {
         const queryToExecute = queries.escapeRoom.text(before, after, lang, participation, area, duration, format, level, license);
-        
+
         let results = await models.escapeRoom.findAll(queryToExecute);
         // Fuzzy finding of escaperooms
         const fuzzyThreshold = 0.4;
         const filteredResults = [];
+
         results = results.sort((a, b) => -fuzzy(value, a.title || "") - fuzzy(value, a.description || "") * 0.7 + fuzzy(value, b.title || "") + fuzzy(value, b.description || "") * 0.7);
         results = results.slice((page - 1) * limit, page * limit);
 
@@ -24,7 +25,6 @@ const getResultsFromInstance = async (value, before, after, lang, page = 1, limi
             const result = results[index];
 
             if (fuzzy(value, result.title || "") > fuzzyThreshold || fuzzy(value, result.description || "") > fuzzyThreshold) {
-               
                 filteredResults.push(result);
             } else {
                 break;
@@ -52,8 +52,10 @@ exports.searchInInstance = async (req, res, next) => { // Busqueda local
 
 exports.renderSearch = async (req, res) => {
     let instances = [];
+
     try {
         const dbUrls = await models.adminConfig.findOne({"attributes": ["urls"], "where": {"id": 1}});
+
         instances = JSON.parse(dbUrls.urls);
     } catch (error) {
         instances = urlsDefault;
@@ -113,12 +115,13 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
     let localR = [];
     const dbUrls = await models.adminConfig.findOne({"attributes": ["urls"], "where": {"id": 1}});
     let jsonUrlsDB = [];
+
     try {
         jsonUrlsDB = JSON.parse(dbUrls.urls);
     } catch (error) {
         console.warn("No valid URLs in DB, using default URLs.");
     }
-    const urls = instance ? [instance] : (jsonUrlsDB || urlsDefault);
+    const urls = instance ? [instance] : jsonUrlsDB || urlsDefault;
 
     try {
         localR = await getResultsFromInstance(query, before, after, lang, page, limit, participation, area, duration, format, level, license);
@@ -172,13 +175,14 @@ exports.sendContactEmail = async (req, res, next) => {
         }
 
         // Use provided contact info or fall back to user data
-        const senderName = contactName ||  "Anonymous";
+        const senderName = contactName || "Anonymous";
         const senderEmail = contactEmail || "No email provided";
-        
-        const str =  await renderEJS("views/emails/contact.ejs", {i18n, "user": senderName, "message": text, "userEmail": senderEmail, escapeRoomTitle }, {});
-        await mailer.sendEmail(author.username, "Escapp: " + i18n.network.contact.subject, str, str);
+
+        const str = await renderEJS("views/emails/contact.ejs", {i18n, "user": senderName, "message": text, "userEmail": senderEmail, escapeRoomTitle }, {});
+
+        await mailer.sendEmail(author.username, `Escapp: ${i18n.network.contact.subject}`, str, str);
         req.flash("success", localI18n.network.contactForm.success);
-        res.redirect("/escapeRooms/"+req.escapeRoom.id);
+        res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
     } catch (error) {
         console.error(error);
         next(error);
@@ -188,8 +192,9 @@ exports.sendContactEmail = async (req, res, next) => {
 // GET /network/:escapeRoomId/json
 exports.getPreviewData = async (req, res) => {
     try {
-    const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPreview);
-    return res.json(escapeRoom.toJSON());    
+        const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPreview);
+
+        return res.json(escapeRoom.toJSON());
     } catch (error) {
         console.error("Error fetching preview data:", error);
         res.status(500).json({"error": "Error fetching preview data"});
@@ -202,16 +207,17 @@ exports.servePreviewRender = async (req, res, next) => {
         const {url, escapeRoomId} = req.query;
         const hostname = getHostname(req);
         const data = await tryFetch(`${url || hostname}/network/${escapeRoomId}/json`);
+
         if (!data || !data.ok) {
             throw new Error("Failed to fetch preview data");
         }
         const escapeRoomData = await data.json();
-        
+
         const escapeRoom = await models.escapeRoom.build(escapeRoomData);
+
         escapeRoom.author = await models.user.build(escapeRoomData.author);
 
-        return res.render("escapeRooms/show", {"escapeRoom":  escapeRoom, "user": req.session.user, "isParticipant": false, fromNetwork: true, networkUrl: url, referer: req.get('referer')});
-
+        return res.render("escapeRooms/show", {escapeRoom, "user": req.session.user, "isParticipant": false, "fromNetwork": true, "networkUrl": url, "referer": req.get("referer")});
     } catch (error) {
         console.error("Error fetching preview data:", error);
         next(error);
@@ -220,24 +226,30 @@ exports.servePreviewRender = async (req, res, next) => {
 
 
 exports.importFromNetwork = async (req, res, next) => {
-
     try {
-    const { url, escapeRoomId } = req.query;
+        const { url, escapeRoomId } = req.query;
 
-        if (!url) throw new Error("No url in query params");
-        if (!escapeRoomId) throw new Error("No escape room id");
+        if (!url) {
+            throw new Error("No url in query params");
+        }
+        if (!escapeRoomId) {
+            throw new Error("No escape room id");
+        }
         const urlFetch = `${url}/escapeRooms/${escapeRoomId}/export`;
         const exportRes = await fetch(urlFetch);
-        if (!exportRes.ok) throw new Error("Fail to fetch");
+
+        if (!exportRes.ok) {
+            throw new Error("Fail to fetch");
+        }
         const arrayBuffer = await exportRes.arrayBuffer();
         const zipBuffer = Buffer.from(arrayBuffer);
 
         const tmpPath = path.join(os.tmpdir(), `escapeRoom-${escapeRoomId}-${crypto.randomUUID()}.zip`);
+
         await fs.writeFile(tmpPath, zipBuffer);
         req.tmpPath = tmpPath;
         next();
-    }  catch(e) {
+    } catch (e) {
         next(e);
     }
-
-}
+};

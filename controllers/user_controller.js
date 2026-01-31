@@ -38,7 +38,7 @@ exports.new = (req, res) => {
         user,
         "register": true,
         "redir": req.query.redir,
-        
+
         "admin": false
     });
 };
@@ -95,7 +95,7 @@ exports.create = async (req, res, next) => {
         req.flash("error", e);
         res.render("index", {
             user,
-            
+
             "register": true,
             redir
         });
@@ -172,7 +172,8 @@ exports.update = async (req, res, next) => {
     let scs = i18n.common.flash.successEditingUser;
 
     const availableLanguages = await getAvailableLanguagesArray();
-    if (availableLanguages.some(l=>l===body.lang)) {
+
+    if (availableLanguages.some((l) => l === body.lang)) {
         user.lang = body.lang;
         if (req.cookies && req.cookies.locale && (user.lang !== body.lang || req.cookies.locale !== body.lang)) {
             res.cookie("locale", body.lang);
@@ -345,7 +346,7 @@ exports.resetPasswordHash = (req, res, next) => {
     const {code, email} = query;
 
     if (user && user.password === code && user.username === email) {
-        res.render("index", {  "resetPasswordHash": true, user });
+        res.render("index", { "resetPasswordHash": true, user });
     } else {
         next();
     }
@@ -382,7 +383,7 @@ exports.resendConfirmationEmail = async (req, res) => {
     const {i18n} = res.locals;
     const {user} = req;
 
-    const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${user.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName":  getHostname(req)}, {});
+    const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${user.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName": getHostname(req)}, {});
 
     mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str);
     req.flash("success", i18n.common.flash.confirmationEmailResent);
@@ -401,7 +402,7 @@ exports.confirmEmail = async (req, res, next) => {
             req.flash("success", i18n.common.flash.emailSuccessfullyConfirmed);
             res.render("index", {
                 user,
-                
+
                 "admin": false,
                 "redir": "/"
             });

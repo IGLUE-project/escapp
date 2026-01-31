@@ -192,7 +192,6 @@ exports.create = async (req, res) => {
         }));
 
 
-
         await models.subject.bulkCreate(newSubjects, {transaction});
 
         const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": er.id }, {transaction});
@@ -412,10 +411,10 @@ exports.returnThumbnail = async (req, res, next) => {
 
         if (thumbnail && thumbnail.public_id) {
             res.sendFile(path.join(__dirname, `../uploads/thumbnails/${thumbnail.public_id}`));
-            return;
         } else {
             const alt = req.escapeRoom.getThumbnailUrl();
-            if (alt){
+
+            if (alt) {
                 res.sendFile(path.join(__dirname, "..", "public", alt));
                 return;
             }
@@ -687,17 +686,18 @@ exports.admin = async (req, res, next) => {
     let page = parseInt(req.query.page || 1, 10);
 
     // Parse verified filter: "all", "verified", "notVerified", "needsReverification"
-    // verified=true means verified AND isLastVersionVerified (truly verified)
-    // verified="changed" means verified but NOT isLastVersionVerified (needs re-verification)
-    // verified=false means not verified at all
-    let verifiedFilter = req.query.verified;
+    // Verified=true means verified AND isLastVersionVerified (truly verified)
+    // Verified="changed" means verified but NOT isLastVersionVerified (needs re-verification)
+    // Verified=false means not verified at all
+    const verifiedFilter = req.query.verified;
     let verifiedParam;
+
     if (verifiedFilter === "verified") {
-        verifiedParam = true; // verified=true AND isLastVersionVerified=true
+        verifiedParam = true; // Verified=true AND isLastVersionVerified=true
     } else if (verifiedFilter === "notVerified") {
-        verifiedParam = false; // verified=false
+        verifiedParam = false; // Verified=false
     } else if (verifiedFilter === "needsReverification") {
-        verifiedParam = "changed"; // verified=true AND isLastVersionVerified=false
+        verifiedParam = "changed"; // Verified=true AND isLastVersionVerified=false
     }
     // If "all" or undefined, verifiedParam stays undefined (no filter)
 
@@ -714,6 +714,7 @@ exports.admin = async (req, res, next) => {
 
         if (page > pages && pages !== 0) {
             const params = new URLSearchParams();
+
             params.set("page", pages);
             if (search) {
                 params.set("search", search);
@@ -809,7 +810,7 @@ exports.confirmCollaborators = async (req, res, next) => {
             await escapeRoom.removeUserCoAuthor(req.session.user.id, {transaction});
             await transaction.commit();
             req.flash("success", i18n.common.flash.successCancellingCollaborator);
-            res.redirect(`/escapeRooms`);
+            res.redirect("/escapeRooms");
         } else { // Accept collaboration
             await models.coAuthors.update(
                 { "confirmed": true },
@@ -831,8 +832,6 @@ exports.confirmCollaborators = async (req, res, next) => {
             req.flash("success", i18n.common.flash.successConfirmingCollaborator);
             res.redirect(`/escapeRooms/${escapeRoom.id}/edit`);
         }
-
-        
     } catch (error) {
         await transaction.rollback();
         console.error(error);
@@ -873,7 +872,7 @@ exports.deleteCollaborators = async (req, res, next) => {
             if (collab.id === req.session.user.id) {
                 res.redirect(`/escapeRooms/${escapeRoom.id}`);
             } else {
-                res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);                
+                res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
             }
         } catch (error) {
             await transaction.rollback();
@@ -949,7 +948,8 @@ exports.export = async (req, res, next) => {
 
         const toExport = escapeRoom.toJSON ? escapeRoom.toJSON() : escapeRoom.dataValues;
         const all = getFilePathsForER(toExport);
-        toExport.server =  getHostname(req);
+
+        toExport.server = getHostname(req);
 
         const zipName = `escape-room-${escapeRoom.id}.zip`;
 
@@ -971,11 +971,12 @@ exports.export = async (req, res, next) => {
             let filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
 
             if (item.pathStr && item.pathStr.assetType === "webapp") {
-                filePathOriginal = item.pathStr.contentPath.replace("/index.html","");
+                filePathOriginal = item.pathStr.contentPath.replace("/index.html", "");
             }
             const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
             const filePath = path.join(process.cwd(), relativeFromRoot);
             const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
+
             if (fsSync.existsSync(filePath)) {
                 const stats = fsSync.statSync(filePath);
 
@@ -985,22 +986,18 @@ exports.export = async (req, res, next) => {
                         : `${folderName}`;
 
                     archive.directory(filePath, targetPath);
-
                 } else if (stats.isFile()) {
                     const targetPath = idFolder
                         ? `${folderName}/${idFolder}/${originalName}`
                         : `${folderName}/${originalName}`;
 
-                    archive.file(filePath, {
-                        name: targetPath
-                    });
+                    archive.file(filePath, {"name": targetPath});
                 } else {
                     console.warn("Path exists but is neither file nor directory, skipping:", filePath);
                 }
             } else {
                 console.warn("File not found, skipping:", filePath);
             }
-
         }
 
         archive.append(JSON.stringify(toExport, null, 2), { "name": "escape-room.json" });
@@ -1013,114 +1010,120 @@ exports.export = async (req, res, next) => {
 
 exports.importView = async (_, res) => {
     res.render("escapeRooms/import");
-}
+};
 
-const getReplacements = function(all) {
+const getReplacements = function (all) {
     const currentDate = Date.now();
 
     const mapping = { };
-    for (let item of all) {
-        const {old} = item;
-        let newName = Date.now() + "_" + ((old.length > 200) ? old.slice(60) : old);
 
-        if(mapping[item.field]) {
-            mapping[item.field][old] =  newName
+    for (const item of all) {
+        const {old} = item;
+        const newName = `${Date.now()}_${old.length > 200 ? old.slice(60) : old}`;
+
+        if (mapping[item.field]) {
+            mapping[item.field][old] = newName;
         } else {
-            mapping[item.field] = {[old]:  newName}
+            mapping[item.field] = {[old]: newName};
         }
     }
     return mapping;
-}
+};
 
 exports.import = async (req, res, next) => {
-  const transaction = await sequelize.transaction();
-  try {
-    const zip = new AdmZip(req.tmpPath || req.file.path);
+    const transaction = await sequelize.transaction();
 
-    // Try to get escapeRoom.json from the root
-    const entry = zip.getEntry("escape-room.json");
+    try {
+        const zip = new AdmZip(req.tmpPath || req.file.path);
 
-    if (!entry || entry.isDirectory) {
-      return res.status(400).send("escape-room.json not found at ZIP root");
-    }
+        // Try to get escapeRoom.json from the root
+        const entry = zip.getEntry("escape-room.json");
 
-    const rawJson = entry.getData().toString("utf8");
-
-    const escapeRoom = JSON.parse(rawJson);
-    const all = getFilePathsForER(escapeRoom);
-    const replacements = getReplacements(all); 
-    for (const fi in all) {
-        const item = all[fi];
-        const folderName = item.field; // E.g. "assets"
-        const idFolder = item.pathStr.id && String(item.pathStr.id); // E.g. "670"
-        let filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
-        if (item.pathStr && item.pathStr.assetType === "webapp") {
-            filePathOriginal = item.pathStr.contentPath.replace("/index.html", "");
+        if (!entry || entry.isDirectory) {
+            return res.status(400).send("escape-room.json not found at ZIP root");
         }
-        const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
-        const filePath = path.join(process.cwd(), relativeFromRoot);
-        const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
-        let replacementName = originalName;
-        if (replacements[folderName] && replacements[folderName][originalName]) {
-            replacementName = replacements[folderName][originalName];
-        }
-        const route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
-        let newRoute = item.pathStr.contentPath;
-        if (item.pathStr && item.pathStr.assetType === "webapp") {
-            newRoute = item.pathStr.contentPath.replace("/index.html", "");
-        }
-        newRoute = newRoute.replace(item.old,replacementName);
-        const fileZip = zip.getEntry(route)
-        const newRouteRelative = newRoute.replace(/^[/\\]+/, "");
+
+        const rawJson = entry.getData().toString("utf8");
+
+        const escapeRoom = JSON.parse(rawJson);
+        const all = getFilePathsForER(escapeRoom);
+        const replacements = getReplacements(all);
+
+        for (const fi in all) {
+            const item = all[fi];
+            const folderName = item.field; // E.g. "assets"
+            const idFolder = item.pathStr.id && String(item.pathStr.id); // E.g. "670"
+            let filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
+
+            if (item.pathStr && item.pathStr.assetType === "webapp") {
+                filePathOriginal = item.pathStr.contentPath.replace("/index.html", "");
+            }
+            const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
+            const filePath = path.join(process.cwd(), relativeFromRoot);
+            const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
+            let replacementName = originalName;
+
+            if (replacements[folderName] && replacements[folderName][originalName]) {
+                replacementName = replacements[folderName][originalName];
+            }
+            const route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
+            let newRoute = item.pathStr.contentPath;
+
+            if (item.pathStr && item.pathStr.assetType === "webapp") {
+                newRoute = item.pathStr.contentPath.replace("/index.html", "");
+            }
+            newRoute = newRoute.replace(item.old, replacementName);
+            const fileZip = zip.getEntry(route);
+            const newRouteRelative = newRoute.replace(/^[/\\]+/, "");
 
 
-        if (fileZip && !fileZip.isDirectory) {
+            if (fileZip && !fileZip.isDirectory) {
             // Single-file case
-            const data = fileZip.getData();
+                const data = fileZip.getData();
 
-            const targetPath = path.join(__dirname, "..", newRouteRelative);
-            
-            fsSync.mkdirSync(path.dirname(targetPath), { recursive: true });
-            fsSync.writeFileSync(targetPath, data);
+                const targetPath = path.join(__dirname, "..", newRouteRelative);
 
-        } else {
-            // Directory case: extract everything under route/
-            const prefix = route.endsWith("/") ? route : `${route}/`;
-
-            const entries = zip.getEntries().filter(e => e.entryName.startsWith(prefix));
-
-            if (entries.length === 0) {
-                console.warn("No file or folder entries found in zip for:", route);
-            } else {
-                for (const entry of entries) {
-                if (entry.isDirectory) continue;
-
-                const data = entry.getData();
-
-                // Path inside the folder, relative to `route/`
-                const innerRel = entry.entryName.slice(prefix.length);
-
-                // Write into the destination folder path (newRouteRelative)
-                const targetPath = path.join(__dirname, "..", newRouteRelative, innerRel);
-
-                fsSync.mkdirSync(path.dirname(targetPath), { recursive: true });
+                fsSync.mkdirSync(path.dirname(targetPath), { "recursive": true });
                 fsSync.writeFileSync(targetPath, data);
+            } else {
+            // Directory case: extract everything under route/
+                const prefix = route.endsWith("/") ? route : `${route}/`;
+
+                const entries = zip.getEntries().filter((e) => e.entryName.startsWith(prefix));
+
+                if (entries.length === 0) {
+                    console.warn("No file or folder entries found in zip for:", route);
+                } else {
+                    for (const entry of entries) {
+                        if (entry.isDirectory) {
+                            continue;
+                        }
+
+                        const data = entry.getData();
+
+                        // Path inside the folder, relative to `route/`
+                        const innerRel = entry.entryName.slice(prefix.length);
+
+                        // Write into the destination folder path (newRouteRelative)
+                        const targetPath = path.join(__dirname, "..", newRouteRelative, innerRel);
+
+                        fsSync.mkdirSync(path.dirname(targetPath), { "recursive": true });
+                        fsSync.writeFileSync(targetPath, data);
+                    }
                 }
             }
         }
+        const authorId = req.session && req.session.user && req.session.user.id || 0;
+        const newTitle = escapeRoom.title;
+        const currentUser = req.session.user;
+        const prevUrl = escapeRoom.server;
+        const currentUrl = getHostname(req);
+        const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, prevUrl, currentUrl, replacements, transaction);
+
+        res.redirect(`/escapeRooms/${saved.id}`);
+    } catch (err) {
+        req.flash("error", err);
+        console.error(err);
+        next(err);
     }
-    const authorId = req.session && req.session.user && req.session.user.id || 0;
-    const newTitle = escapeRoom.title;
-    const currentUser = req.session.user;
-    const prevUrl = escapeRoom.server;
-    const currentUrl = getHostname(req);
-    const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, prevUrl, currentUrl, replacements, transaction);
-    res.redirect("/escapeRooms/" + saved.id);
-
-  } catch (err) {
-    req.flash("error",err)
-    console.error(err)
-    next(err)
-  }
-
 };

@@ -32,7 +32,7 @@ exports.maxIdleTime = maxIdleTime;
  */
 exports.loginRequired = (req, res, next) => {
     if (req.session.user) {
-        if ((req.path != "/accept-new") && (!req.session.user.lastAcceptedTermsDate ||
+        if (req.path != "/accept-new" && (!req.session.user.lastAcceptedTermsDate ||
             req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY)) {
             return res.redirect("/accept-new");
         } else if (req.route.path === "/uploads/thumbnails/:file_name") { // Allows to access thumbnails...
@@ -42,7 +42,7 @@ exports.loginRequired = (req, res, next) => {
         } else if (req.session.user.anonymized) {
             if (req.session.user.onlyForER) {
                 if (req.escapeRoom) {
-                    if ((req.escapeRoom.id == req.session.user.onlyForER) || req.escapeRoom.isPubliclyAccessible) {
+                    if (req.escapeRoom.id == req.session.user.onlyForER || req.escapeRoom.isPubliclyAccessible) {
                         return next();
                     }
                     return res.redirect(`/escapeRooms/${req.session.user.onlyForER}`);
@@ -60,9 +60,8 @@ exports.loginRequired = (req, res, next) => {
                 return res.redirect(`/escapeRooms/${req.escapeRoom.id}?token=${req.query.token}`);
             }
             return res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
-        } else {
-            return res.redirect(`/?redir=${req.param("redir") || req.url}`);
-        }    
+        }
+        return res.redirect(`/?redir=${req.param("redir") || req.url}`);
     }
     return res.redirect(`/?redir=${req.param("redir") || req.url}`);
 };
@@ -179,6 +178,7 @@ exports.authShowEscapeRoom = async (req, res, next) => {
 
 exports.authShowEscapeRoomOrPending = async (req, res, next) => {
     const er = req.escapeRoom;
+
     if (er && (er.isAccessibleToAllUsers || er.allowGuests)) {
         return next();
     }
@@ -281,7 +281,7 @@ exports.authJoinEscapeRoom = (req, res, next) => {
     if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         res.status(403);
         req.flash("error", i18n.user.teacherCannotJoin);
-        return res.redirect("/escapeRooms/" + er.id);
+        return res.redirect(`/escapeRooms/${er.id}`);
     }
     next();
 };

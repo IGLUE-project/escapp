@@ -251,8 +251,8 @@ router.get("/network/searchInInstance", networkController.searchInInstance);
 router.get("/network/query", networkController.searchInNetwork);
 router.post("/network/:escapeRoomId(\\d+)/sendcontactemail", networkController.sendContactEmail);
 router.get("/network/:escapeRoomId(\\d+)/json", sessionController.loginOrGuestAccessRequired, sessionController.authShowEscapeRoom, networkController.getPreviewData);
-router.get("/network/preview",  networkController.servePreviewRender);
+router.get("/network/preview", networkController.servePreviewRender);
 router.post("/network/import", sessionController.loginRequired, networkController.importFromNetwork, escapeRoomController.import);
-router.get(["/network/search","/network"], networkController.renderSearch);
+router.get(["/network/search", "/network"], networkController.renderSearch);
 
 module.exports = router;

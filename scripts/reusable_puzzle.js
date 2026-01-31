@@ -39,7 +39,7 @@ exports.addReusablePuzzle = async function (name, form, zipPath, thumbnailPath, 
 
         const [reusablePuzzle] = await models.reusablePuzzle.upsert({ name }, { "transaction": t });
         const reusablePuzzleDir = path.join(__dirname, `../reusablePuzzles/installed/${reusablePuzzle.name}`);
-        const reusablePuzzleInstructionsDir = path.join(reusablePuzzleDir, `instructions`);
+        const reusablePuzzleInstructionsDir = path.join(reusablePuzzleDir, "instructions");
 
         if (!fs.existsSync(reusablePuzzleDir)) {
             fs.mkdirSync(reusablePuzzleDir, { "recursive": true });
@@ -57,6 +57,7 @@ exports.addReusablePuzzle = async function (name, form, zipPath, thumbnailPath, 
         await zip.close();
 
         let instructionsText = "";
+
         if (Object.keys(instructions).length > 0) {
             for (const [lang, instruction] of Object.entries(instructions)) {
                 fs.copyFileSync(instruction, path.join(reusablePuzzleInstructionsDir, `${lang}.pdf`));
@@ -65,7 +66,7 @@ exports.addReusablePuzzle = async function (name, form, zipPath, thumbnailPath, 
             reusablePuzzle.instructions = instructionsText;
         }
 
-        if((typeof order === "number")&&(order > 0)){
+        if (typeof order === "number" && order > 0) {
             reusablePuzzle.order = order;
         }
 

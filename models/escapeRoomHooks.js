@@ -1,10 +1,7 @@
 // Definition of hooks for the escapeRoom model:
 
 
-
-module.exports = ({ escapeRoom, turno }) =>  {
-
-
+module.exports = ({ escapeRoom, turno }) => {
     escapeRoom.addHook("beforeSave", async (er, options) => {
         let [publicShift] = await er.getTurnos({"where": {"place": "_PUBLIC"}});
 
@@ -49,6 +46,7 @@ module.exports = ({ escapeRoom, turno }) =>  {
         er.isAccessibleToAllUsers = er.status === "completed" && er.scope === "public";
         const {isOpenRegistration} = require("../helpers/globalInstanceConfig");
         const openRegistration = await isOpenRegistration();
+
         er.isPubliclyAccessible = er.isAccessibleToAllUsers && (openRegistration || er.allowGuests);
         er.isNetworkAccessible = er.isPubliclyAccessible && er.verified;
     });

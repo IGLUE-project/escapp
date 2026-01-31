@@ -54,17 +54,18 @@ exports.getParticipant = getParticipant;
 
 const getReusablePuzzleIdByName = async (rpName) => {
     try {
-        const reus = await models.reusablePuzzle.findOne({where: {name: rpName}});
+        const reus = await models.reusablePuzzle.findOne({"where": {"name": rpName}});
+
         if (reus) {
             return reus.id;
         }
-        throw new Error("No reusable puzzle with the name " + rpName)
-    } catch(e) {
+        throw new Error(`No reusable puzzle with the name ${rpName}`);
+    } catch (e) {
         throw new Error(e);
     }
-}
+};
 
-exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, currentUrl, fileMapping = {}, transaction) {
+exports.cloneER = async function (er, authorId, newTitle, currentUser, prevUrl, currentUrl, fileMapping = {}, transaction) {
     let {subjects, duration, license, field, format, level, description, scope, invitation, teamSize, minTeamSize, teamAppearance, classAppearance, lang, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, afterInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, automatedHints, supportLink, automaticAttendance, hybridInstructions, instructions, reusablePuzzleInstances, scenes, allowUserToResetTeamProgress} = er;
 
     const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -81,28 +82,28 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     if (reusablePuzzleInstances && reusablePuzzleInstances.length) {
         include.push({
             "model": models.reusablePuzzleInstance,
-            "include": [models.reusablePuzzle,  models.puzzle]
+            "include": [models.reusablePuzzle, models.puzzle]
         });
     }
 
-    
+
     lang = lang || "en";
-    let theReusablePuzzleInstances = undefined;
+    let theReusablePuzzleInstances;
 
     if (reusablePuzzleInstances) {
         theReusablePuzzleInstances = [];
 
         for (const instance of reusablePuzzleInstances) {
             theReusablePuzzleInstances.push({
-                name: instance.name,
-                config: instance.config,
-                reusablePuzzleId: await getReusablePuzzleIdByName(instance.reusablePuzzle.name)
+                "name": instance.name,
+                "config": instance.config,
+                "reusablePuzzleId": await getReusablePuzzleIdByName(instance.reusablePuzzle.name)
             });
         }
     }
     const escapeRoom = models.escapeRoom.build({
         "title": newTitle,
-        subjects: subjects ? subjects.map((s) => ({ "subject": s.subject })) : [],
+        "subjects": subjects ? subjects.map((s) => ({ "subject": s.subject })) : [],
         duration,
         description,
         scope,
@@ -120,8 +121,8 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
         posttest,
         numQuestions,
         invitation,
-        hybridInstructions: (fileMapping["hybridInstructions"] && hybridInstructions && fileMapping["hybridInstructions"][hybridInstructions]) ? fileMapping["hybridInstructions"][hybridInstructions] : hybridInstructions, 
-        instructions: (fileMapping["instructions"] && instructions && fileMapping["instructions"][instructions]) ? fileMapping["instructions"][instructions] : instructions, 
+        "hybridInstructions": fileMapping.hybridInstructions && hybridInstructions && fileMapping.hybridInstructions[hybridInstructions] ? fileMapping.hybridInstructions[hybridInstructions] : hybridInstructions,
+        "instructions": fileMapping.instructions && instructions && fileMapping.instructions[instructions] ? fileMapping.instructions[instructions] : instructions,
         numRight,
         feedback,
         forbiddenLateSubmissions,
@@ -156,33 +157,35 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
             score,
             "hints": [...hints].map(({content, "order": hintOrder, category}) => ({content, "order": hintOrder, category}))
         })),
-        "hintApp": hintApp ? uploadsHelper.getFields(hintApp, fileMapping["hintApp"]) : undefined,
+        "hintApp": hintApp ? uploadsHelper.getFields(hintApp, fileMapping.hintApp) : undefined,
         "reusablePuzzleInstances": theReusablePuzzleInstances,
-        "attachment": attachment ?  uploadsHelper.getFields(attachment, fileMapping["attachment"]) : undefined
+        "attachment": attachment ? uploadsHelper.getFields(attachment, fileMapping.attachment) : undefined
     }, {include});
-    
+
     const saved = await escapeRoom.save({transaction});
     const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
     const teamCreated = await models.team.create({ "name": currentUser.name, "turnoId": testShift.id}, {transaction});
     // Convert to strings for consistent comparison
-    const oldPuzzleIds = er.puzzles ? er.puzzles.map(p => String(p.id)): [];
-    const newPuzzleIds = saved.puzzles ? saved.puzzles.map(p => String(p.id)): [];
+    const oldPuzzleIds = er.puzzles ? er.puzzles.map((p) => String(p.id)) : [];
+    const newPuzzleIds = saved.puzzles ? saved.puzzles.map((p) => String(p.id)) : [];
 
     // Update puzzles on reusablePuzzleInstances to point to new puzzle IDs
-    for (let rpi in reusablePuzzleInstances) {
+    for (const rpi in reusablePuzzleInstances) {
         const oldRPI = reusablePuzzleInstances[rpi];
         const newRPI = saved.reusablePuzzleInstances[rpi];
 
         if (oldRPI.puzzles && oldRPI.puzzles.length) {
             const newPuzzlesForRPI = [];
+
             for (const oldPuzzle of oldRPI.puzzles) {
                 const puzzleIndex = oldPuzzleIds.indexOf(String(oldPuzzle.id));
+
                 if (puzzleIndex !== -1) {
                     newPuzzlesForRPI.push(saved.puzzles[puzzleIndex]);
                     if (newRPI.config) {
                         newRPI.config = newRPI.config.replaceAll(
-                            '\\"puzzle\\":\\"' + String(oldPuzzle.id) + '\\"',
-                            '\\"puzzle\\":\\"' + String(saved.puzzles[puzzleIndex].id) + '\\"'
+                            `\\"puzzle\\":\\"${String(oldPuzzle.id)}\\"`,
+                            `\\"puzzle\\":\\"${String(saved.puzzles[puzzleIndex].id)}\\"`
                         );
                     }
                 }
@@ -192,34 +195,38 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
         }
 
         saved.teamInstructions = saved.teamInstructions.replaceAll(
-            "/escapeRooms/"+er.id+"/reusablePuzzleInstances/"+oldRPI.id,
-            "/escapeRooms/"+saved.id+"/reusablePuzzleInstances/"+newRPI.id);
+            `/escapeRooms/${er.id}/reusablePuzzleInstances/${oldRPI.id}`,
+            `/escapeRooms/${saved.id}/reusablePuzzleInstances/${newRPI.id}`
+        );
     }
     const filteredAssets = Array.isArray(assets)
-    ? assets.filter(a => a?.assetType)
-    : [];
+        ? assets.filter((a) => a?.assetType)
+        : [];
 
     const theAssets = filteredAssets.length
-    ? filteredAssets.map(asset => ({
-        ...uploadsHelper.getFieldsForAssetNoURL(asset, fileMapping["assets"]),
-        userId: authorId,
-        escapeRoomId: saved.id
+        ? filteredAssets.map((asset) => ({
+            ...uploadsHelper.getFieldsForAssetNoURL(asset, fileMapping.assets),
+            "userId": authorId,
+            "escapeRoomId": saved.id
         }))
-    : undefined;
+        : undefined;
 
     const savedAssets = theAssets
-    ? await models.asset.bulkCreate(theAssets, { transaction })
-    : [];
+        ? await models.asset.bulkCreate(theAssets, { transaction })
+        : [];
 
 
     for (const [i, oldAsset] of filteredAssets.entries()) {
         const newAsset = savedAssets[i];
-        if (!newAsset) continue;
-        
+
+        if (!newAsset) {
+            continue;
+        }
+
         // Update relative references too, if those exist in configs
         const fromRel = `/assets/${oldAsset.id}.`;
-        const toRel   = `/assets/${newAsset.id}.`;
-       
+        const toRel = `/assets/${newAsset.id}.`;
+
         if (typeof saved.description === "string") {
             saved.description = saved.description.replaceAll(fromRel, toRel);
         }
@@ -249,8 +256,7 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
             await newAsset.save({ transaction });
         }
     }
-         
-    
+
 
     if (typeof saved.description === "string") {
         saved.description = saved.description.replaceAll(prevUrl, currentUrl);
@@ -271,32 +277,36 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     await saved.save({transaction});
     if (scenes) {
         const newScenes = [];
-        const hostName =  currentUrl;
-        for (let scene in scenes) {
+        const hostName = currentUrl;
+
+        for (const scene in scenes) {
             let oldScene = scenes[scene];
             const oldERid = er.id;
             const newERid = saved.id;
-            const oldAssetsIds = assets ? assets.map(a=>a.id): [];
-            const newAssetsIds = savedAssets ? savedAssets.map(a=>a.id) : [];
-            const oldReusablePuzzleInstances = reusablePuzzleInstances ? reusablePuzzleInstances.map(rpi=>rpi.id) : [];
-            const newReusablePuzzleInstances = saved.reusablePuzzleInstances ? saved.reusablePuzzleInstances.map(rpi=>rpi.id) : [];
-            oldScene = oldScene.toJSON? oldScene.toJSON() : oldScene;
-            const newScene = replaceSceneUrls(oldScene, oldERid, newERid, oldAssetsIds, newAssetsIds, oldReusablePuzzleInstances, newReusablePuzzleInstances, prevUrl, hostName); 
-            newScenes.push(newScene)
+            const oldAssetsIds = assets ? assets.map((a) => a.id) : [];
+            const newAssetsIds = savedAssets ? savedAssets.map((a) => a.id) : [];
+            const oldReusablePuzzleInstances = reusablePuzzleInstances ? reusablePuzzleInstances.map((rpi) => rpi.id) : [];
+            const newReusablePuzzleInstances = saved.reusablePuzzleInstances ? saved.reusablePuzzleInstances.map((rpi) => rpi.id) : [];
+
+            oldScene = oldScene.toJSON ? oldScene.toJSON() : oldScene;
+            const newScene = replaceSceneUrls(oldScene, oldERid, newERid, oldAssetsIds, newAssetsIds, oldReusablePuzzleInstances, newReusablePuzzleInstances, prevUrl, hostName);
+
+            newScenes.push(newScene);
         }
 
         if (newScenes.length > 0) {
             const savedScenes = await models.scene.bulkCreate(newScenes, {transaction});
-            for (let scene in scenes) { 
+
+            for (const scene in scenes) {
                 const oldScene = scenes[scene];
                 const oldERid = er.id;
                 const newERid = saved.id;
                 const newSceneid = savedScenes[scene].id;
-                saved.teamInstructions = saved.teamInstructions.replaceAll("/" + oldERid + "/scenes/" + oldScene.id, "/" + newERid + "/scenes/" + newSceneid);
+
+                saved.teamInstructions = saved.teamInstructions.replaceAll(`/${oldERid}/scenes/${oldScene.id}`, `/${newERid}/scenes/${newSceneid}`);
             }
             await saved.save({transaction});
-        }                            
-
+        }
     }
 
     await teamCreated.addTeamMembers(currentUser.id, {transaction});
@@ -305,48 +315,56 @@ exports.cloneER =  async function(er, authorId, newTitle, currentUser, prevUrl, 
     console.log(JSON.stringify(saved, null, 5));
 
     return saved;
-}
+};
 
-exports.getFilePathsForER = function(toExport) {
-
-
+exports.getFilePathsForER = function (toExport) {
     const assetCandidates = toExport.assets.map((ast) => ({
         "field": "assets",
         "pathStr": ast,
-        "old":  ast.fileId
+        "old": ast.fileId
     }));
-    const thumbnailCandidate = toExport.attachment ? [{
-        "field": "attachment",
-        "pathStr": {...toExport.attachment, 
-            contentPath: toExport.attachment.url,
-            filename : toExport.attachment.public_id
-        },
-        "old": toExport.attachment.public_id
-    }]: [];
-    const hybridInstructionsCandidate = toExport.hybridInstructions ? [{
-        "field": "hybridInstructions",
-        "pathStr": {
-            filename: toExport.hybridInstructions, 
-            contentPath: `/uploads/hybrid/${toExport.hybridInstructions}`
-        },
-        "old": toExport.hybridInstructions
-    }]: [];
-    const instructionsCandidate = toExport.instructions ? [{
-        "field": "instructions",
-        "pathStr": {
-            filename: toExport.instructions, 
-            contentPath: `/uploads/instructions/${toExport.instructions}`
-        },
-        "old": toExport.instructions
-    }]: [];     
-    const hintAppCandidate = toExport.hintApp ? [{
-        "field": "hintApp",
-        "pathStr": {
-            ...toExport.hintApp, 
-            contentPath: toExport.hintApp.url,
-            filename : toExport.hintApp.public_id
-        },
-        "old": toExport.hintApp.public_id
-    }]: [];      
+    const thumbnailCandidate = toExport.attachment ? [
+        {
+            "field": "attachment",
+            "pathStr": {
+                ...toExport.attachment,
+                "contentPath": toExport.attachment.url,
+                "filename": toExport.attachment.public_id
+            },
+            "old": toExport.attachment.public_id
+        }
+    ] : [];
+    const hybridInstructionsCandidate = toExport.hybridInstructions ? [
+        {
+            "field": "hybridInstructions",
+            "pathStr": {
+                "filename": toExport.hybridInstructions,
+                "contentPath": `/uploads/hybrid/${toExport.hybridInstructions}`
+            },
+            "old": toExport.hybridInstructions
+        }
+    ] : [];
+    const instructionsCandidate = toExport.instructions ? [
+        {
+            "field": "instructions",
+            "pathStr": {
+                "filename": toExport.instructions,
+                "contentPath": `/uploads/instructions/${toExport.instructions}`
+            },
+            "old": toExport.instructions
+        }
+    ] : [];
+    const hintAppCandidate = toExport.hintApp ? [
+        {
+            "field": "hintApp",
+            "pathStr": {
+                ...toExport.hintApp,
+                "contentPath": toExport.hintApp.url,
+                "filename": toExport.hintApp.public_id
+            },
+            "old": toExport.hintApp.public_id
+        }
+    ] : [];
+
     return [...thumbnailCandidate, ...assetCandidates, ...hybridInstructionsCandidate, ...instructionsCandidate, ...hintAppCandidate];
-}
+};

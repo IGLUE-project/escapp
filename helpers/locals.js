@@ -112,7 +112,7 @@ module.exports = function (app) {
         }
     });
 
-    app.locals.formatTeamSize = function(minTeamSize, teamSize, i18n) {
+    app.locals.formatTeamSize = function (minTeamSize, teamSize, i18n) {
         const hasMin = Number.isInteger(minTeamSize) && minTeamSize > 0;
         const hasMax = Number.isInteger(teamSize) && teamSize > 0;
 
@@ -122,24 +122,24 @@ module.exports = function (app) {
 
         if (!hasMin && hasMax) {
             return teamSize === 1
-            ? i18n.network.filters.participation.individual
-            : `${i18n.common.teams} ${i18n.common.upTo} ${teamSize} ${i18n.common.players}`;
+                ? i18n.network.filters.participation.individual
+                : `${i18n.common.teams} ${i18n.common.upTo} ${teamSize} ${i18n.common.players}`;
         }
 
         if (hasMin && hasMax) {
             if (minTeamSize === teamSize) {
-            return `${i18n.common.teams} ${i18n.common.of} ${teamSize} ${i18n.common.players}`;
+                return `${i18n.common.teams} ${i18n.common.of} ${teamSize} ${i18n.common.players}`;
             }
 
             if (minTeamSize <= 1) {
-            return `${i18n.common.teams} ${i18n.common.upTo} ${teamSize} ${i18n.common.players}`;
+                return `${i18n.common.teams} ${i18n.common.upTo} ${teamSize} ${i18n.common.players}`;
             }
 
             return `${i18n.common.teams} ${i18n.common.of} ${minTeamSize}-${teamSize} ${i18n.common.players}`;
         }
 
-        return ""
-    }
+        return "";
+    };
 
     /**
      * Check if user can export an escape room based on exportAllowed setting
@@ -148,14 +148,15 @@ module.exports = function (app) {
      * @param {Object} globalConfig - Global config with exportAllowed and EXPORT_ALLOWED_OPTIONS
      * @returns {boolean}
      */
-    app.locals.canExport = function(user, escapeRoom, globalConfig) {
+    app.locals.canExport = function (user, escapeRoom, globalConfig) {
         const {exportAllowed, EXPORT_ALLOWED_OPTIONS} = globalConfig;
+
         switch (exportAllowed) {
         case EXPORT_ALLOWED_OPTIONS.ALL:
             return true;
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_USERS:
-            return !!user;
+            return Boolean(user);
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS:
             return user && (isAdmin(user) || !isStudent(user));

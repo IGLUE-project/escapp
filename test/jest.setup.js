@@ -10,8 +10,6 @@ jest.setTimeout(60000);
 global.console.log = jest.fn();
 
 // Mock the mailer to prevent SMTP connection issues during tests
-jest.mock("../helpers/mailer", () => ({
-    sendEmail: jest.fn().mockResolvedValue({ messageId: "test-message-id" })
-}));
+jest.mock("../helpers/mailer", () => ({"sendEmail": jest.fn().mockResolvedValue({ "messageId": "test-message-id" })}));
 
 // Note: Database cleanup is handled by --forceExit flag in npm test script

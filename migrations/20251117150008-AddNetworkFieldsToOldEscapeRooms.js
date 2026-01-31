@@ -7,16 +7,16 @@ module.exports = {
 
         try {
             const rooms = await queryInterface.sequelize.query(
-                'SELECT id, status FROM "escapeRooms"',
-                { transaction, type: Sequelize.QueryTypes.SELECT }
+                "SELECT id, status FROM \"escapeRooms\"",
+                { transaction, "type": Sequelize.QueryTypes.SELECT }
             );
 
             for (const room of rooms) {
                 try {
                     if (room.status === null) {
                         await queryInterface.sequelize.query(
-                            'UPDATE "escapeRooms" SET status = ? WHERE id = ?',
-                            { replacements: ['draft', room.id], transaction }
+                            "UPDATE \"escapeRooms\" SET status = ? WHERE id = ?",
+                            { "replacements": ["draft", room.id], transaction }
                         );
                     }
                 } catch (err) {

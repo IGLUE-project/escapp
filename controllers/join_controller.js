@@ -115,11 +115,12 @@ exports.joinAnonymous = async (req, res, next) => {
     const { i18n } = res.locals;
     const currentLang = i18n.lang;
 
-    let  redirURL = `/escapeRooms/${req.escapeRoom.id}`
-    if(req.query.token) {
-        redirURL +=  "?token=" + req.query.token;
-    } 
-    redirURL+= "#join-anon"
+    let redirURL = `/escapeRooms/${req.escapeRoom.id}`;
+
+    if (req.query.token) {
+        redirURL += `?token=${req.query.token}`;
+    }
+    redirURL += "#join-anon";
 
     if (!req.body.alias) {
         req.flash("error", i18n.common.flash.errorCreatingUser);
@@ -128,7 +129,7 @@ exports.joinAnonymous = async (req, res, next) => {
     }
     req.body.password = Math.random().toString(36).slice(-8);
     req.body.username = `${req.escapeRoom.id}_${String(req.body.alias).toLowerCase()}_${Date.now()}@anonymous.org`;
-    req.body.redir = redirURL // `/escapeRooms/${req.escapeRoom.id}/join`;
+    req.body.redir = redirURL; // `/escapeRooms/${req.escapeRoom.id}/join`;
     req.body.anonymous = true;
     if (req.body.accept_terms != "on") {
         req.flash("error", i18n.common.flash.youMustAcceptTerms);
@@ -161,7 +162,7 @@ exports.joinAnonymous = async (req, res, next) => {
             req.flash("error", i18n.common.flash.aliasAlreadyExists);
         } else {
             req.flash("error", i18n.common.flash.errorCreatingUser);
-        }           
+        }
         res.redirect(redirURL);
     }
 };

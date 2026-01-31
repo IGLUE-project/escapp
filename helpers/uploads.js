@@ -2,7 +2,7 @@ const fs = require("fs/promises");
 const fsSync = require("fs");
 const path = require("path");
 const { fileTypeFromFile, fromFile } = require("file-type");
-const fileFunction =  fileTypeFromFile || fromFile;
+const fileFunction = fileTypeFromFile || fromFile;
 const mimeTypesRegexs = {
     "zip": new RegExp(/application\/(zip|x-zip-compressed|x-zip)/),
     "image": new RegExp("image\/.*"),
@@ -25,7 +25,6 @@ const getAssetTypeFromMimeType = function (mimetype) {
 exports.getAssetTypeFromMimeType = getAssetTypeFromMimeType;
 
 exports.getDataForFile = async function (filePathFull) {
-
     const fileType = await fileFunction(filePathFull);
 
     if (typeof fileType === "undefined") {
@@ -62,9 +61,9 @@ exports.deleteResource = async function (fileId, model, folderNameInsideUploads)
 };
 
 exports.getFields = (el, mapping) => ({
-    "public_id": (mapping && el.public_id && mapping[el.public_id]) ? mapping[el.public_id] : el.public_id,
+    "public_id": mapping && el.public_id && mapping[el.public_id] ? mapping[el.public_id] : el.public_id,
     "config": el.config,
-    "url": (mapping && el.public_id && mapping[el.public_id]) ? el.url.replace(el.public_id, mapping[el.public_id]) : el.url,
+    "url": mapping && el.public_id && mapping[el.public_id] ? el.url.replace(el.public_id, mapping[el.public_id]) : el.url,
     "filename": el.filename,
     "mime": el.mime
 });
@@ -72,11 +71,11 @@ exports.getFields = (el, mapping) => ({
 exports.getFieldsForAsset = (el, mapping) => ({
     "assetType": el.assetType,
     "mimetype": el.mimetype,
-    "fileId": (mapping && el.fileId && mapping[el.fileId]) ? mapping[el.fileId] : el.fileId,
-    "filePath": (mapping && el.fileId && mapping[el.fileId]) ? el.filePath.replace(el.fileId, mapping[el.fileId]) : el.filePath,
+    "fileId": mapping && el.fileId && mapping[el.fileId] ? mapping[el.fileId] : el.fileId,
+    "filePath": mapping && el.fileId && mapping[el.fileId] ? el.filePath.replace(el.fileId, mapping[el.fileId]) : el.filePath,
     "fileExtension": el.fileExtension,
     "filename": el.filename,
-    "contentPath": (mapping && el.fileId && mapping[el.fileId]) ? el.contentPath.replace(el.fileId, mapping[el.fileId]) : el.contentPath,
+    "contentPath": mapping && el.fileId && mapping[el.fileId] ? el.contentPath.replace(el.fileId, mapping[el.fileId]) : el.contentPath,
     "config": el.config,
     "url": el.url
 });
@@ -84,10 +83,10 @@ exports.getFieldsForAsset = (el, mapping) => ({
 exports.getFieldsForAssetNoURL = (el, mapping) => ({
     "assetType": el.assetType,
     "mimetype": el.mimetype,
-    "fileId": (mapping && el.fileId && mapping[el.fileId]) ? mapping[el.fileId] : el.fileId,
-    "filePath": (mapping && el.fileId && mapping[el.fileId]) ? el.filePath.replace(el.fileId, mapping[el.fileId]) : el.filePath,
+    "fileId": mapping && el.fileId && mapping[el.fileId] ? mapping[el.fileId] : el.fileId,
+    "filePath": mapping && el.fileId && mapping[el.fileId] ? el.filePath.replace(el.fileId, mapping[el.fileId]) : el.filePath,
     "fileExtension": el.fileExtension,
     "filename": el.filename,
-    "contentPath": (mapping && el.fileId && mapping[el.fileId]) ? el.contentPath.replace(el.fileId, mapping[el.fileId]) : el.contentPath,
+    "contentPath": mapping && el.fileId && mapping[el.fileId] ? el.contentPath.replace(el.fileId, mapping[el.fileId]) : el.contentPath,
     "config": el.config
 });

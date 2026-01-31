@@ -1,6 +1,7 @@
 "use strict";
 
 const crypt = require("../helpers/crypt");
+
 module.exports = {
     up (queryInterface) {
         return queryInterface.bulkInsert("users", [

@@ -1,18 +1,18 @@
 "use strict";
 
 module.exports = {
-    up(queryInterface, Sequelize) {
+    up (queryInterface, Sequelize) {
         return queryInterface.addColumn(
             "escapeRooms",
             "allowUserToResetTeamProgress",
             {
-                type: Sequelize.BOOLEAN,
-                defaultValue: false
+                "type": Sequelize.BOOLEAN,
+                "defaultValue": false
             }
         );
     },
 
-    down(queryInterface) {
+    down (queryInterface) {
         return queryInterface.removeColumn("escapeRooms", "allowUserToResetTeamProgress");
     }
 };

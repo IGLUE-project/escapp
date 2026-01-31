@@ -10,6 +10,7 @@ const CACHE_TTL = 60000; // 1 minute cache
 const loadConfig = async function () {
     try {
         const config = await models.adminConfig.findOne({"where": {"id": 1}});
+
         cachedConfig = config ? config.dataValues : null;
         cacheTimestamp = Date.now();
         return cachedConfig;
@@ -39,6 +40,7 @@ exports.refreshConfig = loadConfig;
  */
 const getWhitelistDomains = async function () {
     const config = await getConfig();
+
     if (config && config.whitelistDomains !== null && config.whitelistDomains !== undefined) {
         return config.whitelistDomains;
     }
@@ -52,6 +54,7 @@ exports.getWhitelistDomains = getWhitelistDomains;
  */
 const getEmailWhitelist = async function () {
     const domains = await getWhitelistDomains();
+
     if (!domains) {
         return [];
     }
@@ -65,6 +68,7 @@ exports.getEmailWhitelist = getEmailWhitelist;
  */
 exports.isOpenRegistration = async () => {
     const whitelist = await getEmailWhitelist();
+
     return whitelist.length === 0;
 };
 
@@ -73,6 +77,7 @@ exports.isOpenRegistration = async () => {
  */
 const getTeacherDomains = async function () {
     const config = await getConfig();
+
     if (config && config.teacherDomains !== null && config.teacherDomains !== undefined) {
         return config.teacherDomains;
     }
@@ -86,6 +91,7 @@ exports.getTeacherDomains = getTeacherDomains;
  */
 exports.getTeacherDomainsArray = async function () {
     const domains = await getTeacherDomains();
+
     if (!domains) {
         return [];
     }
@@ -97,6 +103,7 @@ exports.getTeacherDomainsArray = async function () {
  */
 exports.getDisableChoosingRole = async function () {
     const config = await getConfig();
+
     if (config && config.disableChoosingRole !== null && config.disableChoosingRole !== undefined) {
         return config.disableChoosingRole;
     }
@@ -108,6 +115,7 @@ exports.getDisableChoosingRole = async function () {
  */
 exports.getEnableTeacherPersonalInfo = async function () {
     const config = await getConfig();
+
     if (config && config.enableTeacherPersonalInfo !== null && config.enableTeacherPersonalInfo !== undefined) {
         return config.enableTeacherPersonalInfo;
     }
@@ -119,6 +127,7 @@ exports.getEnableTeacherPersonalInfo = async function () {
  */
 exports.getEmailValidationStudent = async function () {
     const config = await getConfig();
+
     if (config && config.emailValidationStudent !== null && config.emailValidationStudent !== undefined) {
         return config.emailValidationStudent;
     }
@@ -130,6 +139,7 @@ exports.getEmailValidationStudent = async function () {
  */
 exports.getEmailValidationTeacher = async function () {
     const config = await getConfig();
+
     if (config && config.emailValidationTeacher !== null && config.emailValidationTeacher !== undefined) {
         return config.emailValidationTeacher;
     }
@@ -152,6 +162,7 @@ exports.EXPORT_ALLOWED_OPTIONS = {
  */
 exports.getAvailableLanguages = async function () {
     const config = await getConfig();
+
     if (config && config.availableLanguages !== null && config.availableLanguages !== undefined) {
         return config.availableLanguages;
     }
@@ -163,6 +174,7 @@ exports.getAvailableLanguages = async function () {
  */
 exports.getAvailableLanguagesArray = async function () {
     const languages = await exports.getAvailableLanguages();
+
     if (!languages) {
         return ["en", "es", "sr"];
     }
@@ -175,11 +187,13 @@ exports.getAvailableLanguagesArray = async function () {
  */
 exports.getExportAllowed = async function () {
     const config = await getConfig();
+
     if (config && config.exportAllowed !== null && config.exportAllowed !== undefined) {
         return config.exportAllowed;
     }
     const envValue = process.env.EXPORT_ALLOWED || "ONLY_OWNER";
     // Validate the value is one of the allowed options
+
     if (Object.values(exports.EXPORT_ALLOWED_OPTIONS).includes(envValue)) {
         return envValue;
     }

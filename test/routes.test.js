@@ -10,7 +10,7 @@ const app = require("../app");
 
 // Test IDs - escape room 2 is owned by testTeacher (user 11)
 const studentId = 2;
-const teacherId = 11; // testTeacher user ID
+const teacherId = 11; // TestTeacher user ID
 const teacherEscapeRoomId = 2; // Escape room owned by testTeacher
 const teacherTurnoId = 5; // Turno in escape room 2
 const teacherPuzzleId = 4; // Puzzle in escape room 2
@@ -29,7 +29,7 @@ const publicRoutes = routes.publicRoutes(adminEscapeRoomId, teacherId, adminPuzz
 
 describe("Unauthenticated routes", () => {
     for (const { route, statusCode } of publicRoutes) {
-        it(`should return ${Array.isArray(statusCode) ? statusCode.join('/') : statusCode} for unauthenticated route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join("/") : statusCode} for unauthenticated route ${route}`, async () => {
             const res = await request(app).get(route);
 
             if (Array.isArray(statusCode)) {
@@ -55,7 +55,7 @@ describe("Teacher routes", () => {
     });
 
     for (const { route, statusCode } of teacherRoutes) {
-        it(`should return ${Array.isArray(statusCode) ? statusCode.join('/') : statusCode} for teacher route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join("/") : statusCode} for teacher route ${route}`, async () => {
             const res = await teacherSession.get(route);
 
             if (Array.isArray(statusCode)) {
@@ -80,7 +80,7 @@ describe("Student routes", () => {
     });
 
     for (const { route, statusCode } of studentRoutes) {
-        it(`should return ${Array.isArray(statusCode) ? statusCode.join('/') : statusCode} for student route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join("/") : statusCode} for student route ${route}`, async () => {
             const res = await studentSession.get(route);
 
             if (Array.isArray(statusCode)) {

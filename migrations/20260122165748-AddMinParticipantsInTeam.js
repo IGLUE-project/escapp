@@ -10,4 +10,3 @@ module.exports = {
         await queryInterface.removeColumn("escapeRooms", "minTeamSize");
     }
 };
- 

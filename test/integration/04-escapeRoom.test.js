@@ -32,13 +32,14 @@ describe("Escape Room CRUD", () => {
     describe("Create Escape Room", () => {
         it("should allow teacher to access new escape room page", async () => {
             const res = await teacherSession.get("/escapeRooms/new");
+
             expect(res.statusCode).toBe(200);
         });
 
         it("should redirect after creating escape room with valid data", async () => {
             const res = await createEscapeRoom(teacherSession, {
-                title: `Test ER ${Date.now()}`,
-                description: "Automated test escape room"
+                "title": `Test ER ${Date.now()}`,
+                "description": "Automated test escape room"
             });
 
             // Successful creation redirects to the new escape room
@@ -46,6 +47,7 @@ describe("Escape Room CRUD", () => {
 
             if (res.headers.location) {
                 const match = res.headers.location.match(/\/escapeRooms\/(\d+)/);
+
                 if (match) {
                     createdEscapeRooms.push(parseInt(match[1]));
                 }
@@ -53,11 +55,11 @@ describe("Escape Room CRUD", () => {
         });
 
         it("should re-render form when creating escape room without title", async () => {
-            const res = await teacherSession
-                .post("/escapeRooms")
-                .send({
+            const res = await teacherSession.
+                post("/escapeRooms").
+                send({
                     ...DEFAULT_ESCAPE_ROOM,
-                    title: ""
+                    "title": ""
                 });
 
             // Validation error re-renders the form
@@ -65,11 +67,11 @@ describe("Escape Room CRUD", () => {
         });
 
         it("should deny escape room creation by students", async () => {
-            const res = await studentSession
-                .post("/escapeRooms")
-                .send(DEFAULT_ESCAPE_ROOM);
+            const res = await studentSession.
+                post("/escapeRooms").
+                send(DEFAULT_ESCAPE_ROOM);
 
-            // authCreateEscapeRoom middleware denies students
+            // AuthCreateEscapeRoom middleware denies students
             expect(res.statusCode).toBe(403);
         });
     });
@@ -78,45 +80,51 @@ describe("Escape Room CRUD", () => {
         it("should redirect teacher to escape room detail view", async () => {
             const res = await teacherSession.get("/escapeRooms/1");
             // Redirects to appropriate view based on user role
+
             expect(res.statusCode).toBe(302);
         });
 
         it("should allow teacher to view escape room edit page", async () => {
             const res = await teacherSession.get("/escapeRooms/1/edit");
+
             expect(res.statusCode).toBe(200);
         });
 
         it("should allow teacher to view escape room settings", async () => {
             const res = await teacherSession.get("/escapeRooms/1/settings");
+
             expect(res.statusCode).toBe(200);
         });
 
         it("should handle student viewing escape room based on authorization", async () => {
             const res = await studentSession.get("/escapeRooms/1");
             // 200 if authorized, 403 if not participant/not allowed
+
             expect([200, 403]).toContain(res.statusCode);
         });
 
         it("should deny student access to escape room edit page", async () => {
             const res = await studentSession.get("/escapeRooms/1/edit");
+
             expect(res.statusCode).toBe(403);
         });
 
         it("should display escape room thumbnail", async () => {
             const res = await teacherSession.get("/escapeRooms/1/thumbnail");
+
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe("Update Escape Room", () => {
         it("should re-render page when updating escape room with partial data", async () => {
-            const res = await teacherSession
-                .put("/escapeRooms/1")
-                .send({
-                    title: "Updated Title",
-                    description: "Updated description",
-                    duration: 60,
-                    subject: "Science"
+            const res = await teacherSession.
+                put("/escapeRooms/1").
+                send({
+                    "title": "Updated Title",
+                    "description": "Updated description",
+                    "duration": 60,
+                    "subject": "Science"
                     // Missing required fields causes re-render
                 });
 
@@ -125,14 +133,14 @@ describe("Escape Room CRUD", () => {
         });
 
         it("should deny student from updating escape room", async () => {
-            const res = await studentSession
-                .put("/escapeRooms/1")
-                .send({
-                    title: "Hacked Title",
-                    subject: "Science"
+            const res = await studentSession.
+                put("/escapeRooms/1").
+                send({
+                    "title": "Hacked Title",
+                    "subject": "Science"
                 });
 
-            // authEditEscapeRoom middleware denies students
+            // AuthEditEscapeRoom middleware denies students
             expect(res.statusCode).toBe(403);
         });
     });
@@ -140,11 +148,13 @@ describe("Escape Room CRUD", () => {
     describe("Escape Room Status", () => {
         it("should allow owner to access status/activation page", async () => {
             const res = await teacherSession.get("/escapeRooms/1/activate");
+
             expect(res.statusCode).toBe(200);
         });
 
         it("should deny student access to activation page", async () => {
             const res = await studentSession.get("/escapeRooms/1/activate");
+
             expect(res.statusCode).toBe(403);
         });
     });
@@ -152,15 +162,16 @@ describe("Escape Room CRUD", () => {
     describe("Escape Room Visibility", () => {
         it("should allow owner to access sharing settings", async () => {
             const res = await teacherSession.get("/escapeRooms/1/sharing");
+
             expect(res.statusCode).toBe(200);
         });
 
         it("should re-render page when updating visibility with partial data", async () => {
-            const res = await teacherSession
-                .put("/escapeRooms/1")
-                .send({
-                    scope: "public",
-                    subject: "Science"
+            const res = await teacherSession.
+                put("/escapeRooms/1").
+                send({
+                    "scope": "public",
+                    "subject": "Science"
                 });
 
             // Re-renders page due to missing required fields
@@ -170,22 +181,22 @@ describe("Escape Room CRUD", () => {
 
     describe("Escape Room Formats", () => {
         it("should re-render page when setting online format with partial data", async () => {
-            const res = await teacherSession
-                .put("/escapeRooms/1")
-                .send({
-                    format: "online",
-                    subject: "Science"
+            const res = await teacherSession.
+                put("/escapeRooms/1").
+                send({
+                    "format": "online",
+                    "subject": "Science"
                 });
 
             expect(res.statusCode).toBe(200);
         });
 
         it("should re-render page when setting hybrid format with partial data", async () => {
-            const res = await teacherSession
-                .put("/escapeRooms/1")
-                .send({
-                    format: "hybrid",
-                    subject: "Science"
+            const res = await teacherSession.
+                put("/escapeRooms/1").
+                send({
+                    "format": "hybrid",
+                    "subject": "Science"
                 });
 
             expect(res.statusCode).toBe(200);
@@ -195,15 +206,16 @@ describe("Escape Room CRUD", () => {
     describe("Content Licenses", () => {
         it("should allow owner to access sharing/license settings", async () => {
             const res = await teacherSession.get("/escapeRooms/1/sharing");
+
             expect(res.statusCode).toBe(200);
         });
 
         it("should re-render page when setting license with partial data", async () => {
-            const res = await teacherSession
-                .put("/escapeRooms/1")
-                .send({
-                    license: "CC BY",
-                    subject: "Science"
+            const res = await teacherSession.
+                put("/escapeRooms/1").
+                send({
+                    "license": "CC BY",
+                    "subject": "Science"
                 });
 
             expect(res.statusCode).toBe(200);
@@ -213,11 +225,13 @@ describe("Escape Room CRUD", () => {
     describe("Preview Mode", () => {
         it("should allow teacher to access test/preview mode", async () => {
             const res = await teacherSession.get("/escapeRooms/1/test");
+
             expect(res.statusCode).toBe(200);
         });
 
         it("should deny student access to test/preview mode", async () => {
             const res = await studentSession.get("/escapeRooms/1/test");
+
             expect(res.statusCode).toBe(403);
         });
     });
@@ -225,16 +239,16 @@ describe("Escape Room CRUD", () => {
     describe("Delete Escape Room", () => {
         it("should redirect after deleting escape room", async () => {
             // First create an escape room to delete
-            const createRes = await createEscapeRoom(teacherSession, {
-                title: `To Delete ${Date.now()}`
-            });
+            const createRes = await createEscapeRoom(teacherSession, {"title": `To Delete ${Date.now()}`});
 
             if (createRes.headers.location) {
                 const match = createRes.headers.location.match(/\/escapeRooms\/(\d+)/);
+
                 if (match) {
                     const id = parseInt(match[1]);
                     const deleteRes = await teacherSession.delete(`/escapeRooms/${id}`);
                     // Successful deletion redirects to escape rooms list
+
                     expect(deleteRes.statusCode).toBe(302);
                 }
             }
@@ -253,16 +267,19 @@ describe("Escape Room Listing", () => {
 
     it("should display escape rooms list for teacher", async () => {
         const res = await teacherSession.get("/escapeRooms");
+
         expect(res.statusCode).toBe(200);
     });
 
     it("should display escape rooms list for student", async () => {
         const res = await studentSession.get("/escapeRooms");
+
         expect(res.statusCode).toBe(200);
     });
 
     it("should display user's escape rooms page", async () => {
         const res = await teacherSession.get("/users/1/escapeRooms");
+
         expect(res.statusCode).toBe(200);
     });
 });
