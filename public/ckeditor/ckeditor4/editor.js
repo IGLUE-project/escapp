@@ -73,7 +73,7 @@ var rankingTemplate = ()=>`<div class="editor">
     </ranking>
 </div>`
 
-var reusablePuzzleTemplate = (id, url, width = 100, height = "auto", align = "center", ratio = "4/3", heightIframe = "300") => `<div class="webappfull-block reusable-puzzle-block" style="width:100%;height:auto;text-align:${align};">
+var reusablePuzzleTemplate = (id, url, width = 100, height = "auto", align = "center", ratio = "16/9", heightIframe = "300") => `<div class="webappfull-block reusable-puzzle-block" style="width:100%;height:auto;text-align:${align};">
 <div class="config-size-webappfull">
     <div>
         <label>${window.i18n.width}</label>
@@ -213,9 +213,10 @@ const assetTemplate = async(id, payload) =>{
     return textEditorTemplate(id, assetItemTemplate(payload));
 }
 
-var insertContent = async (index, type, payload, puzzles) => {
+var insertContent = async (index, type, payload = {}, puzzles) => {
     var content = "";
     var id = "ck-" + index + "-" + Date.now();
+
     switch(type){
         case "countdown":
             content = countdownTemplate();
@@ -229,6 +230,7 @@ var insertContent = async (index, type, payload, puzzles) => {
         case "progress":
             content = progressBarTemplate();
             break;
+        case "webapp":
         case "reusablePuzzleInstance":
             content = reusablePuzzleTemplate(id, payload.url, payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
             break;
@@ -398,12 +400,12 @@ $(()=>{
             var type = $(e).data("content-type");
             var puzzles = $(e).data("puzzles") !== "" ? $(e).data("puzzles").toString().split(",") : [];
             var obj = {type,puzzles};
-            if(type === "text" || type === "catalog"){
+            if(type === "text"){
                 const id = $(e).find(".editor").attr("id");
                 //Por algun motivo el tag de script da problemas y hay que cambiarlo por este
                 obj.payload = {text: CKEDITOR.instances[id].getData().replaceAll("</script>", "<\\/script>")};
-                obj.type = "text";
-            } else if (type == "reusablePuzzleInstance") {
+                obj.type = type;
+            } else if ((type === "reusablePuzzleInstance")||(type === "webapp")) {
                 const src = $(e).find(".webappfullIframe").attr("src");
                 obj.payload = {
                     url: src, 
@@ -412,17 +414,17 @@ $(()=>{
                     align: $(e).find(".webappfull-align:checked").val(),
                     ratio: $(e).find(".webappfullAspectRatioSelect").val()
                 };
-                obj.type = "reusablePuzzleInstance";
-            } else if (type == "scene") {
+                obj.type = type;
+            } else if (type === "scene") {
                 const sceneIframe = $(e).find(".webappfullIframe");
                 const src = sceneIframe.attr("src");
                 obj.payload = {
                     url: src, 
                     width: $(e).find(".webappfullWidth").val(),
                     align: $(e).find(".webappfull-align:checked").val(),
-                    ratio: sceneIframe.attr("aspect-ratio")
+                    ratio: sceneIframe.css("aspect-ratio")
                 };
-                obj.type = "scene";
+                obj.type = type;
             }
             results.push(obj);
         });

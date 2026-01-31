@@ -528,9 +528,15 @@
         } else if(type === "countdown" || type === "progress" || type === "ranking" || type === "text") {
             payload = id;
         } else {
-            type = "asset";
+            //Assets
             const asset = window.assets.find(p => p.id == id);
             payload = asset;
+            
+            if(asset && asset.assetType === 'webapp'){
+                type = asset.assetType;
+            } else {
+                type = "asset";
+            }
         }
 
         if(payload.url){
