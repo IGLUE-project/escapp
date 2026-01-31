@@ -2444,7 +2444,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.inspiration .guides-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 60px;
   justify-content: center;
   margin-top: 40px;
 }
@@ -2455,7 +2455,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   padding: 30px;
   background: linear-gradient(135deg, #161938 0%, #161938 100%);
   border-radius: 12px;
-  width: 280px;
+  width: 400px;
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -2482,7 +2482,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.inspiration .guides-container .guide-card h3 {
   margin: 0 0 10px 0;
-  font-size: 20px;
+  font-size: 25px;
   color: #FAC855;
   text-align: center;
 }
@@ -2490,7 +2490,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin: 0;
   text-align: center;
   color: #cccccc;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 @media (max-width: 800px) {
