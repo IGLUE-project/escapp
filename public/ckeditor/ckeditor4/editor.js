@@ -198,12 +198,7 @@ const assetItemTemplate = (payload)=> {
              </iframe>
         </div>`;
     case "pdf":
-        return `<div style="width:${assetConfig.width}px;height:${assetConfig.height}px;max-width:100%"  >
-        <object data="${payload.url}" type="application/pdf" width="100%" height="100%">
-            <iframe style="border:none" src="${payload.url}" width="100%" height="100%" >
-            </iframe>
-        </object>
-        </div>`;
+        return `<iframe src="${payload.url}" width="100%" height="600" style="border:none"></iframe>`;
     default:
         return "";
     }
