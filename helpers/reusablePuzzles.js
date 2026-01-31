@@ -1,5 +1,13 @@
 const { DELETE } = require("sequelize/lib/query-types");
 
+function escapeRegExp (s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function normalizeBaseUrl (url) {
+    // Remove trailing slashes so "http://x/" and "http://x" match consistently
+    return url.replace(/\/+$/, "");
+}
+
 const getLengthForPuzzleSolution = (sol, validator = "exact") => {
     switch (validator) {
     case "exact":
@@ -199,10 +207,3 @@ exports.replaceSceneUrls = function (
     return rootCopy;
 };
 
-function escapeRegExp (s) {
-    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-function normalizeBaseUrl (url) {
-    // Remove trailing slashes so "http://x/" and "http://x" match consistently
-    return url.replace(/\/+$/, "");
-}

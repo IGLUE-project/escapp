@@ -58,10 +58,10 @@ exports.uploadAsset = async (req, res) => {
                 fsSync.mkdirSync(assetContentPathFolderFull);
                 await zip.extract(null, assetContentPathFolderFull);
                 await zip.close();
-                const assetContentPath = `${assetContentPathFolder}/index.html`;
+                const assetContentPathWebApp = `${assetContentPathFolder}/index.html`;
                 const assetUrl = `/assets/${asset.id}/index.html`;
 
-                await asset.update({ "assetType": "webapp", "contentPath": assetContentPath, "url": assetUrl });
+                await asset.update({ "assetType": "webapp", "contentPath": assetContentPathWebApp, "url": assetUrl });
             }
         }
         res.json({asset});
@@ -235,7 +235,7 @@ exports.getAsset = async (req, res, next) => {
 };
 
 // GET /uploads/:file_id/:webapp_file_name
-exports.getWebAppFile = async (req, res, next) => {
+exports.getWebAppFile = (req, res, next) => {
     const { file_id, webapp_file_name } = req.params;
 
     try {
