@@ -293,7 +293,6 @@ exports.exportAuth = async (req, res, next) => {
 
     try {
         const exportAllowed = await getExportAllowed();
-
         switch (exportAllowed) {
         case EXPORT_ALLOWED_OPTIONS.ALL:
             // Everyone can export
@@ -310,7 +309,7 @@ exports.exportAuth = async (req, res, next) => {
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS:
             // Only teachers (non-students) and admins can export
-            if (user && (isAdmin(user) || !isStudent(user)) && er.completed) {
+            if (user && (isAdmin(user) || (!isStudent(user)) && er.status == "completed")) {
                 return next();
             }
             break;

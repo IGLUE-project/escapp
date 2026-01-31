@@ -226,7 +226,7 @@
                     break;
                 }
             } else if(tag.condition === "language"){
-                if(escapeRoom.language !== tag.value){
+                if(escapeRoom.lang !== tag.value){
                     filteredOut = true;
                     break;
                 }
@@ -251,7 +251,8 @@
                     break;
                 }
             } else if(tag.condition === "area"){
-                if(escapeRoom.area !== tag.value){
+                console.log(escapeRoom)
+                if(escapeRoom.field !== tag.value){
                     filteredOut = true;
                     break;
                 }
