@@ -62,6 +62,16 @@
 </div>
 
 <div>
+    <label for="messageSuccessBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.SuccessMessage%>:</label>
+    <input id="messageSuccessBTBInput" type="text" name="successMessage" style="flex:1;"  />
+</div>
+
+<div>
+    <label for="messageErrorBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.FailureMessage%>:</label>
+    <input id="messageErrorBTBInput" type="text" name="errorMessage" style="flex:1;"  />
+</div>
+
+<div>
     <label for="fontColorSuccessMessageBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.SuccessMessageColor%>:</label>
     <input type="text" id="fontColorSuccessMessageBTBInput" name="fontColorSuccessMessage" data-jscolor='{ "closeButton": true, "closeText": "<%= i18n.common.ok %>", "backgroundColor": "#161938", "buttonColor": "#fff" }' style="flex:1;" />
 </div>
@@ -93,7 +103,7 @@
 
 <div>
     <label for="delayBTBInput"><%=i18n.reusablePuzzleApps.BasicTextBox.MinimumSuccessMessageDuration%>:</label>
-    <input id="delayBTBInput" type="number" min="2" max="1000" step="1" name="delay" value="2" style="flex:1;" />
+    <input id="delayBTBInput" type="number" min="0" max="1000" step="1" name="delay" value="2" style="flex:1;" />
 </div>
 
 
@@ -105,6 +115,9 @@
 
 <script>
     document.getElementById("messageBTBInput").value =  window.currentOpenPuzzleConfig?.message || '';
+    document.getElementById("messageSuccessBTBInput").value =  window.currentOpenPuzzleConfig?.successMessage || '';
+    document.getElementById("messageErrorBTBInput").value =  window.currentOpenPuzzleConfig?.errorMessage || '';
+
     document.getElementById("buttonLabelBTBInput").value =  window.currentOpenPuzzleConfig?.buttonLabel || '';
     document.getElementById("placeholderBTBInput").value =  window.currentOpenPuzzleConfig?.placeholder || '';
     document.getElementById("widthBTBInput").value =  window.currentOpenPuzzleConfig?.width || '';
