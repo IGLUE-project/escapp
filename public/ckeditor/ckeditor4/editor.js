@@ -172,31 +172,13 @@ var progressBarTemplate = ()=> `<div class="editor" >
 
 //Render item depending on assetType
 const assetItemTemplate = (payload)=> {
-    let assetConfig = payload.config;
-    if((typeof assetConfig === "undefined")||(assetConfig === null)){
-        assetConfig = {};
-    }
-    if(typeof assetConfig.width === "undefined"){
-        assetConfig.width = "100%";
-    }
-    if(typeof assetConfig.height === "undefined"){
-        assetConfig.height = "auto";
-    }
-
     switch(payload.assetType){
     case "image":
-        return `<img src="${payload.url}" style="width:${assetConfig.width};height:${assetConfig.height};max-width:100%">`;
+        return `<img src="${payload.url}" style="width:500px;height:auto;max-width:100%">`;
     case "audio":
-        return `<audio controls=${assetConfig.controls!=="undefined"?"controls":null}  ${assetConfig.autoplay===true ? "autoplay" : ""}  src="${payload.url}"/>`;
+        return `<audio controls src="${payload.url}"></audio>`;
     case "video":
-        return `<div class="ckeditor-html5-video" style="text-align: center;max-width:100%" src="${payload.url}" ><video ${assetConfig.autoplay===true ? "autoplay" : ""} style="width:${assetConfig.width}px;height:${assetConfig.height}px" controls=${assetConfig.controls!=="undefined"?"controls":null} src="${payload.url}" download=${assetConfig.download!=="undefined"?"download":null}/></div>`;
-    case "webapp":
-        assetConfig.width = "100%";
-        assetConfig.height = "auto";
-        return `<div style="width:${assetConfig.width};height:${assetConfig.height};max-width:1500px"  >
-             <iframe src="${payload.url}"  style="border:none" width="100%" height="100%" >
-             </iframe>
-        </div>`;
+    return `<div style="text-align: center"><video controls src="${payload.url}" style="height:450px; width:auto;"></video></div>`;
     case "pdf":
         return `<iframe src="${payload.url}" width="100%" height="600" style="border:none"></iframe>`;
     default:
