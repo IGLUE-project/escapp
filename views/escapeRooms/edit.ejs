@@ -170,9 +170,19 @@
                         <%= i18n.languages[escapeRoom.lang] %>
                     </div>
                 </div>
+                <%if(escapeRoom.field) {%>
+                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 70ms;">
+                    <div class="flexShowLeft">
+                        <%=i18n.showTeacher.titles.field%>:
+                    </div>
+                    <div class="flexShowRight">
+                        <%= i18n.escapeRoom.fields[escapeRoom.field] %> 
+                    </div>
+                </div>
+                <%}%>
                 <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 40ms;">
                     <div class="flexShowLeft">
-                        <%=i18n.showTeacher.titles.subject%>:
+                        <%=i18n.showTeacher.titles.subjects%>:
                     </div>
                     <div class="flexShowRight">
                         <span class="tags-box"><% for (var s in escapeRoom.subject || []) {%>
@@ -195,16 +205,6 @@
                     </div>
                     <div class="flexShowRight">
                         <%=formatTeamSize(escapeRoom.minTeamSize, escapeRoom.teamSize, i18n)%>
-                    </div>
-                </div>
-                <%}%>
-                <%if(escapeRoom.field) {%>
-                <div class="flexRow nextToPicture animated slideInUp" style="animation-delay: 70ms;">
-                    <div class="flexShowLeft">
-                        <%=i18n.showTeacher.titles.field%>:
-                    </div>
-                    <div class="flexShowRight">
-                        <%= i18n.escapeRoom.fields[escapeRoom.field] %> 
                     </div>
                 </div>
                 <%}%>

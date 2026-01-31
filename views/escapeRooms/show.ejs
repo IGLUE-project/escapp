@@ -247,6 +247,11 @@
                 </button>
          </a>
         <% } %>
+        <% if (user && user.isAdmin) { %>
+        <a href="/escapeRooms/<%=escapeRoom.id%>/edit">
+            <button class="rounded editButton" type="submit"><%=i18n.common.edit%></button>
+         </a>
+        <% } %>
         <%}%>
     </div>
    <br/>

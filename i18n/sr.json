@@ -481,8 +481,8 @@
         "automaticAttendanceNone": "Učešće se ne beleži automatski",
         "automaticAttendanceParticipant": "Učešće se automatski beleži za učesnika",
         "automaticAttendanceTeam": "Učešće se automatski beleži za učesnika i njegove članove tima",
-        "allowUserToResetTeamProgress": "Dozvoli učesnicima da resetuju svoj timski napredak",
-        "allowUserToResetTeamProgressHint": "Kada studenti resetuju svoj napredak, sve informacije vezane za njihov prethodni pokušaj (odgovori, korišćeni saveti, vreme, itd.) se trajno brišu."
+        "allowUserToResetTeamProgress": "Omogućiti učesnicima da ponovo pokrenu i ponovo igraju escape room",
+        "allowUserToResetTeamProgressHint": "Kada učesnici ponovo pokrenu escape room, sve informacije povezane sa njihovim prethodnim pokušajem (npr. pomoć, odgovori, dobijeni nagoveštaji i vremenske oznake) trajno se brišu."
       },
       "hints": {
         "correctNumber": "Broj tačnih odgovora",
@@ -802,7 +802,7 @@
       "dismiss": "odbaci",
       "unverify": " opozvati verifikaciju",
       "not_verified": "nije verifikovano",
-      "explanation": "Vašu escape sobu je pregledao escapp tim i ona ispunjava minimalne zahteve kvaliteta za objavljivanje na mreži edukativnih escape soba. Ako napravite izmene u escape sobi, moraćete je ponovo verifikovati pre nego što učesnici mreže mogu da igraju ažuriranu verziju.",
+      "explanation": "Vaša escape room igra je verifikovana od strane administratora ove Escapp instance.",
       "areYouSureVerify": "Da li želite da verifikujete ovu escape sobu? Escape soba će postati dostupna na mreži.",
       "areYouSureReVerify": "Ova escape soba se promenila od poslednje verifikacije. Da li želite da je ponovo verifikujete ili da je opozovete?",
       "areYouSureUnVerify": "Ova escape soba je trenutno verifikovana. Da li želite da je opozovete? Escape soba će postati nedostupna na mreži dok je ponovo ne verifikujete."
@@ -1123,7 +1123,7 @@
         "appearance": "Izgled",
         "description": "Opis",
         "duration": "Trajanje (minuti)",
-        "field": "Polje",
+        "field": "Oblast znanja",
         "format": "Format",
         "hints": "Saveti",
         "instructions": "Uputstva",
@@ -1133,7 +1133,8 @@
         "posttest": "Post-kviz",
         "pretest": "Pred-kviz",
         "puzzles": "Zagonetke",
-        "subject": "Naslov",
+        "subject": "Tema",
+        "subjects": "Teme",
         "survey": "Anketa",
         "teamSize": "Maksimalna veličina tima",
         "minTeamSize":  "Minimalna veličina tima",

@@ -475,12 +475,12 @@
                 "puzzle": "Puzzle",
                 "weight": "Weight",
                 "youCanUse": "You can use",
-                "automaticAttendance": "Participation record. When a participant accesses the escape room during their turn",
+                "automaticAttendance": "Participation record. When a participant accesses the escape room",
                 "automaticAttendanceNone": "Participation is not recorded automatically",
                 "automaticAttendanceParticipant": "Participation is recorded automatically for the participant",
                 "automaticAttendanceTeam": "Participation is recorded automatically for the participant and their teammates",
-                "allowUserToResetTeamProgress": "Allow participants to reset their own team progress",
-                "allowUserToResetTeamProgressHint": "When students reset their progress, all information related to their previous attempt (answers, hints used, time, etc.) is permanently deleted."
+                "allowUserToResetTeamProgress": "Allow participants to restart and replay the escape room",
+                "allowUserToResetTeamProgressHint": "When participants restart the escape room, all information related to their previous attempt (e.g., assistance, answers, hints obtained, and timestamps) is permanently deleted."
             },
             "hints": {
                 "correctNumber": "Number of correct answers",
@@ -800,7 +800,7 @@
             "dismiss": "dismiss",
             "unverify": "unverify",
             "not_verified": "not verified",
-            "explanation": "Your escape room has been reviewed by the escapp team and meets the minimum quality requirements to be published on the network of educational escape rooms. If you make changes to the escape room, it will need to be re-verified before network participants can play the updated version.",
+            "explanation": "Your escape room has been verified by an administrator of this Escapp instance.",
             "areYouSureVerify": "Do you want to verify this escape room? The escape room will become available in the network.",
             "areYouSureReVerify": "This escape room has changed since its last verification. Do you want to re-verify it or unverify it?",
             "areYouSureUnVerify": "This escape room is currently verified. Do you want to unverify it? The escape room will become unavailable in the network until you verify it again."
@@ -1122,7 +1122,7 @@
             "appearance": "Appearance",
             "description": "Description",
             "duration": "Duration (minutes)",
-            "field": "Field",
+            "field": "Knowledge area",
             "format": "Format",
             "hints": "Hints",
             "instructions": "Instructions",
@@ -1132,7 +1132,8 @@
             "posttest": "Post-quiz",
             "pretest": "Pre-quiz",
             "puzzles": "Puzzles",
-            "subject": "Subject",
+            "subject": "Topic",
+            "subjects": "Topics",
             "survey": "Survey",
             "teamSize": "Maximum team size",
             "minTeamSize": "Minimum team size",
