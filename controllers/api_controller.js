@@ -44,7 +44,8 @@ exports.checkParticipantSafe = async (req, res, next) => {
 
         if (user) {
             const availableLanguages = await getAvailableLanguagesArray();
-            if (!req.escapeRoom.forceLang && user.lang && i18n.lang !== user.lang && availableLanguages.some(l => l === user.lang)) {
+
+            if (!req.escapeRoom.forceLang && user.lang && i18n.lang !== user.lang && availableLanguages.some((l) => l === user.lang)) {
                 // eslint-disable-next-line global-require
                 res.locals.i18n_lang = user.lang;
                 // eslint-disable-next-line global-require

@@ -3,9 +3,13 @@
 <div class="main">
     <div class="breadcrumbs-container">
         <div class="breadcrumbs">
+            <%if(session.user && !session.user.anonymized){%>
             <a href="/escapeRooms"><%=i18n.common.my%></a>
             <span class="material-icons">chevron_right</span>
+            <%}%>
             <a href="/escapeRooms/<%=escapeRoom.id%>"><%=escapeRoom.title%></a>
+            <span class="material-icons">chevron_right</span>
+            <span><%=i18n.management.report.title%></span>
         </div>
     </div>
     <h1><%=i18n.management.report.title%></h1>
@@ -60,6 +64,9 @@
 
         <button type="submit" class="acceptButton rounded"><%=i18n.management.report.send%></button>
     </form>
+    <br/>
+    <br/>
+    <br/>
 </div>
 
 <%- include ("../partials/_footer.ejs") %>

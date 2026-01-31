@@ -34,10 +34,10 @@ module.exports = {
         // Populate with values from .env
         const whitelistDomains = process.env.WHITELIST_DOMAINS || null;
         const teacherDomains = process.env.TEACHER_DOMAINS || null;
-        const disableChoosingRole = process.env.DISABLE_CHOOSING_ROLE === "true" ? true : (process.env.DISABLE_CHOOSING_ROLE === "false" ? false : null);
-        const enableTeacherPersonalInfo = process.env.ENABLE_TEACHER_PERSONAL_INFO === "true" ? true : (process.env.ENABLE_TEACHER_PERSONAL_INFO === "false" ? false : null);
-        const emailValidationStudent = process.env.EMAIL_VALIDATION_STUDENT === "true" ? true : (process.env.EMAIL_VALIDATION_STUDENT === "false" ? false : null);
-        const emailValidationTeacher = process.env.EMAIL_VALIDATION_TEACHER === "true" ? true : (process.env.EMAIL_VALIDATION_TEACHER === "false" ? false : null);
+        const disableChoosingRole = process.env.DISABLE_CHOOSING_ROLE === "true" ? true : process.env.DISABLE_CHOOSING_ROLE === "false" ? false : null;
+        const enableTeacherPersonalInfo = process.env.ENABLE_TEACHER_PERSONAL_INFO === "true" ? true : process.env.ENABLE_TEACHER_PERSONAL_INFO === "false" ? false : null;
+        const emailValidationStudent = process.env.EMAIL_VALIDATION_STUDENT === "true" ? true : process.env.EMAIL_VALIDATION_STUDENT === "false" ? false : null;
+        const emailValidationTeacher = process.env.EMAIL_VALIDATION_TEACHER === "true" ? true : process.env.EMAIL_VALIDATION_TEACHER === "false" ? false : null;
 
         // Update existing record (id=1) with .env values
         await queryInterface.sequelize.query(

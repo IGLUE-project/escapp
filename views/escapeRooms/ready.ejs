@@ -19,9 +19,11 @@
         </div>
 		<%}%>
 	</div>
+	<%if (turno.status != "test") {%>
 	<div class="reporting">
 		<a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
 	</div>
+	<%}%>
 	<div class="flex ">
 		<div class="flex-thumb attachmentShow animated">
 			<img  alt="thumbnail" src="<%=escapeRoom.getThumbnailUrl()%>">

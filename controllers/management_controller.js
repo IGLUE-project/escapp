@@ -72,6 +72,7 @@ exports.generateReport = async (req, res) => {
         const captchaNum1 = Math.floor(Math.random() * 10) + 1;
         const captchaNum2 = Math.floor(Math.random() * 10) + 1;
         const newCaptchaExpected = captchaNum1 + captchaNum2;
+
         return res.render("management/reportForm", {
             escapeRoom,
             reporterName,
@@ -84,29 +85,30 @@ exports.generateReport = async (req, res) => {
 
     let msg = comments || "";
     // Build reporter info string
-     if (!user && (reporterName || reporterEmail)) {
+
+    if (!user && (reporterName || reporterEmail)) {
         msg += "\n" + `${reporterName || "Anonymous"} <${reporterEmail || "no-email"}>`;
     }
 
     const report = models.report.build({
         reason,
-        comments: msg,
+        "comments": msg,
         "escapeRoomId": escapeRoom.id,
-        reportAuthor: user
+        "reportAuthor": user ? user.id : null
     });
 
     try {
-        
         await report.save();
         req.flash("success", i18n.common.flash.successSendingReport);
         res.redirect(`/escapeRooms/${escapeRoom.id}`);
     } catch (err) {
-        console.error(err)
+        console.error(err);
         req.flash("error", i18n.common.flash.errorSendingReport);
         // Regenerate captcha for retry
         const captchaNum1 = Math.floor(Math.random() * 10) + 1;
         const captchaNum2 = Math.floor(Math.random() * 10) + 1;
         const newCaptchaExpected = captchaNum1 + captchaNum2;
+
         res.render("management/reportForm", {
             escapeRoom,
             report,
@@ -206,11 +208,11 @@ exports.setEnvironmentSettings = async (req, res) => {
             exportAllowed
         } = req.body;
 
-        const parsedURLs = urls
-            .split(";")
-            .map((url) => url.trim())
-            .filter((url) => url.length > 0 && url.includes("http"))
-            .map((url) => url.replace(/\/$/, ""));
+        const parsedURLs = urls.
+            split(";").
+            map((url) => url.trim()).
+            filter((url) => url.length > 0 && url.includes("http")).
+            map((url) => url.replace(/\/$/, ""));
 
         // Parse boolean values (empty string means use .env default, otherwise use the checkbox value)
         const parseBooleanField = (value) => {
@@ -243,9 +245,10 @@ exports.setEnvironmentSettings = async (req, res) => {
             if (value === "" || value === undefined) {
                 return null; // Use .env default
             }
-            const languages = value.split(",")
-                .map((l) => l.trim().toLowerCase())
-                .filter((l) => l.length > 0 && SUPPORTED_LANGUAGES.includes(l));
+            const languages = value.split(",").
+                map((l) => l.trim().toLowerCase()).
+                filter((l) => l.length > 0 && SUPPORTED_LANGUAGES.includes(l));
+
             return languages.length > 0 ? languages.join(",") : null;
         };
 

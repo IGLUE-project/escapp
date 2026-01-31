@@ -50,7 +50,7 @@ exports.loadShow = {
 
 exports.loadPreview = {
     "include": [
-        { "model": models.user, "as": "author", attributes: ["id", "alias"] },
+        { "model": models.user, "as": "author", "attributes": ["id", "alias"] },
         { "model": models.attachment }
     ]
 };
@@ -72,7 +72,7 @@ exports.loadPuzzles = {
     ]
 };
 
- 
+
 exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUsers = null, ignoreERIds = []) => {
     const findOptions = {
         "attributes": [
@@ -268,9 +268,10 @@ exports.public = (page = 1, limit = 10) => ({
 exports.text = (before, after, lang, participation, area, duration, format, level) => {
     const conditions = {
         "where": {"isNetworkAccessible": true},
-        "attributes": ["id", "title", "description", "lang", "teamSize", "minTeamSize", "field", "duration", "format", "level", "createdAt"],
+        "attributes": ["id", "title", "description", "lang", "teamSize", "minTeamSize", "field", "duration", "format", "level", "createdAt", "license"],
         "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}]
     };
+
     if (before && after) {
         conditions.where.createdAt = {[Op.between]: [new Date(after), new Date(before)]};
     } else {
@@ -320,32 +321,36 @@ exports.loadExport = {
             ],
             "order": [["order", "asc"]]
         },
-    { "model": models.attachment },
+        { "model": models.attachment },
         {
             "model": models.subject,
             "attributes": ["subject"]
         },
         { "model": models.asset, "separate": true },
         { "model": models.hintApp },
-        { "model": models.scene, 
-            "separate": true, 
+        {
+            "model": models.scene,
+            "separate": true,
             "include": [
-                { 
-                    "model": models.reusablePuzzleInstance, "separate": true, 
+                {
+                    "model": models.reusablePuzzleInstance,
+                    "separate": true,
                     "include": [
                         {"model": models.reusablePuzzle },
                         {"model": models.puzzle }
                     ]
                 },
                 { "model": models.puzzle, "separate": true }
-        ]}, 
-        { 
-            "model": models.reusablePuzzleInstance, "separate": true,
+            ]
+        },
+        {
+            "model": models.reusablePuzzleInstance,
+            "separate": true,
             "include": [
                 {"model": models.reusablePuzzle },
                 {"model": models.puzzle }
             ]
-         }
+        }
     ],
     "order": [
         [
@@ -396,19 +401,23 @@ exports.loadComplete = {
         },
         { "model": models.asset, "separate": true },
         { "model": models.hintApp },
-        { "model": models.scene, 
-            "separate": true, 
+        {
+            "model": models.scene,
+            "separate": true,
             "include": [
-                { 
-                    "model": models.reusablePuzzleInstance, "separate": true,
+                {
+                    "model": models.reusablePuzzleInstance,
+                    "separate": true,
                     "include": [{ "model": models.reusablePuzzle }]
-                 },
+                },
                 { "model": models.puzzle, "separate": true }
-        ]}, 
-        { 
-            "model": models.reusablePuzzleInstance, "separate": true,
+            ]
+        },
+        {
+            "model": models.reusablePuzzleInstance,
+            "separate": true,
             "include": [{ "model": models.reusablePuzzle }]
-         },
+        },
         {
             "model": models.user,
             "as": "author"

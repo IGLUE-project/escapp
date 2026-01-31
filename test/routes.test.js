@@ -8,26 +8,35 @@ global.console.log = jest.fn();
 
 const app = require("../app");
 
-// Const to = (promise) => promise.then((data) => [null, data]).catch((err) => [err]);
-
+// Test IDs - escape room 2 is owned by testTeacher (user 11)
 const studentId = 2;
-const teacherId = 1;
-const escapeRoomId = 1;
-const turnoId = 1;
-const puzzleId = 1;
+const teacherId = 11; // TestTeacher user ID
+const teacherEscapeRoomId = 2; // Escape room owned by testTeacher
+const teacherTurnoId = 5; // Turno in escape room 2
+const teacherPuzzleId = 4; // Puzzle in escape room 2
+const adminEscapeRoomId = 1; // Escape room owned by admin
+const adminTurnoId = 1;
+const adminPuzzleId = 1;
 
 const routes = require("./routes");
 
-const teacherRoutes = routes.teacherRoutes(escapeRoomId, teacherId, puzzleId, turnoId);
-const studentRoutes = routes.studentRoutes(escapeRoomId, studentId, puzzleId, turnoId);
-const publicRoutes = routes.publicRoutes(escapeRoomId, teacherId, puzzleId, turnoId);
+// Teacher routes use escape room 2 (owned by testTeacher)
+const teacherRoutes = routes.teacherRoutes(teacherEscapeRoomId, teacherId, teacherPuzzleId, teacherTurnoId);
+// Student routes test against escape room 1 (to test access control)
+const studentRoutes = routes.studentRoutes(adminEscapeRoomId, studentId, adminPuzzleId, adminTurnoId);
+// Public routes test against escape room 1
+const publicRoutes = routes.publicRoutes(adminEscapeRoomId, teacherId, adminPuzzleId, adminTurnoId);
 
 describe("Unauthenticated routes", () => {
     for (const { route, statusCode } of publicRoutes) {
-        it(`should return ${statusCode} for unauthenticated route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join("/") : statusCode} for unauthenticated route ${route}`, async () => {
             const res = await request(app).get(route);
 
-            expect(res.statusCode).toBe(statusCode);
+            if (Array.isArray(statusCode)) {
+                expect(statusCode).toContain(res.statusCode);
+            } else {
+                expect(res.statusCode).toBe(statusCode);
+            }
         });
     }
 });
@@ -37,18 +46,23 @@ describe("Teacher routes", () => {
 
     beforeAll(async () => {
         teacherSession = session(app);
+        // Use testTeacher - a teacher who is NOT an admin
         const res = await teacherSession.
             post("/").
-            send({ "login": "admin@upm.es", "password": "1234" });
+            send({ "login": "testteacher@test.com", "password": "testteacher" });
 
         expect(res.statusCode).toBe(302);
     });
 
     for (const { route, statusCode } of teacherRoutes) {
-        it(`should return ${statusCode} for teacher route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join("/") : statusCode} for teacher route ${route}`, async () => {
             const res = await teacherSession.get(route);
 
-            expect(res.statusCode).toBe(statusCode);
+            if (Array.isArray(statusCode)) {
+                expect(statusCode).toContain(res.statusCode);
+            } else {
+                expect(res.statusCode).toBe(statusCode);
+            }
         });
     }
 });
@@ -66,10 +80,14 @@ describe("Student routes", () => {
     });
 
     for (const { route, statusCode } of studentRoutes) {
-        it(`should return ${statusCode} for student route ${route}`, async () => {
+        it(`should return ${Array.isArray(statusCode) ? statusCode.join("/") : statusCode} for student route ${route}`, async () => {
             const res = await studentSession.get(route);
 
-            expect(res.statusCode).toBe(statusCode);
+            if (Array.isArray(statusCode)) {
+                expect(statusCode).toContain(res.statusCode);
+            } else {
+                expect(res.statusCode).toBe(statusCode);
+            }
         });
     }
 });

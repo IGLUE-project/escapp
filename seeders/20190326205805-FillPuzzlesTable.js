@@ -34,6 +34,18 @@ module.exports = {
             "automatic": false,
             "createdAt": new Date(),
             "updatedAt": new Date()
+        },
+        // Puzzle for escape room 2 (owned by testTeacher)
+        {
+            "escapeRoomId": 2,
+            "id": 4,
+            "title": "Math Puzzle 1",
+            "sol": "42",
+            "score": 25,
+            "order": 0,
+            "automatic": true,
+            "createdAt": new Date(),
+            "updatedAt": new Date()
         }
     ]),
 

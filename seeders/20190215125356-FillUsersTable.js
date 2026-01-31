@@ -1,6 +1,7 @@
 "use strict";
 
 const crypt = require("../helpers/crypt");
+
 module.exports = {
     up (queryInterface) {
         return queryInterface.bulkInsert("users", [
@@ -11,7 +12,7 @@ module.exports = {
                 "alias": "the_admin",
                 "password": crypt.encryptPassword("1234", "aaaa"),
                 "salt": "aaaa",
-                "isAdmin": !process.env.TEST,
+                "isAdmin": true,
                 "dni": "xxxxxxxxx",
                 "eduLevel": "higher",
                 "confirmed": true,
@@ -134,6 +135,39 @@ module.exports = {
                 "isStudent": true,
                 "eduLevel": "higher",
                 "dni": "26077434B",
+                "confirmed": true,
+                "createdAt": new Date(),
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
+            },
+            // Test Admin - always has isAdmin true (for testing)
+            {
+                "name": "Test",
+                "surname": "Admin",
+                "username": "testadmin@test.com",
+                "alias": "testadmin",
+                "password": crypt.encryptPassword("testadmin", "cccc"),
+                "salt": "cccc",
+                "isAdmin": true,
+                "dni": "00000001A",
+                "eduLevel": "higher",
+                "confirmed": true,
+                "createdAt": new Date(),
+                "updatedAt": new Date(),
+                "lastAcceptedTermsDate": new Date()
+            },
+            // Test Teacher - has no student flag (for testing teacher-only features)
+            {
+                "name": "Test",
+                "surname": "Teacher",
+                "username": "testteacher@test.com",
+                "alias": "testteacher",
+                "password": crypt.encryptPassword("testteacher", "dddd"),
+                "salt": "dddd",
+                "isAdmin": false,
+                "isStudent": false,
+                "dni": "00000002B",
+                "eduLevel": "higher",
                 "confirmed": true,
                 "createdAt": new Date(),
                 "updatedAt": new Date(),

@@ -80,7 +80,7 @@ const leaveTeam = (teamId, turnId, ranking) => sendTurnMessage({"type": LEAVE_TE
  * Get socket query params
  */
 exports.getInfoFromSocket = ({handshake}, availableLanguages = ["en", "es", "sr"]) => {
-    const lang = (handshake.headers["accept-language"] && availableLanguages.find(l => l == handshake.headers["accept-language"].substring(0, 2))) || "en";
+    const lang = handshake.headers["accept-language"] && availableLanguages.find((l) => l == handshake.headers["accept-language"].substring(0, 2)) || "en";
     const escapeRoomId = parseInt(handshake.query.escapeRoom, 10) || undefined;
     const turnId = parseInt(handshake.query.turn, 10) || undefined;
     const {waiting, preview} = handshake.query;
@@ -240,45 +240,65 @@ exports.isParticipantTeamConnectedWaiting = (participantId, teamId) => {
  * Get team members connected to ER
  */
 exports.getConnectedMembers = (teamId) => {
-  if (!teamId) return [];
+    if (!teamId) {
+        return [];
+    }
 
-  const io = global.io;
-  if (!io) return [];
+    const {io} = global;
 
-  const room = io.sockets.adapter.rooms.get(`teamId_${teamId}`);
-  if (!room) return [];
-  const ids = Array.from(room);
+    if (!io) {
+        return [];
+    }
+
+    const room = io.sockets.adapter.rooms.get(`teamId_${teamId}`);
+
+    if (!room) {
+        return [];
+    }
+    const ids = Array.from(room);
     const members = new Set();
 
-  for (const i of ids) {
-    const socket = io.sockets.sockets.get(i);
-    const {username} = socket.handshake
-    if (username) members.add(username);
+    for (const i of ids) {
+        const socket = io.sockets.sockets.get(i);
+        const {username} = socket.handshake;
 
-  }
+        if (username) {
+            members.add(username);
+        }
+    }
 
-  return [...members];
+    return [...members];
 };
 
 exports.getConnectedMembersIds = (teamId) => {
-  if (!teamId) return [];
+    if (!teamId) {
+        return [];
+    }
 
-  const io = global.io;
-  if (!io) return [];
+    const {io} = global;
 
-  const room = io.sockets.adapter.rooms.get(`teamId_${teamId}`);
-  if (!room) return [];
-  const ids = Array.from(room);
+    if (!io) {
+        return [];
+    }
+
+    const room = io.sockets.adapter.rooms.get(`teamId_${teamId}`);
+
+    if (!room) {
+        return [];
+    }
+    const ids = Array.from(room);
     const members = new Set();
 
-  for (const i of ids) {
-    const socket = io.sockets.sockets.get(i);
-    const {userId} = socket.handshake
-    if (userId) members.add(userId);
+    for (const i of ids) {
+        const socket = io.sockets.sockets.get(i);
+        const {userId} = socket.handshake;
 
-  }
+        if (userId) {
+            members.add(userId);
+        }
+    }
 
-  return [...members];
+    return [...members];
 };
 
 /**
@@ -517,12 +537,15 @@ exports.sendLeaveTeam = (teamId, turnId, teams) => {
  */
 const requestHint = async (escapeRoomId, teamId, userId, status, score, category, ai, i18n) => {
     const team = await models.team.findByPk(teamId, queries.team.puzzlesAndHints(teamId));
-    
+
     if (team && team.turno && team.turno.escapeRoom) {
         if (ai) {
             const teamMembers = this.getConnectedMembersIds(teamId);
             const leader = this.getLeader(teamMembers);
-            if (leader != userId) {return;}
+
+            if (leader != userId) {
+                return;
+            }
         }
         const result = await calculateNextHint(team.turno.escapeRoom, team, status, score, category, i18n.escapeRoom.play, userId, ai);
 
@@ -541,12 +564,15 @@ exports.getLeader = (ids) => {
     }
 
     let leader = ids[0];
+
     for (let i = 1; i < ids.length; i++) {
-        if (ids[i] < leader) leader = ids[i];
+        if (ids[i] < leader) {
+            leader = ids[i];
+        }
     }
 
     return leader;
-}
+};
 
 exports.requestHint = requestHint;
 

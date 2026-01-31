@@ -13,6 +13,7 @@ const SUPPORTED_LANGUAGES = Object.keys(LOCALES);
 
 function getAvailableLocales () {
     const envLanguages = process.env.AVAILABLE_LANGUAGES;
+
     if (envLanguages) {
         return envLanguages.split(",").map((l) => l.trim()).filter((l) => l.length > 0);
     }
@@ -35,7 +36,6 @@ function getBrowserLocale (req) {
 function getDefaultLocale () {
     return "en";
 }
-
 
 
 function getTextsForLocale (locale) {

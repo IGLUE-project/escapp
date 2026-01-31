@@ -9,7 +9,7 @@ const reusablePuzzlesList = [
         "instructions": {
             "en": "defaultReusablePuzzles/Keypad/Keypad_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Keypad/Keypad_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/Keypad/Keypad_Instructions_SR.pdf",
+            "sr": "defaultReusablePuzzles/Keypad/Keypad_Instructions_SR.pdf"
         },
         "order": 1
     },
@@ -177,7 +177,7 @@ const reusablePuzzlesList = [
         "instructions": {
             "en": "defaultReusablePuzzles/Video/Video_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Video/Video_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/Video/Video_Instructions_SR.pdf",
+            "sr": "defaultReusablePuzzles/Video/Video_Instructions_SR.pdf"
         },
         "order": 15
     },

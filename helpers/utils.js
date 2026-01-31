@@ -69,7 +69,7 @@ exports.playInterface = async (name, req, res, next) => {
     const isAdmin = Boolean(req.session.user.isAdmin),
         isCoAuthor = req.escapeRoom.userCoAuthor.some((user) => user.id === req.session.user.id && user.coAuthors.confirmed),
         isAuthor = req.escapeRoom.authorId === req.session.user.id;
-     
+
     req.escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPuzzles);
     req.escapeRoom.hintApp = await models.hintApp.findOne({"where": { "escapeRoomId": req.escapeRoom.id }});
     const {token} = await models.user.findByPk(req.session.user.id);
@@ -88,7 +88,7 @@ exports.playInterface = async (name, req, res, next) => {
             "isStudent": false,
             "status": req.turn.status,
             "endPoint": name,
-            "hostName":  this.getHostname(req),
+            "hostName": this.getHostname(req),
             token,
             "layout": false
         });
@@ -202,17 +202,16 @@ exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRo
 
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]], "include": [{"model": models.reusablePuzzleInstance}]});
 
-exports.getReusablePuzzles = () =>
-  models.reusablePuzzle.findAll({
-    attributes: [
-      "name",
-      "instructions",
-      "order",
-      "config",
-      ["id", "reusablePuzzleId"]
+exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({
+    "attributes": [
+        "name",
+        "instructions",
+        "order",
+        "config",
+        ["id", "reusablePuzzleId"]
     ],
-    order: [["order", "ASC"]]
-  });
+    "order": [["order", "ASC"]]
+});
 
 exports.getReusablePuzzlesInstances = (id) => models.reusablePuzzleInstance.findAll({"where": {"escapeRoomId": id}, "include": [{"model": models.puzzle, "attributes": ["id"]}]});
 
@@ -689,4 +688,4 @@ exports.getHostname = (req) => process.env.APP_NAME
     ? `${req.protocol}://${process.env.APP_NAME}${
         process.env.PORT && process.env.PORT !== "80" && process.env.PORT !== "443" ? `:${process.env.PORT}` : ""
     }`
-    : ("http://localhost:" + (process.env.PORT || 3000));
+    : `http://localhost:${process.env.PORT || 3000}`;

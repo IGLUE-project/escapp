@@ -1235,6 +1235,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   padding: 0px 10px 0px 10px;
   margin-top: -10px;
   position: relative;
+  min-height: 25px;
 }
 #mainSection .main.escapeRoomShow .by-author a {
   cursor: pointer;
@@ -2808,7 +2809,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.step-instructions countdown {
   font-family: "Digital", monospace;
-  font-size: 17vw;
+  font-size: 14vw;
   display: block;
   text-align: center;
   cursor: move;
@@ -3565,7 +3566,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 
 @media (min-width: 1800px) {
   #mainSection .main.step-instructions countdown {
-    font-size: 300px;
+    font-size: 200px;
   }
 }
 #copyLinkButton:hover, #copyEmbedButton:hover {
@@ -3847,7 +3848,17 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   position: relative;
   margin: 0;
   color: #9292B0;
+  font-family: "Gugi" !important;
+}
+#mainSection #mainHeader .langs.legal, #mainSection #mainHeader .legal.legal, #mainSection #mainFooter .langs.legal, #mainSection #mainFooter .legal.legal {
   margin-bottom: 5px;
+}
+#mainSection #mainHeader .langs .active, #mainSection #mainHeader .legal .active, #mainSection #mainFooter .langs .active, #mainSection #mainFooter .legal .active {
+  color: white !important;
+}
+#mainSection #mainHeader .langs a:hover, #mainSection #mainHeader .legal a:hover, #mainSection #mainFooter .langs a:hover, #mainSection #mainFooter .legal a:hover {
+  color: white;
+  font-weight: bold;
 }
 #mainSection #mainHeader {
   height: 50px;
@@ -3974,7 +3985,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin: 0;
   margin-bottom: 10px;
   color: #161938;
-  font-size: 0.6em;
+  font-size: 14px;
 }
 #mainSection .main .overlay-trigger::after {
   background: transparent;
@@ -4002,7 +4013,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   outline: 0;
   cursor: pointer;
   border-radius: 20px;
-  padding: 10px;
+  padding: 5px 10px;
   text-align: center;
   font-size: 16px;
   border-width: 2px;
@@ -4333,21 +4344,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: white;
   font-weight: bold;
 }
-.portada .contenedor .loginRight .langs {
+.portada .contenedor .langs {
   position: absolute;
   top: 0px;
   right: 0px;
   text-align: right;
   justify-content: right;
   padding-right: 2%;
-  color: #656683;
-}
-.portada .contenedor .loginRight .langs .active {
-  color: white !important;
-}
-.portada .contenedor .loginRight .langs a:hover {
-  color: white;
-  font-weight: bold;
 }
 .portada .contenedor #imagenPortada {
   width: auto;
@@ -5273,6 +5276,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   text-align: center;
   min-width: 40%;
   max-width: 90%;
+  text-align-last: center;
 }
 #mainSection .main.preview option {
   text-align: center;

@@ -32,8 +32,8 @@ exports.maxIdleTime = maxIdleTime;
  */
 exports.loginRequired = (req, res, next) => {
     if (req.session.user) {
-        if (!req.session.user.lastAcceptedTermsDate ||
-            req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY) {
+        if (req.path != "/accept-new" && (!req.session.user.lastAcceptedTermsDate ||
+            req.session.user.lastAcceptedTermsDate < process.env.LAST_MODIFIED_TERMS_OR_POLICY)) {
             return res.redirect("/accept-new");
         } else if (req.route.path === "/uploads/thumbnails/:file_name") { // Allows to access thumbnails...
             return next();
@@ -42,7 +42,7 @@ exports.loginRequired = (req, res, next) => {
         } else if (req.session.user.anonymized) {
             if (req.session.user.onlyForER) {
                 if (req.escapeRoom) {
-                    if (req.escapeRoom.id == req.session.user.onlyForER) {
+                    if (req.escapeRoom.id == req.session.user.onlyForER || req.escapeRoom.isPubliclyAccessible) {
                         return next();
                     }
                     return res.redirect(`/escapeRooms/${req.session.user.onlyForER}`);
@@ -54,6 +54,14 @@ exports.loginRequired = (req, res, next) => {
         return next();
     } else if ((req.params.file_name || req.params.public_id) && req.get("Referrer") && req.get("Referrer").includes("/escapeRooms/")) {
         return next();
+    } else if (req.route.path === "/escapeRooms/:escapeRoomId(\\d+)/join") {
+        if (req.escapeRoom.allowGuests) {
+            if (req.query && req.query.token) {
+                return res.redirect(`/escapeRooms/${req.escapeRoom.id}?token=${req.query.token}`);
+            }
+            return res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
+        }
+        return res.redirect(`/?redir=${req.param("redir") || req.url}`);
     }
     return res.redirect(`/?redir=${req.param("redir") || req.url}`);
 };
@@ -171,7 +179,7 @@ exports.authShowEscapeRoom = async (req, res, next) => {
 exports.authShowEscapeRoomOrPending = async (req, res, next) => {
     const er = req.escapeRoom;
 
-    if (er && er.isAccessibleToAllUsers) {
+    if (er && (er.isAccessibleToAllUsers || er.allowGuests)) {
         return next();
     }
 
@@ -268,10 +276,12 @@ exports.authPlayEscapeRoom = async (req, res, next) => {
 exports.authJoinEscapeRoom = (req, res, next) => {
     const {user} = req.session;
     const er = req.escapeRoom;
+    const {i18n} = res.locals;
 
     if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         res.status(403);
-        return next(new Error(res.locals.i18n.api.forbidden));
+        req.flash("error", i18n.user.teacherCannotJoin);
+        return res.redirect(`/escapeRooms/${er.id}`);
     }
     next();
 };

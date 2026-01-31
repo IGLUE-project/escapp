@@ -266,6 +266,9 @@
     "total": "ukupno",
     "Total": "Ukupno",
     "upTo": "Do",
+    "teams": "Timovi",
+    "of": "od",
+    "players": "igrača",
     "no": "Ne",
     "yes": "Da"
 
@@ -501,9 +504,9 @@
         "noHintsStrategy": "Saveti nisu dozvoljeni",
         "freeHintsStrategy": "Studenti mogu dobiti besplatne savete",
         "quizHintsStrategy": "Studenti mogu dobiti savete polaganjem kviza",
-        "automatedHintStrategy": "Automatizovani saveti",
+        "automatedHintStrategy": "Proaktivni saveti",
         "automatedHintsExplanation": "Možete odabrati da učesnici dobijaju automatizovanu pomoć ako se zadrže na zagonetki duže od procenjenog trajanja iz prethodnog koraka",
-        "noAutomatedHints": "Ne pružaj automatizovane savete",
+        "noAutomatedHints": "Ne pružaj proaktivne savete",
         "automatedSuggestions": "Pošaljite poruku učesnicima sugerišući im da zatraže savetako premaše procenjeno trajanje na određenoj zagonetki",
         "automatedHints": "Automatski pošaljite savetako učesnici premaše procenjeno trajanje na određenoj zagonetki",
         "MoodleXML": "MoodleXML",
@@ -699,6 +702,7 @@
         "field": "Oblast znanja",
         "format": "Format",
         "teamSize": "Veličina tima",
+        "participationMode": "Način učešća",
         "licenseExplanation": "Pod kojom licencom želite da objavite svoju escape sobu?",
         "licenseExplanationAlreadyPublished": "Više ne možete menjati licencu jer je vaša escape soba već objavljena ranije.",
         "invitationExplanation": "Da li želite da učesnici unesu lozinku da bi se pridružili sobi za bekstvo? Ako jeste, unesite je u tekstualno polje ispod.",
@@ -1359,6 +1363,7 @@
       "name": "Ime",
       "anonymous": "Anoniman",
       "anonymizedCantLogin": "Ovaj nalog je anonimizovan i više se ne možete prijaviti pomoću njega.",
+      "teacherCannotJoin": "Koristili ste link namenjen učesnicima escape sobe. Ako želite da testirate svoju escape sobu, kliknite na dugme 'test'.",
       "password": "Lozinka",
       "passwordConfirm": "Potvrdite lozinku",
       "passLeaveBlank": "Ako želite da promenite lozinku, popunite sledeća polja. U suprotnom, ostavite ih prazna.",
@@ -1459,13 +1464,13 @@
         "markAsRead": "Označi kao pročitano",
         "delete": "Obriši",
         "name": "Vaše ime",
-        "namePlaceholder": "Unesite svoje ime",
-        "email": "Vaša e-pošta",
-        "emailPlaceholder": "Unesite svoju e-poštu",
+        "namePlaceholder": "Unesite vaše ime ",
+        "email": "Vaš email",
+        "emailPlaceholder": "Unesite vaš email",
         "optional": "opciono",
         "captchaLabel": "Rešite ovo da biste potvrdili da ste čovek",
-        "captchaError": "Pogrešan odgovor captche. Molimo vas pokušajte ponovo.",
-        "commentsPlaceholder": "Navedite dodatne detalje o vašoj prijavi...",
+        "captchaError": "Netačan odgovor na captch-u. Molimo pokušajte ponovo..",
+        "commentsPlaceholder": "Navedite dodatne detalje o vašem izveštaju...",
         "reasons": {
           "inappropriateContent": "Neprikladan sadržaj za ciljnu publiku.",
           "copyrightViolation": "Kršenje autorskih prava.",
@@ -1484,7 +1489,7 @@
           "Futuristic": "Futuristički",
           "Realistic": "Realističan",
           "Tablet": "Tablet",
-          "Framed": "U okviru"
+          "Framed": "Frejmovan"
         },
         "actionAfterSolve": "Akcija nakon rešavanja",
         "enabled": "Omogućeno",
@@ -1669,7 +1674,7 @@
       "Clock": {
         "name": "Sat",
         "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da postave određeno vreme na satu.",
-        "SecondHand": "Sekunda",
+        "SecondHand": "Kazaljka za sekunde",
         "InitialTime": "Početno vreme"
       },
       "Jigsaw": {
@@ -1691,7 +1696,7 @@
         "username": "Korisničko ime",
         "passwordPlaceholder": "Plejsholder lozinke",
         "avatar": "Avatar",
-        "helpMessage": "Pomoćna poruka"
+        "helpMessage":  "Poruka za pomoć"
       },
       "Video": {
         "name": "Video",
@@ -1934,14 +1939,14 @@
             "registrationSettings": "Podešavanja registracije",
             "disableChoosingRole": "Onemogući izbor uloge",
             "enableTeacherPersonalInfo": "Omogući lične podatke nastavnika",
-            "emailValidationSettings": "Podešavanja validacije e-pošte",
-            "emailValidationStudent": "Validacija e-pošte za učenike",
-            "emailValidationTeacher": "Validacija e-pošte za nastavnike",
+            "emailValidationSettings": "Podešavanja validacije email-a",
+            "emailValidationStudent": "Validacija email-a za učenike",
+            "emailValidationTeacher": "Validacija email-a za nastavnike",
             "useEnvDefault": "Koristi podrazumevanu vrednost iz .env",
             "true": "Tačno",
             "false": "Netačno",
             "networkUrls": "URL-ovi mreže",
-            "urlsHelp": "URL-ovi odvojeni sa točka-zareza: https://url:port/;https:...",
+            "urlsHelp": "URL-ovi odvojeni tačka-zarezom: https://url:port/;https:...",
             "currentUrlsFromDb": "Trenutni URL-ovi iz baze podataka",
             "defaultUrlsFromConfig": "Podrazumevani URL-ovi iz konfiguracionog fajla",
             "copyDefaultUrls": "Kopiraj podrazumevane URL-ove u polje za unos",
@@ -1959,7 +1964,7 @@
             "all": "Sve",
             "verified": "Verifikovano",
             "notVerified": "Nije verifikovano",
-            "needsReverification": "Treba ponovna verifikacija"
+            "needsReverification": "Potrebna ponovna verifikacija"
         }
     },
     "network": {
@@ -1967,8 +1972,10 @@
         "conductSearch": "Izvršite pretragu",
         "clickToPlay": "Kliknite na dugme ispod da biste igrali na njihovoj stranici:",
         "clickToClone": "...ili kliknite na dugme ispod da biste je uvezli u vaš profil i koristili je kao nastavnik",
+        "currentInstance": "trenutna Escapp instanca",
         "view": "poseti",
-        "hostedAt": "Ova escape soba je hostovana na:",
+        "hostedAt": "Ova escape soba je hostovana na",
+        "Local": "Lokalno",
         "filters": {
             "Filters": "Filteri",
             "any": "Bilo koji",
@@ -1976,11 +1983,15 @@
             "before": "Pre",
             "language": "Jezik",
             "eduLevel": {
-                "filter": "Obrazovni nivo",
-                "primary": "Osnovno obrazovanje",
-                "secondary": "Srednje obrazovanje",
-                "vet": "Stručno obrazovanje i obuka",
-                "higher": "Visoko obrazovanje"
+              "filter": "Obrazovni nivo",
+              "primary": "Osnovno obrazovanje",
+              "secondary": "Srednje obrazovanje",
+              "vet": "Stručno obrazovanje i obuka",
+              "higher": "Visoko obrazovanje",
+              "adult": "Odraslo obrazovanje",
+              "general": "Opšta javnost",
+              "other": "Ostalo",
+              "unspecified": "Nespecifikovano"
             },
             "area": "Oblast",
             "participation": {
@@ -1993,7 +2004,9 @@
                 "filter":"Format",
                 "online": "Virtuelno",
                 "hybrid": "Hibridno"
-            }
+            },
+            "license": "Licenca",
+            "instance": "Escapp URL"
         },
         "search": {
             "searchButton": "pretraga",
@@ -2006,7 +2019,7 @@
         "contact": {
             "text1": "Poruka od",
             "text2": "vezano za vašu escape sobu: ",
-            "text3": "kontakt e-pošta: ",
+            "text3": "kontakt email: ",
             "text4": "u Escapp-u.",
             "subject": "Nova poruka o vašoj escape sobi"
         },
@@ -2017,8 +2030,8 @@
             "message": "Poruka",
             "name": "Vaše ime",
             "namePlaceholder": "Unesite svoje ime",
-            "email": "Vaša e-pošta",
-            "emailPlaceholder": "Unesite svoju e-mail adresu",
+            "email": "Vaš email",
+            "emailPlaceholder": "Unesite svoju email adresu",
             "optional": "opciono",
             "captchaLabel": "Molimo vas rešite ovaj jednostavni matematički problem da biste potvrdili da ste čovek",
             "captchaError": "Pogrešan odgovor captche. Molimo vas pokušajte ponovo.",

@@ -58,10 +58,10 @@ exports.uploadAsset = async (req, res) => {
                 fsSync.mkdirSync(assetContentPathFolderFull);
                 await zip.extract(null, assetContentPathFolderFull);
                 await zip.close();
-                const assetContentPath = `${assetContentPathFolder}/index.html`;
+                const assetContentPathWebApp = `${assetContentPathFolder}/index.html`;
                 const assetUrl = `/assets/${asset.id}/index.html`;
 
-                await asset.update({ "assetType": "webapp", "contentPath": assetContentPath, "url": assetUrl });
+                await asset.update({ "assetType": "webapp", "contentPath": assetContentPathWebApp, "url": assetUrl });
             }
         }
         res.json({asset});
@@ -148,7 +148,7 @@ exports.browseResources = async (req, res, next) => {
 exports.getAsset = async (req, res, next) => {
     const {asset_id, asset_extension} = req.params;
     let asset;
-    
+
 
     try {
         asset = await models.asset.findOne({"where": { "id": asset_id }});
@@ -156,8 +156,9 @@ exports.getAsset = async (req, res, next) => {
             res.status(404).send("Asset not found.");
             return;
         }
-        
+
         const filePath = path.join(__dirname, "..", asset.filePath);
+
         switch (asset.assetType) {
         case "video":
             const stat = fsSync.statSync(filePath);
@@ -228,13 +229,13 @@ exports.getAsset = async (req, res, next) => {
             res.sendFile(filePath);
         }
     } catch (err) {
-        // console.error(err);
+        // Console.error(err);
         res.status(404).send("Error loading asset");
     }
 };
 
 // GET /uploads/:file_id/:webapp_file_name
-exports.getWebAppFile = async (req, res, next) => {
+exports.getWebAppFile = (req, res, next) => {
     const { file_id, webapp_file_name } = req.params;
 
     try {

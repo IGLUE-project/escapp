@@ -111,7 +111,7 @@ exports.index = async (req, res, next) => {
             }
         });
         if (req.query.csv) {
-            createCsvFile(res, participants, "participants");
+            createCsvFile(res, participants, `participants-er-${escapeRoom.id}-${turnId ? `turn-${turnId}-` : ""}${Date.now()}`);
         } else {
             res.render("escapeRooms/participants", {escapeRoom, participants, turnos, turnId, orderBy});
         }

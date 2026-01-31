@@ -8,7 +8,7 @@
     "dev": "DEBUG=escapp  nodemon bin/www -e sass,js,json --ignore public/js/ --ignore public/apps/ --ignore reusablePuzzles/ --ignore migrations --ignore seeders --ignore test/ --ignore uploads/ --exec \"npm run css && npm run lint && node\"",
     "dev-windows": "nodemon bin/www -e sass,js,json --ignore public/js/ --ignore public/apps/ --ignore migrations --ignore seeders --ignore test/ --ignore uploads --exec \"npm run css && npm run lint && node\"",
     "pretest": "DATABASE_URL=postgres://loguser:password@localhost/er_jest TEST=true node scripts/db_test_setup.js",
-    "test": "DATABASE_URL=postgres://loguser:password@localhost/er_jest TEST=true jest --forceExit",
+    "test": "DATABASE_URL=postgres://loguser:password@localhost/er_jest TEST=true jest --forceExit --runInBand",
     "test:watch": "DATABASE_URL=postgres://loguser:password@localhost/er_jest TEST=true jest --watchAll",
     "create_local": "node scripts/db_create.js",
     "migrate_local": "node scripts/db_migrate.js",
@@ -69,6 +69,10 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "setupFilesAfterEnv": [
+      "./test/jest.setup.js"
+    ],
+    "testTimeout": 30000
   }
 }

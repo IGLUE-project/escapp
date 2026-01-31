@@ -18,6 +18,8 @@
           <%-include("../partials/_verify",{escapeRoom})%>
       
         <%}else if(escapeRoom.verified) {%>
+            <div></div>
+            <div></div>
          <%-include("../partials/_verify",{escapeRoom})%>
         <%}%>
        
@@ -189,7 +191,7 @@
                 <%if(escapeRoom.teamSize || escapeRoom.minTeamSize){%>
                  <div class="flexRow animated slideInUp" style="animation-delay: 60ms;">
                     <div class="flexShowLeft">
-                        <%=i18n.escapeRoom.steps.sharing.teamSize%>
+                        <%=i18n.escapeRoom.steps.sharing.participationMode%>
                     </div>
                     <div class="flexShowRight">
                         <%=formatTeamSize(escapeRoom.minTeamSize, escapeRoom.teamSize, i18n)%>
@@ -212,7 +214,7 @@
                         <%=i18n.showTeacher.titles.level%>:
                     </div>
                     <div class="flexShowRight">
-                        <%= i18n.user.eduLevel[escapeRoom.level] %> 
+                        <%= i18n.network.filters.eduLevel[escapeRoom.level] %> 
                     </div>
                 </div>
                 <%}%>

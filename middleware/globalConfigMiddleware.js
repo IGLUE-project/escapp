@@ -12,6 +12,7 @@ module.exports = async (req, res, next) => {
     } catch (e) {
         // Fallback to .env values if DB is not available
         const defaultLanguages = (process.env.AVAILABLE_LANGUAGES || "en,es,sr").split(",").map((l) => l.trim());
+
         res.locals.globalConfig = {
             "disableChoosingRole": process.env.DISABLE_CHOOSING_ROLE === "true",
             "enableTeacherPersonalInfo": process.env.ENABLE_TEACHER_PERSONAL_INFO === "true",

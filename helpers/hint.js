@@ -5,7 +5,7 @@ const {getCurrentPuzzle} = require("./utils");
 
 exports.calculateNextHint = async (escapeRoom, team, status, score, category, messages, userId, ai) => {
     const success = status === "completed" || status === "passed";
-    const transaction = await sequelize.transaction({isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED});
+    const transaction = await sequelize.transaction({"isolationLevel": Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED});
 
     try {
         const teamId = team.id;
@@ -36,11 +36,13 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
             if (escapeRoom.hintLimit !== undefined && escapeRoom.hintLimit !== null && hints.length >= escapeRoom.hintLimit) {
                 return { "msg": messages.tooMany, "ok": false };
             }
-            const hintInterval = ai ? 0 : escapeRoom.hintInterval ;
+            const hintInterval = ai ? 0 : escapeRoom.hintInterval;
+
             if (hintInterval && hints.length > 0) {
                 const latestHint = hints[hints.length - 1].createdAt;
                 const now = new Date();
                 const timeSinceLastHint = (now - latestHint) / 1000 / 60;
+
                 if (timeSinceLastHint < hintInterval) {
                     const timeAhead = hintInterval - timeSinceLastHint;
                     const each = timeAhead < 1 ? `${Math.round(timeAhead * 60)} s.` : `${Math.round(timeAhead)} min.`;
@@ -89,20 +91,21 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
             }
             if (hintOrder || escapeRoom.allowCustomHints) {
                 const reqHint = models.requestedHint.build({hintId, teamId, success, score, userId});
-                const exists = await models.requestedHint.findOne({"where": {hintId, teamId}}, {transaction})
+                const exists = await models.requestedHint.findOne({"where": {hintId, teamId}}, {transaction});
+
                 if (!exists) {
                     await reqHint.save({transaction});
                     await transaction.commit();
                     return {"ok": true, msg, hintOrder, puzzleOrder, category};
                 }
                 await transaction.commit();
-                return {"ok": false}
+                return {"ok": false};
             }
             await transaction.commit();
             return {"ok": false, "msg": messages.cantRequestMoreThis, hintOrder, puzzleOrder, category};
         }
         const reqHint = models.requestedHint.build({"hintId": null, teamId, success, score, userId});
-        
+
         await reqHint.save({transaction});
         await transaction.commit();
         return { "ok": false, "msg": messages.failed};

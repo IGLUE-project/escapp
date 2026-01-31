@@ -147,7 +147,7 @@ module.exports = function (sequelize, DataTypes) {
             "level": {
                 "type": DataTypes.STRING,
                 "allowNull": false,
-                "validate": {"isIn": [["primary", "secondary", "vet", "higher", "other"]]}
+                "validate": {"isIn": [["primary", "secondary", "vet", "higher", "adult", "unspecified", "general", "other"]]}
             },
             "format": {
                 "type": DataTypes.STRING,

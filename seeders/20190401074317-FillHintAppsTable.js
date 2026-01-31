@@ -10,6 +10,16 @@ module.exports = {
             "mime": "text/xml",
             "createdAt": new Date(),
             "updatedAt": new Date()
+        },
+        // HintApp for escape room 2 (testTeacher's escape room)
+        {
+            "escapeRoomId": 2,
+            "public_id": "escapeRoom/attachments/teachertest123",
+            "url": "https://res.cloudinary.com/dbrbgqgfg/raw/upload/v1554105049/escapeRoom/attachments/teachertest123",
+            "filename": "math.xml",
+            "mime": "text/xml",
+            "createdAt": new Date(),
+            "updatedAt": new Date()
         }
 
     ]),

@@ -149,7 +149,11 @@
         "delete": "borrar",
         "download": "descargar",
         "edit": "editar",
-        "upTo": "Hasta",
+        "upTo": "hasta",
+        "teams": "Equipos",
+        "of": "de",
+        "teamsOf": "Equipos de",
+        "players": "jugadores",
         "error": {
             "whoops": "Ups!",
             "notFound": "No hemos encontrado la página que buscas",
@@ -499,9 +503,9 @@
                 "noHintsStrategy": "Pistas no permitidas",
                 "freeHintsStrategy": "Los participantes pueden obtener pistas gratuitamente",
                 "quizHintsStrategy": "Los participantes pueden obtener pistas si aprueban un cuestionario",
-                "automatedHintStrategy": "Pistas automáticas",
+                "automatedHintStrategy": "Pistas proactivas",
                 "automatedHintsExplanation": "Puedes escoger que los participantes reciban ayuda automáticamente si se atascan en un reto más de la duración estimada en el paso anterior",
-                "noAutomatedHints": "No proporcionar pistas automáticamente",
+                "noAutomatedHints": "No proporcionar pistas de forma proactiva",
                 "automatedSuggestions": "Enviar un mensaje a los participantes sugiriéndoles pedir una pista si se pasan de la duración estimada en un reto concreto",
                 "automatedHints": "Enviar una pista automáticamente si se pasan de la duración estimada en un reto concreto",
                 "MoodleXML": "MoodleXML",
@@ -696,6 +700,7 @@
                 "field": "Área de conocimiento",
                 "format": "Formato",
                 "teamSize": "Tamaño del equipo",
+                "participationMode": "Modo de participación",
                 "licenseExplanation": "¿Con qué licencia quieres publicar tu escape room?",
                 "licenseExplanationAlreadyPublished": "Ya no puedes cambiar la licencia porque tu escape room ya ha sido publicada anteriormente.",
                 "invitationExplanation": "¿Quieres que los participantes tengan que introducir una contraseña para apuntarse a la escape room? Si es así, introdúcela en el campo de texto que aparece a continuación.",
@@ -1359,6 +1364,7 @@
         "name": "Nombre",
         "anonymous": "Anónimo",
         "anonymizedCantLogin": "Esta cuenta ha sido eliminada y no puedes iniciar sesión",
+        "teacherCannotJoin": "Has usado un enlace destinado a los participants de la escape room. Si quieres probar tu escape room haz click en el botón 'test'.",
         "password": "Contraseña",
         "passLeaveBlank": "Si deseas cambiar la contraseña, rellena los siguientes campos, sino déjalos en blanco",
         "passwordConfirm": "Confirmar contraseña",
@@ -1736,8 +1742,10 @@
         "conductSearch": "Realize una busqueda",
         "clickToPlay": "Haz clic en el botón de abajo para jugar en su sitio:",
         "clickToClone": "...o haz clic en el botón de abajo para importar la escape room a tu perfil y usarla como profe",
+        "currentInstance": "la instancia actual de Escapp",
         "view": "visitar",
-        "hostedAt": "Esta escape room está alojada en:",
+        "hostedAt": "Esta escape room está alojada en",
+        "Local": "Local",
         "filters": {
             "Filters": "Filtros",
             "any": "Cualquiera",
@@ -1749,7 +1757,11 @@
                 "primary": "Educación primaria",
                 "secondary": "Educación secundaria",
                 "vet": "Formación profesional",
-                "higher": "Educación superior"
+                "higher": "Educación superior",
+                "adult": "Educación para adultos",
+                "general": "Público general",
+                "other": "Otro",
+                "unspecified": "Sin especificar"
             },
             "area": "Área",
             "participation": {
@@ -1762,7 +1774,10 @@
                 "filter":"Formato",
                 "online": "Online",
                 "hybrid": "Híbrido"
-            }
+            },
+            "license": "Licencia",
+            "instance": "Instancia de Escapp"
+
         },
         "search": {
             "searchButton": "buscar",

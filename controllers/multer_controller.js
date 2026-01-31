@@ -17,12 +17,12 @@ const storageWithExtension = (destination) => multer.diskStorage({
 });
 
 const temporaryStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, os.tmpdir());
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  }
+    "destination": (req, file, cb) => {
+        cb(null, os.tmpdir());
+    },
+    "filename": (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
 });
 
 const instructionStorage = storageWithExtension("./uploads/instructions/");
@@ -34,5 +34,5 @@ exports.instructions = multer({"storage": instructionStorage});
 exports.thumbnails = multer({"storage": thumbnailStorage});
 exports.upload = multer({"storage": uploadStorage});
 exports.hybridInstructions = multer({"storage": hybridStorage});
-exports.memoryStorage = multer({ storage: temporaryStorage})
+exports.memoryStorage = multer({ "storage": temporaryStorage});
 exports.hints = multer({"dest": "./uploads/hints/"}); // Confirm if this needs extension

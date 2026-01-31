@@ -36,6 +36,14 @@ module.exports = {
             "createdAt": new Date(),
             "order": 0,
             "updatedAt": new Date()
+        },
+        // Hint for puzzle 4 (escape room 2)
+        {
+            "puzzleId": 4,
+            "content": "Hint for math puzzle",
+            "createdAt": new Date(),
+            "order": 0,
+            "updatedAt": new Date()
         }
 
     ]),
