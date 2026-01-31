@@ -972,11 +972,11 @@
         "description": "Select a guide to help you create and manage your escape rooms.",
         "inspiration": {
             "title": "Best Practices guide",
-            "description": " A Comprehensive Step-by-step guide for escape room design."
+            "description": "A guide with guidelines and recommendations for designing, building, and running educational escape rooms"
         },
         "manual": {
             "title": "Escapp User Manual",
-            "description": "Comprehensive manual on how to use the Escapp platform."
+            "description": "Comprehensive manual on how to use the Escapp platform"
         }
     },
     "participant": {

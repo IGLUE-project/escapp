@@ -973,11 +973,11 @@
         "description": "Izaberite vodič koji će vam pomoći da kreirate i upravljate vašim escape sobama.",
         "inspiration": {
                 "title": "Vodič za najbolje prakse",
-                "description": "Sveobuhvatan vodič korak po korak za dizajniranje escape sobe."
+                "description": "Vodič sa smernicama i preporukama za dizajniranje, izradu i realizaciju edukativnih escape sobe"
         },
         "manual": {
                 "title": "Uputstvo za upotrebu Escapp-a",
-                "description": "Sveobuhvatan priručnik kako koristiti Escapp platformu."
+                "description": "Sveobuhvatan priručnik kako koristiti Escapp platformu"
         }
     },
     "participant": {

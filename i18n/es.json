@@ -972,11 +972,11 @@
         "description": "Selecciona una guía para ayudarte a crear y gestionar tus escape rooms.",
         "inspiration": {
             "title": "Guía de buenas prácticas",
-            "description": "Guía completa paso a paso para el diseño de escape rooms."
+            "description": "Guía con directrices y recomendaciones para diseñar, construir y ejecutar escape rooms educativas"
         },
         "manual": {
             "title": "Manual de usuario de Escapp",
-            "description": "Manual completo sobre cómo usar la plataforma Escapp."
+            "description": "Manual completo sobre cómo usar la plataforma Escapp"
         }
     },
     "participant": {
