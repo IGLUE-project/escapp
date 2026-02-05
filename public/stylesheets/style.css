@@ -3483,6 +3483,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   color: #161938;
   -webkit-text-fill-color: #161938 !important;
 }
+.modalCatalogResource #configZone .configReusablePuzzle .associatedPuzzle, .modalCatalogResource #configZone #editDialog .associatedPuzzle {
+  max-width: 360px;
+}
 .modalCatalogResource #configZone .configReusablePuzzle h3.reusablePuzzleInstanceTitle, .modalCatalogResource #configZone #editDialog h3.reusablePuzzleInstanceTitle {
   margin: 0px 0px 20px 0px;
 }
