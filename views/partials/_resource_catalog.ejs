@@ -136,11 +136,13 @@
                 <form action="reusablePuzzleInstance" class="reusablePuzzleInstanceForm" onsubmit="send(event,this)" style="position:relative;" method="POST" id="configForm" >
                 </form>
                 <div class="previewReusablePuzzle">
+                    <div class="preview-group">
                     <div style="display:flex;justify-content:end;align-items:center;gap:0.2em; margin-bottom: 1em; font-size: smaller;">
                         <button class="rounded small" onclick="updateIframe();"><span class="material-icons">replay</span> <%=i18n.reusablePuzzles.reset%></button>
                         <button class="rounded small" onclick="fullscreenIframe('previewReusablePuzzleIframe')"><span class="material-icons">fullscreen</span> <%=i18n.reusablePuzzles.fullscreen%></button><br/>
                     </div>
                     <iframe src="" id="previewReusablePuzzleIframe" frameborder="0"></iframe>
+                    </div>
                 </div>
             </div>
         </section>
@@ -578,6 +580,8 @@
 
         window.currentOpenPuzzleConfig = config;
         window.currentReusablePuzzleId = reusablePuzzleId;
+        configForm.attr('data-reusable-puzzle-name', puzzle.name);
+
         if(config.url || puzzle.id){
             fetch(config.url ? config.url : `/reusablePuzzlesInstances/${puzzle.id}/form`)
             .then(response => response.text())

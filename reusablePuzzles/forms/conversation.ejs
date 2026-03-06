@@ -1,0 +1,328 @@
+<style>
+
+  [data-reusable-puzzle-name="Conversation"] .previewReusablePuzzle {
+        min-width: 400px;
+  }
+</style>
+
+<% /* --- Validator include from your snippet --- */ %>
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+
+<br>
+<h4 class="titleLabelEdit"><%= i18n.escapeRoom.steps.indications.front.catalog.config.customization %></h4>
+
+<div>
+  <label for="skinSelect"><%= i18n.reusablePuzzleApps.Common.skin %>:</label>
+  <select id="skinSelect" name="skin">
+    <option value="STANDARD"><%= i18n.reusablePuzzleApps.Common.skins.Standard %></option>
+    <option value="RETRO"><%= i18n.reusablePuzzleApps.Common.skins.Retro %></option>
+    <option value="FUTURISTIC"><%= i18n.reusablePuzzleApps.Common.skins.Futuristic %></option>
+  </select>
+</div>
+
+<div>
+  <label for="actionValue"><%= i18n.reusablePuzzleApps.Common.actionAfterSolve %>:</label>
+  <select id="actionValue" name="actionAfterSolve">
+    <option value="NONE"><%= i18n.reusablePuzzleApps.Common.NoneF %></option>
+    <option value="SHOW_MESSAGE"><%= i18n.reusablePuzzleApps.Common.showMessage %></option>
+  </select>
+</div>
+
+<div id="actionDiv">
+  <label for="messageInput"><%= i18n.reusablePuzzleApps.Common.Message %>:</label>
+  <input id="messageInput" type="message" name="message" placeholder="<%= i18n.reusablePuzzleApps.Common.MessagePlaceholder %>" style="flex:1;" />
+</div>
+
+<div>
+  <label for="backgroundInput"><%= i18n.reusablePuzzleApps.Common.BackgroundURL %>:</label>
+  <input type="text" id="backgroundInput" name="background" placeholder="<%= i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder %>" style="flex:1;" />
+</div>
+<br>
+
+<!-- ================= Branching Q&A Editor (Vanilla JS, EJS-friendly) ================= -->
+<h4 class="titleLabelEdit"><%= i18n.reusablePuzzleApps.Common.Questions || 'Questions & Answers' %></h4>
+<input type="hidden" name="branchingJson" id="branchingJson" />
+<div id="branchingEditor"></div>
+<div class="be-toolbar" style="display:flex; gap:8px; flex-wrap:wrap; margin:8px 0;">
+   
+</div>
+
+<style>
+  /* Scoped styles to avoid collisions */
+  #branchingEditor {
+    max-width: 50vw;
+  }
+  #branchingEditor .be-question{border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin:10px 0;}
+  #branchingEditor .be-qhead{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:6px}
+  #branchingEditor .be-title{font-weight:600}
+  #branchingEditor .be-row{display:flex;gap:8px;align-items:center;margin:8px 0}
+  #branchingEditor input[type="text"]{width:100%;padding:8px 10px;border:1px solid #e5e7eb;border-radius:10px; min-width: 100px;margin-right: 0.6em;-webkit-text-fill-color:white !important;}
+  .be-btn{border:1px solid #e5e7eb;padding:6px 10px;border-radius:10px;cursor:pointer}
+  .be-btn:hover{box-shadow:0 1px 0 rgba(0,0,0,.06)}
+  #branchingEditor .be-answers{margin-left:0;     flex-direction: column;}
+  #branchingEditor .be-answer{border:1px dashed #e5e7eb;border-radius:12px;padding:10px;margin:8px 0;     align-items: center;}
+  #branchingEditor .be-indent{border-left:2px solid #e5e7eb;margin-left:14px;padding-left:14px}
+  #branchingEditor .be-help{font-size:12px; color:#6b7280}
+  #branchingEditor .be-btn{font-family: 'Material Icons', sans-serif; background: none; font-weight: normal; font-style: normal; font-size: 16px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-smoothing: antialiased; text-decoration: none;}
+  #branchingEditor .be-btn.be-add { background-color: var(--brightgreen); border: none; height: 40px; margin: auto; width: 41px; font-size: 24px; padding: 0px;}
+  #branchingEditor .be-btn.be-delete { background-color: var(--lightred); border: none; height: 40px;   width: 41px; font-size: 24px; padding: 0px;}
+  #branchingEditor .be-btn.be-edit { background-color: var(--brightyellow); border: none; height: 40px; margin: auto; width: 41px; font-size: 24px; padding: 0px;}
+  
+</style>
+
+<script>
+  (function(){
+    // Show/hide message field based on actionAfterSolve
+    const actionSel = document.getElementById('actionValue');
+    const actionDiv = document.getElementById('actionDiv');
+    function syncAction(){ actionDiv.style.display = actionSel.value === 'SHOW_MESSAGE' ? '' : 'none'; }
+    if (actionSel && actionDiv){ actionSel.addEventListener('change', syncAction); syncAction(); }
+
+    // ---------- ID helpers ----------
+    let beId = 0; const beMakeId = (p) => `${p}_${++beId}`;
+
+    // ---------- Model ----------
+    function beBlankQ(){ return { id: beMakeId('q'), text: '', image: '', answers: [ beBlankA(), beBlankA() ] }; }
+    function beBlankA(){ return { id: beMakeId('a'), text: '', next: null }; }
+
+    // ---------- DOM helper ----------
+    function beEl(tag, props = {}, children = []){
+      const node = document.createElement(tag);
+      Object.entries(props).forEach(([k,v]) => {
+        if (k === 'class') node.className = v;
+        else if (k === 'text') node.textContent = v;
+        else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2).toLowerCase(), v);
+        else if (v !== null && v !== undefined) node.setAttribute(k, v);
+      });
+      (Array.isArray(children) ? children : [children]).forEach(ch => ch && node.appendChild(ch));
+      return node;
+    }
+
+    // ---------- Build question fieldset ----------
+    function beQuestionFS(model, { root = false } = {}){
+      const fs = beEl('fieldset', { class:'be-question', 'data-qid': model.id });
+
+      const header = beEl('div', { class:'be-qhead' }, [
+        beEl('span', { class:'be-title', text: root ? 'Root Question' : `Question` }),
+        !root && beEl('button', { class:'be-btn be-delete', type:'button', text:'delete', onClick: () => { fs.remove(); beRefresh(); } })
+      ].filter(Boolean));
+
+      const rowQ = beEl('div', { class:'be-row' }, [
+        beEl('input', { type:'text', placeholder:'Question text', value:(model.text||''), onInput:beRefresh })
+      ]);
+
+      const rowImg = beEl('div', { class:'be-row' }, [
+        beEl('input', { type:'text', placeholder:'Image URL (optional)', value:(model.image||''), onInput:beRefresh }),
+        beEl('span', { class:'be-help', text:'Optional image for this question' })
+      ]);
+
+      const answersWrap = beEl('div', { class:'be-answers' });
+      const addAns = beEl('button', { class:'be-btn be-add', type:'button', text:'add', onClick: () => { answersWrap.appendChild(beAnswerBlk(beBlankA())); beRefresh(); }});
+
+      fs.appendChild(header);
+      fs.appendChild(rowQ);
+      fs.appendChild(rowImg);
+      fs.appendChild(answersWrap);
+      fs.appendChild(addAns);
+
+      (model.answers||[]).forEach(a => answersWrap.appendChild(beAnswerBlk(a)));
+      return fs;
+
+      function beAnswerBlk(a){
+        const row = beEl('div', { class:'be-answer', 'data-aid': a.id });
+        const txt = beEl('input', { type:'text', placeholder:'Answer text', value:(a.text||''), onInput:beRefresh });
+        const bar = beEl('div', { class:'be-row' });
+        const addChild = beEl('button', { class:a.next ? 'be-btn be-edit':'be-btn be-add', type:'button', text:(a.next ? 'edit' : 'add'), onClick: () => {
+          if (!childHolder.firstChild){ childHolder.appendChild(beQuestionFS(beBlankQ())); beRefresh(); }
+        }});
+        const del = beEl('button', { class:'be-btn be-delete', type:'button', text:'remove', onClick: () => { row.remove(); beRefresh(); }});
+        bar.appendChild(addChild); bar.appendChild(del);
+        row.appendChild(txt); row.appendChild(bar);
+        const childHolder = beEl('div', { class:'be-indent' });
+        if (a.next) childHolder.appendChild(beQuestionFS(a.next));
+        row.appendChild(childHolder);
+        return row;
+      }
+    }
+
+    // ---------- Serialize ----------
+    function beSerialize(fs){
+      const id = fs.getAttribute('data-qid');
+      const top = fs.querySelectorAll(':scope > .be-row');
+      const text = top[0]?.querySelector('input')?.value || '';
+      const image = top[1]?.querySelector('input')?.value || '';
+      const answers = Array.from(fs.querySelectorAll(':scope > .be-answers > .be-answer')).map(ans => {
+        const aid = ans.getAttribute('data-aid');
+        const atext = ans.querySelector('input[type="text"]').value;
+        const child = ans.querySelector(':scope > .be-indent > fieldset.be-question');
+        return { id: aid, text: atext, next: child ? beSerialize(child) : null };
+      });
+      return { id, text, image, answers };
+    }
+
+    // ---------- Mount into existing EJS page ----------
+    const mount = document.getElementById('branchingEditor');
+    const hidden = document.getElementById('branchingJson');
+    let rootFS = null;
+
+    function beNew(){
+      mount.innerHTML = '';
+      rootFS = beQuestionFS(beBlankQ(), { root:true });
+      mount.appendChild(rootFS);
+      beRefresh();
+    }
+    function beDemo(){
+      const demo = { id: beMakeId('q'), text: 'Start here?', image:'', answers:[ { id: beMakeId('a'), text:'Yes', next: beBlankQ() }, { id: beMakeId('a'), text:'No' } ] };
+      mount.innerHTML = '';
+      rootFS = beQuestionFS(demo, { root:true });
+      mount.appendChild(rootFS);
+      beRefresh();
+    }
+    function beRefresh(){console.log("Refreshing conversation editor",rootFS); if (!rootFS) {return;} hidden.value = JSON.stringify(beSerialize(rootFS)); }
+    
+    console.log("Current open puzzle config:", window.currentOpenPuzzleConfig);
+
+    // Ensure hidden value is fresh just before form submission
+    const form = document.querySelector('form#configForm');
+    if (form){ form.addEventListener('submit', beRefresh); }
+
+        // Boot
+    // If the puzzle editor provides an existing config like:
+    // window.currentOpenPuzzleConfig.branchingJson (string), load it.
+    // Otherwise start a new blank root.
+
+    function beMaxNumericSuffixFromTree(q){
+      // Finds the largest _N suffix across q/a ids so new ids don't collide.
+      let max = 0;
+      const getNum = (id) => {
+        const m = String(id || '').match(/_(\d+)$/);
+        return m ? parseInt(m[1], 10) : 0;
+      };
+      (function walk(node){
+        if (!node) return;
+        max = Math.max(max, getNum(node.id));
+        (node.answers || []).forEach(a => {
+          max = Math.max(max, getNum(a.id));
+          if (a.next) walk(a.next);
+        });
+      })(q);
+      return max;
+    }
+
+    function beCoerceTree(raw){
+      // Accepts a parsed object and ensures it has the shape we need.
+      // It keeps any existing ids; if missing, it generates new ones.
+      function coerceQ(q){
+        const qq = q && typeof q === 'object' ? q : {};
+        const id = qq.id || beMakeId('q');
+        const text = typeof qq.text === 'string' ? qq.text : '';
+        const image = typeof qq.image === 'string' ? qq.image : '';
+        const answers = Array.isArray(qq.answers) ? qq.answers : [];
+        return {
+          id,
+          text,
+          image,
+          answers: answers.map(coerceA)
+        };
+      }
+      function coerceA(a){
+        const aa = a && typeof a === 'object' ? a : {};
+        const id = aa.id || beMakeId('a');
+        const text = typeof aa.text === 'string' ? aa.text : '';
+        const next = aa.next ? coerceQ(aa.next) : null;
+        return { id, text, next };
+      }
+      return coerceQ(raw);
+    }
+
+    function beLoadFromString(jsonStr){
+      if (!jsonStr || typeof jsonStr !== 'string') return false;
+      const trimmed = jsonStr.trim();
+      if (!trimmed) return false;
+      let parsed;
+      try{
+        parsed = JSON.parse(trimmed);
+      }catch(e){
+        console.warn('Invalid branchingJson, starting blank:', e);
+        return false;
+      }
+      // If someone stored { nested: {...} } we accept that too.
+      const rawTree = (parsed && parsed.nested && parsed.nested.id) ? parsed.nested : parsed;
+      if (!rawTree || !rawTree.id) return false;
+
+      // Reset counter to avoid collisions with imported ids
+      beId = 0;
+      const coerced = beCoerceTree(rawTree);
+      beId = beMaxNumericSuffixFromTree(coerced);
+
+      mount.innerHTML = '';
+      rootFS = beQuestionFS(coerced, { root:true });
+      mount.appendChild(rootFS);
+      beRefresh();
+      return true;
+    }
+
+// Try to load existing config (branchingJson may be string, double-stringified, or an object)
+const cfg = window.currentOpenPuzzleConfig || {};
+if (cfg.skin && document.getElementById('skinSelect')) {
+  document.getElementById('skinSelect').value = cfg.skin;
+}
+if (cfg.actionAfterSolve && document.getElementById('actionValue')) {
+  document.getElementById('actionValue').value = cfg.actionAfterSolve;
+}
+if (typeof cfg.message === 'string' && document.getElementById('messageInput')) {
+  document.getElementById('messageInput').value = cfg.message;
+}
+if (typeof cfg.background === 'string' && document.getElementById('backgroundInput')) {
+  document.getElementById('backgroundInput').value = cfg.background;
+}
+syncAction(); // re-apply visibility after setting actionAfterSolve
+
+
+// Some systems store it at cfg.branchingJson, others inside cfg.config / cfg.puzzleConfig / etc.
+// Add any extra fallbacks you know you have:
+const raw =
+  cfg.branchingJson ??
+  cfg.config?.branchingJson ??
+  cfg.puzzleConfig?.branchingJson ??
+  cfg.configuration?.branchingJson ??
+  '';
+
+function unwrapPossiblyDoubleEncodedJson(value) {
+  // 1) If it's already an object, just stringify it once
+  if (value && typeof value === 'object') return JSON.stringify(value);
+
+  // 2) If it's not a string, treat as empty
+  if (typeof value !== 'string') return '';
+
+  let s = value.trim();
+  if (!s) return '';
+
+  // 3) If it's double-encoded, parsing once yields a string that looks like JSON
+  // Example: "\"{...}\""  -> parse -> "{...}"
+  for (let i = 0; i < 2; i++) {
+    try {
+      const parsed = JSON.parse(s);
+      if (typeof parsed === 'string') {
+        const t = parsed.trim();
+        if (t.startsWith('{') || t.startsWith('[')) {
+          s = t;
+          continue;
+        }
+      }
+    } catch (e) {
+      // Not JSON at this layer, stop unwrapping
+    }
+    break;
+  }
+
+  return s;
+}
+
+const existingStr = unwrapPossiblyDoubleEncodedJson(raw);
+const loaded = beLoadFromString(existingStr);
+if (!loaded) beDemo();
+
+  })();
+</script>

@@ -192,6 +192,18 @@ const reusablePuzzlesList = [
             "sr": "defaultReusablePuzzles/SQLChallenge/SQLChallenge_Instructions_SR.pdf"
         },
         "order": 16
+    },
+    {
+        "name": "Conversation",
+        "zip": "defaultReusablePuzzles/Conversation/Conversation_Puzzle.zip",
+        "form": "conversation.ejs",
+        "thumbnail": "defaultReusablePuzzles/Conversation/Conversation_Thumbnail.png",
+        // "instructions": {
+        //     "en": "defaultReusablePuzzles/Conversation/Conversation_Instructions_EN.pdf",
+        //     "es": "defaultReusablePuzzles/Conversation/Conversation_Instructions_ES.pdf",
+        //     "sr": "defaultReusablePuzzles/Conversation/Conversation_Instructions_SR.pdf"
+        // },
+        "order": 17
     }
 
     // {
