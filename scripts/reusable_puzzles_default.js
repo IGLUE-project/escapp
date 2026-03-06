@@ -204,6 +204,18 @@ const reusablePuzzlesList = [
         //     "sr": "defaultReusablePuzzles/Conversation/Conversation_Instructions_SR.pdf"
         // },
         "order": 17
+    },
+    {
+        "name": "Classification",
+        "zip": "defaultReusablePuzzles/Classification/Classification_Puzzle.zip",
+        "form": "classification.ejs",
+        "thumbnail": "defaultReusablePuzzles/Classification/Classification_Thumbnail.png",
+        // "instructions": {
+        //     "en": "defaultReusablePuzzles/Classification/Classification_Instructions_EN.pdf",
+        //     "es": "defaultReusablePuzzles/Classification/Classification_Instructions_ES.pdf",
+        //     "sr": "defaultReusablePuzzles/Classification/Classification_Instructions_SR.pdf"
+        // },
+        "order": 18
     }
 
     // {

@@ -1,0 +1,57 @@
+<%
+    // Default parameters
+    var assetLabel = (typeof assetLabel !== "undefined") ? assetLabel : i18n.escapeRoom.steps.assets.title;
+    var assetName = (typeof assetName !== "undefined") ? assetName : "assetId";
+    var assetId = (typeof assetId !== "undefined") ? assetId : "assetSelect";
+    var assetPlaceholder = (typeof assetPlaceholder !== "undefined") ? assetPlaceholder : i18n.escapeRoom.steps.assets.title;
+    var assetRequired = (typeof assetRequired !== "undefined") ? assetRequired : false;
+    var assetFilter = (typeof assetFilter !== "undefined") ? assetFilter : null; // e.g., "image", "audio", "video", "webapp", "pdf"
+    var allowEmpty = (typeof allowEmpty !== "undefined") ? allowEmpty : true;
+%>
+
+<div>
+    <label for="<%= assetId %>"><%= assetLabel %>:</label>
+    <select id="<%= assetId %>" name="<%= assetName %>" <%= assetRequired ? 'required' : '' %>>
+        <% if (allowEmpty) { %>
+            <option value="" hidden disabled selected><%= assetPlaceholder %></option>
+        <% } %>
+    </select>
+</div>
+
+<script>
+(function() {
+    const selectEl = document.getElementById('<%= assetId %>');
+    const assetFilter = '<%= assetFilter || "" %>';
+    const configValue = window.currentOpenPuzzleConfig?.['<%= assetName %>'] || '';
+
+    // Filter assets if a filter type is specified
+    let filteredAssets = window.assets || [];
+    if (assetFilter) {
+        filteredAssets = filteredAssets.filter(asset => {
+            if (!asset.assetType) return false;
+            return asset.assetType.toLowerCase().includes(assetFilter.toLowerCase());
+        });
+    }
+
+    // Populate dropdown with assets
+    filteredAssets.forEach(asset => {
+        const option = document.createElement('option');
+        option.value = asset.id;
+        option.textContent = asset.filename;
+        option.setAttribute('data-url', asset.url);
+        if (configValue && (configValue == asset.id || configValue == asset.url)) {
+            option.selected = true;
+        }
+        selectEl.appendChild(option);
+    });
+
+    // If no assets match the filter, show a message
+    if (filteredAssets.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.disabled = true;
+        option.textContent = '<%= i18n.escapeRoom.steps.indications.front.catalog.config.noResources || "No resources available" %>';
+        selectEl.appendChild(option);
+    }
+})();
+</script>

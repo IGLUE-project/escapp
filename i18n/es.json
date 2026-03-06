@@ -144,6 +144,7 @@
         "confirm": "confirmar",
         "confirmed": "confirmado",
         "continue": "continuar",
+        "confirm": "confirmar",
         "copyembed": "copiar / incrustar",
         "reset": "reiniciar",
         "delete": "borrar",
@@ -1538,6 +1539,25 @@
             "Bottom": "Abajo",
             "Text": "Texto",
             "Image": "Imagen"
+        },
+        "Classification": {
+            "name": "Clasificación",
+            "description": "Este recurso permite crear un reto de clasificación donde los participantes deben arrastrar elementos a las categorías correctas.",
+            "leftTitle": "Título izquierdo",
+            "leftTitlePlaceholder": "Título para la categoría izquierda",
+            "rightTitle": "Título derecho",
+            "rightTitlePlaceholder": "Título para la categoría derecha",
+            "confirmationText": "Texto de confirmación",
+            "confirmationTextPlaceholder": "Texto del botón de confirmación",
+            "images": "Imágenes",
+            "image": "Imagen",
+            "imageTitle": "Título",
+            "imageTitlePlaceholder": "Título de la imagen",
+            "imageSrc": "URL",
+            "imageSrcPlaceholder": "URL de la imagen",
+            "addImage": "Añadir imagen",
+            "defaultTitle1": "escape",
+            "defaultTitle2": "room"
         },
         "Keypad": {
             "name": "Panel de botones",

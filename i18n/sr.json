@@ -1538,7 +1538,25 @@
         "Bottom": "Dole",
         "Text": "Tekst",
         "Image": "Slika"
-      
+      },
+      "Classification": {
+        "name": "Klasifikacija",
+        "description": "Ovaj resurs vam omogućava da kreirate zagonetku klasifikacije gde učesnici moraju da prevuku elemente u odgovarajuće kategorije.",
+        "leftTitle": "Levi naslov",
+        "leftTitlePlaceholder": "Naslov za levu kategoriju",
+        "rightTitle": "Desni naslov",
+        "rightTitlePlaceholder": "Naslov za desnu kategoriju",
+        "confirmationText": "Tekst potvrde",
+        "confirmationTextPlaceholder": "Tekst za dugme za potvrdu",
+        "images": "Slike",
+        "image": "Slika",
+        "imageTitle": "Naslov",
+        "imageTitlePlaceholder": "Naslov slike",
+        "imageSrc": "URL",
+        "imageSrcPlaceholder": "URL slike",
+        "addImage": "Dodaj sliku",
+        "defaultTitle1": "бекство",
+        "defaultTitle2": "соба"
       },
       "Keypad": {
         "name": "Tastatura za otključavanje",

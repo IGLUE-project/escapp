@@ -1539,6 +1539,25 @@
             "Text": "Text",
             "Image": "Image"
         },
+        "Classification": {
+            "name": "Classification",
+            "description": "This resource allows you to create a classification puzzle where participants must drag elements to the correct categories.",
+            "leftTitle": "Left Title",
+            "leftTitlePlaceholder": "Title for the left category",
+            "rightTitle": "Right Title",
+            "rightTitlePlaceholder": "Title for the right category",
+            "confirmationText": "Confirmation Text",
+            "confirmationTextPlaceholder": "Text for the confirmation button",
+            "images": "Images",
+            "image": "Image",
+            "imageTitle": "Title",
+            "imageTitlePlaceholder": "Image title",
+            "imageSrc": "URL",
+            "imageSrcPlaceholder": "Image URL",
+            "addImage": "Add image",
+            "defaultTitle1": "escape",
+            "defaultTitle2": "room"
+        },
         "Keypad": {
             "name": "Keypad",
             "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of numbers, letters, colors, or symbols using a keypad.",
