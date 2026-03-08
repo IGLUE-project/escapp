@@ -216,6 +216,30 @@ const reusablePuzzlesList = [
         //     "sr": "defaultReusablePuzzles/Classification/Classification_Instructions_SR.pdf"
         // },
         "order": 18
+    },
+    {
+        "name": "IpadClassifier",
+        "zip": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Puzzle.zip",
+        "form": "ipadClassifier.ejs",
+        "thumbnail": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Thumbnail.png",
+        // "instructions": {
+        //     "en": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_EN.pdf",
+        //     "es": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_ES.pdf",
+        //     "sr": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_SR.pdf"
+        // },
+        "order": 19
+    },
+     {
+        "name": "PopupQuestion",
+        "zip": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Puzzle.zip",
+        "form": "popupQuestion.ejs",
+        "thumbnail": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Thumbnail.png",
+        // "instructions": {
+        //     "en": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_EN.pdf",
+        //     "es": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_ES.pdf",
+        //     "sr": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_SR.pdf"
+        // },
+        "order": 20
     }
 
     // {

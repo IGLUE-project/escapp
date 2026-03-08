@@ -51,8 +51,15 @@
 </div>
 
 <div>
-    <label for="mazeBgImg"><%=i18n.reusablePuzzleApps.HiddenPath.BackgroundGrid%>:</label>
-    <input type="text" id="mazeBgImgInput" name="mazeBgImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "mazeBgImgInput",
+        assetName: "mazeBgImg",
+        assetLabel: i18n.reusablePuzzleApps.HiddenPath.BackgroundGrid,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 
 <div class="onlyForGridBackground" style="display:none">
@@ -100,8 +107,15 @@
 </div>
 
 <div>
-    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
@@ -197,8 +211,6 @@
     document.getElementById("mazeHeight").value =  window.currentOpenPuzzleConfig?.mazeHeight || 4;
     document.getElementById("showStartCell").value =  window.currentOpenPuzzleConfig?.showStart || "TRUE";
     document.getElementById("showEndCell").value =  window.currentOpenPuzzleConfig?.showEnd || "TRUE";
-    document.getElementById("mazeBgImgInput").value =  window.currentOpenPuzzleConfig?.mazeBgImg || '';
-    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
     document.getElementById("mazePaddingTopInput").value =  window.currentOpenPuzzleConfig?.mazePaddingTop || 0;
     document.getElementById("mazePaddingBottomInput").value =  window.currentOpenPuzzleConfig?.mazePaddingBottom || 0;
     document.getElementById("mazePaddingLeftInput").value =  window.currentOpenPuzzleConfig?.mazePaddingLeft || 0;

@@ -55,12 +55,27 @@
 </div>
 
 <div>
-    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style%>="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <div>
-	<label for="dbUrl"><%=i18n.reusablePuzzleApps.SQLChallenge.dbUrl%><a target="_blank" href="https://iglue-project.github.io/sql_puzzle"><span class="material-icons">info</span></a>:</label>
-	<input id="dbUrl" type="text" name="dbUrl" placeholder="<%=i18n.reusablePuzzleApps.SQLChallenge.dbUrlPlaceholder%>" style="flex:1;"/>
+    <a target="_blank" href="https://iglue-project.github.io/sql_puzzle"><span class="material-icons" style="float: right;">info</span></a>
+    <%- include ("./_asset.ejs", {
+        assetId: "dbUrlInput",
+        assetName: "dbUrl",
+        assetLabel: i18n.reusablePuzzleApps.SQLChallenge.dbUrl,
+        assetPlaceholder: i18n.reusablePuzzleApps.SQLChallenge.dbUrlPlaceholder,
+        assetFilter: "",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <div>
 	<label for="question"><%=i18n.reusablePuzzleApps.SQLChallenge.question%>:</label>
@@ -139,7 +154,7 @@
     document.getElementById("theme").value = window.currentOpenPuzzleConfig?.theme ||  theme_default
     document.getElementById("actionValue").value = window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
     document.getElementById("messageInput").value = window.currentOpenPuzzleConfig?.message || '';
-    document.getElementById("dbUrl").value = window.currentOpenPuzzleConfig?.dbUrl || '';
+    document.getElementById("dbUrlInput").value = window.currentOpenPuzzleConfig?.dbUrl || '';
     document.getElementById("question").value = window.currentOpenPuzzleConfig?.question || '';
     document.getElementById("title").value = window.currentOpenPuzzleConfig?.title || '';
     document.getElementById("initialQuery").value = window.currentOpenPuzzleConfig?.initialQuery || '';

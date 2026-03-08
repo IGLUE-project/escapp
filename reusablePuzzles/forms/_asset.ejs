@@ -9,20 +9,32 @@
     var allowEmpty = (typeof allowEmpty !== "undefined") ? allowEmpty : true;
 %>
 
-<div>
+<div style="position: relative;">
     <label for="<%= assetId %>"><%= assetLabel %>:</label>
-    <select id="<%= assetId %>" name="<%= assetName %>" <%= assetRequired ? 'required' : '' %>>
-        <% if (allowEmpty) { %>
-            <option value="" hidden disabled selected><%= assetPlaceholder %></option>
-        <% } %>
-    </select>
+    <div style="display: flex; align-items: center; flex: 1;">
+        <input type="text"
+               id="<%= assetId %>"
+               name="<%= assetName %>"
+               list="<%= assetId %>List"
+               placeholder="<%= assetPlaceholder %>"
+               <%= assetRequired ? 'required' : '' %>
+               style="flex:1;" />
+        <button type="button"
+                id="<%= assetId %>Clear"
+                style="display: none; border: none; background: none; cursor: pointer; padding: 0 5px; font-size: 18px; color: rgb(185, 62, 68);">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+    <datalist id="<%= assetId %>List"></datalist>
 </div>
 
 <script>
 (function() {
-    const selectEl = document.getElementById('<%= assetId %>');
+    const inputEl = document.getElementById('<%= assetId %>');
+    const datalistEl = document.getElementById('<%= assetId %>List');
     const assetFilter = '<%= assetFilter || "" %>';
     const configValue = window.currentOpenPuzzleConfig?.['<%= assetName %>'] || '';
+    const origin = window.location.origin;
 
     // Filter assets if a filter type is specified
     let filteredAssets = window.assets || [];
@@ -33,25 +45,60 @@
         });
     }
 
-    // Populate dropdown with assets
+    // Create mapping between filenames and URLs
+    const assetMap = {};
+    const urlToName = {};
+
+    // Populate datalist with assets (using filename as value for display)
     filteredAssets.forEach(asset => {
-        const option = document.createElement('option');
-        option.value = asset.id;
-        option.textContent = asset.filename;
-        option.setAttribute('data-url', asset.url);
-        if (configValue && (configValue == asset.id || configValue == asset.url)) {
-            option.selected = true;
+        // Ensure URL has full absolute path with hostname
+        let url = asset.url || `/assets/${asset.id}`;
+        if (url.startsWith('/')) {
+            url = origin + url;
+        } else if (!url.startsWith('http')) {
+            url = origin + '/assets/' + url;
         }
-        selectEl.appendChild(option);
+
+        assetMap[asset.filename] = url;
+        urlToName[url] = asset.filename;
+
+        const option = document.createElement('option');
+        option.value = asset.filename;
+        option.setAttribute('data-url', url);
+        option.setAttribute('data-id', asset.id);
+        datalistEl.appendChild(option);
     });
 
-    // If no assets match the filter, show a message
-    if (filteredAssets.length === 0) {
-        const option = document.createElement('option');
-        option.value = '';
-        option.disabled = true;
-        option.textContent = '<%= i18n.escapeRoom.steps.indications.front.catalog.config.noResources || "No resources available" %>';
-        selectEl.appendChild(option);
+    // Clear button
+    const clearBtn = document.getElementById('<%= assetId %>Clear');
+
+    function updateClearButton() {
+        clearBtn.style.display = inputEl.value ? 'block' : 'none';
     }
+
+    // Clear button click handler
+    clearBtn.addEventListener('click', function() {
+        inputEl.value = '';
+        this.style.display = 'none';
+        inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    // Convert filename to URL when user selects from datalist
+    inputEl.addEventListener('change', function() {
+        const selectedName = this.value;
+        if (assetMap[selectedName]) {
+            this.value = assetMap[selectedName];
+        }
+        updateClearButton();
+    });
+
+    // Set initial value from config (show URL or convert URL to name for display)
+    if (configValue) {
+        inputEl.value = configValue;
+    }
+    updateClearButton();
+
+    // Show/hide clear button on input change
+    inputEl.addEventListener('input', updateClearButton);
 })();
 </script>

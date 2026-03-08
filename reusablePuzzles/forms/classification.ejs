@@ -26,9 +26,16 @@
 </div>
 
 <div>
-    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
-</div>
+     <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput", 
+        assetName: "backgroundImg", 
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    } ) %>
+   </div>
 
 <div>
     <label for="leftTitleInput"><%=i18n.reusablePuzzleApps.Classification.leftTitle%>:</label>
@@ -48,6 +55,10 @@
 <div style="margin: 15px 0px;">
     <label><%=i18n.reusablePuzzleApps.Classification.images%>:</label>
     <input type="hidden" id="classificationImagesInput" name="initialImages" />
+
+    <!-- Shared datalist for image assets -->
+    <datalist id="classificationImageAssetsList"></datalist>
+
     <div id="classificationImagesWrapper" style="flex-direction: column;">
         <% const defaultTitles = [i18n.reusablePuzzleApps.Classification.defaultTitle1, i18n.reusablePuzzleApps.Classification.defaultTitle2]; %>
         <% for (let i = 1; i <= 2; i++) { %>
@@ -64,10 +75,16 @@
                 </div>
                 <div style="margin: 10px 0px 10px 0px;">
                     <label><%=i18n.reusablePuzzleApps.Classification.imageSrc%>:</label>
-                    <input class="inputImageSrc" type="text" placeholder="<%=i18n.reusablePuzzleApps.Classification.imageSrcPlaceholder%>" style="flex:1;" />
+                    <div style="display: flex; align-items: center; flex: 1;">
+                        <input class="inputImageSrc" type="text" list="classificationImageAssetsList" placeholder="<%=i18n.reusablePuzzleApps.Classification.imageSrcPlaceholder%>" style="flex:1;" />
+                        <button type="button" class="clearImageSrc" style="display: none; border: none; background: none; cursor: pointer; padding: 0 5px; font-size: 18px; color: rgb(185, 62, 68);">
+                            <span class="material-icons">close</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         <% } %>
+
         <button class="rounded small addClassificationImage" type="button" onclick="addClassificationImage(event);" style="background-color: white;">
             <span class="material-icons" style="color: #161938">add</span> <%=i18n.reusablePuzzleApps.Classification.addImage%>
         </button>
@@ -83,6 +100,39 @@
         } else {
             document.getElementById("actionDiv").style.display = 'none';
         }
+    });
+
+    // Populate shared datalist with image assets
+    const classificationAssetMap = {};
+    const classificationOrigin = window.location.origin;
+    const classificationDatalist = document.getElementById('classificationImageAssetsList');
+
+    (window.assets || []).filter(asset => asset.assetType && asset.assetType.toLowerCase().includes('image')).forEach(asset => {
+        let url = asset.url || `/assets/${asset.id}`;
+        if (url.startsWith('/')) {
+            url = classificationOrigin + url;
+        } else if (!url.startsWith('http')) {
+            url = classificationOrigin + '/assets/' + url;
+        }
+        classificationAssetMap[asset.filename] = url;
+
+        const option = document.createElement('option');
+        option.value = asset.filename;
+        option.setAttribute('data-url', url);
+        classificationDatalist.appendChild(option);
+    });
+
+    // Handle clear button visibility
+    function updateClearButtonVisibility(input) {
+        const clearBtn = input.closest('div').querySelector('.clearImageSrc');
+        if (clearBtn) {
+            clearBtn.style.display = input.value ? 'block' : 'none';
+        }
+    }
+
+    // Initialize clear buttons for existing inputs
+    document.querySelectorAll('.inputImageSrc').forEach(function(input) {
+        updateClearButtonVisibility(input);
     });
 
     // Update images JSON
@@ -112,6 +162,7 @@
         $newImage.find('button.deleteClassificationImage').first().show();
         $newImage.find('input.inputImageTitle').val('');
         $newImage.find('input.inputImageSrc').val('');
+        $newImage.find('.clearImageSrc').hide();
         $wrapper.find('button.addClassificationImage').before($newImage);
         if (imageNumber === 24) {
             var $addButton = $wrapper.find('button.addClassificationImage');
@@ -147,6 +198,30 @@
         updateClassificationImages();
     }
 
+    // Clear image src button click handler (delegated)
+    $('#classificationImagesWrapper').on('click', '.clearImageSrc', function(e) {
+        e.preventDefault();
+        var input = $(this).closest('div').find('.inputImageSrc');
+        input.val('');
+        $(this).hide();
+        updateClassificationImages();
+    });
+
+    // Convert filename to URL when selecting from datalist, and update clear button
+    $('#classificationImagesWrapper').on('change', 'input.inputImageSrc', function() {
+        var selectedName = this.value;
+        if (classificationAssetMap[selectedName]) {
+            this.value = classificationAssetMap[selectedName];
+        }
+        updateClearButtonVisibility(this);
+        updateClassificationImages();
+    });
+
+    // Update clear button on input
+    $('#classificationImagesWrapper').on('input', 'input.inputImageSrc', function() {
+        updateClearButtonVisibility(this);
+    });
+
     // Load config values
     document.getElementById("backgroundImgInput").value = window.currentOpenPuzzleConfig?.backgroundImg || '';
     document.getElementById("messageInput").value = window.currentOpenPuzzleConfig?.message || '';
@@ -171,7 +246,9 @@
                 }
                 var $imageDiv = $imagesWrapper.find(".classificationImageWrapper[imageNumber='" + imageNumber + "']");
                 $imageDiv.find('input.inputImageTitle').val(images[i].title || '');
-                $imageDiv.find('input.inputImageSrc').val(images[i].src || '');
+                var srcInput = $imageDiv.find('input.inputImageSrc');
+                srcInput.val(images[i].src || '');
+                updateClearButtonVisibility(srcInput[0]);
             }
         }
     }
@@ -185,6 +262,6 @@
         document.getElementById("actionDiv").style.display = 'none';
     }
 
-    // Event listeners for image inputs
-    $('#classificationImagesWrapper').on('change', 'input.inputImageTitle, input.inputImageSrc', updateClassificationImages);
+    // Event listeners for title inputs
+    $('#classificationImagesWrapper').on('change', 'input.inputImageTitle', updateClassificationImages);
 </script>

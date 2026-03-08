@@ -108,8 +108,15 @@
 
 
 <div>
-    <label for="backgroundImgBTBInput"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundImgBTBInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgBTBInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
@@ -153,6 +160,4 @@
 
     document.getElementById("opacityBTBInput").value =  window.currentOpenPuzzleConfig?.opacity || '';
     document.getElementById("delayBTBInput").value =  window.currentOpenPuzzleConfig?.delay || '';
-
-    document.getElementById("backgroundImgBTBInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
 </script>

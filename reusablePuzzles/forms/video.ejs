@@ -4,13 +4,27 @@
 <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
 
 <div id="videoURLVideo">
-    <label for="videoURLVideoInput"><%=i18n.reusablePuzzleApps.Common.Video%>:</label>
-    <input id="videoURLVideoInput" type="text" name="videoURL" style="flex:1;"  />
+    <%- include ("./_asset.ejs", {
+        assetId: "videoURLVideoInput",
+        assetName: "videoURL",
+        assetLabel: i18n.reusablePuzzleApps.Common.Video,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "video",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 
 <div id="posterURLVideo">
-    <label for="posterURLVideoInput"><%=i18n.reusablePuzzleApps.Video.poster%>:</label>
-    <input id="posterURLVideoInput" type="text" name="posterURL" style="flex:1;"  />
+    <%- include ("./_asset.ejs", {
+        assetId: "posterURLVideoInput",
+        assetName: "posterURL",
+        assetLabel: i18n.reusablePuzzleApps.Video.poster,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 
 <div>
@@ -43,8 +57,15 @@
 </div>
 
 <div>
-    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
@@ -57,13 +78,10 @@
         }
     });
 
-    document.getElementById("videoURLVideoInput").value =  window.currentOpenPuzzleConfig?.videoURL || '';
-    document.getElementById("posterURLVideoInput").value =  window.currentOpenPuzzleConfig?.posterURL || '';
     document.getElementById("showControlsVideo").value =  window.currentOpenPuzzleConfig?.enableControls || 'TRUE';
     document.getElementById("showPlayButtonVideo").value =  window.currentOpenPuzzleConfig?.showPlayButton || 'FALSE';
     document.getElementById("allowSkipVideo").value =  window.currentOpenPuzzleConfig?.allowSkipVideo || 'TRUE';
     document.getElementById("skipVideoButtonLabelVideoInput").value =  window.currentOpenPuzzleConfig?.skipVideoText || '';
-    document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
 
     document.getElementById('allowSkipVideo').dispatchEvent(new Event('change'));
 </script>

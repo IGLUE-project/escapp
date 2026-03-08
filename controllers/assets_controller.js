@@ -23,7 +23,7 @@ exports.uploadAsset = async (req, res) => {
         let assetFilePathFull = path.join(__dirname, "..", assetFilePath);
         const assetFileType = await getDataForFile(assetFilePathFull);
         const assetFileId = path.parse(req.file.filename).name;
-        const assetFileName = req.file.originalname;
+        const assetFileName = req.body.filename || req.file.originalname;
 
         const assetFileExtension = path.extname(req.body.filename);
 

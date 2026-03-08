@@ -138,6 +138,10 @@
                 <div class="previewReusablePuzzle">
                     <div class="preview-group">
                     <div style="display:flex;justify-content:end;align-items:center;gap:0.2em; margin-bottom: 1em; font-size: smaller;">
+                        <select id="aspectRatioSelect" onchange="changeAspectRatio(this.value)" style="padding: 4px 26px 4px 8px; border-radius: 4px;">
+                            <option value="4/3">4:3</option>
+                            <option value="16/9">16:9</option>
+                        </select>
                         <button class="rounded small" onclick="updateIframe();"><span class="material-icons">replay</span> <%=i18n.reusablePuzzles.reset%></button>
                         <button class="rounded small" onclick="fullscreenIframe('previewReusablePuzzleIframe')"><span class="material-icons">fullscreen</span> <%=i18n.reusablePuzzles.fullscreen%></button><br/>
                     </div>
@@ -657,6 +661,10 @@
         $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${puzzleId}&config=${encodeURIComponent(JSON.stringify(reusablePuzzleInstanceConfig))}`);
     }
 
+    function changeAspectRatio(ratio) {
+        $('#previewReusablePuzzleIframe').css('aspect-ratio', ratio);
+    }
+
     function refreshCKEditor() {
         try {
 
@@ -761,6 +769,7 @@
     }
 
     function send(e,form) {
+        e.preventDefault();
         let fetchOptions = {
             method:'post'
         };

@@ -35,14 +35,22 @@
 </div>
 
 <div>
-  <label for="backgroundInput"><%= i18n.reusablePuzzleApps.Common.BackgroundURL %>:</label>
-  <input type="text" id="backgroundInput" name="background" placeholder="<%= i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder %>" style="flex:1;" />
+  <%- include ("./_asset.ejs", {
+      assetId: "backgroundInput",
+      assetName: "background",
+      assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+      assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+      assetFilter: "image",
+      assetRequired: false,
+      allowEmpty: true
+  }) %>
 </div>
 <br>
 
 <!-- ================= Branching Q&A Editor (Vanilla JS, EJS-friendly) ================= -->
 <h4 class="titleLabelEdit"><%= i18n.reusablePuzzleApps.Common.Questions || 'Questions & Answers' %></h4>
 <input type="hidden" name="branchingJson" id="branchingJson" />
+<datalist id="conversationImageAssetsList"></datalist>
 <div id="branchingEditor"></div>
 <div class="be-toolbar" style="display:flex; gap:8px; flex-wrap:wrap; margin:8px 0;">
    
@@ -73,6 +81,28 @@
 
 <script>
   (function(){
+    // Populate shared datalist for question images
+    (function() {
+        const datalistEl = document.getElementById('conversationImageAssetsList');
+        const origin = window.location.origin;
+        let filteredAssets = (window.assets || []).filter(asset => {
+            if (!asset.assetType) return false;
+            return asset.assetType.toLowerCase().includes('image');
+        });
+
+        window.conversationAssetMap = {};
+        filteredAssets.forEach(asset => {
+            let url = asset.url || `/assets/${asset.id}`;
+            if (url.startsWith('/')) { url = origin + url; }
+            else if (!url.startsWith('http')) { url = origin + '/assets/' + url; }
+            window.conversationAssetMap[asset.filename] = url;
+            const option = document.createElement('option');
+            option.value = asset.filename;
+            option.setAttribute('data-url', url);
+            datalistEl.appendChild(option);
+        });
+    })();
+
     // Show/hide message field based on actionAfterSolve
     const actionSel = document.getElementById('actionValue');
     const actionDiv = document.getElementById('actionDiv');
@@ -113,7 +143,7 @@
       ]);
 
       const rowImg = beEl('div', { class:'be-row' }, [
-        beEl('input', { type:'text', placeholder:'Image URL (optional)', value:(model.image||''), onInput:beRefresh }),
+        beEl('input', { type:'text', class:'be-question-image', list:'conversationImageAssetsList', placeholder:'Image URL (optional)', value:(model.image||''), onInput:beRefresh, onChange: function(e) { if (window.conversationAssetMap && window.conversationAssetMap[e.target.value]) { e.target.value = window.conversationAssetMap[e.target.value]; beRefresh(); } } }),
         beEl('span', { class:'be-help', text:'Optional image for this question' })
       ]);
 
@@ -273,9 +303,6 @@ if (cfg.actionAfterSolve && document.getElementById('actionValue')) {
 }
 if (typeof cfg.message === 'string' && document.getElementById('messageInput')) {
   document.getElementById('messageInput').value = cfg.message;
-}
-if (typeof cfg.background === 'string' && document.getElementById('backgroundInput')) {
-  document.getElementById('backgroundInput').value = cfg.background;
 }
 syncAction(); // re-apply visibility after setting actionAfterSolve
 

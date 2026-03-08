@@ -1,0 +1,382 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelect" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
+    </select>
+</div>
+
+<!-- <div>
+    <label for="actionValue"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionValue" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+    </select>
+</div> 
+
+<div id="actionDiv">
+    <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+    <input id="messageInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>" style="flex:1;" />
+</div>
+-->
+<div>
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput",
+        assetName: "background",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
+</div>
+
+
+<div>
+    <label for="button_okInput"><%=i18n.reusablePuzzleApps.Ipad.label_button_ok%>:</label>
+    <input type="text" id="button_okInput" name="button_ok" value="<%=i18n.reusablePuzzleApps.Ipad.button_ok%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="button_nokInput"><%=i18n.reusablePuzzleApps.Ipad.label_button_nok%>:</label>
+    <input type="text" id="button_nokInput" name="button_nok" value="<%=i18n.reusablePuzzleApps.Ipad.button_nok%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="contextInput"><%=i18n.reusablePuzzleApps.Ipad.label_context%>:</label>
+    <input type="text" id="contextInput" name="context" value="<%=i18n.reusablePuzzleApps.Ipad.context%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="sendInput"><%=i18n.reusablePuzzleApps.Ipad.label_send%>:</label>
+    <input type="text" id="sendInput" name="sendText" value="<%=i18n.reusablePuzzleApps.Ipad.send%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="send_disabledInput"><%=i18n.reusablePuzzleApps.Ipad.label_send_disabled%>:</label>
+    <input type="text" id="send_disabledInput" name="send_disabled" value="<%=i18n.reusablePuzzleApps.Ipad.send_disabled%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="retryInput"><%=i18n.reusablePuzzleApps.Ipad.label_retry%>:</label>
+    <input type="text" id="retryInput" name="retry" value="<%=i18n.reusablePuzzleApps.Ipad.retry%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="congratsInput"><%=i18n.reusablePuzzleApps.Ipad.label_congrats%>:</label>
+    <input type="text" id="congratsInput" name="congrats" value="<%=i18n.reusablePuzzleApps.Ipad.congrats%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="headerInput"><%=i18n.reusablePuzzleApps.Ipad.label_header%>:</label>
+    <input type="text" id="headerInput" name="header" value="<%=i18n.reusablePuzzleApps.Ipad.header%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="modalheaderInput"><%=i18n.reusablePuzzleApps.Ipad.label_modalheader%>:</label>
+    <input type="text" id="modalheaderInput" name="modalheader" value="<%=i18n.reusablePuzzleApps.Ipad.modalheader%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="modalcontentInput"><%=i18n.reusablePuzzleApps.Ipad.label_modalcontent%>:</label>
+    <textarea id="modalcontentInput" name="modalcontent" class="inverse" style="flex:1; min-height: 80px;"><%=i18n.reusablePuzzleApps.Ipad.modalcontent%></textarea>
+</div>
+
+<div>
+    <label for="modalinstructions0Input"><%=i18n.reusablePuzzleApps.Ipad.label_modalinstructions0%>:</label>
+    <input type="text" id="modalinstructions0Input" name="modalinstructions0" value="<%=i18n.reusablePuzzleApps.Ipad.modalinstructions0%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="modalinstructions1Input"><%=i18n.reusablePuzzleApps.Ipad.label_modalinstructions1%>:</label>
+    <input type="text" id="modalinstructions1Input" name="modalinstructions1" value="<%=i18n.reusablePuzzleApps.Ipad.modalinstructions1%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="modalinstructions2Input"><%=i18n.reusablePuzzleApps.Ipad.label_modalinstructions2%>:</label>
+    <input type="text" id="modalinstructions2Input" name="modalinstructions2" value="<%=i18n.reusablePuzzleApps.Ipad.modalinstructions2%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="modalheader2Input"><%=i18n.reusablePuzzleApps.Ipad.label_modalheader2%>:</label>
+    <input type="text" id="modalheader2Input" name="modalheader2" value="<%=i18n.reusablePuzzleApps.Ipad.modalheader2%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="feedbackInput"><%=i18n.reusablePuzzleApps.Ipad.label_feedback%>:</label>
+    <input type="text" id="feedbackInput" name="feedback" value="<%=i18n.reusablePuzzleApps.Ipad.feedback%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="endInput"><%=i18n.reusablePuzzleApps.Ipad.label_end%>:</label>
+    <input type="text" id="endInput" name="end" value="<%=i18n.reusablePuzzleApps.Ipad.end%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="codesInput"><%=i18n.reusablePuzzleApps.Ipad.label_codes%>:</label>
+    <input type="text" id="codesInput" name="codes" value="<%=i18n.reusablePuzzleApps.Ipad.codes%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="reviewInput"><%=i18n.reusablePuzzleApps.Ipad.label_review%>:</label>
+    <input type="text" id="reviewInput" name="review" value="<%=i18n.reusablePuzzleApps.Ipad.review%>" style="flex:1;" />
+</div>
+
+<h4 class="titleLabelEdit"><%=i18n.reusablePuzzleApps.Ipad.items%></h4>
+
+<div style="margin: 15px 0px; display: block;">
+    <input type="hidden" id="ipadItemsInput" name="items" />
+    <datalist id="ipadItemAssetsList"></datalist>
+
+    <div id="ipadItemsWrapper" style="flex-direction: column;">
+        <% for (let i = 1; i <= 2; i++) { %>
+            <div class="ipadItemWrapper" itemNumber="<%=i%>" style="display: flex; flex-direction: column; border: 1px solid white; padding: 10px 15px; border-radius: 20px; margin: 10px 0px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <p style="margin: 5px 0px;"><%=i18n.reusablePuzzleApps.Ipad.item%> <%=i%></p>
+                    <button class="deleteIpadItem" type="button" style="display:none; border: none; background: none; cursor: pointer; font-size: 22px;" onclick="deleteIpadItem(event)">
+                        <span style="color: rgb(185, 62, 68);" class="material-icons">delete_outline</span>
+                    </button>
+                </div>
+                <input type="hidden" class="inputItemIframe" value="true" />
+                <div style="display: flex; align-items: center; margin: 8px 0px;">
+                    <label style="min-width: 80px;"><%=i18n.reusablePuzzleApps.Ipad.item%>:</label>
+                    <div style="display: flex; align-items: center; flex: 1;">
+                        <input class="inputItemPath" type="text" list="ipadItemAssetsList" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+                        <button type="button" class="clearItemPath" style="display: none; border: none; background: none; cursor: pointer; padding: 0 5px; font-size: 18px; color: rgb(185, 62, 68);">
+                            <span class="material-icons">close</span>
+                        </button>
+                    </div>
+                </div>
+                <div style="display: none; align-items: center; margin: 8px 0px;">
+                    <label style="min-width: 80px;"><%=i18n.reusablePuzzleApps.Ipad.label_feedback%>:</label>
+                    <input class="inputItemFeedback" type="text" style="flex:1;" />
+                </div>
+            </div>
+        <% } %>
+
+        <button class="rounded small addIpadItem" type="button" onclick="addIpadItem(event);" style="background-color: white;">
+            <span class="material-icons" style="color: #161938">add</span> <%=i18n.reusablePuzzleApps.Ipad.addItem%>
+        </button>
+    </div>
+</div>
+<br>
+
+<script>
+    // Populate shared datalist for item assets
+    var ipadAssetMap = {};
+    var ipadAssetTypeMap = {};
+    (function() {
+        const datalistEl = document.getElementById('ipadItemAssetsList');
+        const origin = window.location.origin;
+        (window.assets || []).forEach(asset => {
+            let url = asset.url || `/assets/${asset.id}`;
+            if (url.startsWith('/')) { url = origin + url; }
+            else if (!url.startsWith('http')) { url = origin + '/assets/' + url; }
+            ipadAssetMap[asset.filename] = url;
+            ipadAssetTypeMap[url] = asset.assetType || '';
+            const option = document.createElement('option');
+            option.value = asset.filename;
+            option.setAttribute('data-url', url);
+            datalistEl.appendChild(option);
+        });
+    })();
+
+    // Determine if URL is an image (iframe = false for images, true otherwise)
+    function isImageUrl(url) {
+        if (!url) return false;
+        // Check asset type map first
+        var assetType = ipadAssetTypeMap[url];
+        if (assetType && assetType.toLowerCase().includes('image')) return true;
+        // Fallback to extension check
+        var imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp', '.ico'];
+        var lowerUrl = url.toLowerCase();
+        return imageExtensions.some(function(ext) { return lowerUrl.endsWith(ext); });
+    }
+
+    // Update iframe value based on path
+    function updateIframeValue(wrapper) {
+        var pathInput = wrapper.querySelector('input.inputItemPath');
+        var iframeInput = wrapper.querySelector('input.inputItemIframe');
+        if (pathInput && iframeInput) {
+            // iframe = false for images, true for everything else (HTML, etc.)
+            iframeInput.value = isImageUrl(pathInput.value) ? 'false' : 'true';
+        }
+    }
+
+    // Handle clear button visibility
+    function updateIpadClearButtonVisibility(input) {
+        const clearBtn = input.closest('div').querySelector('.clearItemPath');
+        if (clearBtn) {
+            clearBtn.style.display = input.value ? 'block' : 'none';
+        }
+    }
+
+    // Action after solve toggle
+    // document.getElementById('actionValue').addEventListener('change', function() {
+    //     if (this.value === 'SHOW_MESSAGE') {
+    //         document.getElementById("actionDiv").style.display = 'flex';
+    //     } else {
+    //         document.getElementById("actionDiv").style.display = 'none';
+    //     }
+    // });
+
+    // Update items JSON
+    function updateIpadItems() {
+        var ipadItemsArr = [];
+        document.querySelectorAll('#ipadItemsWrapper .ipadItemWrapper').forEach(function(wrapper) {
+            var item = {};
+            item.iframe = wrapper.querySelector('input.inputItemIframe').value === 'true';
+            item.path = wrapper.querySelector('input.inputItemPath').value;
+            item.feedback = wrapper.querySelector('input.inputItemFeedback').value;
+            ipadItemsArr.push(item);
+        });
+        document.getElementById('ipadItemsInput').value = JSON.stringify(ipadItemsArr);
+    }
+
+    // Add new item
+    function addIpadItemToWrapper(wrapper) {
+        var $wrapper = $(wrapper);
+        var $allItems = $wrapper.find('.ipadItemWrapper');
+        var $firstItem = $allItems.first();
+        if ($firstItem.length === 0) return;
+        var itemNumber = $allItems.length + 1;
+        if (itemNumber > 50) return;
+        var $newItem = $firstItem.clone();
+        $newItem.attr('itemNumber', itemNumber);
+        $newItem.find('p').first().html('<%=i18n.reusablePuzzleApps.Ipad.item%> ' + itemNumber);
+        $newItem.find('button.deleteIpadItem').first().show();
+        $newItem.find('input.inputItemIframe').val('true');
+        $newItem.find('input.inputItemPath').val('');
+        $newItem.find('input.inputItemFeedback').val('');
+        $newItem.find('.clearItemPath').hide();
+        $wrapper.find('button.addIpadItem').before($newItem);
+        if (itemNumber === 50) {
+            var $addButton = $wrapper.find('button.addIpadItem');
+            $addButton.attr('disabled', 'disabled');
+            $addButton.css('background-color', '#999');
+        }
+        updateIpadItems();
+    }
+
+    function addIpadItem(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var wrapper = document.getElementById('ipadItemsWrapper');
+        addIpadItemToWrapper(wrapper);
+    }
+
+    // Delete item
+    function deleteIpadItem(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var $itemWrapper = $(e.target).closest('.ipadItemWrapper');
+        if ($itemWrapper.length !== 1) return;
+        var $itemsWrapper = $itemWrapper.parent('#ipadItemsWrapper');
+        if ($itemsWrapper.length !== 1) return;
+        $itemWrapper.remove();
+        $itemsWrapper.find('.ipadItemWrapper').each(function(index) {
+            $(this).attr('itemNumber', index + 1);
+            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.Ipad.item%> ' + (index + 1));
+        });
+        var $addButton = $itemsWrapper.find('button.addIpadItem');
+        $addButton.removeAttr('disabled');
+        $addButton.css('background-color', 'white');
+        updateIpadItems();
+    }
+
+    // Event listeners for item inputs
+    $('#ipadItemsWrapper').on('change', 'input.inputItemFeedback', updateIpadItems);
+
+    // Convert filename to URL when selecting from datalist, update iframe and clear button
+    $('#ipadItemsWrapper').on('change', 'input.inputItemPath', function() {
+        if (ipadAssetMap[this.value]) {
+            this.value = ipadAssetMap[this.value];
+        }
+        var wrapper = $(this).closest('.ipadItemWrapper')[0];
+        updateIframeValue(wrapper);
+        updateIpadClearButtonVisibility(this);
+        updateIpadItems();
+    });
+
+    // Update clear button on input
+    $('#ipadItemsWrapper').on('input', 'input.inputItemPath', function() {
+        updateIpadClearButtonVisibility(this);
+    });
+
+    // Clear button click handler
+    $('#ipadItemsWrapper').on('click', '.clearItemPath', function(e) {
+        e.preventDefault();
+        var input = $(this).closest('div').find('.inputItemPath');
+        input.val('');
+        $(this).hide();
+        updateIpadItems();
+    });
+
+    // Initialize clear buttons for existing inputs
+    document.querySelectorAll('.inputItemPath').forEach(function(input) {
+        updateIpadClearButtonVisibility(input);
+    });
+
+    // Load config values
+    document.getElementById("skinSelect").value = window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    // document.getElementById("actionValue").value = window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    // document.getElementById("messageInput").value = window.currentOpenPuzzleConfig?.message || '';
+
+    // Load text labels (only if config exists, otherwise use defaults from HTML)
+    if (window.currentOpenPuzzleConfig?.button_ok) document.getElementById("button_okInput").value = window.currentOpenPuzzleConfig.button_ok;
+    if (window.currentOpenPuzzleConfig?.button_nok) document.getElementById("button_nokInput").value = window.currentOpenPuzzleConfig.button_nok;
+    if (window.currentOpenPuzzleConfig?.context) document.getElementById("contextInput").value = window.currentOpenPuzzleConfig.context;
+    if (window.currentOpenPuzzleConfig?.sendText) document.getElementById("sendInput").value = window.currentOpenPuzzleConfig.sendText;
+    if (window.currentOpenPuzzleConfig?.send_disabled) document.getElementById("send_disabledInput").value = window.currentOpenPuzzleConfig.send_disabled;
+    if (window.currentOpenPuzzleConfig?.retry) document.getElementById("retryInput").value = window.currentOpenPuzzleConfig.retry;
+    if (window.currentOpenPuzzleConfig?.congrats) document.getElementById("congratsInput").value = window.currentOpenPuzzleConfig.congrats;
+    if (window.currentOpenPuzzleConfig?.header) document.getElementById("headerInput").value = window.currentOpenPuzzleConfig.header;
+    if (window.currentOpenPuzzleConfig?.modalheader) document.getElementById("modalheaderInput").value = window.currentOpenPuzzleConfig.modalheader;
+    if (window.currentOpenPuzzleConfig?.modalcontent) document.getElementById("modalcontentInput").value = window.currentOpenPuzzleConfig.modalcontent;
+    if (window.currentOpenPuzzleConfig?.modalinstructions0) document.getElementById("modalinstructions0Input").value = window.currentOpenPuzzleConfig.modalinstructions0;
+    if (window.currentOpenPuzzleConfig?.modalinstructions1) document.getElementById("modalinstructions1Input").value = window.currentOpenPuzzleConfig.modalinstructions1;
+    if (window.currentOpenPuzzleConfig?.modalinstructions2) document.getElementById("modalinstructions2Input").value = window.currentOpenPuzzleConfig.modalinstructions2;
+    if (window.currentOpenPuzzleConfig?.modalheader2) document.getElementById("modalheader2Input").value = window.currentOpenPuzzleConfig.modalheader2;
+    if (window.currentOpenPuzzleConfig?.feedback) document.getElementById("feedbackInput").value = window.currentOpenPuzzleConfig.feedback;
+    if (window.currentOpenPuzzleConfig?.end) document.getElementById("endInput").value = window.currentOpenPuzzleConfig.end;
+    if (window.currentOpenPuzzleConfig?.codes) document.getElementById("codesInput").value = window.currentOpenPuzzleConfig.codes;
+    if (window.currentOpenPuzzleConfig?.review) document.getElementById("reviewInput").value = window.currentOpenPuzzleConfig.review;
+
+    // Load existing items
+    if (window.currentOpenPuzzleConfig?.items) {
+        var ipadItems = window.currentOpenPuzzleConfig.items;
+        if (typeof ipadItems === 'string') {
+            try { ipadItems = JSON.parse(ipadItems); } catch(e) { ipadItems = []; }
+        }
+        if (Array.isArray(ipadItems)) {
+            var $itemsWrapper = $('#ipadItemsWrapper');
+            for (var i = 0; i < ipadItems.length; i++) {
+                var itemNumber = i + 1;
+                if (itemNumber > 2) {
+                    addIpadItemToWrapper($itemsWrapper[0]);
+                }
+                var $itemDiv = $itemsWrapper.find(".ipadItemWrapper[itemNumber='" + itemNumber + "']");
+                $itemDiv.find('input.inputItemIframe').val(ipadItems[i].iframe ? 'true' : 'false');
+                var pathInput = $itemDiv.find('input.inputItemPath');
+                pathInput.val(ipadItems[i].path || '');
+                updateIpadClearButtonVisibility(pathInput[0]);
+                $itemDiv.find('input.inputItemFeedback').val(ipadItems[i].feedback || '');
+            }
+        }
+    }
+    // Always update to save current state
+    updateIpadItems();
+
+    // Toggle action div visibility
+    // if (window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
+    //     document.getElementById("actionDiv").style.display = 'block';
+    // } else {
+    //     document.getElementById("actionDiv").style.display = 'none';
+    // }
+</script>

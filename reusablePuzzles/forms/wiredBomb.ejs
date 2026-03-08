@@ -21,13 +21,19 @@
 </div>
 
 <div>
-    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundImgInput" name="background" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput",
+        assetName: "background",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
 <script>
     document.getElementById("numberOfWiresWiredBomb").value =  window.currentOpenPuzzleConfig?.numberOfWires || 4;
     document.getElementById("timerWiredBomb").value =  window.currentOpenPuzzleConfig?.timer || "FALSE";
-    document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.background || '';
 </script>

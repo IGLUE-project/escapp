@@ -22,8 +22,15 @@
 </div>
 
 <div>
-    <label for="avatarLogin"><%=i18n.reusablePuzzleApps.Login.avatar%>:</label>
-    <input type="text" id="avatarLogin" name="avatarImg" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "avatarLogin",
+        assetName: "avatarImg",
+        assetLabel: i18n.reusablePuzzleApps.Login.avatar,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 
 <div>
@@ -57,8 +64,15 @@
 </div>
 
 <div>
-    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
@@ -71,13 +85,11 @@
     document.getElementById("usernameRequiredLogin").value =  window.currentOpenPuzzleConfig?.usernameRequired || 'FALSE';
     document.getElementById("usernameLogin").value =  window.currentOpenPuzzleConfig?.username || '';
     document.getElementById("passwordPlaceholderLogin").value =  window.currentOpenPuzzleConfig?.passwordPlaceholder || '';
-    document.getElementById("avatarLogin").value =  window.currentOpenPuzzleConfig?.avatarImg || '';
     document.getElementById("hintLogin").value =  window.currentOpenPuzzleConfig?.hint || '';
     document.getElementById("actionLogin").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
     document.getElementById("messageActionLoginInput").value =  window.currentOpenPuzzleConfig?.message || '';
     document.getElementById("webActionLoginInput").value =  window.currentOpenPuzzleConfig?.webURL || '';
     document.getElementById("videoActionLoginInput").value =  window.currentOpenPuzzleConfig?.videoURL || '';
-    document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
 
     document.getElementById('actionLogin').dispatchEvent(new Event('change'));
 </script>

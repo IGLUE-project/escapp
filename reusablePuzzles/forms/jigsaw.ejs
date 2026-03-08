@@ -12,13 +12,27 @@
 </div>
 
 <div>
-    <label for="imageSolJigsaw"><%=i18n.reusablePuzzleApps.Jigsaw.solutionImage%>:</label>
-    <input type="text" id="imageSolJigsaw" name="imageSol" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "imageSolJigsaw",
+        assetName: "imageSol",
+        assetLabel: i18n.reusablePuzzleApps.Jigsaw.solutionImage,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 
 <div>
-    <label for="imageSolReverseJigsaw"><%=i18n.reusablePuzzleApps.Jigsaw.solutionImageReverse%>:</label>
-    <input type="text" id="imageSolReverseJigsaw" name="imageSolReverse" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "imageSolReverseJigsaw",
+        assetName: "imageSolReverse",
+        assetLabel: i18n.reusablePuzzleApps.Jigsaw.solutionImageReverse,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 
 <div>
@@ -40,16 +54,20 @@
 </div>
 
 <div>
-    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
 <script>
     document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
-    document.getElementById("imageSolJigsaw").value =  window.currentOpenPuzzleConfig?.imageSol || '';
-    document.getElementById("imageSolReverseJigsaw").value =  window.currentOpenPuzzleConfig?.imageSolReverse || '';
     document.getElementById("jigsawWidth").value =  window.currentOpenPuzzleConfig?.cols || 4;
     document.getElementById("jigsawHeight").value =  window.currentOpenPuzzleConfig?.rows || 3;
-    document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
 </script>

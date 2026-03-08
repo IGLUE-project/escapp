@@ -17,6 +17,8 @@
   <%- include("_itemSelection_roundSettings", { roundNumber: i }) %>
 <% } %>
 
+<datalist id="itemSelectionImageAssetsList"></datalist>
+
 <div id="failureMessageISPInputWrapper">
     <label for="failureMessageISPInput"><%=i18n.reusablePuzzleApps.Common.FailureMessage%>:</label>
     <input id="failureMessageISPInput" type="text" name="failureMessage" style="flex:1;"  />
@@ -36,14 +38,52 @@
 </div>
 
 <div>
-    <label for="backgroundISPInput"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundISPInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundISPInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
 <input type="hidden" class="reusablePuzzleJSONSetting" id="roundsISPInput" name="rounds"/>
 
 <script type="text/javascript">
+    // Populate shared datalist for image inputs
+    (function() {
+        const datalistEl = document.getElementById('itemSelectionImageAssetsList');
+        const origin = window.location.origin;
+        let filteredAssets = (window.assets || []).filter(asset => {
+            if (!asset.assetType) return false;
+            return asset.assetType.toLowerCase().includes('image');
+        });
+
+        window.itemSelectionAssetMap = {};
+        filteredAssets.forEach(asset => {
+            let url = asset.url || `/assets/${asset.id}`;
+            if (url.startsWith('/')) { url = origin + url; }
+            else if (!url.startsWith('http')) { url = origin + '/assets/' + url; }
+            window.itemSelectionAssetMap[asset.filename] = url;
+            const option = document.createElement('option');
+            option.value = asset.filename;
+            option.setAttribute('data-url', url);
+            datalistEl.appendChild(option);
+        });
+
+        // Event delegation for converting filename to URL
+        document.addEventListener('change', function(e) {
+            if (e.target.matches('input.roundImageISPInput, input.inputItemImage')) {
+                if (window.itemSelectionAssetMap[e.target.value]) {
+                    e.target.value = window.itemSelectionAssetMap[e.target.value];
+                }
+            }
+        });
+    })();
+
     function updateRoundSettings(){
         var nRounds = parseInt(document.getElementById("numberOfRoundsISPInput").value);
         if((typeof nRounds === "number")&&(!Number.isNaN(nRounds))){
@@ -93,7 +133,6 @@
     document.getElementById("failureMessageISPInput").value =  window.currentOpenPuzzleConfig?.failureMessage || '';
     document.getElementById("actionAfterSolveISPInput").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
     document.getElementById("successMessageISPInput").value =  window.currentOpenPuzzleConfig?.successMessage || '';
-    document.getElementById("backgroundISPInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
 
     if(window.currentOpenPuzzleConfig?.rounds){
         var rounds = window.currentOpenPuzzleConfig?.rounds;

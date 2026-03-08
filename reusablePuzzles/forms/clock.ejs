@@ -26,8 +26,15 @@
 </div>
 
 <div>
-    <label for="backgroundImg"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundImgInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
@@ -35,5 +42,4 @@
     document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
     document.getElementById("secondHandClock").value =  window.currentOpenPuzzleConfig?.useSeconds || 'TRUE';
     document.getElementById("initialTimeClock").value =  window.currentOpenPuzzleConfig?.initialTime || '5:30:00';
-    document.getElementById("backgroundImgInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
 </script>

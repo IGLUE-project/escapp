@@ -1,0 +1,402 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelect" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
+    </select>
+</div>
+
+<div>
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundInput",
+        assetName: "background",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
+</div>
+
+<h4 class="titleLabelEdit" style="margin-top: 20px;"><%=i18n.reusablePuzzleApps.PopupQuestion.contentArea%></h4>
+
+<div>
+    <label for="contentTypeSelect"><%=i18n.reusablePuzzleApps.PopupQuestion.contentType%>:</label>
+    <select id="contentTypeSelect" name="contentType">
+        <option value="IMAGE"><%=i18n.reusablePuzzleApps.PopupQuestion.contentTypeImage%></option>
+        <option value="IFRAME"><%=i18n.reusablePuzzleApps.PopupQuestion.contentTypeIframe%></option>
+    </select>
+</div>
+
+<div>
+    <%- include ("./_asset.ejs", {
+        assetId: "contentUrlInput",
+        assetName: "contentUrl",
+        assetLabel: i18n.reusablePuzzleApps.PopupQuestion.contentUrl,
+        assetPlaceholder: i18n.reusablePuzzleApps.PopupQuestion.contentUrlPlaceholder,
+        assetFilter: "",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
+</div>
+
+<div style="margin: 10px 0; display: flex; flex-direction: column;">
+    <label><%=i18n.reusablePuzzleApps.PopupQuestion.contentPosition%>:</label>
+    <input type="hidden" id="contentPositionTopHidden" name="contentPosition[top]" value="0%" />
+    <input type="hidden" id="contentPositionLeftHidden" name="contentPosition[left]" value="0%" />
+    <input type="hidden" id="contentPositionWidthHidden" name="contentPosition[width]" value="100%" />
+    <input type="hidden" id="contentPositionHeightHidden" name="contentPosition[height]" value="100%" />
+    <div style="margin-top: 5px; display: flex; flex-direction: column;">
+        <div style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
+            <label for="contentPositionTop" style="font-size: 0.9em; min-width: 60px;"><%=i18n.reusablePuzzleApps.PopupQuestion.top%>:</label>
+            <input type="range" id="contentPositionTop" min="0" max="100" value="0" style="flex: 1;" oninput="updatePositionSlider('top', this.value)" />
+            <span id="contentPositionTopValue" style="min-width: 40px;">0%</span>
+        </div>
+        <div style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
+            <label for="contentPositionLeft" style="font-size: 0.9em; min-width: 60px;"><%=i18n.reusablePuzzleApps.PopupQuestion.left%>:</label>
+            <input type="range" id="contentPositionLeft" min="0" max="100" value="0" style="flex: 1;" oninput="updatePositionSlider('left', this.value)" />
+            <span id="contentPositionLeftValue" style="min-width: 40px;">0%</span>
+        </div>
+        <div style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
+            <label for="contentPositionWidth" style="font-size: 0.9em; min-width: 60px;"><%=i18n.reusablePuzzleApps.PopupQuestion.width%>:</label>
+            <input type="range" id="contentPositionWidth" min="0" max="100" value="100" style="flex: 1;" oninput="updatePositionSlider('width', this.value)" />
+            <span id="contentPositionWidthValue" style="min-width: 40px;">100%</span>
+        </div>
+        <div style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
+            <label for="contentPositionHeight" style="font-size: 0.9em; min-width: 60px;"><%=i18n.reusablePuzzleApps.PopupQuestion.height%>:</label>
+            <input type="range" id="contentPositionHeight" min="0" max="100" value="100" style="flex: 1;" oninput="updatePositionSlider('height', this.value)" />
+            <span id="contentPositionHeightValue" style="min-width: 40px;">100%</span>
+        </div>
+    </div>
+</div>
+
+<h4 class="titleLabelEdit" style="margin-top: 20px;"><%=i18n.reusablePuzzleApps.PopupQuestion.popupSettings%></h4>
+
+<div>
+    <label for="popupPositionSelect"><%=i18n.reusablePuzzleApps.PopupQuestion.popupPosition%>:</label>
+    <select id="popupPositionSelect" name="popupPosition">
+        <option value="TOP_LEFT"><%=i18n.reusablePuzzleApps.PopupQuestion.topLeft%></option>
+        <option value="TOP_RIGHT"><%=i18n.reusablePuzzleApps.PopupQuestion.topRight%></option>
+        <option value="BOTTOM_LEFT"><%=i18n.reusablePuzzleApps.PopupQuestion.bottomLeft%></option>
+        <option value="BOTTOM_RIGHT"><%=i18n.reusablePuzzleApps.PopupQuestion.bottomRight%></option>
+    </select>
+</div>
+
+<div>
+    <label for="popupWidthInput"><%=i18n.reusablePuzzleApps.PopupQuestion.popupWidth%>:</label>
+    <input type="number" id="popupWidthInput" name="popupWidth" value="350" min="200" max="800" style="flex:1;" />
+</div>
+
+<div>
+    <label for="popupTitleInput"><%=i18n.reusablePuzzleApps.PopupQuestion.popupTitle%>:</label>
+    <input type="text" id="popupTitleInput" name="popupTitle" placeholder="<%=i18n.reusablePuzzleApps.PopupQuestion.popupTitlePlaceholder%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="popupMinimizableCheck"><%=i18n.reusablePuzzleApps.PopupQuestion.popupMinimizable%>:</label>
+    <input type="checkbox" id="popupMinimizableCheck" name="popupMinimizable" checked />
+</div>
+
+<h4 class="titleLabelEdit" style="margin-top: 20px;"><%=i18n.reusablePuzzleApps.PopupQuestion.questions%></h4>
+
+<div style="margin: 15px 0px; display: block;">
+    <input type="hidden" id="popupQuestionsInput" name="questions" class="reusablePuzzleJSONSetting" />
+
+    <div id="popupQuestionsWrapper" style="flex-direction: column;">
+        <div class="popupQuestionWrapper" questionNumber="1" style="display: flex; flex-direction: column; border: 1px solid white; padding: 10px 15px; border-radius: 20px; margin: 10px 0px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <p style="margin: 5px 0px;"><%=i18n.reusablePuzzleApps.PopupQuestion.question%> 1</p>
+                <button class="deletePopupQuestion" type="button" style="display:none; border: none; background: none; cursor: pointer; font-size: 22px;" onclick="deletePopupQuestion(event)">
+                    <span style="color: rgb(185, 62, 68);" class="material-icons">delete_outline</span>
+                </button>
+            </div>
+            <div style="display: flex; align-items: center; margin: 8px 0px;">
+                <label style="min-width: 100px;"><%=i18n.reusablePuzzleApps.PopupQuestion.questionText%>:</label>
+                <input class="inputQuestionText" type="text" placeholder="<%=i18n.reusablePuzzleApps.PopupQuestion.questionTextPlaceholder%>" style="flex:1;" />
+            </div>
+            <div style="display: flex; align-items: center; margin: 8px 0px;">
+                <label style="min-width: 100px;"><%=i18n.reusablePuzzleApps.PopupQuestion.inputType%>:</label>
+                <select class="inputTypeSelect" style="flex:1;">
+                    <option value="TEXT"><%=i18n.reusablePuzzleApps.PopupQuestion.inputTypeText%></option>
+                    <option value="NUMERIC"><%=i18n.reusablePuzzleApps.PopupQuestion.inputTypeNumeric%></option>
+                    <option value="SELECT"><%=i18n.reusablePuzzleApps.PopupQuestion.inputTypeSelect%></option>
+                </select>
+            </div>
+            <div class="inputPlaceholderDiv" style="display: flex; align-items: center; margin: 8px 0px;">
+                <label style="min-width: 100px;"><%=i18n.reusablePuzzleApps.PopupQuestion.inputPlaceholder%>:</label>
+                <input class="inputPlaceholderText" type="text" placeholder="<%=i18n.reusablePuzzleApps.PopupQuestion.inputPlaceholderDefault%>" style="flex:1;" />
+            </div>
+            <div class="selectOptionsDiv" style="display: none; flex-direction: column; margin: 8px 0px;">
+                <label><%=i18n.reusablePuzzleApps.PopupQuestion.selectOptions%>:</label>
+                <textarea class="selectOptionsText inverse" placeholder="<%=i18n.reusablePuzzleApps.PopupQuestion.selectOptionsPlaceholder%>" style="flex:1; min-height: 60px; margin-top: 5px;"></textarea>
+                <small style="color: #aaa;"><%=i18n.reusablePuzzleApps.PopupQuestion.selectOptionsHelp%></small>
+            </div>
+        </div>
+
+        <button class="rounded small addPopupQuestion" type="button" onclick="addPopupQuestion(event);" style="background-color: white;">
+            <span class="material-icons" style="color: #161938">add</span> <%=i18n.reusablePuzzleApps.PopupQuestion.addQuestion%>
+        </button>
+    </div>
+</div>
+
+<h4 class="titleLabelEdit" style="margin-top: 20px;"><%=i18n.reusablePuzzleApps.PopupQuestion.buttonTexts%></h4>
+
+<div>
+    <label for="submitButtonTextInput"><%=i18n.reusablePuzzleApps.PopupQuestion.submitButtonText%>:</label>
+    <input type="text" id="submitButtonTextInput" name="submitButtonText" value="<%=i18n.reusablePuzzleApps.PopupQuestion.submitButtonDefault%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="continueButtonTextInput"><%=i18n.reusablePuzzleApps.PopupQuestion.continueButtonText%>:</label>
+    <input type="text" id="continueButtonTextInput" name="continueButtonText" value="<%=i18n.reusablePuzzleApps.PopupQuestion.continueButtonDefault%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="errorMessageInput"><%=i18n.reusablePuzzleApps.PopupQuestion.errorMessage%>:</label>
+    <input type="text" id="errorMessageInput" name="errorMessage" value="<%=i18n.reusablePuzzleApps.PopupQuestion.errorMessageDefault%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="buttonColorInput"><%=i18n.reusablePuzzleApps.PopupQuestion.buttonColor%>:</label>
+    <input type="text" id="buttonColorInput" name="buttonColor" placeholder="<%=i18n.reusablePuzzleApps.PopupQuestion.buttonColorPlaceholder%>" style="flex:1;" />
+</div>
+
+<div>
+    <label for="actionValue"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionValue" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+    </select>
+</div>
+
+<div id="actionDiv">
+    <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+    <input id="messageInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>" style="flex:1;" />
+</div>
+<br>
+
+<script>
+    // Update position slider value and hidden input
+    function updatePositionSlider(field, value) {
+        var capitalField = field.charAt(0).toUpperCase() + field.slice(1);
+        document.getElementById('contentPosition' + capitalField + 'Value').textContent = value + '%';
+        document.getElementById('contentPosition' + capitalField + 'Hidden').value = value + '%';
+    }
+
+    // Action after solve toggle
+    document.getElementById('actionValue').addEventListener('change', function() {
+        if (this.value === 'SHOW_MESSAGE') {
+            document.getElementById("actionDiv").style.display = 'flex';
+        } else {
+            document.getElementById("actionDiv").style.display = 'none';
+        }
+    });
+
+    // Toggle input type fields
+    function updateInputTypeFields(wrapper) {
+        var inputType = wrapper.querySelector('.inputTypeSelect').value;
+        var placeholderDiv = wrapper.querySelector('.inputPlaceholderDiv');
+        var selectOptionsDiv = wrapper.querySelector('.selectOptionsDiv');
+
+        if (inputType === 'SELECT') {
+            placeholderDiv.style.display = 'none';
+            selectOptionsDiv.style.display = 'flex';
+        } else {
+            placeholderDiv.style.display = 'flex';
+            selectOptionsDiv.style.display = 'none';
+        }
+    }
+
+    // Update questions JSON
+    function updatePopupQuestions() {
+        var questionsArr = [];
+        document.querySelectorAll('#popupQuestionsWrapper .popupQuestionWrapper').forEach(function(wrapper) {
+            var question = {};
+            question.question = wrapper.querySelector('.inputQuestionText').value;
+            question.inputType = wrapper.querySelector('.inputTypeSelect').value;
+            question.inputPlaceholder = wrapper.querySelector('.inputPlaceholderText').value;
+
+            // Parse select options
+            var optionsText = wrapper.querySelector('.selectOptionsText').value.trim();
+            if (optionsText && question.inputType === 'SELECT') {
+                question.selectOptions = optionsText.split('\n').filter(function(line) {
+                    return line.trim() !== '';
+                }).map(function(line) {
+                    var parts = line.split('|');
+                    if (parts.length >= 2) {
+                        return { value: parts[0].trim(), label: parts[1].trim() };
+                    } else {
+                        return { value: line.trim(), label: line.trim() };
+                    }
+                });
+            }
+
+            questionsArr.push(question);
+        });
+        document.getElementById('popupQuestionsInput').value = JSON.stringify(questionsArr);
+    }
+
+    // Add new question
+    function addPopupQuestionToWrapper(wrapper) {
+        var $wrapper = $(wrapper);
+        var $allQuestions = $wrapper.find('.popupQuestionWrapper');
+        var $firstQuestion = $allQuestions.first();
+        if ($firstQuestion.length === 0) return;
+        var questionNumber = $allQuestions.length + 1;
+        if (questionNumber > 10) return;
+        var $newQuestion = $firstQuestion.clone();
+        $newQuestion.attr('questionNumber', questionNumber);
+        $newQuestion.find('p').first().html('<%=i18n.reusablePuzzleApps.PopupQuestion.question%> ' + questionNumber);
+        $newQuestion.find('button.deletePopupQuestion').first().show();
+        $newQuestion.find('.inputQuestionText').val('');
+        $newQuestion.find('.inputTypeSelect').val('TEXT');
+        $newQuestion.find('.inputPlaceholderText').val('');
+        $newQuestion.find('.selectOptionsText').val('');
+        $newQuestion.find('.inputPlaceholderDiv').show();
+        $newQuestion.find('.selectOptionsDiv').hide();
+        $wrapper.find('button.addPopupQuestion').before($newQuestion);
+        if (questionNumber === 10) {
+            var $addButton = $wrapper.find('button.addPopupQuestion');
+            $addButton.attr('disabled', 'disabled');
+            $addButton.css('background-color', '#999');
+        }
+        updatePopupQuestions();
+    }
+
+    function addPopupQuestion(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var wrapper = document.getElementById('popupQuestionsWrapper');
+        addPopupQuestionToWrapper(wrapper);
+    }
+
+    // Delete question
+    function deletePopupQuestion(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var $questionWrapper = $(e.target).closest('.popupQuestionWrapper');
+        if ($questionWrapper.length !== 1) return;
+        var $questionsWrapper = $questionWrapper.parent('#popupQuestionsWrapper');
+        if ($questionsWrapper.length !== 1) return;
+        if ($questionsWrapper.find('.popupQuestionWrapper').length <= 1) return; // Keep at least one
+        $questionWrapper.remove();
+        $questionsWrapper.find('.popupQuestionWrapper').each(function(index) {
+            $(this).attr('questionNumber', index + 1);
+            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.PopupQuestion.question%> ' + (index + 1));
+        });
+        var $addButton = $questionsWrapper.find('button.addPopupQuestion');
+        $addButton.removeAttr('disabled');
+        $addButton.css('background-color', 'white');
+        updatePopupQuestions();
+    }
+
+    // Event listeners for question inputs
+    $('#popupQuestionsWrapper').on('change input', '.inputQuestionText, .inputPlaceholderText, .selectOptionsText', updatePopupQuestions);
+
+    $('#popupQuestionsWrapper').on('change', '.inputTypeSelect', function() {
+        var wrapper = $(this).closest('.popupQuestionWrapper')[0];
+        updateInputTypeFields(wrapper);
+        updatePopupQuestions();
+    });
+
+    // Also update on blur to ensure values are captured
+    $('#popupQuestionsWrapper').on('blur', '.inputQuestionText, .inputPlaceholderText', updatePopupQuestions);
+
+    // Load config values
+    document.getElementById("skinSelect").value = window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById("contentTypeSelect").value = window.currentOpenPuzzleConfig?.contentType || 'IFRAME';
+    document.getElementById("popupPositionSelect").value = window.currentOpenPuzzleConfig?.popupPosition || 'BOTTOM_RIGHT';
+    document.getElementById("popupWidthInput").value = window.currentOpenPuzzleConfig?.popupWidth || 350;
+    document.getElementById("popupTitleInput").value = window.currentOpenPuzzleConfig?.popupTitle || '';
+    document.getElementById("contentUrlInput").value = window.currentOpenPuzzleConfig?.contentUrl || '';
+ 
+    document.getElementById("popupMinimizableCheck").checked = window.currentOpenPuzzleConfig?.popupMinimizable !== false;
+
+    if (window.currentOpenPuzzleConfig?.submitButtonText) document.getElementById("submitButtonTextInput").value = window.currentOpenPuzzleConfig.submitButtonText;
+    if (window.currentOpenPuzzleConfig?.continueButtonText) document.getElementById("continueButtonTextInput").value = window.currentOpenPuzzleConfig.continueButtonText;
+    if (window.currentOpenPuzzleConfig?.errorMessage) document.getElementById("errorMessageInput").value = window.currentOpenPuzzleConfig.errorMessage;
+    if (window.currentOpenPuzzleConfig?.buttonColor) document.getElementById("buttonColorInput").value = window.currentOpenPuzzleConfig.buttonColor;
+
+    document.getElementById("actionValue").value = window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    document.getElementById("messageInput").value = window.currentOpenPuzzleConfig?.message || '';
+
+    // Load content position
+    function loadPositionValue(field, value) {
+        if (!value) return;
+        var numValue = parseInt(value.replace('%', ''), 10) || 0;
+        var capitalField = field.charAt(0).toUpperCase() + field.slice(1);
+        document.getElementById('contentPosition' + capitalField).value = numValue;
+        document.getElementById('contentPosition' + capitalField + 'Value').textContent = numValue + '%';
+        document.getElementById('contentPosition' + capitalField + 'Hidden').value = numValue + '%';
+    }
+    if (window.currentOpenPuzzleConfig?.contentPosition) {
+        var pos = window.currentOpenPuzzleConfig.contentPosition;
+        if (typeof pos === 'string') {
+            try { pos = JSON.parse(pos); } catch(e) { pos = {}; }
+        }
+        loadPositionValue('top', pos.top);
+        loadPositionValue('left', pos.left);
+        loadPositionValue('width', pos.width);
+        loadPositionValue('height', pos.height);
+    }
+
+    // Load existing questions
+    if (window.currentOpenPuzzleConfig?.questions) {
+        var questions = window.currentOpenPuzzleConfig.questions;
+        if (typeof questions === 'string') {
+            try { questions = JSON.parse(questions); } catch(e) { questions = []; }
+        }
+        if (Array.isArray(questions) && questions.length > 0) {
+            var $questionsWrapper = $('#popupQuestionsWrapper');
+            for (var i = 0; i < questions.length; i++) {
+                var questionNumber = i + 1;
+                if (questionNumber > 1) {
+                    addPopupQuestionToWrapper($questionsWrapper[0]);
+                }
+                var $questionDiv = $questionsWrapper.find(".popupQuestionWrapper[questionNumber='" + questionNumber + "']");
+                $questionDiv.find('.inputQuestionText').val(questions[i].question || '');
+                $questionDiv.find('.inputTypeSelect').val(questions[i].inputType || 'TEXT');
+                $questionDiv.find('.inputPlaceholderText').val(questions[i].inputPlaceholder || '');
+
+                // Convert selectOptions array to text
+                if (questions[i].selectOptions && Array.isArray(questions[i].selectOptions)) {
+                    var optionsText = questions[i].selectOptions.map(function(opt) {
+                        if (opt.value === opt.label) {
+                            return opt.value;
+                        } else {
+                            return opt.value + '|' + opt.label;
+                        }
+                    }).join('\n');
+                    $questionDiv.find('.selectOptionsText').val(optionsText);
+                }
+
+                updateInputTypeFields($questionDiv[0]);
+            }
+        }
+    }
+    // Always update to save current state
+    updatePopupQuestions();
+
+    // Toggle action div visibility
+    if (window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
+        document.getElementById("actionDiv").style.display = 'flex';
+    } else {
+        document.getElementById("actionDiv").style.display = 'none';
+    }
+
+    // Ensure questions are updated before form submission
+    $(document).ready(function() {
+        var configForm = document.getElementById('configForm');
+        if (configForm) {
+            configForm.addEventListener('submit', function(e) {
+                updatePopupQuestions();
+            }, true);
+        }
+    });
+</script>

@@ -32,14 +32,20 @@
 </div>
 
 <div>
-    <label for="background"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundInput" name="backgroundImg" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
 <script>
     document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
-    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.backgroundImg || '';
     document.getElementById("initialSetup").value =  window.currentOpenPuzzleConfig?.initialSetup || 'CLASSIC';
     document.getElementById("automaticReset").value =  window.currentOpenPuzzleConfig?.resetOnFail || 'FALSE';
 </script>
