@@ -224,35 +224,36 @@ exports.cloneER = async function (er, authorId, newTitle, currentUser, prevUrl, 
         }
 
         // Update relative references too, if those exist in configs
-        const fromRel = `/assets/${oldAsset.id}.`;
-        const toRel = `/assets/${newAsset.id}.`;
+        // Matches /assets/{id}. (regular) or /assets/{id}/ (webapp)
+        const fromRelRegex = new RegExp(`/assets/${oldAsset.id}([./])`, 'g');
+        const toRelReplace = `/assets/${newAsset.id}$1`;
 
         if (typeof saved.description === "string") {
-            saved.description = saved.description.replaceAll(fromRel, toRel);
+            saved.description = saved.description.replace(fromRelRegex, toRelReplace);
         }
         if (typeof saved.indicationsInstructions === "string") {
-            saved.indicationsInstructions = saved.indicationsInstructions.replaceAll(fromRel, toRel);
+            saved.indicationsInstructions = saved.indicationsInstructions.replace(fromRelRegex, toRelReplace);
         }
         if (typeof saved.teamInstructions === "string") {
-            saved.teamInstructions = saved.teamInstructions.replaceAll(fromRel, toRel);
+            saved.teamInstructions = saved.teamInstructions.replace(fromRelRegex, toRelReplace);
         }
         if (typeof saved.classInstructions === "string") {
-            saved.classInstructions = saved.classInstructions.replaceAll(fromRel, toRel);
+            saved.classInstructions = saved.classInstructions.replace(fromRelRegex, toRelReplace);
         }
         if (typeof saved.afterInstructions === "string") {
-            saved.afterInstructions = saved.afterInstructions.replaceAll(fromRel, toRel);
+            saved.afterInstructions = saved.afterInstructions.replace(fromRelRegex, toRelReplace);
         }
 
         if (Array.isArray(saved.reusablePuzzleInstances) && saved.reusablePuzzleInstances.length) {
             for (const rpi of saved.reusablePuzzleInstances) {
                 if (typeof rpi?.config === "string") {
-                    rpi.config = rpi.config.replaceAll(fromRel, toRel);
+                    rpi.config = rpi.config.replace(fromRelRegex, toRelReplace);
                 }
             }
         }
 
         if (oldAsset.url && typeof oldAsset.url === "string") {
-            newAsset.url = oldAsset.url.replaceAll(fromRel, toRel);
+            newAsset.url = oldAsset.url.replace(fromRelRegex, toRelReplace);
             await newAsset.save({ transaction });
         }
     }
@@ -272,6 +273,16 @@ exports.cloneER = async function (er, authorId, newTitle, currentUser, prevUrl, 
     }
     if (typeof saved.afterInstructions === "string") {
         saved.afterInstructions = saved.afterInstructions.replaceAll(prevUrl, currentUrl);
+    }
+
+    // Replace server URLs in reusablePuzzleInstance configs and save
+    if (Array.isArray(saved.reusablePuzzleInstances) && saved.reusablePuzzleInstances.length) {
+        for (const rpi of saved.reusablePuzzleInstances) {
+            if (typeof rpi?.config === "string") {
+                rpi.config = rpi.config.replaceAll(prevUrl, currentUrl);
+                await rpi.save({ transaction });
+            }
+        }
     }
 
     await saved.save({transaction});

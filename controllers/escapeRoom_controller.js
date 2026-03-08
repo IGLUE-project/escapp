@@ -1066,10 +1066,12 @@ exports.import = async (req, res, next) => {
             if (replacements[folderName] && replacements[folderName][originalName]) {
                 replacementName = replacements[folderName][originalName];
             }
-            const route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
+            let route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
             let newRoute = item.pathStr.contentPath;
 
             if (item.pathStr && item.pathStr.assetType === "webapp") {
+                // Webapps are exported as directories at assets/{assetId}/ (without fileId subfolder)
+                route = idFolder ? `${folderName}/${idFolder}` : `${folderName}`;
                 newRoute = item.pathStr.contentPath.replace("/index.html", "");
             }
             newRoute = newRoute.replace(item.old, replacementName);
