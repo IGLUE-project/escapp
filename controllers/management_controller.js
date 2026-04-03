@@ -25,11 +25,10 @@ exports.showReportForm = (req, res) => {
     const captchaNum1 = Math.floor(Math.random() * 10) + 1;
     const captchaNum2 = Math.floor(Math.random() * 10) + 1;
     const captchaExpected = captchaNum1 + captchaNum2;
-
     res.render("management/reportForm", {
         escapeRoom,
         "reporterName": user ? `${user.name}`.trim() : "",
-        "reporterEmail": user ? user.username : "",
+        "reporterEmail": (user && !user.anonymized) ? user.username : "",
         captchaNum1,
         captchaNum2,
         captchaExpected
@@ -40,7 +39,6 @@ exports.showReportForm = (req, res) => {
 exports.showContact = (req, res) => {
     const {escapeRoom} = req;
     const {user} = req.session;
-
     // Generate simple math captcha
     const captchaNum1 = Math.floor(Math.random() * 10) + 1;
     const captchaNum2 = Math.floor(Math.random() * 10) + 1;
@@ -51,7 +49,7 @@ exports.showContact = (req, res) => {
         "escapeRoomId": escapeRoom.id,
         "author": escapeRoom.author.alias,
         "contactName": user ? `${user.name}`.trim() : "",
-        "contactEmail": user ? user.username : "",
+        "contactEmail": (user && !user.anonymized) ? user.username : "",
         captchaNum1,
         captchaNum2,
         captchaExpected
