@@ -205,17 +205,29 @@ exports.getPreviewData = async (req, res) => {
 exports.servePreviewRender = async (req, res, next) => {
     try {
         const {url, escapeRoomId} = req.query;
-        const hostname = getHostname(req);
-        const data = await tryFetch(`${url || hostname}/network/${escapeRoomId}/json`);
+        let escapeRoomData;
 
-        if (!data || !data.ok) {
-            throw new Error("Failed to fetch preview data");
+        if (url) {
+            // Remote preview - fetch from remote server
+            const data = await tryFetch(`${url}/network/${escapeRoomId}/json`);
+
+            if (!data || !data.ok) {
+                throw new Error("Failed to fetch preview data");
+            }
+            escapeRoomData = await data.json();
+        } else {
+            // Local preview - query database directly to avoid self-fetch auth issues
+            const localER = await models.escapeRoom.findByPk(escapeRoomId, queries.escapeRoom.loadPreview);
+
+            if (!localER) {
+                throw new Error("Escape room not found");
+            }
+            escapeRoomData = localER.toJSON();
         }
-        const escapeRoomData = await data.json();
 
-        const escapeRoom = await models.escapeRoom.build(escapeRoomData);
+        const escapeRoom = models.escapeRoom.build(escapeRoomData);
 
-        escapeRoom.author = await models.user.build(escapeRoomData.author);
+        escapeRoom.author = models.user.build(escapeRoomData.author);
 
         return res.render("escapeRooms/show", {escapeRoom, "user": req.session.user, "isParticipant": false, "fromNetwork": true, "networkUrl": url, "referer": req.get("referer")});
     } catch (error) {
