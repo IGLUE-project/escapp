@@ -982,8 +982,8 @@ exports.export = async (req, res, next) => {
 
                 if (stats.isDirectory()) {
                     const targetPath = idFolder
-                        ? `${folderName}/${idFolder}`
-                        : `${folderName}`;
+                        ? `${folderName}/${idFolder}/${originalName}`
+                        : `${folderName}/${originalName}`;
 
                     archive.directory(filePath, targetPath);
                 } else if (stats.isFile()) {

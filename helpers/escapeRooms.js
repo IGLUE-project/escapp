@@ -223,36 +223,29 @@ exports.cloneER = async function (er, authorId, newTitle, currentUser, prevUrl, 
             continue;
         }
 
-        // Update relative references too, if those exist in configs
+        // Update relative references for file-extension assets (e.g. /assets/10.jpg)
         const fromRel = `/assets/${oldAsset.id}.`;
         const toRel = `/assets/${newAsset.id}.`;
+        // Update relative references for webapp assets (e.g. /assets/10/index.html)
+        const fromRelDir = `/assets/${oldAsset.id}/`;
+        const toRelDir = `/assets/${newAsset.id}/`;
 
-        if (typeof saved.description === "string") {
-            saved.description = saved.description.replaceAll(fromRel, toRel);
-        }
-        if (typeof saved.indicationsInstructions === "string") {
-            saved.indicationsInstructions = saved.indicationsInstructions.replaceAll(fromRel, toRel);
-        }
-        if (typeof saved.teamInstructions === "string") {
-            saved.teamInstructions = saved.teamInstructions.replaceAll(fromRel, toRel);
-        }
-        if (typeof saved.classInstructions === "string") {
-            saved.classInstructions = saved.classInstructions.replaceAll(fromRel, toRel);
-        }
-        if (typeof saved.afterInstructions === "string") {
-            saved.afterInstructions = saved.afterInstructions.replaceAll(fromRel, toRel);
+        for (const field of ["description", "indicationsInstructions", "teamInstructions", "classInstructions", "afterInstructions"]) {
+            if (typeof saved[field] === "string") {
+                saved[field] = saved[field].replaceAll(fromRel, toRel).replaceAll(fromRelDir, toRelDir);
+            }
         }
 
         if (Array.isArray(saved.reusablePuzzleInstances) && saved.reusablePuzzleInstances.length) {
             for (const rpi of saved.reusablePuzzleInstances) {
                 if (typeof rpi?.config === "string") {
-                    rpi.config = rpi.config.replaceAll(fromRel, toRel);
+                    rpi.config = rpi.config.replaceAll(fromRel, toRel).replaceAll(fromRelDir, toRelDir);
                 }
             }
         }
 
         if (oldAsset.url && typeof oldAsset.url === "string") {
-            newAsset.url = oldAsset.url.replaceAll(fromRel, toRel);
+            newAsset.url = oldAsset.url.replaceAll(fromRel, toRel).replaceAll(fromRelDir, toRelDir);
             await newAsset.save({ transaction });
         }
     }

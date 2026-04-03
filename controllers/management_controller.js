@@ -290,9 +290,13 @@ exports.exportAuth = async (req, res, next) => {
     const {i18n} = res.locals;
     const {user} = req.session || {};
     const er = req.escapeRoom;
-
+   
     try {
+        if (user && (isAdmin(user) || isAuthor(user, er) || isCoAuthor(user, er))) {
+            return next();
+        }
         const exportAllowed = await getExportAllowed();
+
         switch (exportAllowed) {
         case EXPORT_ALLOWED_OPTIONS.ALL:
             // Everyone can export
@@ -309,17 +313,14 @@ exports.exportAuth = async (req, res, next) => {
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS:
             // Only teachers (non-students) and admins can export
-            if (user && (isAdmin(user) || (!isStudent(user)) && er.status == "completed")) {
+            if (user && (!isStudent(user) && er.status == "completed")) {
                 return next();
             }
             break;
 
-        case EXPORT_ALLOWED_OPTIONS.ONLY_OWNER:
         default:
             // Only the author, co-authors, or admin can export
-            if (user && (isAdmin(user) || isAuthor(user, er) || isCoAuthor(user, er))) {
-                return next();
-            }
+             
             break;
         }
 
