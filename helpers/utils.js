@@ -367,7 +367,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
                         await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "userId": user.id, "success": true, answer}, {transaction});
                     }
                 } else {
-                    if (!alreadySolved && !readOnly) {
+                    if (!alreadySolved) {
                         await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "userId": user.id, "success": false, answer}, {transaction});
                     }
                     status = 423;
