@@ -408,7 +408,10 @@ exports.loadComplete = {
                 {
                     "model": models.reusablePuzzleInstance,
                     "separate": true,
-                    "include": [{ "model": models.reusablePuzzle }]
+                    "include": [
+                        {"model": models.reusablePuzzle },
+                        {"model": models.puzzle }
+                    ]
                 },
                 { "model": models.puzzle, "separate": true }
             ]
@@ -416,7 +419,10 @@ exports.loadComplete = {
         {
             "model": models.reusablePuzzleInstance,
             "separate": true,
-            "include": [{ "model": models.reusablePuzzle }]
+            "include": [
+                {"model": models.reusablePuzzle },
+                {"model": models.puzzle }
+            ]
         },
         {
             "model": models.user,

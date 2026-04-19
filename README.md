@@ -23,4 +23,4 @@ Check out the [API documentation](https://github.com/IGLUE-project/escapp/wiki/A
 
 ## 📖 Documentation for teachers and students
 
-Check out the [user manual](https://github.com/IGLUE-project/escapp/blob/master/public/pdf/Escapp_manual_EN.pdf) to learn how to use Escapp.
+Check out the [user manual](https://github.com/IGLUE-project/escapp/blob/master/public/pdf/Escapp_manual_en.pdf) to learn how to use Escapp.

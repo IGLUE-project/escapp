@@ -267,6 +267,16 @@ exports.cloneER = async function (er, authorId, newTitle, currentUser, prevUrl, 
         saved.afterInstructions = saved.afterInstructions.replaceAll(prevUrl, currentUrl);
     }
 
+    // Replace server URLs in reusablePuzzleInstance configs and save
+    if (Array.isArray(saved.reusablePuzzleInstances) && saved.reusablePuzzleInstances.length) {
+        for (const rpi of saved.reusablePuzzleInstances) {
+            if (typeof rpi?.config === "string") {
+                rpi.config = rpi.config.replaceAll(prevUrl, currentUrl);
+                await rpi.save({ transaction });
+            }
+        }
+    }
+
     await saved.save({transaction});
     if (scenes) {
         const newScenes = [];
