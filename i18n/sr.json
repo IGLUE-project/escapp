@@ -536,6 +536,7 @@
         "hybridInstructionsNote": "Naznačili ste da je escape soba hibridna, molimo vas da ovde upload-ujete sve dodatne resurse koji će učesnicima biti potrebni za završetak aktivnosti.",
         "front": {
           "countdown": "Odbrojavanje",
+          "countdownInNavbar": "Prikaži na traci za navigaciju",
           "ranking": "tabela sa rezultatima",
           "progress": "Traka progresa (progress bar)",
           "textAndMedia": "Tekst i multimedija",

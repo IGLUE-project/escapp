@@ -66,6 +66,25 @@
   /* display: inline-block; */
 }
 
+.navbar-countdown {
+  font-family: 'Digital', monospace;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  margin-left: 10px;
+  white-space: nowrap;
+  display: inline-block;
+}
+.navbar-countdown-pulse {
+  animation: navbar-cd-pulse 1s infinite;
+}
+@keyframes navbar-cd-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.navbar-countdown-boom {
+  display: none !important;
+}
+
 .container-fluid {
     padding: 35px 50px;
     padding-top: 0px;

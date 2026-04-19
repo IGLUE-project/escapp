@@ -535,6 +535,7 @@
                 "hybridInstructionsNote": "Has indicado que la escape room es híbrida. Si es necesario, proporciona a los participantes los recursos físicos que necesitarán para completar la actividad.",
                 "front": {
                     "countdown": "Cuenta atrás",
+                    "countdownInNavbar": "Mostrar en barra de navegación",
                     "ranking": "Ranking",
                     "progress": "Barra de progreso",
                     "textAndMedia": "Texto y multimedia",

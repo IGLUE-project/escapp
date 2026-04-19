@@ -157,7 +157,10 @@ var sceneTemplate = (id, url, width = 100, height = "auto", align = "center", ra
 </iframe>
 </div>`;
 
-var countdownTemplate = ()=> `<div class="editor" ><countdown/></div>`;
+var countdownTemplate = (navbar = false)=> `<div class="editor" >
+<countdown/>
+<label class="countdown-navbar-label"><input type="checkbox" class="countdown-navbar-check" ${navbar ? "checked" : ""}> ${window.i18n.countdownInNavbar}</label>
+</div>`;
 
 var progressBarTemplate = ()=> `<div class="editor" >
 <progressbar>
@@ -196,7 +199,7 @@ var insertContent = async (index, type, payload = {}, puzzles) => {
 
     switch(type){
         case "countdown":
-            content = countdownTemplate();
+            content = countdownTemplate(payload.navbar);
             break;
         case "ranking":
             content = rankingTemplate();
@@ -396,12 +399,14 @@ $(()=>{
                 const sceneIframe = $(e).find(".webappfullIframe");
                 const src = sceneIframe.attr("src");
                 obj.payload = {
-                    url: src, 
+                    url: src,
                     width: $(e).find(".webappfullWidth").val(),
                     align: $(e).find(".webappfull-align:checked").val(),
                     ratio: sceneIframe.css("aspect-ratio")
                 };
                 obj.type = type;
+            } else if (type === "countdown") {
+                obj.payload = { navbar: $(e).find(".countdown-navbar-check").is(":checked") };
             }
             results.push(obj);
         });

@@ -534,6 +534,7 @@
                 "hybridInstructionsNote": "You have indicated that the escape room is hybrid, please upload here any additional resources that participants will need to complete the activity.",
                 "front": {
                     "countdown": "Countdown",
+                    "countdownInNavbar": "Show in navigation bar",
                     "ranking": "Leaderboard",
                     "progress": "Progress bar",
                     "textAndMedia": "Text and multimedia",

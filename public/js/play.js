@@ -504,7 +504,12 @@ var insertContent =async (type, payload, puzzles, index, prevIndex) => {
       content = sceneTemplate(escapeUnsafeHtml(payload.url),payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
       break;
     case "countdown":
-      content = countdownTemplate();
+      if (payload && payload.navbar) {
+        $('.navbar').find('.navbar-countdown').remove();
+        $('.navbar .navbar-brand').after('<span class="navbar-text navbar-countdown text-danger"><span class="navbar-cd-minus" style="display:none">-</span><span class="navbar-cd-hours">00</span>:<span class="navbar-cd-mins">00</span>:<span class="navbar-cd-secs">00</span></span>');
+      } else {
+        content = countdownTemplate();
+      }
       break;
     case "ranking":
       content = rankingEmptyTemplate();

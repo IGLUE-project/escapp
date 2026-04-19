@@ -65,16 +65,21 @@
                 $('.mins').attr('data-text', pad(mins));
                 $('.secs').html(pad(secs));
                 $('.secs').attr('data-text', pad(secs));
+                $('.navbar-cd-hours').html(pad(hours));
+                $('.navbar-cd-mins').html(pad(mins));
+                $('.navbar-cd-secs').html(pad(secs));
                 if (rem_time > 0 && rem_time < 11 && !$(".clockContainer").hasClass("pulse")) {
                     $(".clockContainer").addClass("animated");
                     $(".clockContainer").addClass("infinite");
                     $(".clockContainer").addClass("pulse");
+                    $(".navbar-countdown").css("animation", "navbar-cd-pulse 1s infinite");
                 }
                 if (rem_time === 0 || rem_time < 0) {
                     $(".clock").addClass("red");
                     $(".clockContainer").removeClass("animated");
                     $(".clockContainer").removeClass("infinite");
                     $(".clockContainer").removeClass("pulse");
+                    $(".navbar-countdown").css("animation", "navbar-cd-pulse 1s infinite");
                 }
                 if (rem_time === 0) {
                     //clearInterval(countdownChrono);
@@ -82,10 +87,13 @@
                     $('.time').css("display", "none");
                     //$('.boom').html("BOOOOOM!");
                     //$('.boom').attr('data-text', "BOOOOOM!");
+                    $('.navbar-countdown').addClass("navbar-countdown-boom");
                 } else if (rem_time < 0) {
                     $('.explosion').css("display","none");
                     $('.time').css("display", "block");
                     $('.minus').css("display","inline-block");
+                    $('.navbar-countdown').removeClass("navbar-countdown-boom");
+                    $('.navbar-cd-minus').css("display","inline");
                 }
                 if (startTime && duration) {
                     rem_time = Math.floor( (duration*60*1000 - ( (now || new Date()) - startTime))/1000);
@@ -106,6 +114,7 @@
                     $(".clockContainer").addClass("animated");
                     $(".clockContainer").addClass("infinite");
                     $(".clockContainer").addClass("pulse");
+                    $(".navbar-countdown").css("animation", "navbar-cd-pulse 1s infinite");
                     setTimeout(()=>{
                         //$(".clockContainer").removeClass("infinite");
                     },10000)

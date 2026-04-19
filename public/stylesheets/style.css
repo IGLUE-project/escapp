@@ -2564,6 +2564,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin-right: 0px;
   margin-left: 0px;
 }
+#mainSection .main.step-instructions .countdown-navbar-check {
+  height: auto;
+}
 #mainSection .main.step-instructions .building-block {
   position: relative;
   border: 5px solid white;
@@ -2824,6 +2827,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.step-instructions countdown:after {
   content: "00:00:00";
+}
+#mainSection .main.step-instructions .countdown-navbar-label {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
+  cursor: pointer;
 }
 #mainSection .main.step-instructions progressbar {
   width: 100% !important;
