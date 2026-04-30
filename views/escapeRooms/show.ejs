@@ -180,7 +180,7 @@
         
         <%} else { %>
             <button class="rounded editButton acceptButton" id="join-anon-btn" title="<%=i18n.collaborators.beforeJoin%>"><%=i18n.showPlayer.play%></button>
-            <div id="dialog-join-anon" title="Playing '<%=escapeRoom.title%>'" style="display: none;">
+            <div id="dialog-join-anon" title="<%=i18n.escapeRoom.general.playDialogTitle%> '<%=escapeRoom.title%>'" style="display: none;">
                 <p class="text-center">
                 <%=i18n.showPlayer.alreadyAccount%>
                 <br/><br/> <a href="/?redir=/escapeRooms/<%=escapeRoom.id%>/join<%if(locals.token){%>?token=<%=locals.token%><%}%>" >

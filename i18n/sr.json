@@ -760,7 +760,8 @@
       "areYouSureDelete": "Da li ste sigurni da želite da obrišete ovu escape sobu?",
       "areYouSureClone": "Da li ste sigurni da želite da kopirate ovu escape sobu?",
       "author": "Autor",
-      "contact": "Kontaktirati"
+      "contact": "Kontaktirati",
+      "playDialogTitle": "Igrati"
     },
     "attributes": {
       "title": "Naslov",

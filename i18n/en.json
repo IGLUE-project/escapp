@@ -758,7 +758,8 @@
             "areYouSureDelete": "Are you sure you want to delete this escape room?",
             "areYouSureClone": "Are you sure you want to clone this escape room?",
             "author": "Author",
-            "contact": "Contact"
+            "contact": "Contact",
+            "playDialogTitle": "Play"
         },
         "attributes": {
             "title": "The title",
