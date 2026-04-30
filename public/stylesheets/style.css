@@ -3863,20 +3863,38 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection #mainHeader #logoEU img, #mainSection #mainFooter #logoEU img {
   width: 100%;
 }
-#mainSection #mainHeader .langs, #mainSection #mainHeader .legal, #mainSection #mainFooter .langs, #mainSection #mainFooter .legal {
+#mainSection #mainHeader .legal, #mainSection #mainFooter .legal {
   width: auto;
   position: relative;
   margin: 0;
   color: #9292B0;
   font-family: "Gugi" !important;
 }
-#mainSection #mainHeader .langs.legal, #mainSection #mainHeader .legal.legal, #mainSection #mainFooter .langs.legal, #mainSection #mainFooter .legal.legal {
+#mainSection #mainHeader .legal.legal, #mainSection #mainFooter .legal.legal {
   margin-bottom: 5px;
 }
-#mainSection #mainHeader .langs .active, #mainSection #mainHeader .legal .active, #mainSection #mainFooter .langs .active, #mainSection #mainFooter .legal .active {
+#mainSection #mainHeader .legal .active, #mainSection #mainFooter .legal .active {
   color: white !important;
 }
-#mainSection #mainHeader .langs a:hover, #mainSection #mainHeader .legal a:hover, #mainSection #mainFooter .langs a:hover, #mainSection #mainFooter .legal a:hover {
+#mainSection #mainHeader .legal a:hover, #mainSection #mainFooter .legal a:hover {
+  color: white;
+  font-weight: bold;
+}
+#mainSection #mainHeader .langs, #mainSection #mainFooter .langs {
+  width: auto;
+  position: relative;
+  margin: 0px 10px 0px 0px;
+  color: #9292B0;
+  font-family: "Gugi" !important;
+  display: inline-block;
+}
+#mainSection #mainHeader .langs li, #mainSection #mainFooter .langs li {
+  display: inline-block;
+}
+#mainSection #mainHeader .langs .active, #mainSection #mainFooter .langs .active {
+  color: white !important;
+}
+#mainSection #mainHeader .langs a:hover, #mainSection #mainFooter .langs a:hover {
   color: white;
   font-weight: bold;
 }

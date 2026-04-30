@@ -8,29 +8,41 @@
                 <a title="<%=i18n.common.mainPage%>" href="/escapeRooms"><span class="navBarIcon material-icons">home</span></a>
                 <span style="display:inline-block;width:10px;"></span>
             <%}%>
-            <% if (session.user.isStudent) { %>
-                <a title="<%=i18n.common.guide%>" href="/manual"><span class="navBarIcon material-icons">help_outline</span></a>
-                <span style="display:inline-block;width:10px;"></span>
-            <% } else { %>
-                <a title="<%=i18n.common.guide%>" href="/guides"><span class="navBarIcon material-icons">help_outline</span></a>
-                <span style="display:inline-block;width:10px;"></span>
-            <% } %>
-            <a title="<%=i18n.common.reports%>" href="/network/search?query="><span class="navBarIcon material-icons">language</span></a>
-            <% if (session.user.isAdmin) { %>
-                <span style="display:inline-block;width:10px;"></span>
-                Admin
-                <span style="display:inline-block;width:10px;"></span>
-                <a title="<%=i18n.common.users%>" href="/users/index/"><span class="navBarIcon material-icons">people</span></a>
-                <span style="display:inline-block;width:10px;"></span>
-                <a title="<%=i18n.common.mainPage%>" href="/escapeRoomsAdmin"><span class="navBarIcon material-icons">games</span></a>
-                <span style="display:inline-block;width:10px;"></span>
-                <a title="<%=i18n.common.reports%>" href="/reports"><span class="navBarIcon material-icons">report</span></a>
-                <span style="display:inline-block;width:10px;"></span>
-                <a title="<%=i18n.common.reports%>" href="/reusablePuzzles"><span class="navBarIcon material-icons">extension</span></a>
-                <span style="display:inline-block;width:10px;"></span>
-                <a title="<%=i18n.common.reports%>" href="/environment"><span class="navBarIcon material-icons">dns</span></a>
-            <% } %>
-        <% } else {%>
+        <% } else { %>
+            <a title="<%=i18n.user.actions.Login%>" href="/"><span class="navBarIcon material-icons">login</span></a>
+            <span style="display:inline-block;width:10px;"></span>
+        <% } %>
+
+        <% if (session.user && !session.user.isStudent) { %>
+            <a title="<%=i18n.common.guide%>" href="/guides"><span class="navBarIcon material-icons">help_outline</span></a>
+            <span style="display:inline-block;width:10px;"></span>
+        <% } else { %>
+            <a title="<%=i18n.common.guide%>" href="/manual"><span class="navBarIcon material-icons">help_outline</span></a>
+            <span style="display:inline-block;width:10px;"></span>
+        <% } %>
+
+        <a title="<%=i18n.network.title%>" href="/network/search?query="><span class="navBarIcon material-icons">language</span></a>
+
+        <% if (session.user && session.user.isAdmin) { %>
+            <span style="display:inline-block;width:10px;"></span>
+            Admin
+            <span style="display:inline-block;width:10px;"></span>
+            <a title="<%=i18n.common.users%>" href="/users/index/"><span class="navBarIcon material-icons">people</span></a>
+            <span style="display:inline-block;width:10px;"></span>
+            <a title="<%=i18n.common.mainPage%>" href="/escapeRoomsAdmin"><span class="navBarIcon material-icons">games</span></a>
+            <span style="display:inline-block;width:10px;"></span>
+            <a title="<%=i18n.common.reports%>" href="/reports"><span class="navBarIcon material-icons">report</span></a>
+            <span style="display:inline-block;width:10px;"></span>
+            <a title="<%=i18n.common.reports%>" href="/reusablePuzzles"><span class="navBarIcon material-icons">extension</span></a>
+            <span style="display:inline-block;width:10px;"></span>
+            <a title="<%=i18n.common.reports%>" href="/environment"><span class="navBarIcon material-icons">dns</span></a>
+        <% } %>
+    </div>
+
+    <div class="right">
+         <% if(session.user && !session.user.anonymized) { %>
+            <a title="<%=i18n.common.profile%>" href="/users/<%=session.user.id%>/edit"><%= session.user.name %></a>
+        <% } else { %>
             <ul class="langs">
                <% var langs = locals.globalConfig.availableLanguages || ["en", "es"]; %>
                <% for (var l in langs) {
@@ -40,13 +52,6 @@
                     <li><a class="<%=(i18n.lang==ll?"active":"")%>" href="/?clang=<%=ll%>"><%=ll%></a></li> 
                <%}%>
             </ul>
-             <% } %>
-    </div>
-    <div class="right">
-        <% if (!session.user) { %>
-            <a href="/"><%=i18n.user.actions.Login%></a>
-        <% } else if(!session.user.anonymized) { %>
-            <a title="<%=i18n.common.profile%>" href="/users/<%=session.user.id%>/edit"><%= session.user.name %></a>
         <% } %>
     </div>
 </header>
