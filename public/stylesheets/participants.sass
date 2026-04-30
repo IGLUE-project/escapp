@@ -10,9 +10,11 @@
       .flex-row
         .flex-cell
           &.flex-name
-            width: 30%
-          &.flex-username
             width: 25%
+          &.flex-alias
+            width: 25%
+          &.flex-username
+            width: 15%
             text-overflow: ellipsis
             white-space: pre
             overflow: hidden
@@ -20,11 +22,11 @@
               color: colors.$darkerpurple
               font-weight: normal
           &.flex-turno
-            width: 18%
+            width: 15%
           &.flex-team
             width: 15%
           &.flex-attendance
-            width: 12%
+            width: 15%
             border-right: none
             .attendance-checkbox
               width: 20px
@@ -36,6 +38,7 @@
             justify-content: center
             align-items: center
             span
+              padding: 1px
               text-overflow: ellipsis
               overflow: hidden
               font-family: 'Lato', sans-serif

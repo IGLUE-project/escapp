@@ -4153,10 +4153,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   overflow: visible;
 }
 #mainSection .main.participants .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-name {
-  width: 30%;
+  width: 25%;
+}
+#mainSection .main.participants .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-alias {
+  width: 25%;
 }
 #mainSection .main.participants .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-username {
-  width: 25%;
+  width: 15%;
   text-overflow: ellipsis;
   white-space: pre;
   overflow: hidden;
@@ -4166,13 +4169,13 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   font-weight: normal;
 }
 #mainSection .main.participants .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-turno {
-  width: 18%;
+  width: 15%;
 }
 #mainSection .main.participants .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-team {
   width: 15%;
 }
 #mainSection .main.participants .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-attendance {
-  width: 12%;
+  width: 15%;
   border-right: none;
 }
 #mainSection .main.participants .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-attendance .attendance-checkbox {
@@ -4186,6 +4189,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   align-items: center;
 }
 #mainSection .main.participants .flex-table-wrapper .flex-table .flex-row:not(.flex-row-title) .flex-cell span {
+  padding: 1px;
   text-overflow: ellipsis;
   overflow: hidden;
   font-family: "Lato", sans-serif;
@@ -6152,13 +6156,13 @@ table.mainTable tr td .icon {
   width: 20%;
 }
 #mainSection .main.teams .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-turno {
-  width: 20%;
+  width: 15%;
 }
 #mainSection .main.teams .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-participants {
   width: 50%;
 }
 #mainSection .main.teams .flex-table-wrapper .flex-table .flex-row .flex-cell.flex-started {
-  width: 10%;
+  width: 15%;
   border-right: none;
   text-shadow: 0px 0px 6px #222;
 }
