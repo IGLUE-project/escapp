@@ -20,7 +20,6 @@
         min-height: 100vh
         background-color: colors.$darkerpurple
         .loginLeft
-            // background-color: $bckg
             width: 50%
             text-align: center
             flex: 7
@@ -28,7 +27,8 @@
             display: flex
             height: 100vh
             justify-content: center
-            #imagenPortada
+            #coverImage
+                width: auto
                 max-height: 90%
                 width: auto
                 max-width: 85%
@@ -102,10 +102,21 @@
             text-align: right
             justify-content: right
             padding-right: 2%
-            
 
-        #imagenPortada
-            width: auto
+        .loginLeftHeader
+            height: 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: auto;
+            z-index: 1;
+            position: absolute;
+            top: 0px
+            left: 0px
+            padding: 8px;
+            margin: 0px 0px 0px 5px;
+            color: white;
+            
 @media (max-width: 768px)
     .portada .contenedor .loginLeft
         display: none

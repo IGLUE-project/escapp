@@ -4301,7 +4301,8 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   height: 100vh;
   justify-content: center;
 }
-.portada .contenedor .loginLeft #imagenPortada {
+.portada .contenedor .loginLeft #coverImage {
+  width: auto;
   max-height: 90%;
   width: auto;
   max-width: 85%;
@@ -4390,8 +4391,19 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   justify-content: right;
   padding-right: 2%;
 }
-.portada .contenedor #imagenPortada {
+.portada .contenedor .loginLeftHeader {
+  height: 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: auto;
+  z-index: 1;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 8px;
+  margin: 0px 0px 0px 5px;
+  color: white;
 }
 
 @media (max-width: 768px) {
