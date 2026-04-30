@@ -13,13 +13,9 @@
                 <span class="material-icons">chevron_right</span>
                 <span><%=escapeRoom.title%></span>           
             <%}%>
-				
-                
-            
         </div>
 	</div>
     
-
     <%var isCollaborator = (user && escapeRoom.userCoAuthor?.find(u => u.id === user.id)) %>
     <%var isUnconfirmedCollaborator = (isCollaborator && !isCollaborator.coAuthors.confirmed) %>
 
@@ -32,31 +28,25 @@
                 </form>
             </div>
     <%}%>
-     <%if(!locals.fromNetwork){%>
+    <%if(!locals.fromNetwork){%>
     <div class="reporting">
         <a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
     </div>
     <%}%>
-    <div class="flex ">
+    <div class="flex">
 		<div class="flex-thumb attachmentShow animated">
            <img  alt="thumbnail" src="<%=locals.fromNetwork? locals.networkUrl:""%>/escapeRooms/<%=escapeRoom.id%>/thumbnail">
 		</div>
 		<div class="flex-er-info animated fadeIn">
-            <h1><%=escapeRoom.title%>
-            <br/>
-        </h1>
+            <h1><%=escapeRoom.title%></h1>
+
             <%if(!locals.fromNetwork){%>
-            <p>
-                <span>by <%=escapeRoom.author.alias%></span>
-            </p>
-             
-            <p>
-                <a href="<%=locals.fromNetwork? locals.networkUrl:""%>/escapeRooms/<%=escapeRoom.id%>/contact">Contact</a>
-            </p>
+                <h3 style="font-size: 17px; margin-top: -5px"><%=i18n.escapeRoom.general.author%>: <span style="font-size: 16px"><a href="<%=locals.fromNetwork? locals.networkUrl:""%>/escapeRooms/<%=escapeRoom.id%>/contact"><%=escapeRoom.author.alias%></a></span></h3>
             <%}%>
-            <br/>
-            <h3><%=i18n.showTeacher.titles.description%></h3>
-            <p><%-escapeRoom.description%></p>
+
+            <h3 style="margin-top: 35px; margin-bottom: 16px"><%=i18n.showTeacher.titles.description%></h3>
+            <div style="margin-top: 0px"><%-escapeRoom.description%></div>
+
             <div class="flex-er-info-preview fadeIn">
                 <%if(escapeRoom.field){%>
                     <div>

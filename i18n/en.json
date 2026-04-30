@@ -756,7 +756,9 @@
         },
         "general": {
             "areYouSureDelete": "Are you sure you want to delete this escape room?",
-            "areYouSureClone": "Are you sure you want to clone this escape room?"
+            "areYouSureClone": "Are you sure you want to clone this escape room?",
+            "author": "Author",
+            "contact": "Contact"
         },
         "attributes": {
             "title": "The title",
