@@ -122,7 +122,7 @@
 				</div>
 			</div>
 			<div id="toolbar_element">
-				<div id="toolbar_settings_wrapper" class="subToolbar toolbar_btn tool_action toolbar_hotspot toolbar_hotzone toolbar_object toolbar_web" style="display:none" action="showElementSettings">
+				<div id="toolbar_settings_wrapper" class="subToolbar toolbar_btn tool_action toolbar_hotspot toolbar_hotzone toolbar_object toolbar_web toolbar_audio toolbar_video" style="display:none" action="showElementSettings">
 					<img class="toolbar_icon" src="/scene_maker/images/toolbar/properties.png"/>
 					<p i18n-key="i.Properties">Properties</p>
 				</div>
@@ -565,6 +565,10 @@
 			<label i18n-key="i.ActionParamsURL">URL:</label>
 			<input type="text">
 		</div>
+		<div class="settings_element_wrapper actionParamsLoop" style='display:none'>
+			<input type="checkbox">
+			<label i18n-key="i.ActionParamsLoop">Loop</label>
+		</div>
 		<div class="settings_element_wrapper actionParamsText" style='display:none'>
 			<label i18n-key="i.ActionParamsText">Text:</label>
 			<textarea maxlength="1500" rows="3"></textarea>
@@ -630,6 +634,37 @@
 			</div>
 			<div class="elSettingsButtonsWrapper">
 				<button id="objectSettingsDone" type="button" class="button" i18n-key="i.Done">Done</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Multimedia Settings -->
+	<div style='display:none'>
+		<div id="multimediaSettings_fancybox" class="elSettings_fancybox">
+			<p class="elsettings_fancybox_title" i18n-key="i.Properties">Properties</p>
+			<input type="hidden" name="elId">
+			<div class="new_elsettings_field">
+				<input type="checkbox" defaultvalue="false" name="autoplay">
+				<span i18n-key="i.MSettingsAutoplay">Autoplay.</span>
+			</div>
+			<div class="new_elsettings_field">
+				<input type="checkbox" defaultvalue="false" name="loop">
+				<span i18n-key="i.MSettingsLoop">Loop.</span>
+			</div>
+			<div class="new_elsettings_field">
+				<input type="checkbox" defaultvalue="true" name="controls">
+				<span i18n-key="i.MSettingsControls">Controls.</span>
+			</div>
+			<div class="new_elsettings_field">
+				<input type="checkbox" defaultvalue="false" name="resume">
+				<span i18n-key="i.MSettingsResume">Preserve state when the view is hidden.</span>
+			</div>
+			<div id="posterURLMultimediaWrapper" class="new_elsettings_field settings_element_wrapper">
+				<label i18n-key="i.MSettingsPoster">Poster URL:</label>
+				<input id="posterURLMultimedia" type="text">
+			</div>
+			<div class="elSettingsButtonsWrapper">
+				<button id="multimediaSettingsDone" type="button" class="button" i18n-key="i.Done">Done</button>
 			</div>
 		</div>
 	</div>

@@ -1,9 +1,9 @@
 <div class="portada">
     <div class="contenedor" style="display: flex; height: 100%">
         <div class="loginLeft" style="">
-            <img alt="Escape room" id="imagenPortada" src="/images/puzzle.png" width="80%"/>
+            <img alt="Escapp" id="coverImage" src="/images/puzzle.png" width="80%"/>
         </div>
-        <div class="loginRight" style=" ">
+        <div class="loginRight">
            <% if(locals.register) { %>
                 <%- include("users/_form.ejs") %>
            <%  } else if (locals.resetPassword) { %>
@@ -19,9 +19,15 @@
                     var ll = langs[l];
                     %>
                <% if (l != 0) { %> / <%}%>
-                    <li><a class="<%=(i18n.lang==ll?"active":"")%>" href="/?clang=<%=ll%>"><%=ll%></a></li> 
+                    <li><a class="<%=(i18n.lang==ll?"active":"")%>" href="/?clang=<%=ll%>"><%=ll%></a></li>
                <%}%>
           </ul>
+        </div>
+        <div class="loginLeftHeader">
+          <a title="<%=i18n.common.guide%>" href="/manual"><span class="navBarIcon material-icons">help_outline</span></a>
+          <span style="display:inline-block;width:10px;"></span>
+          <a title="<%=i18n.network.title%>" href="/network/search?query="><span class="navBarIcon material-icons">language</span></a>
+          <span style="display:inline-block;width:10px;"></span>
         </div>
     </div>
 </div>

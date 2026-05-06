@@ -424,7 +424,8 @@ exports.renderReusablePuzzle = async (req, res, _) => {
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleInstance.reusablePuzzleId}/`;
         const {token} = await models.user.findByPk(req.session.user.id);
         const referrer = req.get("Referrer");
-        const preview = Boolean(referrer && referrer.match("/team$"));
+        const preview = ((req.query.preview === "true") || (referrer && /escapeRooms\/[^/]+\/team$/.test(referrer)));
+
         const config = {
             ...reusablePuzzleInstanceConfig,
             solutionLength,

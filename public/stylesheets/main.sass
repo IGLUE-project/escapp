@@ -29,7 +29,7 @@
       min-width: 175px
       img
         width: 100%
-    .langs, .legal
+    .legal
       width: auto
       position: relative
       margin: 0
@@ -37,6 +37,20 @@
       font-family: 'Gugi' !important
       &.legal
         margin-bottom: 5px
+      .active
+        color: white !important
+      a:hover
+        color: white
+        font-weight: bold
+    .langs
+      width: auto
+      position: relative
+      margin: 0px 10px 0px 0px
+      color: colors.$textpurple
+      font-family: 'Gugi' !important
+      display: inline-block
+      li
+        display: inline-block
       .active
         color: white !important
       a:hover
@@ -61,7 +75,6 @@
       padding: 10px
       color: white
     .right
-      
       flex: 1
       text-align: right
       font-family: Gugi
