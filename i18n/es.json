@@ -1431,7 +1431,8 @@
     "policies": {
         "terms": "Términos de uso",
         "privacy": "Política de privacidad",
-        "cookies": "Política de cookies"
+        "cookies": "Política de cookies",
+        "reportError": "Reportar un error"
     },
     "reusablePuzzles": {
         "name": "Retos reutilizables",
@@ -2145,7 +2146,8 @@
             "exportOnlyOwner": "Solo el propietario",
             "exportOnlyTeachers": "Solo profesores",
             "exportOnlyUsers": "Solo usuarios registrados",
-            "exportAll": "Todos (incluidos invitados)"
+            "exportAll": "Todos (incluidos invitados)",
+            "errorReportUrl": "URL del formulario para reportar errores"
         },
         "verificationFilter": {
             "all": "Todas",

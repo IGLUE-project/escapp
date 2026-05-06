@@ -229,7 +229,7 @@ const reusablePuzzlesList = [
         // },
         "order": 19
     },
-     {
+    {
         "name": "PopupQuestion",
         "zip": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Puzzle.zip",
         "form": "popupQuestion.ejs",

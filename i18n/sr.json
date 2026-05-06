@@ -1430,7 +1430,8 @@
     "policies": {
       "terms": "Uslovi korišćenja",
       "privacy": "Politika privatnosti",
-      "cookies": "Politika kolačića"
+      "cookies": "Politika kolačića",
+      "reportError": "Prijavi grešku"
     },
     "reusablePuzzles": {
       "name": "Zagonetke za višekratnu upotrebu",
@@ -2071,7 +2072,8 @@
             "exportOnlyOwner": "Samo vlasnik",
             "exportOnlyTeachers": "Samo nastavnici",
             "exportOnlyUsers": "Samo registrovani korisnici",
-            "exportAll": "Svi (uključujući goste)"
+            "exportAll": "Svi (uključujući goste)",
+            "errorReportUrl": "URL formulara za prijavu greške"
         },
         "verificationFilter": {
             "all": "Sve",

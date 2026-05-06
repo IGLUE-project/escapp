@@ -25,10 +25,11 @@ exports.showReportForm = (req, res) => {
     const captchaNum1 = Math.floor(Math.random() * 10) + 1;
     const captchaNum2 = Math.floor(Math.random() * 10) + 1;
     const captchaExpected = captchaNum1 + captchaNum2;
+
     res.render("management/reportForm", {
         escapeRoom,
         "reporterName": user ? `${user.name}`.trim() : "",
-        "reporterEmail": (user && !user.anonymized) ? user.username : "",
+        "reporterEmail": user && !user.anonymized ? user.username : "",
         captchaNum1,
         captchaNum2,
         captchaExpected
@@ -49,7 +50,7 @@ exports.showContact = (req, res) => {
         "escapeRoomId": escapeRoom.id,
         "author": escapeRoom.author.alias,
         "contactName": user ? `${user.name}`.trim() : "",
-        "contactEmail": (user && !user.anonymized) ? user.username : "",
+        "contactEmail": user && !user.anonymized ? user.username : "",
         captchaNum1,
         captchaNum2,
         captchaExpected
@@ -170,7 +171,8 @@ exports.getEnvironmentSettings = async (_, res) => {
             "emailValidationStudent": process.env.EMAIL_VALIDATION_STUDENT === "true",
             "emailValidationTeacher": process.env.EMAIL_VALIDATION_TEACHER === "true",
             "availableLanguages": process.env.AVAILABLE_LANGUAGES || "en,es,sr",
-            "exportAllowed": process.env.EXPORT_ALLOWED || "ONLY_OWNER"
+            "exportAllowed": process.env.EXPORT_ALLOWED || "ONLY_OWNER",
+            "errorReportUrl": process.env.ERROR_REPORT_URL || require("../helpers/globalInstanceConfig").DEFAULT_ERROR_REPORT_URL
         };
 
         // Database settings (overrides)
@@ -182,7 +184,8 @@ exports.getEnvironmentSettings = async (_, res) => {
             "emailValidationStudent": config.emailValidationStudent ?? null,
             "emailValidationTeacher": config.emailValidationTeacher ?? null,
             "availableLanguages": config.availableLanguages ?? null,
-            "exportAllowed": config.exportAllowed ?? null
+            "exportAllowed": config.exportAllowed ?? null,
+            "errorReportUrl": config.errorReportUrl ?? null
         };
 
         res.render("management/environmentSettings", {urlsText, urlsDBText, envSettings, dbSettings, EXPORT_ALLOWED_OPTIONS, SUPPORTED_LANGUAGES});
@@ -203,7 +206,8 @@ exports.setEnvironmentSettings = async (req, res) => {
             emailValidationStudent,
             emailValidationTeacher,
             availableLanguages,
-            exportAllowed
+            exportAllowed,
+            errorReportUrl
         } = req.body;
 
         const parsedURLs = urls.
@@ -259,7 +263,8 @@ exports.setEnvironmentSettings = async (req, res) => {
             "emailValidationStudent": parseBooleanField(emailValidationStudent),
             "emailValidationTeacher": parseBooleanField(emailValidationTeacher),
             "availableLanguages": parseAvailableLanguages(availableLanguages),
-            "exportAllowed": parseStringField(exportAllowed)
+            "exportAllowed": parseStringField(exportAllowed),
+            "errorReportUrl": parseStringField(errorReportUrl)
         };
 
         if (!config) { // First setup
@@ -288,7 +293,7 @@ exports.exportAuth = async (req, res, next) => {
     const {i18n} = res.locals;
     const {user} = req.session || {};
     const er = req.escapeRoom;
-   
+
     try {
         if (user && (isAdmin(user) || isAuthor(user, er) || isCoAuthor(user, er))) {
             return next();
@@ -318,7 +323,7 @@ exports.exportAuth = async (req, res, next) => {
 
         default:
             // Only the author, co-authors, or admin can export
-             
+
             break;
         }
 

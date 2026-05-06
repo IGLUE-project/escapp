@@ -123,6 +123,14 @@
                 </select>
                 <span class="env-default"><%= t.defaultFromEnv %>: <%= envSettings.exportAllowed || t.notSet %></span>
             </div>
+
+            <div class="setting-row">
+                <label for="errorReportUrl"><%= t.errorReportUrl %></label>
+                <input type="text" name="errorReportUrl" id="errorReportUrl"
+                    value="<%= dbSettings.errorReportUrl !== null ? dbSettings.errorReportUrl : '' %>"
+                    placeholder="<%= t.leaveEmptyForDefault %>"/>
+                <span class="env-default"><%= t.defaultFromEnv %>: <%= envSettings.errorReportUrl || t.notSet %></span>
+            </div>
         </div>
 
          <h2><%= t.networkUrls %></h2>
