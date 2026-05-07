@@ -118,10 +118,10 @@
     <input type="text" id="endInput" name="end" value="<%=i18n.reusablePuzzleApps.Ipad.end%>" style="flex:1;" />
 </div>
 
-<div>
+<!--<div>
     <label for="codesInput"><%=i18n.reusablePuzzleApps.Ipad.label_codes%>:</label>
     <input type="text" id="codesInput" name="codes" value="<%=i18n.reusablePuzzleApps.Ipad.codes%>" style="flex:1;" />
-</div>
+</div>-->
 
 <div>
     <label for="reviewInput"><%=i18n.reusablePuzzleApps.Ipad.label_review%>:</label>
@@ -345,7 +345,6 @@
     if (window.currentOpenPuzzleConfig?.modalheader2) document.getElementById("modalheader2Input").value = window.currentOpenPuzzleConfig.modalheader2;
     if (window.currentOpenPuzzleConfig?.feedback) document.getElementById("feedbackInput").value = window.currentOpenPuzzleConfig.feedback;
     if (window.currentOpenPuzzleConfig?.end) document.getElementById("endInput").value = window.currentOpenPuzzleConfig.end;
-    if (window.currentOpenPuzzleConfig?.codes) document.getElementById("codesInput").value = window.currentOpenPuzzleConfig.codes;
     if (window.currentOpenPuzzleConfig?.review) document.getElementById("reviewInput").value = window.currentOpenPuzzleConfig.review;
 
     // Load existing items

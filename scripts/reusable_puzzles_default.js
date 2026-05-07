@@ -198,11 +198,11 @@ const reusablePuzzlesList = [
         "zip": "defaultReusablePuzzles/Conversation/Conversation_Puzzle.zip",
         "form": "conversation.ejs",
         "thumbnail": "defaultReusablePuzzles/Conversation/Conversation_Thumbnail.png",
-        // "instructions": {
-        //     "en": "defaultReusablePuzzles/Conversation/Conversation_Instructions_EN.pdf",
-        //     "es": "defaultReusablePuzzles/Conversation/Conversation_Instructions_ES.pdf",
-        //     "sr": "defaultReusablePuzzles/Conversation/Conversation_Instructions_SR.pdf"
-        // },
+        "instructions": {
+            "en": "defaultReusablePuzzles/Conversation/Conversation_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Conversation/Conversation_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/Conversation/Conversation_Instructions_EN.pdf"
+        },
         "order": 17
     },
     {
@@ -210,11 +210,11 @@ const reusablePuzzlesList = [
         "zip": "defaultReusablePuzzles/Classification/Classification_Puzzle.zip",
         "form": "classification.ejs",
         "thumbnail": "defaultReusablePuzzles/Classification/Classification_Thumbnail.png",
-        // "instructions": {
-        //     "en": "defaultReusablePuzzles/Classification/Classification_Instructions_EN.pdf",
-        //     "es": "defaultReusablePuzzles/Classification/Classification_Instructions_ES.pdf",
-        //     "sr": "defaultReusablePuzzles/Classification/Classification_Instructions_SR.pdf"
-        // },
+        "instructions": {
+            "en": "defaultReusablePuzzles/Classification/Classification_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Classification/Classification_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/Classification/Classification_Instructions_EN.pdf"
+        },
         "order": 18
     },
     {
@@ -222,11 +222,11 @@ const reusablePuzzlesList = [
         "zip": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Puzzle.zip",
         "form": "ipadClassifier.ejs",
         "thumbnail": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Thumbnail.png",
-        // "instructions": {
-        //     "en": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_EN.pdf",
-        //     "es": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_ES.pdf",
-        //     "sr": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_SR.pdf"
-        // },
+        "instructions": {
+            "en": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_EN.pdf"
+        },
         "order": 19
     },
     {
@@ -234,11 +234,11 @@ const reusablePuzzlesList = [
         "zip": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Puzzle.zip",
         "form": "popupQuestion.ejs",
         "thumbnail": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Thumbnail.png",
-        // "instructions": {
-        //     "en": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_EN.pdf",
-        //     "es": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_ES.pdf",
-        //     "sr": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_SR.pdf"
-        // },
+        "instructions": {
+            "en": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_EN.pdf"
+        },
         "order": 20
     }
 

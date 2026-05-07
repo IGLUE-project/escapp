@@ -95,10 +95,10 @@
                         </a>
                     </div>
                 <%}%>
-                <%if(escapeRoom.forceLang){%>
+                <%if(escapeRoom.lang){%>
                     <div>
-                        <h3><%=i18n.showTeacher.titles.forceLang2%></h3>
-                        <p><%=i18n.langs[escapeRoom.forceLang] || forceLang%></p>
+                        <h3><%=i18n.showTeacher.titles.lang%></h3>
+                        <p><%=i18n.langs[escapeRoom.lang] || escapeRoom.lang%></p>
                     </div>
                 <%}%>
                 <%if(escapeRoom.level){%>
