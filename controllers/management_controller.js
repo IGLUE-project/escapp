@@ -299,31 +299,32 @@ exports.exportAuth = async (req, res, next) => {
             return next();
         }
         const exportAllowed = await getExportAllowed();
+        const isCompleted = er.status === "completed";
 
         switch (exportAllowed) {
         case EXPORT_ALLOWED_OPTIONS.ALL:
-            // Everyone can export
-            if (er.completed) {
+            // Everyone (including guests) can export completed escape rooms
+            if (isCompleted) {
                 return next();
             }
+            break;
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_USERS:
-            // Only logged-in users can export
-            if (user && er.completed) {
+            // Only logged-in users can export completed escape rooms
+            if (user && isCompleted) {
                 return next();
             }
             break;
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS:
-            // Only teachers (non-students) and admins can export
-            if (user && (!isStudent(user) && er.status == "completed")) {
+            // Only teachers (non-students) can export completed escape rooms
+            if (user && !isStudent(user) && isCompleted) {
                 return next();
             }
             break;
 
         default:
-            // Only the author, co-authors, or admin can export
-
+            // ONLY_OWNER: only author, co-authors, or admin (handled above)
             break;
         }
 
