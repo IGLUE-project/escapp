@@ -1,7 +1,9 @@
 <header class="" id="mainHeader">
     <div class="left">
         <% if (session.user) { %>
-            <a title="<%=i18n.common.exit%>" href="/?_method=DELETE"><span class="navBarIcon material-icons">power_settings_new</span></a>
+            <form method="POST" action="/?_method=DELETE" style="display:inline">
+                <button type="submit" title="<%=i18n.common.exit%>" class="navBarIconButton" style="background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit"><span class="navBarIcon material-icons">power_settings_new</span></button>
+            </form>
             <span style="display:inline-block;width:10px;"></span>
 
             <% if(!session.user.anonymized) { %>

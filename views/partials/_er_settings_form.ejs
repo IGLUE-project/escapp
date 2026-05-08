@@ -114,7 +114,7 @@
  <div class="inputFormField erFormField animated slideInUp description" style="animation-delay: <%=200*(formFields.length+3)%>ms;">
         <label for="custom-content"  class="itemNarrow">6. <%=i18n.showTeacher.titles["description"]%>:</label><br/>
         <div id="custom-content" class="editor-wrapper purple-ckeditor-small">
-          <%-escapeRoom.description%>
+          <%-sanitizeRichText(escapeRoom.description)%>
         </div>
     </div>
 

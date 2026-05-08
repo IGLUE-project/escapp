@@ -133,9 +133,9 @@
                     </li>
                     <%if(escapeRoom.teamInstructions  !=null && escapeRoom.classInstructions !=null && escapeRoom.classInstructions !=null){%>
                     <li>
-                        <a href="/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT">
-                            <button class="showMenuButton cloneButton" ><%=i18n.showTeacher.actionList.clone%></button>
-                        </a>
+                        <form method="POST" action="/escapeRooms/<%= escapeRoom.id %>/clone?_method=PUT" style="display:inline">
+                            <button class="showMenuButton cloneButton" type="submit"><%=i18n.showTeacher.actionList.clone%></button>
+                        </form>
                     </li>
                     <li>
                         <a href="/escapeRooms/<%= escapeRoom.id %>/export">
@@ -251,7 +251,7 @@
                             <%=i18n.showTeacher.titles.description%>:
                         </div>
                         <div class="flexShowRightNot">
-                            <%- escapeRoom.description %>
+                            <%- sanitizeRichText(escapeRoom.description) %>
                         </div>
                     </div>
                 <% } %>

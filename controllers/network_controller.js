@@ -9,6 +9,52 @@ const crypto = require("crypto");
 const os = require("os");
 const fs = require("fs/promises");
 
+// Block hostnames that resolve to internal/non-routable space.
+// Defence against SSRF to localhost, RFC1918 (10/8, 172.16/12, 192.168/16),
+// link-local (169.254/16, including AWS/GCP metadata 169.254.169.254),
+// loopback IPv6, multicast, etc. Pure string check — no DNS — so DNS-rebinding
+// attacks aren't fully neutralised, but the obvious internal targets are.
+const isPrivateHostname = function (host) {
+    if (!host) {
+        return true;
+    }
+    const h = host.toLowerCase().replace(/^\[|\]$/g, ""); // strip IPv6 brackets
+
+    if (h === "localhost" || h.endsWith(".localhost") || h.endsWith(".local") || h.endsWith(".internal")) {
+        return true;
+    }
+    // IPv4 dotted quad?
+    const v4 = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+
+    if (v4) {
+        const [a, b] = [parseInt(v4[1], 10), parseInt(v4[2], 10)];
+
+        if (a === 10 || a === 127 || a === 0) {
+            return true;
+        }
+        if (a === 169 && b === 254) {
+            return true;
+        }
+        if (a === 172 && b >= 16 && b <= 31) {
+            return true;
+        }
+        if (a === 192 && b === 168) {
+            return true;
+        }
+        if (a === 100 && b >= 64 && b <= 127) { // CGNAT 100.64/10
+            return true;
+        }
+        if (a >= 224) { // multicast / reserved
+            return true;
+        }
+    }
+    // IPv6 loopback / link-local / unique-local
+    if (h === "::1" || h === "::" || h.startsWith("fe80:") || h.startsWith("fc") || h.startsWith("fd")) {
+        return true;
+    }
+    return false;
+};
+
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level, license) => {
     try {
         const queryToExecute = queries.escapeRoom.text(before, after, lang, participation, area, duration, format, level, license);
@@ -247,7 +293,50 @@ exports.importFromNetwork = async (req, res, next) => {
         if (!escapeRoomId) {
             throw new Error("No escape room id");
         }
-        const urlFetch = `${url}/escapeRooms/${escapeRoomId}/export`;
+        // Reject anything that isn't a numeric id — keeps the constructed URL tight
+        if (!/^\d+$/.test(String(escapeRoomId))) {
+            throw new Error("Invalid escape room id");
+        }
+        // SSRF guard.
+        // 1) URL must parse as http(s).
+        // 2) If a network-instances allowlist is configured (DB or .env) the
+        //    URL must match one entry — the admin vouched for it (so e.g.
+        //    a localhost dev allowlist still works).
+        // 3) Otherwise (no allowlist), reject loopback/private/link-local
+        //    hostnames so anonymous SSRF to internal services is blocked.
+        let parsed;
+
+        try {
+            parsed = new URL(url);
+        } catch (e) {
+            throw new Error("Invalid url");
+        }
+        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+            throw new Error("URL must be http or https");
+        }
+
+        const dbUrls = await models.adminConfig.findOne({"attributes": ["urls"], "where": {"id": 1}});
+        let allowedUrls = [];
+
+        try {
+            allowedUrls = dbUrls && dbUrls.urls ? JSON.parse(dbUrls.urls) : [];
+        } catch (e) {
+            allowedUrls = [];
+        }
+        if (!allowedUrls.length) {
+            allowedUrls = urlsDefault;
+        }
+        const normalize = (u) => String(u || "").replace(/\/$/, "");
+        const requested = normalize(url);
+
+        if (allowedUrls.length > 0) {
+            if (!allowedUrls.map(normalize).includes(requested)) {
+                throw new Error("URL not in network instances allowlist");
+            }
+        } else if (isPrivateHostname(parsed.hostname)) {
+            throw new Error("Refusing to fetch private/internal host");
+        }
+        const urlFetch = `${requested}/escapeRooms/${escapeRoomId}/export`;
         const exportRes = await fetch(urlFetch);
 
         if (!exportRes.ok) {

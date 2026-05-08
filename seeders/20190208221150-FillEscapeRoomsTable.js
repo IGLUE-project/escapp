@@ -26,7 +26,7 @@ module.exports = {
                 "invitation": "teacherTest1",
                 "authorId": 11,
                 "scoreParticipation": 50,
-                "status": "active",
+                "status": "draft",
                 "createdAt": new Date(),
                 "updatedAt": new Date()
             }
