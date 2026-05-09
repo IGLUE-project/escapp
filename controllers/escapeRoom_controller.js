@@ -893,11 +893,36 @@ exports.isStatusCompleted = (req, res, next) => {
         next(new Error(404));
     }
 };
-exports.test = async (req, res) => {
+exports.test = async (req, res, next) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
-    const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
-    const participant = participants && participants.length ? participants[0] : null;
+    let participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
+    let participant = participants && participants.length ? participants[0] : null;
     const isAdmin = req.session.user && req.session.user.isAdmin;
+
+    // If an admin reaches the Test page without already being in a test-shift
+    // team for this ER (typical case: they aren't the author or a co-author),
+    // auto-join them on the test shift — mirrors what creation /
+    // co-author confirmation do for authors and co-authors.
+    if (!participant && isAdmin) {
+        const transaction = await sequelize.transaction();
+
+        try {
+            const user = await models.user.findByPk(req.session.user.id, {transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}, transaction});
+            const team = await models.team.create({"name": user.alias || user.name, "turnoId": testShift.id}, {transaction});
+
+            await team.addTeamMembers(user.id, {transaction});
+            await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": user.id}, {transaction});
+            await transaction.commit();
+
+            // Re-fetch so the render path below gets the real team/participant.
+            participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
+            participant = participants && participants.length ? participants[0] : null;
+        } catch (err) {
+            await transaction.rollback();
+            return next(err);
+        }
+    }
 
     if (participant) {
         const [team] = participant.teamsAgregados;
@@ -905,8 +930,6 @@ exports.test = async (req, res) => {
         const finished = howManyRetos === escapeRoom.puzzles.length;
 
         res.render("escapeRooms/ready", {escapeRoom, participant, team, finished, isAdmin});
-    } else if (isAdmin) {
-        res.render("escapeRooms/ready", {escapeRoom, "participant": {}, "team": {"turno": {"status": "test"}, "teamMembers": []}, "finished": false, isAdmin});
     } else {
         res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
     }
