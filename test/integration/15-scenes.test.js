@@ -56,8 +56,12 @@ describe("Scene Editor", () => {
                 post(`/escapeRooms/${escapeRoomId}/scenes`).
                 send({
                     "scene": {
+                        // The scene beforeSave hook derives `name` from
+                        // content.title and `thumbnail` from content.avatar;
+                        // both columns are NOT NULL in the schema.
                         "json": JSON.stringify({
-                            "name": "Test Scene",
+                            "title": "Test Scene",
+                            "avatar": "default.png",
                             "width": 800,
                             "height": 600,
                             "objects": []

@@ -5,7 +5,7 @@ const {models} = sequelize;
 const query = require("../queries");
 const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {isAuthor, isParticipant, cloneER, getFilePathsForER} = require("../helpers/escapeRooms");
+const {isAuthor, isParticipant, cloneER, getFilePathsForER, safeImportPath, copyERFilesForClone} = require("../helpers/escapeRooms");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname} = require("../helpers/utils");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 const fsSync = require("fs");
@@ -669,7 +669,10 @@ exports.clone = async (req, res, next) => {
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${escapeRoom.title}`;
         const currentUser = req.session.user;
-        const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, undefined, undefined, undefined, transaction);
+        // Duplicate every referenced file on disk under a fresh name so the
+        // clone is independent — deleting the source no longer breaks it.
+        const fileMapping = copyERFilesForClone(escapeRoom);
+        const saved = await cloneER(escapeRoom, authorId, newTitle, currentUser, undefined, undefined, fileMapping, transaction);
 
         res.redirect(`/escapeRooms/${saved.id}/edit`);
     } catch (err) {
@@ -890,11 +893,36 @@ exports.isStatusCompleted = (req, res, next) => {
         next(new Error(404));
     }
 };
-exports.test = async (req, res) => {
+exports.test = async (req, res, next) => {
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
-    const participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
-    const participant = participants && participants.length ? participants[0] : null;
+    let participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
+    let participant = participants && participants.length ? participants[0] : null;
     const isAdmin = req.session.user && req.session.user.isAdmin;
+
+    // If an admin reaches the Test page without already being in a test-shift
+    // team for this ER (typical case: they aren't the author or a co-author),
+    // auto-join them on the test shift — mirrors what creation /
+    // co-author confirmation do for authors and co-authors.
+    if (!participant && isAdmin) {
+        const transaction = await sequelize.transaction();
+
+        try {
+            const user = await models.user.findByPk(req.session.user.id, {transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}, transaction});
+            const team = await models.team.create({"name": user.alias || user.name, "turnoId": testShift.id}, {transaction});
+
+            await team.addTeamMembers(user.id, {transaction});
+            await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": user.id}, {transaction});
+            await transaction.commit();
+
+            // Re-fetch so the render path below gets the real team/participant.
+            participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
+            participant = participants && participants.length ? participants[0] : null;
+        } catch (err) {
+            await transaction.rollback();
+            return next(err);
+        }
+    }
 
     if (participant) {
         const [team] = participant.teamsAgregados;
@@ -902,8 +930,6 @@ exports.test = async (req, res) => {
         const finished = howManyRetos === escapeRoom.puzzles.length;
 
         res.render("escapeRooms/ready", {escapeRoom, participant, team, finished, isAdmin});
-    } else if (isAdmin) {
-        res.render("escapeRooms/ready", {escapeRoom, "participant": {}, "team": {"turno": {"status": "test"}, "teamMembers": []}, "finished": false, isAdmin});
     } else {
         res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
     }
@@ -1070,8 +1096,10 @@ exports.import = async (req, res, next) => {
             let newRoute = item.pathStr.contentPath;
 
             if (item.pathStr && item.pathStr.assetType === "webapp") {
-                // Webapps are exported as directories at assets/{assetId}/ (without fileId subfolder)
-                route = idFolder ? `${folderName}/${idFolder}` : `${folderName}`;
+                // Export writes the webapp directory at assets/{assetId}/{fileId}/...
+                // (see archive.directory call in exports.export). Match that prefix
+                // here so the contents land directly under /uploads/webapps/<newName>/.
+                route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
                 newRoute = item.pathStr.contentPath.replace("/index.html", "");
             }
             newRoute = newRoute.replace(item.old, replacementName);
@@ -1083,7 +1111,7 @@ exports.import = async (req, res, next) => {
             // Single-file case
                 const data = fileZip.getData();
 
-                const targetPath = path.join(__dirname, "..", newRouteRelative);
+                const targetPath = safeImportPath(newRouteRelative);
 
                 fsSync.mkdirSync(path.dirname(targetPath), { "recursive": true });
                 fsSync.writeFileSync(targetPath, data);
@@ -1106,8 +1134,8 @@ exports.import = async (req, res, next) => {
                         // Path inside the folder, relative to `route/`
                         const innerRel = entry.entryName.slice(prefix.length);
 
-                        // Write into the destination folder path (newRouteRelative)
-                        const targetPath = path.join(__dirname, "..", newRouteRelative, innerRel);
+                        // Reject ZIP-slip: each entry must resolve inside the destination folder
+                        const targetPath = safeImportPath(path.posix.join(newRouteRelative, innerRel));
 
                         fsSync.mkdirSync(path.dirname(targetPath), { "recursive": true });
                         fsSync.writeFileSync(targetPath, data);

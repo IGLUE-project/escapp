@@ -1433,7 +1433,8 @@
     "policies": {
         "terms": "Terms of use",
         "privacy": "Privacy policy",
-        "cookies": "Cookie policy"
+        "cookies": "Cookie policy",
+        "reportError": "Report an error"
     },
     "reusablePuzzles":{
         "name": "Reusable puzzles",
@@ -2088,7 +2089,8 @@
             "exportOnlyOwner": "Only Owner",
             "exportOnlyTeachers": "Only Teachers",
             "exportOnlyUsers": "Only Registered Users",
-            "exportAll": "Everyone (including guests)"
+            "exportAll": "Everyone (including guests)",
+            "errorReportUrl": "Error report URL"
         },
         "verificationFilter": {
             "all": "All",

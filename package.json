@@ -54,6 +54,7 @@
     "nodemailer": "^7.0.10",
     "nodemon": "^3.1.9",
     "pg": "^8.7.3",
+    "sanitize-html": "^2.17.3",
     "sass": "^1.51.0",
     "sequelize": "^6.19.0",
     "sequelize-cli": "^6.4.1",

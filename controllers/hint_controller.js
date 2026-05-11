@@ -47,22 +47,34 @@ exports.hintAppWrapper = async (req, res, next) => {
 exports.downloadQuiz = async (req, res) => {
     try {
         const hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});
+
+        if (!hintApp) {
+            return res.status(404).end();
+        }
         const fileUrl = hintApp.url;
 
-        if (fileUrl) {
-            const isAbsolute = (/^https?:\/\//i).test(fileUrl);
+        if (!fileUrl) {
+            return res.status(404).end();
+        }
+        const isAbsolute = (/^https?:\/\//i).test(fileUrl);
 
-            if (!isAbsolute) {
-                const filePath = path.join(__dirname, "..", fileUrl);
+        if (!isAbsolute) {
+            // Legacy rows store url as a bare filename (no slashes). The
+            // actual file lives under /uploads/hints/<public_id>; fall back
+            // to that canonical folder when the stored value isn't a path.
+            const looksLikePath = fileUrl.includes("/") || fileUrl.includes("\\");
+            const relPath = looksLikePath
+                ? fileUrl
+                : path.posix.join("/uploads/hints", hintApp.public_id || fileUrl);
+            const filePath = path.join(__dirname, "..", relPath);
 
-                res.setHeader("Content-Disposition", `attachment; filename="${hintApp.filename}"`);
-                res.sendFile(filePath);
-            } else {
-                http.get(fileUrl, (resp) => {
-                    res.setHeader("content-disposition", `attachment; filename="${hintApp.filename}"`);
-                    resp.pipe(res);
-                });
-            }
+            res.setHeader("Content-Disposition", `attachment; filename="${hintApp.filename}"`);
+            res.sendFile(filePath);
+        } else {
+            http.get(fileUrl, (resp) => {
+                res.setHeader("content-disposition", `attachment; filename="${hintApp.filename}"`);
+                resp.pipe(res);
+            });
         }
     } catch (e) {
         console.error(e);

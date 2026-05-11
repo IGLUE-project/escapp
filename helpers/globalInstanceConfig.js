@@ -182,6 +182,23 @@ exports.getAvailableLanguagesArray = async function () {
 };
 
 /**
+ * Default URL for the error reporting form (used when not configured in DB or .env)
+ */
+exports.DEFAULT_ERROR_REPORT_URL = "https://forms.gle/pakPBsQTxRj8VhQf8";
+
+/**
+ * Get errorReportUrl setting (DB override, .env fallback, or hardcoded default)
+ */
+exports.getErrorReportUrl = async function () {
+    const config = await getConfig();
+
+    if (config && config.errorReportUrl !== null && config.errorReportUrl !== undefined && config.errorReportUrl !== "") {
+        return config.errorReportUrl;
+    }
+    return process.env.ERROR_REPORT_URL || exports.DEFAULT_ERROR_REPORT_URL;
+};
+
+/**
  * Get exportAllowed setting (DB override or .env fallback)
  * Valid values: ONLY_OWNER, ONLY_TEACHERS, ONLY_USERS, ALL
  */

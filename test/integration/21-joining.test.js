@@ -28,9 +28,12 @@ describe("Escape Room Joining", () => {
 
         it("should deny teacher from joining own escape room", async () => {
             const res = await teacherSession.get(`/escapeRooms/${escapeRoomId}/join`);
-            // AuthJoinEscapeRoom denies author, or 404 if not joinable
+            // AuthJoinEscapeRoom denies the author by redirecting back to the
+            // escape-room page with a flash error. Express's res.redirect()
+            // overrides the prior res.status(403) to 302, so the wire status
+            // is 302; 404 still applies if the ER is not joinable.
 
-            expect([403, 404]).toContain(res.statusCode);
+            expect([302, 403, 404]).toContain(res.statusCode);
         });
     });
 

@@ -603,7 +603,7 @@ exports.getRole = async (role, username = "", i18n) => {
     const teacherWhitelist = teacherWhitelistArray.length > 0 ? teacherWhitelistArray : undefined;
     const disableChoosingRole = await globalConfig.getDisableChoosingRole();
 
-    if ((!role || (role === "teacher")) && exports.isValidEmail(username, teacherWhitelist)) {
+    if ((!role || role === "teacher") && exports.isValidEmail(username, teacherWhitelist)) {
         if (disableChoosingRole) {
             return "teacher";
         }

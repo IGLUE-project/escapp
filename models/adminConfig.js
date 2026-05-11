@@ -39,6 +39,10 @@ module.exports = function (sequelize, DataTypes) {
             "exportAllowed": {
                 "type": DataTypes.STRING,
                 "allowNull": true
+            },
+            "errorReportUrl": {
+                "type": DataTypes.TEXT,
+                "allowNull": true
             }
         }
     );

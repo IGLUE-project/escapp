@@ -99,6 +99,7 @@ const sessionMiddleware = session({
         "path": "/",
         "httpOnly": true,
         "secure": app.get("env") === "production" && !process.env.HEROKU,
+        "sameSite": "lax",
         "maxAge": null
     },
     "saveUninitialized": false
@@ -111,8 +112,7 @@ app.use(sessionMiddleware);
 
 app.use(methodOverride("_method", {
     "methods": [
-        "POST",
-        "GET"
+        "POST"
     ]
 }));
 

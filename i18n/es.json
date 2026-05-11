@@ -1434,7 +1434,8 @@
     "policies": {
         "terms": "Términos de uso",
         "privacy": "Política de privacidad",
-        "cookies": "Política de cookies"
+        "cookies": "Política de cookies",
+        "reportError": "Reportar un error"
     },
     "reusablePuzzles": {
         "name": "Retos reutilizables",
@@ -1601,8 +1602,8 @@
             "label_context": "Texto de contexto",
             "label_send": "Texto botón verificar",
             "label_send_disabled": "Texto botón deshabilitado",
-            "label_retry": "Mensaje reintento 1",
-            "label_congrats": "Mensaje felicitación",
+            "label_retry": "Mensaje de reintento",
+            "label_congrats": "Mensaje de felicitación",
             "label_header": "Texto cabecera",
             "label_modalheader": "Cabecera modal",
             "label_modalcontent": "Contenido modal",
@@ -2161,7 +2162,8 @@
             "exportOnlyOwner": "Solo el propietario",
             "exportOnlyTeachers": "Solo profesores",
             "exportOnlyUsers": "Solo usuarios registrados",
-            "exportAll": "Todos (incluidos invitados)"
+            "exportAll": "Todos (incluidos invitados)",
+            "errorReportUrl": "URL del formulario para reportar errores"
         },
         "verificationFilter": {
             "all": "Todas",

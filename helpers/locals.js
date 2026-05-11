@@ -2,9 +2,11 @@ const {steps} = require("./progress");
 const {getContentForPuzzle} = require("./utils");
 const {isAdmin, isStudent} = require("./users");
 const {isAuthor, isCoAuthor} = require("./escapeRooms");
+const {sanitizeRichText} = require("./sanitizeHtml");
 
 module.exports = function (app) {
     app.locals.FULL_APP_NAME = process.env.FULL_APP_NAME || "https://escapp.es";
+    app.locals.sanitizeRichText = sanitizeRichText;
 
     const zeroPadding = (d) => {
         if (d < 10) {
@@ -149,21 +151,30 @@ module.exports = function (app) {
      * @returns {boolean}
      */
     app.locals.canExport = function (user, escapeRoom, globalConfig) {
+        if (!escapeRoom || !globalConfig) {
+            return false;
+        }
         const {exportAllowed, EXPORT_ALLOWED_OPTIONS} = globalConfig;
+
+        // Author, co-authors and admins can always export
+        if (user && (isAdmin(user) || isAuthor(user, escapeRoom) || isCoAuthor(user, escapeRoom))) {
+            return true;
+        }
+        const isCompleted = escapeRoom.status === "completed";
 
         switch (exportAllowed) {
         case EXPORT_ALLOWED_OPTIONS.ALL:
-            return true;
+            return isCompleted;
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_USERS:
-            return Boolean(user);
+            return Boolean(user) && isCompleted;
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_TEACHERS:
-            return user && (isAdmin(user) || !isStudent(user));
+            return Boolean(user) && !isStudent(user) && isCompleted;
 
         case EXPORT_ALLOWED_OPTIONS.ONLY_OWNER:
         default:
-            return user && (isAdmin(user) || isAuthor(user, escapeRoom) || isCoAuthor(user, escapeRoom));
+            return false;
         }
     };
 };
