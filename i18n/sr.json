@@ -1488,16 +1488,18 @@
       "Common": {
         "skin": "Skin",
         "skins": {
-          "Standard": "Standardni",
           "Basic": "Osnovni",
-          "Retro": "Retro",
+          "Framed": "Frejmovan",
           "Futuristic": "Futuristički",
           "Realistic": "Realističan",
-          "Tablet": "Tablet",
-          "Framed": "Frejmovan"
+          "Retro": "Retro",
+          "Standard": "Standardni",
+          "Smartphone": "Smartphone",
+          "Tablet": "Tablet"
         },
         "actionAfterSolve": "Akcija nakon rešavanja",
         "enabled": "Omogućeno",
+        "disableAfterSolve": "Onemogući nakon rešavanja",
         "disabled": "Onemogućeno",
         "enabledF": "Omogućeno",
         "disabledF": "Onemogućeno",
@@ -1678,6 +1680,15 @@
         "description": "Ovaj resurs vam omogućava da kreirate slagalicu čije rešenje zahteva od učesnika da aktiviraju određeni skup prekidača. Opciono, svaki prekidač može biti povezan sa brojem, slovom, simbolom ili bojom.",
         "numberOfSwitches": "Broj prekidača",
         "switchesType": "Povezani elementi"
+      },
+      "Telephone": {
+        "name": "Telefon",
+        "description": "Ovaj resurs vam omogućava da kreirate telefon u kojem učesnici mogu birati sekvence brojeva, slova, boja ili simbola. Telefon može biti povezan sa zagonetkom iz escape room-a i njenim rešenjem.",
+        "elementType": "Tip elemenata",
+        "rotaryPhone": "Rotacioni telefon",
+        "showFeedbackLight": "Prikaži povratnu informaciju pomoću svetla",
+        "avatar": "Avatar",
+        "sequence": "Sekvenca"
       },
       "WireConnection": {
         "name": "Žična veza",

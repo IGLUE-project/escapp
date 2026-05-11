@@ -229,7 +229,7 @@ const reusablePuzzlesList = [
         // },
         "order": 19
     },
-     {
+    {
         "name": "PopupQuestion",
         "zip": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Puzzle.zip",
         "form": "popupQuestion.ejs",
@@ -240,7 +240,19 @@ const reusablePuzzlesList = [
         //     "sr": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_SR.pdf"
         // },
         "order": 20
-    }
+    },
+    {
+        "name": "Telephone",
+        "zip": "defaultReusablePuzzles/Telephone/Telephone_Puzzle.zip",
+        "form": "telephone.ejs",
+        "thumbnail": "defaultReusablePuzzles/Telephone/Telephone_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Telephone/Telephone_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Telephone/Telephone_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/Telephone/Telephone_Instructions_SR.pdf"
+        },
+        "order": 21
+    },
 
     // {
     //     "name": "CodeEditor",

@@ -1489,16 +1489,18 @@
         "Common": {
             "skin": "Apariencia",
             "skins": {
-                "Standard": "Estándar",
                 "Basic": "Básica",
-                "Retro": "Retro",
+                "Framed": "Enmarcado",
                 "Futuristic": "Futurista",
                 "Realistic": "Realista",
-                "Tablet": "Tablet",
-                "Framed": "Enmarcado"
+                "Retro": "Retro",
+                "Standard": "Estándar",
+                "Smartphone": "Smartphone",
+                "Tablet": "Tablet"
             },
             "actionAfterSolve": "Acción tras resolver",
             "enabled": "Habilitado",
+            "disableAfterSolve": "Deshabilitar tras resolver",
             "disabled": "Deshabilitado",
             "enabledF": "Habilitada",
             "disabledF": "Deshabilitada",
@@ -1679,6 +1681,15 @@
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes activen una serie de interruptores determinados. Opcionalmente, a cada interruptor se le puede asociar un número, una letra, un símbolo o un color.",
             "numberOfSwitches": "Número de interruptores",
             "switchesType": "Elementos asociados"
+        },
+        "Telephone": {
+            "name": "Teléfono",
+            "description": "Este recurso permite crear un teléfono en el que los participantes pueden marcar secuencias de números, letras, colores o símbolos. El teléfono puede vincularse a un reto de la escape room y a su solución.",
+            "elementType": "Tipo de elementos",
+            "rotaryPhone": "Teléfono de disco",
+            "showFeedbackLight": "Mostrar feedback mediante una luz",
+            "avatar": "Avatar",
+            "sequence": "Secuencia"
         },
         "WireConnection": {
             "name": "Conexión de cables",
