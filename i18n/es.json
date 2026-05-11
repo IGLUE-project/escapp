@@ -1688,6 +1688,8 @@
             "elementType": "Tipo de elementos",
             "rotaryPhone": "Teléfono de disco",
             "showFeedbackLight": "Mostrar feedback mediante una luz",
+            "contacts": "Contactos",
+            "contact": "Contacto",
             "avatar": "Avatar",
             "sequence": "Secuencia"
         },

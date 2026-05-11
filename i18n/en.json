@@ -1687,6 +1687,8 @@
             "elementType": "Type of elements",
             "rotaryPhone": "Rotary phone",
             "showFeedbackLight": "Show feedback using a light",
+            "contacts": "Contacts",
+            "contact": "Contact",
             "avatar": "Avatar",
             "sequence": "Sequence"
         },

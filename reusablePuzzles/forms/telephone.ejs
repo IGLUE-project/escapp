@@ -56,6 +56,31 @@
     </select>
 </div>
 
+<div class="contactsDivTelephone" style="flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px;">
+    <label><%=i18n.reusablePuzzleApps.Telephone.contacts%></label>
+    <div class="contactWrapperTelephoneTemplate" style="display:none; flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px; margin: 10px 0px 10px 0px;">
+        <div style="position: relative;">
+            <p style="margin: 7px 0px 5px 0px;"></p>
+            <button class="deleteContactTelephone" type="button" style="display:none; border: none; background: none; position: absolute; right: 0; align-self: center; font-size: 22px;" onclick="deleteContactTelephone(event)">
+                <span style="color: rgb(185, 62, 68);" class="material-icons">delete_outline</span>
+            </button>
+        </div>
+        <div>
+            <label><%=i18n.reusablePuzzleApps.Telephone.sequence%>:</label>
+            <input class="inputContactSequence" type="text" style="flex:1;" />
+        </div>
+        <div style="margin: 10px 0px 10px 0px;">
+            <label><%=i18n.reusablePuzzleApps.Common.soundURL%>:</label>
+            <input class="inputContactSound" type="text" style="flex:1;" />
+        </div>
+        <div style="margin: 10px 0px 10px 0px;">
+            <label><%=i18n.reusablePuzzleApps.Telephone.avatar%>:</label>
+            <input class="inputContactAvatar" type="text" style="flex:1;" />
+        </div>
+    </div>
+    <button class="rounded small addNewContactTelehone" type="button" onclick="addContactTelephone(event);" style="background-color: white; margin-top: 5px; margin-bottom: 10px"><span class="material-icons" style="color: #161938">add</span></button>
+</div>
+
 <div>
     <%- include ("./_asset.ejs", {
         assetId: "backgroundInput",
@@ -69,7 +94,102 @@
 </div>
 <br>
 
+<input type="hidden" class="reusablePuzzleJSONSetting" id="contactsTelephone" name="telephoneNumbers"/>
+
 <script>
+    var maxContactsTelephoneRP = 999;
+    function addContactTelephoneToDiv($contactsWrapper){
+        if ($contactsWrapper.length === 0) return;
+        const $contactTemplate = $contactsWrapper.find('.contactWrapperTelephoneTemplate');
+        if ($contactTemplate.length === 0) return;
+        const $allContacts = $contactsWrapper.find('.contactWrapperTelephone');
+        var contactNumber = $allContacts.length + 1;
+        if (contactNumber > maxContactsTelephoneRP) return;
+        const $newContact = $contactTemplate.clone();
+        $newContact.removeClass("contactWrapperTelephoneTemplate").addClass("contactWrapperTelephone");
+
+        $newContact.attr("contactNumber",contactNumber);
+        $newContact.find('p').first().html('<%=i18n.reusablePuzzleApps.Telephone.contact%> ' + contactNumber);
+        $newContact.find('button.deleteContactTelephone').first().show();
+        $newContact.find('input.inputContactSequence').val('');
+        $newContact.find('input.inputContactSound').val('');
+        $newContact.find('input.inputContactAvatar').val('');
+        $contactsWrapper.find('button').last().before($newContact);
+        if(contactNumber === maxContactsTelephoneRP){
+            var $addNewContactButton = $contactsWrapper.find('button.addNewContactTelehone');
+            $addNewContactButton.attr("disabled","disabled");
+            $addNewContactButton.css("background-color", "#999");
+        }
+        $newContact.show();
+    };
+    function addContactTelephone(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const $contactsWrapper = $(e.target).closest('.contactsDivTelephone');
+        return addContactTelephoneToDiv($contactsWrapper);
+    };
+    function deleteContactTelephone(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const $contactWrapper = $(e.target).closest('.contactWrapperTelephone');
+        if ($contactWrapper.length !== 1) return;
+        const $contactsWrapper = $($contactWrapper).parent('.contactsDivTelephone');
+        if ($contactsWrapper.length !== 1) return;
+        $contactWrapper.remove();
+        $contactsWrapper.find('.contactWrapperTelephone').each(function(index) {
+            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.Telephone.contact%> ' + (index+1));
+        });
+        var $addContactButton = $contactsWrapper.find('button.addNewContactTelehone');
+        $addContactButton.removeAttr("disabled");
+        $addContactButton.css("background-color", "white");
+        updateContactsTelephone();
+        updateIframe();
+    };
+    function updateContactsTelephone(){
+        var contacts = [];
+        document.querySelectorAll('div.contactWrapperTelephone').forEach(div => {
+            let contact = {};
+            let addContact = false;
+            const inputContactSequence = div.querySelector('input.inputContactSequence');
+            const inputContactSound = div.querySelector('input.inputContactSound');
+            const inputContactAvatar = div.querySelector('input.inputContactAvatar');
+
+            if(inputContactSequence.value.trim()!==""){
+                contact.number = inputContactSequence.value;
+                addContact = true;
+            }
+            if(inputContactSound.value.trim()!==""){
+                contact.audio = inputContactSound.value;
+                addContact = true;
+            }
+            if(inputContactAvatar.value.trim()!==""){
+                contact.avatar = inputContactAvatar.value;
+                addContact = true;
+            }
+            if(addContact){
+               contacts.push(contact); 
+            }
+        });
+        document.getElementById("contactsTelephone").value = JSON.stringify(contacts);
+    };
+
+    if(window.currentOpenPuzzleConfig?.telephoneNumbers){
+        var contacts = window.currentOpenPuzzleConfig?.telephoneNumbers;
+        if (Array.isArray(contacts)){
+            document.getElementById("contactsTelephone").value = JSON.stringify(contacts);
+            var $contactsWrapper = $("div.contactsDivTelephone");
+            for(let i=0; i<contacts.length; i++){
+                var contactNumber = (i+1);
+                addContactTelephoneToDiv($contactsWrapper);
+                var $contactDiv = $contactsWrapper.find("div.contactWrapperTelephone[contactNumber='" + contactNumber + "']");
+                $contactDiv.find("input.inputContactSequence").val(contacts[i].number);
+                $contactDiv.find("input.inputContactSound").val(contacts[i].audio);
+                $contactDiv.find("input.inputContactAvatar").val(contacts[i].avatar);
+            };
+        }
+
+    }
+
     document.getElementById('skinSelect').addEventListener('change', function() {
         var showLightFeedbackDiv = document.getElementById("showLightFeedbackDiv");
         if (this.value === 'RETRO') {
@@ -93,6 +213,11 @@
             soundDiv.style.display = 'none';
         }
     });
+
+    $('div.contactsDivTelephone').on('change',
+        'input.inputContactSequence, input.inputContactSound, input.inputContactAvatar',
+        updateContactsTelephone
+    );
 
     document.getElementById("skinSelect").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
     document.getElementById("showLightFeedback").value =  window.currentOpenPuzzleConfig?.showLightFeedback || 'FALSE';
