@@ -78,7 +78,7 @@
             <input class="inputContactAvatar" type="text" style="flex:1;" />
         </div>
     </div>
-    <button class="rounded small addNewContactTelehone" type="button" onclick="addContactTelephone(event);" style="background-color: white; margin-top: 5px; margin-bottom: 10px"><span class="material-icons" style="color: #161938">add</span></button>
+    <button class="rounded small addNewContactTelephone" type="button" onclick="addContactTelephone(event);" style="background-color: white; margin-top: 5px; margin-bottom: 10px"><span class="material-icons" style="color: #161938">add</span></button>
 </div>
 
 <div>
@@ -116,7 +116,7 @@
         $newContact.find('input.inputContactAvatar').val('');
         $contactsWrapper.find('button').last().before($newContact);
         if(contactNumber === maxContactsTelephoneRP){
-            var $addNewContactButton = $contactsWrapper.find('button.addNewContactTelehone');
+            var $addNewContactButton = $contactsWrapper.find('button.addNewContactTelephone');
             $addNewContactButton.attr("disabled","disabled");
             $addNewContactButton.css("background-color", "#999");
         }
@@ -139,7 +139,7 @@
         $contactsWrapper.find('.contactWrapperTelephone').each(function(index) {
             $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.Telephone.contact%> ' + (index+1));
         });
-        var $addContactButton = $contactsWrapper.find('button.addNewContactTelehone');
+        var $addContactButton = $contactsWrapper.find('button.addNewContactTelephone');
         $addContactButton.removeAttr("disabled");
         $addContactButton.css("background-color", "white");
         updateContactsTelephone();
@@ -148,8 +148,8 @@
     function updateContactsTelephone(){
         var contacts = [];
         document.querySelectorAll('div.contactWrapperTelephone').forEach(div => {
-            let contact = {};
-            let addContact = false;
+            var contact = {};
+            var addContact = false;
             const inputContactSequence = div.querySelector('input.inputContactSequence');
             const inputContactSound = div.querySelector('input.inputContactSound');
             const inputContactAvatar = div.querySelector('input.inputContactAvatar');
@@ -178,7 +178,7 @@
         if (Array.isArray(contacts)){
             document.getElementById("contactsTelephone").value = JSON.stringify(contacts);
             var $contactsWrapper = $("div.contactsDivTelephone");
-            for(let i=0; i<contacts.length; i++){
+            for(var i=0; i<contacts.length; i++){
                 var contactNumber = (i+1);
                 addContactTelephoneToDiv($contactsWrapper);
                 var $contactDiv = $contactsWrapper.find("div.contactWrapperTelephone[contactNumber='" + contactNumber + "']");

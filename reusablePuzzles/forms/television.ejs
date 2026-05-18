@@ -1,0 +1,453 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: true}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="skinSelectTV"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelectTV" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Television.SmartTV%></option>
+        <option value="RETRO_REMOTE"><%=i18n.reusablePuzzleApps.Television.RETRO_REMOTE_SKIN%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+    </select>
+</div>
+
+<div>
+    <label for="aspectRatioTVSelect"><%=i18n.reusablePuzzleApps.Common.aspectRatio%>:</label>
+    <select id="aspectRatioTVSelect" name="aspectRatio">
+        <option value="16/9">16/9</option>
+        <option value="4/3">4/3</option>
+    </select>
+</div>
+
+<div>
+    <label for="actionTVSelect"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionTVSelect" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+        <option value="PLAY_VIDEO"><%=i18n.reusablePuzzleApps.Common.playVideo%></option>
+    </select>
+</div>
+
+<div id="delayMessageTV">
+    <label for="delayMessageTVInput"><%=i18n.reusablePuzzleApps.Television.MinimumSuccessMessageDuration%>:</label>
+    <input id="delayMessageTVInput" type="number" min="0" max="1000" step="1" name="delayMessage" value="3" style="flex:1;" />
+</div>
+
+<div id="maximumChannelNumberLengthTV">
+    <label for="maximumChannelNumberLengthTVInput"><%=i18n.reusablePuzzleApps.Television.MaximumChannelNumberLength%>:</label>
+    <input id="maximumChannelNumberLengthTVInput" type="number" min="1" max="9" step="1" name="maxChannelLength" value="4" style="flex:1;" />
+</div>
+
+<div id="loopChannelVideosTV">
+    <label for="loopChannelVideos"><%=i18n.reusablePuzzleApps.Television.LoopChannelVideos%>:</label>
+    <select name="enableLoopForChannels" id="loopChannelVideosTVSelect">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div id="simulateSignalNoiseTV">
+    <label for="simulateSignalNoiseTVSelect"><%=i18n.reusablePuzzleApps.Television.SimulateSignalNoise%>:</label>
+    <select name="fuzzyScreen" id="simulateSignalNoiseTVSelect">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div id="topContentMarginTV">
+    <label for="topContentMarginTVInput"><%=i18n.reusablePuzzleApps.Television.TopContentMargin%>:</label>
+    <input id="topContentMarginTVInput" name="videoContainerPaddingTop" type="number" min="0" max="99" step="1" value="0" style="flex:1;" />
+</div>
+
+<div id="bottomContentMarginTV">
+    <label for="bottomContentMarginTVInput"><%=i18n.reusablePuzzleApps.Television.BottomContentMargin%>:</label>
+    <input id="bottomContentMarginTVInput" name="videoContainerPaddingBottom" type="number" min="0" max="99" step="1" value="0" style="flex:1;" />
+</div>
+
+<div id="leftContentMarginTV">
+    <label for="leftContentMarginTVInput"><%=i18n.reusablePuzzleApps.Television.LeftContentMargin%>:</label>
+    <input id="leftContentMarginTVInput" name="videoContainerPaddingLeft" type="number" min="0" max="99" step="1" value="0" style="flex:1;" />
+</div>
+
+<div id="rightContentMarginTV">
+    <label for="rightContentMarginTVInput"><%=i18n.reusablePuzzleApps.Television.RightContentMargin%>:</label>
+    <input id="rightContentMarginTVInput" name="videoContainerPaddingRight" type="number" min="0" max="99" step="1" value="0" style="flex:1;" />
+</div>
+
+<div id="initialVolumeTV">
+    <label for="initialVolumeTVInput"><%=i18n.reusablePuzzleApps.Television.InitialVolume%>:</label>
+    <input id="initialVolumeTVInput" name="initialVolume" type="number" min="0" max="100" step="1" style="flex:1;" />
+</div>
+
+<div>
+    <label for="auxiliarySourceTypeSelect"><%=i18n.reusablePuzzleApps.Television.ASType%>:</label>
+    <select id="auxiliarySourceTypeSelect" name="inputType">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="INTERNAL"><%=i18n.reusablePuzzleApps.Television.inputTypeStorage%></option>
+        <option value="DISC"><%=i18n.reusablePuzzleApps.Television.inputTypeDisc%></option>
+        <option value="VHS"><%=i18n.reusablePuzzleApps.Television.inputTypeVHS%></option>
+    </select>
+</div>
+
+<div id="auxiliarySourceInitialState">
+    <label for="auxiliarySourceInitialStateSelect"><%=i18n.reusablePuzzleApps.Television.ASInitialState%>:</label>
+    <select id="auxiliarySourceInitialStateSelect" name="inputInitialState">
+        <option value="OUT"><%=i18n.reusablePuzzleApps.Television.inputStateOut%></option>
+        <option value="IN"><%=i18n.reusablePuzzleApps.Television.inputStateIn%></option>
+    </select>
+</div>
+
+<div id="auxiliarySourcePlayerState">
+    <label for="auxiliarySourcePlayerStateSelect"><%=i18n.reusablePuzzleApps.Television.ASPlayerInitialState%>:</label>
+    <select id="auxiliarySourcePlayerStateSelect" name="inputPlayerInitialState">
+        <option value="ON"><%=i18n.reusablePuzzleApps.Common.On%></option>
+        <option value="OFF"><%=i18n.reusablePuzzleApps.Common.Off%></option>
+    </select>
+</div>
+
+<div id="enableRewindAndForwardTV">
+    <label for="enableRewindAndForwardTVSelect"><%=i18n.reusablePuzzleApps.Television.AllowFForwardRewind%>:</label>
+    <select name="enableRewindAndForward" id="enableRewindAndForwardTVSelect">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div id="channelsDivTelevision" style="flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px;">
+    <label><%=i18n.reusablePuzzleApps.Television.Channels%></label>
+    <div class="channelWrapperTelevisionTemplate" style="display:none; flex-direction: column; border: 1px solid white; gap: 15px; padding: 20px 10px 5px 10px; border-radius: 20px; margin: 10px 0px 10px 0px;">
+        <div style="position: relative; padding: 0px 0px 6px 0px;">
+            <button class="deleteChannelTelevision" type="button" style="display:none; border: none; background: none; position: absolute; right: 0px; top: -21px; align-self: center; font-size: 22px;" onclick="deleteChannelTelevision(event)">
+                <span style="color: rgb(185, 62, 68);" class="material-icons">delete_outline</span>
+            </button>
+        </div>
+        <div>
+            <label><%=i18n.reusablePuzzleApps.Television.ChannelNumber%>:</label>
+            <input class="inputChannelNumber" type="text" style="flex:1;" />
+        </div>
+        <div>
+            <label><%=i18n.reusablePuzzleApps.Common.Video%>:</label>
+            <input class="inputChannelVideo" type="text" style="flex:1;" />
+        </div>
+        <div style="margin: 0px 0px 10px 0px;">
+            <label><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+            <input class="inputChannelMessage" type="text" style="flex:1;" />
+        </div>
+    </div>
+    <button class="rounded small addNewChannelTelevision" type="button" onclick="addChannelTelevision(event);" style="background-color: white; margin-top: 5px; margin-bottom: 10px"><span class="material-icons" style="color: #161938">add</span></button>
+</div>
+
+<div id="DChannelContentWrapper" style="flex-direction: column; border: 1px solid white; padding: 0px 10px 18px 10px;border-radius: 20px; gap: 18px;">
+    <p style="margin: 12px 0px 0px 0px;"><%=i18n.reusablePuzzleApps.Television.DefaultChannelContent%></p>
+    <div id="DChannelContentVideo">
+        <label for="DChannelContentVideoInput"><%=i18n.reusablePuzzleApps.Common.Video%>:</label>
+        <input type="text" id="DChannelContentVideoInput" style="flex:1;"/>
+    </div>
+    <div id="DChannelContentMessage">
+        <label for="DChannelContentMessageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+        <input type="text" id="DChannelContentMessageInput" style="flex:1;"/>
+    </div>
+</div>
+
+<div id="ASContentWrapper" style="flex-direction: column; border: 1px solid white; padding: 0px 10px 18px 10px;border-radius: 20px; gap: 18px;">
+    <p style="margin: 12px 0px 0px 0px;"><%=i18n.reusablePuzzleApps.Television.ASContent%></p>
+    <div id="ASContentVideo">
+        <label for="ASContentVideoInput"><%=i18n.reusablePuzzleApps.Common.Video%>:</label>
+        <input type="text" id="ASContentVideoInput" style="flex:1;"/>
+    </div>
+    <div id="ASContentMessage">
+        <label for="ASContentMessageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+        <input type="text" id="ASContentMessageInput" style="flex:1;"/>
+    </div>
+</div>
+
+<div id="KeepTVState">
+    <label for="KeepTVStateSelect"><%=i18n.reusablePuzzleApps.Television.KeepTVState%>:</label>
+    <select name="keepState" id="KeepTVStateSelect">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundInput",
+        assetName: "background",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
+</div>
+<br>
+
+<input type="hidden" class="reusablePuzzleJSONSetting" id="channelsTV" name="channels"/>
+<input type="hidden" class="reusablePuzzleJSONSetting" id="inputChannelTV" name="inputChannel"/>
+<input type="hidden" class="reusablePuzzleJSONSetting" id="defaultChannelTV" name="defaultChannelContent"/>
+
+<script>
+    var skinSelectTV = document.getElementById("skinSelectTV");
+    var actionTVSelect = document.getElementById('actionTVSelect');
+    var auxiliarySourceTypeSelect = document.getElementById("auxiliarySourceTypeSelect");
+    var auxiliarySourceInitialState = document.getElementById("auxiliarySourceInitialState");
+    var auxiliarySourcePlayerState = document.getElementById("auxiliarySourcePlayerState");
+    var enableRewindAndForwardTVDiv = document.getElementById("enableRewindAndForwardTV");
+    var channelsTVInput = document.getElementById("channelsTV");
+    var defaultChannelTVInput = document.getElementById("defaultChannelTV");
+    var DChannelContentWrapperDiv = document.getElementById("DChannelContentWrapper");
+    var DChannelVideoInput = document.getElementById("DChannelContentVideoInput");
+    var DChannelMessageInput = document.getElementById("DChannelContentMessageInput");
+    var inputChannelTVInput = document.getElementById("inputChannelTV");
+    var ASContentWrapperDiv = document.getElementById("ASContentWrapper");
+    var ASContentVideoInput = document.getElementById("ASContentVideoInput");
+    var ASContentMessageInput = document.getElementById("ASContentMessageInput");
+
+    skinSelectTV.addEventListener('change', function() {
+        Array.from(auxiliarySourceTypeSelect.options).forEach(option => {
+            option.disabled = false;
+            option.hidden = false;
+        });
+
+        var fuzzyScreenDefaultValue = "FALSE";
+        var auxiliarySourceTypeDefaultValue = "NONE";
+
+        switch(this.value){
+        case "RETRO_REMOTE":
+            fuzzyScreenDefaultValue = "TRUE";
+            auxiliarySourceTypeDefaultValue = "VHS";
+            auxiliarySourceTypeSelect.querySelector('option[value="INTERNAL"]').disabled = true;
+            auxiliarySourceTypeSelect.querySelector('option[value="INTERNAL"]').hidden = true;
+            auxiliarySourceTypeSelect.querySelector('option[value="DISC"]').disabled = true;
+            auxiliarySourceTypeSelect.querySelector('option[value="DISC"]').hidden = true;
+            break;
+        case "RETRO":
+            fuzzyScreenDefaultValue = "TRUE";
+            auxiliarySourceTypeDefaultValue = "VHS";
+            auxiliarySourceTypeSelect.querySelector('option[value="INTERNAL"]').disabled = true;
+            auxiliarySourceTypeSelect.querySelector('option[value="INTERNAL"]').hidden = true;
+            auxiliarySourceTypeSelect.querySelector('option[value="DISC"]').disabled = true;
+            auxiliarySourceTypeSelect.querySelector('option[value="DISC"]').hidden = true;
+            break;
+        default:
+        case "STANDARD":
+            fuzzyScreenDefaultValue = "FALSE";
+            auxiliarySourceTypeDefaultValue = "DISC";
+            auxiliarySourceTypeSelect.querySelector('option[value="VHS"]').disabled = true;
+            auxiliarySourceTypeSelect.querySelector('option[value="VHS"]').hidden = true;
+            break;
+        }
+        document.getElementById("simulateSignalNoiseTVSelect").value = fuzzyScreenDefaultValue;
+        if (auxiliarySourceTypeSelect.selectedOptions[0].disabled) {
+            auxiliarySourceTypeSelect.value = auxiliarySourceTypeDefaultValue;
+        }
+    });
+
+    auxiliarySourceTypeSelect.addEventListener('change', function() {
+        if ((this.value === 'VHS')||(this.value === 'DISC')) {
+            auxiliarySourceInitialState.style.display = 'flex';
+        } else {
+            auxiliarySourceInitialState.style.display = 'none';
+        }
+        if(this.value === 'VHS'){
+            auxiliarySourcePlayerState.style.display = 'flex';
+        } else {
+            auxiliarySourcePlayerState.style.display = 'none';
+        }
+        if(this.value === 'NONE'){
+            enableRewindAndForwardTVDiv.style.display = 'none';
+            ASContentWrapperDiv.style.display = 'none';
+        } else {
+            enableRewindAndForwardTVDiv.style.display = 'flex';
+            ASContentWrapperDiv.style.display = 'flex';
+        }
+    });
+
+    actionTVSelect.addEventListener('change', function() {
+        var delayMessageDiv = document.getElementById("delayMessageTV");
+        if (this.value === 'SHOW_MESSAGE') {
+            delayMessageDiv.style.display = 'flex';
+        } else {
+            delayMessageDiv.style.display = 'none';
+        }
+    });
+
+    //Channels
+    var maxChannelsTelevisionRP = 999;
+    function addChannelTelevisionToDiv($channelsWrapper){
+        if ($channelsWrapper.length === 0) return;
+        const $channelTemplate = $channelsWrapper.find('.channelWrapperTelevisionTemplate');
+        if ($channelTemplate.length === 0) return;
+        const $allChannels = $channelsWrapper.find('.channelWrapperTelevision');
+        var channelNumber = $allChannels.length + 1;
+        if (channelNumber > maxChannelsTelevisionRP) return;
+        const $newChannel = $channelTemplate.clone();
+        $newChannel.removeClass("channelWrapperTelevisionTemplate").addClass("channelWrapperTelevision");
+
+        $newChannel.attr("channelNumber",channelNumber);
+        // $newChannel.find('p').first().html('<%=i18n.reusablePuzzleApps.Television.Channel%> ' + channelNumber);
+        $newChannel.find('button.deleteChannelTelevision').first().show();
+        $newChannel.find('input.inputChannelNumber').val('');
+        $newChannel.find('input.inputChannelVideo').val('');
+        $newChannel.find('input.inputChannelMessage').val('');
+        $channelsWrapper.find('button.addNewChannelTelevision').last().before($newChannel);
+        if(channelNumber === maxChannelsTelevisionRP){
+            var $addNewChannelButton = $channelsWrapper.find('button.addNewChannelTelevision');
+            $addNewChannelButton.attr("disabled","disabled");
+            $addNewChannelButton.css("background-color", "#999");
+        }
+        $newChannel.show();
+    };
+    function addChannelTelevision(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const $channelsWrapper = $(e.target).closest('#channelsDivTelevision');
+        return addChannelTelevisionToDiv($channelsWrapper);
+    };
+    function deleteChannelTelevision(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const $channelWrapper = $(e.target).closest('.channelWrapperTelevision');
+        if ($channelWrapper.length !== 1) return;
+        const $channelsWrapper = $($channelWrapper).parent('#channelsDivTelevision');
+        if ($channelsWrapper.length !== 1) return;
+        $channelWrapper.remove();
+        $channelsWrapper.find('.channelWrapperTelevision').each(function(index) {
+            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.Television.Channel%> ' + (index+1));
+        });
+        var $addChannelButton = $channelsWrapper.find('button.addNewChannelTelevision');
+        $addChannelButton.removeAttr("disabled");
+        $addChannelButton.css("background-color", "white");
+        updateChannelsTelevision();
+        updateIframe();
+    };
+    function updateChannelsTelevision(){
+        var channels = [];
+        document.querySelectorAll('div.channelWrapperTelevision').forEach(div => {
+            let channel = {};
+            let addChannel = false;
+            const inputChannelNumber = div.querySelector('input.inputChannelNumber');
+            const inputChannelVideo = div.querySelector('input.inputChannelVideo');
+            const inputChannelMessage = div.querySelector('input.inputChannelMessage');
+
+            if(inputChannelNumber.value.trim()!==""){
+                channel.id = inputChannelNumber.value;
+                addChannel = true;
+            }
+            if(inputChannelVideo.value.trim()!==""){
+                channel.src = inputChannelVideo.value;
+                addChannel = true;
+            }
+            if(inputChannelMessage.value.trim()!==""){
+                channel.message = inputChannelMessage.value;
+                addChannel = true;
+            }
+            if(addChannel){
+               channels.push(channel); 
+            }
+        });
+        channelsTVInput.value = JSON.stringify(channels);
+    };
+
+    if(window.currentOpenPuzzleConfig?.channels){
+        var channels = window.currentOpenPuzzleConfig?.channels;
+        if (Array.isArray(channels)){
+            channelsTVInput.value = JSON.stringify(channels);
+            var $channelsWrapper = $("#channelsDivTelevision");
+            for(var i=0; i<channels.length; i++){
+                var channelNumber = (i+1);
+                addChannelTelevisionToDiv($channelsWrapper);
+                var $channelDiv = $channelsWrapper.find("div.channelWrapperTelevision[channelNumber='" + channelNumber + "']");
+                $channelDiv.find("input.inputChannelNumber").val(channels[i].id);
+                $channelDiv.find("input.inputChannelVideo").val(channels[i].src);
+                $channelDiv.find("input.inputChannelMessage").val(channels[i].message);
+            };
+        }
+    }
+
+    $("#channelsDivTelevision").on('change','input', updateChannelsTelevision);
+
+    //defaultChannelContentTV
+    function updateDefaultChannelContentTV(){
+        var defaultChannelContentTVData = {};
+        var defaultChannelContentTVVideo = DChannelVideoInput.value;
+        var defaultChannelContentTVMessage = DChannelMessageInput.value;
+
+        if((typeof defaultChannelContentTVVideo === "string")&&(defaultChannelContentTVVideo.trim()!="")){
+            defaultChannelContentTVData.src = defaultChannelContentTVVideo;
+        }
+        if((typeof defaultChannelContentTVMessage === "string")&&(defaultChannelContentTVMessage.trim()!="")){
+            defaultChannelContentTVData.message = defaultChannelContentTVMessage;
+        }
+        //Save value
+        defaultChannelTVInput.value = JSON.stringify(defaultChannelContentTVData);
+    };
+
+    $('#DChannelContentWrapper').on('change','input', updateDefaultChannelContentTV);
+
+    if(window.currentOpenPuzzleConfig?.defaultChannelContent){
+        var defaultChannelContentTV = window.currentOpenPuzzleConfig.defaultChannelContent;
+        if(typeof defaultChannelContentTV.src === "string"){
+            DChannelVideoInput.value = defaultChannelContentTV.src;
+        }
+        if(typeof defaultChannelContentTV.message === "string"){
+            DChannelMessageInput.value = defaultChannelContentTV.message;
+        }
+        updateDefaultChannelContentTV();
+    }
+
+
+    //InputChannelTV
+    function updateInputChannelTV(){
+        var inputChannelTVData = {};
+        var inputChannelTVVideo = ASContentVideoInput.value;
+        var inputChannelTVMessage = ASContentMessageInput.value;
+        if((typeof inputChannelTVVideo === "string")&&(inputChannelTVVideo.trim()!="")){
+            inputChannelTVData.src = inputChannelTVVideo;
+        }
+        if((typeof inputChannelTVMessage === "string")&&(inputChannelTVMessage.trim()!="")){
+            inputChannelTVData.message = inputChannelTVMessage;
+        }
+        //Save value
+        inputChannelTVInput.value = JSON.stringify(inputChannelTVData);
+    };
+
+    $('#ASContentWrapper').on('change','input', updateInputChannelTV);
+
+    if(window.currentOpenPuzzleConfig?.inputChannel){
+        var inputChannelTV = window.currentOpenPuzzleConfig.inputChannel;
+        if(typeof inputChannelTV.src === "string"){
+            ASContentVideoInput.value = inputChannelTV.src;
+        }
+        if(typeof inputChannelTV.message === "string"){
+            ASContentMessageInput.value = inputChannelTV.message;
+        }
+        updateInputChannelTV();
+    }
+
+
+    document.getElementById("skinSelectTV").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    document.getElementById("aspectRatioTVSelect").value =  window.currentOpenPuzzleConfig?.aspectRatio || '16/9';
+    actionTVSelect.value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    document.getElementById("delayMessageTVInput").value =  window.currentOpenPuzzleConfig?.delayMessage || '3';
+    document.getElementById("maximumChannelNumberLengthTVInput").value =  window.currentOpenPuzzleConfig?.maxChannelLength || '4';
+    document.getElementById("loopChannelVideosTVSelect").value =  window.currentOpenPuzzleConfig?.enableLoopForChannels || 'TRUE';
+    document.getElementById("topContentMarginTVInput").value =  window.currentOpenPuzzleConfig?.videoContainerPaddingTop || '';
+    document.getElementById("bottomContentMarginTVInput").value =  window.currentOpenPuzzleConfig?.videoContainerPaddingBottom || '';
+    document.getElementById("leftContentMarginTVInput").value =  window.currentOpenPuzzleConfig?.videoContainerPaddingLeft || '';
+    document.getElementById("rightContentMarginTVInput").value =  window.currentOpenPuzzleConfig?.videoContainerPaddingRight || '';
+    document.getElementById("initialVolumeTVInput").value =  window.currentOpenPuzzleConfig?.initialVolume || '50';
+    document.getElementById("auxiliarySourceTypeSelect").value =  window.currentOpenPuzzleConfig?.inputType || 'NONE';
+    document.getElementById("auxiliarySourceInitialStateSelect").value =  window.currentOpenPuzzleConfig?.inputInitialState || 'OUT';
+    document.getElementById("auxiliarySourcePlayerStateSelect").value =  window.currentOpenPuzzleConfig?.inputPlayerInitialState || 'ON';
+    document.getElementById("enableRewindAndForwardTVSelect").value =  window.currentOpenPuzzleConfig?.enableRewindAndForward || 'TRUE';
+    document.getElementById("KeepTVStateSelect").value =  window.currentOpenPuzzleConfig?.keepState || 'FALSE';
+
+    //Trigger change events
+    actionTVSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    skinSelectTV.dispatchEvent(new Event('change', { bubbles: true }));
+    auxiliarySourceTypeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+
+    document.getElementById("simulateSignalNoiseTVSelect").value =  window.currentOpenPuzzleConfig?.fuzzyScreen || 'FALSE';
+</script>

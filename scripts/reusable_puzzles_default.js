@@ -194,6 +194,30 @@ const reusablePuzzlesList = [
         "order": 16
     },
     {
+        "name": "Telephone",
+        "zip": "defaultReusablePuzzles/Telephone/Telephone_Puzzle.zip",
+        "form": "telephone.ejs",
+        "thumbnail": "defaultReusablePuzzles/Telephone/Telephone_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Telephone/Telephone_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Telephone/Telephone_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/Telephone/Telephone_Instructions_SR.pdf"
+        },
+        "order": 17
+    },
+    {
+        "name": "Television",
+        "zip": "defaultReusablePuzzles/Television/Television_Puzzle.zip",
+        "form": "television.ejs",
+        "thumbnail": "defaultReusablePuzzles/Television/Television_Thumbnail.png",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Television/Television_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Television/Television_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/Television/Television_Instructions_SR.pdf"
+        },
+        "order": 18
+    },
+        {
         "name": "Conversation",
         "zip": "defaultReusablePuzzles/Conversation/Conversation_Puzzle.zip",
         "form": "conversation.ejs",
@@ -203,7 +227,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/Conversation/Conversation_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Conversation/Conversation_Instructions_EN.pdf"
         },
-        "order": 17
+        "order": 19
     },
     {
         "name": "Classification",
@@ -215,7 +239,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/Classification/Classification_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Classification/Classification_Instructions_EN.pdf"
         },
-        "order": 18
+        "order": 20
     },
     {
         "name": "IpadClassifier",
@@ -227,7 +251,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_EN.pdf"
         },
-        "order": 19
+        "order": 21
     },
     {
         "name": "PopupQuestion",
@@ -239,19 +263,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_EN.pdf"
         },
-        "order": 20
-    },
-    {
-        "name": "Telephone",
-        "zip": "defaultReusablePuzzles/Telephone/Telephone_Puzzle.zip",
-        "form": "telephone.ejs",
-        "thumbnail": "defaultReusablePuzzles/Telephone/Telephone_Thumbnail.png",
-        "instructions": {
-            "en": "defaultReusablePuzzles/Telephone/Telephone_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/Telephone/Telephone_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/Telephone/Telephone_Instructions_SR.pdf"
-        },
-        "order": 21
+        "order": 22
     },
 
     // {
