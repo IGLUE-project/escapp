@@ -259,7 +259,9 @@
         $(".sections").scrollTop(0);
         const modal = $("#modalCatalogResource");
         if(modal.hasClass("active")) {
+            //Close modal
             $('body').css("overflow", "scroll");
+            unloadRPIIframe();
         } else {
             $('body').css("overflow", "hidden");
             window.scrollTo(0, 0);
@@ -659,6 +661,10 @@
         let reusablePuzzleId = reusablePuzzleInstanceConfig.reusablePuzzleId;
         let puzzleId = reusablePuzzleInstanceConfig.puzzle;
         $('#previewReusablePuzzleIframe').attr('src', `/reusablePuzzlePreview/${reusablePuzzleId}?escapeRoomId=<%=escapeRoom.id%>&puzzleId=${puzzleId}&config=${encodeURIComponent(JSON.stringify(reusablePuzzleInstanceConfig))}`);
+    }
+
+    function unloadRPIIframe(){
+        $('#previewReusablePuzzleIframe').attr('src',"about:blank");
     }
 
     function changeAspectRatio(ratio) {
