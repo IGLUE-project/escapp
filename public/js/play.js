@@ -497,6 +497,7 @@ var insertContent =async (type, payload, puzzles, index, prevIndex) => {
       content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(replacedText)}</div>`;
       //content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(text)}</div>`;
       break;
+    case "webapp":
     case "reusablePuzzleInstance":
       content = reusablePuzzleTemplate(escapeUnsafeHtml(payload.url),payload.width, payload.height, payload.align, payload.ratio, payload.heightIframe);
       break;

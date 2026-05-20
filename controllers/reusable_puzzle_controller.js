@@ -4,7 +4,7 @@ const path = require("path");
 const StreamZip = require("node-stream-zip");
 const sequelize = require("../models");
 const ejs = require("ejs");
-const {getLocaleForEscapeRoom} = require("../helpers/I18n");
+const {getLocaleForEscapeRoomContent} = require("../helpers/I18n");
 const {getHostname} = require("../helpers/utils");
 const {getPuzzlesSolutionLength} = require("../helpers/reusablePuzzles");
 
@@ -406,7 +406,7 @@ exports.renderReusablePuzzle = async (req, res, _) => {
         const reusablePuzzleInstanceConfig = JSON.parse(reusablePuzzleInstance.config);
         const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleInstance.reusablePuzzleId);
         const escapeRoom = await models.escapeRoom.findByPk(reusablePuzzleInstance.escapeRoomId);
-        const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
+        const localeForReusablePuzzle = getLocaleForEscapeRoomContent(req, escapeRoom, false);
         const linkedPuzzles = await reusablePuzzleInstance.getPuzzles();
         const linkedPuzzlesLength = linkedPuzzles.length;
         let solutionLength;
@@ -482,7 +482,7 @@ exports.renderReusablePuzzlePreview = async (req, res) => {
         receivedConfig.solutionLength = getPuzzlesSolutionLength(linkedPuzzles);
 
         const escapeRoom = await models.escapeRoom.findByPk(escapeRoomId);
-        const localeForReusablePuzzle = getLocaleForEscapeRoom(req, escapeRoom, false);
+        const localeForReusablePuzzle = getLocaleForEscapeRoomContent(req, escapeRoom, false);
         const filePath = path.join(__dirname, `/../reusablePuzzles/installed/${reusablePuzzle.name}/index.html`);
         const hostName = getHostname(req);
         const basePath = `${hostName}/reusablePuzzles/${reusablePuzzleId}/`;

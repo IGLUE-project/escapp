@@ -4,7 +4,7 @@ const {models} = sequelize;
 const {getDataForFile} = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {ckeditorResponse, getHostname} = require("../helpers/utils");
-const {getLocaleForEscapeRoom} = require("../helpers/I18n");
+const {getLocaleForEscapeRoomContent} = require("../helpers/I18n");
 const queries = require("../queries");
 const path = require("path");
 const fs = require("fs/promises");
@@ -199,7 +199,7 @@ exports.getAsset = async (req, res, next) => {
             const hostName = getHostname(req);
             const {token} = await models.user.findByPk(req.session.user.id);
             const escapeRoom = await models.escapeRoom.findByPk(asset.escapeRoomId);
-            const localeForAsset = getLocaleForEscapeRoom(req, escapeRoom, false);
+            const localeForAsset = getLocaleForEscapeRoomContent(req, escapeRoom, false);
             const config = {
                 "locale": localeForAsset,
                 "escappClientSettings": {
