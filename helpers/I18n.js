@@ -37,12 +37,11 @@ function getDefaultLocale () {
     return "en";
 }
 
-
 function getTextsForLocale (locale) {
     return LOCALES[isValidLocale(locale) ? locale : getDefaultLocale()];
 }
 
-exports.getLocaleForEscapeRoom = (req, escapeRoom, editing) => {
+function getLocaleForEscapeRoom (req, escapeRoom, editing) {
     if (editing !== true && isValidLocale(escapeRoom.forceLang) && req.route.path !== "/escapeRooms/:escapeRoomId(\\d+)/report") {
         return escapeRoom.forceLang;
     }
@@ -57,8 +56,18 @@ exports.getLocaleForEscapeRoom = (req, escapeRoom, editing) => {
     return getDefaultLocale();
 };
 
-exports.isValidLocale = isValidLocale;
-exports.getDefaultLocale = getDefaultLocale;
-exports.getTextsForLocale = getTextsForLocale;
-exports.getAvailableLocales = getAvailableLocales;
+exports.getLocaleForEscapeRoomContent = (req, escapeRoom, editing) => {
+    if (isValidLocale(escapeRoom.lang)) {
+        return escapeRoom.lang;
+    }
+    return getLocaleForEscapeRoom(req, escapeRoom, editing);
+};
+
 exports.SUPPORTED_LANGUAGES = SUPPORTED_LANGUAGES;
+exports.getAvailableLocales = getAvailableLocales;
+exports.isValidLocale = isValidLocale;
+exports.getTextsForLocale = getTextsForLocale;
+exports.getLocaleForEscapeRoom = getLocaleForEscapeRoom;
+exports.getDefaultLocale = getDefaultLocale;
+
+
