@@ -225,7 +225,7 @@ const reusablePuzzlesList = [
         "instructions": {
             "en": "defaultReusablePuzzles/Conversation/Conversation_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Conversation/Conversation_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/Conversation/Conversation_Instructions_EN.pdf"
+            "sr": "defaultReusablePuzzles/Conversation/Conversation_Instructions_SR.pdf"
         },
         "order": 19
     },
@@ -237,7 +237,7 @@ const reusablePuzzlesList = [
         "instructions": {
             "en": "defaultReusablePuzzles/Classification/Classification_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/Classification/Classification_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/Classification/Classification_Instructions_EN.pdf"
+            "sr": "defaultReusablePuzzles/Classification/Classification_Instructions_SR.pdf"
         },
         "order": 20
     },
@@ -249,7 +249,7 @@ const reusablePuzzlesList = [
         "instructions": {
             "en": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_EN.pdf"
+            "sr": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_SR.pdf"
         },
         "order": 21
     },
@@ -261,7 +261,7 @@ const reusablePuzzlesList = [
         "instructions": {
             "en": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_EN.pdf",
             "es": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_EN.pdf"
+            "sr": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_SR.pdf"
         },
         "order": 22
     },
