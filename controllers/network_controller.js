@@ -55,32 +55,39 @@ const isPrivateHostname = function (host) {
     return false;
 };
 
-const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level, license) => {
+const getSearchScore = (query, escapeRoom) => {
+    const title = (escapeRoom.title || "").trim().toLowerCase();
+    const description = (escapeRoom.description || "").trim().toLowerCase();
+    const titleScore = title ? fuzzy(query, title) : 0;
+    const descriptionScore = description ? fuzzy(query, description): 0;
+    var totalScore = titleScore * 0.7 + descriptionScore * 0.3;
+    if(descriptionScore > 0.9){
+        totalScore = Math.max(0.5, totalScore);
+    }
+    return totalScore;
+};
+
+const getResultsFromInstance = async (userQuery, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level, license) => {
     try {
-        const queryToExecute = queries.escapeRoom.network(before, after, lang, participation, area, duration, format, level, license);
-
-        let results = await models.escapeRoom.findAll(queryToExecute);
-        // Fuzzy finding of escaperooms
-        const fuzzyThreshold = 0.4;
-        const filteredResults = [];
-
-        results = results.sort((a, b) => -fuzzy(value, a.title || "") - fuzzy(value, a.description || "") * 0.7 + fuzzy(value, b.title || "") + fuzzy(value, b.description || "") * 0.7);
-        results = results.slice((page - 1) * limit, page * limit);
-
-        for (let index = 0; index < results.length; index++) {
-            const result = results[index];
-
-            if (fuzzy(value, result.title || "") > fuzzyThreshold || fuzzy(value, result.description || "") > fuzzyThreshold) {
-                filteredResults.push(result);
-            } else {
-                break;
-            }
+        const dbQuery = queries.escapeRoom.network(before, after, lang, participation, area, duration, format, level, license);
+        let results = await models.escapeRoom.findAll(dbQuery);
+        const query = (userQuery || "").trim().toLowerCase();
+        if (!query) {
+            return results.slice((page - 1) * limit, page * limit);
         }
-
-        return filteredResults;
+        const fuzzyThreshold = 0.5;
+        const scoredResults = results.map(result => ({
+                result,
+                score: getSearchScore(query, result)
+            }))
+            .filter(item => item.score >= fuzzyThreshold)
+            .sort((a, b) => b.score - a.score);
+        return scoredResults
+            .slice((page - 1) * limit, page * limit)
+            .map(item => item.result);
     } catch (error) {
         console.error("Error getting local results: ", error);
-        return {};
+        return [];
     }
 };
 

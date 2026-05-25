@@ -395,8 +395,6 @@
 
     document.getElementById("searchButton").addEventListener("click", async () => {
         const query = document.getElementById("search").value;
-        tags.length = 0;
-        $("#tags").empty();
         searchAndDisplay(query);
     });
 
