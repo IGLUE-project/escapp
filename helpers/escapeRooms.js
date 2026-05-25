@@ -383,7 +383,6 @@ exports.cloneER = async function (er, authorId, newTitle, currentUser, prevUrl, 
     await teamCreated.addTeamMembers(currentUser.id, {transaction});
     await models.participants.create({"attendance": false, "turnId": testShift.id, "userId": currentUser.id}, {transaction});
     await transaction.commit();
-    console.log(JSON.stringify(saved, null, 5));
 
     return saved;
 };

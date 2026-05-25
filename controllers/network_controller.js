@@ -57,7 +57,7 @@ const isPrivateHostname = function (host) {
 
 const getResultsFromInstance = async (value, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level, license) => {
     try {
-        const queryToExecute = queries.escapeRoom.text(before, after, lang, participation, area, duration, format, level, license);
+        const queryToExecute = queries.escapeRoom.network(before, after, lang, participation, area, duration, format, level, license);
 
         let results = await models.escapeRoom.findAll(queryToExecute);
         // Fuzzy finding of escaperooms
@@ -154,7 +154,8 @@ const tryFetch = async (url) => { // El fetch falla si no hay nadie, wrapper
     }
 };
 
-exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira querys contra el resto de instancias y agrega
+// Network search: sends queries to all Escapp instances and aggregates the results
+exports.searchInNetwork = async (req, res, _) => { 
     const {query, before, after, lang, page, limit, participation, area, duration, format, level, license, instance} = req.query;
     const aggregated = [];
     const promises = [];
@@ -182,7 +183,6 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
 
     for (const index in urls) {
         const url = urls[index];
-
         try {
             promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${lang || ""}&level=${level || ""}&format=${format || ""}&duration=${duration || ""}&area=${area || ""}&participation=${participation || ""}&page=${page || 1}&limit=${limit || 10}`)));
         } catch (error) {
@@ -190,17 +190,17 @@ exports.searchInNetwork = async (req, res, _) => { // Busqueda en la red, tira q
         }
     }
 
-    const values = await Promise.allSettled(promises); // All a secas termina si una falla
+    const values = await Promise.allSettled(promises); // Promise.all stops if one request fails
 
     for (let i = 0; i < values.length; i++) {
         const data = values[i];
-
         if (data.status === "fulfilled" && data.value && data.value instanceof Array) {
             data.value.forEach((v) => {
                 aggregated.push({...v, "url": urls[i]});
             });
         }
     }
+
     res.json(aggregated);
 };
 
@@ -239,7 +239,6 @@ exports.sendContactEmail = async (req, res, next) => {
 exports.getPreviewData = async (req, res) => {
     try {
         const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, queries.escapeRoom.loadPreview);
-
         return res.json(escapeRoom.toJSON());
     } catch (error) {
         console.error("Error fetching preview data:", error);
@@ -252,11 +251,9 @@ exports.servePreviewRender = async (req, res, next) => {
     try {
         const {url, escapeRoomId} = req.query;
         let escapeRoomData;
-
         if (url) {
             // Remote preview - fetch from remote server
             const data = await tryFetch(`${url}/network/${escapeRoomId}/json`);
-
             if (!data || !data.ok) {
                 throw new Error("Failed to fetch preview data");
             }
@@ -264,7 +261,6 @@ exports.servePreviewRender = async (req, res, next) => {
         } else {
             // Local preview - query database directly to avoid self-fetch auth issues
             const localER = await models.escapeRoom.findByPk(escapeRoomId, queries.escapeRoom.loadPreview);
-
             if (!localER) {
                 throw new Error("Escape room not found");
             }
@@ -272,8 +268,14 @@ exports.servePreviewRender = async (req, res, next) => {
         }
 
         const escapeRoom = models.escapeRoom.build(escapeRoomData);
-
-        escapeRoom.author = models.user.build(escapeRoomData.author);
+        if(escapeRoomData.author){
+            escapeRoom.author = models.user.build(escapeRoomData.author);
+        }
+        if(escapeRoomData.subjects){
+            escapeRoom.subject = escapeRoomData.subjects.map(subject =>
+                models.subject.build(subject)
+            )
+        }
 
         return res.render("escapeRooms/show", {escapeRoom, "user": req.session.user, "isParticipant": false, "fromNetwork": true, "networkUrl": url, "referer": req.get("referer")});
     } catch (error) {

@@ -51,7 +51,8 @@ exports.loadShow = {
 exports.loadPreview = {
     "include": [
         { "model": models.user, "as": "author", "attributes": ["id", "alias"] },
-        { "model": models.attachment }
+        { "model": models.attachment },
+        { "model": models.subject, "attributes": ["subject"] }
     ]
 };
 
@@ -265,11 +266,11 @@ exports.public = (page = 1, limit = 10) => ({
     "offset": (page - 1) * limit
 });
 
-exports.text = (before, after, lang, participation, area, duration, format, level) => {
+exports.network = (before, after, lang, participation, area, duration, format, level) => {
     const conditions = {
         "where": {"isNetworkAccessible": true},
         "attributes": ["id", "title", "description", "lang", "teamSize", "minTeamSize", "field", "duration", "format", "level", "createdAt", "license"],
-        "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}]
+        "include": [{"model": models.attachment, "required": false, "attributes": ["url"]}, {"model": models.subject, "attributes": ["subject"] }]
     };
 
     if (before && after) {
