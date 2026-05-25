@@ -2165,7 +2165,7 @@
                 "individual": "Individual",
                 "team": "Teams"
             },
-            "duration": "Duration (min)",
+            "duration": "Maximum duration (min)",
             "format": {
                 "filter":"Format",
                 "online": "Online",

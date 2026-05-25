@@ -2157,7 +2157,7 @@
                 "individual": "Individualno",
                 "team": "Timovi"
             },
-            "duration": "Trajanje (min)",
+            "duration": "Maksimalno trajanje (min)",
             "format": {
                 "filter":"Format",
                 "online": "Virtuelno",

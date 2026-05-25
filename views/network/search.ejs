@@ -142,19 +142,21 @@
     let resultsToDraw = [];
 
     const removeTagByCondition = (condition, selector) => {
-        const tag = $(`#tag-${condition}`);
-        if (tag) {
-            tag.remove();
+        $(`#tag-${condition}`).remove();
+        const index = tags.findIndex(t => t.condition === condition);
+        if (index !== -1) {
+            tags.splice(index, 1);
         }
-        tags.splice(tags.findIndex(t => t.condition === condition), 1);
-        selector.value = "";
+        if (selector) {
+            selector.value = "";
+        }
         rerenderResults();
     };
 
     const addTag = (color, condition, value, text, selector) => {
         tags.push({condition, value});
         const tag = $(`
-            <span class="tag" id="tag-${condition}" class="tag" style="background-color:${color};">
+            <span class="tag" id="tag-${condition}" style="background-color:${color};">
                 <span class="tagValue">
                  ${text}
                 </span>
@@ -162,24 +164,25 @@
             </span>
         `);
         tag.find(".removeTag").on("click", () => {
-            removeTagByCondition(`tag-${condition}`, selector);
-            tag.remove();
+            removeTagByCondition(condition, selector);
         });
         $("#tags").append(tag);
     };
 
-    const doestTagExist = (condition) => {
+    const doesTagExist = (condition) => {
         return tags.find(tag => tag.condition === condition);
     };
 
     const modifyOrInsertTag = (color, condition, value, text, selector) => {
-        if (doestTagExist(condition)) {
-            const tag = tags.find(tag => tag.condition === condition);
-            $(`#tag-${condition} .tagValue`).text(text);
-            tags.find(tag => tag.condition === condition).value = value;
-            if(value === ""){
+        if (value === "") {
+            if (doesTagExist(condition)) {
                 removeTagByCondition(condition, selector);
             }
+            return;
+        }
+        if (doesTagExist(condition)) {
+            $(`#tag-${condition} .tagValue`).text(text);
+            tags.find(tag => tag.condition === condition).value = value;
         } else {
             addTag(color, condition, value, text, selector);
         }
@@ -192,9 +195,7 @@
             if(isEscapeRoomFilteredOut(escapeRoom)){
                 return;
             }
-            const href =  ("/network/preview?url=" +  (escapeRoom.url || "") + "&escapeRoomId=" + escapeRoom.id) 
-            const imageURL =  escapeRoom.attachment ? ((escapeRoom.url ? escapeRoom.url : "") + "/escapeRooms/"+escapeRoom.id +"/thumbnail") : `/images/puzzle${getColorForEscapeRoomThumbnail(escapeRoom.id)}.png`;
-            parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
+            parsedResults += newEscapeRoom(escapeRoom);
         });
         if(parsedResults === ""){
             $("#noResults").show();
@@ -241,7 +242,7 @@
                 }
             } else if(tag.condition === "instance"){
                 if (!escapeRoom.url) {
-                    if (tag.value != "local") {
+                    if (tag.value !== "local") {
                         filteredOut = true;
                         break;
                     }
@@ -255,7 +256,7 @@
                     break;
                 }
             } else if(tag.condition === "duration"){
-                if(escapeRoom.duration >= parseInt(tag.value)){
+                if (escapeRoom.duration > parseInt(tag.value,10)) {
                     filteredOut = true;
                     break;
                 }
@@ -290,45 +291,50 @@
 
     const lang = document.getElementById("language");
     lang.addEventListener("change", (event) => {
-        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        const selected = event.target.value === "" ? "<%=i18n.network.filters.any%>" : event.target.options[event.target.selectedIndex].text;
         modifyOrInsertTag(colorTags[2], "language",event.target.value,   selected, event.target);
     });
 
     const format = document.getElementById("format");
     format.addEventListener("change", (event) => {
-        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        const selected = event.target.value === "" ? "<%=i18n.network.filters.any%>" : event.target.options[event.target.selectedIndex].text;
         modifyOrInsertTag(colorTags[3], "format",event.target.value,   selected, event.target);
     });
 
     const area = document.getElementById("area");
     area.addEventListener("change", (event) => {
-        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        const selected = event.target.value === "" ? "<%=i18n.network.filters.any%>" : event.target.options[event.target.selectedIndex].text;
         modifyOrInsertTag(colorTags[4], "area",event.target.value,   selected, event.target);
     });
     const instance = document.getElementById("instance");
     instance.addEventListener("change", (event) => {
-        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        const selected = event.target.value === "" ? "<%=i18n.network.filters.any%>" : event.target.options[event.target.selectedIndex].text;
         modifyOrInsertTag(colorTags[5], "instance",event.target.value,   selected, event.target);
     });
     const license = document.getElementById("license");
     license.addEventListener("change", (event) => {
-        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        const selected = event.target.value === "" ? "<%=i18n.network.filters.any%>" : event.target.options[event.target.selectedIndex].text;
         modifyOrInsertTag(colorTags[6], "license", event.target.value,   selected, event.target);
     });    
     const duration = document.getElementById("duration");
     duration.addEventListener("change", (event) => {
-        modifyOrInsertTag(colorTags[7], "duration", event.target.value,   "<" + event.target.value + " min", event.target);
+        const value = event.target.value.trim();
+        if (value === "") {
+            removeTagByCondition("duration", event.target);
+            return;
+        }
+        modifyOrInsertTag(colorTags[7],"duration",value,"≤ " + value + " min",event.target);
     });
 
     const participation = document.getElementById("participation");
     participation.addEventListener("change", (event) => {
-        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        const selected = event.target.value === "" ? "<%=i18n.network.filters.any%>" : event.target.options[event.target.selectedIndex].text;
         modifyOrInsertTag(colorTags[1], "participation", event.target.value,   selected, event.target);
     });
 
     const level  = document.getElementById("level");
     level.addEventListener("change", (event) => {
-        const selected = event.target.value === "" ? "Cualquiera" : event.target.options[event.target.selectedIndex].text;
+        const selected = event.target.value === "" ? "<%=i18n.network.filters.any%>" : event.target.options[event.target.selectedIndex].text;
         modifyOrInsertTag(colorTags[0], "level", event.target.value,   selected, event.target);
     });
 
@@ -362,11 +368,15 @@
         })
 
         const response = await fetch(url);
-        const results = await response.text();
-        const jsonResults = JSON.parse(results);
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+        const jsonResults = await response.json();
         let parsedResults = "";
         $(".Results #loading").remove();
-        if ($("#first")){ $("#first").remove(); }
+        if ($("#first").length) {
+            $("#first").remove();
+        }
         if(jsonResults.length === 0){
             $("#noResults").show();
             $(".Results").addClass("empty");
@@ -375,12 +385,9 @@
             document.querySelector(".Results").innerHTML = parsedResults;
             return;
         }
-
         resultsToDraw = jsonResults;
         jsonResults.forEach((escapeRoom, i) => {
-            const href =  ("/network/preview?url=" +  (escapeRoom.url || "") + "&escapeRoomId=" + escapeRoom.id) 
-            const imageURL =  escapeRoom.attachment ? ((escapeRoom.url ? escapeRoom.url : "") + "/escapeRooms/"+escapeRoom.id +"/thumbnail") : `/images/puzzle${getColorForEscapeRoomThumbnail(escapeRoom.id)}.png`;
-            parsedResults += newEscapeRoom(href, imageURL, escapeRoom.title);
+            parsedResults += newEscapeRoom(escapeRoom);
         });
         document.querySelector(".Results").innerHTML = parsedResults;
     };
@@ -393,18 +400,31 @@
         searchAndDisplay(query);
     });
 
-
-    const newEscapeRoom = (href, imageURL, title) => {
+    const newEscapeRoom = (escapeRoom) => {
+        const href = `/network/preview?${
+            new URLSearchParams({
+                url: escapeRoom.url || "",
+                escapeRoomId: escapeRoom.id
+            }).toString()
+        }`;
+        const imageURL =  escapeRoom.attachment ? ((escapeRoom.url ? escapeRoom.url : "") + "/escapeRooms/"+escapeRoom.id +"/thumbnail") : `/images/puzzle${getColorForEscapeRoomThumbnail(escapeRoom.id)}.png`;
+        const safeImageURL = encodeURI(imageURL || "../images/puzzleorange.png");
+        const escapedTitle = $('<div>').text(escapeRoom.title).html();
+        
         return `
-                <a href="${href}%>" class="escapeRoomItemWrapper animated bounceIn" title=${title} style="animation-delay: 100ms;" >
-                    <div class="escapeRoomItem">
-                        <div class="erFoto" style="text-align: center">
-                            <div class="bckgFoto" style="background-image: url( ${imageURL ? imageURL :  "../images/puzzleorange.png"})"></div>
-                            <h2 class="escapeRoomTitle">${title}</h2>
-                        </div>
+            <a href="${href}" 
+               class="escapeRoomItemWrapper animated bounceIn"
+               title="${escapedTitle}"
+               style="animation-delay: 100ms;">
+                <div class="escapeRoomItem">
+                    <div class="erFoto" style="text-align: center">
+                        <div class="bckgFoto" style="background-image: url('${safeImageURL}')"></div>
+                        <h2 class="escapeRoomTitle">${escapedTitle}</h2>
                     </div>
-                </a>
-    `;}
+                </div>
+            </a>
+        `;
+    }
 
     let params = new URLSearchParams(window.location.search);
     if(params.get("query") !== null){

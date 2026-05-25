@@ -1933,7 +1933,7 @@
                 "individual": "Individual",
                 "team": "Por equipos"
             },
-            "duration": "Duración (min)",
+            "duration": "Duración máxima (min)",
             "format": {
                 "filter":"Formato",
                 "online": "Online",
