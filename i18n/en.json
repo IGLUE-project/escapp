@@ -17,9 +17,8 @@
             "hintFailed": "Failed hint requests"
         },
         "hints": {
-            "customClue": "Help from the teacher",
+            "customHint": "Help from the teacher",
             "failed": "Hint requests failed",
-            "failedClue": "Failed clue",
             "succeeded": "Hints obtained",
             "title": "Hints"
         },
@@ -87,7 +86,7 @@
             "nPuzzlesTeam": "Number of puzzles completed by each team",
             "nPuzzlesTeamButton": "see by puzzle",
             "failed": "Failed hint request",
-            "legendMsg": "Scroll to the right to see events that took place after the offical end of the countdown. Hover on the puzzles or hints to see more information about them.",
+            "legendMsg": "Scroll to the right to see events that took place after the official end of the countdown. Hover on the puzzles or hints to see more information about them.",
             "hint": "Hint",
             "score": "Score",
             "solved": "Solved",
@@ -96,7 +95,7 @@
             "title": "Timeline",
             "showLegend": "Show legend",
             "time": "Time",
-            "puzzleExplanation": "The timeline shows the puzzles each team of participants were working on at every instant of the escape room. For each solved puzzle, the number of minutes it took each team to solve it is displayed. If a puzzle does not have a number on top, it means that participants did not manage to solve it.",
+            "puzzleExplanation": "The timeline shows which puzzles each team was working on at every instant of the escape room. For each solved puzzle, the number of minutes it took each team to solve it is displayed. If a puzzle does not have a number on top, it means that participants did not manage to solve it.",
             "unsolved": "Not solved",
             "now": "Current moment",
             "end": "End of the escape room",
@@ -164,6 +163,7 @@
             "isIn": "must have one of the allowed values"
         },
         "exit": "exit",
+        "Exit": "Exit",
         "filter": "filter",
         "finish": "finish",
         "Finish": "Finish",
@@ -293,9 +293,9 @@
             "response": "Response",
             "sampleResponse": "Sample response",
             "puzzleAPI": "Puzzles",
-            "puzzleAPIDesc": "This endpoint allows you to solve puzzles remotely without a need to access Escapp's team interface",
+            "puzzleAPIDesc": "This endpoint allows you to solve puzzles remotely without needing to access Escapp's team interface",
             "startAPI": "Participation",
-            "startAPIDesc": "This endpoint allows you to start participating in an escape room without a need to hit the start button in Escapp",
+            "startAPIDesc": "This endpoint allows you to start participating in an escape room without needing to hit the start button in Escapp",
             "erState": "Object indicating the current state of the escape room for the team. It has two properties: <code>puzzlesSolved</code>, which contains an array indicating which puzzles have been completed by the team (including the puzzle's name, number, solution, and success message);  <code>hintsAllowed</code>, a boolean indicating whether the team can request any more hints; <code>progress</code>, the percentage of puzzles solved, and <code>score</code>, the total score of the participant according to the grading rubric set up by the teacher.",
             "code": {
                 "OK": "The answer provided for the puzzle is correct",
@@ -329,8 +329,8 @@
 
         },
         "play": {
-            "aiHintSuggested": "You are taking quite a long to solve this puzzle. You should considering requesting a hint to help you move forward.",
-            "aiHintAvailable": "You are taking quite a long to solve this puzzle. Here is some extra help so you can move forward.",
+            "aiHintSuggested": "You are taking quite a long time to solve this puzzle. You should considering requesting a hint to help you move forward.",
+            "aiHintAvailable": "You are taking quite a long time to solve this puzzle. Here is some extra help so you can move forward.",
             "correct": "Correct answer!",
             "check": "Check solution",
             "msg": "Message",
@@ -452,15 +452,15 @@
                 "supportLinkPlaceHolder": "You can provide a URL for participants to use in case they encounter problems.",
                 "title": "Escape Room basic configuration",
                 "titlePlaceHolder": "What is the escape room's name?",
-                "videoPlaceHolder": "An URL dor the escape room's introduction video"
+                "videoPlaceHolder": "A URL for the escape room's introduction video"
             },
             "evaluation": {
                 "eachHint": "Penalty or reward for requesting a hint",
                 "eachHintObtain": "Penalty or reward for each hint obtained",
                 "eachPuzzle": "Percentage of the grade assigned to each puzzle",
                 "forSurveys": "create surveys and quizes for your escape room",
-                "hintSuccess": "Points for each hint request succeeded",
-                "hintFailed": "Points for each hint request failed",
+                "hintSuccess": "Points for each successful hint request",
+                "hintFailed": "Points for each failed hint request",
                 "justParticipating": "Percentage of the grade assigned solely for participating",
                 "gradingIntro": "Here you can set up the rubric to grade participants and choose how their participation will be recorded.",
                 "or": "or",
@@ -500,8 +500,8 @@
                 "hintLimitPlaceholder": "No limit",
                 "hintStrategy": "Hint strategy",
                 "noHintsStrategy": "No hints allowed",
-                "freeHintsStrategy": "Students can obtain free hints",
-                "quizHintsStrategy": "Students can obtain hints by passing a quiz",
+                "freeHintsStrategy": "Participants can obtain free hints",
+                "quizHintsStrategy": "Participants can obtain hints by passing a quiz",
                 "automatedHintStrategy": "Proactive hints",
                 "automatedHintsExplanation": "You can automatically provide help to participants when they exceed the estimated time to solve a puzzle.",
                 "noAutomatedHints": "Do not provide proactive hints",
@@ -645,14 +645,13 @@
             	"automatic": "Resource (internal or external)",
                 "calculateDuration": "calculate",
                 "calculateDurationTitle": "Calculate the expected duration based on previous data from participants who have completed this puzzle",
-                "clueName": "Clue name",
                 "description": "Description",
                 "expectedDuration": "Expected Duration (mins)",
                 "expectedDurationPlaceholder": "How long will it take participants to solve this puzzle?",
                 "failMsg": "Message on fail",
                 "Hint": "Hint",
                 "hints": "Hints",
-                "manual": "Text box in team interface",
+                "manual": "Text box in the Escapp header",
                 "newCat": "New category",
                 "noHints": "You haven't defined any hints",
                 "noPuzzlesYet": "You haven't defined any puzzles yet",
@@ -702,12 +701,12 @@
                 "teamSize": "Team size",
                 "participationMode": "Participation mode",
                 "licenseExplanation": "Under which license do you want to publish your escape room?",
-                "licenseExplanationAlreadyPublished": "You cannot change the license anymore since your escape room has already been published before.",
+                "licenseExplanationAlreadyPublished": "You cannot change the license since your escape room was published before.",
                 "invitationExplanation": "Do you want participants to enter a password to join the escape room? If so, enter it in the text field below.",
                 "instructionsExplanation": "Share any instructions you want with teachers who use your escape room. Upload a PDF file. You can include information about how to play, how to evaluate, etc.",
                 "scopeExplanation": "You can choose between two visibility options for your escape room: public and unlisted. Escape rooms with public visibility may appear on the platform’s homepage, and any user can join and play them at any time. Escape rooms with unlisted visibility do not appear on the homepage and can only be joined by students through a direct link. In these escape rooms, you can also set a password for access. All escape rooms, regardless of their visibility setting, can be accessed by platform administrators and used according to their license.",
                 "statusExplanation": "Have you finished creating the escape room? If so, select the completed option. Otherwise, select draft, and you can continue editing it later. Keep in mind that until you publish it, participants will not be able to join. Once published, you will not be able to change the license.",
-                "areYouSureUnpublish": "Are you sure you want to unpublish the escape room and revert it to draft status? If you do, new participants will no longer be able to access it.",
+                "areYouSureUnpublish": "Are you sure you want to unpublish the escape room and return it to draft status? If you do, new participants will no longer be able to access it.",
                 "areYouSurePublish": "Are you sure you want to publish the escape room? Your license cannot be changed once published",
                 "areYouSurePublishBefore": "Are you sure you want to publish the escape room?",
                 "checklist": {
@@ -723,7 +722,7 @@
                     "congrats2":"Create a shift so participants can sign up for the escape room.",
                     "backToDraft":"Do you want to go back to draft? To do so, click on the switch. ",
                     "erStatus": "Current escape room status",
-                    "areYouReady": "Have you finished creating your escape room? Make it public by flipping the switch! Keep in mind that once it's published, you won’t be able to change its license. Before publishing, you can test it on your own or invite collaborators to try it out as a group.",
+                    "areYouReady": "Have you finished creating your escape room? Publish it by enabling the switch! Keep in mind that once it's published, you won’t be able to change its license. Before publishing, you can test it yourself or invite collaborators to try it out as a group.",
                     "stillInfoNeeded": "You still have some mandatory information that you need to complete before making your escape room public.",
                     "warningAboutLicense": "Once you publish your escape room, you will not be able to change the license. Once you are ready, click on the switch."
                 },
@@ -742,7 +741,7 @@
                 "namePlaceholder": "Name to identify the shift",
                 "asynchronous": "Asynchronous",
                 "asynchronous_plural": "Asynchronous",
-                "date": "Celebration date",
+                "date": "Scheduled date",
                 "datePlaceholder": "Date in which the escape room will take place",
                 "enrollmentPeriod": "Enrollment period",
                 "enrollmentPeriodPlaceholder": "Period in which participants can sign up for this shift",
@@ -781,12 +780,12 @@
             "numQuestions": "The number of questions",
             "numRight": "The number of questions to pass",
             "feedback": "The feedback option",
-            "allowCustomHints": "The custom hints opion",
+            "allowCustomHints": "The custom hints option",
             "forbiddenLateSubmissions": "The option to forbid late submissions",
             "classInstructions": "The class interface",
             "afterInstructions": "Post-activity instructions ",
             "teamInstructions": "The team interface",
-            "indicationsInstructions": "The pre-activity instrucionts",
+            "indicationsInstructions": "The pre-activity instructions",
             "supportLink": "The support link",
             "scoreParticipation": "The attendance score",
             "automaticAttendance": "The attendance method",
@@ -902,7 +901,7 @@
                 },
                 "hints": {
                     "title": "Hints",
-                    "content": "An essential part in the design of all escape rooms are the clues and aids It is essential to avoid that participants spend too much time in the same challenge because, if this happens, there is a risk that In addition, this situation can be counterproductive from a pedagogical point of view, since participants will not face all the challenges.To prevent the request for help from being constant, one possibility is to devise a battery of questions Students have to try to answer each time they need a clue, and if they can guess more than a certain number of questions, they will get a clue, in this way participants will earn the right to get help and their theoretical knowledge is tested. of the subject to complement the practical content that is put into practice in the escape room."
+                    "content": "An essential part of designing any escape room is creating effective hints and clues. It is important to prevent participants from spending too much time on the same puzzle, as this may lead to frustration and negatively affect the learning experience. In addition, if participants remain stuck for too long, they may not have enough time to face all the puzzles in the escape room. To avoid constant requests for help, one possible strategy is to create a battery of questions that participants must answer whenever they want to obtain a hint. If they answer a sufficient number of questions correctly, they will earn a hint. In this way, participants gain the right to receive help while also reinforcing their theoretical knowledge of the subject alongside the practical skills applied during the escape room."
                 },
                 "instructions": {
                     "title": "Instructions",
@@ -951,7 +950,7 @@
         "id": "Fake ID",
         "whatsapp": "Fake whatsapp",
         "vt": "Fake virtual tour",
-        "anonymous": "Anonymus message",
+        "anonymous": "Anonymous message",
         "rhyme": "Rhyme generator",
         "soup": "Alphabet soup generator",
         "crossword": "Crossword generator",
@@ -1045,7 +1044,7 @@
         "beforeLeave": "Before you leave, fill in the following questionnaire",
         "beforeStart": "Before you start, fill in the following questionnaire",
         "opinion": "Your opinion matters to us! Please tell us what do you think about it",
-        "hybridInstructions": "Physical resources needed beforehand",
+        "hybridInstructions": "Physical resources required beforehand",
         "startPlay": "start",
         "play": "play",
         "Play": "Play",
@@ -1056,7 +1055,7 @@
         "supportLink": "Support",
         "sureUnjoin": "Are you sure you want to leave the escape room?",
         "congrats": "Congratulations! You've successfully exited the escape room.",
-        "resultsTitle": "This is the escape room's leaderboard",
+        "resultsTitle": "Escape Room Leaderboard",
         "unjoin": "leave",
         "reset": "reset",
         "sureReset": "Are you sure you wish to restart the escape room?",
@@ -1109,12 +1108,12 @@
             "copyTitle": "Copy the link",
             "qrTitle": "Generate a QR code to share",
             "noShiftsShare": "You cannot share the escape room until you have created at least one shift",
-            "noShiftsShareDraft": "You cannot share the escape room until you have changed its status to completed in the last stp of the Setup ('Publication').",
+            "noShiftsShareDraft": "You must publish the escape room before you can share it.",
             "noShiftsStart": "You cannot start the escape room until you have created at least one shift",
             "join": {
                 "intro": "Share the following link with your students so they can access the escape room:",
                 "also": "They can also access ",
-                "register": " and, after signing up and login in, they can select the escape room entitled ",
+                "register": " and, after signing up and logging in, they can select the escape room called ",
                 "password": " and introduce the following password ",
                 "specialShifts": "Special shifts"
             }
@@ -1150,7 +1149,7 @@
             "forceLang2": "Language"
 
         },
-        "cantManageUntilComplete": "You cannot manage the escape room until you have changed its status to completed in the last step of the Setup ('Publication')."
+        "cantManageUntilComplete": "You must publish the escape room before you can manage it."
     },
     "team": {
         "add": "Add a team",
@@ -1285,7 +1284,7 @@
             "full": "No places left in this shift"
         },
         "attributes": {
-            "date": "The celebration date",
+            "date": "The scheduled date",
             "place": "The title",
             "from": "The enrollment period starting date",
             "to": "The enrollment period finish date",
@@ -1391,7 +1390,7 @@
     },
     "hint": {
         "Hints": "Hints",
-        "hintFailedToObtain": "Hint failed to obtain",
+        "hintFailedToObtain": "Hint request failed",
         "hintObtained": "Hint obtained",
         "attributes": {
             "content": "The hint content",
@@ -1404,12 +1403,13 @@
         "ok": "Message sent",
         "nok": "Message could not be sent",
         "send": "send",
+        "to": "To",
         "everyone": "Everyone connected to this escape room",
         "shift": "Everyone connected that belongs to the shift",
         "team": "Everyone connected that belongs to the team",
         "participant": "Just one person (if connected)",
         "waiting": "Include participants waiting to enter the escape room as well",
-        "msgPlaceholder": "Write here your message",
+        "msgPlaceholder": "Write here your message.",
         "msgPlaceholder2": "Write here your message. All the users in this list that are currently connected will receive it."
     },
     "cookies": {
@@ -1473,7 +1473,7 @@
             "optional": "optional",
             "captchaLabel": "Solve this to verify you are human",
             "captchaError": "Incorrect captcha answer. Please try again.",
-            "commentsPlaceholder": "Provide additional details about your report...",
+            "commentsPlaceholder": "Provide additional details about your report.",
             "reasons": {
                 "inappropriateContent": "Inappropriate content for the target audience.",
                 "copyrightViolation": "Copyright infringement.",
@@ -2191,7 +2191,7 @@
         },
         "contactForm": {
             "title": "Contact the author",
-            "placeholder": "Send a message to the author of this escape room",
+            "placeholder": "Send a message to the author of this escape room.",
             "send": "send",
             "message": "Message",
             "name": "Your name",

@@ -131,6 +131,10 @@ exports.show = async (req, res) => {
     if (req.session.user && isAuthor(req.session.user, req.escapeRoom)) {
         return res.redirect(`/escapeRooms/${req.escapeRoom.id}/edit`);
     }
+    if(req.escapeRoom){
+        req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
+    }
+
     const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
     const isUserParticipant = await isParticipant(req.session.user, escapeRoom);
 

@@ -14,7 +14,7 @@
     <h1><%=i18n.message.title%></h1>
         <form id="messages-form" action="/escapeRooms/<%=escapeRoom.id%>/message" method="POST">
             <textarea name="msg" id="msg" rows="5" minlength="1" placeholder="<%=i18n.message.msgPlaceholder%>"></textarea><br>
-            <h2>To:</h2>
+            <h2><%=i18n.message.to%>:</h2>
             <input type="radio" id="everyone" name="to" value="everyone" <%if(!turnId){%>checked<%}%>>
             <label for="everyone"><%=i18n.message.everyone%></label><br>
             <input type="radio" id="shift" name="to" value="shift"  <%if(turnId){%>checked<%}%>>

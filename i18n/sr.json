@@ -17,9 +17,8 @@
       "hintFailed": "Neuspešni zahtevi za pomoć"
     },
     "hints": {
-      "customClue": "Pomoć od nastavnika",
+      "customHint": "Pomoć od nastavnika",
       "failed": "Zahtevi za savete nisu uspeli",
-      "failedClue": "Neuspešan trag",
       "succeeded": "Dobijeni saveti",
       "title": "Saveti"
     },
@@ -166,6 +165,7 @@
       "isIn": "mora imati jednu od dozvoljenih vrednosti"
     },
     "exit": "izlaz",
+    "Exit": "Izlaz",
     "filter": "filter",
     "finish": "završetak",
     "Finish": "Završetak",
@@ -646,14 +646,13 @@
         "calculateDuration": "izračunaj",
         "calculateDurationTitle": "Izračunaj očekivano trajanje na osnovu prethodnih podataka učesnika koji su završili ovu zagonetku",
         "automatic": "Resurs (interni ili eksterni)",
-        "clueName": "Naziv traga",
         "description": "Opis",
         "expectedDuration": "Očekivano trajanje (min)",
         "expectedDurationPlaceholder": "Koliko će vremena trebati učesnicima da reše ovu zagonetku?",
         "failMsg": "Poruka o neuspehu ",
         "Hint": "Savet",
         "hints": "Saveti",
-        "manual": "Tekstualno polje u Interfejsu tima",
+        "manual": "Tekstualni okvir u zaglavlju Escapp-a",
         "newCat": "Nova kategorija",
         "noHints": "Niste definisali nikakve savete ",
         "noPuzzlesYet": "Još uvek niste definisali nijednu zagonetku",
@@ -1056,7 +1055,7 @@
       "supportLink": "Podrška",
       "sureUnjoin": "Da li ste sigurni da želite da napustite escape sobu?",
       "congrats": "Čestitamo! Uspešno ste izašli iz escape sobe.",
-      "resultsTitle": "Ovo je tabela najboljih rezultata escape sobe",
+      "resultsTitle": "Lista rezultata escape sobe",
       "unjoin": "napusti",
       "reset": "resetuj",
       "sureReset": "Da li ste sigurni da želite da ponovo pokrenete escape sobu?",
@@ -1109,7 +1108,7 @@
         "copyTitle": "Kopirajte link",
         "qrTitle": "Generišite QR kod za deljenje",
         "noShiftsShare": "Ne možete deliti escape sobu dok ne kreirate bar jednu smenu",
-        "noShiftsShareDraft": "Ne možete deliti escape sobu dok ne promenite njen status u završeno u poslednjoj fazi podešavanja ('Publikacija').",
+        "noShiftsShareDraft": "Objavite escape room da biste mogli da je podelite.",
         "noShiftsStart": "Ne možete pokrenuti escape sobu dok ne kreirate bar jednu smenu",
         "join": {
           "intro": "Podelite sledeći link sa svojim učenicima kako bi mogli pristupiti sobi za bekstvo:",
@@ -1148,9 +1147,8 @@
         "lang": "Jezik escape sobea",
         "forceLang": "Prisili određeni jezik u escape sobe za učesnike ove escape sobe",
         "forceLang2": "Jezik"
-
       },
-      "cantManageUntilComplete": "Ne možete upravljati escape sobom dok ne promenite njen status u završeno u poslednjem koraku podešavanja ('Publikacija')."
+      "cantManageUntilComplete": "Objavite escape room da biste mogli da njome upravljate."
     },
     "team": {
       "add": "Dodaj tim",
@@ -1403,12 +1401,13 @@
       "ok": "Poruka poslata",
       "nok": "Poruka nije mogla biti poslata",
       "send": "pošalji",
+      "to": "Za",
       "everyone": "Svi povezani sa ovom escape sobom",
       "shift": "Svi povezani koji pripadaju smeni",
       "team": "Svi povezani koji pripadaju timu",
       "participant": "Samo jedna osoba (ako je povezana)",
       "waiting": "Uključite i učesnike koji čekaju da uđu u escape sobu",
-      "msgPlaceholder": "Napišite ovde svoju poruku",
+      "msgPlaceholder": "Napišite ovde svoju poruku.",
       "msgPlaceholder2": "Napišite ovde svoju poruku. Svi korisnici na ovoj listi koji su trenutno povezani će je primiti."
     },
     "cookies": {
@@ -1472,7 +1471,7 @@
         "optional": "opciono",
         "captchaLabel": "Rešite ovo da biste potvrdili da ste čovek",
         "captchaError": "Netačan odgovor na captch-u. Molimo pokušajte ponovo..",
-        "commentsPlaceholder": "Navedite dodatne detalje o vašem izveštaju...",
+        "commentsPlaceholder": "Navedite dodatne detalje o vašem izveštaju.",
         "reasons": {
           "inappropriateContent": "Neprikladan sadržaj za ciljnu publiku.",
           "copyrightViolation": "Kršenje autorskih prava.",
@@ -2184,7 +2183,7 @@
         },
         "contactForm": {
             "title": "Kontaktiraj autora",
-            "placeholder": "Pošalji poruku autoru ove escape sobe",
+            "placeholder": "Pošalji poruku autoru ove escape sobe.",
             "send": "pošalji",
             "message": "Poruka",
             "name": "Vaše ime",

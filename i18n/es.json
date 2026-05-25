@@ -17,9 +17,8 @@
             "hintFailed": "Solicitudes de pista fallidas"
         },
         "hints": {
-            "customClue": "Ayuda del profesor",
+            "customHint": "Ayuda del profesor",
             "failed": "Peticiones de pista fallidas",
-            "failedClue": "Peticiones de pista fallidas",
             "succeeded": "Pistas obtenidas",
             "title": "Pistas"
         },
@@ -165,6 +164,7 @@
             "isIn": "debe tomar uno de los valores permitidos"
         },
         "exit": "salir",
+        "Exit": "Salir",
         "filter": "filtrar",
         "Finish": "Finalizar",
         "finish": "finalizar",
@@ -252,7 +252,7 @@
         },
         "guide": "Manual de usuario",
         "ideas": "Ideas para retos",
-        "mainPage": "Pág. principal",
+        "mainPage": "Página principal",
         "ok": "ok",
         "pagination": {
             "first": "Primera página",
@@ -460,7 +460,7 @@
                 "eachHintObtain": "Penalización o recompensa por pista conseguida",
                 "eachPuzzle": "Porcentaje de la nota asignado a cada reto",
                 "gradingIntro": "Aquí puedes configurar la rúbrica para calificar a los participantes y seleccionar la forma en la que se registrará su participación.",
-                "hintSuccess": "Puntos por solicitud de pista conseguida",
+                "hintSuccess": "Puntos por solicitud de pista exitosa",
                 "hintFailed": "Puntos por solicitud de pista fallida",
                 "justParticipating": "Porcentaje de la nota asignado solo por participar",
                 "forSurveys": "para crear las encuestas y cuestionarios de tu escape room",
@@ -646,14 +646,13 @@
             	"automatic": "Recurso (interno o externo)",
                 "calculateDuration": "calcular",
                 "calculateDurationTitle": "Calcula la duración esperada del reto basándote en los datos de intentos previos de otros equipos",
-                "clueName": "Nombre de la pista",
                 "description": "Descripción",
                 "expectedDuration": "Duración aproximada (min)",
                 "expectedDurationPlaceholder": "¿Cuánto tiempo crees que tardarán los participantes en resolver este reto?",
                 "failMsg": "Mensaje al fallar",
                 "Hint": "Pista",
                 "hints": "Pistas",
-                "manual": "Caja de texto en la interfaz de equipo",
+                "manual": "Caja de texto en la cabecera de Escapp",
                 "newCat": "Categoría nueva",
                 "noHints": "No has definido ninguna pista",
                 "noPuzzlesYet": "No has definido ningún reto todavía",
@@ -702,7 +701,7 @@
                 "teamSize": "Tamaño del equipo",
                 "participationMode": "Modo de participación",
                 "licenseExplanation": "¿Con qué licencia quieres publicar tu escape room?",
-                "licenseExplanationAlreadyPublished": "Ya no puedes cambiar la licencia porque tu escape room ya ha sido publicada anteriormente.",
+                "licenseExplanationAlreadyPublished": "No puedes cambiar la licencia porque la escape room ya fue publicada anteriormente.",
                 "invitationExplanation": "¿Quieres que los participantes tengan que introducir una contraseña para apuntarse a la escape room? Si es así, introdúcela en el campo de texto que aparece a continuación.",
                 "instructionsExplanation": "Comparte las instrucciones que quieras con los profesores que utilicen tu escape room. Sube un fichero en formato PDF. Puedes incluir información sobre cómo se juega, cómo se evalúa, etc.",
                 "scopeExplanation": "Puedes elegir entre dos tipos de visibilidad para tu escape room: pública y oculta. Las escape rooms con visibilidad pública pueden aparecer en la página principal de la plataforma y cualquier usuario puede apuntarse y jugar a ellas en cualquier momento. Las escape rooms con visibilidad oculta no aparecen en la página principal y los estudiantes sólo pueden apuntarse a ellas mediante un enlace directo. En estas escape rooms también puedes definir una contraseña de acceso. Todas las escape rooms, independientemente de su tipo de visibilidad, pueden ser accedidas por los administradores de la plataforma y empleadas de acuerdo a su licencia.",
@@ -721,9 +720,9 @@
                     "step8": "Rúbrica de evaluación creada",
                     "congrats": "¡Enhorabuena! Has publicado tu escape room con éxito.",
                     "congrats2":"Crea un turno para que los participantes puedan apuntarse a la escape room.",
-                    "backToDraft":"¿Quieres volver a estado borrador? Para hacerlo, haz click en el interruptor. ",
+                    "backToDraft":"¿Quieres volver a estado borrador? Para hacerlo, haz clic en el interruptor. ",
                     "erStatus": "Estado actual de la escape room ",
-                    "areYouReady": "¿Has terminado de crear tu escape room? ¡Hazla pública activando el interruptor! Ten en cuenta que, una vez publicada, no podrás cambiar su licencia. Antes de hacerla pública, puedes probarla por tu cuenta o invitar a colaboradores para probarla en grupo.",
+                    "areYouReady": "¿Has terminado de crear tu escape room? ¡Publícala activando el interruptor! Ten en cuenta que, una vez publicada, no podrás cambiar su licencia. Antes de hacerlo, puedes probarla tú mismo o invitar a colaboradores para probarla en grupo.",
                     "stillInfoNeeded": "Aún tienes información obligatoria que debes completar antes de hacer pública tu escape room",
                     "warningAboutLicense": "Una vez publiques tu escape room, no podrás cambiar la licencia. Cuando estés listo, haz clic en el interruptor."
                 },
@@ -1057,7 +1056,7 @@
         "supportLink": "Soporte",
         "sureUnjoin": "¿Seguro que deseas desapuntarte?",
         "congrats": "¡Enhorabuena! Has terminado con éxito la escape room",
-        "resultsTitle": "Este es el ranking de resultados de la escape room",
+        "resultsTitle": "Ranking de la escape room",
         "unjoin": "desapuntarse",
         "reset": "reiniciar",
         "sureReset": "¿Seguro que deseas reiniciar la escape room?",
@@ -1110,7 +1109,7 @@
             "copyTitle": "Copia el enlace",
             "qrTitle": "Genera un código QR para compartir",
             "noShiftsShare": "No puedes compartir la escape room hasta que hayas establecido al menos un turno",
-            "noShiftsShareDraft": "No puedes compartir la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación').",
+            "noShiftsShareDraft": "Publica la escape room para poder compartirla.",
             "noShiftsStart": "No puedes comenzar la escape room hasta que hayas establecido al menos un turno",
             "join": {
                 "intro": "Para que tus alumnos puedan acceder a la escape room comparte con ellos el siguiente enlace:",
@@ -1132,7 +1131,7 @@
             "instructions": "Instrucciones",
             "invitation": "Invitación",
             "level": "Nivel",
-            "password": "Clave de acceso",
+            "password": "Contraseña de acceso",
             "posttest": "Post-test",
             "pretest": "Pre-test",
             "puzzles": "Retos",
@@ -1152,7 +1151,7 @@
             "forceLang": "Forzar el idioma de Escapp para los participantes de esta escape room",
             "forceLang2": "Idioma"
         },
-        "cantManageUntilComplete": "No puedes gestionar la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación')."
+        "cantManageUntilComplete": "Publica la escape room para poder gestionarla."
 
     },
     "team": {
@@ -1337,7 +1336,7 @@
         "acceptTerms": "Condiciones de uso",
         "terms": "Confirmo que he leído y acepto los <a href='/terms' target='_blank'>Términos de Uso</a> y la <a href='/privacy' target='_blank'>Política de Privacidad</a>.",
         "inputs": {
-            "editUser": "Editar usuario",
+            "editUser": "Ajustes de cuenta",
             "namePlaceHolder": "Introduce tu nombre",
             "passwordConfirmPlaceHolder": "Introduce tu contraseña",
             "passwordPlaceHolder": "Introduce tu contraseña",
@@ -1354,10 +1353,10 @@
             "wrongLetterDNI": "DNI erroneo, la letra del NIF no se corresponde",
             "notFound": "Usuario no encontrado",
             "ensureRegistered": "Ha ocurrido un error. Asegúrate de que te has registrado correctamente en la escape room.",
-            "emailConfirm":"Por favor, confirma tu correo electrónico haciendo click en el botón de confirmar",
+            "emailConfirm":"Por favor, confirma tu correo electrónico haciendo clic en el botón de confirmar",
             "emailConfirmButton":"confirmar",
             "emailResetPassword1":" Si recibes este mensaje es porque has solicitado recuperar tu contraseña en Escapp.",
-            "emailResetPassword2":"Haz click en el siguiente link:",
+            "emailResetPassword2":"Haz clic en el siguiente link:",
             "notAllowedTeacherEmail": "No puedes registrarte como profesor con este correo electrónico",
             "notAllowedStudentEmail": "No puedes registrarte como alumnno con este correo electrónico",
             "notAllowedEmail": "No puedes registrarte con este correo electrónico",
@@ -1366,7 +1365,7 @@
         "name": "Nombre",
         "anonymous": "Anónimo",
         "anonymizedCantLogin": "Esta cuenta ha sido eliminada y no puedes iniciar sesión",
-        "teacherCannotJoin": "Has usado un enlace destinado a los participants de la escape room. Si quieres probar tu escape room haz click en el botón 'test'.",
+        "teacherCannotJoin": "Has usado un enlace destinado a los participants de la escape room. Si quieres probar tu escape room haz clic en el botón 'test'.",
         "password": "Contraseña",
         "passLeaveBlank": "Si deseas cambiar la contraseña, rellena los siguientes campos. Si no, déjalos en blanco.",
         "passwordConfirm": "Confirmar contraseña",
@@ -1405,12 +1404,13 @@
         "ok": "Mensaje enviado",
         "nok": "Envío fallido",
         "send": "enviar",
+        "to": "A",
         "everyone": "Todos los conectados a esta escape room",
         "shift": "Todos los conectados que pertenezcan al turno",
         "team": "Todos los conectados que pertenezcan al equipo",
         "participant": "Sólo a una persona (si está conectada)",
         "waiting": "Enviar también a los participantes esperando para acceder a la escape room",
-        "msgPlaceholder": "Escribe aquí tu mensaje",
+        "msgPlaceholder": "Escribe aquí tu mensaje.",
         "msgPlaceholder2": "Escribe aquí tu mensaje. Todos los usuarios de esta lista que estén conectados ahora mismo lo recibirán."
     },
     "cookies": {
@@ -1473,7 +1473,7 @@
             "optional": "opcional",
             "captchaLabel": "Resuelve esto para verificar que eres humano",
             "captchaError": "Respuesta de captcha incorrecta. Inténtalo de nuevo.",
-            "commentsPlaceholder": "Proporciona detalles adicionales sobre tu reporte...",
+            "commentsPlaceholder": "Proporciona detalles adicionales sobre tu reporte.",
             "reasons": {
                 "inappropriateContent": "Contenido inapropiado para el público al que va dirigido.",
                 "copyrightViolation": "Infracción de copyright.",
@@ -1959,7 +1959,7 @@
         },
         "contactForm": {
             "title": "Contactar con el autor",
-            "placeholder": "Escribe un mensaje al autor de la escape room",
+            "placeholder": "Escribe un mensaje al autor de la escape room.",
             "send": "enviar",
             "message": "Mensaje",
             "name": "Tu nombre",

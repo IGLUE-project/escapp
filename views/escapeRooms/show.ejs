@@ -48,29 +48,33 @@
             <div style="margin-top: 0px"><%-sanitizeRichText(escapeRoom.description)%></div>
 
             <div class="flex-er-info-preview fadeIn">
+
                 <%if(escapeRoom.field){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.field%></h3>
                         <p><%=i18n.escapeRoom.fields[escapeRoom.field]%></p>
                     </div>
                 <%}%>
-                <%if(escapeRoom.license){%>
-                    <div>
-                        <h3><%=i18n.escapeRoom.steps.sharing.license%></h3>
-                        <p>
-                            <%var cc = escapeRoom.license.split(" ")[1].toLowerCase();%>
-                            <a href="https://creativecommons.org/licenses/<%=cc%>/4.0/" target="_blank">
-                                <img style="height: 46px;" src="/images/cc/<%=cc%>.png" alt="">
-                            </a>
-                        </p>
-                    </div>
-                <%}%>
+
                 <%if(escapeRoom.subject){%>
                     <div>
-                        <h3><%=i18n.showTeacher.titles.subject%></h3>
+                        <h3><%=i18n.showTeacher.titles.subjects%></h3>
                         <p class="tags-box"><% for (var s in escapeRoom.subject || []) {%>
                             <span class="tag-chip"><%=escapeRoom.subject[s].subject%></span>
                         <%}%></p>
+                    </div>
+                <%}%>
+
+                <%if(escapeRoom.level){%>
+                    <div>
+                        <h3><%=i18n.escapeRoom.steps.sharing.level%></h3>
+                        <p><%=i18n.network.filters.eduLevel[escapeRoom.level]%></p>
+                    </div>
+                <%}%>
+                <%if(escapeRoom.lang){%>
+                    <div>
+                        <h3><%=i18n.showTeacher.titles.lang%></h3>
+                        <p><%=i18n.langs[escapeRoom.lang] || escapeRoom.lang%></p>
                     </div>
                 <%}%>
                 <%if(escapeRoom.duration){%>
@@ -85,6 +89,23 @@
                         <p><%=i18n.escapeRoom.format[escapeRoom.format]%></p>
                     </div>
                 <%}%>
+                <%if(escapeRoom.teamSize || escapeRoom.minTeamSize){%>
+                    <div>
+                        <h3><%=i18n.escapeRoom.steps.sharing.participationMode%></h3>
+                        <p><%=formatTeamSize(escapeRoom.minTeamSize, escapeRoom.teamSize, i18n)%></p>
+                    </div>
+                <%}%>
+                <%if(escapeRoom.license){%>
+                    <div>
+                        <h3><%=i18n.escapeRoom.steps.sharing.license%></h3>
+                        <p>
+                            <%var cc = escapeRoom.license.split(" ")[1].toLowerCase();%>
+                            <a href="https://creativecommons.org/licenses/<%=cc%>/4.0/" target="_blank">
+                                <img style="height: 46px;" src="/images/cc/<%=cc%>.png" alt="">
+                            </a>
+                        </p>
+                    </div>
+                <%}%>
                 <%if(!locals.fromNetwork && escapeRoom.instructions && user && !user.isStudent){%>
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.instructions%></h3>
@@ -95,27 +116,6 @@
                         </a>
                     </div>
                 <%}%>
-                <%if(escapeRoom.lang){%>
-                    <div>
-                        <h3><%=i18n.showTeacher.titles.lang%></h3>
-                        <p><%=i18n.langs[escapeRoom.lang] || escapeRoom.lang%></p>
-                    </div>
-                <%}%>
-                <%if(escapeRoom.level){%>
-                    <div>
-                        <h3><%=i18n.escapeRoom.steps.sharing.level%></h3>
-                        <p><%=i18n.network.filters.eduLevel[escapeRoom.level]%></p>
-                    </div>
-                <%}%>
-                <%if(escapeRoom.teamSize || escapeRoom.minTeamSize){%>
-                    <div>
-                        <h3><%=i18n.escapeRoom.steps.sharing.participationMode%></h3>
-                        <p><%=formatTeamSize(escapeRoom.minTeamSize, escapeRoom.teamSize, i18n)%></p>
-                    </div>
-                <%}%>
-
-
-                
             </div>
         </div>
 

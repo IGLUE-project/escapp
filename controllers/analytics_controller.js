@@ -41,7 +41,7 @@ exports.analytics = async (req, res, next) => {
         const hintLabels = escapeRoom.puzzles.map((p) => p.hints.map((h) => h.content)).reduce((x, y) => x.concat(y), []);
         const reqHints = {"0": 0};
 
-        hintLabels.unshift(i18n.analytics.hints.customClue);
+        hintLabels.unshift(i18n.analytics.hints.customHint);
         hintIds.forEach((e) => {
             reqHints[e] = 0;
         });
