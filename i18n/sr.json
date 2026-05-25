@@ -14,7 +14,7 @@
       "title": "Ocenjivanje",
       "attendance": "Prisustvo",
       "hintSuccess": "Dobijeni saveti",
-      "hintFailed": "Propušteni saveti"
+      "hintFailed": "Neuspešni zahtevi za pomoć"
     },
     "hints": {
       "customClue": "Pomoć od nastavnika",
@@ -29,7 +29,7 @@
     },
     "main": {
       "download": "preuzmi",
-      "downloadRaw": "preuzmi raw",
+      "downloadRaw": "preuzmi kompletne podatke",
       "grading": "Ocenjivanje",
       "hints": "Saveti",
       "histogram": "Histogram",
@@ -47,7 +47,7 @@
       },
       "dashboard": {
         "nParticipants": "# Učesnika",
-        "sucessRate": "Stopa uspeha",
+        "successRate": "Stopa uspeha",
         "bestTime": "Najbolje vreme",
         "avgTeamSize": "Prosečna veličina tima",
         "avgReqHints": "Prosečan broj dobijenih saveta",
@@ -215,7 +215,7 @@
       "passwordsDoNotMatch": "Lozinke se ne podudaraju",
       "problemSendingEmail": "Došlo je do problema sa vašim zahtevom",
       "resetPasswordSent": "Poslali smo vam imejl sa linkom za resetovanje lozinke",
-      "resetPasswordUserNotFound": "Žao nam je, niste registrovani u escapp-u",
+      "resetPasswordUserNotFound": "Žao nam je, niste registrovani u Escapp-u",
       "successActivatingTurno": "Smena (shift) uspešno aktivirana/deaktivirana",
       "successAddingCollaborator": "Saradnik je uspešno dodat. Biće obavešten da potvrdi svoju kolaboraciju",
       "successCreatingER": "Escape soba uspešno podešena",
@@ -285,7 +285,7 @@
       "description": "Opis",
       "authentication": "Da li su parametri autentifikacije ispravni ili ne",
       "authenticationAPI": "Autentifikacija",
-      "authenticationAPIDesc": "Ova krajnja tačka (endpoint) vam omogućava da se autentifikujete u escapp-u i proverite da li vam je dozvoljeno da učestvujete u escape sobi u datom trenutku",
+      "authenticationAPIDesc": "Ova krajnja tačka (endpoint) vam omogućava da se autentifikujete u Escapp-u i proverite da li vam je dozvoljeno da učestvujete u escape sobi u datom trenutku",
       "method": "Metod",
       "email": "email korisnika",
       "password": "Lozinka korisnika",
@@ -295,9 +295,9 @@
       "response": "Odgovor",
       "sampleResponse": "Primer odgovora",
       "puzzleAPI": "Zagonetke",
-      "puzzleAPIDesc": "Ova krajnja tačka (endpoint) vam omogućava da rešavate zagonetke na daljinu bez potrebe za pristupom timskom interfejsu escapp-a",
+      "puzzleAPIDesc": "Ova krajnja tačka (endpoint) vam omogućava da rešavate zagonetke na daljinu bez potrebe za pristupom timskom interfejsu Escapp-a",
       "startAPI": "Participacija",
-      "startAPIDesc": "Ova krajnja tačka (endpoint) vam omogućava da počnete da učestvujete u escape sobi bez potrebe da pritisnete dugme za start u escapp-u",
+      "startAPIDesc": "Ova krajnja tačka (endpoint) vam omogućava da počnete da učestvujete u escape sobi bez potrebe da pritisnete dugme za start u Escapp-u",
       "erState": "Objekat koji označava trenutno stanje escape sobe za tim. Ima dva svojstva: <code>puzzlesSolved</code>, koji sadrži niz koji pokazuje koje je zagonetke tim završio (uključujući ime zagonetke, broj, rešenje i poruku o uspehu); <code>hintsAllowed</code>, true/false vrednost koja pokazuje da li tim može da zahteva još saveta; <code>progress</code>, procenat rešenih zagonetki i <code>score</code>, ukupan rezultat učesnika prema rubrici za ocenjivanje koju je postavio nastavnik.",
       "code": {
         "OK": "Odgovor naveden za zagonetku je tačan",
@@ -308,7 +308,7 @@
         "PARTICIPANT": "Vi ste učesnik ove escape sobe i smena za koju ste se prijavili je aktivna",
         "TOO_LATE": "Vi ste učesnik ove escape sobe, ali smena za koju ste se prijavili je završena ili vam je isteklo vreme",
         "NOT_ACTIVE": "Vi ste učesnik ove escape sobe, ali smena za koju ste se prijavili još nije počela",
-        "NOT_STARTED": "Vi ste učesnik ove escape sobe, ali niste pritisnuli dugme za početak na escapp platformi ili započeli putem API-ja",
+        "NOT_STARTED": "Vi ste učesnik ove escape sobe, ali niste pritisnuli dugme za početak na Escapp platformi ili započeli putem API-ja",
         "NOT_A_PARTICIPANT": "Niste učesnik ove escape sobe",
         "AUTHOR": "Vi ste autor ove escape sobe "
       },
@@ -316,7 +316,7 @@
         "PARTICIPANT": "Uspešno ste započeli escape sobu",
         "TOO_LATE": "Smena za koju ste se prijavili je završena ili vam je isteklo vreme",
         "NOT_ACTIVE": "Smena za koju ste se prijavili još nije počela",
-        "NOT_STARTED": "Niste pritisnuli dugme za početak na escapp platformi",
+        "NOT_STARTED": "Niste pritisnuli dugme za početak na Escapp platformi",
         "NOT_A_PARTICIPANT": "Niste učesnik ove escape sobe",
         "AUTHOR": "Vi ste autor ove escape sobe"
       },
@@ -523,14 +523,13 @@
         "title": "Interfejs tima"
       },
       "class": {
-        "explanation": "Ovde možete prilagoditi interfejs koji ćete moći da prikažete u učionici svim učesnicima. Može da uključuje odbrojavanje, uvodni video, tabelu (leaderboard) itd. Ako se escape soba sprovodi na daljinu, učesnici nikada neće videti Interfejs odeljenja (class interface), tako da možete preskočiti ovaj korak.",
-        "placeholder": "Dodajte informacije koje želite da projektujete u učionici",
+        "explanation": "U ovom odeljku možete kreirati interfejs za prikaz istog sadržaja svim učesnicima (npr. projektovanjem u učionici). Možete dodati elemente kao što su odbrojavanje vremena, uvodni video ili rang-lista. Ako će se escape room odvijati asinhrono, učesnici nikada neće videti ovaj interfejs, pa možete preskočiti ovaj korak.",
+        "placeholder": "Dodajte sadržaj koji želite da prikažete svim učesnicima.",
         "title": "Interfejs odeljenja"
       },
-
       "indications": {
-        "explanation": "Ovde možete prilagoditi informacije koje će učesnici videti pre početka escape sobe od trenutka prijave. Na primer, možete ih podsetiti da ponesu određeni materijal, reći im da pregledaju sadržaj kursa ili im pružiti video za gledanje.",
-        "placeholder": "Dodaj prilagođena uputstva",
+        "explanation": "U ovom odeljku možete navesti uputstva koja će učesnici videti od trenutka kada se prijave za escape room pa sve do njenog početka.",
+        "placeholder": "Dodajte prethodna uputstva.",
         "title": "Uputstva pre aktivnosti",
         "hybridInstructions": "Fizički resursi",
         "hybridInstructionsNote": "Naznačili ste da je escape soba hibridna, molimo vas da ovde upload-ujete sve dodatne resurse koji će učesnicima biti potrebni za završetak aktivnosti.",
@@ -546,8 +545,7 @@
           "setupVisualization": "Vizuelizacija",
           "visualizationIntro": "Kada želite da prikažete ovaj blok sadržaja?",
           "visualizationStart": "Odmah na početku",
-          "visualizationFinish": "Kada završe escape sobu.",
-          "visualizationSucceed": "Kada učesnici rade na sledećim zagonetkama",
+          "visualizationFinish": "Kada učesnici završe escape sobu.",
           "accept": "prihvati",
           "cancel": "poništi",
           "dropHere": "Otpustite sada da biste postavili sadržaj ovde",
@@ -582,7 +580,7 @@
             "addResource": "dodaj resurs",
             "addBlock": "dodaj blok",
             "downloadZip": "preuzmi",
-            "addText": "dodaj tekstualni blok",
+            "addText": "dodaj blok sadržaja",
             "table": {
               "name": "Ime",
               "type": "Tip",
@@ -630,24 +628,24 @@
         "settings": "Osnovna konfiguracija",
         "evaluation": "Evaluacija",
         "sharing": "Publikacija",
-        "hints": "Upravljanje savetima",
+        "hints": "Upravljanje pomoći",
         "assets": "Upload aseta",
         "team": "Interfejs tima",
         "indications": "Uputstva pre aktivnosti",
         "after": "Uputstva posle aktivnosti",
         "class": "Interfejs odeljenja",
         "participants": "Učesnici",
-        "puzzles": "Zagonetke",
+        "puzzles": "Zagonetke i pomoći",
         "turnos": "Smene"
       },
       "puzzles": {
-        "explanation": "U ovom koraku možete specificirati različite zagonetke koje čine escape sobu. Imajte na umu da moraju pratiti linearnu strukturu, što znači da, da bi rešili zagonetku, učesnici moraju da reše prethodnu. Potrebno je da navedete naziv i opis svake zagonetke, kao i njeno rešenje.  Ako omogućite opciju automatskog praćenja za zagonetku, neće biti moguće rešiti je u Interfejsu tima. Umesto toga, mora se završiti putem aplikacije koja koristi Escapp API. Možete dodati savete za svaku zagonetku i ovi saveti će biti obezbeđeni učesnicima na osnovu konfiguracije saveta koju podesite u sledećem koraku.",
+        "explanation": "U ovom odeljku možete konfigurisati zagonetke escape room-a. Ove zagonetke moraju pratiti linearnu strukturu, što znači da se svaka zagonetka može završiti tek nakon što su prethodne rešene. Za svaku zagonetku potrebno je da navedete naziv i rešenje. Pored toga, u ovom odeljku možete definisati dostupne pomoći za svaku zagonetku, koje će učesnicima biti pružene u skladu sa podešavanjima definisanim u sledećem odeljku.",
         "addNewHint": "dodaj savet",
         "addNewCategory": "dodaj kategoriju",
         "addNewPuzzles": "dodaj zagonetku",
         "calculateDuration": "izračunaj",
         "calculateDurationTitle": "Izračunaj očekivano trajanje na osnovu prethodnih podataka učesnika koji su završili ovu zagonetku",
-        "automatic": "Resurs (zagonetka za višekratnu upotrebu ili eksterni resurs)",
+        "automatic": "Resurs (interni ili eksterni)",
         "clueName": "Naziv traga",
         "description": "Opis",
         "expectedDuration": "Očekivano trajanje (min)",
@@ -666,7 +664,7 @@
         "solution": "Odgovor",
         "subpuzzles": "Podzagonetke",
         "successMsg": "Poruka o uspehu",
-        "title": "Zagonetke",
+        "title": "Zagonetke i pomoći",
         "tracking": "Kako uneti rešenje",
         "validator": {
           "msg": "Verifikacija",
@@ -685,8 +683,8 @@
       },
       "after": {
         "title": "Uputstva post-aktivnosti",
-        "explanation": "Ovde možete dodati informacije koje želite da pokažete učesnicima kada završe escape sobu. Možete uključiti anketu, post-kviz ili bilo koju drugu informaciju koju želite da podelite sa njima.",
-        "placeholder": "Dodajte prilagođene instrukcije nakon igranja escape sobea"
+        "explanation": "Ovde možete navesti informacije koje želite da prikažete učesnicima nakon što završe escape room.",
+        "placeholder": "Dodajte prilagođene instrukcije nakon igranja escape sobea."
 
       },
       "sharing": {
@@ -967,9 +965,9 @@
       "shareIntro": "Možete koristiti ovaj link da biste podelili zagonetku sa svojim učenicima",
       "edit": "uredi",
       "delete": "obriši",
-      "outside": "Ostali resursi van delokruga escapp-a",
+      "outside": "Ostali resursi van delokruga Escapp-a",
       "fullscreen": "Deli preko celog ekrana",
-      "intro": "Kolekcija zagonetki ispod vam omogućava da povežete digitalne aplikacije za zagonetke sa nacrtom zagonetke koji ste definisali za svoju escapp escape sobu. Možete prilagoditi njihova podešavanja i deliti ih sa svojim učenicima kao deo vaše escape sobe.",
+      "intro": "Kolekcija zagonetki ispod vam omogućava da povežete digitalne aplikacije za zagonetke sa nacrtom zagonetke koji ste definisali za svoju Escapp escape sobu. Možete prilagoditi njihova podešavanja i deliti ih sa svojim učenicima kao deo vaše escape sobe.",
       "resourceCatalog": "Katalog resursa"
     },
     "guides": {
@@ -1104,8 +1102,6 @@
       },
       "messages": {
         "noHintControl": "Ova escape soba još uvek nema sistem saveta",
-        "freeHintsStrategy": "Ova escape soba dozvoljava dobijanje besplatnih saveta",
-        "noHintsStrategy": "Ova escape soba ne dozvoljava dobijanje saveta",
         "withAutomatedSuggestions": "Učesnicima se sugeriše da traže savet ako previše vremena provedu na zagonetki",
         "withAutomatedHints": "Učesnici automatski dobijaju savet ako previše vremena provedu na zagonetki",
         "noVideo": "Ova escape soba još uvek nema video",
@@ -1357,12 +1353,12 @@
         "emailConfirm": "Molimo vas da potvrdite svoju adresu e-pošte klikom na dugme ",
         "emailConfirmButton": "potvrdi",
         "emailWelcome": "Dobrodošli u",
-        "emailResetPassword1": "Ako primate ovu e-poštu, to je zato što ste resetovali lozinku u escapp-u.",
+        "emailResetPassword1": "Ako primate ovu e-poštu, to je zato što ste resetovali lozinku u Escapp-u.",
         "emailResetPassword2": "Ovo je link za resetovanje lozinke:",
         "notAllowedTeacherEmail": "Nije vam dozvoljeno da se upišete kao nastavnik sa ovom e-poštom",
         "notAllowedStudentEmail": "Nije vam dozvoljeno da se upišete kao student sa ovom e-poštom",
         "notAllowedEmail": "Nije vam dozvoljeno da se upišete sa ovom e-poštom",
-        "sucessfullyUpdatedUser": "Korisnik je uspešno ažuriran"
+        "successfullyUpdatedUser": "Korisnik je uspešno ažuriran"
 
       },
       "name": "Ime",

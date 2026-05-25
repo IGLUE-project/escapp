@@ -14,7 +14,7 @@
             "title": "Calificaciones",
             "attendance": "Asistencia",
             "hintSuccess": "Pistas obtenidas",
-            "hintFailed": "Pistas falladas"
+            "hintFailed": "Solicitudes de pista fallidas"
         },
         "hints": {
             "customClue": "Ayuda del profesor",
@@ -29,7 +29,7 @@
         },
         "main": {
             "download": "descargar",
-            "downloadRaw": "descargar en crudo",
+            "downloadRaw": "descargar datos completos",
             "grading": "Calificaciones",
             "hints": "Pistas",
             "histogram":"Histograma",
@@ -46,12 +46,12 @@
                 "png": "Descargar PNG"
             },
             "dashboard": {
-                "nParticipants": "Nº participantes",
-                "sucessRate": "Tasa de salida",
+                "nParticipants": "Nº de participantes",
+                "successRate": "Tasa de salida",
                 "bestTime": "Mejor tiempo",
-                "avgTeamSize": "Tamaño medio equipos",
-                "avgReqHints": "Pistas conseguidas en media",
-                "retosSuperadosTeam": "Nº de equipos que superó el reto"
+                "avgTeamSize": "Tamaño medio de los equipos",
+                "avgReqHints": "Pistas conseguidas de media",
+                "retosSuperadosTeam": "Nº de equipos que superaron el reto"
             }
         },
         "progress": {
@@ -80,14 +80,14 @@
         "timeline": {
             "customHint": "Ayuda del profesor",
             "openDoor": "El equipo ha conseguido finalizar la escape room",
-            "closedDoor": "El equipo ha comenzado la  escape room",
+            "closedDoor": "El equipo ha comenzado la escape room",
             "title": "Cronograma",
             "nTeamsPuzzle": "Nº de equipos que han superado cada reto",
             "nTeamsPuzzleButton": "ver por equipo",
             "nPuzzlesTeam": "Nº de retos que ha superado cada equipo",
             "nPuzzlesTeamButton": "ver por reto",
             "failed": "Intento fallido",
-            "legendMsg": "Desplázate a la derecha para ver eventos que ocurrieron después de que acabase la cuenta atrás de la escape room. Pon el ratón encima de los retos o pistas para ver más información acerca de ellos.",
+            "legendMsg": "Desplázate a la derecha para ver eventos que ocurrieron después de que acabara la cuenta atrás de la escape room. Pon el ratón encima de los retos o pistas para ver más información acerca de ellos.",
             "hint": "Pista",
             "score": "Puntuación",
             "solved": "Resuelto",
@@ -96,7 +96,7 @@
             "time": "Tiempo",
             "unsolved": "No resuelto",
             "showLegend": "Mostrar leyenda",
-            "puzzleExplanation": "La línea te tiempo muestra los retos en los que cada equipo estaba trabajando en cada momento de la escape room. Para cada reto resuelto, puedes consultar los minutos que tardaron en hacerlo. Si no aparecen los minutos es que no resolvieron el reto.",
+            "puzzleExplanation": "La línea de tiempo muestra los retos en los que cada equipo estaba trabajando en cada momento de la escape room. Para cada reto resuelto, puedes consultar los minutos que tardaron en hacerlo. Si no aparecen los minutos es que no resolvieron el reto.",
             "now": "Momento actual",
             "end": "Fin de la escape room",
             "hintFailed": "Pista no obtenida",
@@ -209,7 +209,7 @@
             "errorUserIsAlreadyACollaborator": "El usuario ya es un colaborador",
             "errorFile": "Error al subir el fichero",
             "errorImage": "Error al subir la imagen",
-            "errorReady": "No pudes jugar a la escape room",
+            "errorReady": "No puedes jugar a la escape room",
             "errorSendingReport": "Error al enviar el reporte",
             "errorMandatoryPass": "Es obligatorio introducir una contraseña",
             "invalidConfirmationCode": "Código de confirmación inválido",
@@ -217,7 +217,7 @@
             "passwordsDoNotMatch": "Las contraseñas no coinciden",
             "problemSendingEmail": "Ha habido un problema con su petición",
             "resetPasswordSent": "Te hemos enviado un correo para recuperar tu contraseña",
-            "resetPasswordUserNotFound": "Lo siento, no estás registrado en escapp",
+            "resetPasswordUserNotFound": "Lo siento, no estás registrado en Escapp",
             "successActivatingTurno": "Turno activado/desactivado con éxito",
             "successCreatingER": "Escape room creada con éxito",
             "successCreatingHint": "Pista creada con éxito",
@@ -274,7 +274,7 @@
     "escapeRoom": {
         "api":{
             "id": "ID",
-            "name": "Name",
+            "name": "Nombre",
             "endpoint": "URL",
             "solution": "Solución",
             "sample": "Ejemplo de petición a la API",
@@ -283,7 +283,7 @@
             "description": "Descripción",
             "authentication": "Indica si los parámetros de autenticación son correctos o no",
             "authenticationAPI": "Autenticación",
-            "authenticationAPIDesc": "Este endpoint te permite autenticarte en escapp y comprobar si puedes participar en una escape room determinada en un momento dado",
+            "authenticationAPIDesc": "Este endpoint te permite autenticarte en Escapp y comprobar si puedes participar en una escape room determinada en un momento dado",
             "method": "Método",
             "email": "Correo electrónico del usuario",
             "password": "Contraseña del usuario",
@@ -293,9 +293,9 @@
             "response": "Respuesta",
             "sampleResponse": "Ejemplo de respuesta",
             "puzzleAPI": "Retos",
-            "puzzleAPIDesc": "Este endpoint permite resolver los retos de la escape room sin necesidad de emplear la interfaz de equipo de escapp",
+            "puzzleAPIDesc": "Este endpoint permite resolver los retos de la escape room sin necesidad de emplear la interfaz de equipo de Escapp",
             "startAPI": "Participación",
-            "startAPIDesc": "Este endpoint te permite comenzar a participar en la escape room sin necesidad de darle al botón de comenzar en escapp",
+            "startAPIDesc": "Este endpoint te permite comenzar a participar en la escape room sin necesidad de darle al botón de comenzar en Escapp",
             "erState": "Objeto que indica el estado actual de la escape room para el equipo. Tiene 4 propiedades: <code>puzzlesSolved</code>, que contiene un array de los retos que el equipo ha superado (incluyendo el número, nombre, solución y mensaje de éxito); <code>hintsAllowed</code>, un booleano que indica si el equipo puede o no recibir más pistas; <code>progress</code>, que indica el porcentaje de retos superados, y <code>score</code>, que calcula la nota del participante según la rúbrica establecida por el profesor.",
             "code": {
                 "OK": "La petición ha tenido éxito total",
@@ -306,14 +306,14 @@
                 "PARTICIPANT": "Eres participante de esta escape room y el turno al que te has apuntado está activo ahora mismo",
                 "TOO_LATE": "Eres participante de esta escape room pero el turno al que te has apuntado ha terminado o te has quedado sin tiempo",
                 "NOT_ACTIVE": "Eres participante de esta escape room pero el turno al que te has apuntado aún no ha empezado",
-                "NOT_STARTED": "Eres participante de esta escape room pero no le has dado al botón de comenzar en la plataforma escapp o no has comenzado a través de la API",
+                "NOT_STARTED": "Eres participante de esta escape room pero no le has dado al botón de comenzar en la plataforma Escapp o no has comenzado a través de la API",
                 "NOT_A_PARTICIPANT": "No eres participante de esta escape room",
                 "AUTHOR": "Eres el creador de esta escape room"
             },
             "participationStart": {
                 "PARTICIPANT": "Has comenzado con éxito la escape room",
                 "TOO_LATE": "El turno al que te has apuntado ha terminado o te has quedado sin tiempo",
-                "NOT_STARTED": "No has dado al botón de comenzar en la plataforma escapp o no has comenzado a través de la API",
+                "NOT_STARTED": "No has dado al botón de comenzar en la plataforma Escapp o no has comenzado a través de la API",
                 "NOT_ACTIVE": "El turno al que te has apuntado aún no ha empezado",
                 "NOT_A_PARTICIPANT": "No eres participante de esta escape room",
                 "AUTHOR": "Eres el creador de esta escape room"
@@ -343,13 +343,13 @@
             "finish": "¡Has superado todos los retos!",
             "dontClose": "No quedan más pistas automáticas para tu situación. Puedes llamar al profesor para que te dé una personalizada. No cierres este mensaje hasta que venga",
             "noMoreLeft": "No quedan más pistas automáticas para tu situación. Puedes llamar al profesor para que te dé una personalizada. ",
-            "noMoreLeftTeam": "Alguien de tu equipo ha conseguido una pista peor no queda ninguna para vuestra situación actual. Podéis llamar al profesor para que os ayude.",
+            "noMoreLeftTeam": "Alguien de tu equipo ha conseguido una pista pero no queda ninguna para vuestra situación actual. Podéis llamar al profesor para que os ayude.",
             "chooseCat": "¿Con qué necesitas ayuda?",
             "cantRequestMore": "No puedes pedir más pistas",
             "cantRequestMoreThis": "No puedes solicitar más pistas en este momento",
             "canRequest": "Pide una pista",
             "newRetoSuperado": "¡Nuevo reto superado!",
-            "newRetoFailed": "Incorrecto!",
+            "newRetoFailed": "¡Incorrecto!",
             "empty": "Ayuda del profesor",
             "Info": "Información",
             "newHint": "Nueva pista",
@@ -365,9 +365,9 @@
             "start": "Comenzar",
             "stop": "Detener",
             "requestedHints": "Pistas recibidas",
-            "successMessage": "Enhorabuena! Has conseguido una nueva pista.",
+            "successMessage": "¡Enhorabuena! Has conseguido una nueva pista.",
             "tooMany": "Ya has pedido el número máximo de pistas",
-            "tooOften": "Sólo puedes pedir una pista cada",
+            "tooOften": "Solo puedes pedir una pista cada",
             "notUntil": "No puedes pedir otra pista hasta dentro de",
             "timeUp": "¡Se ha acabado el tiempo!",
             "teamJoined": "Alguien de tu equipo se ha conectado",
@@ -427,7 +427,7 @@
             "Import": "Importar",
             "importER": "Importar Escape Room",
             "selectFile": "Selecciona un fichero",
-            "selectFromEscapp": "Selecciona un fichero .zip exportado de Escapp"
+            "selectFromEscapp": "Selecciona un fichero .zip con una escape room exportada desde Escapp"
         },
         "steps": {
             "appearance": {
@@ -446,7 +446,7 @@
                 "invitationPlaceHolder": "Proporciona una contraseña para restringir el acceso a la escape room",
                 "noFileUploaded": "No has subido ningún fichero",
                 "noImageUploaded": "No has subido ninguna imagen",
-                "subjectNote": "¿Cúal es el tema abordado en la actividad? Introduce uno o varios términos separados por comas.",
+                "subjectNote": "¿Cuáles son los temas abordados por la actividad? Introduce uno o varios temas separados por comas.",
                 "subjectPlaceHolder": "Escribe aquí.",
                 "teamSizePlaceHolder": "¿Cuántos miembros puede tener cada equipo como máximo? Déjalo en blanco si no quieres limitarlo.",
                 "minTeamSizePlaceHolder": "¿Cuántos miembros debe tener un equipo como mínimo? Déjalo en blanco si no quieres limitarlo.",
@@ -484,7 +484,7 @@
                 "allowUserToResetTeamProgressHint": "Cuando los participantes reinician la escape room, toda la información relacionada con su intento anterior (p. ej., asistencia, respuestas, pistas obtenidas y marcas de tiempo) se elimina de forma permanente."
             },
             "hints": {
-                "explanation": "En este apartado puedes configurar la estrategia de pistas a seguir durante la escape room. Hay tres estragias disponibles: no permitir pistas; permitir que el alumno obtenga una pista cuando la necesite sin proporcionar nada a cambio, y permitir que el alumno obtenga una pista tras responder correctamente a un cuestionario. Si habilitas las pistas, puedes configurar el límite de pistas que puede recibir cada equipo durante la escape room. Si eliges la última estrategia, sólo tienes que subir un fichero MoodleXML con una batería de preguntas e indicar cuántas se les muestran cada intento, cuántas deben acertar para lograr una pista y si se les muestra la respuesta correcta al finalizar cada intento.",
+                "explanation": "En este apartado puedes seleccionar la estrategia de pistas de tu escape room. Hay tres estrategias disponibles: no permitir pistas, permitir pistas gratuitas y requerir que los participantes resuelvan un cuestionario para obtener una pista. Si habilitas las pistas, puedes limitar las pistas que los participantes podrán obtener. Si eliges la última estrategia, deberás subir un fichero MoodleXML que contenga una batería de preguntas e indicar cuántas preguntas se mostrarán en cada intento, cuántas deben responder correctamente los participantes para superar el cuestionario y si se les mostrará la respuesta correcta después de cada intento.",
                 "correctNumber": "Número de aciertos",
                 "correctNumberPlaceHolder": "¿Cuántas preguntas hay que acertar para obtener una pista?",
                 "moodleExplanation": "Si quieres que los participantes tengan que responder a una serie de preguntas para obtener una pista, sube un fichero MoodleXML que incluya una batería de preguntas",
@@ -501,8 +501,8 @@
                 "hintLimitPlaceholder": "No hay límite",
                 "hintStrategy": "Estrategia de pistas",
                 "noHintsStrategy": "Pistas no permitidas",
-                "freeHintsStrategy": "Los participantes pueden obtener pistas gratuitamente",
-                "quizHintsStrategy": "Los participantes pueden obtener pistas si aprueban un cuestionario",
+                "freeHintsStrategy": "Los participantes pueden obtener pistas gratis",
+                "quizHintsStrategy": "Los participantes pueden obtener pistas si superan un cuestionario",
                 "automatedHintStrategy": "Pistas proactivas",
                 "automatedHintsExplanation": "Puedes proporcionar ayuda automáticamente a los participantes cuando excedan el tiempo estimado para resolver un reto.",
                 "noAutomatedHints": "No proporcionar pistas de forma proactiva",
@@ -522,13 +522,13 @@
                 "title": "Interfaz de equipo"
             },
             "class": {
-                "explanation": "En este apartado puedes personalizar la interfaz que proyectarás en el aula. Puedes añadir elementos como una cuenta atrás, un video introductorio o un ranking. Si vas a realizar la escape room de forma remota, los participantes nunca verán esta interfaz, por lo que puedes saltarte este paso.",
-                "placeholder": "Añade la información que quieras proyectar en el aula",
+                "explanation": "En este apartado puedes crear una interfaz para mostrar un mismo contenido a todos los participantes (p. ej., proyectándola en el aula). Puedes añadir elementos como una cuenta atrás, un video introductorio o un ranking. Si vas a realizar la escape room de forma asíncrona, los participantes nunca verán esta interfaz, por lo que puedes saltarte este paso.",
+                "placeholder": "Añade el contenido que quieras mostrar a todos los participantes.",
                 "title": "Interfaz de clase"
             },
             "indications": {
-                "explanation": "En este apartado puedes personalizar las instrucciones que los participantes recibirán antes de que comience la escape room desde el momento en el que se apunten. Por ejemplo, puedes recordarles que traigan algún material, indicarles que repasen parte del contenido de la asignatura o proporcionarles un vídeo.",
-                "placeholder": "Añade instrucciones previas personalizadas",
+                "explanation": "En este apartado puedes especificar las instrucciones que los participantes verán desde que se apunten a la escape room hasta su comienzo.",
+                "placeholder": "Añade instrucciones previas.",
                 "title": "Instrucciones previas",
                 "hybridInstructions": "Recursos físicos",
                 "hybridInstructionsNote": "Has indicado que la escape room es híbrida. Si es necesario, proporciona a los participantes los recursos físicos que necesitarán para completar la actividad.",
@@ -544,8 +544,7 @@
                     "setupVisualization": "Visualización",
                     "visualizationIntro": "¿Cuándo deseas mostrar este bloque de contenido?",
                     "visualizationStart": "Nada más empezar",
-                    "visualizationFinish": "Cuando superen la escape room.",
-                    "visualizationSucceed": "Cuando los participantes estén trabajando en los siguientes retos",
+                    "visualizationFinish": "Cuando los participantes superen la escape room.",
                     "accept": "aceptar",
                     "cancel": "cancelar",
                     "dropHere": "Suelta para colocarlo aquí",
@@ -580,7 +579,7 @@
                         "addResource": "añadir recurso",
                         "addBlock": "añadir bloque",
                         "downloadZip": "descargar zip",
-                        "addText": "añadir bloque de texto",
+                        "addText": "añadir bloque de contenido",
                         "table": {
                             "name": "Nombre",
                             "type": "Tipo",
@@ -608,7 +607,7 @@
                             "customization": "Opciones de configuración",
                             "puzzleSolution": "Solución",
                             "range": "Rango",
-                            "autoplay": "Autoplay",
+                            "autoplay": "Reproducción automática",
                             "controls": "Controles",
                             "download": "Descarga",
                             "nameDescription": "Nombre y descripción",
@@ -628,7 +627,7 @@
             	"edit":"Configuración básica",
             	"settings":"Configuración básica",
             	"turnos": "Turnos",
-            	"puzzles": "Retos",
+            	"puzzles": "Retos y pistas",
                 "hints": "Gestión de pistas",
                 "assets": "Galería de ficheros",
                 "team": "Interfaz de equipo",
@@ -640,12 +639,12 @@
                 "sharing": "Publicación"
             },
             "puzzles": {
-                "explanation": "En este apartado puedes configurar los distintos retos que componen la escape room. Ten en cuenta que deben seguir una estructura lineal, es decir, para resolver un reto es necesario haber resuelto el anterior. Debes especificar el nombre y descripción de cada reto, así como su solución. Si seleccionas la opción de monitorización automática para algún reto, en la interfaz de equipo no se permitirá resolver ese reto sino que se deberá hacer mediante una aplicación que use la API de escapp. Puedes añadir pistas para cada reto, las cuales serán proporcionadas a los participantes de acuerdo a la configuración de pistas que establezcas en la siguiente sección.",
+                "explanation": "En este apartado puedes configurar los retos de la escape room. Estos retos deben seguir una estructura lineal, por lo que cada reto solo podrá completarse una vez se hayan resuelto los anteriores. Para cada reto, debes especificar un nombre y una solución. Además, en esta sección puedes definir las pistas disponibles para cada reto, las cuales serán proporcionadas a los participantes de acuerdo a la configuración que establezcas en la siguiente sección.",
                 "addNewHint": "añadir pista",
                 "addNewCategory": "añadir categoría",
                 "addNewPuzzles": "añadir reto",
-            	"automatic": "Recurso (reto reutilizable o externo)",
-                "calculateDuration": "calculate",
+            	"automatic": "Recurso (interno o externo)",
+                "calculateDuration": "calcular",
                 "calculateDurationTitle": "Calcula la duración esperada del reto basándote en los datos de intentos previos de otros equipos",
                 "clueName": "Nombre de la pista",
                 "description": "Descripción",
@@ -665,7 +664,7 @@
                 "solution": "Solución",
                 "subpuzzles": "Subretos",
                 "successMsg": "Mensaje al acertar",
-                "title": "Retos",
+                "title": "Retos y pistas",
                 "tracking": "Introducción de la solución",
                 "validator": {
                    "msg": "Verificación",
@@ -684,8 +683,8 @@
             },
             "after": {
                 "title": "Instrucciones finales",
-                "explanation": "Aquí puedes añadir la información que quieres mostrar a los participantes una vez terminen la escape room. Puedes incluir una encuesta, un post-test o cualquier otro recurso o información que quieras compartir con ellos.",
-                "placeholder": "Añade instrucciones personalizadas para después de la escape room"
+                "explanation": "Aquí puedes indicar la información que quieres mostrar a los participantes una vez que terminen la escape room.",
+                "placeholder": "Añade instrucciones para después de la escape room."
             },
             "sharing": {
                 "title": "Publicación",
@@ -789,7 +788,7 @@
             "teamInstructions": "La interfaz de equipo",
             "afterInstructions": "Las instrucciones al terminar",
             "indicationsInstructions": "Las instrucciones previas",
-            "supportLink": "El link de soporte",
+            "supportLink": "El enlace de soporte",
             "scoreParticipation": "La nota por asistencia",
             "automaticAttendance": "El modo de tomar asistencia",
             "hintLimit": "El límite de pistas",
@@ -839,7 +838,7 @@
             "theme": "Temática",
             "build": "Construye",
             "hints": "Pistas",
-            "instructions": "Intrucciones",
+            "instructions": "Instrucciones",
             "try": "Prueba",
             "puzzleByPuzzle": "Reto a reto",
             "simulation": "Simulación completa",
@@ -878,7 +877,7 @@
                     "info": "Extraer información",
                     "logic": "Lógica abstracta"
                 },
-                "resources": "Aqui podrás encontrar webs que ofrecen estos recursos."
+                "resources": "Aquí podrás encontrar webs que ofrecen estos recursos."
             },
             "fourth": {
                 "title": "Paso 4: Seleccionar una temática apropiada",
@@ -904,7 +903,7 @@
                 },
                 "hints": {
                     "title": "Pistas",
-                    "content": "Una parte esencial en el diseño de toda <em>escape room</em> son las pistas y ayudas. Es esencial evitar que los participantes pasen demasiado tiempo en un mismo reto ya que, si esto ocurre, se corre el riesgo de que pierdan la motivación. Además, esa situación puede ser contraproducente desde el punto de vista pedagógico, ya que los participantes no se enfrentarán  a la totalidad de los retos. Para evitar que la petición de ayuda sea constante, una posibilidad es idear una batería de preguntas que los participantes tengan que intentar responder cada vez que necesiten una pista. Si consiguen acertar más de un número determinado de preguntas, conseguirán una pista. De esta manera los participantes se ganarán el derecho a obtener ayuda y se ponen a prueba sus conocimientos teóricos acerca de la asignatura para complementar el contenido práctico que se pone en práctica en la <em>escape room</em>."
+                    "content": "Una parte esencial en el diseño de toda <em>escape room</em> son las pistas y ayudas. Es esencial evitar que los participantes pasen demasiado tiempo en un mismo reto ya que, si esto ocurre, se corre el riesgo de que pierdan la motivación. Además, esa situación puede ser contraproducente desde el punto de vista pedagógico, ya que los participantes no se enfrentarán a la totalidad de los retos. Para evitar que la petición de ayuda sea constante, una posibilidad es idear una batería de preguntas que los participantes tengan que intentar responder cada vez que necesiten una pista. Si consiguen acertar más de un número determinado de preguntas, conseguirán una pista. De esta manera los participantes se ganarán el derecho a obtener ayuda y se ponen a prueba sus conocimientos teóricos acerca de la asignatura para complementar el contenido práctico que se pone en práctica en la <em>escape room</em>."
                 },
                 "instructions": {
                     "title": "Instrucciones",
@@ -942,11 +941,11 @@
         "secretCode": "Código secreto",
         "snotes": "Mensajes ocultos",
         "ar": "Realidad aumentada",
-        "roulette": "Ruleta con colores y numeros",
+        "roulette": "Ruleta con colores y números",
         "coordinates": "Mensajes con coordenadas",
         "codeGen": "Generador de códigos",
         "url": "URL con contraseña",
-        "postcard": "Postal con codigo",
+        "postcard": "Postal con código",
         "puzzleGen": "Generador de puzzles",
         "ticket": "Ticket falso",
         "id": "Tarjetas ID falsas",
@@ -966,9 +965,9 @@
         "shareIntro": "Puedes usar este link para compartir el reto con tus alumnos",
         "edit": "editar",
         "delete": "borrar",
-        "outside": "Otros recursos ajenos a escapp",
+        "outside": "Otros recursos ajenos a Escapp",
         "fullscreen": "Compartir en pantalla completa",
-        "intro": "La siguiente colección de recursos se integra con los retos de tu escape room de escapp. Puedes personalizar distintos aspectos de los mismos y obtener un enlace para compartirlos con tus alumnos como parte de la escape room.",
+        "intro": "La siguiente colección de recursos se integra con los retos de tu escape room de Escapp. Puedes personalizar distintos aspectos de los mismos y obtener un enlace para compartirlos con tus alumnos como parte de la escape room.",
         "resourceCatalog": "Catálogo de recursos"
     },
     "guides": {
@@ -1002,7 +1001,7 @@
         "wrongToken": "Contraseña de acceso a la escape room incorrecta",
         "connected": "Conectado",
         "waiting": "En espera",
-        "disconnected": "Desonectado",
+        "disconnected": "Desconectado",
         "participants" : "participante(s)"
     },
     "collaborators": {
@@ -1103,11 +1102,9 @@
             "resourceCatalog": "Catálogo de recursos"
         },
         "messages": {
-            "copyAria": "Input invisible para permitir copiar el link de invitación",
-            "freeHintsStrategy": "Esta escape room permite obtener pistas libremente",
+            "copyAria": "Input invisible para permitir copiar el enlace de invitación",
             "withAutomatedSuggestions": "Se anima a los participantes a pedir una pista si están tardando demasiado",
             "withAutomatedHints": "Los participantes reciben automáticamente una pista si están tardando demasiado",
-            "noHintsStrategy": "Esta escape room no permite obtener pistas",
             "noHintControl": "Esta escape room no utiliza ningún mecanismo de control de pistas",
             "noVideo": "No hay vídeo",
             "copyTitle": "Copia el enlace",
@@ -1152,7 +1149,7 @@
             "video": "Vídeo",
             "share": "Compartir",
             "lang": "Idioma de la escape room",
-            "forceLang": "Forzar el idioma de escapp para los participantes de esta escape room",
+            "forceLang": "Forzar el idioma de Escapp para los participantes de esta escape room",
             "forceLang2": "Idioma"
         },
         "cantManageUntilComplete": "No puedes gestionar la escape room hasta que hayas cambiado su estado a completado en el último paso de la Configuración ('Publicación')."
@@ -1201,13 +1198,13 @@
         "Actions": "Acciones",
         "addTurno": "añadir turno",
         "all": "Todos los turnos",
-        "alreadyIn": "Ya estas dentro de un turno.",
+        "alreadyIn": "Ya estás apuntado a un turno.",
         "tooLate": "Es demasiado tarde para unirte a este equipo",
         "always": "siempre",
         "alwaysOpen": "asíncrono",
         "asynchronousTitle": "Turno asíncrono",
         "asynchronousShiftsTitle": "Turnos asíncronos",
-        "notActiveForYou": "Esta escape room no esta abierta",
+        "notActiveForYou": "Esta escape room no está abierta",
         "turnNotAvailable":"El turno seleccionado no está disponible",
         "participants": "Participantes",
         "arrows": {
@@ -1359,19 +1356,19 @@
             "ensureRegistered": "Ha ocurrido un error. Asegúrate de que te has registrado correctamente en la escape room.",
             "emailConfirm":"Por favor, confirma tu correo electrónico haciendo click en el botón de confirmar",
             "emailConfirmButton":"confirmar",
-            "emailResetPassword1":" Si recibes este mensaje es porque has solicitado recuperar tu contraseña en escapp.",
+            "emailResetPassword1":" Si recibes este mensaje es porque has solicitado recuperar tu contraseña en Escapp.",
             "emailResetPassword2":"Haz click en el siguiente link:",
             "notAllowedTeacherEmail": "No puedes registrarte como profesor con este correo electrónico",
             "notAllowedStudentEmail": "No puedes registrarte como alumnno con este correo electrónico",
             "notAllowedEmail": "No puedes registrarte con este correo electrónico",
-            "sucessfullyUpdatedUser": "El usuario se ha actualizado con éxito"
+            "successfullyUpdatedUser": "El usuario se ha actualizado con éxito"
         },
         "name": "Nombre",
         "anonymous": "Anónimo",
         "anonymizedCantLogin": "Esta cuenta ha sido eliminada y no puedes iniciar sesión",
         "teacherCannotJoin": "Has usado un enlace destinado a los participants de la escape room. Si quieres probar tu escape room haz click en el botón 'test'.",
         "password": "Contraseña",
-        "passLeaveBlank": "Si deseas cambiar la contraseña, rellena los siguientes campos, sino déjalos en blanco",
+        "passLeaveBlank": "Si deseas cambiar la contraseña, rellena los siguientes campos. Si no, déjalos en blanco.",
         "passwordConfirm": "Confirmar contraseña",
         "roles": {
             "admin": "Administrador",

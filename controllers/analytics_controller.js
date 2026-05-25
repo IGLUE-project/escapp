@@ -33,7 +33,7 @@ exports.analytics = async (req, res, next) => {
             "value": getBestTime(finished),
             "icon": "timer"
         };
-        const sucessRate = {
+        const successRate = {
             "value": `${Math.round(finished.length / teams.length * 10000) / 100 || 0}%`,
             "icon": "star"
         };
@@ -68,7 +68,7 @@ exports.analytics = async (req, res, next) => {
                 });
             }
         });
-        const summary = {nParticipants, sucessRate, bestTime, avgTeamSize, avgReqHints};
+        const summary = {nParticipants, successRate, bestTime, avgTeamSize, avgReqHints};
         const charts = {retosSuperadosTeam, hintsByTeam};
 
         res.render("escapeRooms/analytics/analytics", {escapeRoom, turnId, summary, charts});

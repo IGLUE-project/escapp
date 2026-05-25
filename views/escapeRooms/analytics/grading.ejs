@@ -43,8 +43,8 @@
             <% for (var p in puzzles) { var puzzle = puzzles[p]; %>
                 <th><%=puzzle.title%></th>
             <% } %>
-            <% if (hintConditional) { %><th><%=i18n.analytics.grading.hintSuccess%></th><%}%>
-            <% if (hintAppConditional) { %><th><%=i18n.analytics.grading.hintFailed%></th><%}%>
+            <% if (hintConditional) { %><th><%=i18n.analytics.grading.hintSuccess%></th><%} %>
+            <% if (hintAppConditional) { %><th><%=i18n.analytics.grading.hintFailed%></th><%} %>
             <th><%=i18n.common.Total%></th>
         </tr>
         <%for (var p in results) { var result = results[p];%>

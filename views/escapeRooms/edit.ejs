@@ -8,10 +8,7 @@
             <span><%=escapeRoom.title%></span>
         </div>
     </div>
-    <br class="escapeRoomItem">
-    <h1><%=i18n.escapeRoom.steps.settings.title%>:</h1>
-    
-        
+
     <h2 class="by-author"> 
         <%if (session.user.isAdmin){%>
          <%=i18n.common.see%> <a href="/users/<%=escapeRoom.authorId%>"><%=i18n.common.author%></a>
@@ -25,7 +22,6 @@
        
     </h2>
    
-
     <div class="menuERShow">
         <div class="menuERShowLeft">
             <ul class="menuERactionList animated slideInLeft gugi timeldine-er">
@@ -337,22 +333,28 @@
                 <div class="flexRow animated slideInUp" id="pistas" style="animation-delay: <%=delay%>ms;">
                     <% delay += 50 %>
                     <div class="flexShowLeft">
-                        <%=i18n.showTeacher.actionList.hintStrategy%>:
-                        <% var hintConditional  = (!escapeRoom.hintLimit && escapeRoom.hintLimit !== 0 ) || escapeRoom.hintLimit > 0; // Hints allowed %>
-                        <% var hintAppConditional = hintConditional && Boolean(escapeRoom.hintApp); // Hint app methodology %>
-
+                        <%=i18n.escapeRoom.steps.hints.hintStrategy%>:
                     </div>
                     <div class="flexShowRight">
-                        <% if (hintAppConditional) { %>
+                        <% 
+                            var hintsAllowed = (escapeRoom.hintLimit == null || escapeRoom.hintLimit > 0);
+                            var hintQuizStrategyEnabled = (hintsAllowed && Boolean(escapeRoom.hintApp));
+                            var proactiveHints = (hintsAllowed && (escapeRoom.automatedHints &&  escapeRoom.automatedHints !== "NO_AUTOMATED_HINTS"));
+                        %>
+                        <% if (hintQuizStrategyEnabled) { %>
+                            <%=i18n.escapeRoom.steps.hints.quizHintsStrategy%>.
+                        <% } else if (hintsAllowed) { %>
+                            <%=i18n.escapeRoom.steps.hints.freeHintsStrategy%>.
+                        <% } else { %>
+                            <%=i18n.escapeRoom.steps.hints.noHintsStrategy%>.
+                        <% } %>
+                        <% if (proactiveHints) { %>
+                            <%=escapeRoom.automatedHints ? i18n.showTeacher.messages.withAutomatedSuggestions : i18n.showTeacher.messages.withAutomatedHints %>.
+                        <% } %>
+                        <% if (hintQuizStrategyEnabled) { %>
+                            <br/>
                             <a class="show_link" href="/escapeRooms/<%= escapeRoom.id%>/quizFile"><%=escapeRoom.hintApp.filename%></a>
                             <button class="preview-icon" onclick="previewHintApp()"><span class="material-icons">remove_red_eye</span></button>
-                        <% } else if (hintConditional) { %>
-                            <%=i18n.showTeacher.messages.freeHintsStrategy%>.
-                            <%if (escapeRoom.automatedHints &&  escapeRoom.automatedHints !== "NO_AUTOMATED_HINTS") {%>
-                                 <%=escapeRoom.automatedHints ? i18n.showTeacher.messages.withAutomatedSuggestions : i18n.showTeacher.messages.withAutomatedHints %>
-                            <%}%>
-                        <% } else { %>
-                            <%=i18n.showTeacher.messages.noHintsStrategy%>
                         <% } %>
                     </div>
                 </div>

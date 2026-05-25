@@ -180,7 +180,7 @@ exports.update = async (req, res, next) => {
             res.cookie("locale", body.lang);
             const i18n2 = require(`../i18n/${body.lang}`);
 
-            scs = i18n2.user.sucessfullyUpdatedUser;
+            scs = i18n2.user.successfullyUpdatedUser;
         }
     }
     if (body.password && body.confirm_password) {

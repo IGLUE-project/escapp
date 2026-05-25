@@ -14,7 +14,7 @@
             "title": "Grading",
             "attendance": "Attendance",
             "hintSuccess": "Hints obtained",
-            "hintFailed": "Hints missed"
+            "hintFailed": "Failed hint requests"
         },
         "hints": {
             "customClue": "Help from the teacher",
@@ -29,7 +29,7 @@
         },
         "main": {
             "download": "download",
-            "downloadRaw": "download raw",
+            "downloadRaw": "download complete data",
             "grading": "Grading",
             "hints": "Hints",
             "histogram":"Histogram",
@@ -47,7 +47,7 @@
             },
             "dashboard": {
                 "nParticipants": "# Participants",
-                "sucessRate": "Success Rate",
+                "successRate": "Success Rate",
                 "bestTime": "Best time",
                 "avgTeamSize": "Avg. team size",
                 "avgReqHints": "Avg. hints obtained",
@@ -213,7 +213,7 @@
             "passwordsDoNotMatch": "Passwords do not match",
             "problemSendingEmail": "There was a problem with your request",
             "resetPasswordSent": "We have sent you an email with a link to reset your password",
-            "resetPasswordUserNotFound": "Sorry, you are not registered in escapp",
+            "resetPasswordUserNotFound": "Sorry, you are not registered in Escapp",
             "successActivatingTurno": "Shift successfully activated/deactivated",
             "successAddingCollaborator": "Successfully added collaborator. They will be notified to confirm their collaboration",
             "successCreatingER": "Escape room successfully set up",
@@ -283,7 +283,7 @@
             "description": "Description",
             "authentication": "Whether the authentication parameters are correct or not",
             "authenticationAPI": "Authentication",
-            "authenticationAPIDesc": "This endpoint allows you to authenticate in escapp and verify whether you are allowed to participate in an escape room at a given time",
+            "authenticationAPIDesc": "This endpoint allows you to authenticate in Escapp and verify whether you are allowed to participate in an escape room at a given time",
             "method": "Method",
             "email": "User email",
             "password": "User password",
@@ -293,9 +293,9 @@
             "response": "Response",
             "sampleResponse": "Sample response",
             "puzzleAPI": "Puzzles",
-            "puzzleAPIDesc": "This endpoint allows you to solve puzzles remotely without a need to access escapp's team interface",
+            "puzzleAPIDesc": "This endpoint allows you to solve puzzles remotely without a need to access Escapp's team interface",
             "startAPI": "Participation",
-            "startAPIDesc": "This endpoint allows you to start participating in an escape room without a need to hit the start button in escapp",
+            "startAPIDesc": "This endpoint allows you to start participating in an escape room without a need to hit the start button in Escapp",
             "erState": "Object indicating the current state of the escape room for the team. It has two properties: <code>puzzlesSolved</code>, which contains an array indicating which puzzles have been completed by the team (including the puzzle's name, number, solution, and success message);  <code>hintsAllowed</code>, a boolean indicating whether the team can request any more hints; <code>progress</code>, the percentage of puzzles solved, and <code>score</code>, the total score of the participant according to the grading rubric set up by the teacher.",
             "code": {
                 "OK": "The answer provided for the puzzle is correct",
@@ -306,7 +306,7 @@
                 "PARTICIPANT": "You are a participant of this escape room and the shift you signed up for is active",
                 "TOO_LATE": "You are a participant of this escape room but the shift you signed up for is finished or you have run out of time",
                 "NOT_ACTIVE": "You are a participant of this escape room but the shift you signed up for has not started yet",
-                "NOT_STARTED": "You are a participant of this escape room but you have not hit the start button on the escapp platform or started via API",
+                "NOT_STARTED": "You are a participant of this escape room but you have not hit the start button on the Escapp platform or started via API",
                 "NOT_A_PARTICIPANT": "You are not a participant of this escape room",
                 "AUTHOR": "You are the author of this escape room"
             },
@@ -314,7 +314,7 @@
                 "PARTICIPANT": "You have successfully started the escape room",
                 "TOO_LATE": "The shift you signed up for is finished or you have run out of time",
                 "NOT_ACTIVE": "The shift you signed up for has not started yet",
-                "NOT_STARTED": "You have not hit the start button on the escapp platform",
+                "NOT_STARTED": "You have not hit the start button on the Escapp platform",
                 "NOT_A_PARTICIPANT": "You are not a participant of this escape room",
                 "AUTHOR": "You are the author of this escape room"
             },
@@ -426,7 +426,7 @@
             "Import": "Import",
             "importER": "Import Escape Room",
             "selectFile": "Select a file",
-            "selectFromEscapp": "Select a .zip file exported from Escapp"
+            "selectFromEscapp": "Select a .zip file containing an escape room exported from Escapp"
         },
         "steps": {
             "appearance": {
@@ -445,7 +445,7 @@
                 "invitationPlaceHolder": "Provide a password to restrict access to the escape room",
                 "noFileUploaded": "No files have been uploaded yet",
                 "noImageUploaded": "No pictures have been uploaded yet",
-                "subjectNote": "What topic is covered in the activity? Introduce multiple topics separated by commas.",
+                "subjectNote": "What topics are covered by the activity? Enter one or more topics separated by commas.",
                 "subjectPlaceHolder": "Type here",
                 "teamSizePlaceHolder": "How many members can each team have? Leave it blank if you don't want to limit it.",
                 "minTeamSizePlaceHolder": "What is the minimum number of team members? Leave it blank if you don't want to limit it.",
@@ -483,10 +483,10 @@
                 "allowUserToResetTeamProgressHint": "When participants restart the escape room, all information related to their previous attempt (e.g., assistance, answers, hints obtained, and timestamps) is permanently deleted."
             },
             "hints": {
+                "explanation": "In this step you can select the hint strategy of your escape room. There are three strategies available: not allowing hints, allowing free hints, and requiring participants to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that participants can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt.",
                 "correctNumber": "Number of correct answers",
                 "correctNumberPlaceHolder": "How many correct answers do participants need to obtain a hint?",
                 "moodleXMLExplanation": "If you want participants to answer a series of questions to obtain a hint, upload a MoodleXML file that includes a battery of questions",
-                "explanation": "In this step you can select the hint strategy of your escape room. There are three strategies available: not allowing hints, allowing free hints, and requiring participants to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that participants can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt.",
                 "moodleExplanation": "If you want participants to answer a quiz in order to get a hint, please upload a MoodleXML with a battery of questions",
                 "feedback": "Feedback",
                 "feedbackExplanation": "Do you want to show participants the correct answers once the quiz is completed?",
@@ -521,14 +521,14 @@
                 "title": "Team interface"
             },
             "class": {
-                "explanation": "Here you can customize the interface that you'll be able to screen in the classroom for all participants to see. It can include a countdown, an introductory video, a leaderboard, etc. If the escape room is conducted remotely, the participants will never see the class interface, so you can skip this step.",
-                "placeholder": "Add the information you want to project in the classroom",
+                "explanation": "In this step, you can create an interface to display the same content to all participants (e.g., by projecting it in the classroom). You can add elements such as a countdown timer, an introductory video, or a leaderboard. If the escape room will be carried out asynchronously, participants will never see this interface, so you can skip this step.",
+                "placeholder": "Add the content you want to display to all participants.",
                 "title": "Classroom interface"
             },
 
             "indications": {
-                "explanation": "Here you can customize the information participants will see prior to the start of the escape room since the moment the sign up. For instance, you can remind them to bring certain material, tell them to review the course content, or provide them a video to watch.",
-                "placeholder": "Add custom instructions",
+                "explanation": "In this step, you can specify the instructions that participants will see from the moment they sign up for the escape room until it begins.",
+                "placeholder": "Add preliminary instructions.",
                 "title": "Pre-activity instructions",
                 "hybridInstructions": "Physical resources",
                 "hybridInstructionsNote": "You have indicated that the escape room is hybrid, please upload here any additional resources that participants will need to complete the activity.",
@@ -544,8 +544,7 @@
                     "setupVisualization": "Visualization",
                     "visualizationIntro": "When do you wish to display this content block?",
                     "visualizationStart": "Right at the beginning",
-                    "visualizationFinish": "When they finish the escape room.",
-                    "visualizationSucceed": "When participants are working on the following puzzles",
+                    "visualizationFinish": "When participants finish the escape room.",
                     "accept": "accept",
                     "cancel": "cancel",
                     "dropHere": "Drop now to place the content here",
@@ -580,7 +579,7 @@
                         "addResource": "add resource",
                         "addBlock": "add block",
                         "downloadZip": "download",
-                        "addText": "add text block",
+                        "addText": "add content block",
                         "table": {
                             "name": "Name",
                             "type": "Type",
@@ -635,15 +634,15 @@
                 "after": "Post-activity instructions",
                 "class": "Classroom Interface",
                 "participants": "Participants",
-                "puzzles": "Puzzles",
+                "puzzles": "Puzzles and hints",
                 "turnos": "Shifts"
             },
             "puzzles": {
-                "explanation": "In this step, you can specify the different puzzles that make up the escape room. Keep in mind that they must follow a linear structure, which means that, in order to solve a puzzle, participants need to have solved the previous one. You need to specify the name and description of each puzzle, as well as its solution. If you enable the automatic monitoring option for a puzzle, it won't be possible to solve it in the team interface. Instead, it must be completed through an application that uses the Escapp API. You can add hints for each puzzle and these hints will be provided to participants based on the hint configuration you set in the next step.",
+                "explanation": "In this step, you can configure the escape room puzzles. These puzzles must follow a linear structure, meaning that each puzzle can only be completed once the previous ones have been solved. For each puzzle, you must specify a name and a solution. In addition, in this section you can define the hints available for each puzzle, which will be provided to participants according to the configuration established in the following section.",
                 "addNewHint": "add hint",
                 "addNewCategory": "add category",
                 "addNewPuzzles": "add puzzle",
-            	"automatic": "Resource (reusable puzzle or external)",
+            	"automatic": "Resource (internal or external)",
                 "calculateDuration": "calculate",
                 "calculateDurationTitle": "Calculate the expected duration based on previous data from participants who have completed this puzzle",
                 "clueName": "Clue name",
@@ -664,7 +663,7 @@
                 "solution": "Answer",
                 "subpuzzles": "Subpuzzles",
                 "successMsg": "Message on success",
-                "title": "Puzzles",
+                "title": "Puzzles and hints",
                 "tracking": "How to enter the solution",
                 "validator": {
                    "msg": "Verification",
@@ -683,8 +682,8 @@
             },
             "after": {
                 "title": "Post-activity instructions",
-                "explanation": "Here you can add the information you want to show participants once they finish the escape room. You can include a survey, a post-quiz, or any other information you want to share with them.",
-                "placeholder": "Add custom instructions for after the escape room"
+                "explanation": "Here you can specify the information you want to show participants once they finish the escape room.",
+                "placeholder": "Add instructions for after the escape room."
 
             },
             "sharing": {
@@ -966,9 +965,9 @@
         "shareIntro": "You can use this link to share the puzzle with your students",
         "edit": "edit",
         "delete": "delete",
-        "outside": "Other resources out of the scope of escapp",
+        "outside": "Other resources out of the scope of Escapp",
         "fullscreen": "Share in fullscreen",
-        "intro": "The collection of puzzles below allows you to connect digital puzzle applications with the puzzle outline that you defined for your escapp escape room. You can customize their settings and share them with your students as a part of your escape room.",
+        "intro": "The collection of puzzles below allows you to connect digital puzzle applications with the puzzle outline that you defined for your Escapp escape room. You can customize their settings and share them with your students as a part of your escape room.",
         "resourceCatalog": "Resource catalog"
     },
     "guides": {
@@ -1103,10 +1102,8 @@
         },
         "messages": {
             "noHintControl": "This escape room does not have any hint system yet",
-            "freeHintsStrategy": "This escape room allows obtaining free hints",
             "withAutomatedSuggestions": "Participants are encouraged to ask for a hint if they are taking too long",
             "withAutomatedHints": "Participants automatically receive a hint if they are taking too long",
-            "noHintsStrategy": "This escape room does not allow to obtain hints",
             "noVideo": "This escape room does not have any video yet",
             "copyAria": "Invisible input to enable copying invitation link",
             "copyTitle": "Copy the link",
@@ -1149,7 +1146,7 @@
             "video": "Video",
             "share": "Share",
             "lang": "Language of the escape room",
-            "forceLang": "Force specific language in escapp for the participants of this escape room",
+            "forceLang": "Force specific language in Escapp for the participants of this escape room",
             "forceLang2": "Language"
 
         },
@@ -1356,12 +1353,12 @@
             "ensureRegistered": "An error occurred. Please make sure you've correctly registered in the escape room",
             "emailConfirm":"Please, confirm your email address, by clicking the 'confirm' button below",
             "emailConfirmButton":"confirm",
-            "emailResetPassword1":"If you are receiving this email is because you reset your password in escapp.",
+            "emailResetPassword1":"If you are receiving this email is because you reset your password in Escapp.",
             "emailResetPassword2":"This is the link to reset your password:",
             "notAllowedTeacherEmail": "You are not allowed to enroll as a teacher with this email",
             "notAllowedStudentEmail": "You are not allowed to enroll as a student with this email",
             "notAllowedEmail": "You are not allowed to enroll with this email",
-            "sucessfullyUpdatedUser":  "User successfully updated"
+            "successfullyUpdatedUser":  "User successfully updated"
 
 
         },

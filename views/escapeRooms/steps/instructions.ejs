@@ -139,8 +139,6 @@ window.reusablePuzzleInstances = window.reusablePuzzleInstances.map(rpi => ({ ..
 <div id="dialog-config" title="<%=i18n.escapeRoom.steps.indications.front.setupVisualization%>" style="display: none;">
   <div class="config-list">
     <p class="config-paragraph"><%=i18n.escapeRoom.steps.indications.front.visualizationIntro%></p>
-
-    <p class="config-paragraph" style="color: var(--info);font-size: 19px;"><%=i18n.escapeRoom.steps.indications.front.visualizationSucceed%>:</p>
     <%for (var p in escapeRoom.puzzles) {
       var puzzle= escapeRoom.puzzles[p];%>
       <label class="puzzle-preview-select">
@@ -149,7 +147,7 @@ window.reusablePuzzleInstances = window.reusablePuzzleInstances.map(rpi => ({ ..
       </label>
     <%}%>
     <label class="puzzle-preview-select">
-      <input type="checkbox" id="puzzle-all"><%=i18n.escapeRoom.steps.indications.front.visualizationFinish%>
+      <input type="checkbox" id="puzzle-all">&nbsp; <%=i18n.escapeRoom.steps.indications.front.visualizationFinish%>
     </label>
   </div>
 </div>
