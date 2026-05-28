@@ -1558,7 +1558,8 @@
         "imageSrcPlaceholder": "URL slike",
         "addImage": "Dodaj sliku",
         "defaultTitle1": "бекство",
-        "defaultTitle2": "соба"
+        "defaultTitle2": "соба",
+        "defaultConfirmation": "Провери"
       },
       "Ipad":{
         "name": "iPad Klasifikator",
