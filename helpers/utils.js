@@ -35,14 +35,18 @@ exports.saveInterface = async (name, req, res, next) => {
 
         if (hybridInstructionsFile && hybridInstructionsFile.filename) {
             try {
-                fs.unlinkSync(path.join(__dirname, "/../uploads/hybrid/", escapeRoom.hybridInstructions));
+                if (escapeRoom.hybridInstructions) {
+                    fs.unlinkSync(path.join(__dirname, "/../uploads/hybrid/", escapeRoom.hybridInstructions));
+                }
             } catch (e) {
                 console.error("Error deleting old resources file:", e);
             }
             escapeRoom.hybridInstructions = hybridInstructionsFile.filename;
         } else if (body.keepHybridInstructions === "0") {
             try {
-                fs.unlinkSync(path.join(__dirname, "/../uploads/hybrid/", escapeRoom.hybridInstructions));
+                if (escapeRoom.hybridInstructions) {
+                    fs.unlinkSync(path.join(__dirname, "/../uploads/hybrid/", escapeRoom.hybridInstructions));
+                }
             } catch (e) {
                 console.error("Error deleting old resources file:", e);
             }
