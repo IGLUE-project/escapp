@@ -667,7 +667,7 @@
                 "validator": {
                    "msg": "Verification",
                     "exact": "Exact",
-                    "caseinsensitive": "Case-insensitive",
+                    "caseinsensitive": "Relaxed (case- and accent-insensitive)",
                     "regex": "Regular expression",
                     "range": "Numeric, with a tolerance of ±"
                 },

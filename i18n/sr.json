@@ -668,7 +668,7 @@
         "validator": {
           "msg": "Verifikacija",
           "exact": "Tačno",
-          "caseinsensitive": "Neosetljivo na velika i mala slova",
+          "caseinsensitive": "Fleksibilna (ignoriše akcente i veličinu slova)",
           "regex": "Regularni izraz",
           "range": "Numerički, sa tolerancijom od ±"
         },

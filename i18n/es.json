@@ -668,7 +668,7 @@
                 "validator": {
                    "msg": "Verificación",
                     "exact": "Exacta",
-                    "caseinsensitive": "Sin distinguir mayúsculas",
+                    "caseinsensitive": "Laxa (sin distinguir mayúsculas ni acentos)",
                     "regex": "Expresión regular",
                     "range": "Numérica, con una tolerancia de ±"
                 },
