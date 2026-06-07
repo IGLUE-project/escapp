@@ -1551,8 +1551,8 @@
             "Text": "Text",
             "Image": "Image"
         },
-        "Classification": {
-            "name": "Drag and Drop Classify",
+        "DragAndDropClassification": {
+            "name": "Drag and drop classification",
             "description": "This resource allows you to create a classification puzzle where participants must drag elements to the correct categories.",
             "leftTitle": "Left Title",
             "leftTitlePlaceholder": "Title for the left category",
@@ -1584,9 +1584,9 @@
             "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of numbers, letters, colors, or symbols using a keypad.",
             "keyType": "Type of buttons"
         },
-        "Ipad": {
-            "name": "iPad Classifier",
-            "description": "This resource allows you to create a puzzle whose solution requires participants to interact with a virtual iPad and classify texts or images into two categories",
+        "DigitalClassifier": {
+            "name": "Digital classifier",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to interact with a tablet and classify texts or images into two categories",
             "button_ok":"Possible",
             "button_nok":"Dismiss",
             "context": "Context",
@@ -1630,7 +1630,7 @@
             "label_review": "Review text"
         },
         "PopupQuestion": {
-            "name": "Popup Question",
+            "name": "Popup question",
             "description": "This resource allows you to create a puzzle with a popup question overlay on top of content (image or iframe)",
             "contentArea": "Content Area",
             "contentType": "Content type",

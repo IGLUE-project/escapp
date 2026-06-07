@@ -38,45 +38,45 @@
    </div>
 
 <div>
-    <label for="leftTitleInput"><%=i18n.reusablePuzzleApps.Classification.leftTitle%>:</label>
-    <input type="text" id="leftTitleInput" name="leftTitle" placeholder="<%=i18n.reusablePuzzleApps.Classification.leftTitlePlaceholder%>" style="flex:1;" />
+    <label for="leftTitleInput"><%=i18n.reusablePuzzleApps.DragAndDropClassification.leftTitle%>:</label>
+    <input type="text" id="leftTitleInput" name="leftTitle" placeholder="<%=i18n.reusablePuzzleApps.DragAndDropClassification.leftTitlePlaceholder%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="rightTitleInput"><%=i18n.reusablePuzzleApps.Classification.rightTitle%>:</label>
-    <input type="text" id="rightTitleInput" name="rightTitle" placeholder="<%=i18n.reusablePuzzleApps.Classification.rightTitlePlaceholder%>" style="flex:1;" />
+    <label for="rightTitleInput"><%=i18n.reusablePuzzleApps.DragAndDropClassification.rightTitle%>:</label>
+    <input type="text" id="rightTitleInput" name="rightTitle" placeholder="<%=i18n.reusablePuzzleApps.DragAndDropClassification.rightTitlePlaceholder%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="confirmationTextInput"><%=i18n.reusablePuzzleApps.Classification.confirmationText%>:</label>
-    <input type="text" id="confirmationTextInput" name="confirmationText" placeholder="<%=i18n.reusablePuzzleApps.Classification.confirmationTextPlaceholder%>" style="flex:1;" />
+    <label for="confirmationTextInput"><%=i18n.reusablePuzzleApps.DragAndDropClassification.confirmationText%>:</label>
+    <input type="text" id="confirmationTextInput" name="confirmationText" placeholder="<%=i18n.reusablePuzzleApps.DragAndDropClassification.confirmationTextPlaceholder%>" style="flex:1;" />
 </div>
 
 <div style="margin: 15px 0px;">
-    <label><%=i18n.reusablePuzzleApps.Classification.images%>:</label>
+    <label><%=i18n.reusablePuzzleApps.DragAndDropClassification.images%>:</label>
     <input type="hidden" id="classificationImagesInput" name="initialImages" />
 
     <!-- Shared datalist for image assets -->
     <datalist id="classificationImageAssetsList"></datalist>
 
     <div id="classificationImagesWrapper" style="flex-direction: column;">
-        <% const defaultTitles = [i18n.reusablePuzzleApps.Classification.defaultTitle1, i18n.reusablePuzzleApps.Classification.defaultTitle2]; %>
+        <% var defaultTitles = [i18n.reusablePuzzleApps.DragAndDropClassification.defaultTitle1, i18n.reusablePuzzleApps.DragAndDropClassification.defaultTitle2]; %>
         <% for (let i = 1; i <= 2; i++) { %>
             <div class="classificationImageWrapper" imageNumber="<%=i%>" style="flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px; margin: 10px 0px;">
                 <div style="position: relative;">
-                    <p style="margin: 7px 0px 5px 0px;"><%=i18n.reusablePuzzleApps.Classification.image + " " + i%></p>
+                    <p style="margin: 7px 0px 5px 0px;"><%=i18n.reusablePuzzleApps.DragAndDropClassification.image + " " + i%></p>
                     <button class="deleteClassificationImage" type="button" style="display:none; border: none; background: none; position: absolute; right: 0; top: 0; align-self: center; font-size: 22px;" onclick="deleteClassificationImage(event)">
                         <span style="color: rgb(185, 62, 68);" class="material-icons">delete_outline</span>
                     </button>
                 </div>
                 <div>
-                    <label><%=i18n.reusablePuzzleApps.Classification.imageTitle%>:</label>
-                    <input class="inputImageTitle" type="text" value="<%=defaultTitles[i-1]%>" placeholder="<%=i18n.reusablePuzzleApps.Classification.imageTitlePlaceholder%>" style="flex:1;" />
+                    <label><%=i18n.reusablePuzzleApps.DragAndDropClassification.imageTitle%>:</label>
+                    <input class="inputImageTitle" type="text" value="<%=defaultTitles[i-1]%>" placeholder="<%=i18n.reusablePuzzleApps.DragAndDropClassification.imageTitlePlaceholder%>" style="flex:1;" />
                 </div>
                 <div style="margin: 10px 0px 10px 0px;">
-                    <label><%=i18n.reusablePuzzleApps.Classification.imageSrc%>:</label>
+                    <label><%=i18n.reusablePuzzleApps.DragAndDropClassification.imageSrc%>:</label>
                     <div style="display: flex; align-items: center; flex: 1;">
-                        <input class="inputImageSrc" type="text" list="classificationImageAssetsList" placeholder="<%=i18n.reusablePuzzleApps.Classification.imageSrcPlaceholder%>" style="flex:1;" />
+                        <input class="inputImageSrc" type="text" list="classificationImageAssetsList" placeholder="<%=i18n.reusablePuzzleApps.DragAndDropClassification.imageSrcPlaceholder%>" style="flex:1;" />
                         <button type="button" class="clearImageSrc" style="display: none; border: none; background: none; cursor: pointer; padding: 0 5px; font-size: 18px; color: rgb(185, 62, 68);">
                             <span class="material-icons">close</span>
                         </button>
@@ -86,7 +86,7 @@
         <% } %>
 
         <button class="rounded small addClassificationImage" type="button" onclick="addClassificationImage(event);" style="background-color: white;">
-            <span class="material-icons" style="color: #161938">add</span> <%=i18n.reusablePuzzleApps.Classification.addImage%>
+            <span class="material-icons" style="color: #161938">add</span> <%=i18n.reusablePuzzleApps.DragAndDropClassification.addImage%>
         </button>
     </div>
 </div>
@@ -103,9 +103,9 @@
     });
 
     // Populate shared datalist with image assets
-    const classificationAssetMap = {};
-    const classificationOrigin = window.location.origin;
-    const classificationDatalist = document.getElementById('classificationImageAssetsList');
+    var classificationAssetMap = {};
+    var classificationOrigin = window.location.origin;
+    var classificationDatalist = document.getElementById('classificationImageAssetsList');
 
     (window.assets || []).filter(asset => asset.assetType && asset.assetType.toLowerCase().includes('image')).forEach(asset => {
         let url = asset.url || `/assets/${asset.id}`;
@@ -116,7 +116,7 @@
         }
         classificationAssetMap[asset.filename] = url;
 
-        const option = document.createElement('option');
+        var option = document.createElement('option');
         option.value = asset.filename;
         option.setAttribute('data-url', url);
         classificationDatalist.appendChild(option);
@@ -124,7 +124,7 @@
 
     // Handle clear button visibility
     function updateClearButtonVisibility(input) {
-        const clearBtn = input.closest('div').querySelector('.clearImageSrc');
+        var clearBtn = input.closest('div').querySelector('.clearImageSrc');
         if (clearBtn) {
             clearBtn.style.display = input.value ? 'block' : 'none';
         }
@@ -158,7 +158,7 @@
         if (imageNumber > 24) return;
         var $newImage = $firstImage.clone();
         $newImage.attr('imageNumber', imageNumber);
-        $newImage.find('p').first().html('<%=i18n.reusablePuzzleApps.Classification.image%> ' + imageNumber);
+        $newImage.find('p').first().html('<%=i18n.reusablePuzzleApps.DragAndDropClassification.image%> ' + imageNumber);
         $newImage.find('button.deleteClassificationImage').first().show();
         $newImage.find('input.inputImageTitle').val('');
         $newImage.find('input.inputImageSrc').val('');
@@ -190,7 +190,7 @@
         $imageWrapper.remove();
         $imagesWrapper.find('.classificationImageWrapper').each(function(index) {
             $(this).attr('imageNumber', index + 1);
-            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.Classification.image%> ' + (index + 1));
+            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.DragAndDropClassification.image%> ' + (index + 1));
         });
         var $addButton = $imagesWrapper.find('button.addClassificationImage');
         $addButton.removeAttr('disabled');

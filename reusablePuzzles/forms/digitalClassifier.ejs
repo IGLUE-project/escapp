@@ -4,28 +4,6 @@
 <h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
 
 <div>
-    <label for="skinSelect"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
-    <select id="skinSelect" name="skin">
-        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
-        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
-        <option value="FUTURISTIC"><%=i18n.reusablePuzzleApps.Common.skins.Futuristic%></option>
-    </select>
-</div>
-
-<!-- <div>
-    <label for="actionValue"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
-    <select id="actionValue" name="actionAfterSolve">
-        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
-        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
-    </select>
-</div> 
-
-<div id="actionDiv">
-    <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
-    <input id="messageInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>" style="flex:1;" />
-</div>
--->
-<div>
     <%- include ("./_asset.ejs", {
         assetId: "backgroundImgInput",
         assetName: "background",
@@ -37,98 +15,92 @@
     }) %>
 </div>
 
-
 <div>
-    <label for="button_okInput"><%=i18n.reusablePuzzleApps.Ipad.label_button_ok%>:</label>
-    <input type="text" id="button_okInput" name="button_ok" value="<%=i18n.reusablePuzzleApps.Ipad.button_ok%>" style="flex:1;" />
+    <label for="button_okInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_button_ok%>:</label>
+    <input type="text" id="button_okInput" name="button_ok" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.button_ok%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="button_nokInput"><%=i18n.reusablePuzzleApps.Ipad.label_button_nok%>:</label>
-    <input type="text" id="button_nokInput" name="button_nok" value="<%=i18n.reusablePuzzleApps.Ipad.button_nok%>" style="flex:1;" />
+    <label for="button_nokInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_button_nok%>:</label>
+    <input type="text" id="button_nokInput" name="button_nok" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.button_nok%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="contextInput"><%=i18n.reusablePuzzleApps.Ipad.label_context%>:</label>
-    <input type="text" id="contextInput" name="context" value="<%=i18n.reusablePuzzleApps.Ipad.context%>" style="flex:1;" />
+    <label for="sendInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_send%>:</label>
+    <input type="text" id="sendInput" name="sendText" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.send%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="sendInput"><%=i18n.reusablePuzzleApps.Ipad.label_send%>:</label>
-    <input type="text" id="sendInput" name="sendText" value="<%=i18n.reusablePuzzleApps.Ipad.send%>" style="flex:1;" />
+    <label for="send_disabledInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_send_disabled%>:</label>
+    <input type="text" id="send_disabledInput" name="send_disabled" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.send_disabled%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="send_disabledInput"><%=i18n.reusablePuzzleApps.Ipad.label_send_disabled%>:</label>
-    <input type="text" id="send_disabledInput" name="send_disabled" value="<%=i18n.reusablePuzzleApps.Ipad.send_disabled%>" style="flex:1;" />
+    <label for="retryInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_retry%>:</label>
+    <input type="text" id="retryInput" name="retry" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.retry%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="retryInput"><%=i18n.reusablePuzzleApps.Ipad.label_retry%>:</label>
-    <input type="text" id="retryInput" name="retry" value="<%=i18n.reusablePuzzleApps.Ipad.retry%>" style="flex:1;" />
+    <label for="congratsInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_congrats%>:</label>
+    <input type="text" id="congratsInput" name="congrats" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.congrats%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="congratsInput"><%=i18n.reusablePuzzleApps.Ipad.label_congrats%>:</label>
-    <input type="text" id="congratsInput" name="congrats" value="<%=i18n.reusablePuzzleApps.Ipad.congrats%>" style="flex:1;" />
+    <label for="headerInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_header%>:</label>
+    <input type="text" id="headerInput" name="header" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.header%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="headerInput"><%=i18n.reusablePuzzleApps.Ipad.label_header%>:</label>
-    <input type="text" id="headerInput" name="header" value="<%=i18n.reusablePuzzleApps.Ipad.header%>" style="flex:1;" />
+    <label for="modalheaderInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_modalheader%>:</label>
+    <input type="text" id="modalheaderInput" name="modalheader" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.modalheader%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="modalheaderInput"><%=i18n.reusablePuzzleApps.Ipad.label_modalheader%>:</label>
-    <input type="text" id="modalheaderInput" name="modalheader" value="<%=i18n.reusablePuzzleApps.Ipad.modalheader%>" style="flex:1;" />
+    <label for="modalcontentInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_modalcontent%>:</label>
+    <textarea id="modalcontentInput" name="modalcontent" class="inverse" style="flex:1; min-height: 80px;"><%=i18n.reusablePuzzleApps.DigitalClassifier.modalcontent%></textarea>
 </div>
 
 <div>
-    <label for="modalcontentInput"><%=i18n.reusablePuzzleApps.Ipad.label_modalcontent%>:</label>
-    <textarea id="modalcontentInput" name="modalcontent" class="inverse" style="flex:1; min-height: 80px;"><%=i18n.reusablePuzzleApps.Ipad.modalcontent%></textarea>
+    <label for="modalinstructions0Input"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_modalinstructions0%>:</label>
+    <input type="text" id="modalinstructions0Input" name="modalinstructions0" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.modalinstructions0%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="modalinstructions0Input"><%=i18n.reusablePuzzleApps.Ipad.label_modalinstructions0%>:</label>
-    <input type="text" id="modalinstructions0Input" name="modalinstructions0" value="<%=i18n.reusablePuzzleApps.Ipad.modalinstructions0%>" style="flex:1;" />
+    <label for="modalinstructions1Input"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_modalinstructions1%>:</label>
+    <input type="text" id="modalinstructions1Input" name="modalinstructions1" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.modalinstructions1%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="modalinstructions1Input"><%=i18n.reusablePuzzleApps.Ipad.label_modalinstructions1%>:</label>
-    <input type="text" id="modalinstructions1Input" name="modalinstructions1" value="<%=i18n.reusablePuzzleApps.Ipad.modalinstructions1%>" style="flex:1;" />
+    <label for="modalinstructions2Input"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_modalinstructions2%>:</label>
+    <input type="text" id="modalinstructions2Input" name="modalinstructions2" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.modalinstructions2%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="modalinstructions2Input"><%=i18n.reusablePuzzleApps.Ipad.label_modalinstructions2%>:</label>
-    <input type="text" id="modalinstructions2Input" name="modalinstructions2" value="<%=i18n.reusablePuzzleApps.Ipad.modalinstructions2%>" style="flex:1;" />
+    <label for="modalheader2Input"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_modalheader2%>:</label>
+    <input type="text" id="modalheader2Input" name="modalheader2" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.modalheader2%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="modalheader2Input"><%=i18n.reusablePuzzleApps.Ipad.label_modalheader2%>:</label>
-    <input type="text" id="modalheader2Input" name="modalheader2" value="<%=i18n.reusablePuzzleApps.Ipad.modalheader2%>" style="flex:1;" />
+    <label for="feedbackInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_feedback%>:</label>
+    <input type="text" id="feedbackInput" name="feedback" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.feedback%>" style="flex:1;" />
 </div>
 
 <div>
-    <label for="feedbackInput"><%=i18n.reusablePuzzleApps.Ipad.label_feedback%>:</label>
-    <input type="text" id="feedbackInput" name="feedback" value="<%=i18n.reusablePuzzleApps.Ipad.feedback%>" style="flex:1;" />
-</div>
-
-<div>
-    <label for="endInput"><%=i18n.reusablePuzzleApps.Ipad.label_end%>:</label>
-    <input type="text" id="endInput" name="end" value="<%=i18n.reusablePuzzleApps.Ipad.end%>" style="flex:1;" />
+    <label for="endInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_end%>:</label>
+    <input type="text" id="endInput" name="end" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.end%>" style="flex:1;" />
 </div>
 
 <!--<div>
-    <label for="codesInput"><%=i18n.reusablePuzzleApps.Ipad.label_codes%>:</label>
-    <input type="text" id="codesInput" name="codes" value="<%=i18n.reusablePuzzleApps.Ipad.codes%>" style="flex:1;" />
+    <label for="codesInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_codes%>:</label>
+    <input type="text" id="codesInput" name="codes" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.codes%>" style="flex:1;" />
 </div>-->
 
 <div>
-    <label for="reviewInput"><%=i18n.reusablePuzzleApps.Ipad.label_review%>:</label>
-    <input type="text" id="reviewInput" name="review" value="<%=i18n.reusablePuzzleApps.Ipad.review%>" style="flex:1;" />
+    <label for="reviewInput"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_review%>:</label>
+    <input type="text" id="reviewInput" name="review" value="<%=i18n.reusablePuzzleApps.DigitalClassifier.review%>" style="flex:1;" />
 </div>
 
-<h4 class="titleLabelEdit"><%=i18n.reusablePuzzleApps.Ipad.items%></h4>
+<h4 class="titleLabelEdit"><%=i18n.reusablePuzzleApps.DigitalClassifier.items%></h4>
 
 <div style="margin: 15px 0px; display: block;">
     <input type="hidden" id="ipadItemsInput" name="items" />
@@ -138,14 +110,14 @@
         <% for (let i = 1; i <= 2; i++) { %>
             <div class="ipadItemWrapper" itemNumber="<%=i%>" style="display: flex; flex-direction: column; border: 1px solid white; padding: 10px 15px; border-radius: 20px; margin: 10px 0px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <p style="margin: 5px 0px;"><%=i18n.reusablePuzzleApps.Ipad.item%> <%=i%></p>
+                    <p style="margin: 5px 0px;"><%=i18n.reusablePuzzleApps.DigitalClassifier.item%> <%=i%></p>
                     <button class="deleteIpadItem" type="button" style="display:none; border: none; background: none; cursor: pointer; font-size: 22px;" onclick="deleteIpadItem(event)">
                         <span style="color: rgb(185, 62, 68);" class="material-icons">delete_outline</span>
                     </button>
                 </div>
                 <input type="hidden" class="inputItemIframe" value="true" />
                 <div style="display: flex; align-items: center; margin: 8px 0px;">
-                    <label style="min-width: 80px;"><%=i18n.reusablePuzzleApps.Ipad.item%>:</label>
+                    <label style="min-width: 80px;"><%=i18n.reusablePuzzleApps.DigitalClassifier.item%>:</label>
                     <div style="display: flex; align-items: center; flex: 1;">
                         <input class="inputItemPath" type="text" list="ipadItemAssetsList" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
                         <button type="button" class="clearItemPath" style="display: none; border: none; background: none; cursor: pointer; padding: 0 5px; font-size: 18px; color: rgb(185, 62, 68);">
@@ -154,14 +126,14 @@
                     </div>
                 </div>
                 <div style="display: none; align-items: center; margin: 8px 0px;">
-                    <label style="min-width: 80px;"><%=i18n.reusablePuzzleApps.Ipad.label_feedback%>:</label>
+                    <label style="min-width: 80px;"><%=i18n.reusablePuzzleApps.DigitalClassifier.label_feedback%>:</label>
                     <input class="inputItemFeedback" type="text" style="flex:1;" />
                 </div>
             </div>
         <% } %>
 
         <button class="rounded small addIpadItem" type="button" onclick="addIpadItem(event);" style="background-color: white;">
-            <span class="material-icons" style="color: #161938">add</span> <%=i18n.reusablePuzzleApps.Ipad.addItem%>
+            <span class="material-icons" style="color: #161938">add</span> <%=i18n.reusablePuzzleApps.DigitalClassifier.addItem%>
         </button>
     </div>
 </div>
@@ -172,15 +144,15 @@
     var ipadAssetMap = {};
     var ipadAssetTypeMap = {};
     (function() {
-        const datalistEl = document.getElementById('ipadItemAssetsList');
-        const origin = window.location.origin;
+        var datalistEl = document.getElementById('ipadItemAssetsList');
+        var origin = window.location.origin;
         (window.assets || []).forEach(asset => {
             let url = asset.url || `/assets/${asset.id}`;
             if (url.startsWith('/')) { url = origin + url; }
             else if (!url.startsWith('http')) { url = origin + '/assets/' + url; }
             ipadAssetMap[asset.filename] = url;
             ipadAssetTypeMap[url] = asset.assetType || '';
-            const option = document.createElement('option');
+            var option = document.createElement('option');
             option.value = asset.filename;
             option.setAttribute('data-url', url);
             datalistEl.appendChild(option);
@@ -211,7 +183,7 @@
 
     // Handle clear button visibility
     function updateIpadClearButtonVisibility(input) {
-        const clearBtn = input.closest('div').querySelector('.clearItemPath');
+        var clearBtn = input.closest('div').querySelector('.clearItemPath');
         if (clearBtn) {
             clearBtn.style.display = input.value ? 'block' : 'none';
         }
@@ -249,7 +221,7 @@
         if (itemNumber > 50) return;
         var $newItem = $firstItem.clone();
         $newItem.attr('itemNumber', itemNumber);
-        $newItem.find('p').first().html('<%=i18n.reusablePuzzleApps.Ipad.item%> ' + itemNumber);
+        $newItem.find('p').first().html('<%=i18n.reusablePuzzleApps.DigitalClassifier.item%> ' + itemNumber);
         $newItem.find('button.deleteIpadItem').first().show();
         $newItem.find('input.inputItemIframe').val('true');
         $newItem.find('input.inputItemPath').val('');
@@ -282,7 +254,7 @@
         $itemWrapper.remove();
         $itemsWrapper.find('.ipadItemWrapper').each(function(index) {
             $(this).attr('itemNumber', index + 1);
-            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.Ipad.item%> ' + (index + 1));
+            $(this).find('p').first().text('<%=i18n.reusablePuzzleApps.DigitalClassifier.item%> ' + (index + 1));
         });
         var $addButton = $itemsWrapper.find('button.addIpadItem');
         $addButton.removeAttr('disabled');
@@ -324,14 +296,9 @@
     });
 
     // Load config values
-    document.getElementById("skinSelect").value = window.currentOpenPuzzleConfig?.skin || 'STANDARD';
-    // document.getElementById("actionValue").value = window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
-    // document.getElementById("messageInput").value = window.currentOpenPuzzleConfig?.message || '';
-
     // Load text labels (only if config exists, otherwise use defaults from HTML)
     if (window.currentOpenPuzzleConfig?.button_ok) document.getElementById("button_okInput").value = window.currentOpenPuzzleConfig.button_ok;
     if (window.currentOpenPuzzleConfig?.button_nok) document.getElementById("button_nokInput").value = window.currentOpenPuzzleConfig.button_nok;
-    if (window.currentOpenPuzzleConfig?.context) document.getElementById("contextInput").value = window.currentOpenPuzzleConfig.context;
     if (window.currentOpenPuzzleConfig?.sendText) document.getElementById("sendInput").value = window.currentOpenPuzzleConfig.sendText;
     if (window.currentOpenPuzzleConfig?.send_disabled) document.getElementById("send_disabledInput").value = window.currentOpenPuzzleConfig.send_disabled;
     if (window.currentOpenPuzzleConfig?.retry) document.getElementById("retryInput").value = window.currentOpenPuzzleConfig.retry;

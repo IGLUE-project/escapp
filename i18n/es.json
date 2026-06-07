@@ -1550,8 +1550,8 @@
             "Text": "Texto",
             "Image": "Imagen"
         },
-        "Classification": {
-            "name": "Clasificación (arrastrar)",
+        "DragAndDropClassification": {
+            "name": "Clasificación por arrastre",
             "description": "Este recurso permite crear un reto de clasificación donde los participantes deben arrastrar elementos a las categorías correctas.",
             "leftTitle": "Título izquierdo",
             "leftTitlePlaceholder": "Título para la categoría izquierda",
@@ -1583,9 +1583,9 @@
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes introduzcan una secuencia determinada de números, letras, colores o símbolos mediante un panel de botones.",
             "keyType": "Tipo de botones"
         },
-        "Ipad": {
-            "name": "iPad Clasificación",
-            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes interactúen con un iPad virtual y clasifiquen textos o imágenes en dos categorías",
+        "DigitalClassifier": {
+            "name": "Clasificador digital",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes interactúen con una tableta y clasifiquen textos o imágenes en dos categorías",
             "button_ok":"Posible",
             "button_nok":"Descartar",
             "context": "Contexto",
@@ -1629,7 +1629,7 @@
             "label_review": "Texto revisión"
         },
         "PopupQuestion": {
-            "name": "Pregunta Emergente",
+            "name": "Pregunta emergente",
             "description": "Este recurso permite crear un puzzle con una pregunta emergente superpuesta sobre contenido (imagen o iframe)",
             "contentArea": "Área de Contenido",
             "contentType": "Tipo de contenido",

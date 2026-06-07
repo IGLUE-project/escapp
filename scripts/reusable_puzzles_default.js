@@ -230,26 +230,26 @@ const reusablePuzzlesList = [
         "order": 19
     },
     {
-        "name": "Classification",
-        "zip": "defaultReusablePuzzles/Classification/Classification_Puzzle.zip",
-        "form": "classification.ejs",
-        "thumbnail": "defaultReusablePuzzles/Classification/Classification_Thumbnail.png",
+        "name": "DragAndDropClassification",
+        "zip": "defaultReusablePuzzles/DragAndDropClassification/DragAndDropClassification_Puzzle.zip",
+        "form": "dragAndDropClassification.ejs",
+        "thumbnail": "defaultReusablePuzzles/DragAndDropClassification/DragAndDropClassification_Thumbnail.png",
         "instructions": {
-            "en": "defaultReusablePuzzles/Classification/Classification_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/Classification/Classification_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/Classification/Classification_Instructions_SR.pdf"
+            "en": "defaultReusablePuzzles/DragAndDropClassification/DragAndDropClassification_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/DragAndDropClassification/DragAndDropClassification_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/DragAndDropClassification/DragAndDropClassification_Instructions_SR.pdf"
         },
         "order": 20
     },
     {
-        "name": "IpadClassifier",
-        "zip": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Puzzle.zip",
-        "form": "ipadClassifier.ejs",
-        "thumbnail": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Thumbnail.png",
+        "name": "DigitalClassifier",
+        "zip": "defaultReusablePuzzles/DigitalClassifier/DigitalClassifier_Puzzle.zip",
+        "form": "digitalClassifier.ejs",
+        "thumbnail": "defaultReusablePuzzles/DigitalClassifier/DigitalClassifier_Thumbnail.png",
         "instructions": {
-            "en": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_EN.pdf",
-            "es": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_ES.pdf",
-            "sr": "defaultReusablePuzzles/IpadClassifier/IpadClassifier_Instructions_SR.pdf"
+            "en": "defaultReusablePuzzles/DigitalClassifier/DigitalClassifier_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/DigitalClassifier/DigitalClassifier_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/DigitalClassifier/DigitalClassifier_Instructions_SR.pdf"
         },
         "order": 21
     },
