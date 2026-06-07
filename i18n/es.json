@@ -1567,7 +1567,8 @@
             "imageSrcPlaceholder": "URL de la imagen",
             "addImage": "Añadir imagen",
             "defaultTitle1": "escape",
-            "defaultTitle2": "room"
+            "defaultTitle2": "room",
+            "defaultConfirmation": "Comprobar"
         },
         "Conversation": {
             "name": "Conversación",

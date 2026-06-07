@@ -1568,7 +1568,8 @@
             "imageSrcPlaceholder": "Image URL",
             "addImage": "Add image",
             "defaultTitle1": "escape",
-            "defaultTitle2": "room"
+            "defaultTitle2": "room",
+            "defaultConfirmation": "Check"
         },
         "Conversation": {
             "name": "Conversation",

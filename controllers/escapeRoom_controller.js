@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const {Op} = Sequelize;
 const AdmZip = require("adm-zip");
 const sequelize = require("../models");
 const {models} = sequelize;
@@ -178,7 +179,7 @@ exports.create = async (req, res) => {
     const {title, subject, duration, forbiddenLateSubmissions, description, lang, teamSize, minTeamSize, supportLink, forceLang, field, format, level, invitation, progress, allowUserToResetTeamProgress} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
 
-    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, "allowUserToResetTeamProgress": allowUserToResetTeamProgress === "true", description, supportLink, "scope": "private", "teamSize": teamSize || 0, "minTeamSize": minTeamSize || 0, authorId, forceLang, lang, field, format, level}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, "allowUserToResetTeamProgress": allowUserToResetTeamProgress === "true", description, supportLink, "scope": "private", "teamSize": teamSize || 0, "minTeamSize": minTeamSize || 0, authorId, forceLang, lang, "field": field || "00", "format": format || "none", "level": level || "unspecified"}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
     const transaction = await sequelize.transaction();
 
@@ -297,9 +298,9 @@ exports.update = async (req, res) => {
     escapeRoom.forbiddenLateSubmissions = body.forbiddenLateSubmissions === "on";
     escapeRoom.description = body.description;
     escapeRoom.supportLink = body.supportLink;
-    escapeRoom.level = body.level || null;
-    escapeRoom.field = body.field || null;
-    escapeRoom.format = body.format;
+    escapeRoom.level = body.level || "unspecified";
+    escapeRoom.field = body.field || "00";
+    escapeRoom.format = body.format || "none";
     escapeRoom.lang = body.lang;
     escapeRoom.teamSize = body.teamSize || 0;
     escapeRoom.minTeamSize = body.minTeamSize || 0;
@@ -647,20 +648,109 @@ exports.destroy = async (req, res, next) => {
     const {i18n} = res.locals;
 
     try {
-        await req.escapeRoom.destroy({}, {transaction});
-        if (req.escapeRoom.attachment && await models.attachment.count({"where": {"url": req.escapeRoom.attachment.url}}) === 0) {
-            try {
-                fsSync.unlinkSync(path.join(__dirname, "/../", req.escapeRoom.attachment.url));
-            } catch (e) {
-                console.error("Error deleting attachment file:", e);
-            }
+        // Store file paths before destroying the record
+        const filesToCleanup = {
+            attachment: req.escapeRoom.attachment ? req.escapeRoom.attachment.url : null,
+            instructions: req.escapeRoom.instructions,
+            hybridInstructions: req.escapeRoom.hybridInstructions
+        };
+
+        // Get attachment count within transaction to prevent race conditions
+        let shouldDeleteAttachment = false;
+        if (filesToCleanup.attachment) {
+            const attachmentCount = await models.attachment.count({
+                "where": {"url": filesToCleanup.attachment},
+                "transaction": transaction
+            });
+            shouldDeleteAttachment = attachmentCount === 1; // Only this escape room uses it
         }
+
+        await req.escapeRoom.destroy({}, {transaction});
         await transaction.commit();
+
+        // File cleanup after successful database transaction
+        const fileCleanupPromises = [];
+
+        // Clean up attachment file if safe to do so
+        if (shouldDeleteAttachment) {
+            fileCleanupPromises.push(
+                (async () => {
+                    try {
+                        const attachmentPath = path.join(__dirname, "/../", filesToCleanup.attachment);
+                        if (fsSync.existsSync(attachmentPath)) {
+                            await fsSync.promises.unlink(attachmentPath);
+                            console.log(`Successfully deleted attachment file: ${attachmentPath}`);
+                        } else {
+                            console.log(`Attachment file already missing: ${attachmentPath}`);
+                        }
+                    } catch (e) {
+                        console.error("Error deleting attachment file:", e);
+                    }
+                })()
+            );
+        }
+
+        // Clean up instructions file
+        if (filesToCleanup.instructions) {
+            fileCleanupPromises.push(
+                (async () => {
+                    try {
+                        const instructionsPath = path.join(__dirname, "/../uploads/instructions/", filesToCleanup.instructions);
+                        if (fsSync.existsSync(instructionsPath)) {
+                            await fsSync.promises.unlink(instructionsPath);
+                            console.log(`Successfully deleted instructions file: ${instructionsPath}`);
+                        } else {
+                            console.log(`Instructions file already missing: ${instructionsPath}`);
+                        }
+                    } catch (e) {
+                        console.error("Error deleting instructions file:", e);
+                    }
+                })()
+            );
+        }
+
+        // Clean up hybrid instructions file
+        if (filesToCleanup.hybridInstructions) {
+            fileCleanupPromises.push(
+                (async () => {
+                    try {
+                        const hybridPath = path.join(__dirname, "/../uploads/hybrid/", filesToCleanup.hybridInstructions);
+                        if (fsSync.existsSync(hybridPath)) {
+                            await fsSync.promises.unlink(hybridPath);
+                            console.log(`Successfully deleted hybrid instructions file: ${hybridPath}`);
+                        } else {
+                            console.log(`Hybrid instructions file already missing: ${hybridPath}`);
+                        }
+                    } catch (e) {
+                        console.error("Error deleting hybrid instructions file:", e);
+                    }
+                })()
+            );
+        }
+
+        // Execute all file cleanups concurrently, but don't wait for them
+        // File cleanup failures shouldn't affect the user experience
+        Promise.allSettled(fileCleanupPromises).then((results) => {
+            const failures = results.filter(r => r.status === 'rejected');
+            if (failures.length > 0) {
+                console.error(`File cleanup had ${failures.length} failures during escape room deletion`);
+            }
+        });
+
         req.flash("success", i18n.common.flash.successDeletingER);
         res.redirect("/escapeRooms");
     } catch (error) {
         await transaction.rollback();
-        req.flash("error", `${i18n.common.flash.errorDeletingER}: ${error.message}`);
+
+        // Provide more specific error messages based on error type
+        if (error.name === 'SequelizeForeignKeyConstraintError') {
+            req.flash("error", `${i18n.common.flash.errorDeletingER}: Cannot delete - still referenced by other data`);
+        } else if (error.code === 'EBUSY' || error.code === 'ENOTEMPTY') {
+            req.flash("error", `${i18n.common.flash.errorDeletingER}: Files are currently in use`);
+        } else {
+            req.flash("error", `${i18n.common.flash.errorDeletingER}: ${error.message}`);
+        }
+
         next(error);
     }
 };

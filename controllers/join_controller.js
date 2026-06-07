@@ -128,7 +128,9 @@ exports.joinAnonymous = async (req, res, next) => {
         return;
     }
     req.body.password = Math.random().toString(36).slice(-8);
-    req.body.username = `${req.escapeRoom.id}_${String(req.body.alias).toLowerCase()}_${Date.now()}@anonymous.org`;
+    // Remove spaces and special characters from alias, keep only alphanumeric characters
+    const sanitizedAlias = String(req.body.alias).toLowerCase().replace(/[^a-z0-9]/g, '');
+    req.body.username = `${req.escapeRoom.id}_${sanitizedAlias}_${Date.now()}@anonymous.org`;
     req.body.redir = redirURL; // `/escapeRooms/${req.escapeRoom.id}/join`;
     req.body.anonymous = true;
     if (req.body.accept_terms != "on") {

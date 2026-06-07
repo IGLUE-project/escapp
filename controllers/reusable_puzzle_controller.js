@@ -67,9 +67,20 @@ exports.deleteReusablePuzzle = async (req, res, next) => {
         const pathDelete = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
 
         await puzzle.destroy();
-        fs.rmdir(pathDelete, { "recursive": true, "force": true }, (error) => {
-            console.error(error);
-        });
+
+        // Safely delete the puzzle directory with proper error handling
+        try {
+            if (fs.existsSync(pathDelete)) {
+                await fs.promises.rmdir(pathDelete, { "recursive": true, "force": true });
+                console.log(`Successfully deleted reusable puzzle directory: ${pathDelete}`);
+            } else {
+                console.log(`Reusable puzzle directory already missing: ${pathDelete}`);
+            }
+        } catch (error) {
+            console.error(`Error deleting reusable puzzle directory (${pathDelete}):`, error);
+            // Don't fail the entire operation if directory cleanup fails
+        }
+
         res.status(200);
         res.redirect("back");
     } catch (e) {
