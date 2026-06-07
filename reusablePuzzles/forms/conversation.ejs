@@ -1,13 +1,11 @@
 <style>
-
   [data-reusable-puzzle-name="Conversation"] .previewReusablePuzzle {
         min-width: 400px;
   }
 </style>
 
-<% /* --- Validator include from your snippet --- */ %>
 <br>
-<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false}, ) %>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: false} ) %>
 
 <br>
 <h4 class="titleLabelEdit"><%= i18n.escapeRoom.steps.indications.front.catalog.config.customization %></h4>
@@ -48,7 +46,7 @@
 <br>
 
 <!-- ================= Branching Q&A Editor (Vanilla JS, EJS-friendly) ================= -->
-<h4 class="titleLabelEdit"><%= i18n.reusablePuzzleApps.Common.Questions || 'Questions & Answers' %></h4>
+<h4 class="titleLabelEdit"><%= i18n.reusablePuzzleApps.Conversation.questionsTitle %></h4>
 <input type="hidden" name="branchingJson" id="branchingJson" />
 <datalist id="conversationImageAssetsList"></datalist>
 <div id="branchingEditor"></div>
@@ -134,17 +132,17 @@
       const fs = beEl('fieldset', { class:'be-question', 'data-qid': model.id });
 
       const header = beEl('div', { class:'be-qhead' }, [
-        beEl('span', { class:'be-title', text: root ? 'Root Question' : `Question` }),
+        beEl('span', { class:'be-title', text: root ? '<%= i18n.reusablePuzzleApps.Conversation.questionRoot %>' : '<%= i18n.reusablePuzzleApps.Conversation.question %>' }),
         !root && beEl('button', { class:'be-btn be-delete', type:'button', text:'delete', onClick: () => { fs.remove(); beRefresh(); } })
       ].filter(Boolean));
 
       const rowQ = beEl('div', { class:'be-row' }, [
-        beEl('input', { type:'text', placeholder:'Question text', value:(model.text||''), onInput:beRefresh })
+        beEl('input', { type:'text', placeholder:'<%= i18n.reusablePuzzleApps.Conversation.questionText %>', value:(model.text||''), onInput:beRefresh })
       ]);
 
       const rowImg = beEl('div', { class:'be-row' }, [
-        beEl('input', { type:'text', class:'be-question-image', list:'conversationImageAssetsList', placeholder:'Image URL (optional)', value:(model.image||''), onInput:beRefresh, onChange: function(e) { if (window.conversationAssetMap && window.conversationAssetMap[e.target.value]) { e.target.value = window.conversationAssetMap[e.target.value]; beRefresh(); } } }),
-        beEl('span', { class:'be-help', text:'Optional image for this question' })
+        beEl('input', { type:'text', class:'be-question-image', list:'conversationImageAssetsList', placeholder:'<%= i18n.reusablePuzzleApps.Conversation.questionImage %>', value:(model.image||''), onInput:beRefresh, onChange: function(e) { if (window.conversationAssetMap && window.conversationAssetMap[e.target.value]) { e.target.value = window.conversationAssetMap[e.target.value]; beRefresh(); } } }),
+        // beEl('span', { class:'be-help', text:'Optional image for this question' })
       ]);
 
       const answersWrap = beEl('div', { class:'be-answers' });
@@ -161,7 +159,7 @@
 
       function beAnswerBlk(a){
         const row = beEl('div', { class:'be-answer', 'data-aid': a.id });
-        const txt = beEl('input', { type:'text', placeholder:'Answer text', value:(a.text||''), onInput:beRefresh });
+        const txt = beEl('input', { type:'text', placeholder:'<%= i18n.reusablePuzzleApps.Conversation.questionAnswer %>', value:(a.text||''), onInput:beRefresh });
         const bar = beEl('div', { class:'be-row' });
         const addChild = beEl('button', { class:a.next ? 'be-btn be-edit':'be-btn be-add', type:'button', text:(a.next ? 'edit' : 'add'), onClick: () => {
           if (!childHolder.firstChild){ childHolder.appendChild(beQuestionFS(beBlankQ())); beRefresh(); }
@@ -203,21 +201,25 @@
       beRefresh();
     }
     function beDemo(){
-      const demo = { id: beMakeId('q'), text: 'Start here?', image:'', answers:[ { id: beMakeId('a'), text:'Yes', next: beBlankQ() }, { id: beMakeId('a'), text:'No' } ] };
+      // const demo = { id: beMakeId('q'), text: '<%= i18n.reusablePuzzleApps.Conversation.questionExample %>', image:'', answers:[ { id: beMakeId('a'), text:'<%= i18n.reusablePuzzleApps.Common.Yes %>' , next: beBlankQ() }, { id: beMakeId('a'), text:'<%= i18n.reusablePuzzleApps.Common.No %>' } ] };
+      const demo = { id: beMakeId('q'), text: '', image:'', answers:[] };
       mount.innerHTML = '';
       rootFS = beQuestionFS(demo, { root:true });
       mount.appendChild(rootFS);
       beRefresh();
     }
-    function beRefresh(){console.log("Refreshing conversation editor",rootFS); if (!rootFS) {return;} hidden.value = JSON.stringify(beSerialize(rootFS)); }
+    function beRefresh(){
+      if (!rootFS) {
+        return;
+      } 
+      hidden.value = JSON.stringify(beSerialize(rootFS)); 
+    }
     
-    console.log("Current open puzzle config:", window.currentOpenPuzzleConfig);
-
     // Ensure hidden value is fresh just before form submission
     const form = document.querySelector('form#configForm');
     if (form){ form.addEventListener('submit', beRefresh); }
 
-        // Boot
+    // Boot
     // If the puzzle editor provides an existing config like:
     // window.currentOpenPuzzleConfig.branchingJson (string), load it.
     // Otherwise start a new blank root.
@@ -274,7 +276,7 @@
       try{
         parsed = JSON.parse(trimmed);
       }catch(e){
-        console.warn('Invalid branchingJson, starting blank:', e);
+        // console.warn('Invalid branchingJson, starting blank:', e);
         return false;
       }
       // If someone stored { nested: {...} } we accept that too.

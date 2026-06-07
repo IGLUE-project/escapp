@@ -1657,6 +1657,15 @@
         "buttonColor": "Boja dugmeta",
         "buttonColorPlaceholder": "npr., purple, #ff0000"
       },
+      "Conversation": {
+        "name": "Razgovor",
+        "questionsTitle": "Pitanja i odgovori",
+        "question": "Pitanje",
+        "questionRoot": "Početno pitanje",
+        "questionText": "Tekst pitanja",
+        "questionImage": "URL slike (opciono)",
+        "questionAnswer": "Tekst odgovora"
+      },
       "Keypad": {
         "name": "Tastatura za otključavanje",
         "description": "Ovaj resurs vam omogućava da napravite zagonetku čije rešenje zahteva od učesnika da unesu određeni niz brojeva, slova, boja ili simbola pomoću tastature.",

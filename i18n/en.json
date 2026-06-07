@@ -1570,6 +1570,15 @@
             "defaultTitle1": "escape",
             "defaultTitle2": "room"
         },
+        "Conversation": {
+            "name": "Conversation",
+            "questionsTitle": "Questions and answers",
+            "question": "Question",
+            "questionRoot": "Root question",
+            "questionText": "Question text",
+            "questionImage": "Image URL (optional)",
+            "questionAnswer": "Answer text"
+        },
         "Keypad": {
             "name": "Keypad",
             "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of numbers, letters, colors, or symbols using a keypad.",

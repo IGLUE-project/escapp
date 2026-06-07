@@ -1569,6 +1569,15 @@
             "defaultTitle1": "escape",
             "defaultTitle2": "room"
         },
+        "Conversation": {
+            "name": "Conversación",
+            "questionsTitle": "Preguntas y respuestas",
+            "question": "Pregunta",
+            "questionRoot": "Pregunta raíz",
+            "questionText": "Texto de la pregunta",
+            "questionImage": "URL de la imagen (opcional)",
+            "questionAnswer": "Texto de la respuesta"
+        },
         "Keypad": {
             "name": "Panel de botones",
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes introduzcan una secuencia determinada de números, letras, colores o símbolos mediante un panel de botones.",
