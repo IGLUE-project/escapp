@@ -1062,7 +1062,7 @@
         "sureReset": "¿Seguro que deseas reiniciar la escape room?",
         "alreadyAccount": "¿Ya tienes una cuenta en Escapp?",
         "registerNow": "¿Todavía no tienes una cuenta?",
-        "playAnonymously" : "También puedes jugar de forma anónima a esta escape room"
+        "playAnonymously" : "También puedes jugar a esta escape room sin registrarte"
     },
     "showTeacher": {
         "actionList": {
