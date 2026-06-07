@@ -217,7 +217,7 @@
       "resetPasswordSent": "Poslali smo vam imejl sa linkom za resetovanje lozinke",
       "resetPasswordUserNotFound": "Žao nam je, niste registrovani u Escapp-u",
       "successActivatingTurno": "Smena (shift) uspešno aktivirana/deaktivirana",
-      "successAddingCollaborator": "Saradnik je uspešno dodat. Biće obavešten da potvrdi svoju kolaboraciju",
+      "successAddingCollaborator": "Zahtev za saradnju je poslat. Korisnik mora da prihvati zahtev putem platforme.",
       "successCreatingER": "Escape soba uspešno podešena",
       "successCreatingHint": "Savet uspešno kreiran",
       "successCreatingPuzzle": "Zagonetka uspešno kreirana",
@@ -241,9 +241,9 @@
       "successEditingUser": "Korisnik uspešno izmenjen",
       "successImage": "Slika uspešno upload-ovana",
       "successSendingReport": "Prijava uspešno poslata",
-      "successConfirmingCollaborator": "Uspešno ste potvrđeni kao saradnik",
-    "successCancellingCollaborator": "Uspešno ste uklonjeni kao saradnik",
-      "youMustAcceptTerms": "Morate prihvatiti uslove da biste se registrovali",
+      "successConfirmingCollaborator": "Saradnja je potvrđena. Sada možete da uređujete escape room.",
+      "successCancellingCollaborator": "Uspešno ste uklonjeni kao saradnik",
+      "youMustAcceptTerms": "Morate prihvatiti Uslove korišćenja i Politiku privatnosti da biste se registrovali.",
       "youHaveNotBeenAddedAsACollaborator": "Niste dodati kao saradnik",
       "aliasAlreadyExists": "Ovaj pseudonim (alias) je već zauzet. Molimo vas da izaberete drugi."
     },
@@ -1005,6 +1005,8 @@
     },
     "collaborators": {
       "Collaborators": "Saradnici",
+      "Type": "Tip",
+      "Alias": "Alias",
       "Name": "Ime",
       "Email": "E-pošta",
       "add": "dodaj",
@@ -1012,11 +1014,13 @@
       "areYouSureDelete": "Da li ste sigurni da želite da uklonite ovog saradnika?",
       "invitation": "Pozvani ste da sarađujete u ovoj escape sobi.",
       "beforeJoin": "Pre nego što počnete da igrate, morate da prihvatite ili odbijete zahtev da budete saradnik u ovoj escape sobi",
-      "confirmCollaboration": "potvrdi",
+      "confirmCollaboration": "prihvati",
       "cancelCollaboration": "otkaži",
       "addCollaborator": "Dodaj saradnika",
       "owner": "Vlasnik",
-      "pendingConfirmation": "ČEKA SE POTVRDA"
+      "pendingConfirmation": "Čeka se potvrda",
+      "pendingConfirmationHover": "Korisnik mora da prihvati zahtev za saradnju putem platforme",
+      "confirmed": "Potvrđen"
     },
     "puzzle": {
       "puzzle": "zagonetka",

@@ -2164,7 +2164,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   width: 500px;
   max-width: 50%;
 }
-.collaborators .flex-table-wrapper .flex-name, .collaborators .flex-table-wrapper .flex-email {
+.collaborators .flex-table-wrapper .flex-ctype, .collaborators .flex-table-wrapper .flex-alias, .collaborators .flex-table-wrapper .flex-email {
   flex: 1;
 }
 .collaborators .flex-table-wrapper .flex-actions button {
@@ -2172,6 +2172,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 .collaborators .flex-table-wrapper .flex-actions button span {
   font-size: 1em;
+}
+.collaborators span.collaborator_status_pending {
+  background: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 7px !important;
+  user-select: none;
 }
 
 .contact-form {
@@ -5245,6 +5253,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border: 2px solid white;
   border-radius: 5px;
   padding: 1em;
+  margin-bottom: 35px;
 }
 #mainSection .main.showPlayer .flex-er-collaborator p {
   margin-top: 0px;

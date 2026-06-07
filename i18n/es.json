@@ -240,12 +240,12 @@
             "successEditingTeam": "Equipo editado con éxito",
             "successEditingTurno": "Turno editado con éxito",
             "successEditingUser": "Usuario editado con éxito",
-            "successAddingCollaborator": "Colaborador añadido con éxito. Se le notificará para que confirme su colaboración",
-            "successConfirmingCollaborator": "Confirmado como colaborador con éxito",
+            "successAddingCollaborator": "Solicitud de colaboración enviada. El usuario debe aceptar la solicitud a través de la plataforma.",
+            "successConfirmingCollaborator": "Colaboración confirmada. Ya puedes editar la escape room.",
             "successCancellingCollaborator": "Eliminado como colaborador con éxito",
             "successImage": "Imagen subida con éxito",
             "successSendingReport": "Reporte enviado con éxito",
-            "youMustAcceptTerms": "Debes aceptar los términos y condiciones para poder registrarte.",
+            "youMustAcceptTerms": "Debes aceptar los términos de uso y la política de privacidad para poder registrarte.",
             "youHaveNotBeenAddedAsACollaborator": "No has sido añadido como colaborador de esta escape room.",
             "aliasAlreadyExists": "Alguien con ese alias ya está registrado en Escapp"
 
@@ -1005,19 +1005,22 @@
     },
     "collaborators": {
         "Collaborators": "Colaboradores",
+        "Type": "Tipo",
+        "Alias": "Alias",
         "Name": "Nombre",
         "Email": "E-mail",
         "add": "añadir",
         "delete": "borrar",
-        "areYouSureDelete": "¿Seguro que desea quitar este colaborador?",
+        "areYouSureDelete": "¿Seguro que quieres quitar este colaborador?",
         "invitation": "Te han invitado a colaborar en esta escape room.",
         "beforeJoin": "Antes de jugar, tienes que aceptar o rechazar la solicitud de ser colaborador de esta escape room",
         "addCollaborator": "Añadir colaborador",
-        "confirmCollaboration": "confirmar",
+        "confirmCollaboration": "aceptar",
         "cancelCollaboration": "cancelar",
         "owner": "Propietario",
-        "pendingConfirmation": "PENDIENTE CONFIRMACIÓN"
-
+        "pendingConfirmation": "Pendiente de confirmación",
+        "pendingConfirmationHover": "El usuario debe aceptar la solicitud de colaboración a través de la plataforma",
+        "confirmed": "Confirmado"
     },
     "puzzle": {
         "puzzle": "reto",

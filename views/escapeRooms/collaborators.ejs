@@ -6,6 +6,8 @@
             <a href="/escapeRooms"><%=i18n.common.my%></a>
             <span class="material-icons">chevron_right</span>
             <a href="/escapeRooms/<%=escapeRoom.id%>"><%=escapeRoom.title%></a> 
+            <span class="material-icons">chevron_right</span>
+            <span><%=i18n.collaborators.Collaborators%></span>
         </div>
     </div>
     <h1><%=i18n.collaborators.Collaborators%></h1>
@@ -23,21 +25,24 @@
     <div class="flex-table-wrapper">
         <div class="flex-table animated jello">
             <div class="flex-row flex-row-title">
-                <div class="flex-cell flex-name"><%=i18n.collaborators.Name%></div>
+                <div class="flex-cell flex-ctype"><%=i18n.collaborators.Type%></div>
+                <div class="flex-cell flex-alias"><%=i18n.collaborators.Alias%></div>
                 <div class="flex-cell flex-email"><%=i18n.collaborators.Email%></div>
                 <div class="flex-cell flex-actions"><%=i18n.turno.Actions%></div>
             </div>
             <div class="flex-row">
-                <div class="flex-cell flex-name">
-                    <% if (!escapeRoom.author.anonymized) {%>
-                       <%=escapeRoom.author.alias%> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
-                       <%}else{%>
-                        <i><%=i18n.user.anonymous%> </i> &nbsp; <em>(<%=i18n.collaborators.owner%>)</em>
-                    <%}%>
+                <div class="flex-cell flex-ctype">
+                    <%=i18n.collaborators.owner%>
+                </div>
+                <div class="flex-cell flex-alias">
+                    <%=escapeRoom.author.alias%>
                 </div>
                 <div class="flex-cell flex-email">
-                    <% if (escapeRoom.author.anonymized) {%> <i><%=i18n.user.anonymous%> </i><%} else {%> <%=escapeRoom.author.alias%> <%}%>
-
+                    <% if (escapeRoom.author.anonymized) {%> 
+                        <i><%=i18n.user.anonymous%> </i>
+                    <%} else {%> 
+                        <%=escapeRoom.author.username%> 
+                    <%}%>
                 </div>
                 <div class="flex-cell flex-actions">
                 </div>
@@ -45,22 +50,26 @@
             <% for (var t in collaborators ) {
                 var collab = collaborators[t]; %>
             <div class="flex-row">
-                <div class="flex-cell flex-name">
+                <div class="flex-cell flex-ctype">
+                    <%if(!collab.coAuthors.confirmed){%> 
+                        <span class="collaborator_status_pending" title="<%=i18n.collaborators.pendingConfirmationHover%>"><%=i18n.collaborators.pendingConfirmation%></span>
+                    <%} else {%>
+                        <%=i18n.collaborators.confirmed%>
+                    <%}%>
+                </div>
+                <div class="flex-cell flex-alias">
                     <%=collab.alias%>
                 </div>
                 <div class="flex-cell flex-email">
                     <% if (collab.anonymized) {%>
                         <i><%=i18n.user.anonymous%> </i>
                     <% } else {%>
-                        <%=collab.alias%>
+                        <%=collab.username%>
                     <%}%>
                 </div>
                 <div class="flex-cell flex-actions">
                     <div class="overlay-wrapper">
-                        <%if(!collab.coAuthors.confirmed){%><span class="tag-chip">
-                            <%=i18n.collaborators.pendingConfirmation%>
-                        </span><%}%>
-                        <button class="team-button msg-team" title="<%=i18n.team.delete%>" onclick="overlayTrigger('collaborator-<%=collab.id%>')">
+                        <button class="team-button msg-team" onclick="overlayTrigger('collaborator-<%=collab.id%>')">
                             <span class="material-icons">delete </span>
                         </button>
                         <div class="overlay-trigger overlayf-menu" data-id="collaborator-<%=collab.id%>">
