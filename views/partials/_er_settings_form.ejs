@@ -1,5 +1,4 @@
 <% let formFields = [
-
      {
          name: "title",
          id: "tit",
@@ -10,7 +9,6 @@
      }]
 %>
 <% let formFields2 = [
-     
      {
         name: "duration",
         id: "dur",
@@ -20,7 +18,6 @@
         max: 24 * 60 * 60 * 365,
         value: escapeRoom.duration,
         required: true
-
      },
      {
          name: "teamSize",
@@ -55,7 +52,6 @@
         <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
                placeholder="<%=i18n.escapeRoom.steps.settings[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
     </div>
-
 <%}%>
   <div class="inputFormField erFormField animated slideInUp" style="animation-delay: 200ms;">
       <label for="subj"  class="itemNarrow">2. <%=i18n.showTeacher.titles["subjects"]%>:</label>
@@ -122,7 +118,7 @@
 <% for (let f in formFields2) {
   var field = formFields2[f];%>
     <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*f%>ms;">
-        <label for="<%=field.id%>"  class="itemNarrow"><%=parseInt(f)+6%>. <%=i18n.showTeacher.titles[field.i18n]%>:</label>
+        <label for="<%=field.id%>"  class="itemNarrow"><%=parseInt(f)+7%>. <%=i18n.showTeacher.titles[field.i18n]%>:</label>
         <input <%=field.required ? 'required="required"' : "" %>  type="<%=field.number ? "number" : "text"%>" min="<%=field.min%>" max="<%=field.max%>" class="customInput itemWide" id="<%= field.id %>" name="<%= field.name %>" value="<%= field.value %>" maxlength="<%=field.maxlength%>"
                placeholder="<%=i18n.escapeRoom.steps.settings[field.i18n + "PlaceHolder"]%>" autocomplete="off"/>
     </div>
@@ -134,7 +130,7 @@
 <%}%>
 
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+1)%>ms;">
-  <label for="<%=field.id%>"  class="itemNarrow">9. <%=i18n.showTeacher.titles["lang"]%>:</label>
+  <label for="<%=field.id%>"  class="itemNarrow">11. <%=i18n.showTeacher.titles["lang"]%>:</label>
   <select class="customInput itemWide" id="lang" name="lang" autocomplete="off">
     <% for (var l of Object.keys(i18n.languages)) {%>
     <option value="<%=l%>" <%= (escapeRoom.lang || i18n.lang) == l ? "selected" : "" %>><%=i18n.languages[l]%></option>
@@ -142,7 +138,7 @@
   </select>
 </div>
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*formFields.length%>ms;">
-  <label for="<%=field.id%>"  class="itemNarrow">10. <%=i18n.showTeacher.titles["forceLang"]%>:</label>
+  <label for="<%=field.id%>"  class="itemNarrow">12. <%=i18n.showTeacher.titles["forceLang"]%>:</label>
   <select class="customInput itemWide" id="forceLang" name="forceLang" autocomplete="off">
     <option value="" <%=escapeRoom.forceLang  ? "" : "selected" %>><%=i18n.langs["dontForce"]%> </option>
     <% var langs = globalConfig.availableLanguages || ["en", "es"]; %>
@@ -154,7 +150,7 @@
   </select>
 </div>
   <div class="inputFormField erFormField animated slideInUp" style="animation-delay:0ms;">
-    <label for="allowUserToResetTeamProgress" class="itemNarrow">11. <%=i18n.escapeRoom.steps.evaluation.allowUserToResetTeamProgress%>:</label>
+    <label for="allowUserToResetTeamProgress" class="itemNarrow">13. <%=i18n.escapeRoom.steps.evaluation.allowUserToResetTeamProgress%>:</label>
     <select class="customInput itemWide" id="allowUserToResetTeamProgress" name="allowUserToResetTeamProgress">
       <option value="false" <%= !escapeRoom.allowUserToResetTeamProgress ? "selected" : "" %>><%=i18n.common.no%></option>
       <option value="true" <%= escapeRoom.allowUserToResetTeamProgress ? "selected" : "" %>><%=i18n.common.yes%></option>
@@ -162,7 +158,7 @@
     <span class="field-hint"><%=i18n.escapeRoom.steps.evaluation.allowUserToResetTeamProgressHint%></span>
   </div>
 <div class="inputFormField erFormField animated slideInUp" style="animation-delay: <%=200*(formFields.length+2)%>ms;">
-    <label class="itemNarrow">12. <%=i18n.showTeacher.titles.thumbnail%>:</label>
+    <label class="itemNarrow">14. <%=i18n.showTeacher.titles.thumbnail%>:</label>
     <input class="attach" type="file" id="img" name="image"/>
     <label for="img" class="fileUpload customInput itemWide">
       <span id="imgLabel" >
