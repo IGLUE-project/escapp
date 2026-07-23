@@ -344,7 +344,7 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
             const solutionNum = Number(splitArray[0]);
             const range = Number(splitArray[1]);
 
-            correctAnswer = answer > solutionNum - range && answer < solutionNum + range;
+            correctAnswer = answer >= solutionNum - range && answer <= solutionNum + range;
             break;
         }
         case "caseinsensitive":

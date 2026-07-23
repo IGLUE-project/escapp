@@ -70,7 +70,7 @@
 
                 const range =  parseFloat(rangeElement.val().replace(",", "."));
 
-                if(isNaN(range) || range === "" || range === 0) {
+                if(isNaN(range) || range < 0) {
                     rangeElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRange%>");
                     rangeElement.get(0).reportValidity();
                     return false;
