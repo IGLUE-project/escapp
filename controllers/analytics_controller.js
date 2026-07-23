@@ -606,10 +606,38 @@ exports.download = async (req, res) => {
             const hs = flattenObject(hintsSucceeded, puzzleNames.map((p) => `Hints succeeded for ${p}`));
             const attendance = Boolean(user.turnosAgregados[0].participants.attendance);
 
-            if (includeNames) {
-                return {name, surname, username, alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
+            // Latest interaction of the team: most recent puzzle solve, failed attempt or hint request
+            let lastInteraction = null;
+            const considerInteraction = (ts) => {
+                if (!ts) {
+                    return;
+                }
+                const date = new Date(ts);
+
+                if (!lastInteraction || date > lastInteraction) {
+                    lastInteraction = date;
+                }
+            };
+
+            const teamFailedAttempts = retosNoSuperados[teamId] || {};
+
+            for (const reto of user.teamsAgregados[0].retos) {
+                considerInteraction(reto.retosSuperados.createdAt);
             }
-            return {alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
+            for (const order in teamFailedAttempts) {
+                for (const attempt of teamFailedAttempts[order]) {
+                    considerInteraction(attempt.when);
+                }
+            }
+            for (const hint of requestedHints) {
+                considerInteraction(hint.createdAt);
+            }
+            const lastInteractionTimestamp = lastInteraction ? convertDate(lastInteraction) : "";
+
+            if (includeNames) {
+                return {name, surname, username, alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, lastInteractionTimestamp, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
+            }
+            return {alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, lastInteractionTimestamp, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
         });
 
         createCsvFile(res, results, `donwload-er-${escapeRoom.id}-${turnId ? `turn-${turnId}-` : ""}${Date.now()}`);

@@ -1,4 +1,5 @@
 const sequelize = require("../models");
+const {toRfc3339} = require("./csv");
 const {models} = sequelize;
 
 exports.retosSuperadosByWho = (who, puzzles, showDate = false, turno) => {
@@ -160,4 +161,5 @@ exports.byRanking = (a, b) => {
     return 1;
 };
 
-exports.convertDate = (ts) => new Date(ts.getTime() - ts.getTimezoneOffset() * 60000).toISOString().split(".")[0].replace("T", " ");
+// Formats a timestamp as ISO 8601 / RFC 3339 with the local timezone offset, e.g. "2026-07-23T14:30:00+02:00"
+exports.convertDate = toRfc3339;
