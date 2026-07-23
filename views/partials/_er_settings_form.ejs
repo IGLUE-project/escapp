@@ -449,4 +449,15 @@ $(function(){
   :root {
     --placeholder-text: "<%=i18n.escapeRoom.steps.indications.front.dropHere%>";
   }
+  /* jQuery UI appends an aria-live region to <body> for its autocomplete; hide it (jQuery UI theme CSS is not loaded here) so its text does not show up near the footer */
+  .ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
 </style>
