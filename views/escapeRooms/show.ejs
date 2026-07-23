@@ -99,10 +99,16 @@
                     <div>
                         <h3><%=i18n.escapeRoom.steps.sharing.license%></h3>
                         <p>
-                            <%var cc = escapeRoom.license.split(" ")[1].toLowerCase();%>
-                            <a href="https://creativecommons.org/licenses/<%=cc%>/4.0/" target="_blank">
-                                <img style="height: 46px;" src="/images/cc/<%=cc%>.png" alt="">
-                            </a>
+                            <%if(escapeRoom.license === "CC0"){%>
+                                <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">
+                                    <img style="height: 46px;" src="/images/cc/zero.png" alt="CC0">
+                                </a>
+                            <%} else {%>
+                                <%var cc = escapeRoom.license.split(" ")[1].toLowerCase();%>
+                                <a href="https://creativecommons.org/licenses/<%=cc%>/4.0/" target="_blank">
+                                    <img style="height: 46px;" src="/images/cc/<%=cc%>.png" alt="">
+                                </a>
+                            <%}%>
                         </p>
                     </div>
                 <%}%>

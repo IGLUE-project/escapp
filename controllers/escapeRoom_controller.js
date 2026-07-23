@@ -517,7 +517,9 @@ exports.sharingUpdate = async (req, res) => {
             escapeRoom.invitation = null;
             escapeRoom.allowGuests = true;
         }
-        if (!escapeRoom.publishedOnce) { // Cannot change the license of a published room
+        const isAdmin = Boolean(req.session.user && req.session.user.isAdmin);
+
+        if (!escapeRoom.publishedOnce || isAdmin) { // Cannot change the license of a published room (except admins)
             escapeRoom.license = body.license;
             if ((escapeRoom.status === "draft" || !escapeRoom.status) && body.status === "completed") {
                 escapeRoom.publishedOnce = true;

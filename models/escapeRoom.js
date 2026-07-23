@@ -137,7 +137,7 @@ module.exports = function (sequelize, DataTypes) {
             "license": {
                 "type": DataTypes.STRING,
                 "allowNull": true,
-                "validate": {"isIn": [["CC BY", "CC BY-NC", "CC BY-SA", "CC BY-NC-SA", "CC BY-ND", "CC BY-NC-ND"]]}
+                "validate": {"isIn": [["CC BY", "CC BY-NC", "CC BY-SA", "CC BY-NC-SA", "CC BY-ND", "CC BY-NC-ND", "CC0"]]}
             },
             "field": {
                 "type": DataTypes.STRING,
