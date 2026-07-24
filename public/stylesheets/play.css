@@ -73,6 +73,11 @@
   margin-left: 10px;
   white-space: nowrap;
   display: inline-block;
+  /* Dark LED-style backdrop so the red digits stay legible on any theme's navbar (bg-primary) */
+  padding: 2px 8px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.45);
+  vertical-align: middle;
 }
 .navbar-countdown-pulse {
   animation: navbar-cd-pulse 1s infinite;

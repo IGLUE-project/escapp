@@ -633,11 +633,12 @@ exports.download = async (req, res) => {
                 considerInteraction(hint.createdAt);
             }
             const lastInteractionTimestamp = lastInteraction ? convertDate(lastInteraction) : "";
+            const lastInteractionMinute = lastInteraction && turno ? Math.round(100 * (new Date(lastInteraction) - new Date(turno)) / 1000 / 60) / 100 : "";
 
             if (includeNames) {
-                return {name, surname, username, alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, lastInteractionTimestamp, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
+                return {name, surname, username, alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, lastInteractionTimestamp, lastInteractionMinute, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
             }
-            return {alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, lastInteractionTimestamp, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
+            return {alias, teamId, teamName, attendance, teamAttendance, ...rns, ...rs, ...rsMin, turnoTag, turno, lastInteractionTimestamp, lastInteractionMinute, hintsFailedTotal, ...hf, hintsSucceededTotal, ...hs};
         });
 
         createCsvFile(res, results, `donwload-er-${escapeRoom.id}-${turnId ? `turn-${turnId}-` : ""}${Date.now()}`);
