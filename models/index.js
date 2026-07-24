@@ -317,21 +317,25 @@ reusablePuzzleInstance.belongsTo(escapeRoom, {"foreignKey": "escapeRoomId"});
 
 // Relation 1-to-N between reusablePuzzle and reusablePuzzleInstance:
 reusablePuzzle.hasMany(reusablePuzzleInstance, {
-    "foreignKey": "escapeRoomId",
+    "foreignKey": "reusablePuzzleId",
     "onDelete": "CASCADE",
     "hooks": true
 });
 
 reusablePuzzleInstance.belongsTo(reusablePuzzle, {"foreignKey": "reusablePuzzleId"});
 
-reusablePuzzleInstance.belongsToMany(puzzle, {"through": "reusablePuzzleInstancePuzzle"});
+reusablePuzzleInstance.belongsToMany(puzzle, {"through": "reusablePuzzleInstancePuzzle", "onDelete": "CASCADE"});
 
-puzzle.belongsToMany(reusablePuzzleInstance, {"through": "reusablePuzzleInstancePuzzle"});
+puzzle.belongsToMany(reusablePuzzleInstance, {"through": "reusablePuzzleInstancePuzzle", "onDelete": "CASCADE"});
 
 
 // Scenes
 scene.belongsTo(escapeRoom);
-escapeRoom.hasMany(scene, {"foreignKey": "escapeRoomId"});
+escapeRoom.hasMany(scene, {
+    "foreignKey": "escapeRoomId",
+    "onDelete": "CASCADE",
+    "hooks": true
+});
 
 scene.hasMany(reusablePuzzleInstance);
 reusablePuzzleInstance.belongsTo(scene);

@@ -338,7 +338,9 @@
         const selectedPuzzleDiv = $('#selectePuzzle');
 
         if(puzzleSelected) {
-            if (puzzleSelected.assignedReusablePuzzleInstances.length > 0 && puzzleSelected.assignedReusablePuzzleInstance != id) {
+            // Warn only if the puzzle is linked to a reusable puzzle instance OTHER than the one being edited (id)
+            const linkedToOtherInstance = puzzleSelected.assignedReusablePuzzleInstances.some((instanceId) => Number(instanceId) !== Number(id));
+            if (linkedToOtherInstance) {
                 span.show();
             } else {
                 span.hide();
@@ -445,6 +447,18 @@
                 const asset = $(`#p-${id}`);
                 asset.remove();
                 overlayTrigger(id, false)
+
+                // Keep client state in sync so the deleted instance's links don't
+                // linger (and keep the "linked to another resource" warning) until refresh
+                const deletedId = Number(id);
+                window.puzzles.forEach((puzzle, index) => {
+                    if (puzzle.assignedReusablePuzzleInstances.includes(deletedId)) {
+                        window.puzzles[index].assignedReusablePuzzleInstances = puzzle.assignedReusablePuzzleInstances.filter((p) => p !== deletedId);
+                    }
+                });
+                if (window.reusablePuzzleInstances) {
+                    window.reusablePuzzleInstances = window.reusablePuzzleInstances.filter((rpi) => Number(rpi.id) !== deletedId);
+                }
             }
         });
     }
