@@ -60,6 +60,7 @@
         "ranking": {
             "members": "Members",
             "res": "Results",
+            "progress": "Progress",
             "team": "Team",
             "user": "Participant",
             "time": "Time",
@@ -1446,6 +1447,21 @@
         "expectedDuration": "Expected duration (mins)",
         "fullscreen":"fullscreen",
         "reset":"reset",
+        "status": "Status",
+        "disable": "Disable",
+        "enable": "Enable",
+        "disabled": "disabled",
+        "deleteConfirm": "Deleting this reusable puzzle will also delete ALL of its existing instances in every escape room. Are you sure?",
+        "order": "Order",
+        "enabledLabel": "enabled",
+        "formTemplate": "Form template / URL",
+        "currentThumbnail": "Current thumbnail",
+        "instructions": "Instructions",
+        "editHint": "Leave a field blank to keep its current value. Uploading a new ZIP or thumbnail replaces the current one.",
+        "puzzleName": "Name",
+        "replaceZip": "Replace puzzle ZIP (optional)",
+        "replaceThumbnail": "Replace thumbnail (optional)",
+        "keepCurrent": "Leave blank to keep current",
         "errors": {
             "nullPuzzle": "You must link at least one puzzle to this resource"
         }

@@ -232,6 +232,7 @@ router.get("/reusablePuzzles/:reusablePuzzleId", sessionController.loginRequired
 router.get("/reusablePuzzles/:puzzle_id/:file_name(*)", reusablePuzzleController.getReusablePuzzleAsset);
 router.get("/reusablePuzzles/installed/:puzzle_id/:file_name(*)", reusablePuzzleController.getReusablePuzzleAsset);
 router.delete("/reusablePuzzles/:puzzle_id", sessionController.loginRequired, sessionController.adminRequired, reusablePuzzleController.deleteReusablePuzzle);
+router.post("/reusablePuzzles/:puzzle_id/toggleDisabled", sessionController.loginRequired, sessionController.adminRequired, reusablePuzzleController.toggleReusablePuzzleDisabled);
 router.get("/reusablePuzzlesInstances/:puzzle_id/form", sessionController.loginRequired, sessionController.authCreateEscapeRoom, reusablePuzzleController.getFormForInstance);
 router.get("/reusablePuzzlePreview/:reusablePuzzleId", sessionController.authCreateEscapeRoom, reusablePuzzleController.renderReusablePuzzlePreview);
 

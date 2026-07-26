@@ -61,6 +61,7 @@
     "ranking": {
       "members": "Članovi",
       "res": "Rezultati",
+      "progress": "Napredak",
       "team": "Tim",
       "user": "Učesnik",
       "time": "Vreme",
@@ -1444,6 +1445,21 @@
       "expectedDuration": "Očekivano trajanje (min)",
       "fullscreen": "ceo ekran",
       "reset": "resetuj",
+      "status": "Status",
+      "disable": "Onemogući",
+      "enable": "Omogući",
+      "disabled": "onemogućeno",
+      "deleteConfirm": "Brisanjem ove zagonetke za višekratnu upotrebu biće obrisane i SVE njene postojeće instance u svim escape sobama. Da li ste sigurni?",
+      "order": "Redosled",
+      "enabledLabel": "omogućeno",
+      "formTemplate": "Šablon forme / URL",
+      "currentThumbnail": "Trenutna sličica",
+      "instructions": "Uputstva",
+      "editHint": "Ostavite polje prazno da zadržite trenutnu vrednost. Otpremanje novog ZIP-a ili sličice zamenjuje trenutni.",
+      "puzzleName": "Naziv",
+      "replaceZip": "Zameni ZIP zagonetke (opciono)",
+      "replaceThumbnail": "Zameni sličicu (opciono)",
+      "keepCurrent": "Ostavite prazno da zadržite trenutno",
       "errors": {
         "nullPuzzle": "Morate povezati barem jednu zagonetku sa ovim resursom"
       }

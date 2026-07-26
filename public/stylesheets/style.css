@@ -3467,7 +3467,8 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   margin: auto;
 }
 .modalCatalogResource .modalContainer .sections {
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: 80vh;
   max-height: 1000px;
 }
@@ -4855,6 +4856,197 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main #add-reto .material-icons {
   font-size: 32px;
+}
+
+.rp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5em;
+}
+
+.rp-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.rp-card.disabled {
+  opacity: 0.55;
+}
+
+.rp-thumb, .rp-thumb-placeholder {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #f4f4f4;
+}
+
+.rp-thumb {
+  object-fit: cover;
+}
+
+.rp-thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c4c4c4;
+}
+
+.rp-body {
+  padding: 0.75em 1em 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  flex: 1;
+}
+
+.rp-name {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 0;
+  word-break: break-word;
+}
+
+.rp-badge {
+  font-size: 0.7em;
+  color: #F47E84;
+  white-space: nowrap;
+}
+
+.rp-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-top: auto;
+}
+.rp-actions form {
+  margin: 0;
+  display: inline-flex;
+}
+
+.rp-spacer {
+  flex: 1;
+}
+
+.rp-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+.rp-icon-btn:hover {
+  opacity: 0.7;
+}
+.rp-icon-btn.rp-delete {
+  color: #F47E84;
+}
+
+.rp-switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+  flex: none;
+}
+.rp-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.rp-switch input:checked + .rp-slider {
+  background: #48C18E;
+}
+.rp-switch input:checked + .rp-slider:before {
+  transform: translateX(20px);
+}
+
+.rp-slider {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  background: #ccc;
+  border-radius: 22px;
+  transition: 0.2s;
+}
+.rp-slider:before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.rp-edit-layout {
+  display: flex;
+  gap: 2.5em;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.rp-edit-current {
+  min-width: 200px;
+}
+
+.rp-edit-thumb {
+  width: 200px;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f4f4f4;
+}
+.rp-edit-thumb.rp-edit-thumb-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c4c4c4;
+}
+
+.rp-edit-info {
+  list-style: none;
+  padding: 0;
+  margin-top: 1em;
+  font-size: 0.9em;
+  line-height: 1.7;
+  word-break: break-word;
+}
+.rp-edit-info code {
+  font-size: 0.85em;
+}
+
+.rp-edit-hint {
+  font-size: 0.85em;
+  opacity: 0.85;
+  margin: 0 0 0.5em;
+}
+
+.rp-edit-form {
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+.rp-edit-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9em;
+  gap: 3px;
+}
+.rp-edit-form input[type=text], .rp-edit-form input[type=number] {
+  padding: 6px;
+}
+.rp-edit-form input[type=submit] {
+  margin-top: 0.5em;
+  padding: 8px;
+  cursor: pointer;
 }
 
 .ranking {

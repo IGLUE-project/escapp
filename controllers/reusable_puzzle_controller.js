@@ -37,7 +37,7 @@ exports.getFormForInstance = async (req, res, next) => {
 
 exports.getReusablePuzzles = async (req, res, next) => {
     try {
-        const reusablePuzzles = await models.reusablePuzzle.findAll();
+        const reusablePuzzles = await models.reusablePuzzle.findAll({"order": [["order", "ASC"], ["id", "ASC"]]});
 
         res.render("reusablePuzzles/index", {reusablePuzzles});
     } catch (e) {
@@ -49,11 +49,24 @@ exports.getReusablePuzzle = async (req, res, next) => {
     const {reusablePuzzleId} = req.params;
 
     try {
-        const reusablePuzzle = await models.reusablePuzzle.findOne({"where": {"id": reusablePuzzleId}});
-        const config = JSON.parse(reusablePuzzle.config);
-        const form = config.url.includes("reusablePuzzles/forms/") ? config.url.split("/").pop() : "";
+        const reusablePuzzle = await models.reusablePuzzle.findByPk(reusablePuzzleId);
 
-        res.render("reusablePuzzles/details", {"id": reusablePuzzle.id, "name": reusablePuzzle.name, "description": reusablePuzzle.description, "thumbnail": reusablePuzzle.config.thumbnail, form});
+        if (!reusablePuzzle) {
+            return next(new Error("Reusable puzzle not found"));
+        }
+        const config = typeof reusablePuzzle.config === "string" ? JSON.parse(reusablePuzzle.config || "{}") : (reusablePuzzle.config || {});
+        const form = config.url && config.url.includes("reusablePuzzles/forms/") ? config.url.split("/").pop() : "";
+
+        res.render("reusablePuzzles/details", {
+            "id": reusablePuzzle.id,
+            "name": reusablePuzzle.name,
+            "order": reusablePuzzle.order,
+            "instructions": reusablePuzzle.instructions || "",
+            "disabled": reusablePuzzle.disabled,
+            "url": config.url || "",
+            "thumbnail": config.thumbnail || "",
+            form
+        });
     } catch (e) {
         next(e);
     }
@@ -82,6 +95,25 @@ exports.deleteReusablePuzzle = async (req, res, next) => {
         }
 
         res.status(200);
+        res.redirect("back");
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+};
+
+// Enable/disable a reusable puzzle type. Disabled types are hidden from the
+// catalog (cannot be used for new instances) while existing instances keep working.
+exports.toggleReusablePuzzleDisabled = async (req, res, next) => {
+    const {puzzle_id} = req.params;
+
+    try {
+        const puzzle = await models.reusablePuzzle.findByPk(puzzle_id);
+
+        if (!puzzle) {
+            return res.status(404).send("Reusable puzzle not found");
+        }
+        await puzzle.update({"disabled": !puzzle.disabled}, {"fields": ["disabled"]});
         res.redirect("back");
     } catch (e) {
         console.error(e);
@@ -209,87 +241,105 @@ exports.createReusablePuzzle = async (req, res, next) => {
 };
 
 exports.editReusablePuzzle = async (req, res, next) => {
-    const {name, description, form } = req.body;
+    const {puzzle_id} = req.params;
+    const {name, form, order} = req.body;
+    const files = req.files || {};
     const t = await sequelize.transaction();
 
     try {
-        let thumbnailPath, thumbnailExtension,
-            thumbnailName = "";
+        const puzzle = await models.reusablePuzzle.findByPk(puzzle_id);
 
-        if (req.files.thumbnail) {
-            thumbnailPath = path.join(__dirname, "/../", req.files.thumbnail[0].path);
-            thumbnailExtension = req.files.thumbnail[0].originalname.split(".").pop();
-            thumbnailName = `thumbnail.${thumbnailExtension}`;
+        if (!puzzle) {
+            throw new Error("Puzzle doesnt exist");
         }
 
-        let hasForm = false;
-        let zip = null;
+        // Start from the CURRENT config so unchanged fields (thumbnail, url) are preserved
+        const config = typeof puzzle.config === "string" ? JSON.parse(puzzle.config || "{}") : (puzzle.config || {});
+        const oldName = puzzle.name;
+        const newName = name && name.trim() ? name.trim() : oldName;
+        const oldDir = path.join(__dirname, `../reusablePuzzles/installed/${oldName}`);
 
-        if (req.files.file && req.files.file[0]) {
-            const zipPath = path.join(__dirname, "/../", req.files.file[0].path);
+        // Rename the installed folder (and fix any installed-form url) when the name changes
+        if (newName !== oldName) {
+            const newDir = path.join(__dirname, `../reusablePuzzles/installed/${newName}`);
 
-            zip = new StreamZip.async({ "file": zipPath });
+            if (fs.existsSync(newDir)) {
+                throw new Error("A reusable puzzle with that name already exists");
+            }
+            if (fs.existsSync(oldDir)) {
+                fs.renameSync(oldDir, newDir);
+            }
+            if (config.url && config.url.includes(`/reusablePuzzles/installed/${oldName}/`)) {
+                config.url = config.url.replace(`/reusablePuzzles/installed/${oldName}/`, `/reusablePuzzles/installed/${newName}/`);
+            }
+            puzzle.name = newName;
+        }
+
+        const installedDir = path.join(__dirname, `../reusablePuzzles/installed/${newName}`);
+
+        // New ZIP uploaded -> re-extract and recompute the url; otherwise keep the current url
+        if (files.file && files.file[0]) {
+            const zipPath = path.join(__dirname, "/../", files.file[0].path);
+            const zip = new StreamZip.async({ "file": zipPath });
             const entries = await zip.entries();
+            let hasForm = false;
 
             for (const entry of Object.values(entries)) {
                 if (entry.name === "form.ejs") {
                     hasForm = true;
                 }
             }
-        }
-
-        const puzzle = await models.reusablePuzzle.findOne({"where": {name}});
-
-        if (puzzle === null) {
-            throw new Error("Puzzle doesnt exist");
-        }
-
-        puzzle.description = description;
-
-        const newPath = path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}`);
-
-        if (thumbnailPath) {
-            fs.renameSync(thumbnailPath, path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/thumbnail.${thumbnailExtension}`));
-        }
-
-        if (zip) {
-            fs.rmdirSync(newPath, { "recursive": true, "force": true });
-            fs.mkdirSync(newPath);
-            await zip.extract(null, newPath);
+            fs.rmSync(installedDir, { "recursive": true, "force": true });
+            fs.mkdirSync(installedDir, { "recursive": true });
+            await zip.extract(null, installedDir);
             await zip.close();
+            fs.unlinkSync(zipPath);
+
+            const currentForm = config.url && config.url.includes("reusablePuzzles/forms/") ? config.url.split("/").pop() : "";
+
+            config.url = hasForm
+                ? `/reusablePuzzles/installed/${newName}/form.ejs`
+                : `/reusablePuzzles/forms/${(form && form.trim()) || currentForm || "default"}`;
+        } else if (form && form.trim()) {
+            // No new zip, but a form template name was given -> switch to that template
+            config.url = `/reusablePuzzles/forms/${form.trim()}`;
         }
 
-        let instructions = "";
+        // New thumbnail uploaded -> replace it; otherwise keep the current thumbnail
+        if (files.thumbnail && files.thumbnail[0]) {
+            const thumbnailExtension = files.thumbnail[0].originalname.split(".").pop();
+            const thumbnailName = `thumbnail.${thumbnailExtension}`;
 
-        if (req.files.instructions) {
-            req.files.instructions.forEach((instruction) => {
-                fs.renameSync(path.join(__dirname, "/../", req.files.instructions[0].path), path.join(__dirname, `../reusablePuzzles/installed/${puzzle.name}/${instruction.originalname}`));
-                instructions += `${instruction.originalname.split(".")[0]}, `;
-            });
-        }
-        puzzle.instructions = instructions;
-
-        if (hasForm) {
-            puzzle.config = JSON.stringify({"url": `/reusablePuzzles/installed/${puzzle.name}/form.ejs`, "thumbnail": thumbnailName});
-        } else {
-            puzzle.config = JSON.stringify({"url": `/reusablePuzzles/forms/${form}`, "thumbnail": thumbnailName});
+            if (!fs.existsSync(installedDir)) {
+                fs.mkdirSync(installedDir, { "recursive": true });
+            }
+            fs.renameSync(path.join(__dirname, "/../", files.thumbnail[0].path), path.join(installedDir, thumbnailName));
+            config.thumbnail = thumbnailName;
         }
 
+        // Order: only update when a valid number was submitted
+        if (typeof order !== "undefined" && String(order).trim() !== "" && !Number.isNaN(Number(order))) {
+            puzzle.order = Number(order);
+        }
+
+        // instructions and disabled are intentionally left untouched (not editable here)
+
+        puzzle.config = JSON.stringify(config);
         await puzzle.save({"transaction": t});
         await t.commit();
         res.redirect("back");
     } catch (e) {
         await t.rollback();
-        if (req.files.file && req.files.file[0] && req.files.file[0].path) {
-            fs.rm(
-                path.join(__dirname, "/../", req.files.file[0].path), { "recursive": true, "force": true },
-                (error) => {
-                    if (error) {
-                        console.error("Error removing directory:", error);
-                    }
-                    next(e);
+        console.error(e);
+        if (files.file && files.file[0] && files.file[0].path) {
+            fs.rm(path.join(__dirname, "/../", files.file[0].path), { "recursive": true, "force": true }, (error) => {
+                if (error) {
+                    console.error("Error removing uploaded file:", error);
                 }
-            );
+                next(e);
+            });
+        } else {
+            next(e);
         }
     }
 };

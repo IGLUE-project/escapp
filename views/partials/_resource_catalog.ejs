@@ -159,14 +159,14 @@
     <div style="width:100%">
         <div style="display: flex; justify-content:end; margin-bottom:0.2em; gap: 0.7rem" >
                 <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
-                    <button class="rounded building-block-bar-button uploadButton" onclick="toggleCatalogModal()">
-                        <a href="#">
+                    <button class="rounded building-block-bar-button uploadButton" type="button" onclick="toggleCatalogModal()">
+                        <div style="display:flex">
                             <span class="building-block-icon material-icons"> add </span>
                             <p><%=i18n.escapeRoom.steps.indications.front.catalog.addResource%></p>
-                        </a>
+                        </div>
                     </button>
                 <% } %>
-                    <button class="rounded building-block-bar-button uploadButton" onclick="toggleUploadModal()">
+                    <button class="rounded building-block-bar-button uploadButton" type="button" onclick="toggleUploadModal()">
                         <div style="display:flex">
                         <span class="building-block-icon material-icons"> upload </span>
                         <p><%=i18n.escapeRoom.steps.indications.front.catalog.uploadFile%></p>
@@ -260,7 +260,7 @@
         const modal = $("#modalCatalogResource");
         if(modal.hasClass("active")) {
             //Close modal
-            $('body').css("overflow", "scroll");
+            $('body').css("overflow", "");
             unloadRPIIframe();
         } else {
             $('body').css("overflow", "hidden");
@@ -274,7 +274,7 @@
         const modal = $("#uploadFileDialog");
         modal.find('form')[0].reset();
         if(modal.hasClass("active")) {
-            $('body').css("overflow", "scroll");
+            $('body').css("overflow", "");
         } else {
             $('body').css("overflow", "hidden");
             window.scrollTo(0, 0);

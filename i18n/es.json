@@ -59,6 +59,7 @@
         "ranking": {
             "members": "Miembros",
             "res": "Resultado",
+            "progress": "Progreso",
             "team": "Equipo",
             "time": "Tiempo",
             "title": "Ranking",
@@ -1445,6 +1446,21 @@
         "expectedDuration": "Duración aproximada (minutos)",
         "fullscreen":"pantalla completa",
         "reset":"reiniciar",
+        "status": "Estado",
+        "disable": "Deshabilitar",
+        "enable": "Habilitar",
+        "disabled": "deshabilitado",
+        "deleteConfirm": "Al eliminar este reto reutilizable se eliminarán también TODAS sus instancias existentes en todas las escape rooms. ¿Estás seguro?",
+        "order": "Orden",
+        "enabledLabel": "habilitado",
+        "formTemplate": "Plantilla de formulario / URL",
+        "currentThumbnail": "Miniatura actual",
+        "instructions": "Instrucciones",
+        "editHint": "Deja un campo en blanco para mantener su valor actual. Subir un nuevo ZIP o miniatura reemplaza el actual.",
+        "puzzleName": "Nombre",
+        "replaceZip": "Reemplazar ZIP del reto (opcional)",
+        "replaceThumbnail": "Reemplazar miniatura (opcional)",
+        "keepCurrent": "Deja en blanco para mantener el actual",
         "errors": {
             "nullPuzzle": "Debes vincular al menos un reto a este recurso"
         }

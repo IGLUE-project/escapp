@@ -22,6 +22,11 @@ module.exports = function (sequelize, DataTypes) {
             "config": {
                 "type": DataTypes.JSON,
                 "validate": {"notEmpty": {"msg": "config must not be empty"}}
+            },
+            "disabled": {
+                "type": DataTypes.BOOLEAN,
+                "allowNull": false,
+                "defaultValue": false
             }
         }
     );

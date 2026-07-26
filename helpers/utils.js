@@ -207,6 +207,7 @@ exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRo
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]], "include": [{"model": models.reusablePuzzleInstance}]});
 
 exports.getReusablePuzzles = () => models.reusablePuzzle.findAll({
+    "where": {"disabled": false},
     "attributes": [
         "name",
         "instructions",

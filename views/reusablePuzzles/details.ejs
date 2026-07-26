@@ -1,25 +1,50 @@
 <%- include ('../partials/_header.ejs') %>
 
 <div class='main' style='color:white;padding:20px'>
-    <h1>Creación de un nuevo puzzle</h1>
-    <p> Suba un ZIP </p>
-    <form method='POST' style='width:30%' enctype='multipart/form-data' action='/reusablePuzzles/<%=id%>?_method=PUT'>
-        <div style='display:flex;flex-direction:column;justify-content:start'>
-            <input type='text' value='<%=name%>'  name='name' placeholder='Puzzle Name' required/>
-            <input type='description' value='<%=description%>'  name='description' placeholder='Puzzle Description'/>
-            <input type='file' name='file'/>
-            <input type='text' value='<%=form%>' name='form' placeholder="Form name if zip has no form"/>
-            <input type='file' name='thumbnail' placeholder="Thumbnail file"/>
-            <input type='submit'/>
-            <br>
-        </div>
-    </form>
-    <button onclick='window.location.replace(document.referrer)'>Volver</button>
-</div>
+    <h1><%=i18n.reusablePuzzles.edit%>: <%=name%></h1>
 
-<style>
-    input {
-        margin: 5px;
-        padding: 5px;
-    }
-</style>
+    <div class="rp-edit-layout">
+        <div class="rp-edit-current">
+            <% if (thumbnail) { %>
+                <img src="/reusablePuzzles/<%=id%>/<%=thumbnail%>" alt="<%=name%>" class="rp-edit-thumb"/>
+            <% } else { %>
+                <div class="rp-edit-thumb rp-edit-thumb-empty"><span class="material-icons" style="font-size:3em;">extension</span></div>
+            <% } %>
+            <ul class="rp-edit-info">
+                <li><strong><%=i18n.reusablePuzzles.order%>:</strong> <%=order%></li>
+                <li><strong><%=i18n.reusablePuzzles.status%>:</strong> <%= disabled ? i18n.reusablePuzzles.disabled : i18n.reusablePuzzles.enabledLabel %></li>
+                <li><strong><%=i18n.reusablePuzzles.formTemplate%>:</strong> <code><%= form || url %></code></li>
+                <li><strong><%=i18n.reusablePuzzles.currentThumbnail%>:</strong> <%= thumbnail || "—" %></li>
+                <li><strong><%=i18n.reusablePuzzles.instructions%>:</strong> <%= instructions || "—" %></li>
+            </ul>
+        </div>
+
+        <form method='POST' enctype='multipart/form-data' action='/reusablePuzzles/<%=id%>?_method=PUT' class="rp-edit-form">
+            <p class="rp-edit-hint"><%=i18n.reusablePuzzles.editHint%></p>
+
+            <label><%=i18n.reusablePuzzles.puzzleName%>
+                <input type='text' value='<%=name%>' name='name' required/>
+            </label>
+
+            <label><%=i18n.reusablePuzzles.order%>
+                <input type='number' value='<%=order%>' name='order' min='1' max='99999'/>
+            </label>
+
+            <label><%=i18n.reusablePuzzles.formTemplate%>
+                <input type='text' value='' name='form' placeholder='<%= form || i18n.reusablePuzzles.keepCurrent %>'/>
+            </label>
+
+            <label><%=i18n.reusablePuzzles.replaceZip%>
+                <input type='file' name='file' accept='.zip'/>
+            </label>
+
+            <label><%=i18n.reusablePuzzles.replaceThumbnail%>
+                <input type='file' name='thumbnail' accept='image/*'/>
+            </label>
+
+            <input type='submit' value='<%=i18n.common.save%>'/>
+        </form>
+    </div>
+
+    <button onclick='window.location.replace(document.referrer || "/reusablePuzzles")'><%=i18n.common.back%></button>
+</div>
