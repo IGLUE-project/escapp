@@ -5,7 +5,7 @@
 <div role="main" class="main iglue-stats">
     <div class="dash-hero">
         <img src="https://iglue.dit.upm.es/wp-content/uploads/2024/12/iglue-logo-white.png" alt="IGLUE" class="iglue-stats-logo"/>
-        <p class="dash-subtitle"><%= i18n.iglueStats.title %></p>
+        <p class="dash-subtitle"><%= i18n.iglueStats.heading %></p>
     </div>
 
     <form method="GET" action="/iglue-stats" class="iglue-stats-filters dash-toolbar">
@@ -19,13 +19,16 @@
         </label>
         <label class="iglue-stats-since">
             <input type="checkbox" name="sinceTerms" value="1" <%= filters.sinceTerms ? "checked" : "" %>/>
-            <span><%= i18n.iglueStats.sinceFirstTerms %><% if (minTermsDate) { %> (<%= minTermsDate %>)<% } %></span>
+            <span><%= i18n.iglueStats.sinceEscapp2 %><% if (escapp2Date) { %> (<%= escapp2Date %>)<% } %></span>
         </label>
         <label class="iglue-stats-since">
             <input type="checkbox" name="attendedOnly" value="1" <%= filters.attendedOnly ? "checked" : "" %>/>
             <span><%= i18n.iglueStats.attendedOnly %></span>
         </label>
         <button type="submit" class="rounded dash-apply"><%= i18n.iglueStats.apply %></button>
+        <button type="submit" name="csv" value="1" class="rounded dash-download">
+            <span class="material-icons">download</span><%= i18n.iglueStats.downloadCsv %>
+        </button>
     </form>
 
     <div class="dash-kpis">

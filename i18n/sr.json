@@ -2,14 +2,17 @@
   "lang": "sr",
   "iglueStats": {
     "title": "IGLUE statistika",
+    "heading": "Statistika",
     "dateField": "Polje datuma",
     "registration": "Datum registracije",
     "termsAccepted": "Datum prihvatanja uslova",
     "from": "Od",
     "to": "Do",
     "sinceFirstTerms": "Od prvog prihvaćenog uslova",
+    "sinceEscapp2": "Od Escapp 2.0",
     "attendedOnly": "Samo učenici koji su učestvovali u escape sobi",
     "apply": "Primeni",
+    "downloadCsv": "Preuzmi CSV",
     "total": "Ukupno"
   },
   "locale": "sr",

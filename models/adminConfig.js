@@ -43,6 +43,10 @@ module.exports = function (sequelize, DataTypes) {
             "errorReportUrl": {
                 "type": DataTypes.TEXT,
                 "allowNull": true
+            },
+            "escapp2Date": {
+                "type": DataTypes.DATE,
+                "allowNull": true
             }
         }
     );

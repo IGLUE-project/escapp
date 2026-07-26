@@ -202,6 +202,19 @@ exports.getErrorReportUrl = async function () {
  * Get exportAllowed setting (DB override or .env fallback)
  * Valid values: ONLY_OWNER, ONLY_TEACHERS, ONLY_USERS, ALL
  */
+/**
+ * Get the frozen "Escapp 2.0" date (earliest terms acceptance, captured at migration
+ * time). Returns null if it has never been set.
+ */
+exports.getEscapp2Date = async function () {
+    const config = await getConfig();
+
+    if (config && config.escapp2Date) {
+        return config.escapp2Date;
+    }
+    return null;
+};
+
 exports.getExportAllowed = async function () {
     const config = await getConfig();
 

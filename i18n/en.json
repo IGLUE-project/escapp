@@ -2,14 +2,17 @@
     "lang": "en",
     "iglueStats": {
         "title": "IGLUE statistics",
+        "heading": "Statistics",
         "dateField": "Date field",
         "registration": "Registration date",
         "termsAccepted": "Terms accepted date",
         "from": "From",
         "to": "To",
         "sinceFirstTerms": "Since first accepted terms",
+        "sinceEscapp2": "Since Escapp 2.0",
         "attendedOnly": "Only students who attended an escape room",
         "apply": "Apply",
+        "downloadCsv": "Download CSV",
         "total": "Total"
     },
     "locale": "en_US",

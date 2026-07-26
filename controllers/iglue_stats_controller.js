@@ -1,5 +1,7 @@
 const Sequelize = require("sequelize");
 const {models} = require("../models");
+const {getEscapp2Date} = require("../helpers/globalInstanceConfig");
+const {createCsvFile} = require("../helpers/csv");
 
 const {Op} = Sequelize;
 
@@ -7,6 +9,21 @@ const {Op} = Sequelize;
 const LEVELS = ["primary", "secondary", "vet", "higher", "other", "none"];
 
 const toDateInput = (d) => (d ? new Date(d).toISOString().slice(0, 10) : "");
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+// Accept only a well-formed, real calendar date (YYYY-MM-DD). Anything else — a
+// malformed string, an out-of-range date, an array from duplicated query params,
+// or any object — is discarded. This keeps untrusted input from ever reaching a
+// Date/DB boundary on this public endpoint.
+const safeDate = (value) => {
+    if (typeof value !== "string" || !DATE_RE.test(value)) {
+        return "";
+    }
+    const parsed = new Date(`${value}T00:00:00.000Z`);
+
+    return Number.isNaN(parsed.getTime()) ? "" : value;
+};
 
 // GET /iglue-stats
 // Counts users by educational level (rows) and role (student/teacher columns) for a
@@ -22,20 +39,25 @@ exports.iglueStats = async (req, res, next) => {
     try {
         const sinceTerms = req.query.sinceTerms === "1";
         const attendedOnly = req.query.attendedOnly === "1";
-        const to = req.query.to || "";
+        const to = safeDate(req.query.to);
 
-        // Earliest terms acceptance across all users (the "since first terms" lower bound)
-        const minTermsDate = await models.user.min("lastAcceptedTermsDate");
-        const minTermsInput = toDateInput(minTermsDate);
+        // Frozen "Escapp 2.0" date (earliest terms acceptance, captured at migration time).
+        // Falls back to the live minimum if it has not been set yet.
+        let escapp2Date = await getEscapp2Date();
 
-        let from = req.query.from || "";
-        // Lower bound: the exact MIN(lastAcceptedTermsDate) timestamp when "since first
-        // terms" is used, otherwise the start of the chosen from-day.
+        if (!escapp2Date) {
+            escapp2Date = await models.user.min("lastAcceptedTermsDate");
+        }
+        const escapp2Input = toDateInput(escapp2Date);
+
+        let from = safeDate(req.query.from);
+        // Lower bound: the exact Escapp 2.0 timestamp when "since Escapp 2.0" is used,
+        // otherwise the start of the chosen from-day.
         let fromDate = from ? new Date(`${from}T00:00:00.000`) : null;
 
-        if (sinceTerms && minTermsDate) {
-            fromDate = new Date(minTermsDate);
-            from = minTermsInput;
+        if (sinceTerms && escapp2Date) {
+            fromDate = new Date(escapp2Date);
+            from = escapp2Input;
         }
 
         // Upper bound is exclusive: strictly before `to` (start of the to-day)
@@ -124,12 +146,39 @@ exports.iglueStats = async (req, res, next) => {
             totals.teachers += table[level].teachers;
         });
 
+        // Download the currently-filtered table as CSV
+        if (req.query.csv === "1") {
+            const i18n = res.locals.i18n || {};
+            const labels = (i18n.user && i18n.user.eduLevel) || {};
+            const head = {
+                "level": (i18n.user && i18n.user.eduLevelField) || "Educational level",
+                "students": (i18n.user && i18n.user.student) || "Students",
+                "teachers": (i18n.user && i18n.user.teacher) || "Teachers",
+                "total": (i18n.iglueStats && i18n.iglueStats.total) || "Total"
+            };
+            const rows = LEVELS.map((level) => ({
+                [head.level]: labels[level] || level,
+                [head.students]: table[level].students,
+                [head.teachers]: table[level].teachers,
+                [head.total]: table[level].students + table[level].teachers
+            }));
+
+            rows.push({
+                [head.level]: head.total,
+                [head.students]: totals.students,
+                [head.teachers]: totals.teachers,
+                [head.total]: totals.students + totals.teachers
+            });
+
+            return createCsvFile(res, rows, `iglue-stats-${Date.now()}`);
+        }
+
         res.render("iglueStats", {
             table,
             "levels": LEVELS,
             totals,
             "filters": {from, to, sinceTerms, attendedOnly},
-            "minTermsDate": minTermsInput
+            "escapp2Date": escapp2Input
         });
     } catch (e) {
         next(e);

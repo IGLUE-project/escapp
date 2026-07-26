@@ -2431,6 +2431,24 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .iglue-stats .dash-apply:hover {
   filter: brightness(1.08);
 }
+.iglue-stats .dash-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.iglue-stats .dash-download .material-icons {
+  font-size: 18px;
+}
+.iglue-stats .dash-download:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
 .iglue-stats .dash-kpis {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
