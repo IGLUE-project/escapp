@@ -986,6 +986,26 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .main.environment .tri-state label {
   font-weight: normal;
 }
+.main.environment .iglue-stats-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 35px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  background: #48C18E;
+  color: #050B2D;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+.main.environment .iglue-stats-link:hover {
+  filter: brightness(1.08);
+}
+.main.environment .iglue-stats-link .material-icons {
+  font-size: 20px;
+}
 
 #mainSection .buttons_before_progressbar {
   margin-bottom: 30px;
@@ -2334,6 +2354,198 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border: none;
   margin: 0px;
   height: calc(100% - 16px);
+}
+
+.iglue-stats {
+  width: 94%;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+.iglue-stats .dash-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25em;
+  margin-bottom: 1.5em;
+  text-align: center;
+}
+.iglue-stats .iglue-stats-logo {
+  height: 64px;
+  width: auto;
+  max-width: 100%;
+}
+.iglue-stats .dash-subtitle {
+  color: #9292B0;
+  font-size: 1.05em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.iglue-stats .dash-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1em;
+  background: #161938;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1em 1.25em;
+  margin-bottom: 1.5em;
+}
+.iglue-stats .dash-toolbar label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9292B0;
+}
+.iglue-stats .dash-toolbar input[type=date] {
+  background: #232850;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: white;
+  padding: 7px 9px;
+  color-scheme: dark;
+}
+.iglue-stats .dash-toolbar .iglue-stats-since {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  text-transform: none;
+  letter-spacing: normal;
+  color: white;
+  font-size: 0.85em;
+}
+.iglue-stats .dash-apply {
+  background: #48C18E;
+  color: #050B2D;
+  border: none;
+  font-weight: 700;
+  padding: 9px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.iglue-stats .dash-apply:hover {
+  filter: brightness(1.08);
+}
+.iglue-stats .dash-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.25em;
+  margin-bottom: 1.5em;
+}
+.iglue-stats .dash-kpi {
+  display: flex;
+  align-items: center;
+  gap: 1.1em;
+  background: #161938;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 1.3em 1.5em;
+}
+.iglue-stats .dash-kpi .kpi-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+}
+.iglue-stats .dash-kpi .kpi-num {
+  font-size: 2.5em;
+  font-weight: 800;
+  line-height: 1;
+  color: white;
+}
+.iglue-stats .dash-kpi .kpi-label {
+  color: #9292B0;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 5px;
+}
+.iglue-stats .dash-kpi.kpi-students .kpi-icon {
+  background: rgba(54, 162, 235, 0.15);
+  color: #36A2EB;
+}
+.iglue-stats .dash-kpi.kpi-teachers .kpi-icon {
+  background: rgba(72, 193, 142, 0.15);
+  color: #48C18E;
+}
+.iglue-stats .dash-kpi.kpi-total .kpi-icon {
+  background: rgba(250, 200, 85, 0.15);
+  color: #FAC855;
+}
+.iglue-stats .dash-panel {
+  background: #161938;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 1.5em 1.75em;
+}
+.iglue-stats .dash-panel-head {
+  margin-bottom: 1.4em;
+}
+.iglue-stats .dash-panel-head h2 {
+  margin: 0;
+  font-size: 1.15em;
+  color: white;
+}
+.iglue-stats .dash-levels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.1em;
+}
+.iglue-stats .lvl-card {
+  background: #232850;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.2em 1.35em;
+}
+.iglue-stats .lvl-card .lvl-name {
+  color: white;
+  font-weight: 600;
+  font-size: 0.95em;
+  line-height: 1.3;
+  min-height: 2.6em;
+  margin-bottom: 1em;
+}
+.iglue-stats .lvl-card .lvl-nums {
+  display: flex;
+  gap: 1.75em;
+}
+.iglue-stats .lvl-card .lvl-num {
+  display: flex;
+  flex-direction: column;
+}
+.iglue-stats .lvl-card .lvl-num b {
+  font-size: 2em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.iglue-stats .lvl-card .lvl-num span {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9292B0;
+  margin-top: 5px;
+}
+.iglue-stats .lvl-card .lvl-num.students b {
+  color: #36A2EB;
+}
+.iglue-stats .lvl-card .lvl-num.teachers b {
+  color: #48C18E;
+}
+.iglue-stats .lvl-card .lvl-total {
+  margin-top: 1em;
+  padding-top: 0.8em;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  color: #9292B0;
+  font-size: 0.8em;
+  font-variant-numeric: tabular-nums;
 }
 
 #mainSection .main.inspiration {

@@ -1,0 +1,177 @@
+@use "common/colors"
+
+.iglue-stats
+    width: 94%
+    max-width: 1800px
+    margin: 0 auto
+
+    .dash-hero
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-wrap: wrap
+        gap: 1.25em
+        margin-bottom: 1.5em
+        text-align: center
+
+    .iglue-stats-logo
+        height: 64px
+        width: auto
+        max-width: 100%
+
+    .dash-subtitle
+        color: colors.$textpurple
+        font-size: 1.05em
+        letter-spacing: 0.08em
+        text-transform: uppercase
+        margin: 0
+
+    // ----- Toolbar -----
+    .dash-toolbar
+        display: flex
+        flex-wrap: wrap
+        align-items: flex-end
+        gap: 1em
+        background: colors.$darkerpurple
+        border: 1px solid rgba(255, 255, 255, 0.06)
+        border-radius: 14px
+        padding: 1em 1.25em
+        margin-bottom: 1.5em
+        label
+            display: flex
+            flex-direction: column
+            gap: 5px
+            font-size: 0.78em
+            text-transform: uppercase
+            letter-spacing: 0.04em
+            color: colors.$textpurple
+        input[type=date]
+            background: colors.$mainpurple
+            border: 1px solid rgba(255, 255, 255, 0.12)
+            border-radius: 8px
+            color: white
+            padding: 7px 9px
+            color-scheme: dark
+        .iglue-stats-since
+            flex-direction: row
+            align-items: center
+            gap: 8px
+            text-transform: none
+            letter-spacing: normal
+            color: white
+            font-size: 0.85em
+    .dash-apply
+        background: colors.$brightgreen
+        color: colors.$darkestpurple
+        border: none
+        font-weight: 700
+        padding: 9px 22px
+        border-radius: 8px
+        cursor: pointer
+        &:hover
+            filter: brightness(1.08)
+
+    // ----- KPI cards -----
+    .dash-kpis
+        display: grid
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr))
+        gap: 1.25em
+        margin-bottom: 1.5em
+
+    .dash-kpi
+        display: flex
+        align-items: center
+        gap: 1.1em
+        background: colors.$darkerpurple
+        border: 1px solid rgba(255, 255, 255, 0.06)
+        border-radius: 16px
+        padding: 1.3em 1.5em
+        .kpi-icon
+            width: 58px
+            height: 58px
+            border-radius: 14px
+            display: flex
+            align-items: center
+            justify-content: center
+            font-size: 2em
+        .kpi-num
+            font-size: 2.5em
+            font-weight: 800
+            line-height: 1
+            color: white
+        .kpi-label
+            color: colors.$textpurple
+            font-size: 0.8em
+            text-transform: uppercase
+            letter-spacing: 0.05em
+            margin-top: 5px
+        &.kpi-students .kpi-icon
+            background: rgba(54, 162, 235, 0.15)
+            color: colors.$brightblue
+        &.kpi-teachers .kpi-icon
+            background: rgba(72, 193, 142, 0.15)
+            color: colors.$brightgreen
+        &.kpi-total .kpi-icon
+            background: rgba(250, 200, 85, 0.15)
+            color: colors.$brightyellow
+
+    // ----- Breakdown by educational level -----
+    .dash-panel
+        background: colors.$darkerpurple
+        border: 1px solid rgba(255, 255, 255, 0.06)
+        border-radius: 16px
+        padding: 1.5em 1.75em
+
+    .dash-panel-head
+        margin-bottom: 1.4em
+        h2
+            margin: 0
+            font-size: 1.15em
+            color: white
+
+    // Auto-fitting card grid — naturally fills wide screens with more columns
+    .dash-levels
+        display: grid
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))
+        gap: 1.1em
+
+    .lvl-card
+        background: colors.$mainpurple
+        border: 1px solid rgba(255, 255, 255, 0.06)
+        border-radius: 14px
+        padding: 1.2em 1.35em
+        .lvl-name
+            color: white
+            font-weight: 600
+            font-size: 0.95em
+            line-height: 1.3
+            // Reserve two lines so short and long names keep their numbers aligned
+            min-height: 2.6em
+            margin-bottom: 1em
+        .lvl-nums
+            display: flex
+            gap: 1.75em
+        .lvl-num
+            display: flex
+            flex-direction: column
+            b
+                font-size: 2em
+                line-height: 1
+                font-variant-numeric: tabular-nums
+            span
+                font-size: 0.7em
+                text-transform: uppercase
+                letter-spacing: 0.04em
+                color: colors.$textpurple
+                margin-top: 5px
+            &.students b
+                color: colors.$brightblue
+            &.teachers b
+                color: colors.$brightgreen
+        .lvl-total
+            margin-top: 1em
+            padding-top: 0.8em
+            border-top: 1px solid rgba(255, 255, 255, 0.07)
+            color: colors.$textpurple
+            font-size: 0.8em
+            font-variant-numeric: tabular-nums

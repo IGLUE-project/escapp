@@ -1,5 +1,17 @@
 {
   "lang": "sr",
+  "iglueStats": {
+    "title": "IGLUE statistika",
+    "dateField": "Polje datuma",
+    "registration": "Datum registracije",
+    "termsAccepted": "Datum prihvatanja uslova",
+    "from": "Od",
+    "to": "Do",
+    "sinceFirstTerms": "Od prvog prihvaćenog uslova",
+    "attendedOnly": "Samo učenici koji su učestvovali u escape sobi",
+    "apply": "Primeni",
+    "total": "Ukupno"
+  },
   "locale": "sr",
   "description": "Platforma za upravljanje edukativnim escape sobama",
   "analytics": {

@@ -1,5 +1,17 @@
 {
     "lang": "en",
+    "iglueStats": {
+        "title": "IGLUE statistics",
+        "dateField": "Date field",
+        "registration": "Registration date",
+        "termsAccepted": "Terms accepted date",
+        "from": "From",
+        "to": "To",
+        "sinceFirstTerms": "Since first accepted terms",
+        "attendedOnly": "Only students who attended an escape room",
+        "apply": "Apply",
+        "total": "Total"
+    },
     "locale": "en_US",
     "description": "Platform for managing educational escape rooms",
     "analytics": {

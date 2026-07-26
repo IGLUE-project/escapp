@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const escapeRoomController = require("../controllers/escapeRoom_controller");
+const iglueStatsController = require("../controllers/iglue_stats_controller");
 const turnoController = require("../controllers/turnos_controller");
 const puzzleController = require("../controllers/puzzle_controller");
 const hintController = require("../controllers/hint_controller");
@@ -86,6 +87,7 @@ router.get("/reports", sessionController.loginRequired, sessionController.adminR
 router.post("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.editReport);
 router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
 router.get("/environment", sessionController.loginRequired, sessionController.adminRequired, managementController.getEnvironmentSettings);
+router.get("/iglue-stats", iglueStatsController.iglueStats);
 router.post("/environment", sessionController.loginRequired, sessionController.adminRequired, managementController.setEnvironmentSettings);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/verify", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.verify);
 router.put("/users/:userId(\\d+)/confirm", sessionController.loginRequired, sessionController.adminRequired, userController.confirmAdmin);

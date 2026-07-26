@@ -1,0 +1,83 @@
+<%- include ("partials/_header.ejs") %>
+
+<% const grandTotal = totals.students + totals.teachers; %>
+
+<div role="main" class="main iglue-stats">
+    <div class="dash-hero">
+        <img src="https://iglue.dit.upm.es/wp-content/uploads/2024/12/iglue-logo-white.png" alt="IGLUE" class="iglue-stats-logo"/>
+        <p class="dash-subtitle"><%= i18n.iglueStats.title %></p>
+    </div>
+
+    <form method="GET" action="/iglue-stats" class="iglue-stats-filters dash-toolbar">
+        <label>
+            <%= i18n.iglueStats.from %>
+            <input type="date" name="from" value="<%= filters.from %>"/>
+        </label>
+        <label>
+            <%= i18n.iglueStats.to %>
+            <input type="date" name="to" value="<%= filters.to %>"/>
+        </label>
+        <label class="iglue-stats-since">
+            <input type="checkbox" name="sinceTerms" value="1" <%= filters.sinceTerms ? "checked" : "" %>/>
+            <span><%= i18n.iglueStats.sinceFirstTerms %><% if (minTermsDate) { %> (<%= minTermsDate %>)<% } %></span>
+        </label>
+        <label class="iglue-stats-since">
+            <input type="checkbox" name="attendedOnly" value="1" <%= filters.attendedOnly ? "checked" : "" %>/>
+            <span><%= i18n.iglueStats.attendedOnly %></span>
+        </label>
+        <button type="submit" class="rounded dash-apply"><%= i18n.iglueStats.apply %></button>
+    </form>
+
+    <div class="dash-kpis">
+        <div class="dash-kpi kpi-students">
+            <span class="kpi-icon material-icons">school</span>
+            <div class="kpi-body">
+                <div class="kpi-num"><%= totals.students.toLocaleString() %></div>
+                <div class="kpi-label"><%= i18n.user.student %></div>
+            </div>
+        </div>
+        <div class="dash-kpi kpi-teachers">
+            <span class="kpi-icon material-icons">co_present</span>
+            <div class="kpi-body">
+                <div class="kpi-num"><%= totals.teachers.toLocaleString() %></div>
+                <div class="kpi-label"><%= i18n.user.teacher %></div>
+            </div>
+        </div>
+        <div class="dash-kpi kpi-total">
+            <span class="kpi-icon material-icons">groups</span>
+            <div class="kpi-body">
+                <div class="kpi-num"><%= grandTotal.toLocaleString() %></div>
+                <div class="kpi-label"><%= i18n.iglueStats.total %></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-panel">
+        <div class="dash-panel-head">
+            <h2><%= i18n.user.eduLevelField %></h2>
+        </div>
+
+        <div class="dash-levels">
+            <% levels.forEach((level) => {
+                const s = table[level].students;
+                const t = table[level].teachers;
+                const tot = s + t;
+            %>
+            <div class="lvl-card">
+                <div class="lvl-name"><%= i18n.user.eduLevel[level] %></div>
+                <div class="lvl-nums">
+                    <div class="lvl-num students">
+                        <b><%= s.toLocaleString() %></b>
+                        <span><%= i18n.user.student %></span>
+                    </div>
+                    <div class="lvl-num teachers">
+                        <b><%= t.toLocaleString() %></b>
+                        <span><%= i18n.user.teacher %></span>
+                    </div>
+                </div>
+                <div class="lvl-total"><%= i18n.iglueStats.total %>: <%= tot.toLocaleString() %></div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
