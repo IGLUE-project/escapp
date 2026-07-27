@@ -159,6 +159,8 @@
             let teamRetosLen = team.retos.length;
             let reto = team.retos[r];
             let puzzleTime = reto.retosSuperados.createdAt;
+            // Submitted (correct) answer; fall back to the puzzle solution when not stored
+            let submittedAnswer = (reto.retosSuperados.answer === "" || reto.retosSuperados.answer == null) ? (puzzles[reto.order] ? puzzles[reto.order].sol : "") : reto.retosSuperados.answer;
             let perc = puzzlePosition(puzzleTime, prevPuzzleTime);
             
             prevPuzzleTime = puzzleTime;
@@ -173,6 +175,11 @@
                   <div class="tooltip-info">
                     <b><%=i18n.analytics.timeline.solved%>: </b> <%=Math.round(calculatePuzzleTime(puzzleTime, startTime))%>'
                   </div>
+                  <% if (submittedAnswer) { %>
+                  <div class="tooltip-info">
+                    <b><%=i18n.analytics.timeline.providedAnswer%>: </b> <%= submittedAnswer %>
+                  </div>
+                  <% } %>
                 </div>
               </div>
           <% } %>

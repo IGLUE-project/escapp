@@ -10,6 +10,7 @@
       justify-content: center
       align-items: center
       .dialog
+        box-sizing: border-box
         background-color: colors.$bckg
         width: 50%
         text-align: center
@@ -129,12 +130,16 @@
   #mainSection
     .main
       &.student
+        font-size: x-large
         .dialog
           width: 90%
-          padding: 30px 20px
+          padding: 25px 18px
+          // Let a tall dialog scroll instead of getting clipped by vertical centering
+          max-height: 92vh
+          overflow-y: auto
           .join-button-flex-container
             flex-flow: column-reverse
-            text-align: center  
+            text-align: center
             button
               width: 100%
-              margin-bottom: 10px    
+              margin-bottom: 10px

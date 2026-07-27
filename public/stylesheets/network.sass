@@ -6,10 +6,17 @@
   h1
     font-size: 70px
     margin-bottom: 40px
+    @media screen and (max-width: 900px)
+      font-size: 44px
+      margin-bottom: 20px
+    @media screen and (max-width: 600px)
+      font-size: 32px
   h2
     font-family: Lato, Gugi, sans-serif
     font-size: 23px;
     font-weight: 200;
+    @media screen and (max-width: 600px)
+      font-size: 18px
     
 #mainSection .main.network
   background-image: none !important
@@ -34,13 +41,24 @@
   text-align: center;
   margin-top: 80px
   margin-bottom: 55px
+  @media screen and (max-width: 600px)
+    margin-top: 30px
+    margin-bottom: 25px
   #search
     width: 60%
     min-width: 300px
     text-align: start
     padding: 20px
+    @media screen and (max-width: 600px)
+      width: 100%
+      min-width: 0
+      box-sizing: border-box
+      padding: 14px
   #searchButton
     vertical-align: middle
+    @media screen and (max-width: 600px)
+      width: 100%
+      margin-top: 10px
 
   #tags
     margin-top: 1rem
@@ -92,13 +110,15 @@
       padding: 0
       height: fit-content
       @media screen and (max-width: 900px)
-        flex-flow: row nowrap
+        flex-flow: row wrap
         width: 100%
         margin-bottom: 0rem
       .item
         width: 100%
         @media screen and (max-width: 900px)
           width: calc( 50% - .25rem )
+        @media screen and (max-width: 500px)
+          width: 100%
         &:focus-within
           .label
             color: white
@@ -152,6 +172,11 @@
   .escapeRoomItemWrapper
     aspect-ratio: 1
     width: calc(25% - 0.65em)
+    // Fewer columns as the screen narrows so cards stay a usable size
+    @media screen and (max-width: 900px)
+      width: calc(33.333% - 0.67em)
+    @media screen and (max-width: 600px)
+      width: calc(50% - 0.5em)
 
     &:before
       content: ''

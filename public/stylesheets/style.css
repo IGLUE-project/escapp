@@ -3923,6 +3923,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   align-items: center;
 }
 #mainSection .main.student .dialog {
+  box-sizing: border-box;
   background-color: #2A2A52;
   width: 50%;
   text-align: center;
@@ -4062,9 +4063,14 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   }
 }
 @media (max-width: 767px) {
+  #mainSection .main.student {
+    font-size: x-large;
+  }
   #mainSection .main.student .dialog {
     width: 90%;
-    padding: 30px 20px;
+    padding: 25px 18px;
+    max-height: 92vh;
+    overflow-y: auto;
   }
   #mainSection .main.student .dialog .join-button-flex-container {
     flex-flow: column-reverse;
@@ -5835,15 +5841,19 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   .finish .ranking-table .ranking-members {
     display: none;
   }
-  .showPlayer .flex {
+  #mainSection .main.showPlayer .flex {
     flex-direction: column;
   }
-  .showPlayer .flex .flex-thumb {
+  #mainSection .main.showPlayer .flex .flex-thumb {
     width: 100%;
     margin-left: 0px;
   }
-  .showPlayer .flex .flex-er-info {
+  #mainSection .main.showPlayer .flex .flex-er-info {
     padding: 0px;
+    max-width: 100%;
+  }
+  #mainSection .main.showPlayer .flex .flex-er-info .flex-er-info-preview div {
+    width: 100%;
   }
 }
 table.mainTable {
@@ -7062,10 +7072,26 @@ div#scene_maker_container iframe#scene_maker_iframe {
   font-size: 70px;
   margin-bottom: 40px;
 }
+@media screen and (max-width: 900px) {
+  #networkTitle h1 {
+    font-size: 44px;
+    margin-bottom: 20px;
+  }
+}
+@media screen and (max-width: 600px) {
+  #networkTitle h1 {
+    font-size: 32px;
+  }
+}
 #networkTitle h2 {
   font-family: Lato, Gugi, sans-serif;
   font-size: 23px;
   font-weight: 200;
+}
+@media screen and (max-width: 600px) {
+  #networkTitle h2 {
+    font-size: 18px;
+  }
 }
 
 #mainSection .main.network {
@@ -7095,14 +7121,34 @@ div#scene_maker_container iframe#scene_maker_iframe {
   margin-top: 80px;
   margin-bottom: 55px;
 }
+@media screen and (max-width: 600px) {
+  #networkSearchInputWrapper {
+    margin-top: 30px;
+    margin-bottom: 25px;
+  }
+}
 #networkSearchInputWrapper #search {
   width: 60%;
   min-width: 300px;
   text-align: start;
   padding: 20px;
 }
+@media screen and (max-width: 600px) {
+  #networkSearchInputWrapper #search {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 14px;
+  }
+}
 #networkSearchInputWrapper #searchButton {
   vertical-align: middle;
+}
+@media screen and (max-width: 600px) {
+  #networkSearchInputWrapper #searchButton {
+    width: 100%;
+    margin-top: 10px;
+  }
 }
 #networkSearchInputWrapper #tags {
   margin-top: 1rem;
@@ -7164,7 +7210,7 @@ div#scene_maker_container iframe#scene_maker_iframe {
 }
 @media screen and (max-width: 900px) {
   #filterSearch .filtros .container {
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     width: 100%;
     margin-bottom: 0rem;
   }
@@ -7175,6 +7221,11 @@ div#scene_maker_container iframe#scene_maker_iframe {
 @media screen and (max-width: 900px) {
   #filterSearch .filtros .container .item {
     width: calc(50% - 0.25rem);
+  }
+}
+@media screen and (max-width: 500px) {
+  #filterSearch .filtros .container .item {
+    width: 100%;
   }
 }
 #filterSearch .filtros .container .item:focus-within .label {
@@ -7241,6 +7292,16 @@ div#scene_maker_container iframe#scene_maker_iframe {
 .flexBoxEscapeRooms.network .escapeRoomItemWrapper {
   aspect-ratio: 1;
   width: calc(25% - 0.65em);
+}
+@media screen and (max-width: 900px) {
+  .flexBoxEscapeRooms.network .escapeRoomItemWrapper {
+    width: calc(33.333% - 0.67em);
+  }
+}
+@media screen and (max-width: 600px) {
+  .flexBoxEscapeRooms.network .escapeRoomItemWrapper {
+    width: calc(50% - 0.5em);
+  }
 }
 .flexBoxEscapeRooms.network .escapeRoomItemWrapper:before {
   content: "";

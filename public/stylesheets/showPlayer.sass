@@ -167,11 +167,18 @@
         font-size: 12px
       .ranking-members
         display: none
-  .showPlayer
-    .flex
-      flex-direction: column
-      .flex-thumb
-        width: 100%  
-        margin-left: 0px
-      .flex-er-info
-        padding: 0px
+  // Match the base selector's specificity (#mainSection .main.showPlayer) so the
+  // stacking actually overrides the desktop `flex-direction: row-reverse`.
+  #mainSection
+    .main.showPlayer
+      .flex
+        flex-direction: column
+        .flex-thumb
+          width: 100%
+          margin-left: 0px
+        .flex-er-info
+          padding: 0px
+          max-width: 100%
+          // Info fields (subject/level/duration…) go single-column on mobile
+          .flex-er-info-preview div
+            width: 100%
