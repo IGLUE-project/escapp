@@ -1,6 +1,6 @@
 var socket;
 var myTeamId;
-var myUserName;
+var myUsername;
 var alertMsg;
 
 /** TEMPLATES **/
@@ -39,7 +39,7 @@ const quizInstructionsTemplate = () => {
 };
 
 const quizTemplate = () => {
-  return `<iframe class="hintAppIframe" src="/escapeRooms/${escapeRoomId}/hintAppWrapper" lang="es"/>`
+  return `<iframe class="hintAppIframe" src="/escapeRooms/${escapeRoomId}/hintAppWrapper" lang="es"></iframe>`
 };
 
 const catsTemplate = (categories, hints) => {
@@ -57,11 +57,11 @@ const retoMsg = (puzzle, sol) => {
 }
 
 const reusablePuzzleTemplate = (url, width = 100, height = "auto", align = "center", ratio="16/9", heightIframe="300") => `<div style="width:100%;height:auto;max-width:1500px;margin: auto;text-align:${align};">
-  <iframe class="reusablePuzzleIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px;aspect-ratio:${ratio}" >
+  <iframe class="reusablePuzzleIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px;aspect-ratio:${ratio}"></iframe>
 </div>`;
 
 const sceneTemplate = (url, width = 100, height = "auto", align = "center", ratio="16/9", heightIframe="300") => `<div style="width:100%;height:auto;max-width:1500px;margin: auto;text-align:${align};">
-  <iframe class="sceneIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px;aspect-ratio:${ratio}" >
+  <iframe class="sceneIframe" src="${url}" style="width:${width}%;height:${ratio === "" ? heightIframe + "px" : height};border:none;max-width:1500px;aspect-ratio:${ratio}"></iframe>
 </div>`;
 
 const blockTemplate = (content, index) => `<div class="content-block" data-id="${index}" id="content-${index}">${content}</div>`;
@@ -158,9 +158,9 @@ const onPuzzleResponse = async (RESPONSE) => {
   if (code === "OK") {
     let nextPuzzleOrder = null;
     let nextPuzzle = null;
-    let blockIndexes =  (window.ER.erState.content || []).map(b=>b.index);
-
-    if (!ER.erState.retosSuperados.some(r => r == puzzleOrder)) { // Not solved before
+    
+    if (!ER.erState.retosSuperados.some(r => r == puzzleOrder)) {
+      // Not solved before
       updateSuperados(puzzleOrder);
 
       window.ER.erState.content = content || window.ER.erState.content;
@@ -188,9 +188,13 @@ const onPuzzleResponse = async (RESPONSE) => {
       }
       checkAvailHintsForPuzzle(nextPuzzleOrder);
       ER.erState.currentlyWorkingOn = nextPuzzleOrder;
-      autoPlay(blockIndexes);
-      setPuzzleLS(blockIndexes);
+      
+      let blockIndexes =  (window.ER.erState.content || []).map(b=>b.index);
+      storeERPlayStateInLocalStorage(blockIndexes);
+      checkAutoPlayVideos(blockIndexes);
+      
       await forMs(1000);
+      
       updatePuzzle(nextPuzzleOrder, nextPuzzle, puzzleOrder);
       setAIhintsTimers(nextPuzzle ? nextPuzzle.expectedDuration : undefined);
       if (isLast) {
@@ -529,7 +533,6 @@ var insertContent =async (type, payload, puzzles, index, prevIndex) => {
   }
 };
 
-
 const scrollToTargetAdjusted = (element) => {
   const offset = 60;
   const bodyRect = document.body.getBoundingClientRect().top;
@@ -697,11 +700,9 @@ window.requestHintFinish = (completion, score, status) => {
   chosenCat = null;
 };
 
-
-const setPuzzleLS = (newBlocks = []) => setTimeout(()=>{
-    localStorage["escapp_"+escapeRoomId] =  ER.erState.startTime.toString() + "_" + newBlocks.join(",");
+const storeERPlayStateInLocalStorage = (blocks = []) => setTimeout(()=>{
+  localStorage["escapp_"+escapeRoomId] =  ER.erState.startTime.toString() + "_" + blocks.join(",");
 }, 3000);
-
 
 window.puzzleTimer = null;
 const setAIhintsTimers = (expectedDuration) => {
@@ -723,7 +724,6 @@ const setAIhintsTimers = (expectedDuration) => {
     
     const GIVE_HINT = ER.info.automatedHints && ER.info.automatedHints === "AUTOMATED_HINTS";
     if (diffMs <= 0) {
-      console.log("Estimated duration already passed");
       if(!GIVE_HINT) {
         diffMs = 0;
       } else {
@@ -744,110 +744,121 @@ const setAIhintsTimers = (expectedDuration) => {
   }
 }
 
-const autoPlay = (newBlocks = []) => {
-    let ls = localStorage["escapp_" + escapeRoomId];
-    let erSt = null;
-    let previousBlocks = [];
-    try {
-      [erSt, previousBlocks] = localStorage["escapp_"+escapeRoomId].split("_");
-      previousBlocks = previousBlocks.split(",");
-    } catch(e) {}
+const checkAutoPlayVideos = async (newBlocks = []) => {
+  let erStartTime = null;
+  let previousBlocks = [];
 
-    for (let b in newBlocks) {
-      let block = newBlocks[b].toString();
-      if (erSt !== ER.erState.startTime.toString() || (previousBlocks.indexOf(block) === -1)) { // First time
-        let auto = $( `#block-${block} [autoplay]` );
-        let youtube = false;
+  try {
+    [erStartTime, previousBlocks] = localStorage["escapp_" + escapeRoomId].split("_");
+    previousBlocks = previousBlocks.split(",");
+  } catch (e) {}
 
-        if (!auto.length) { // Iframe
-          youtube = true;
-          auto = $(`#block-${block} iframe`).filter(function() {
-            return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
+  for (let b in newBlocks) {
+    const block = newBlocks[b].toString();
+    const autoplayVideos = $(`#block-${block} video[autoplay]`);
+
+    if (erStartTime !== ER.erState.startTime.toString() || previousBlocks.indexOf(block) === -1) {
+      // First time loading block
+
+      if (autoplayVideos.length === 1) {
+        const autoplayVideo = autoplayVideos[0];
+
+        const scrollToVideo = (video) => {
+          const scroll = () => {
+            video.scrollIntoView({
+              behavior: "smooth",
+              block: "center"
+            });
+          };
+          if (video.readyState >= 1) {
+            scroll();
+          } else {
+            video.addEventListener("loadedmetadata", scroll, { once: true });
+          }
+        };
+
+        const waitUntilCanPlay = (video, timeout = 10000) => {
+          return new Promise((resolve, reject) => {
+            if (video.error) {
+              reject(video.error);
+              return;
+            }
+
+            if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+              resolve();
+              return;
+            }
+
+            let timer;
+
+            const cleanup = () => {
+              clearTimeout(timer);
+              video.removeEventListener("canplay", onCanPlay);
+              video.removeEventListener("error", onError);
+            };
+
+            const onCanPlay = () => {
+              cleanup();
+              resolve();
+            };
+
+            const onError = () => {
+              cleanup();
+              reject(video.error);
+            };
+
+            timer = setTimeout(() => {
+              cleanup();
+              reject(new Error("Video canplay timeout"));
+            }, timeout);
+
+            video.addEventListener("canplay", onCanPlay, { once: true });
+            video.addEventListener("error", onError, { once: true });
           });
-        }
-        if (!auto.length) { // Video
-          auto = $(`#block-${block} video`).filter(function() {
-            return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
-          });
-        }
-        if (auto.length) {
-          const play = async function(el) {
+        };
+
+        const play = async function(el) {
+          if (el.hasAttribute("fullscreen")){
             try {
               await openFullScreen(el);
-            } catch(e2){}
-            if (youtube){
-              try {
-                await el.playVideo();
-                return true;
-              } catch(e4){return true;}
-            } else {
-              try {
-                await el.play();
-                return true;
-              } catch(e3){return false;}
-            }
+            } catch (e) {}
+          }
 
-          };
+          try {
+            await el.play();
+            return true;
+          } catch (e) {
+            return false;
+          }
+        };
 
-          setTimeout(async ()=>{
-            if (youtube) {
-              const ok = await play(auto[0]);
-                if (!ok) {
-                  $('#autoplay-btn').click(async ()=>{
-                    $('#autoplay-alert').hide();
-                    await play(auto[0])
-                  });
-                  $('#autoplay-alert').show({"backdrop": true})
-                  await play(auto[0]);
-                }
-            } else {
-              try {
-                const ok = await play(auto[0]);
-                if (!ok) {
-                  $('#autoplay-btn').click(async ()=>{
-                    $('#autoplay-alert').hide();
-                    await play(auto[0])
-                  });
-                  $('#autoplay-alert').show({"backdrop": true})
-                  await play(auto[0]);
-                }
-              } catch(e){
-              }
-            }
-            try {
-              await openFullScreen(auto[0])
-            } catch(e){
-            } finally {
-              // setTimeout(()=>{
-                // var el = auto.first();
-                // var elOffset = el.offset().top;
-                // var elHeight = el.height();
-                // var windowHeight = $(window).height();
-                // var offset;
-                // if (elHeight < windowHeight) {
-                //   offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
-                // } else {
-                //   offset = elOffset;
-                // }
-              //   document.body.scrollTop = offset;
-              //   document.documentElement.scrollTop = offset;
-              // },00)
-            };
-          }, 100)
-        }
-      } else {
         try {
-          $(`#block-${block} [autoplay]`).each((_i,e)=>e.pause());
+          await waitUntilCanPlay(autoplayVideo);
+
+          scrollToVideo(autoplayVideo);
+
+          const autoPlaySuccess = await play(autoplayVideo);
+          const videoPlaying = (!autoplayVideo.paused && !autoplayVideo.ended && autoplayVideo.readyState > 2);
+          const showPlayDialog = !autoPlaySuccess && !videoPlaying;
+          if (showPlayDialog) {
+            $("#autoplay-btn").off("click.autoplay").on("click.autoplay", async () => {
+                $("#autoplay-alert").hide();
+                await play(autoplayVideo);
+              });
+            $("#autoplay-alert").show({backdrop: true});
+          }
         } catch (e) {}
-        try {
-          $(`#block-${block} video`).each((_i,e)=>e.pause());
-        } catch (e) {}
-        // try {
-        //   $(`#block-${block} iframe`).each((_i,e)=>e.src = e.src.replace("autoplay=1","autoplay=0"));
-        // } catch (e) {}
+      }
+    } else {
+      try {
+        autoplayVideos.each((_i, e) => {
+          e.pause();
+        });
+      } catch (e) {}
     }
   }
-}
+};
+
 /*******************************************************************/
 
 const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
@@ -867,7 +878,7 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket.on("connect", onConnect);
 
   /*Error*/
-  socket.on("error", console.err);
+  socket.on("error", console.error);
 
   /*Join*/
   socket.on("JOIN", onJoin);
@@ -915,6 +926,7 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket.on("reconnect", onConnect);
 
 };
+
 let showModT = false;
 let showNavT = false;
 $( ()=>{
@@ -934,8 +946,8 @@ $( ()=>{
       showNavT= false
     });
   checkAvailHintsForPuzzle(ER.erState.currentlyWorkingOn);
+  
   /** BTN ACTIONS **/
-
   $(document).on("keyup", "#puzzle-input", function(ev){
     const sol = $(this).val();
     if (ev.keyCode === 13) {
@@ -992,8 +1004,8 @@ $( ()=>{
   // Mobile header
   $('meta:not(:first)').attr('content', rgb2hex($('nav').first().css("background-color") || "#FFFFFF"));
 
-  // Autoplay videos
-  let blockIndexes  = (window.ER.erState.content || []).map(b=>b.index);
-  autoPlay(blockIndexes);
-  setPuzzleLS(blockIndexes);
+  //Init
+  let currentBlockIndexes  = (window.ER.erState.content || []).map(b=>b.index);
+  storeERPlayStateInLocalStorage(currentBlockIndexes); //This function resets localStorage
+  checkAutoPlayVideos(currentBlockIndexes);
 });
