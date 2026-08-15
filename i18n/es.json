@@ -1603,6 +1603,7 @@
         },
         "Conversation": {
             "name": "Conversación",
+            "description": "Este recurso te permite crear un reto cuya solución requiere que los participantes ingresen una secuencia específica de respuestas a una serie de preguntas.",
             "questionsTitle": "Preguntas y respuestas",
             "question": "Pregunta",
             "questionRoot": "Pregunta raíz",
@@ -1617,7 +1618,7 @@
         },
         "DigitalClassifier": {
             "name": "Clasificador digital",
-            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes interactúen con una tableta y clasifiquen textos o imágenes en dos categorías",
+            "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes interactúen con una tableta y clasifiquen textos o imágenes en dos categorías.",
             "button_ok":"Posible",
             "button_nok":"Descartar",
             "context": "Contexto",
@@ -1661,7 +1662,7 @@
         },
         "PopupQuestion": {
             "name": "Pregunta emergente",
-            "description": "Este recurso permite crear un reto con una pregunta emergente superpuesta sobre contenido (imagen o contenido web)",
+            "description": "Este recurso permite crear un reto con una pregunta emergente superpuesta sobre contenido (imagen o contenido web).",
             "contentArea": "Área de Contenido",
             "contentType": "Tipo de contenido",
             "contentTypeImage": "Imagen",

@@ -1525,7 +1525,7 @@
           "Realistic": "Realističan",
           "Retro": "Retro",
           "Standard": "Standardni",
-          "Smartphone": "Smartphone",
+          "Smartphone": "Pametni telefon",
           "Tablet": "Tablet"
         },
         "actionAfterSolve": "Akcija nakon rešavanja",
@@ -1551,7 +1551,7 @@
         "Letters": "Slova",
         "Color": "Boja",
         "Colors": "Boje",
-        "Multicolor": "Multikolorno",
+        "Multicolor": "Šareno",
         "SingleColor": "Jedna boja",
         "Symbols": "Simboli",
         "SymbolsColored": "Simboli u boji",
@@ -1583,18 +1583,18 @@
         "button_nok":"Odbij",
         "context": "Kontekst",
         "send":"Proveri",
-        "send_disabled":"Postoji stavki za označavanje",
+        "send_disabled":"Postoji stavkai za označavanje",
         "retry": "Čini se da nisam klasifikovao sve stavke ispravno",
         "congrats": "Čestitamo! Sve stavke su klasifikovane ispravno",
         "header": "Resursi klasifikacije",
         "modalheader": "Baza podataka resursa",
-        "modalcontent": "Na ovoj tableti nalazi se nekoliko stavki za pregled i klasifikaciju. Pomoći će vam da dovršite zadatak. Pregledajte svaku stavku i odlučite da li ispunjava vaše kriterijume.",
+        "modalcontent": "Na ovom tabletu nalazi se nekoliko stavki za pregled i klasifikaciju. Pomoći će vam da dovršite zadatak. Pregledajte svaku stavku i odlučite da li ispunjava vaše kriterijume.",
         "modalinstructions0":"Uputstva:",
         "modalinstructions1": "1. Za svaku stavku kliknite 'Odbij' ako ne ispunjava vaše kriterijume. Inače, kliknite 'Moguće'",
         "modalinstructions2": "2. Kada ste to uradili za SVE stavke, kliknite 'Proveri' da biste videli da li ste napravili ispravnu klasifikaciju",
         "modalheader2": "Resursi klasifikacije",
         "feedback": "Komentari:",
-        "end": "Izazov dovršen",
+        "end": "Izazov završen",
         "codes": "Kodovi pristupa za oktobar",
         "review": "Pregledaj komentare",
         "item": "Stavka",
@@ -1622,7 +1622,7 @@
       },
       "PopupQuestion": {
         "name": "Iskačuće pitanje",
-        "description": "Ovaj resurs vam omogućava da napravite zagonetku sa iskačućim pitanjem preko sadržaja (slika ili veb sadržaj)",
+        "description": "Ovaj resurs vam omogućava da napravite zagonetku sa iskačućim (popup) pitanjem preko sadržaja (slika ili veb sadržaj).",
         "contentArea": "Oblast Sadržaja",
         "contentType": "Tip sadržaja",
         "contentTypeImage": "Slika",
@@ -1684,11 +1684,12 @@
         "imageSrc": "URL",
         "imageSrcPlaceholder": "URL slike",
         "addImage": "Dodaj sliku",
-        "defaultTitle1": "бекство",
-        "defaultTitle2": "соба"
+        "defaultTitle1": "escape",
+        "defaultTitle2": "soba"
       },
       "Conversation": {
         "name": "Razgovor",
+        "description": "Ovaj resurs vam omogućava da napravite zagonetku čije rešenje zahteva od učesnika da unesu određeni niz odgovora na niz pitanja.",
         "questionsTitle": "Pitanja i odgovori",
         "question": "Pitanje",
         "questionRoot": "Početno pitanje",
@@ -1702,7 +1703,7 @@
         "keyType": "Vrsta dugmadi"
       },
       "DecoderDisk": {
-        "name": "Disk za dekoderanje",
+        "name": "Disk za dekodiranje",
         "description": "Ovaj resurs vam omogućava da kreirate disk za dekodiranje sa više točkova, gde svaki točak može da sadrži brojeve, slova, boje ili simbole. Disk se može povezati sa zagonetkom iz escape sobe i njenim rešenjem.",
         "numberOfWheels": "Broj točkova",
         "wheel": "Točak",
@@ -1716,13 +1717,13 @@
       },
       "Switches": {
         "name": "Prekidači",
-        "description": "Ovaj resurs vam omogućava da kreirate slagalicu čije rešenje zahteva od učesnika da aktiviraju određeni skup prekidača. Opciono, svaki prekidač može biti povezan sa brojem, slovom, simbolom ili bojom.",
+        "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da aktiviraju određeni skup prekidača. Opciono, svaki prekidač može biti povezan sa brojem, slovom, simbolom ili bojom.",
         "numberOfSwitches": "Broj prekidača",
         "switchesType": "Povezani elementi"
       },
       "Telephone": {
         "name": "Telefon",
-        "description": "Ovaj resurs vam omogućava da kreirate telefon u kojem učesnici mogu birati sekvence brojeva, slova, boja ili simbola. Telefon može biti povezan sa zagonetkom iz escape room-a i njenim rešenjem.",
+        "description": "Ovaj resurs vam omogućava da kreirate telefon u kojem učesnici mogu birati sekvence brojeva, slova, boja ili simbola. Telefon može biti povezan sa zagonetkom iz escape sobe i njenim rešenjem.",
         "elementType": "Tip elemenata",
         "rotaryPhone": "Rotacioni telefon",
         "showFeedbackLight": "Prikaži povratnu informaciju pomoću svetla",
@@ -1820,7 +1821,7 @@
       },
       "ItemSelection": {
         "name": "Izbor predmeta (item)",
-        "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da izaberu niz predmeta iz datog skupa u jednoj ili više navrata.",
+        "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da izaberu niz predmeta iz datog skupa u jednom ili više navrata.",
         "NumberOfRounds": "Broj rundi",
         "Round": "Runda",
         "Item": "Predmet",
@@ -1883,7 +1884,7 @@
       },
       "WiredBomb": {
         "name": "Bomba sa žicama",
-        "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da razminiraju bombu tako što će preseći niz žica u određenom redosledu.",
+        "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da deaktivirajubombu tako što će preseći niz žica u određenom redosledu.",
         "numberOfWires": "Broj žica",
         "timer": "Odbrojavanje"
       },

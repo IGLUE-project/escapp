@@ -1604,6 +1604,7 @@
         },
         "Conversation": {
             "name": "Conversation",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific sequence of answers to a series of questions.",
             "questionsTitle": "Questions and answers",
             "question": "Question",
             "questionRoot": "Root question",
@@ -1618,7 +1619,7 @@
         },
         "DigitalClassifier": {
             "name": "Digital classifier",
-            "description": "This resource allows you to create a puzzle whose solution requires participants to interact with a tablet and classify texts or images into two categories",
+            "description": "This resource allows you to create a puzzle whose solution requires participants to interact with a tablet and classify texts or images into two categories.",
             "button_ok":"Possible",
             "button_nok":"Dismiss",
             "context": "Context",
@@ -1662,7 +1663,7 @@
         },
         "PopupQuestion": {
             "name": "Popup question",
-            "description": "This resource allows you to create a puzzle with a popup question overlay on top of content (image or web content)",
+            "description": "This resource allows you to create a puzzle with a popup question overlay on top of content (image or web content).",
             "contentArea": "Content Area",
             "contentType": "Content type",
             "contentTypeImage": "Image",
@@ -1768,7 +1769,6 @@
             "inputStateOut": "Out",
             "inputStateIn": "In"
         },
-
         "WireConnection": {
             "name": "Wire connection",
             "description": "This resource allows you to create a puzzle whose solution requires participants to connect source and destination nodes with wires in a specific way. The wires can have different colors and, optionally, each node (source or destination) can be associated with a number, a letter, or a symbol.",
