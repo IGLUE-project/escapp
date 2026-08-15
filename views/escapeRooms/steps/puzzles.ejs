@@ -1,95 +1,87 @@
 <%- include ("../../partials/_header.ejs") %>
 <div role="main" class="main step-puzzles">
     <%- include ("../../partials/_breadcrumbStep") %>
-
      <h1><%=i18n.escapeRoom.steps.puzzles.title%></h1>
     <p class="intro-paragraph">
         <%=i18n.escapeRoom.steps.puzzles.explanation%>
     </p>
     <div class="align-right">
         <button class="rounded editButton" type="button" id="add-new-puzzle">
-            <!-- <span class="material-icons">control_point</span> -->
             <%=i18n.escapeRoom.steps.puzzles.addNewPuzzles%>
         </button>
     </div>
   <br/>
   <br/>
   <form method='POST' id="form" onsubmit='return validateForm()' action='/escapeRooms/<%= escapeRoom.id %>/puzzles'>
-  <div id="sortable">
-
-    <% for(var reto in escapeRoom.puzzles) { %>
-        <% var puzzle = escapeRoom.puzzles[reto] %>
-        <%- include('../../partials/_puzzles_card', {reto, puzzle}) %>
-
-    <%}%>
+    <div id="puzzleCardList">
+      <% for(var reto in escapeRoom.puzzles) { %>
+          <% var puzzle = escapeRoom.puzzles[reto] %>
+          <%- include('../../partials/_puzzles_card', {reto, puzzle}) %>
+      <%}%>
     </div>
     <br/>
     <div class="align-right flex-buttons buttons_before_progressbar">
-    <button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
-    <button class="progress-buttons" type="submit" value="next" id="next" name="next"><%=i18n.common.next%></button>
-    <button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
+      <button class="progress-buttons" type="submit" value="<%=progress%>" id="progress-save" name="progress"><%=i18n.common.save%></button>
+      <button class="progress-buttons" type="submit" value="next" id="next" name="next"><%=i18n.common.next%></button>
+      <button class="progress-buttons" type="submit" value="previous" id="previous" name="previous"><%=i18n.common.previous%></button>
     </div>
-  <%- include('../../partials/_progress', {progress}) %>
-</form>
-
-<div class="hidden-card">
+    <%- include('../../partials/_progress', {progress}) %>
+  </form>
+  <div class="hidden-card">
     <%- include('../../partials/_puzzles_card', {reto: 'new', puzzle: {id: 'new', hints: []}}) %>
-</div>
+  </div>
 </div>
 <%- include('../../partials/_footer', {ignoreExtras: true}) %>
+
 <script src="/js/vendor/jquery.ui.sortable.min.js"></script>
 <script src="/js/vendor/jquery.ui.touch-punch.min.js"></script>
 <script>
     const validateForm = () => {
-        const arr = Array.from(document.getElementsByClassName('puzzle-card'));
-        for (let i in arr){
-            const element = arr[i];
-            const id = $(element).children(".order").val()
-            if ((id === "") || (id === undefined) || (id == 'new')) {
-                continue;
-            }
-            const solutionElement = $(`#puzzles\\[${id}\\]\\[sol\\]`);
+      const arr = Array.from(document.getElementsByClassName('puzzle-card'));
+      for (let i in arr){
+          const element = arr[i];
+          const id = $(element).children(".order").val()
+          if ((id === "") || (id === undefined) || (id == 'new')) {
+              continue;
+          }
+          const solutionElement = $(`#puzzles\\[${id}\\]\\[sol\\]`);
 
-            const solution = solutionElement.val();
-            const isRange = $(`#puzzles\\[${id}\\]\\[ran\\]`).prop('checked');
-            const isRegex = $(`#puzzles\\[${id}\\]\\[reg\\]`).prop('checked');
-            solutionElement.get(0).setCustomValidity("");
-            if(isRegex){
-                try {
-                    new RegExp(solution);
-                } catch (e) {
-                    solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRegex%>");
-                    solutionElement.get(0).reportValidity();
-                    return false;
-                }
-            }
+          const solution = solutionElement.val();
+          const isRange = $(`#puzzles\\[${id}\\]\\[ran\\]`).prop('checked');
+          const isRegex = $(`#puzzles\\[${id}\\]\\[reg\\]`).prop('checked');
+          solutionElement.get(0).setCustomValidity("");
+          if(isRegex){
+              try {
+                  new RegExp(solution);
+              } catch (e) {
+                  solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRegex%>");
+                  solutionElement.get(0).reportValidity();
+                  return false;
+              }
+          }
+          if(isRange){
+              const rangeElement = $(`#puzzles\\[${id}\\]\\[rang\\]`);
+              rangeElement && rangeElement.get(0) && rangeElement.get(0).setCustomValidity("");
 
-            if(isRange){
-                const rangeElement = $(`#puzzles\\[${id}\\]\\[rang\\]`);
-                rangeElement && rangeElement.get(0) && rangeElement.get(0).setCustomValidity("");
+              const range =  parseFloat(rangeElement.val().replace(",", "."));
 
-                const range =  parseFloat(rangeElement.val().replace(",", "."));
+              if(isNaN(range) || range < 0) {
+                  rangeElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRange%>");
+                  rangeElement.get(0).reportValidity();
+                  return false;
+              } 
 
-                if(isNaN(range) || range < 0) {
-                    rangeElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidRange%>");
-                    rangeElement.get(0).reportValidity();
-                    return false;
-                } 
+              const numericVal = parseFloat(solution.replace(",", "."));
 
-                const numericVal = parseFloat(solution.replace(",", "."));
-
-                 if(isNaN(numericVal)) {
-                    solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidSolution%>");
-                    solutionElement.get(0).reportValidity();
-                    return false;
-                } 
-                solutionElement.val(numericVal + "+" + range);
-            }
-        }; }
-
-</script>
-<script>
-
+               if(isNaN(numericVal)) {
+                  solutionElement.get(0).setCustomValidity("<%=i18n.escapeRoom.steps.puzzles.errors.invalidSolution%>");
+                  solutionElement.get(0).reportValidity();
+                  return false;
+              } 
+              solutionElement.val(numericVal + "+" + range);
+          }
+      }; 
+    }
 
     function calculateDuration(e) {
         e.stopPropagation();
@@ -117,12 +109,10 @@
                     }
                 } else {
                     alert("<%=i18n.escapeRoom.steps.puzzles.errors.durationCalculation%>");
-
                 }
             }}).catch((error) => {
                 console.error('Error:', error);
                 alert("<%=i18n.escapeRoom.steps.puzzles.errors.durationCalculation%>");
-                
             });     
             setTimeout(() => {
                 if (spinner) {
@@ -130,211 +120,300 @@
                 }
             }, 1000); // Timeout to hide spinner after 5 seconds in case of failure           
     }
-  $( function() {
-    // Puzzle sortable
 
-    $(document).on('mousedown touchdown', '.handle', () => {
-        $('.puzzle-card > *:not(.showAlways)').slideUp({easing: "swing", duration: 100});
-        $('.puzzle-card').addClass('collapsed')
-    });
-    $(document).on('mouseup touchend', '.handle', () => {
-        $('.puzzle-card > *:not(.showAlways)').slideDown({easing: "swing", duration: 150});
-        $('.puzzle-card').removeClass('collapsed')
-        $('.puzzle-card > *:not(.showAlways)').show();
-    });
-
-    $( "#sortable" ).sortable({
-        handle: '.handle',
-        forcePlaceholderSize:true,
-        start: (event, ui) => {
-         $(ui.placeholder).height('105px');
-        },
-        stop: () => {
-            $('.puzzle-card > *:not(.showAlways)').slideDown({easing: "swing", duration: 200});
-            $('.puzzle-card').removeClass('collapsed')
-            $('.puzzle-card > *:not(.showAlways)').show();
-        },
-        update: (a,b)=>{
-
-            $('.order').each((i,e)=> {
-                $(e).val(i);
-            })
-        }
-    });
-
-    // Hint sortable
-    $( ".hint-list" ).sortable({
-        handle: '.handle-hint',
-        cancel: ".hint-category",
-        update: (event,b)=>{
-            const movedHint = $(b.item[0]).closest('li');
-            const newCat = movedHint.prevAll('.hint-category').first();
-            const catInd = newCat.data('id') || 0;
-            movedHint.find('.hint-cat').val(catInd);
-
-            $(event.target).find('.hint-order').each((i,e)=> {
-                $(e).val(i);
-            })
-        }
-    });
-    // $('.handle').disableSelection();
-
-    $(document).on('click', '.addHint', (e) => {
-        const currentHintList = $(e.target.parentNode.parentNode).find('.hint-list');
-        const order = currentHintList.data('number');
-        const hintOrder = currentHintList.children('.hint-list-element').length;
-        const lastCategory = currentHintList.children('.hint-category').last()
-        const lastCat = lastCategory.length ? lastCategory.data('id') : 0;
-        const template = `
-        <li class="hint-list-element">
-            <div class="hint-li">
-                <span title="<%=i18n.escapeRoom.steps.puzzles.reorder%>" class="material-icons handle-hint">swap_vert</span>
-                <input type="hidden" name="puzzles[${order}][hints][${hintOrder}][id]" value=""/>
-                <input type="hidden" name="puzzles[${order}][hints][${hintOrder}][category]" class="hint-cat" value="${lastCat}"/>
-                <input type="hidden" name="puzzles[${order}][hints][${hintOrder}][order]" class="hint-order" value="${hintOrder}"/>
-                <input type="text" class="light" name="puzzles[${order}][hints][${hintOrder}][content]" maxlength="10000" placeholder="" required value=""/>
-                <button type="button" class="delete-hint" title="<%=i18n.escapeRoom.steps.puzzles.delete%>" >
-                  <span class="material-icons">clear</span>
-                </button>
-            </div>
-        </li>
-        `;
-        $(template).appendTo(currentHintList);
-        currentHintList.sortable({
-            handle: '.handle-hint',
-            cancel: '.hint-category',
-            update: (event, ui) => {
-                const movedHint = $(ui.item[0]).closest('li');
-                const newCat = movedHint.prevAll('.hint-category').first();
-                const catInd = newCat.data('id') || 0;
-                movedHint.find('.hint-cat').val(catInd);
-                $(event.target).find('.hint-order').each((i,e)=> {
-                    $(e).val(i);
-                });
-
-            }
-        });
-        currentHintList.find('input[type=text]').last().focus();
-
-    });
-
-    $('#add-new-puzzle').on('click', ()=>{
+    $( function() {
+      // Puzzles
+      $(document).on('mousedown touchdown', '.handle', () => {
+          $('.puzzle-card > *:not(.showAlways)').slideUp({easing: "swing", duration: 100});
+          $('.puzzle-card').addClass('collapsed')
+      });
+      $(document).on('mouseup touchend', '.handle', () => {
+          $('.puzzle-card > *:not(.showAlways)').slideDown({easing: "swing", duration: 150});
+          $('.puzzle-card').removeClass('collapsed')
+          $('.puzzle-card > *:not(.showAlways)').show();
+      });
+      $("#puzzleCardList").sortable({
+          handle: '.handle',
+          forcePlaceholderSize:true,
+          start: (event, ui) => {
+           $(ui.placeholder).height('105px');
+          },
+          stop: () => {
+              $('.puzzle-card > *:not(.showAlways)').slideDown({easing: "swing", duration: 200});
+              $('.puzzle-card').removeClass('collapsed')
+              $('.puzzle-card > *:not(.showAlways)').show();
+          },
+          update: (a,b)=>{
+              updateDataForAllPuzzles();
+          }
+      });
+      $('#add-new-puzzle').on('click', ()=>{
         let newCard = $('.hidden-card .puzzle-card').clone();
         const order = $('.puzzle-card').length - 1;
         newCard.find('.order').val(order);
-        newCard.find('.hint-list').data("number", order);
+        newCard.find('.hint-list').attr('puzzle-index', order);
         newCard.find( "input[name^='puzzles[new]'],select[name^='puzzles[new]'],label[for^='puzzles[new]']" ).each((i,e)=>{
             if (e.getAttribute("name")) e.name = e.name.replace('puzzles[new]','puzzles['+order+']');
             if (e.getAttribute("for")) e.setAttribute("for", e.getAttribute("for").replace('puzzles[new]','puzzles['+order+']'));
             if (e.getAttribute("id")) e.id = e.id.replace('puzzles[new]','puzzles['+order+']');
         });
         newCard.removeClass('puzzle-card-template');
-        newCard.appendTo('#sortable');
+        newCard.appendTo('#puzzleCardList');
         newCard.attr('id', `puzzle-new_${order}`);
+        initHintSortable(newCard.find('.hint-list'));
+        updateHintDataForPuzzle(newCard);
+
         $('html, body').animate({
             scrollTop: $(newCard).offset().top
         }, 100);
 
         newCard.find('input[type=text]').first().focus();
-    })
+      })
 
-    const catTemplate = (name, puzzle, cat) => {
-        return `<li class="hint-category" data-id="${cat}">
+      $(document).on('click', '.delete-puzzle', (e) => {
+          const actualPuzzle = e.target.parentNode.parentNode;
+          actualPuzzle.remove();
+          updateDataForAllPuzzles();
+      })
+
+      $(document).on('click', '.numberInput', (e) => {
+        e.stopPropagation();
+      });
+
+      $(document).on('change', '.validatorInputs, .puzzle-sol', (e) => {
+        $(e.target).get(0).setCustomValidity("");
+      })
+
+      $(window).keydown(function(event){
+          if(event.keyCode == 13) {
+              event.preventDefault();
+              var inputs = $("form input:visible, form select");
+              var idx = (document.activeElement && (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "SELECT")) ? inputs.index(document.activeElement) : -1;
+              if (idx == inputs.length - 1) {
+                  idx = -1;
+              }
+              inputs[idx + 1].focus(); //  handles submit buttons
+              if (inputs[idx + 1].select) {
+                  inputs[idx + 1].select();
+              }
+              return false;
+          }
+      });
+
+      // Hints
+      function initHintSortable($hintList) {
+          $hintList.sortable({
+              handle: '.handle-hint',
+              cancel: '.hint-category',
+              update: (event, b) => {
+                // const movedHint = $(b.item[0]).closest('li.hint-list-element');
+                const puzzleCard = $(b.item[0]).closest('div.puzzle-card');
+                updateHintDataForPuzzle(puzzleCard);
+              }
+          });
+      }
+
+      $('.hint-list').each(function () {
+        initHintSortable($(this));
+      });
+
+      function updateDataForAllPuzzles() {
+        $('#puzzleCardList > div.puzzle-card').each((puzzleIndex, puzzleElement) => {
+          const $puzzleElement = $(puzzleElement);
+          const puzzlePrefix = "puzzles[" + puzzleIndex + "]";
+          $puzzleElement.find("input.order").attr("name",puzzlePrefix+"[order]").val(puzzleIndex);
+          $puzzleElement.find("input.puzzle-id").attr("name",puzzlePrefix+"[id]");
+          $puzzleElement.find("input.puzzle-title").attr("name",puzzlePrefix+"[title]");
+          $puzzleElement.find("input.puzzle-title").attr("name",puzzlePrefix+"[title]");
+          $puzzleElement.find("input.puzzle-sol").attr("name",puzzlePrefix+"[sol]").attr("id",puzzlePrefix+"[sol]")
+          
+          $puzzleElement.find("input.validatorInputs[value='exact']").attr("name",puzzlePrefix+"[validator]").attr("id",puzzlePrefix+"[exa]");
+          $puzzleElement.find("input.validatorInputs[value='caseinsensitive']").attr("name",puzzlePrefix+"[validator]").attr("id",puzzlePrefix+"[cas]");
+          $puzzleElement.find("input.validatorInputs[value='range']").attr("name",puzzlePrefix+"[validator]").attr("id",puzzlePrefix+"[ran]");
+          $puzzleElement.find("input.validatorInputs.puzzle-rang").attr("id",puzzlePrefix+"[rang]").attr("name",puzzlePrefix+"[rang]");
+          $puzzleElement.find("input.validatorInputs[value='regex']").attr("name",puzzlePrefix+"[validator]").attr("id",puzzlePrefix+"[reg]");
+          $puzzleElement.find("input.puzzle-automatic").attr("name",puzzlePrefix+"[automatic]").attr("id",puzzlePrefix+"[automatic]");
+          $puzzleElement.find("input.puzzle-dur").attr("name",puzzlePrefix+"[dur]").attr("id",puzzlePrefix+"[dur]");
+          $puzzleElement.find("input.puzzle-correct").attr("name",puzzlePrefix+"[correct]").attr("id",puzzlePrefix+"[correct]");
+          $puzzleElement.find("input.puzzle-fail").attr("name",puzzlePrefix+"[fail]").attr("id",puzzlePrefix+"[fail]");
+
+          updateHintDataForPuzzle(puzzleElement);
+        });
+      };
+
+      function updateHintDataForAllPuzzles() {
+        $('#puzzleCardList > div.puzzle-card').each((puzzleIndex, puzzleElement) => {
+          updateHintDataForPuzzle(puzzleElement);
+        });
+      };
+
+      function updateHintDataForPuzzle(puzzleElement) {
+          const $puzzle = $(puzzleElement);
+          const puzzleIndex = $puzzle.find("input.order").val();
+
+          $puzzle.find('ul.hint-list').each((hintListIndex, hintList) => {
+              const $hintList = $(hintList);
+              $hintList.attr("puzzle-index",puzzleIndex);
+              let hintOrder = 0;
+              let categoryIndex = 0;
+
+              $hintList.find('li.hint-category').each((hintCategoryIndex, hintCategory) => {
+                const $hintCategory = $(hintCategory);
+                $hintCategory.attr("category-index",categoryIndex);
+                $hintCategory.find("input.hint-category-name").attr("name","puzzles[" + puzzleIndex + "][categories][" + categoryIndex + "]");
+                categoryIndex = categoryIndex+1;
+              });
+
+              $hintList.find('li.hint-list-element').each((hintListElementIndex, hintListElement) => {
+                const $hintListElement = $(hintListElement);
+                const hintPrefix = "puzzles[" + puzzleIndex + "][hints][" + hintOrder + "]";
+                $hintListElement.find("input.hint-id").attr("name",hintPrefix+"[id]");
+                const $categoryOfHintListElement = $hintListElement.prevAll('li.hint-category').first();
+                const categoryOfHintListElementIndex = $categoryOfHintListElement.length ? $categoryOfHintListElement.attr("category-index") : 0;
+                $hintListElement.find("input.hint-cat").attr("name",hintPrefix+"[category]").val(categoryOfHintListElementIndex);
+                $hintListElement.find("input.hint-order").attr("name",hintPrefix+"[order]").val(hintOrder);
+                $hintListElement.find("input.hint-content").attr("name",hintPrefix+"[content]");
+                
+                hintOrder = hintOrder + 1;
+              });
+          });
+      };
+
+      $(document).on('click', '.addHint', (e) => {
+        const currentHintList = $(e.target.parentNode.parentNode).find('.hint-list');
+        const puzzleIndex = currentHintList.attr('puzzle-index');
+        const selectedCategoryIndex = currentHintList.attr('current-category-index');
+        let currentCategory;
+        if (selectedCategoryIndex !== undefined) {
+            currentCategory = currentHintList.children('.hint-category').filter(`[category-index="${selectedCategoryIndex}"]`);
+            if (!currentCategory.length) {
+              currentCategory = currentHintList.children('.hint-category').last();
+            }
+        } else {
+            currentCategory = currentHintList.children('.hint-category').last();
+        }
+
+        let currentCategoryIndex;
+        let hintIndex;
+        if(currentCategory.length){
+          currentCategoryIndex = currentCategory.attr('category-index');
+          hintIndex = currentCategory.prevAll('li.hint-list-element').length;
+        } else {
+          currentCategoryIndex = 0;
+          hintIndex = currentHintList.find('li.hint-list-element').length;
+        }
+
+        const template = `
+        <li class="hint-list-element">
+            <div class="hint-li">
+                <span title="<%=i18n.escapeRoom.steps.puzzles.reorder%>" class="material-icons handle-hint">swap_vert</span>
+                <input type="hidden" name="puzzles[${puzzleIndex}][hints][${hintIndex}][id]"       class="hint-id" value=""/>
+                <input type="hidden" name="puzzles[${puzzleIndex}][hints][${hintIndex}][category]" class="hint-cat" value="${currentCategoryIndex}"/>
+                <input type="hidden" name="puzzles[${puzzleIndex}][hints][${hintIndex}][order]"    class="hint-order" value="${hintIndex}"/>
+                <input type="text"   name="puzzles[${puzzleIndex}][hints][${hintIndex}][content]"  class="hint-content light" maxlength="10000" placeholder="" required value=""/>
+                <button type="button" class="delete-hint" title="<%=i18n.escapeRoom.steps.puzzles.delete%>" >
+                  <span class="material-icons">clear</span>
+                </button>
+            </div>
+        </li>
+        `;
+
+        const $newHint = $(template);
+        if (currentCategory.length) {
+            const categoryHints = currentCategory.nextUntil('.hint-category', '.hint-list-element');
+            if (categoryHints.length) {
+                $newHint.insertAfter(categoryHints.last());
+            } else {
+                $newHint.insertAfter(currentCategory);
+            }
+        } else {
+            $newHint.appendTo(currentHintList);
+        }
+        
+        updateHintDataForPuzzle($(currentHintList).closest('div.puzzle-card'));
+
+        $newHint.find('input.hint-content').focus();
+      });
+
+      $(document).on('click', '.delete-hint', (e) => {
+          const $hintLi = $(e.target.parentNode.parentNode.parentNode);
+          const currentHintList = $hintLi.closest('.hint-list');
+          $hintLi.remove();
+          updateHintDataForPuzzle(currentHintList.closest('div.puzzle-card'));
+      });
+
+
+      //Hint categories
+
+      //Save current category
+      $(document).on('focusin click', '.hint-category, .hint-list-element', function(){
+          const $element = $(this);
+          const $hintList = $element.closest('.hint-list');
+          let $category;
+          if ($element.hasClass('hint-category')) {
+              $category = $element;
+          } else {
+              $category = $element.prevAll('.hint-category').first();
+          }
+          $hintList.attr('current-category-index', $category.attr('category-index'));
+      });
+
+      $(document).on('focusout', '.hint-category, .hint-list-element', function (e) {
+          const $hintList = $(this).closest('.hint-list');
+          const $newFocus = $(e.relatedTarget);
+          if ($newFocus.hasClass('addHint')) {
+              return;
+          }
+          if ($newFocus.closest($hintList).length) {
+              return;
+          }
+          $hintList.removeAttr('current-category-index');
+      });
+
+      const catTemplate = (name, puzzleIndex, categoryIndex) => {
+        return `<li class="hint-category" category-index="${categoryIndex}">
             <span class="material-icons handle-cat">call_split</span>
-            <input class="light hint-category-name" value="${name || ""}" placeholder="<%=i18n.escapeRoom.steps.puzzles.newCat%>" name="puzzles[${puzzle}][categories][${cat}]"/>
-            ${cat === 0 ? "":`<button type="button" class="delete-cat" title="<%=i18n.escapeRoom.steps.puzzles.delete%>">
+            <input class="light hint-category-name" value="${name || ""}" placeholder="<%=i18n.escapeRoom.steps.puzzles.newCat%>" name="puzzles[${puzzleIndex}][categories][${categoryIndex}]"/>
+            ${categoryIndex === 0 ? "":`<button type="button" class="delete-cat" title="<%=i18n.escapeRoom.steps.puzzles.delete%>">
                 <span class="material-icons">clear</span>
             </button>`}
         </li>`
+      }
 
-    }
-
-    $(document).on('click', '.addCategory', (e) => {
+      $(document).on('click', '.addCategory', (e) => {
         const currentHintList = $(e.target.parentNode.parentNode).find('.hint-list');
-        const order = currentHintList.data('number');
-        const hintOrder = currentHintList.children('.hint-list-element').length;
-        const puzzleOrder = $(e.target.parentNode.parentNode.parentNode).find('.order').val()
+        const puzzleIndex = currentHintList.attr('puzzle-index');
         if (currentHintList.find('.hint-category').length === 0) {
-            currentHintList.prepend(catTemplate("General", puzzleOrder, 0));
+            currentHintList.prepend(catTemplate("<%=i18n.escapeRoom.steps.puzzles.hintDefaultCategoryName%>", puzzleIndex, 0));
         }
         const nCats = currentHintList.children('.hint-category').length;
-        currentHintList.append(catTemplate(null, puzzleOrder, nCats));
+        currentHintList.append(catTemplate(null, puzzleIndex, nCats));
+
+        updateHintDataForPuzzle($(currentHintList).closest('div.puzzle-card'));
+
         currentHintList.find('.hint-category-name').last().focus();
+      });
 
+      $(document).on('click', '.delete-cat', (e) => {
+          const $catLi = $(e.currentTarget).closest('li.hint-category');
+          const currentHintList = $catLi.closest('.hint-list');
+          const categoryIndex = $catLi.attr('category-index');
+          
+          //Remove category item
+          $catLi.remove();
+
+          //Remove category hints
+          currentHintList.find(`input.hint-cat[value="${categoryIndex}"]`).closest('li.hint-list-element').remove();
+
+          //Remove last category item if there is only one category
+          const categories = currentHintList.children('.hint-category');
+          if (categories.length === 1) {
+              categories.remove();
+          }
+
+          updateHintDataForPuzzle(currentHintList.closest('div.puzzle-card'));
+      });
+
+      $("form input:visible, form select")[0].focus();
     });
-
-    $(document).on('click', '.delete-cat', (e) => {
-        // TODO Revisar esto y reorder puzzle
-        const catLi = e.target.parentNode.parentNode;
-        const ul = $(catLi.parentNode);
-        const catId = $(catLi).data('id');
-        const puzzleId = ul.data('number');
-        $(catLi).remove();
-        const cats = ul.children('.hint-category')
-        let catCount = -1;
-
-        if (cats.length === 1) {
-            cats.remove();
-            catCount = 0;
-        }
-
-        const listEls = ul.children();
-        listEls.each((i,e) => {
-            const el = $(e)
-            if (el.hasClass('hint-list-element')) {
-                el.find('.hint-cat').val(catCount);
-            } else if (el.hasClass('hint-category')) {
-                catCount++;
-                el.data('id', catCount);
-                el.find('.hint-category-name').attr('name',`puzzles[${puzzleId}][category][${catCount}]`);
-            }
-        });
-    });
-
-    $(document).on('click', '.delete-hint', (e) => {
-        const actualHint = e.target.parentNode.parentNode.parentNode;
-        const parent = actualHint.parentNode;
-        actualHint.remove();
-        $(parent).find('.hint-order').each((i,e)=> {
-            $(e).val(i);
-        });
-    });
-
-    $(document).on('click', '.delete-puzzle', (e) => {
-        const actualPuzzle = e.target.parentNode.parentNode;
-        const parent = actualPuzzle.parentNode;
-        actualPuzzle.remove();
-        $(parent).find('.order').each((i,e)=> {
-            $(e).val(i);
-        });
-    })
-
-     $(document).on('click', '.numberInput', (e) => {
-        e.stopPropagation();
-     });
-
-    $(document).on('change', '.validatorInputs, .theinput', (e) => {
-        $(e.target).get(0).setCustomValidity("");
-    })
-
-    $(window).keydown(function(event){
-        if(event.keyCode == 13) {
-            event.preventDefault();
-            var inputs = $("form input:visible, form select");
-            var idx = (document.activeElement && (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "SELECT")) ? inputs.index(document.activeElement) : -1;
-            if (idx == inputs.length - 1) {
-                idx = -1;
-            }
-            inputs[idx + 1].focus(); //  handles submit buttons
-            if (inputs[idx + 1].select) {
-                inputs[idx + 1].select();
-            }
-            return false;
-        }
-    });
-
-    $("form input:visible, form select")[0].focus();
-});
 </script>
-
-

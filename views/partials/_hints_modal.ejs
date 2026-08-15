@@ -50,11 +50,10 @@
                             if (nCats === 1) {
                                 categoryIndex = 0;
                             } else if (nCats > 1 && category !== hint.category) { 
-                                category =  hint.category || "General";
+                                category =  hint.category || i18n.escapeRoom.steps.puzzles.hintDefaultCategoryName;
                                 categoryIndex++;    
-                            %>
-                        <% }%>
-                            <% if (hint && reqHintsList.indexOf(hint.id) !== -1) { %>                            
+                            }
+                            if (hint && reqHintsList.indexOf(hint.id) !== -1) { %>                            
                                 <li class="reto-hint" data-hint-number="<%=hint.order%>">
                                     <div class="card border-info mb-3">
                                         <div class="card-body">

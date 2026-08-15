@@ -668,6 +668,7 @@
                 "failMsg": "Mensaje al fallar",
                 "Hint": "Pista",
                 "hints": "Pistas",
+                "hintDefaultCategoryName": "General",
                 "manual": "Caja de texto en la cabecera de Escapp",
                 "newCat": "Categoría nueva",
                 "noHints": "No has definido ninguna pista",

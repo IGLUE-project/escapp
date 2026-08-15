@@ -667,6 +667,7 @@
                 "failMsg": "Message on fail",
                 "Hint": "Hint",
                 "hints": "Hints",
+                "hintDefaultCategoryName": "General",
                 "manual": "Text box in the Escapp header",
                 "newCat": "New category",
                 "noHints": "You haven't defined any hints",

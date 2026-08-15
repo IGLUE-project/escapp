@@ -668,6 +668,7 @@
         "failMsg": "Poruka o neuspehu ",
         "Hint": "Savet",
         "hints": "Saveti",
+        "hintDefaultCategoryName": "Opšte",
         "manual": "Tekstualni okvir u zaglavlju Escapp-a",
         "newCat": "Nova kategorija",
         "noHints": "Niste definisali nikakve savete ",
