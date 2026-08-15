@@ -1,43 +1,55 @@
 // Definition of hooks for the Scene model:
 
-function getPuzzleSolutionsFromSceneContent (content) {
+function getPuzzleSolutionsFromSceneContent(content) {
     if (!content) {
-        return {};
+        return [];
     }
-    const result = {};
+    let result = [];
 
-    if (content.screens instanceof Array) {
+    if (Array.isArray(content.screens)) {
         for (let i = 0; i < content.screens.length; i++) {
             const screen = content.screens[i];
-            const groups = ["hotspots", "hotzones"];
-
-            for (let g = 0; g < groups.length; g++) {
-                const groupName = groups[g];
-                const list = screen[groupName];
-
-                if (!(list instanceof Array)) {
-                    continue;
+            result = result.concat(_getPuzzleSolutionsFromSlideMarkers(screen));
+            if (Array.isArray(screen.views)) {
+                for (let j = 0; j < screen.views.length; j++) {
+                    const view = screen.views[j];
+                    result = result.concat(_getPuzzleSolutionsFromSlideMarkers(view));
                 }
-                for (let j = 0; j < list.length; j++) {
-                    const item = list[j];
+            }
+        }
+    }
+    return Array.from(
+        new Map(result.map(item => [item.puzzleId, item])).values()
+    );
+}
 
-                    if (!item || !(item.actions instanceof Array) || typeof item.id !== "string") {
-                        continue;
-                    }
-                    if (groupName === "hotzones" && typeof item.idAlias !== "string") {
-                        continue;
-                    }
-                    for (let k = 0; k < item.actions.length; k++) {
-                        const action = item.actions[k];
+function _getPuzzleSolutionsFromSlideMarkers(slide) {
+    if (!slide) {
+        return [];
+    }
+    const result = [];
 
-                        if (action && action.actionType === "solvePuzzle") {
-                            if (action.actionParams && typeof action.actionParams.puzzleId === "string") {
-                                if (groupName === "hotzones") {
-                                    item.id = item.idAlias;
-                                }
-                                result[action.actionParams.puzzleId] = item.id;
-                            }
-                        }
+    const groups = ["hotspots", "hotzones"];
+    for (let g = 0; g < groups.length; g++) {
+        const groupName = groups[g];
+        const list = slide[groupName];
+        if (!Array.isArray(list)) {
+            continue;
+        }
+        for (let j = 0; j < list.length; j++) {
+            const item = list[j];
+            if (!item || !(Array.isArray(item.actions)) || typeof item.id !== "string") {
+                continue;
+            }
+            if (groupName === "hotzones" && typeof item.idAlias !== "string") {
+                continue;
+            }
+            for (let k = 0; k < item.actions.length; k++) {
+                const action = item.actions[k];
+                if (action && action.actionType === "solvePuzzle") {
+                    if (action.actionParams && typeof action.actionParams.puzzleId === "string") {
+                        const puzzleSol = (groupName === "hotzones") ? item.idAlias : item.id;
+                        result.push({puzzleId: action.actionParams.puzzleId, puzzleSol: puzzleSol})
                     }
                 }
             }
@@ -56,24 +68,34 @@ module.exports = ({ scene, puzzle }) => {
         // Update puzzle solutions
         const puzzleSolutions = getPuzzleSolutionsFromSceneContent(content);
 
-        if (Object.keys(puzzleSolutions).length > 0 && sceneInstance.escapeRoomId) {
+        if (puzzleSolutions.length > 0 && sceneInstance.escapeRoomId) {
             const puzzles = await puzzle.findAll({
-                "where": {"escapeRoomId": sceneInstance.escapeRoomId},
-                "order": [["order", "ASC"]]
-            });
-            const puzzleLength = puzzles.length;
-
-            for (const puzzleOrder in puzzleSolutions) {
-                if (puzzleLength >= puzzleOrder && puzzleOrder > 0) {
-                    const puzzleSolution = puzzleSolutions[puzzleOrder];
-                    const puzzleInstance = puzzles[puzzleOrder - 1];
-
-                    await puzzleInstance.update({
-                        "sol": puzzleSolution,
-                        "validator": "exact",
-                        "automatic": true
-                    });
+                where: {
+                    escapeRoomId: sceneInstance.escapeRoomId
                 }
+            });
+
+            const puzzlesByOrder = new Map(
+                puzzles.map(puzzleInstance => [
+                    String(puzzleInstance.order + 1),
+                    puzzleInstance
+                ])
+            );
+
+            for (const puzzleSolution of puzzleSolutions) {
+                const puzzleInstance = puzzlesByOrder.get(
+                    puzzleSolution.puzzleId
+                );
+
+                if (!puzzleInstance) {
+                    continue;
+                }
+
+                await puzzleInstance.update({
+                    sol: puzzleSolution.puzzleSol,
+                    validator: "exact",
+                    automatic: true
+                });
             }
         }
     });
