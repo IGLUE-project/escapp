@@ -1031,7 +1031,7 @@
         "invitation": "You have been invited to collaborate in this escape room.",
         "beforeJoin": "Before playing you have to accept or reject the request for being a collaborator of this escape room",
         "confirmCollaboration": "accept",
-        "cancelCollaboration": "cancel",
+        "cancelCollaboration": "reject",
         "addCollaborator": "Add collaborator",
         "owner": "Owner",
         "pendingConfirmation": "Pending confirmation",

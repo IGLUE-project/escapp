@@ -1032,7 +1032,7 @@
         "beforeJoin": "Antes de jugar, tienes que aceptar o rechazar la solicitud de ser colaborador de esta escape room",
         "addCollaborator": "Añadir colaborador",
         "confirmCollaboration": "aceptar",
-        "cancelCollaboration": "cancelar",
+        "cancelCollaboration": "rechazar",
         "owner": "Propietario",
         "pendingConfirmation": "Pendiente de confirmación",
         "pendingConfirmationHover": "El usuario debe aceptar la solicitud de colaboración a través de la plataforma",

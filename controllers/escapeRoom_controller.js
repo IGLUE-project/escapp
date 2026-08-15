@@ -6,7 +6,7 @@ const {models} = sequelize;
 const query = require("../queries");
 const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {isAuthor, isParticipant, cloneER, getFilePathsForER, safeImportPath, copyERFilesForClone} = require("../helpers/escapeRooms");
+const {isAuthor, isCoAuthor, isParticipant, cloneER, getFilePathsForER, safeImportPath, copyERFilesForClone} = require("../helpers/escapeRooms");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname} = require("../helpers/utils");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 const fsSync = require("fs");
@@ -129,7 +129,7 @@ exports.index = async (req, res, next) => {
 
 // GET /escapeRooms/:escapeRoomId
 exports.show = async (req, res) => {
-    if (req.session.user && isAuthor(req.session.user, req.escapeRoom)) {
+    if (req.session.user && !req.session.user.isStudent && (isAuthor(req.session.user, req.escapeRoom) || isCoAuthor(req.session.user, req.escapeRoom))) {
         return res.redirect(`/escapeRooms/${req.escapeRoom.id}/edit`);
     }
     if(req.escapeRoom){

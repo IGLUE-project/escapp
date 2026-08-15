@@ -1031,7 +1031,7 @@
       "invitation": "Pozvani ste da sarađujete u ovoj escape sobi.",
       "beforeJoin": "Pre nego što počnete da igrate, morate da prihvatite ili odbijete zahtev da budete saradnik u ovoj escape sobi",
       "confirmCollaboration": "prihvati",
-      "cancelCollaboration": "otkaži",
+      "cancelCollaboration": "odbij",
       "addCollaborator": "Dodaj saradnika",
       "owner": "Vlasnik",
       "pendingConfirmation": "Čeka se potvrda",
