@@ -27,12 +27,13 @@ const safeDate = (value) => {
 
 // GET /iglue-stats
 // Counts users by educational level (rows) and role (student/teacher columns) for a
-// reporting window [from, to). `to` is an EXCLUSIVE upper bound (users/participations
-// strictly before `to`). `from` defaults to MIN(lastAcceptedTermsDate) when the
-// "since first accepted terms" option is used.
+// reporting window [from, to). `to` is an EXCLUSIVE upper bound. The window is applied
+// on a single axis — lastAcceptedTermsDate (active users) — for BOTH bounds. `from`
+// defaults to the frozen Escapp 2.0 date when the "since Escapp 2.0" option is used.
 //
-//   Teachers  = isStudent=false AND lastAcceptedTermsDate >= from AND createdAt < to
-//   Students  = isStudent=true  AND lastAcceptedTermsDate >= from AND createdAt < to
+//   Teachers  = isStudent=false AND lastAcceptedTermsDate in [from, to)
+//   Students  = isStudent=true  AND (lastAcceptedTermsDate in [from, to)
+//               OR attended an escape room with participants.createdAt in [from, to))
 //   Students (attendance option) = distinct students with a participants row where
 //               attendance=true and participants.createdAt in [from, to)
 exports.iglueStats = async (req, res, next) => {
@@ -52,28 +53,31 @@ exports.iglueStats = async (req, res, next) => {
 
         let from = safeDate(req.query.from);
         // Lower bound: the exact Escapp 2.0 timestamp when "since Escapp 2.0" is used,
-        // otherwise the start of the chosen from-day.
-        let fromDate = from ? new Date(`${from}T00:00:00.000`) : null;
+        // otherwise the start of the chosen from-day (UTC, matching safeDate validation).
+        let fromDate = from ? new Date(`${from}T00:00:00.000Z`) : null;
 
         if (sinceTerms && escapp2Date) {
             fromDate = new Date(escapp2Date);
             from = escapp2Input;
         }
 
-        // Upper bound is exclusive: strictly before `to` (start of the to-day)
-        const toDate = to ? new Date(`${to}T00:00:00.000`) : null;
+        // Upper bound is exclusive: strictly before `to` (start of the to-day, UTC)
+        const toDate = to ? new Date(`${to}T00:00:00.000Z`) : null;
 
         const countDistinctId = [Sequelize.fn("COUNT", Sequelize.fn("DISTINCT", Sequelize.col("user.id"))), "count"];
 
-        // User-based filter: consented on/after `from`, registered before `to`
+        // User-based filter: accepted terms within [from, to) (active users), single axis
         const userWhere = (isStudent) => {
             const where = {isStudent};
 
-            if (fromDate) {
-                where.lastAcceptedTermsDate = {[Op.gte]: fromDate};
-            }
-            if (toDate) {
-                where.createdAt = {[Op.lt]: toDate};
+            if (fromDate || toDate) {
+                where.lastAcceptedTermsDate = {};
+                if (fromDate) {
+                    where.lastAcceptedTermsDate[Op.gte] = fromDate;
+                }
+                if (toDate) {
+                    where.lastAcceptedTermsDate[Op.lt] = toDate;
+                }
             }
             return where;
         };
@@ -117,7 +121,36 @@ exports.iglueStats = async (req, res, next) => {
                 "through": {"attributes": [], "where": throughWhere}
             }];
         } else {
-            studentQuery.where = userWhere(true);
+            // Active students: accepted terms in the window OR attended an escape room
+            // (participants.attendance = true) whose participation date falls in [from, to).
+            // The two sets are unioned and deduplicated by COUNT(DISTINCT user.id) via a
+            // correlated EXISTS, so a student in both sets is counted once.
+            studentQuery.where = {"isStudent": true};
+
+            if (fromDate || toDate) {
+                const termsWindow = {};
+                const partConds = [`p."userId" = "user"."id"`, `p."attendance" = true`];
+
+                if (fromDate) {
+                    termsWindow[Op.gte] = fromDate;
+                    partConds.push(`p."createdAt" >= :pFrom`);
+                }
+                if (toDate) {
+                    termsWindow[Op.lt] = toDate;
+                    partConds.push(`p."createdAt" < :pTo`);
+                }
+                studentQuery.where[Op.or] = [
+                    {"lastAcceptedTermsDate": termsWindow},
+                    Sequelize.literal(`EXISTS (SELECT 1 FROM "participants" p WHERE ${partConds.join(" AND ")})`)
+                ];
+                studentQuery.replacements = {};
+                if (fromDate) {
+                    studentQuery.replacements.pFrom = fromDate.toISOString();
+                }
+                if (toDate) {
+                    studentQuery.replacements.pTo = toDate.toISOString();
+                }
+            }
         }
 
         const studentRows = await models.user.findAll(studentQuery);

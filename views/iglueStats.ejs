@@ -11,14 +11,14 @@
     <form method="GET" action="/iglue-stats" class="iglue-stats-filters dash-toolbar">
         <label>
             <%= i18n.iglueStats.from %>
-            <input type="date" name="from" value="<%= filters.from %>"/>
+            <input type="date" name="from" id="iglue-stats-from" value="<%= filters.from %>" <%= filters.sinceTerms ? "disabled" : "" %>/>
         </label>
         <label>
             <%= i18n.iglueStats.to %>
             <input type="date" name="to" value="<%= filters.to %>"/>
         </label>
         <label class="iglue-stats-since">
-            <input type="checkbox" name="sinceTerms" value="1" <%= filters.sinceTerms ? "checked" : "" %>/>
+            <input type="checkbox" name="sinceTerms" id="iglue-stats-since" value="1" data-escapp2="<%= escapp2Date %>" <%= filters.sinceTerms ? "checked" : "" %>/>
             <span><%= i18n.iglueStats.sinceEscapp2 %><% if (escapp2Date) { %> (<%= escapp2Date %>)<% } %></span>
         </label>
         <label class="iglue-stats-since">
@@ -84,3 +84,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    (function () {
+        var since = document.getElementById("iglue-stats-since");
+        var from = document.getElementById("iglue-stats-from");
+
+        if (!since || !from) {
+            return;
+        }
+        // When "since Escapp 2.0" is checked, `from` is overridden server-side by the
+        // frozen Escapp 2.0 date, so disable the input (and reflect that date in it).
+        since.addEventListener("change", function () {
+            from.disabled = since.checked;
+            if (since.checked && since.dataset.escapp2) {
+                from.value = since.dataset.escapp2;
+            }
+        });
+    }());
+</script>

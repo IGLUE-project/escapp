@@ -18,7 +18,7 @@ module.exports = {
         const [rows] = await queryInterface.sequelize.query(
             `SELECT MIN("lastAcceptedTermsDate") AS "minDate" FROM "users" WHERE "lastAcceptedTermsDate" IS NOT NULL`
         );
-        const escapp2Date = rows && rows[0] ? rows[0].minDate : null;
+        const escapp2Date = rows && rows[0] && rows[0].minDate ? rows[0].minDate : new Date();
 
         await queryInterface.sequelize.query(
             `UPDATE "adminConfigs" SET "escapp2Date" = :escapp2Date WHERE id = 1`,
