@@ -1036,6 +1036,8 @@ exports.showGuide = (_, res) => res.render("inspiration/inspiration");
 
 exports.showManual = (_, res) => res.render("inspiration/manual");
 
+exports.showBestPracticesEscapp = (_, res) => res.render("inspiration/bestPracticesEscapp");
+
 exports.showGuides = (_, res) => res.render("inspiration/guides");
 
 exports.verify = async (req, res, next) => {

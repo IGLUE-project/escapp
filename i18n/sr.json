@@ -995,6 +995,10 @@
         "manual": {
                 "title": "Uputstvo za upotrebu Escapp-a",
                 "description": "Sveobuhvatan priručnik kako koristiti Escapp platformu"
+        },
+        "bestPracticesEscapp": {
+                "title": "Najbolje prakse sa Escapp-om",
+                "description": "Saveti i najbolje prakse za izradu i realizaciju escape soba pomoću Escapp-a"
         }
     },
     "participant": {

@@ -995,6 +995,10 @@
         "manual": {
             "title": "Escapp User Manual",
             "description": "Comprehensive manual on how to use the Escapp platform"
+        },
+        "bestPracticesEscapp": {
+            "title": "Best Practices with Escapp",
+            "description": "Tips and best practices for building and running your escape rooms with Escapp"
         }
     },
     "participant": {
