@@ -131,6 +131,23 @@
                     placeholder="<%= t.leaveEmptyForDefault %>"/>
                 <span class="env-default"><%= t.defaultFromEnv %>: <%= envSettings.errorReportUrl || t.notSet %></span>
             </div>
+
+            <div class="setting-row">
+                <label><%= t.errorReportUrlByLang %></label>
+                <% SUPPORTED_LANGUAGES.forEach(function (lang) { %>
+                    <label for="errorReportUrl_<%= lang %>" style="font-weight:normal;margin-top:6px;"><%= (i18n.langs && i18n.langs[lang]) || lang %></label>
+                    <input type="text" name="errorReportUrl_<%= lang %>" id="errorReportUrl_<%= lang %>"
+                        value="<%= (dbSettings.errorReportUrls && dbSettings.errorReportUrls[lang]) ? dbSettings.errorReportUrls[lang] : '' %>"
+                        placeholder="<%= t.leaveEmptyForDefault %>"/>
+                <% }); %>
+            </div>
+
+            <div class="setting-row">
+                <label for="escapp2Date"><%= t.escapp2Date %></label>
+                <input type="date" name="escapp2Date" id="escapp2Date"
+                    value="<%= dbSettings.escapp2Date || '' %>"/>
+                <span class="supported-hint"><%= t.escapp2DateHint %><% if (escapp2Effective) { %> <%= escapp2Effective %><% } %></span>
+            </div>
         </div>
 
          <h2><%= t.networkUrls %></h2>

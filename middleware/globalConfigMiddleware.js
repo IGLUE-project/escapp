@@ -8,6 +8,7 @@ module.exports = async (req, res, next) => {
             "availableLanguages": await globalConfig.getAvailableLanguagesArray(),
             "exportAllowed": await globalConfig.getExportAllowed(),
             "errorReportUrl": await globalConfig.getErrorReportUrl(),
+            "errorReportUrls": await globalConfig.getErrorReportUrls(),
             "EXPORT_ALLOWED_OPTIONS": globalConfig.EXPORT_ALLOWED_OPTIONS
         };
     } catch (e) {
@@ -19,7 +20,8 @@ module.exports = async (req, res, next) => {
             "enableTeacherPersonalInfo": process.env.ENABLE_TEACHER_PERSONAL_INFO === "true",
             "availableLanguages": defaultLanguages,
             "exportAllowed": process.env.EXPORT_ALLOWED || "ONLY_OWNER",
-            "errorReportUrl": process.env.ERROR_REPORT_URL || globalConfig.DEFAULT_ERROR_REPORT_URL,
+            "errorReportUrl": process.env.ERROR_REPORT_URL || null,
+            "errorReportUrls": {},
             "EXPORT_ALLOWED_OPTIONS": globalConfig.EXPORT_ALLOWED_OPTIONS
         };
     }

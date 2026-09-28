@@ -25,6 +25,92 @@ const safeDate = (value) => {
     return Number.isNaN(parsed.getTime()) ? "" : value;
 };
 
+// Build a CSV filename that embeds the reporting window and the day it was generated,
+// e.g. "iglue-stats_from-2025-01-01_to-2025-06-30_generated-2026-09-28". Open bounds are
+// labelled "start"/"now" so the range is always unambiguous from the file name alone.
+const csvFilename = (prefix, from, to) => {
+    const generated = new Date().toISOString().slice(0, 10);
+
+    return `${prefix}_from-${from || "start"}_to-${to || "now"}_generated-${generated}`;
+};
+
+// Resolve the reporting window from the request — the same logic the stats table uses
+// (safeDate-validated from/to; `from` overridden by the frozen Escapp 2.0 date when the
+// "since Escapp 2.0" option is on). Kept here so the admin user export stays in sync.
+const resolveFilters = async (req) => {
+    const sinceTerms = req.query.sinceTerms === "1";
+    const attendedOnly = req.query.attendedOnly === "1";
+    const to = safeDate(req.query.to);
+
+    let escapp2Date = await getEscapp2Date();
+
+    if (!escapp2Date) {
+        escapp2Date = await models.user.min("lastAcceptedTermsDate");
+    }
+    const escapp2Input = toDateInput(escapp2Date);
+
+    let from = safeDate(req.query.from);
+    let fromDate = from ? new Date(`${from}T00:00:00.000Z`) : null;
+
+    if (sinceTerms && escapp2Date) {
+        fromDate = new Date(escapp2Date);
+        from = escapp2Input;
+    }
+    const toDate = to ? new Date(`${to}T00:00:00.000Z`) : null;
+
+    return {sinceTerms, attendedOnly, from, to, fromDate, toDate, escapp2Input};
+};
+
+// A single user-level WHERE matching exactly the users counted in the stats table:
+// teachers in the terms window, plus students in the terms window OR who attended in
+// the window (or only attendance when that option is active). Returns {where, replacements}.
+const buildCountedUsersWhere = (fromDate, toDate, attendedOnly) => {
+    const replacements = {};
+    const hasWindow = Boolean(fromDate || toDate);
+
+    const termsWindow = () => {
+        const window = {};
+
+        if (fromDate) {
+            window[Op.gte] = fromDate;
+        }
+        if (toDate) {
+            window[Op.lt] = toDate;
+        }
+        return window;
+    };
+
+    const partConds = [`p."userId" = "user"."id"`, `p."attendance" = true`];
+
+    if (fromDate) {
+        partConds.push(`p."createdAt" >= :pFrom`);
+        replacements.pFrom = fromDate.toISOString();
+    }
+    if (toDate) {
+        partConds.push(`p."createdAt" < :pTo`);
+        replacements.pTo = toDate.toISOString();
+    }
+    const attendedExists = Sequelize.literal(`EXISTS (SELECT 1 FROM "participants" p WHERE ${partConds.join(" AND ")})`);
+
+    const teacherCond = {"isStudent": false};
+
+    if (hasWindow) {
+        teacherCond.lastAcceptedTermsDate = termsWindow();
+    }
+
+    let studentCond;
+
+    if (attendedOnly) {
+        studentCond = {"isStudent": true, [Op.and]: [attendedExists]};
+    } else if (hasWindow) {
+        studentCond = {"isStudent": true, [Op.or]: [{"lastAcceptedTermsDate": termsWindow()}, attendedExists]};
+    } else {
+        studentCond = {"isStudent": true};
+    }
+
+    return {"where": {[Op.or]: [teacherCond, studentCond]}, replacements};
+};
+
 // GET /iglue-stats
 // Counts users by educational level (rows) and role (student/teacher columns) for a
 // reporting window [from, to). `to` is an EXCLUSIVE upper bound. The window is applied
@@ -203,7 +289,7 @@ exports.iglueStats = async (req, res, next) => {
                 [head.total]: totals.students + totals.teachers
             });
 
-            return createCsvFile(res, rows, `iglue-stats-${Date.now()}`);
+            return createCsvFile(res, rows, csvFilename("iglue-stats", from, to));
         }
 
         res.render("iglueStats", {
@@ -213,6 +299,79 @@ exports.iglueStats = async (req, res, next) => {
             "filters": {from, to, sinceTerms, attendedOnly},
             "escapp2Date": escapp2Input
         });
+    } catch (e) {
+        next(e);
+    }
+};
+
+// GET /iglue-stats/users  (ADMIN ONLY — the route is guarded)
+// Downloads a CSV of every user counted in the current stats view, with per-user
+// escape-rooms-created and escape-rooms-played counts. Contains personal data (email,
+// alias), so it must never be exposed publicly.
+exports.iglueStatsUsers = async (req, res, next) => {
+    try {
+        const {from, to, fromDate, toDate, attendedOnly} = await resolveFilters(req);
+        const {where, replacements} = buildCountedUsersWhere(fromDate, toDate, attendedOnly);
+
+        // Per-user counts are scoped to the SAME [from, to) window as the stats:
+        //   created = escape rooms authored whose createdAt is in the window
+        //   played  = distinct escape rooms participated in whose participation date is in the window
+        // (:pFrom/:pTo are already bound by buildCountedUsersWhere whenever there is a window)
+        const createdConds = [`er."authorId" = "user"."id"`];
+        const playedConds = [`pp."userId" = "user"."id"`];
+
+        if (fromDate) {
+            createdConds.push(`er."createdAt" >= :pFrom`);
+            playedConds.push(`pp."createdAt" >= :pFrom`);
+        }
+        if (toDate) {
+            createdConds.push(`er."createdAt" < :pTo`);
+            playedConds.push(`pp."createdAt" < :pTo`);
+        }
+
+        const users = await models.user.findAll({
+            "attributes": [
+                "username",
+                "alias",
+                "eduLevel",
+                "isStudent",
+                "createdAt",
+                "lastAcceptedTermsDate",
+                [Sequelize.literal(`(SELECT COUNT(*) FROM "escapeRooms" er WHERE ${createdConds.join(" AND ")})`), "createdCount"],
+                [Sequelize.literal(`(SELECT COUNT(DISTINCT t."escapeRoomId") FROM "participants" pp JOIN "turnos" t ON t."id" = pp."turnId" WHERE ${playedConds.join(" AND ")})`), "playedCount"]
+            ],
+            where,
+            replacements,
+            "order": [["isStudent", "ASC"], ["eduLevel", "ASC"], ["username", "ASC"]],
+            "raw": true
+        });
+
+        const i18n = res.locals.i18n || {};
+        const eduLabels = (i18n.user && i18n.user.eduLevel) || {};
+        const roleLabel = (isStudent) => (isStudent ? ((i18n.user && i18n.user.student) || "Student") : ((i18n.user && i18n.user.teacher) || "Teacher"));
+        const head = {
+            "email": (i18n.iglueStats && i18n.iglueStats.email) || "Email",
+            "role": (i18n.iglueStats && i18n.iglueStats.role) || "Role",
+            "alias": (i18n.iglueStats && i18n.iglueStats.alias) || "Alias",
+            "level": (i18n.user && i18n.user.eduLevelField) || "Educational level",
+            "registered": (i18n.iglueStats && i18n.iglueStats.registration) || "Registration date",
+            "termsAccepted": (i18n.iglueStats && i18n.iglueStats.termsAccepted) || "Terms accepted date",
+            "created": (i18n.iglueStats && i18n.iglueStats.created) || "Escape rooms created",
+            "played": (i18n.iglueStats && i18n.iglueStats.played) || "Escape rooms played"
+        };
+
+        const rows = users.map((u) => ({
+            [head.email]: u.username,
+            [head.role]: roleLabel(u.isStudent),
+            [head.alias]: u.alias,
+            [head.level]: eduLabels[u.eduLevel] || u.eduLevel,
+            [head.registered]: toDateInput(u.createdAt),
+            [head.termsAccepted]: toDateInput(u.lastAcceptedTermsDate),
+            [head.created]: Number(u.createdCount) || 0,
+            [head.played]: Number(u.playedCount) || 0
+        }));
+
+        return createCsvFile(res, rows, csvFilename("iglue-stats-users", from, to));
     } catch (e) {
         next(e);
     }

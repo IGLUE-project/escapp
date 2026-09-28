@@ -13,6 +13,12 @@
         "attendedOnly": "Only students who attended an escape room",
         "apply": "Apply",
         "downloadCsv": "Download CSV",
+        "downloadUsers": "Download users (CSV)",
+        "email": "Email",
+        "role": "Role",
+        "alias": "Alias",
+        "created": "Escape rooms created",
+        "played": "Escape rooms played",
         "total": "Total"
     },
     "locale": "en_US",
@@ -2170,7 +2176,10 @@
             "exportOnlyTeachers": "Only Teachers",
             "exportOnlyUsers": "Only Registered Users",
             "exportAll": "Everyone (including guests)",
-            "errorReportUrl": "Error report URL"
+            "errorReportUrl": "Error report URL",
+            "errorReportUrlByLang": "Bug report form URL per language (overrides the default for that language)",
+            "escapp2Date": "Escapp 2.0 date",
+            "escapp2DateHint": "Reference date shown as \"Since Escapp 2.0\" in the statistics. Leave empty to use the earliest terms-acceptance date."
         },
         "verificationFilter": {
             "all": "All",

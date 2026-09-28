@@ -13,6 +13,12 @@
         "attendedOnly": "Solo estudiantes que han participado en una escape room",
         "apply": "Aplicar",
         "downloadCsv": "Descargar CSV",
+        "downloadUsers": "Descargar usuarios (CSV)",
+        "email": "Email",
+        "role": "Rol",
+        "alias": "Alias",
+        "created": "Escape rooms creadas",
+        "played": "Escape rooms jugadas",
         "total": "Total"
     },
     "locale": "es_ES",
@@ -2241,7 +2247,10 @@
             "exportOnlyTeachers": "Solo profesores",
             "exportOnlyUsers": "Solo usuarios registrados",
             "exportAll": "Todos (incluidos invitados)",
-            "errorReportUrl": "URL del formulario para reportar errores"
+            "errorReportUrl": "URL del formulario para reportar errores",
+            "errorReportUrlByLang": "URL del formulario para reportar errores por idioma (sustituye a la predeterminada para ese idioma)",
+            "escapp2Date": "Fecha de Escapp 2.0",
+            "escapp2DateHint": "Fecha de referencia que se muestra como «Desde Escapp 2.0» en las estadísticas. Déjala vacía para usar la fecha de aceptación de términos más antigua."
         },
         "verificationFilter": {
             "all": "Todas",

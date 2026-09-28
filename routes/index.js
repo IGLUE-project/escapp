@@ -88,6 +88,7 @@ router.post("/reports/:reportId", sessionController.loginRequired, sessionContro
 router.delete("/reports/:reportId", sessionController.loginRequired, sessionController.adminRequired, managementController.deleteReport);
 router.get("/environment", sessionController.loginRequired, sessionController.adminRequired, managementController.getEnvironmentSettings);
 router.get("/iglue-stats", iglueStatsController.iglueStats);
+router.get("/iglue-stats/users", sessionController.loginRequired, sessionController.adminRequired, iglueStatsController.iglueStatsUsers);
 router.post("/environment", sessionController.loginRequired, sessionController.adminRequired, managementController.setEnvironmentSettings);
 router.post("/escapeRooms/:escapeRoomId(\\d+)/verify", sessionController.loginRequired, sessionController.adminRequired, escapeRoomController.verify);
 router.put("/users/:userId(\\d+)/confirm", sessionController.loginRequired, sessionController.adminRequired, userController.confirmAdmin);

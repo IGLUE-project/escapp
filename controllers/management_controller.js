@@ -172,7 +172,7 @@ exports.getEnvironmentSettings = async (_, res) => {
             "emailValidationTeacher": process.env.EMAIL_VALIDATION_TEACHER === "true",
             "availableLanguages": process.env.AVAILABLE_LANGUAGES || "en,es,sr",
             "exportAllowed": process.env.EXPORT_ALLOWED || "ONLY_OWNER",
-            "errorReportUrl": process.env.ERROR_REPORT_URL || require("../helpers/globalInstanceConfig").DEFAULT_ERROR_REPORT_URL
+            "errorReportUrl": process.env.ERROR_REPORT_URL || null
         };
 
         // Database settings (overrides)
@@ -185,10 +185,22 @@ exports.getEnvironmentSettings = async (_, res) => {
             "emailValidationTeacher": config.emailValidationTeacher ?? null,
             "availableLanguages": config.availableLanguages ?? null,
             "exportAllowed": config.exportAllowed ?? null,
-            "errorReportUrl": config.errorReportUrl ?? null
+            "errorReportUrl": config.errorReportUrl ?? null,
+            "errorReportUrls": config.errorReportUrls ?? {},
+            "escapp2Date": config.escapp2Date ? new Date(config.escapp2Date).toISOString().slice(0, 10) : ""
         };
 
-        res.render("management/environmentSettings", {urlsText, urlsDBText, envSettings, dbSettings, EXPORT_ALLOWED_OPTIONS, SUPPORTED_LANGUAGES});
+        // Effective "Escapp 2.0" date in use: the stored override, or the live earliest
+        // terms-acceptance date when none is set. Shown next to the hint so the admin sees
+        // exactly which date the statistics currently use.
+        let escapp2Effective = config.escapp2Date;
+
+        if (!escapp2Effective) {
+            escapp2Effective = await models.user.min("lastAcceptedTermsDate");
+        }
+        escapp2Effective = escapp2Effective ? new Date(escapp2Effective).toISOString().slice(0, 10) : "";
+
+        res.render("management/environmentSettings", {urlsText, urlsDBText, envSettings, dbSettings, escapp2Effective, EXPORT_ALLOWED_OPTIONS, SUPPORTED_LANGUAGES});
     } catch (error) {
         console.error("Error fetching URLS");
         res.status(500).send();
@@ -207,7 +219,8 @@ exports.setEnvironmentSettings = async (req, res) => {
             emailValidationTeacher,
             availableLanguages,
             exportAllowed,
-            errorReportUrl
+            errorReportUrl,
+            escapp2Date
         } = req.body;
 
         const parsedURLs = urls.
@@ -242,6 +255,16 @@ exports.setEnvironmentSettings = async (req, res) => {
             return value.trim();
         };
 
+        // Parse a YYYY-MM-DD date field; empty/invalid clears the override (null)
+        const parseDateField = (value) => {
+            if (typeof value !== "string" || !(/^\d{4}-\d{2}-\d{2}$/).test(value)) {
+                return null;
+            }
+            const parsed = new Date(`${value}T00:00:00.000Z`);
+
+            return Number.isNaN(parsed.getTime()) ? null : parsed;
+        };
+
         // Parse and validate available languages (only allow supported languages)
         const parseAvailableLanguages = (value) => {
             if (value === "" || value === undefined) {
@@ -254,6 +277,17 @@ exports.setEnvironmentSettings = async (req, res) => {
             return languages.length > 0 ? languages.join(",") : null;
         };
 
+        // Collect per-language bug-report URLs (errorReportUrl_<lang>) for supported languages
+        const errorReportUrls = {};
+
+        SUPPORTED_LANGUAGES.forEach((lang) => {
+            const value = req.body[`errorReportUrl_${lang}`];
+
+            if (typeof value === "string" && value.trim() !== "") {
+                errorReportUrls[lang] = value.trim();
+            }
+        });
+
         const configData = {
             "urls": JSON.stringify(parsedURLs),
             "whitelistDomains": parseDomainField(whitelistDomains),
@@ -264,7 +298,9 @@ exports.setEnvironmentSettings = async (req, res) => {
             "emailValidationTeacher": parseBooleanField(emailValidationTeacher),
             "availableLanguages": parseAvailableLanguages(availableLanguages),
             "exportAllowed": parseStringField(exportAllowed),
-            "errorReportUrl": parseStringField(errorReportUrl)
+            "errorReportUrl": parseStringField(errorReportUrl),
+            "errorReportUrls": Object.keys(errorReportUrls).length > 0 ? errorReportUrls : null,
+            "escapp2Date": parseDateField(escapp2Date)
         };
 
         if (!config) { // First setup

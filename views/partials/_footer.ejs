@@ -4,9 +4,14 @@
     <ul class="legal">
         <li><a class="" href="/terms" target="_blank"><%=i18n.policies['terms']%></a> &nbsp;/&nbsp;</li>
         <li><a class="" href="/privacy" target="_blank"><%=i18n.policies['privacy']%></a> &nbsp;/&nbsp;</li>
-        <li><a class="" href="/cookies" target="_blank"><%=i18n.policies['cookies']%></a><% if (locals.globalConfig && locals.globalConfig.errorReportUrl) { %> &nbsp;/&nbsp;<% } %></li>
-        <% if (locals.globalConfig && locals.globalConfig.errorReportUrl) { %>
-        <li><a class="" href="<%= locals.globalConfig.errorReportUrl %>" target="_blank" rel="noopener noreferrer"><%=i18n.policies['reportError']%></a></li>
+        <%
+            const gc = locals.globalConfig || {};
+            // Prefer the bug-report URL for the current language, else the default one
+            const bugReportUrl = (gc.errorReportUrls && gc.errorReportUrls[i18n.lang]) || gc.errorReportUrl;
+        %>
+        <li><a class="" href="/cookies" target="_blank"><%=i18n.policies['cookies']%></a><% if (bugReportUrl) { %> &nbsp;/&nbsp;<% } %></li>
+        <% if (bugReportUrl) { %>
+        <li><a class="" href="<%= bugReportUrl %>" target="_blank" rel="noopener noreferrer"><%=i18n.policies['reportError']%></a></li>
         <% } %>
     </ul>
     </div>

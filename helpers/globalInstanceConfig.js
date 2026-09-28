@@ -182,12 +182,8 @@ exports.getAvailableLanguagesArray = async function () {
 };
 
 /**
- * Default URL for the error reporting form (used when not configured in DB or .env)
- */
-exports.DEFAULT_ERROR_REPORT_URL = "https://forms.gle/pakPBsQTxRj8VhQf8";
-
-/**
- * Get errorReportUrl setting (DB override, .env fallback, or hardcoded default)
+ * Get errorReportUrl setting (DB override, then .env). Returns null when neither is
+ * configured, so the "report error" link is simply hidden — there is no hardcoded default.
  */
 exports.getErrorReportUrl = async function () {
     const config = await getConfig();
@@ -195,7 +191,20 @@ exports.getErrorReportUrl = async function () {
     if (config && config.errorReportUrl !== null && config.errorReportUrl !== undefined && config.errorReportUrl !== "") {
         return config.errorReportUrl;
     }
-    return process.env.ERROR_REPORT_URL || exports.DEFAULT_ERROR_REPORT_URL;
+    return process.env.ERROR_REPORT_URL || null;
+};
+
+/**
+ * Get the per-language bug-report URL map ({ en: "…", es: "…", … }).
+ * Empty object when none configured; the single errorReportUrl remains the fallback.
+ */
+exports.getErrorReportUrls = async function () {
+    const config = await getConfig();
+
+    if (config && config.errorReportUrls && typeof config.errorReportUrls === "object") {
+        return config.errorReportUrls;
+    }
+    return {};
 };
 
 /**

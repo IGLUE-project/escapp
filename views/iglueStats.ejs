@@ -26,9 +26,16 @@
             <span><%= i18n.iglueStats.attendedOnly %></span>
         </label>
         <button type="submit" class="rounded dash-apply"><%= i18n.iglueStats.apply %></button>
-        <button type="submit" name="csv" value="1" class="rounded dash-download">
-            <span class="material-icons">download</span><%= i18n.iglueStats.downloadCsv %>
-        </button>
+        <span class="dash-downloads">
+            <button type="submit" name="csv" value="1" class="rounded dash-download">
+                <span class="material-icons">download</span><%= i18n.iglueStats.downloadCsv %>
+            </button>
+            <% if (session && session.user && session.user.isAdmin) { %>
+            <button type="submit" formaction="/iglue-stats/users" class="rounded dash-download">
+                <span class="material-icons">group</span><%= i18n.iglueStats.downloadUsers %>
+            </button>
+            <% } %>
+        </span>
     </form>
 
     <div class="dash-kpis">

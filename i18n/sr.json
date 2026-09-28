@@ -13,6 +13,12 @@
     "attendedOnly": "Samo učenici koji su učestvovali u escape sobi",
     "apply": "Primeni",
     "downloadCsv": "Preuzmi CSV",
+    "downloadUsers": "Preuzmi korisnike (CSV)",
+    "email": "Email",
+    "role": "Uloga",
+    "alias": "Alias",
+    "created": "Kreirane escape sobe",
+    "played": "Odigrane escape sobe",
     "total": "Ukupno"
   },
   "locale": "sr",
@@ -2162,7 +2168,10 @@
             "exportOnlyTeachers": "Samo nastavnici",
             "exportOnlyUsers": "Samo registrovani korisnici",
             "exportAll": "Svi (uključujući goste)",
-            "errorReportUrl": "URL formulara za prijavu greške"
+            "errorReportUrl": "URL formulara za prijavu greške",
+            "errorReportUrlByLang": "URL formulara za prijavu greške po jeziku (zamenjuje podrazumevani za taj jezik)",
+            "escapp2Date": "Escapp 2.0 datum",
+            "escapp2DateHint": "Referentni datum prikazan kao „Od Escapp 2.0“ u statistici. Ostavite prazno da biste koristili najraniji datum prihvatanja uslova."
         },
         "verificationFilter": {
             "all": "Sve",
