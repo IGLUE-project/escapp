@@ -260,6 +260,9 @@ user.hasMany(retosSuperados, {
 requestedHint.belongsTo(hint, {});
 requestedHint.belongsTo(team, {});
 requestedHint.belongsTo(user, {});
+// Puzzle the team was facing when the hint was requested (automatic, manual or failed).
+// Set on the SET NULL side so deleting a puzzle just clears the reference.
+requestedHint.belongsTo(puzzle, {"onDelete": "SET NULL"});
 
 team.hasMany(requestedHint, {
     "onDelete": "CASCADE",

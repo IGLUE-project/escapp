@@ -80,13 +80,42 @@ exports.getFieldsForAsset = (el, mapping) => ({
     "url": el.url
 });
 
-exports.getFieldsForAssetNoURL = (el, mapping) => ({
-    "assetType": el.assetType,
-    "mimetype": el.mimetype,
-    "fileId": mapping && el.fileId && mapping[el.fileId] ? mapping[el.fileId] : el.fileId,
-    "filePath": mapping && el.fileId && mapping[el.fileId] ? el.filePath.replace(el.fileId, mapping[el.fileId]) : el.filePath,
-    "fileExtension": el.fileExtension,
-    "filename": el.filename,
-    "contentPath": mapping && el.fileId && mapping[el.fileId] ? el.contentPath.replace(el.fileId, mapping[el.fileId]) : el.contentPath,
-    "config": el.config
-});
+// Rewrite an asset's on-disk path to its cloned/imported copy's location.
+// Normally the fresh name (mapping value) embeds the original fileId, so a plain
+// substring swap works — this is the exact behavior for all current data. But legacy
+// import-mangled rows carry a fileId with an added "<ts>_" prefix that was never
+// written into filePath/contentPath; there the swap would no-op and the copy would
+// silently SHARE the source's directory (breaking the source's asset if it is deleted).
+// In that case we rewrite the segment actually present in the path — the
+// /uploads/webapps/<dir> folder, or the file basename — so every copy gets its own path.
+exports.relocatePath = (p, oldFileId, newName) => {
+    if (!p || !newName || newName === oldFileId) {
+        return p;
+    }
+    if (oldFileId && p.includes(oldFileId)) {
+        return p.replace(oldFileId, newName); // current-data path: unchanged behavior
+    }
+    const webapp = p.match(/^(.*\/uploads\/webapps\/)([^/]+)(\/.*)?$/);
+
+    if (webapp) {
+        return `${webapp[1]}${newName}${webapp[3] || ""}`;
+    }
+    const dir = path.posix.dirname(p);
+
+    return `${dir}/${newName}${path.posix.extname(p)}`;
+};
+
+exports.getFieldsForAssetNoURL = (el, mapping) => {
+    const newName = mapping && el.fileId && mapping[el.fileId] ? mapping[el.fileId] : null;
+
+    return {
+        "assetType": el.assetType,
+        "mimetype": el.mimetype,
+        "fileId": newName || el.fileId,
+        "filePath": newName ? exports.relocatePath(el.filePath, el.fileId, newName) : el.filePath,
+        "fileExtension": el.fileExtension,
+        "filename": el.filename,
+        "contentPath": newName ? exports.relocatePath(el.contentPath, el.fileId, newName) : el.contentPath,
+        "config": el.config
+    };
+};

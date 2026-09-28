@@ -10,9 +10,14 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
     try {
         const teamId = team.id;
 
-        if (success) {
-            const currentlyWorkingOn = await getCurrentPuzzle(team, escapeRoom.puzzles);
+        // Puzzle the team is currently facing — a hint (automatic, manual or failed) is
+        // always about this puzzle. Computed for BOTH branches so every requestedHint row
+        // records its puzzle, which the analytics CSVs rely on.
+        const currentlyWorkingOn = await getCurrentPuzzle(team, escapeRoom.puzzles);
+        const currentPuzzle = escapeRoom.puzzles.find((p) => p.order === currentlyWorkingOn);
+        const currentPuzzleId = currentPuzzle ? currentPuzzle.id : null;
 
+        if (success) {
             const hints = await models.requestedHint.findAll({
                 "where": {
                     teamId,
@@ -54,7 +59,6 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
             let currentHint = -1;
             const allHints = [];
             const allHintsIndexes = [];
-            const currentPuzzle = escapeRoom.puzzles.find((p) => p.order === currentlyWorkingOn);
             const puzzleOrder = currentPuzzle ? currentPuzzle.order + 1 : null;
 
             if (!currentPuzzle) {
@@ -90,8 +94,15 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                 hintOrder = allHints[currentHint].order + 1;
             }
             if (hintOrder || escapeRoom.allowCustomHints) {
-                const reqHint = models.requestedHint.build({hintId, teamId, success, score, userId});
-                const exists = await models.requestedHint.findOne({"where": {hintId, teamId}}, {transaction});
+                const reqHint = models.requestedHint.build({hintId, teamId, success, score, userId, "puzzleId": currentPuzzleId});
+                // Only predefined hints are de-duplicated (never issue the same specific
+                // hint twice). Custom hints have no hintId and are governed solely by
+                // hintLimit/hintInterval, so a team may request several — including more
+                // than one for the same puzzle. Matching on a null hintId would otherwise
+                // collapse every custom hint (and every failed attempt) into one row.
+                const exists = hintId !== null
+                    ? await models.requestedHint.findOne({"where": {hintId, teamId}}, {transaction})
+                    : null;
 
                 if (!exists) {
                     await reqHint.save({transaction});
@@ -104,7 +115,7 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
             await transaction.commit();
             return {"ok": false, "msg": messages.cantRequestMoreThis, hintOrder, puzzleOrder, category};
         }
-        const reqHint = models.requestedHint.build({"hintId": null, teamId, success, score, userId});
+        const reqHint = models.requestedHint.build({"hintId": null, teamId, success, score, userId, "puzzleId": currentPuzzleId});
 
         await reqHint.save({transaction});
         await transaction.commit();

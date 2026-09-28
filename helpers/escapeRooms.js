@@ -513,10 +513,20 @@ const resolveItemPath = function (item, name) {
         pathPart = `${dir}${pathPart}`;
     }
     if (name && name !== item.old) {
-        pathPart = pathPart.replace(item.old, name);
+        // Same rewrite the asset row uses (uploadsHelper.getFieldsForAssetNoURL), so the
+        // copied file's on-disk location always matches the stored contentPath — including
+        // legacy import-mangled webapp rows whose fileId isn't embedded in the path.
+        pathPart = uploadsHelper.relocatePath(pathPart, item.old, name);
     }
     return pathPart;
 };
+
+// Exported so export/import (in the controller) resolve on-disk paths the same
+// way clone does — including the canonical-folder fallback for legacy rows whose
+// url/contentPath is a bare filename (e.g. hintApp quiz files). Without it those
+// files are looked up at the project root, skipped from the export ZIP, and the
+// imported escape room ends up with a missing quiz file.
+exports.resolveItemPath = resolveItemPath;
 
 // Duplicate every file referenced by `er` on disk under a fresh, time-stamped
 // name and return the field-mapping suitable for cloneER's `fileMapping` arg.

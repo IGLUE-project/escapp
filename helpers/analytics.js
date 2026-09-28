@@ -91,25 +91,40 @@ exports.countHints = (requestedHints) => {
     };
 };
 
-exports.countHintsByPuzzle = (requestedHints, retosSuperados, startTime) => {
+// Count hints per puzzle. `retosSuperados` is an array (indexed by puzzle position) of
+// the minute each puzzle was solved (0 if unsolved); `puzzleIds` are the puzzle ids in
+// that same order. Each hint is attributed to its puzzle: preferring the explicit puzzle
+// (the linked hint's puzzle for automatic hints, or the puzzle stored on the request for
+// manual/failed hints), and only falling back to timing for legacy rows that stored no
+// puzzle — so manual hints are no longer all dumped onto the first puzzle.
+exports.countHintsByPuzzle = (requestedHints, retosSuperados, startTime, puzzleIds = []) => {
     const hintsSucceeded = new Array(retosSuperados.length).fill(0);
     const hintsFailed = new Array(retosSuperados.length).fill(0);
+
+    // Best-effort for legacy rows with no stored puzzle: the puzzle the team was facing at
+    // `minute` is the first one not yet solved by then (or solved only afterwards).
+    const inferPosByTime = (minute) => {
+        for (let i = 0; i < retosSuperados.length; i++) {
+            if (retosSuperados[i] === 0 || retosSuperados[i] >= minute) {
+                return i;
+            }
+        }
+        return retosSuperados.length - 1;
+    };
 
     for (const h in requestedHints) {
         const hint = requestedHints[h];
         const minute = Math.floor((hint.createdAt - startTime) / 600) / 100;
 
-        let retoPos = 0;
+        const explicitId = (hint.hint && hint.hint.puzzleId) || hint.puzzleId || null;
+        let retoPos = explicitId ? puzzleIds.indexOf(explicitId) : -1;
 
-        for (let r = retosSuperados.length - 1; r >= 0; r--) {
-            if (retosSuperados[r] !== 0) {
-                if (minute > retosSuperados[r]) {
-                    break;
-                }
-                retoPos = r;
-            }
+        if (retoPos < 0) {
+            retoPos = inferPosByTime(minute);
         }
-
+        if (retoPos < 0 || retoPos >= retosSuperados.length) {
+            continue;
+        }
         if (hint.success) {
             hintsSucceeded[retoPos]++;
         } else {

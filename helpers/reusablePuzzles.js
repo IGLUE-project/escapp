@@ -59,8 +59,6 @@ exports.replaceSceneUrls = function (
     oldServerUrl,
     newServerUrl
 ) {
-    const targetKeys = new Set(["avatar", "image", "body", "background", "thumbnail"]);
-
     if (!Array.isArray(oldAssetIds) || !Array.isArray(newAssetIds)) {
         throw new Error("oldAssetIds and newAssetIds must be arrays");
     }
@@ -106,8 +104,13 @@ exports.replaceSceneUrls = function (
 
     const serverRegex = hasServerRewrite ? new RegExp(escapeRegExp(normalizedOldServer), "g") : null;
 
-    function transformValue (key, value) {
-        if (!targetKeys.has(key) || typeof value !== "string") {
+    // Applied to EVERY string value in the scene tree (no key allow-list): the asset
+    // and reusable-puzzle rewrites only touch ids present in the maps, so unrelated
+    // strings pass through untouched. This is key-agnostic on purpose — SceneMaker
+    // embeds asset URLs under many keys (background, image, avatar, body, and action
+    // params/media objects: url, poster, source, src, …), and new ones may appear.
+    function transformValue (value) {
+        if (typeof value !== "string") {
             return value;
         }
 
@@ -167,7 +170,7 @@ exports.replaceSceneUrls = function (
                         stack.push({ "src": v, "dst": childCopy });
                     }
                 } else {
-                    dst[i] = v;
+                    dst[i] = transformValue(v);
                 }
             }
         } else {
@@ -185,16 +188,7 @@ exports.replaceSceneUrls = function (
                         stack.push({ "src": v, "dst": childCopy });
                     }
                 } else {
-                    dst[k] = transformValue(k, v);
-                }
-            }
-
-            // Apply transformations for string values on target keys that might have been objects/arrays? Not needed.
-            // But we also need to transform if a target key points to a string already handled above.
-            // That’s covered by the else branch.
-            for (const k of targetKeys) {
-                if (typeof dst[k] === "string") {
-                    dst[k] = transformValue(k, dst[k]);
+                    dst[k] = transformValue(v);
                 }
             }
         }

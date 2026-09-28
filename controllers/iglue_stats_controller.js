@@ -25,9 +25,11 @@ const safeDate = (value) => {
     return Number.isNaN(parsed.getTime()) ? "" : value;
 };
 
-// Build a CSV filename that embeds the reporting window and the day it was generated,
-// e.g. "iglue-stats_from-2025-01-01_to-2025-06-30_generated-2026-09-28". Open bounds are
-// labelled "start"/"now" so the range is always unambiguous from the file name alone.
+// Build a CSV filename that embeds the searched window and the day it was generated,
+// e.g. "iglue-stats_from-2025-01-01_to-2025-06-30_generated-2026-09-28". `from`/`to` are
+// the dates actually searched (including the frozen "Escapp 2.0" date when the "since
+// Escapp 2.0" option is used). Genuinely open bounds stay "start"/"now": by default the
+// window has NO lower bound (all users since the beginning), so a real date would mislead.
 const csvFilename = (prefix, from, to) => {
     const generated = new Date().toISOString().slice(0, 10);
 

@@ -218,6 +218,16 @@ exports.hintsByParticipants = async (req, res, next) => {
             res.render("escapeRooms/analytics/hints", {escapeRoom, results, turnId, orderBy, "single": true});
         } else {
             const resultsCsv = [];
+            // Every hint belongs to a puzzle: prefer the linked hint's puzzle (automatic),
+            // otherwise the puzzle stored on the request (manual/failed).
+            const puzzles = await getERPuzzles(escapeRoom.id);
+            const puzzleIdToOrder = {};
+            const puzzleIdToTitle = {};
+
+            for (const p of puzzles) {
+                puzzleIdToOrder[p.id] = p.order + 1;
+                puzzleIdToTitle[p.id] = p.title;
+            }
 
             for (const u in users) {
                 const user = users[u];
@@ -231,11 +241,14 @@ exports.hintsByParticipants = async (req, res, next) => {
                     const {success, score, createdAt} = reqHint;
                     const hint = reqHint.hint && reqHint.hint.content ? reqHint.hint.content : "";
                     const minute = Math.floor((createdAt - startTime) / 600) / 100;
+                    const rawPuzzleId = (reqHint.hint && reqHint.hint.puzzleId) || reqHint.puzzleId || null;
+                    const puzzle = rawPuzzleId ? puzzleIdToOrder[rawPuzzleId] || "" : "";
+                    const puzzleName = rawPuzzleId ? puzzleIdToTitle[rawPuzzleId] || "" : "";
 
                     if (includeNames) {
-                        resultsCsv.push({id, name, surname, username, alias, teamId, teamName, teamAttendance, success, "score": Math.round(score * 100) / 100, hint, minute, createdAt});
+                        resultsCsv.push({id, name, surname, username, alias, teamId, teamName, teamAttendance, success, "score": Math.round(score * 100) / 100, puzzle, puzzleName, hint, minute, createdAt});
                     } else {
-                        resultsCsv.push({id, alias, teamId, teamName, teamAttendance, success, "score": Math.round(score * 100) / 100, hint, minute, createdAt});
+                        resultsCsv.push({id, alias, teamId, teamName, teamAttendance, success, "score": Math.round(score * 100) / 100, puzzle, puzzleName, hint, minute, createdAt});
                     }
                 }
             }
@@ -273,6 +286,16 @@ exports.hintsByTeams = async (req, res, next) => {
             res.render("escapeRooms/analytics/hints", {escapeRoom, results, turnId, orderBy, "single": false});
         } else {
             const resultsCsv = [];
+            // Every hint belongs to a puzzle: prefer the linked hint's puzzle (automatic),
+            // otherwise the puzzle stored on the request (manual/failed).
+            const puzzles = await getERPuzzles(escapeRoom.id);
+            const puzzleIdToOrder = {};
+            const puzzleIdToTitle = {};
+
+            for (const p of puzzles) {
+                puzzleIdToOrder[p.id] = p.order + 1;
+                puzzleIdToTitle[p.id] = p.title;
+            }
 
             for (const t in teams) {
                 const team = teams[t];
@@ -285,8 +308,11 @@ exports.hintsByTeams = async (req, res, next) => {
                     const {success, score, createdAt} = hint;
                     const minute = Math.floor((hint.createdAt - startTime) / 600) / 100;
                     const hintContent = hint.hint && hint.hint.content ? hint.hint.content : "";
+                    const rawPuzzleId = (hint.hint && hint.hint.puzzleId) || hint.puzzleId || null;
+                    const puzzle = rawPuzzleId ? puzzleIdToOrder[rawPuzzleId] || "" : "";
+                    const puzzleName = rawPuzzleId ? puzzleIdToTitle[rawPuzzleId] || "" : "";
 
-                    resultsCsv.push({"id": teamId, teamName, "score": Math.round(score * 100) / 100, teamAttendance, "hint": hintContent, success, minute, "createdAt": new Date(createdAt)});
+                    resultsCsv.push({"id": teamId, teamName, "score": Math.round(score * 100) / 100, teamAttendance, puzzle, puzzleName, "hint": hintContent, success, minute, "createdAt": new Date(createdAt)});
                 }
             }
 
@@ -601,7 +627,7 @@ exports.download = async (req, res) => {
             const rs = flattenObject(retosSuperados, puzzleNames);
             const rsMin = flattenObject(retosSuperadosMin, puzzleNames, true);
 
-            const {hintsSucceeded, hintsSucceededTotal, hintsFailed, hintsFailedTotal} = countHintsByPuzzle(requestedHints, retosSuperadosMin, turno);
+            const {hintsSucceeded, hintsSucceededTotal, hintsFailed, hintsFailedTotal} = countHintsByPuzzle(requestedHints, retosSuperadosMin, turno, puzzleIds);
             const hf = flattenObject(hintsFailed, puzzleNames.map((p) => `Hints failed for ${p}`));
             const hs = flattenObject(hintsSucceeded, puzzleNames.map((p) => `Hints succeeded for ${p}`));
             const attendance = Boolean(user.turnosAgregados[0].participants.attendance);
@@ -658,9 +684,11 @@ exports.downloadRaw = async (req, res) => {
     try {
         escapeRoom.puzzles = await getERPuzzles(escapeRoom.id);
         const puzzleIdToOrder = {};
+        const puzzleIdToTitle = {};
 
         for (const p of escapeRoom.puzzles) {
             puzzleIdToOrder[p.id] = p.order + 1;
+            puzzleIdToTitle[p.id] = p.title;
         }
         const logs = [];
         const teams = await models.team.findAll(queries.team.puzzlesByTeam(escapeRoom.id, turnId, true));
@@ -732,7 +760,12 @@ exports.downloadRaw = async (req, res) => {
 
             for (const h of requestedHints) {
                 const hintTS = h.createdAt;
-                const puzId = h.hint ? puzzleIdToOrder[h.hint.puzzleId] : "";
+                // A hint always belongs to a puzzle: prefer the linked hint's puzzle
+                // (automatic hints), otherwise the puzzle stored on the request itself
+                // (manual/custom and failed hints now persist the puzzle being faced).
+                const rawPuzzleId = (h.hint && h.hint.puzzleId) || h.puzzleId || null;
+                const puzId = rawPuzzleId ? puzzleIdToOrder[rawPuzzleId] || "" : "";
+                // hintId only exists for predefined hints; custom hints keep the CUSTOM tag.
                 const hintId = h.hint ? `${puzId}.${h.hint.order + 1}` : "";
 
                 logs.push({
@@ -747,8 +780,8 @@ exports.downloadRaw = async (req, res) => {
                     "hintContent": h.hint ? h.hint.content : "",
                     "hintQuizScore": parseInt(h.score, 10),
                     "eventComplete": h.success ? `HINT_OBTAINED_${hintId || "CUSTOM"}` : "HINT_FAILED_TO_OBTAIN",
-                    "puzzleId": h.hint ? puzId : "",
-                    "puzzleName": h.hint ? escapeRoom.puzzles[puzId - 1].title : ""
+                    "puzzleId": puzId,
+                    "puzzleName": rawPuzzleId ? puzzleIdToTitle[rawPuzzleId] || "" : ""
                 });
             }
         }

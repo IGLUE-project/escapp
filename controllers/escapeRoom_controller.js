@@ -6,7 +6,7 @@ const {models} = sequelize;
 const query = require("../queries");
 const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
-const {isAuthor, isCoAuthor, isParticipant, cloneER, getFilePathsForER, safeImportPath, copyERFilesForClone} = require("../helpers/escapeRooms");
+const {isAuthor, isCoAuthor, isParticipant, cloneER, getFilePathsForER, safeImportPath, copyERFilesForClone, resolveItemPath} = require("../helpers/escapeRooms");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname} = require("../helpers/utils");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 const fsSync = require("fs");
@@ -1091,12 +1091,10 @@ exports.export = async (req, res, next) => {
             const folderName = item.field; // E.g. "assets"
             const idFolder = item.pathStr.id && String(item.pathStr.id); // E.g. "670"
 
-            // ContentPath is relative to project root, possibly starting with "/"
-            let filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
-
-            if (item.pathStr && item.pathStr.assetType === "webapp") {
-                filePathOriginal = item.pathStr.contentPath.replace("/index.html", "");
-            }
+            // Resolve the on-disk source path (handles webapp dirs and legacy rows
+            // whose contentPath/url is a bare filename) so files always make it into
+            // the ZIP. Relative to project root, possibly starting with "/".
+            const filePathOriginal = resolveItemPath(item, null);
             const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
             const filePath = path.join(process.cwd(), relativeFromRoot);
             const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
@@ -1177,11 +1175,10 @@ exports.import = async (req, res, next) => {
             const item = all[fi];
             const folderName = item.field; // E.g. "assets"
             const idFolder = item.pathStr.id && String(item.pathStr.id); // E.g. "670"
-            let filePathOriginal = item.pathStr.contentPath || `/uploads/${item.pathStr.public_id}`;
 
-            if (item.pathStr && item.pathStr.assetType === "webapp") {
-                filePathOriginal = item.pathStr.contentPath.replace("/index.html", "");
-            }
+            // Resolve source path the same way clone/export do (canonical-folder
+            // fallback for legacy bare filenames, webapp /index.html handling).
+            const filePathOriginal = resolveItemPath(item, null);
             const relativeFromRoot = filePathOriginal.replace(/^[/\\]+/, "");
             const filePath = path.join(process.cwd(), relativeFromRoot);
             const originalName = item.pathStr.fileId || item.pathStr.filename || path.basename(filePath);
@@ -1190,17 +1187,12 @@ exports.import = async (req, res, next) => {
             if (replacements[folderName] && replacements[folderName][originalName]) {
                 replacementName = replacements[folderName][originalName];
             }
-            let route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
-            let newRoute = item.pathStr.contentPath;
-
-            if (item.pathStr && item.pathStr.assetType === "webapp") {
-                // Export writes the webapp directory at assets/{assetId}/{fileId}/...
-                // (see archive.directory call in exports.export). Match that prefix
-                // here so the contents land directly under /uploads/webapps/<newName>/.
-                route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
-                newRoute = item.pathStr.contentPath.replace("/index.html", "");
-            }
-            newRoute = newRoute.replace(item.old, replacementName);
+            // ZIP entry path, matching how exports.export archives each file
+            // (assets/{assetId}/{fileId}/... for webapp directories).
+            const route = idFolder ? `${folderName}/${idFolder}/${originalName}` : `${folderName}/${originalName}`;
+            // On-disk destination: canonical folder + the fresh time-stamped name,
+            // so extracted files (e.g. hintApp quiz) always land where downloads look.
+            const newRoute = resolveItemPath(item, replacementName);
             const fileZip = zip.getEntry(route);
             const newRouteRelative = newRoute.replace(/^[/\\]+/, "");
 
