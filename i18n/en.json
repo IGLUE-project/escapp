@@ -1817,7 +1817,7 @@
             "LineColor": "Line color"
         },
         "BasicTextBox": {
-            "name": "Basic Text Box",
+            "name": "Basic text box",
             "description": "This resource allows you to create a puzzle whose solution requires participants to enter a specific text into a text input.",
             "MainText": "Main text",
             "ButtonText": "Button text",
@@ -1837,7 +1837,7 @@
             "MinimumSuccessMessageDuration": "Minimum success message duration (in seconds)"
         },
         "ItemSelection": {
-            "name": "Item Selection",
+            "name": "Item selection",
             "description": "This resource allows you to create a puzzle whose solution requires participants to select a series of items from a given set on one or more occasions.",
             "NumberOfRounds": "Number of rounds",
             "Round": "Round",
@@ -1857,7 +1857,7 @@
             "solutionImageReverse": "Reverse side of the solution image"
         },
         "WiredBomb": {
-            "name": "Wired Bomb",
+            "name": "Wired bomb",
             "description": "This resource allows you to create a puzzle whose solution requires participants to defuse a bomb by cutting a series of wires in a specific order.",
             "numberOfWires": "Number of wires",
             "timer": "Timer"
@@ -1881,7 +1881,7 @@
             "skipVideoButtonLabel": "Skip video button label"
         },
         "SQLChallenge": {
-            "name": "SQL Challenge",
+            "name": "SQL challenge",
             "description": "This resource allows you to create a challenge whose solution requires participants to run SQL queries against a given database.",
             "dbUrl": "Database URL",
             "dbUrlPlaceholder": "Enter the URL of any sqlite database",
@@ -1908,7 +1908,7 @@
             "code": "Code"
         },
         "CodeEditor": {
-            "name": "Code Editor",
+            "name": "Code editor",
             "skins": {
                 "auto" :  "Auto",
                 "dark" : "Dark",
