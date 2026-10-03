@@ -1,9 +1,8 @@
 // Definition of hooks for the escapeRoom model:
 
-
 module.exports = ({ escapeRoom, turno }) => {
     escapeRoom.addHook("beforeSave", async (er, options) => {
-        let [publicShift] = await er.getTurnos({"where": {"place": "_PUBLIC"}});
+        let [publicShift] = await er.getTurnos({"where": {"category": "PUBLIC"}, "transaction": options.transaction});
 
         er.verified = er.verified_at !== null;
         er.isLastVersionVerified = er.updatedAt && er.verified_at && er.updatedAt <= er.verified_at;
@@ -17,7 +16,7 @@ module.exports = ({ escapeRoom, turno }) => {
         if (er.scope === "public" && er.status === "completed") {
             if (typeof publicShift === "undefined") {
                 // Create public shift
-                publicShift = await turno.create({"place": "_PUBLIC", "status": "active", "escapeRoomId": er.id }, { "transaction": options.transaction });
+                publicShift = await turno.create({"category": "PUBLIC", "place": "_PUBLIC", "status": "active", "escapeRoomId": er.id }, { "transaction": options.transaction });
             }
             if (publicShift.status !== "active") {
                 publicShift.status = "active";
@@ -25,20 +24,6 @@ module.exports = ({ escapeRoom, turno }) => {
             }
         } else {
             if (typeof publicShift !== "undefined" && publicShift.status === "active") {
-                publicShift.status = "pending";
-                await publicShift.save({ "transaction": options.transaction });
-            }
-
-            if (er.scope === "public" && er.status === "completed") {
-                if (typeof publicShift === "undefined") {
-                // Create public shift
-                    publicShift = await turno.create({"place": "_PUBLIC", "status": "active", "escapeRoomId": er.id }, { "transaction": options.transaction });
-                }
-                if (publicShift.status !== "active") {
-                    publicShift.status = "active";
-                    await publicShift.save({ "transaction": options.transaction });
-                }
-            } else if (typeof publicShift !== "undefined" && publicShift.status === "active") {
                 publicShift.status = "pending";
                 await publicShift.save({ "transaction": options.transaction });
             }

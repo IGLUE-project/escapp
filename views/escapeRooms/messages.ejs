@@ -21,13 +21,14 @@
             <label for="shift"><%=i18n.message.shift%> &nbsp;&nbsp;
                 <select name="turnId" id="shift-id" onclick="$('#shift').prop('checked', true)">
                     <option value=""></option>
-                    <% for (let turno of turnos){%>
-                        <option value="<%=turno.id%>" <%if(turnId == turno.id){%>selected<%}%>>
-                        <%if (turno.place) {%> <%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
+                    <% for (let turno of turnos) { %>
+                        <option value="<%=turno.id%>" <% if (turnId == turno.id) { %>selected<% } %>>
+                            <%= getShiftTitleWithDate(turno, i18n) %>
                         </option>
-                    <%}%>
+                    <% } %>
                 </select>
-            </label><br>
+            </label>
+            <br>
             <input type="radio" id="team" name="to" value="team">
             <label for="team"><%=i18n.message.team%> &nbsp;&nbsp;
                 <select name="teamId" id="team-id" onclick="$('#team').prop('checked', true)">

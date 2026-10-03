@@ -56,7 +56,8 @@ const formatDate = function (currentDate) {
         <%= turn.date ? formatDate(dateNoTime) : i18n.turno.asynchronousShiftsTitle %>
         <div class="flexBoxTurnos">
             <%}%>
-            <%  
+            <% 
+
             const now = new Date();
             now.setHours(now.getHours() - now.getTimezoneOffset() / 60);
             var title = i18n.turno.statusMsg["canSignUp"];
@@ -72,12 +73,15 @@ const formatDate = function (currentDate) {
             }
 
             let turnPlaceText;
-            if (turn.place) {
-                turnPlaceText = turn.place === "_PUBLIC" ? i18n.turno.publicSub : turn.place;
+            if (turn.category === "PUBLIC") {
+                turnPlaceText = i18n.turno.publicSub;
             } else {
-                turnPlaceText = i18n.turno.Shift;
-            }
-
+                if (turn.place) {
+                    turnPlaceText = turn.place;
+                } else {
+                    turnPlaceText = i18n.turno.Shift;
+                }
+            }   
             %>
             <% var disabled = (full || finished || enrollmentNotAllowed);%>
             <div class="turno turnoAlumno <%= disabled ? "disabled finished":""%>" title="<%=title%>" data-date="<%=dateNoTime.getTime()%>" id="turno-<%=turn.id%>" data-id="<%=turn.id%>">
@@ -85,9 +89,7 @@ const formatDate = function (currentDate) {
                     <%= turn.date ? formatTime(date) : "" %>
                 </div>
                 <div class="place">
-                    <% if (turn.place) { %>
-                       	<%= turnPlaceText %> <br/>
-                    <% } %>
+                    <%= turnPlaceText %> <br/>
                 </div>
             </div>
             <%}%>

@@ -6,52 +6,54 @@
 <div role="main" class="main showPlayer">
 	<div class="breadcrumbs-container">
 		<% if (participant) { %>
-        <div class="breadcrumbs">
-			<a href="/escapeRooms"><%=i18n.common.escapeRooms%></a>
-				<span class="material-icons">chevron_right</span>
-				<%if (turno.status === "test") {%>
-					<a href="/escapeRooms/<%=escapeRoom.id%>">
-						 <%=escapeRoom.title%>
-					</a>
-				<%} else { %>
-					<span><%=escapeRoom.title%></span>
-				<%}%>
-        </div>
+	        <div class="breadcrumbs">
+				<a href="/escapeRooms"><%=i18n.common.escapeRooms%></a>
+					<span class="material-icons">chevron_right</span>
+					<%if (turno.category === "TEST") {%>
+						<a href="/escapeRooms/<%=escapeRoom.id%>">
+							 <%=escapeRoom.title%>
+						</a>
+					<%} else { %>
+						<span><%=escapeRoom.title%></span>
+					<%}%>
+	        </div>
 		<%}%>
 	</div>
-	<%if (turno.status != "test") {%>
-	<div class="reporting">
-		<a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
-	</div>
+	<%if (turno.category !== "TEST") {%>
+		<div class="reporting">
+			<a href="/escapeRooms/<%=escapeRoom.id%>/report"> <%=i18n.management.report.title%> </a>
+		</div>
 	<%}%>
-	<div class="flex ">
+	<div class="flex">
 		<div class="flex-thumb attachmentShow animated">
 			<img  alt="thumbnail" src="<%=escapeRoom.getThumbnailUrl()%>">
 		</div>
 		<div class="flex-er-info animated fadeIn">
-			<h1><%=escapeRoom.title%></h1>
-			<h2><%=i18n.turno.Turno%></h2>
-			<% 
-			let turnPlaceText;
-			if (turno.place) {
-				turnPlaceText = turno.place === "_PUBLIC" ? i18n.turno.publicSub : turno.place;
-			} else {
-				turnPlaceText = i18n.turno.Shift;
-			}
-			let turnDialogTitle = turnPlaceText;
-			if (turno.date) {
-				turnDialogTitle = turnDialogTitle + " (" + getFullDate(turno.date) + ")";
-			} else {
-				turnDialogTitle = turnDialogTitle + " (" + i18n.escapeRoom.steps.turnos.asynchronous + ")";
-			}
-			%>
-			<p><%= turnDialogTitle %></p>
-			<% if (!escapeRoom.teamSize || (escapeRoom.teamSize > 1)) { %>
-				<h2><%=i18n.team.Team%> </h2>
-				<h3><%=team.name%></h3>
-				<p class="members">
-					<%=team.teamMembers.map(m => m.alias).join(", ")%>
-				</p>
+			<h1 class="readyERTitleForPlayers"><%=escapeRoom.title%></h1>
+			<% if ((turno.category === "CUSTOM")&&(turno.place)) { %>
+				<% 
+					let turnTitleForPlayers = turno.place;
+					if (turno.date) {
+						turnTitleForPlayers = turnTitleForPlayers + " (" + getFullDate(turno.date) + ")";
+					}
+				%>
+				<h2 class="readyFieldTitleForPlayers"><%=i18n.turno.Turno%>: <span class="turnTitleForPlayers"><%=turnTitleForPlayers%></span></h2>
+			<% } else if (turno.category === "TEST") { %>
+				<h2 class="readyFieldTitleForPlayers"><%=i18n.turno.TestModeField%>: <span class="turnTitleForPlayers"><%=i18n.turno.TestModeText%></span></h2>
+			<% } %>
+			<% if ((!escapeRoom.teamSize || (escapeRoom.teamSize > 1))) { %>
+				<% const teamMembersForDisplay = team.teamMembers.map(m => ({ alias: m.alias }));%>
+				<h2 class="readyFieldTitleForPlayers"><%=i18n.team.Team%>: <span class="teamNameForPlayers"><%=team.name%></span></h2>
+				<h2 class="readyFieldTitleForPlayers">
+				    <%=i18n.team.TeamMembers%>:
+				    <span class="teamMembersForPlayers">
+				        <% teamMembersForDisplay.forEach((member, index) => { %>
+				            <%= member.alias %><% if (index < teamMembersForDisplay.length - 1) { %><span class="nocolor">,</span> <% } else { %><span class="nocolor">.</span><% } %>
+				        <% }) %>
+				    </span>
+				</h2>
+			<% } else if(participant && participant.alias) { %>
+				<h2 class="readyFieldTitleForPlayers"><%=i18n.team.Player%>: <span class="teamNameForPlayers"><%=participant.alias%></span></h2>
 			<% } %>
 			<% if (escapeRoom.supportLink) { %>
 				<h2><%=i18n.showPlayer.supportLink%></h2>

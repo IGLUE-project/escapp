@@ -14,23 +14,28 @@ module.exports = function (app) {
         }
         return d;
     };
-
     app.locals.zeroPadding = zeroPadding;
+
     app.locals.getFullDate = (date) => {
         const d = new Date(date.getTime());
-
         d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
         return `${zeroPadding(d.getDate())}-${zeroPadding(d.getMonth() + 1)}-${d.getFullYear()} ${zeroPadding(d.getHours())}:${zeroPadding(d.getMinutes())}`;
     };
+
+    app.locals.getShortDate = (date) => {
+        const d = new Date(date.getTime());
+        d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+        return `${zeroPadding(d.getDate())}-${zeroPadding(d.getMonth() + 1)} ${zeroPadding(d.getHours())}:${zeroPadding(d.getMinutes())}`;
+    };
+
     app.locals.getFullDateY = (date) => {
         const d = new Date(date.getTime());
-
         d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
         return `${d.getFullYear()}-${zeroPadding(d.getMonth() + 1)}-${zeroPadding(d.getDate())} ${zeroPadding(d.getHours())}:${zeroPadding(d.getMinutes())}`;
     };
+
     app.locals.formatTime = function (date) {
         const currentDate = new Date(date.getTime());
-
         currentDate.setMinutes(currentDate.getMinutes() + currentDate.getTimezoneOffset());
         return `${zeroPadding(currentDate.getHours())}:${zeroPadding(currentDate.getMinutes())}`;
     };
@@ -38,13 +43,6 @@ module.exports = function (app) {
     app.locals.getDashDate = function (currentDate) {
         // CurrentDate.setMinutes(currentDate.getMinutes() + currentDate.getTimezoneOffset());
         return `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
-    };
-
-    app.locals.zeroPadding = function (hour) {
-        if (hour < 10) {
-            return `0${hour}`;
-        }
-        return hour;
     };
 
     app.locals.secondsToDhms = function (secs) {
@@ -67,7 +65,6 @@ module.exports = function (app) {
         ].filter((a) => a !== "").join(", ");
     };
 
-
     app.locals.getGradientColor = function (grade, threshold = 50, margin = 10) {
         if (grade < threshold - margin) {
             return "var(--lightred)";
@@ -77,6 +74,7 @@ module.exports = function (app) {
             return "var(--brightgreen)";
         }
     };
+
     app.locals.steps = steps;
     app.locals.getContentForPuzzle = getContentForPuzzle;
     app.locals.analyticsSections = () => ({
@@ -141,6 +139,21 @@ module.exports = function (app) {
         }
 
         return "";
+    };
+
+    app.locals.getShiftTitleWithDate = (shift, i18n) => {
+        if (shift.category === "PUBLIC") {
+            return i18n.turno.PUBLIC;
+        }
+
+        if (shift.category === "TEST") {
+            return i18n.turno.TEST;
+        }
+
+        const date = shift.date ? app.locals.getFullDate(shift.date) : i18n.turno.alwaysOpen;
+        const title = shift.place ? `${shift.place} (${date})` : date;
+
+        return title;
     };
 
     /**

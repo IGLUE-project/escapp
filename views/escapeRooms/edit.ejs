@@ -88,8 +88,8 @@
                     <%let pendingShifts = escapeRoom.turnos.filter(turn=>turn.status === "pending" && turn.date && (turn.date - now)/1000/60 < 60)%>
                     <%for (let turn of pendingShifts) {%>
                         <li>
-                            <button class="showMenuButton editButton" onclick="overlayTrigger('turno-<%=turn.id%>')">
-                                <%=i18n.showTeacher.actionList.activateTurno%> <%if(pendingShifts.length>1){%><%=getFullDate(turn.date)%> <%=i18n.showTeacher.actionList.shift%><%}%>
+                            <button class="showMenuButton editButton pendingShiftActionButton" onclick="overlayTrigger('turno-<%=turn.id%>')">
+                                <%=i18n.showTeacher.actionList.activateTurno%>%>: <%= getShortDate(turn.date)%>
                             </button>
                             <% if (turn.date) {%>
                             <div class="overlay-trigger" data-id="turno-<%=turn.id%>">
@@ -106,8 +106,8 @@
                     <%let activeShifts = escapeRoom.turnos.filter(turn=>turn.status === "active" && turn.startTime)%>
                     <%for (let turn of activeShifts) {%>
                         <li>
-                            <button class="showMenuButton stopButton" onclick="overlayTrigger('turno-<%=turn.id%>')" >
-                                <%=i18n.showTeacher.actionList.stop%> <%if(activeShifts.length>1){%><%=getFullDate(turn.date)%> <%=i18n.showTeacher.actionList.shift%><%}%>
+                            <button class="showMenuButton stopButton pendingShiftActionButton" onclick="overlayTrigger('turno-<%=turn.id%>')" >
+                                <%=i18n.showTeacher.actionList.stopShift%>: <%=getShortDate(turn.date)%>
                             </button>
                             <div class="overlay-trigger" data-id="turno-<%=turn.id%>">
                                 <form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/activate?_method=put">
@@ -402,7 +402,7 @@
             <%for(let turno of escapeRoom.turnos){%>
                 <%if (turno.password) {%>
                     <% var invitationLink = hostName + "/escapeRooms/" + escapeRoom.id + "/turnos/" + turno.id + "/select?token=" + turno.password %>
-                    <p class="join-instructions join-turno" style="color: var(--lightred);"><b><%= turno.date ? getFullDate(turno.date) : i18n.turno.alwaysOpen  %> <%if(turno.place){%>(<%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%>)<%}%></b></p>
+                    <p class="join-instructions join-turno" style="color: var(--lightred);"> <b><%= getShiftTitleWithDate(turno, i18n) %></b></p>
                     <ul class="join-turno-list">
                         <li>
                             <%-include("../partials/_copyLink",{invitationLink,key: turno.id})%>

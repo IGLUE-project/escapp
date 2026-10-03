@@ -1351,6 +1351,9 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .showMenuButton:hover {
   transform: scale(0.9);
 }
+#mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .menuERactionList li .showMenuButton.pendingShiftActionButton {
+  font-size: 13px;
+}
 #mainSection .main.escapeRoomShow .menuERShow .menuERShowLeft .timeline-er {
   position: relative;
   margin: 2rem 0;
@@ -5642,6 +5645,20 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   background-image: none;
   background: #2A2A52;
 }
+#mainSection .main.showPlayer h1.readyERTitleForPlayers {
+  font-size: 1.6em;
+  margin-bottom: 1em;
+}
+#mainSection .main.showPlayer h2.readyFieldTitleForPlayers {
+  font-size: 1.2em;
+}
+#mainSection .main.showPlayer h2.readyFieldTitleForPlayers span {
+  font-size: 0.9em;
+  color: #FAC855;
+}
+#mainSection .main.showPlayer h2.readyFieldTitleForPlayers span.nocolor {
+  color: white;
+}
 #mainSection .main.showPlayer .button-share {
   text-align: center;
   padding-top: 0.5em;
@@ -5653,10 +5670,10 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 }
 #mainSection .main.showPlayer .flex {
   display: flex;
+  margin-bottom: 10px;
   flex-direction: row-reverse;
 }
 #mainSection .main.showPlayer .flex .flex-thumb {
-  width: 25%;
   flex: 1;
   position: relative;
   padding-top: 22px;
@@ -5667,8 +5684,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   border-width: 5px;
 }
 #mainSection .main.showPlayer .flex .flex-er-info {
-  flex: 3;
-  max-width: 75%;
+  flex: 5;
 }
 #mainSection .main.showPlayer .flex .flex-er-info img {
   max-width: 90%;
@@ -6944,6 +6960,9 @@ table.mainTable tr td .icon {
 }
 #mainSection .main.turnos .flex-table-wrapper .flex-table .flex-row .flex-cell .overlay-wrapper {
   position: relative;
+}
+#mainSection .main.turnos .flex-table-wrapper .flex-table .flex-row .flex-cell .overlay-wrapper.publicShiftHint {
+  cursor: pointer;
 }
 #mainSection .main.turnos .flex-table-wrapper .flex-table .flex-row .flex-cell .overlay-wrapper .overlay-trigger {
   top: 46px;

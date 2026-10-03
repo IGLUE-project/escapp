@@ -13,10 +13,10 @@
         <select name="turnId" id="turnId">
             <option value="" <%= !turnId ? "selected": ""%> ><%=i18n.turno.all%></option>
             <% for (t in escapeRoom.turnos) { %>
-            <% var turno = escapeRoom.turnos[t] %>
-            <option value="<%=turno.id%>" <%= turnId == turno.id ? "selected" : "" %> >
-                <%if (turno.place) {%> <%=turno.place == "_PUBLIC" ? i18n.turno.PUBLIC : turno.place%> (<%}%><%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%><%if (turno.place) {%>)<%}%>
-            </option>
+              <% var turno = escapeRoom.turnos[t] %>
+              <option value="<%=turno.id%>" <%= turnId == turno.id ? "selected" : "" %> >
+                  <%= getShiftTitleWithDate(turno,i18n) %>
+              </option>
             <% } %>
         </select>
     </label>

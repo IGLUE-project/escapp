@@ -43,7 +43,7 @@ var pastDates = [];
 
 		let turnPlaceText;
 		if (turn.place) {
-			turnPlaceText = turn.place === "_PUBLIC" ? i18n.turno.publicSub : turn.place;
+			turnPlaceText = turn.category === "PUBLIC" ? i18n.turno.publicSub : turn.place;
 		} else {
 			turnPlaceText = i18n.turno.Shift;
 		}
@@ -74,7 +74,7 @@ var pastDates = [];
 		class="dialog-turno hidden" 
 		title="<%=turnDialogTitle%>">
 		<div class="flex-dialog-container">
-			<%if(turn.place !=="_PUBLIC"){%>
+			<%if(turn.category !=="PUBLIC"){%>
 				<div class="flex-block">
 				<button class="turno-btn" title="<%=i18n.turno[turn.status === "active"? "stop" : "start"]%>"  <%if (turn.status === "finished") {%>   disabled <% } else { %> onclick="overlayTrigger('activate-<%=turn.id%>')"` <% } %>>
 					<span class="material-icons"  style="color: var(--brightgreen);" ><%= turn.status === "active"? "stop" : "play_arrow"%></span>

@@ -28,22 +28,16 @@
                 var turno = turnos[t]; %>
             <div class="flex-row <%= (turno.status === "active" && turno.date) ? "active-turno":"" %>">
                 <div class="flex-cell flex-turno">
-                    <%if (turno.place) {%> 
-                        <% if(turno.place == "_PUBLIC"){%> <%=i18n.turno.PUBLIC%> 
-                        <div class="overlay-wrapper">
+                    <%= getShiftTitleWithDate(turno, i18n) %>
+                    <%if (turno.category === "PUBLIC") {%> 
+                        <div class="overlay-wrapper publicShiftHint">
                             &nbsp;<span class="material-icons" style="color:white;" onclick="overlayTrigger('info-public-<%=turno.id%>')" >info</span>&nbsp;
-
                             <div class="overlay-trigger" data-id="info-public-<%=turno.id%>">
                                <p><%=i18n.turno.automaticallyPublic%></p>
                                 <button class="acceptButton" type="button" onclick="overlayTrigger('info-public-<%=turno.id%>', true)"><%=i18n.common.ok%></button>
                             </div>
                         </div>
-                        
-                        <%}else{%> 
-                            <%=turno.place%>
-                        <%}%> ( <%}%>
-                        <%= (turno.date ? getFullDate(turno.date): i18n.turno.alwaysOpen)%>
-                            <%if (turno.place) {%>)<%}%>
+                    <%}%>
                 </div>
                 <div class="flex-cell flex-status"><b><%=i18n.turno.statuses[turno.status]%></b></div>
 
@@ -66,7 +60,7 @@
                     </a>
                 </div>
                 <div class="flex-cell flex-actions">
-                    <%if (turno.place !== "_PUBLIC"){%>
+                    <%if (turno.category === "CUSTOM"){%>
                     <button class="turno-btn edit-turno" onclick="overlayTrigger('edit-<%=turno.id%>')" style="color:var(--mainpurple);" title="<%=i18n.turno.edit%>" data-turno-id="<%=turno.id%>">
                         <span class="material-icons">edit</span>
                     </button>
@@ -85,7 +79,7 @@
                     </div>
                    
                     <%}%>
-                    <%if ((turno.status !== "pending") && (turno.place !== "_PUBLIC")){%>
+                    <%if ((turno.status !== "pending") && (turno.category === "CUSTOM")){%>
                         <div class="overlay-wrapper">
                             <button class="turno-btn" onclick="overlayTrigger('reset-<%=turno.id%>')" title="<%=i18n.turno.resetProgress%>" style="color:var(--brightyellow);">
                                 <span class="material-icons">settings_backup_restore</span>
@@ -99,7 +93,7 @@
                             </div>
                         </div>
                     <%}%>
-                    <%if ((turno.status !== "finished") && (turno.place !== "_PUBLIC")){%>
+                    <%if ((turno.status !== "finished") && (turno.category === "CUSTOM")){%>
                         <div class="overlay-wrapper">
                             <button class="turno-btn" onclick="overlayTrigger('activate-<%=turno.id%>')" style="color:var(--<%= turno.status === "active"? "lightred" : "brightgreen"%>);" title="<%=i18n.turno[turno.status === 'active' ? 'stop' : 'start']%>" >
                                 <span class="material-icons"><%= turno.status === "active"? "stop" : "play_arrow"%></span>

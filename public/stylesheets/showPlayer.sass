@@ -5,6 +5,18 @@
     background-image: none
     background: colors.$bckg
 
+    h1.readyERTitleForPlayers
+      font-size: 1.6em;
+      margin-bottom: 1em;
+
+    h2.readyFieldTitleForPlayers
+      font-size: 1.2em;
+      span
+        font-size: 0.9em;
+        color: #FAC855;
+        &.nocolor
+          color: white;
+
     .button-share
       text-align: center
       padding-top: 0.5em
@@ -14,9 +26,9 @@
       font-size: small
     .flex
       display: flex
+      margin-bottom: 10px
       flex-direction: row-reverse
       .flex-thumb
-        width: 25%
         flex: 1
         position: relative
         padding-top: 22px
@@ -25,8 +37,7 @@
           width: 100%
           border-width: 5px
       .flex-er-info
-        flex: 3
-        max-width: 75%
+        flex: 5
         img
           max-width: 90%
         .flex-er-info-preview

@@ -15,6 +15,11 @@ module.exports = function (sequelize, DataTypes) {
             "status": {
                 "type": DataTypes.STRING,
                 "defaultValue": "pending"
+            }, 
+            "category": {
+                "type": DataTypes.ENUM("PUBLIC", "TEST", "CUSTOM"),
+                "allowNull": false,
+                "defaultValue": "CUSTOM"
             }
         }
     );
