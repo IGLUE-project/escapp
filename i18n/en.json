@@ -1840,6 +1840,10 @@
             "name": "Item selection",
             "description": "This resource allows you to create a puzzle whose solution requires participants to select a series of items from a given set on one or more occasions.",
             "NumberOfRounds": "Number of rounds",
+            "RoundType": "Type",
+            "RoundType_SINGLE_ANSWER": "Single answer",
+            "RoundType_MULTIPLE_ANSWER": "Multiple answer",
+            "RoundType_SORTING_ANSWER": "Sorting answer",
             "Round": "Round",
             "Item": "Item",
             "Items": "Items"

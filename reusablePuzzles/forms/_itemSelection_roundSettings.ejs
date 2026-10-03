@@ -11,6 +11,15 @@
         <input class="roundImageISPInput" list="itemSelectionImageAssetsList" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" type="text" style="flex:1;"  />
     </div>
     <div style="margin: 10px 0px 10px 0px;">
+        <label><%=i18n.reusablePuzzleApps.ItemSelection.RoundType%>:</label>
+        <select class="roundTypeISPSelect">
+          <option value="SINGLE_ANSWER"><%=i18n.reusablePuzzleApps.ItemSelection.RoundType_SINGLE_ANSWER%></option>
+          <option value="MULTIPLE_ANSWER" selected><%=i18n.reusablePuzzleApps.ItemSelection.RoundType_MULTIPLE_ANSWER%></option>
+          <option value="SORTING_ANSWER"><%=i18n.reusablePuzzleApps.ItemSelection.RoundType_SORTING_ANSWER%></option>
+        </select>
+    </div>
+
+    <div style="margin: 10px 0px 10px 0px;">
         <label><%=i18n.reusablePuzzleApps.ItemSelection.Items%>:</label>
         <div class="roundItemsISPWrapper" style="flex-direction: column;">
             <% for (let i = 1; i <= 2; i++) { %>

@@ -1840,6 +1840,10 @@
             "description": "Este recurso permite crear un reto cuya resolución requiere que los participantes seleccionen una serie de elementos de un conjunto determinado en una o más ocasiones.",
             "NumberOfRounds": "Número de rondas",
             "Round": "Ronda",
+            "RoundType": "Tipo",
+            "RoundType_SINGLE_ANSWER": "Respuesta única",
+            "RoundType_MULTIPLE_ANSWER": "Respuesta múltiple",
+            "RoundType_SORTING_ANSWER": "Respuesta de ordenación",
             "Item": "Elemento",
             "Items": "Elementos"
         },

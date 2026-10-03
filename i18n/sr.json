@@ -1833,6 +1833,10 @@
         "name": "Izbor predmeta (item)",
         "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da izaberu niz predmeta iz datog skupa u jednom ili više navrata.",
         "NumberOfRounds": "Broj rundi",
+        "RoundType": "Tip",
+        "RoundType_SINGLE_ANSWER": "Single answer",
+        "RoundType_MULTIPLE_ANSWER": "Multiple answer",
+        "RoundType_SORTING_ANSWER": "Sorting answer",
         "Round": "Runda",
         "Item": "Predmet",
         "Items": "Predmeti"

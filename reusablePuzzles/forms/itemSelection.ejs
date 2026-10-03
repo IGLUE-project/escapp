@@ -109,9 +109,11 @@
                 let round = {};
                 const inputRoundText = div.querySelector('input.roundTextISPInput');
                 const inputRoundImage = div.querySelector('input.roundImageISPInput');
-
+                const selectRoundType = div.querySelector('select.roundTypeISPSelect');
+                
                 round.title = inputRoundText.value;
                 round.img = inputRoundImage.value;
+                round.type = selectRoundType.value;
                 round.items = [];
 
                 $(div).find('.roundItemISPWrapper').each(function(index,roundItemISPWrapper) {
@@ -143,11 +145,16 @@
                 if (roundDiv) {
                     const inputRoundText = roundDiv.querySelector('input.roundTextISPInput');
                     const inputRoundImage = roundDiv.querySelector('input.roundImageISPInput');
+                    const selectRoundType = roundDiv.querySelector('select.roundTypeISPSelect');
+
                     if (inputRoundText) {
                         inputRoundText.value = rounds[i].title;
                     }
                     if (inputRoundImage) {
                         inputRoundImage.value = rounds[i].img;
+                    }
+                    if (selectRoundType) {
+                        selectRoundType.value = rounds[i].type || "MULTIPLE_ANSWER";
                     }
                 }
                 //Items
@@ -178,7 +185,7 @@
     });
     document.getElementById('numberOfRoundsISPInput').addEventListener('change', updateRoundSettings);
     $('div.roundISPSettingsWrapper').on('change',
-        'input.roundTextISPInput, input.roundImageISPInput, input.inputItemText, input.inputItemImage',
+        'input.roundTextISPInput, input.roundImageISPInput, select.roundTypeISPSelect, input.inputItemText, input.inputItemImage',
         updateRoundsISP
     );
 
