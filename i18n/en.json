@@ -67,7 +67,7 @@
             },
             "dashboard": {
                 "nParticipants": "# Participants",
-                "successRate": "Success Rate",
+                "successRate": "Success rate",
                 "bestTime": "Best time",
                 "avgTeamSize": "Avg. team size",
                 "avgReqHints": "Avg. hints obtained",
@@ -392,7 +392,7 @@
             "tooOften": "You can only obtain a hint every",
             "notUntil": "You cannot obtain another hint for another",
             "timeUp": "Time is up!",
-            "teamJoined": "Someone from your team has joined the ER",
+            "teamJoined": "Someone from your team has joined the escape room",
             "disconnect": "Lost connection",
             "reconnect": "Attempting to reconnect...",
             "connected": "Connected!",
@@ -472,7 +472,7 @@
                 "teamSizePlaceHolder": "How many members can each team have? Leave it blank if you don't want to limit it.",
                 "minTeamSizePlaceHolder": "What is the minimum number of team members? Leave it blank if you don't want to limit it.",
                 "supportLinkPlaceHolder": "You can provide a URL for participants to use in case they encounter problems.",
-                "title": "Escape Room basic configuration",
+                "title": "Basic configuration",
                 "titlePlaceHolder": "What is the escape room's name?",
                 "videoPlaceHolder": "A URL for the escape room's introduction video"
             },
@@ -1296,7 +1296,8 @@
             "finished": "Finished",
             "pending": "Pending"
         },
-        "noTurnAvailable": "No turn available for this ER",
+        "noTurnAvailable": "No turn available for this escape room",
+        "noShiftsYet": "There aren't any shifts yet",
         "theres": "There is",
         "thereare": "There are",
         "start": "Start shift",

@@ -394,7 +394,7 @@
       "tooOften": "Možete dobiti savet samo svakih",
       "notUntil": "Ne možete još uvek dobiti drugi savet",
       "timeUp": "Vreme je isteklo!",
-      "teamJoined": "Neko iz vašeg tima se pridružio escape sobi ",
+      "teamJoined": "Neko iz vašeg tima se pridružio escape sobi",
       "disconnect": "Konekcija je izgubljena",
       "reconnect": "Pokušavam da se ponovo povežem...",
       "connected": "Povezano!",
@@ -474,7 +474,7 @@
         "teamSizePlaceHolder": "Koliko članova može imati svaki tim? Ostavite prazno ako ne želite da ograničite broj.",
         "supportLinkPlaceHolder": "Možete dati URL adresu koju učesnici mogu da koriste u slučaju da naiđu na probleme.",
         "minTeamSizePlaceHolder": "Koji je minimalan broj članova tima? Ostavite prazno ako ne želite da postavite ograničenje.",
-        "title": "Osnovna konfiguracija escape sobe",
+        "title": "Osnovna konfiguracija",
         "titlePlaceHolder": "Kako se zove escape soba?",
         "videoPlaceHolder": "URL adresa uvodnog videa escape sobe"
       },
@@ -1295,7 +1295,8 @@
         "finished": "Završeno",
         "pending": "Na čekanju"
       },
-      "noTurnAvailable": "Nema dostupnih smena za ovu escape sobu ",
+      "noTurnAvailable": "Nema dostupnih smena za ovu escape sobu",
+      "noShiftsYet": "Još nema nijedne smene",
       "theres": "Postoji",
       "thereare": "Postoje",
       "start": "Pokreni smenu",
