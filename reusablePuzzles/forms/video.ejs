@@ -28,6 +28,22 @@
 </div>
 
 <div>
+    <label for="autoplayVideoRP"><%=i18n.reusablePuzzleApps.Video.autoplay%>:</label>
+    <select id="autoplayVideoRP" name="autoplay">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
+    <label for="autoscrollVideoRP"><%=i18n.reusablePuzzleApps.Video.autoscroll%>:</label>
+    <select id="autoscrollVideoRP" name="autoscroll">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
     <label for="showControlsVideo"><%=i18n.reusablePuzzleApps.Video.showControls%>:</label>
     <select id="showControlsVideo" name="enableControls">
         <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
@@ -78,6 +94,8 @@
         }
     });
 
+    document.getElementById("autoplayVideoRP").value =  window.currentOpenPuzzleConfig?.autoplay || 'FALSE';
+    document.getElementById("autoscrollVideoRP").value =  window.currentOpenPuzzleConfig?.autoscroll || 'FALSE';
     document.getElementById("showControlsVideo").value =  window.currentOpenPuzzleConfig?.enableControls || 'TRUE';
     document.getElementById("showPlayButtonVideo").value =  window.currentOpenPuzzleConfig?.showPlayButton || 'FALSE';
     document.getElementById("allowSkipVideo").value =  window.currentOpenPuzzleConfig?.allowSkipVideo || 'TRUE';

@@ -1911,6 +1911,8 @@
         "name": "Video",
         "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da gledaju određeni video.",
         "poster": "Poster",
+        "autoplay": "Autoplay",
+        "autoscroll": "Autoscroll",
         "showControls": "Prikaži kontrole",
         "showPlayButton": "Prikaži dugme za reprodukciju",
         "allowSkippingVideo": "Dozvoli preskakanje videa",

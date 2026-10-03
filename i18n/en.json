@@ -1875,6 +1875,8 @@
             "name": "Video",
             "description": "This resource allows you to create a puzzle whose solution requires participants to watch a specific video.",
             "poster": "Poster",
+            "autoplay": "Autoplay",
+            "autoscroll": "Autoscroll",
             "showControls": "Show controls",
             "showPlayButton": "Show play button",
             "allowSkippingVideo": "Allow skipping video",
