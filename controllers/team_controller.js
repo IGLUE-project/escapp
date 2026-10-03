@@ -82,7 +82,7 @@ exports.index = async (req, res, next) => {
                 "model": models.turno,
                 "where": {
                     "escapeRoomId": escapeRoom.id,
-                    "status": {[Op.not]: "test"}
+                    "category": {[Op.not]: "TEST"}
                 }
             },
             {
@@ -99,7 +99,7 @@ exports.index = async (req, res, next) => {
         where.include[0].where.id = turnId;
     }
     try {
-        escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});
+        escapeRoom.turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "category": {[Op.not]: "TEST"}}});
         const teams = await models.team.findAll(where);
 
         for (const team of teams) {

@@ -23,7 +23,7 @@ exports.loadShow = {
             "model": models.turno,
             "separate": true,
             "required": false,
-            "where": {"status": {[Op.not]: "test"}},
+            "where": {"category": {[Op.not]: "TEST"}},
             "order": [["date", "asc"]]
         },
         {
@@ -88,10 +88,10 @@ exports.all = (user, page = 1, limit = 10, search, finished, isAccessibleToAllUs
         "include": [
             {
                 "model": models.turno,
-                "attributes": ["status", "capacity", "from", "to", "startTime"],
+                "attributes": ["category", "status", "capacity", "from", "to", "startTime"],
                 "required": true,
                 "separate": finished === null,
-                "where": {"status": {[Op.not]: "test" }},
+                "where": {"category": {[Op.not]: "TEST" }},
                 "include": [
                     {
                         "model": models.user,
@@ -375,7 +375,7 @@ exports.loadComplete = {
             "model": models.turno,
             "separate": true,
             "required": false,
-            "where": {"status": {[Op.not]: "test"}},
+            "where": {"category": {[Op.not]: "TEST"}},
             "include": {
                 "model": models.team,
                 "separate": true,

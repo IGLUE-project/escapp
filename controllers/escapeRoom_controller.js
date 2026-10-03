@@ -199,7 +199,7 @@ exports.create = async (req, res) => {
 
         await models.subject.bulkCreate(newSubjects, {transaction});
 
-        const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": er.id }, {transaction});
+        const testShift = await models.turno.create({"category":"TEST", "place": "test", "status": "test", "escapeRoomId": er.id }, {transaction});
         const teamCreated = await models.team.create({ "name": req.session.user.name, "turnoId": testShift.id}, {transaction});
 
         await teamCreated.addTeamMembers(req.session.user.id, {transaction});
@@ -922,7 +922,7 @@ exports.confirmCollaborators = async (req, res, next) => {
                 }
             );
             const user = await models.user.findByPk(session.user.id, {transaction});
-            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}}, {transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"category": "TEST"}}, {transaction});
             const teamCreated = await models.team.create({ "name": `${user.alias}`, "turnoId": testShift.id}, {transaction});
 
             await teamCreated.addTeamMembers(user.id, {transaction});
@@ -949,7 +949,7 @@ exports.deleteCollaborators = async (req, res, next) => {
             const collab = await models.user.findByPk(collaborator, {transaction});
 
             await escapeRoom.removeUserCoAuthor(collaborator);
-            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}}, {transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"category": "TEST"}}, {transaction});
 
             const teamCreated = await models.team.findOne({
                 "where": { "name": collab.alias, "turnoId": testShift.id },
@@ -995,7 +995,7 @@ exports.test = async (req, res, next) => {
     let participant = participants && participants.length ? participants[0] : null;
     const isAdmin = req.session.user && req.session.user.isAdmin;
 
-    // If an admin reaches the Test page without already being in a test-shift
+    // If an admin reaches the test page without already being in a test-shift
     // team for this ER (typical case: they aren't the author or a co-author),
     // auto-join them on the test shift — mirrors what creation /
     // co-author confirmation do for authors and co-authors.
@@ -1004,7 +1004,7 @@ exports.test = async (req, res, next) => {
 
         try {
             const user = await models.user.findByPk(req.session.user.id, {transaction});
-            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}, transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"category": "TEST"}, transaction});
             const team = await models.team.create({"name": user.alias || user.name, "turnoId": testShift.id}, {transaction});
 
             await team.addTeamMembers(user.id, {transaction});

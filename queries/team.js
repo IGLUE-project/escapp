@@ -14,7 +14,7 @@ exports.teamRetosNoSuperados = (escapeRoomId, turnId) => {
                 "required": false,
                 "where": {
                     escapeRoomId,
-                    "status": {[Sequelize.Op.not]: "test"}
+                    "category": {[Sequelize.Op.not]: "TEST"}
                 }
             },
             {
@@ -68,7 +68,7 @@ exports.teamComplete = (escapeRoomId, turnId, order, waiting = false) => {
                 "required": true,
                 "where": {
                     escapeRoomId,
-                    "status": {[Sequelize.Op.not]: "test"}
+                    "category": {[Sequelize.Op.not]: "TEST"}
                 }
             },
             {
@@ -152,7 +152,7 @@ exports.puzzlesByTeam = (escapeRoomId, turnId, hints = false) => {
                 "model": models.turno,
                 "where": {
                     escapeRoomId,
-                    "status": {[Sequelize.Op.not]: "test"}
+                    "category": {[Sequelize.Op.not]: "TEST"}
                 }
             },
             {
@@ -269,7 +269,7 @@ exports.ranking = (escapeRoomId, turnId) => {
     if (turnId) {
         options.include[1].where.id = turnId;
     } else {
-        options.include[1].where.status = {[Sequelize.Op.ne]: "test"};
+        options.include[1].where.category = {[Sequelize.Op.ne]: "TEST"};
     }
 
     return options;
@@ -351,7 +351,7 @@ exports.rankingShort = (escapeRoomId, turnId) => {
     if (turnId) {
         options.include[1].where.id = turnId;
     } else {
-        options.include[1].where.status = {[Sequelize.Op.not]: "test"};
+        options.include[1].where.category = {[Sequelize.Op.not]: "TEST"};
     }
 
     return options;
@@ -390,7 +390,7 @@ exports.teamInfo = (escapeRoomId, includeTest = false) => {
     };
 
     if (includeTest) {
-        ret.include[0].where.status = {[Sequelize.Op.not]: "test"};
+        ret.include[0].where.category = {[Sequelize.Op.not]: "TEST"};
     }
     return ret;
 };

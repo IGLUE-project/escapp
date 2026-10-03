@@ -107,7 +107,7 @@
 						</button>
 					</form>
 				</span>
-			<%} else if(((turno.status === "test" )&& !finished)) { %>
+			<%} else if(((turno.category === "TEST")&& !finished)) { %>
 				<span id ="start">
 					<form method="POST" action="/escapeRooms/<%=escapeRoom.id%>/test" style="display: inline;">
 						<button class="rounded acceptButton pulseButton" onclick="clicked()">
@@ -121,7 +121,7 @@
 					<button class="rounded editButton" type="button"><%=i18n.showPlayer.results%></button>
 				</a>
 			<% } %>
-			<% if ((turno.status === "test" && team.startTime) || (escapeRoom.allowUserToResetTeamProgress && team.startTime && turno.status !== "finished")) { %>
+			<% if ((turno.category === "TEST" && team.startTime) || (escapeRoom.allowUserToResetTeamProgress && team.startTime && turno.status !== "finished")) { %>
 				<div id="reset" method="post" style="display: inline-block;">
 					<button class="rounded deleteButton" onclick="overlayTrigger('reset')">
 						<%=i18n.showPlayer.reset%>
@@ -135,7 +135,7 @@
 					</div>
 				</div>
 			<% } %>
-			<% if(!(turno.status == "finished" || turno.status == "test") && !team.startTime){%>
+			<% if(!(turno.status == "finished" || turno.category === "TEST") && !team.startTime){%>
 				<div id="unjoin" method="post" style="display: inline-block;">
 					<button class="rounded deleteButton" onclick="overlayTrigger('unjoin')">
 						<%=i18n.showPlayer.unjoin%>
@@ -156,6 +156,9 @@
 	</div>
 	<br/><br/><br/><br/>
 	<br/><br/><br/>
+
+	<p>Hola <%=turno.status%></p>
+
 	<% if (turno.status !== "finished") { %>
 	<div id="dialog-start" title="" style="visibility:hidden;">
 		<div>

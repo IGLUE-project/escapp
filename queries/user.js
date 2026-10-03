@@ -33,7 +33,7 @@ exports.escapeRoomsForUser = (escapeRoomId, userId, includeTest = false) => {
     };
 
     if (!includeTest) {
-        erUser.include[0].include[1].where.status = {[Op.not]: "test"};
+        erUser.include[0].include[1].where.category = {[Op.not]: "TEST"};
     }
     return erUser;
 };
@@ -49,7 +49,7 @@ exports.puzzlesByParticipant = (escapeRoomId, turnId, orderBy, includeReqHints, 
                 "include": [
                     {
                         "model": models.turno,
-                        "where": {"status": {[Op.not]: "test"}},
+                        "where": {"category": {[Op.not]: "TEST"}},
                         "include": {
                             "model": models.escapeRoom,
                             "attributes": [],
@@ -103,7 +103,7 @@ exports.puzzlesByParticipant = (escapeRoomId, turnId, orderBy, includeReqHints, 
     if (turnId) {
         options.include[0].include[0].where.id = turnId;
     } else {
-        options.include[0].include[0].where.status = {[Op.not]: "test"};
+        options.include[0].include[0].where.category = {[Op.not]: "TEST"};
     }
     if (orderBy) {
         const isPg = process.env.DATABASE_URL;
@@ -159,7 +159,7 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
                     "model": models.turno,
                     "where": {
                         escapeRoomId,
-                        "status": {[Op.not]: "test"}
+                        "category": {[Op.not]: "TEST"}
                     }
                 }
 
@@ -170,7 +170,7 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
     if (turnId) {
         options.include[0].where.id = turnId;
     } else {
-        options.include[0].where.status = {[Op.not]: "test"};
+        options.include[0].where.category = {[Op.not]: "TEST"};
     }
     if (orderBy) {
         const isPg = process.env.DATABASE_URL;

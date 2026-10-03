@@ -164,7 +164,7 @@ exports.cloneER = async function (er, authorId, newTitle, currentUser, prevUrl, 
     }, {include});
 
     const saved = await escapeRoom.save({transaction});
-    const testShift = await models.turno.create({"place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
+    const testShift = await models.turno.create({"category": "TEST", "place": "test", "status": "test", "escapeRoomId": escapeRoom.id }, {transaction});
     const teamCreated = await models.team.create({ "name": currentUser.name, "turnoId": testShift.id}, {transaction});
     // Build old->new puzzle id map. The cloning preserves order, so the i-th
     // puzzle in the source ER becomes the i-th puzzle in the saved ER.

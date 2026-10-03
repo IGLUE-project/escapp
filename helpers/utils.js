@@ -135,10 +135,10 @@ exports.playInterface = async (name, req, res, next) => {
             const tooLate = exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration);
             const alreadyFinished = team.retos.length === req.escapeRoom.puzzles.length;
 
-            if (!team.startTime || !(team.turno.status === "active" || team.turno.status === "test") || tooLate || alreadyFinished) {
+            if (!team.startTime || !(team.turno.status === "active" || team.turno.category === "TEST") || tooLate || alreadyFinished) {
                 if (!team.startTime) {
                     req.flash("error", i18n.team.notStarted);
-                } else if (!(team.turno.status === "active" || team.turno.status === "test")) {
+                } else if (!(team.turno.status === "active" || team.turno.category === "TEST")) {
                     req.flash("error", i18n.turno.notActive);
                 } else if (tooLate) {
                     req.flash("error", i18n.team.tooLate);
@@ -202,7 +202,7 @@ exports.renderEJS = (view, query = {}, options = {}) => new Promise((resolve, re
     });
 });
 
-exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId, "status": {[Op.not]: "test"}}});
+exports.getERTurnos = (escapeRoomId) => models.turno.findAll({"where": {escapeRoomId, "category": {[Op.not]: "TEST"}}});
 
 exports.getERPuzzles = (escapeRoomId) => models.puzzle.findAll({"where": {escapeRoomId}, "order": [["order", "asc"]], "include": [{"model": models.reusablePuzzleInstance}]});
 

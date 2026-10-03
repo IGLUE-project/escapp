@@ -37,7 +37,8 @@ exports.checkSomeTurnAvailable = async (req, res, next) => {
     const turnos = await models.turno.findAll({
         "where": {
             "escapeRoomId": req.escapeRoom.id,
-            "status": {[Op.notIn]: ["finished", "test"]}
+            "status": {[Op.notIn]: ["finished"]},
+            "category": {[Op.notIn]: ["TEST"]}
         },
         "include": [{"model": models.user, "as": "students", "through": "participants"}],
         "order": [["date", "ASC NULLS LAST"]]
@@ -91,7 +92,7 @@ exports.index = async (req, res, next) => {
     const includeNames = true;
 
     try {
-        const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "status": {[Op.not]: "test"}}});
+        const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "category": {[Op.not]: "TEST"}}});
         const users = await models.user.findAll(queries.user.participantsWithTurnoAndTeam(escapeRoom.id, turnId, orderBy));
         const participants = [];
 
@@ -123,8 +124,7 @@ exports.index = async (req, res, next) => {
 // POST /escapeRooms/:escapeRoomId/confirm
 exports.confirmAttendance = async (req, res) => {
     try {
-        const turnos = (await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "status": {[Op.not]: "test"}}})).map((t) => t.id);
-
+        const turnos = (await models.turno.findAll({"where": {"escapeRoomId": req.escapeRoom.id, "category": {[Op.not]: "TEST"}}})).map((t) => t.id);
         await models.participants.update({"attendance": true}, { "where": {[Op.and]: [{"turnId": {[Op.in]: turnos}}, {"userId": {[Op.in]: req.body.attendance.yes}}]} });
         await models.participants.update({"attendance": false}, { "where": {[Op.and]: [{"turnId": {[Op.in]: turnos}}, {"userId": {[Op.in]: req.body.attendance.no}}]}});
         await res.end();
