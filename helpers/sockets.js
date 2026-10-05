@@ -376,7 +376,7 @@ exports.stopTurno = (turnId) => {
  */
 exports.solvePuzzle = async (escapeRoomId, teamId, userId, puzzleOrderMinus, solution, i18n, teamInstructions) => {
     try {
-        if (!puzzleOrderMinus && puzzleOrderMinus < 0) {
+        if (!puzzleOrderMinus || puzzleOrderMinus < 0) {
             throw new Error(i18n.api.notFound);
         }
         const puzzleOrder = puzzleOrderMinus - 1;
@@ -384,7 +384,7 @@ exports.solvePuzzle = async (escapeRoomId, teamId, userId, puzzleOrderMinus, sol
         const team = await models.team.findByPk(teamId, queries.team.teamInfo(escapeRoomId));
         const puzzles = await getERPuzzles(escapeRoomId);
 
-        if (!team && !puzzle) {
+        if (!team || !puzzle) {
             throw new Error(i18n.api.notFound);
         }
         const user = await models.user.findByPk(userId);
@@ -412,14 +412,14 @@ exports.solvePuzzle = async (escapeRoomId, teamId, userId, puzzleOrderMinus, sol
  */
 exports.checkPuzzle = async (escapeRoomId, teamId, userId, puzzleOrderMinus, solution, i18n) => {
     try {
-        if (!puzzleOrderMinus && puzzleOrderMinus < 0) {
+        if (!puzzleOrderMinus || puzzleOrderMinus < 0) {
             throw new Error(i18n.api.notFound);
         }
         const puzzleOrder = puzzleOrderMinus - 1;
         const puzzle = await models.puzzle.findOne({"where": {"order": puzzleOrder, escapeRoomId}});
         const team = await models.team.findByPk(teamId, queries.team.teamInfo(escapeRoomId));
 
-        if (!team && !puzzle) {
+        if (!team || !puzzle) {
             throw new Error(i18n.api.notFound);
         }
         const {body} = await checkPuzzle(solution, puzzle, team.turno.escapeRoom, [team], {"id": userId}, i18n, true);
@@ -493,7 +493,7 @@ exports.startPlaying = async (user, teamId, turnId, escapeRoomId, i18n, preview 
         throw new Error(i18n.api.notFound);
     } catch (err) {
         console.error(err);
-        startTeam(teamId, ERROR, true, undefined, err.msg, undefined);
+        startTeam(teamId, ERROR, true, undefined, err.message, undefined);
     }
 };
 
@@ -535,25 +535,47 @@ exports.sendLeaveTeam = (teamId, turnId, teams) => {
 /**
  * Request a hint
  */
-const requestHint = async (escapeRoomId, teamId, userId, status, score, category, ai, i18n) => {
-    const team = await models.team.findByPk(teamId, queries.team.puzzlesAndHints(teamId));
+const requestHint = async (escapeRoomId, teamId, user, status, score, category, ai, i18n) => {
+    // Socket.io does not await this handler, so an uncaught rejection here is an unhandled
+    // rejection, which Node turns into a process exit — taking every live game with it.
+    // Report the failure to the team the same way the other handlers do.
+    try {
+        const team = await models.team.findByPk(teamId, queries.team.puzzlesAndHints(teamId));
 
-    if (team && team.turno && team.turno.escapeRoom) {
-        if (ai) {
-            const teamMembers = this.getConnectedMembersIds(teamId);
-            const leader = this.getLeader(teamMembers);
+        if (team && team.turno && team.turno.escapeRoom) {
+            // Access is only checked when the socket connects, so a connection that was
+            // open while the turn was live could still pull hints afterwards — and hints
+            // count towards the score. Re-check it per request, exactly as solving does;
+            // TOO_LATE only happens where the escape room forbids late submissions.
+            const participation = await checkTurnoAccess([team], user, team.turno.escapeRoom);
 
-            if (leader != userId) {
+            if (participation !== PARTICIPANT) {
+                const {msg} = getAuthMessageAndCode(participation, i18n);
+
+                // eslint-disable-next-line no-undefined
+                hintResponse(teamId, NOK, true, participation, undefined, undefined, category, msg);
                 return;
             }
-        }
-        const result = await calculateNextHint(team.turno.escapeRoom, team, status, score, category, i18n.escapeRoom.play, userId, ai);
+            if (ai) {
+                const teamMembers = exports.getConnectedMembersIds(teamId);
+                const leader = exports.getLeader(teamMembers);
 
-        if (result) { // TODO participation, auth...
-            const {msg, ok, hintOrder, puzzleOrder, "category": newCat} = result;
+                if (leader != user.id) {
+                    return;
+                }
+            }
+            const result = await calculateNextHint(team.turno.escapeRoom, team, status, score, category, i18n.escapeRoom.play, user.id, ai);
 
-            await hintResponse(teamId, ok ? OK : NOK, true, PARTICIPANT, hintOrder, puzzleOrder, newCat, msg);
+            if (result) { // TODO participation, auth...
+                const {msg, ok, hintOrder, puzzleOrder, "category": newCat} = result;
+
+                await hintResponse(teamId, ok ? OK : NOK, true, PARTICIPANT, hintOrder, puzzleOrder, newCat, msg);
+            }
         }
+    } catch (e) {
+        console.error(e);
+        // eslint-disable-next-line no-undefined
+        hintResponse(teamId, ERROR, true, undefined, undefined, undefined, undefined, e.message);
     }
 };
 
@@ -600,7 +622,7 @@ exports.initializeListeners = (escapeRoomId, turnId, teamId, user, waiting, i18n
         if (teamId) {
             socket.on(CHECK_PUZZLE, ({puzzleOrder, sol}) => exports.checkPuzzle(escapeRoomId, teamId, user.id, puzzleOrder, sol, i18n));
             socket.on(SOLVE_PUZZLE, ({puzzleOrder, sol}) => exports.solvePuzzle(escapeRoomId, teamId, user.id, puzzleOrder, sol, i18n, teamInstructions));
-            socket.on(REQUEST_HINT, ({status, score, category, ai}) => requestHint(escapeRoomId, teamId, user.id, status, score, category, ai, i18n));
+            socket.on(REQUEST_HINT, ({status, score, category, ai}) => requestHint(escapeRoomId, teamId, user, status, score, category, ai, i18n));
             socket.on(START_PLAYING, () => exports.startPlaying(user, teamId, turnId, escapeRoomId, i18n));
             socket.on("disconnect", () => exports.leave(teamId, user.username));
             socket.join(`teamId_${teamId}`);
