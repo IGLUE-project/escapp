@@ -1,6 +1,7 @@
 const {models} = require("../models");
 const Sequelize = require("sequelize");
 const {Op} = Sequelize;
+const {safeUserOrderColumn} = require("./sortColumns");
 
 exports.escapeRoomsForUser = (escapeRoomId, userId, includeTest = false) => {
     const erUser = {
@@ -105,11 +106,13 @@ exports.puzzlesByParticipant = (escapeRoomId, turnId, orderBy, includeReqHints, 
     } else {
         options.include[0].include[0].where.status = {[Op.not]: "test"};
     }
-    if (orderBy) {
+    const orderCol = safeUserOrderColumn(orderBy);
+
+    if (orderCol) {
         const isPg = process.env.DATABASE_URL;
 
         options.order = [
-            [Sequelize.literal(isPg ? `lower("user"."${orderBy}") ASC` : `lower(user.${orderBy}) ASC`)],
+            [Sequelize.literal(isPg ? `lower("user"."${orderCol}") ASC` : `lower(user.${orderCol}) ASC`)],
             ...options.order
         ];
     }
@@ -172,19 +175,21 @@ exports.participantsWithTurnoAndTeam = (escapeRoomId, turnId, orderBy) => {
     } else {
         options.include[0].where.status = {[Op.not]: "test"};
     }
-    if (orderBy) {
-        const isPg = process.env.DATABASE_URL;
+    if (orderBy === "team") {
+        options.order = [
+            [
+                { "model": models.team, "as": "teamsAgregados"},
+                "name",
+                "asc"
+            ]
+        ];
+    } else {
+        const orderCol = safeUserOrderColumn(orderBy);
 
-        if (orderBy === "team") {
-            options.order = [
-                [
-                    { "model": models.team, "as": "teamsAgregados"},
-                    "name",
-                    "asc"
-                ]
-            ];
-        } else {
-            options.order = Sequelize.literal(isPg ? `lower("user"."${orderBy}") ASC` : `lower(user.${orderBy}) ASC`);
+        if (orderCol) {
+            const isPg = process.env.DATABASE_URL;
+
+            options.order = Sequelize.literal(isPg ? `lower("user"."${orderCol}") ASC` : `lower(user.${orderCol}) ASC`);
         }
     }
     return options;
