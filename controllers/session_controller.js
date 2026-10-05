@@ -166,7 +166,13 @@ exports.authShowEscapeRoom = async (req, res, next) => {
         return next();
     }
 
-    req.participant = await getParticipant(user, er);
+    try {
+        req.participant = await getParticipant(user, er);
+    } catch (error) {
+        // Express 4 does not catch rejections from async middleware: without this a
+        // failed query here ends the process instead of rendering the error page.
+        return next(error);
+    }
     if (typeof req.participant !== "undefined") {
         return next();
     }
@@ -189,7 +195,11 @@ exports.authShowEscapeRoomOrPending = async (req, res, next) => {
         return next();
     }
 
-    req.participant = await getParticipant(user, er);
+    try {
+        req.participant = await getParticipant(user, er);
+    } catch (error) {
+        return next(error);
+    }
     if (typeof req.participant !== "undefined") {
         return next();
     }
@@ -219,7 +229,11 @@ exports.authResetTeamProgress = async (req, res, next) => {
         return next();
     }
     if (er.allowUserToResetTeamProgress) {
-        req.participant = await getParticipant(user, er);
+        try {
+            req.participant = await getParticipant(user, er);
+        } catch (error) {
+            return next(error);
+        }
         if (typeof req.participant !== "undefined") {
             return next();
         }
@@ -248,7 +262,11 @@ exports.authEditOrPlayEscapeRoom = async (req, res, next) => {
     if (user && (isAuthor(user, er) || isAdmin(user) || isCoAuthor(user, er))) {
         return next();
     }
-    req.participant = await getParticipant(user, er);
+    try {
+        req.participant = await getParticipant(user, er);
+    } catch (error) {
+        return next(error);
+    }
     if (typeof req.participant !== "undefined") {
         return next();
     }
@@ -265,7 +283,11 @@ exports.authPlayEscapeRoom = async (req, res, next) => {
 
     const er = req.escapeRoom;
 
-    req.participant = await getParticipant(user, er);
+    try {
+        req.participant = await getParticipant(user, er);
+    } catch (error) {
+        return next(error);
+    }
     if (typeof req.participant !== "undefined") {
         return next();
     }

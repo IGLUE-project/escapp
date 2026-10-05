@@ -7,7 +7,7 @@ const query = require("../queries");
 const uploadsHelper = require("../helpers/uploads");
 const {nextStep, prevStep} = require("../helpers/progress");
 const {isAuthor, isCoAuthor, isParticipant, cloneER, getFilePathsForER, safeImportPath, copyERFilesForClone, resolveItemPath} = require("../helpers/escapeRooms");
-const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname} = require("../helpers/utils");
+const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname, rollbackIfPending} = require("../helpers/utils");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
 const fsSync = require("fs");
 const fs = require("fs/promises");
@@ -128,43 +128,57 @@ exports.index = async (req, res, next) => {
 };
 
 // GET /escapeRooms/:escapeRoomId
-exports.show = async (req, res) => {
+exports.show = async (req, res, next) => {
     if (req.session.user && !req.session.user.isStudent && (isAuthor(req.session.user, req.escapeRoom) || isCoAuthor(req.session.user, req.escapeRoom))) {
         return res.redirect(`/escapeRooms/${req.escapeRoom.id}/edit`);
     }
-    if(req.escapeRoom){
-        req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
+
+    try {
+        if(req.escapeRoom){
+            req.escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
+        }
+
+        const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
+        const isUserParticipant = await isParticipant(req.session.user, escapeRoom);
+
+        return res.render("escapeRooms/show", {"escapeRoom": req.escapeRoom, "user": req.session.user, "isParticipant": isUserParticipant, "token": req.query.token});
+    } catch (error) {
+        // Without this an async handler's rejection is unhandled, which ends the process.
+        return next(error);
     }
-
-    const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
-    const isUserParticipant = await isParticipant(req.session.user, escapeRoom);
-
-    return res.render("escapeRooms/show", {"escapeRoom": req.escapeRoom, "user": req.session.user, "isParticipant": isUserParticipant, "token": req.query.token});
 };
 
 // GET /escapeRooms/:escapeRoomId/ready
-exports.ready = async (req, res) => {
+exports.ready = async (req, res, next) => {
     if (req.participant) {
-        const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
-        const [team] = req.participant.teamsAgregados;
-        const howManyRetos = await models.retosSuperados.count({"where": {"success": true, "teamId": team.id }});
-        const finished = howManyRetos === escapeRoom.puzzles.length;
+        try {
+            const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
+            const [team] = req.participant.teamsAgregados;
+            const howManyRetos = await models.retosSuperados.count({"where": {"success": true, "teamId": team.id }});
+            const finished = howManyRetos === escapeRoom.puzzles.length;
 
-        return res.render("escapeRooms/ready", {escapeRoom, "participant": req.participant, team, finished, "isAdmin": req.session.user.isAdmin});
+            return res.render("escapeRooms/ready", {escapeRoom, "participant": req.participant, team, finished, "isAdmin": req.session.user.isAdmin});
+        } catch (error) {
+            return next(error);
+        }
     }
     req.flash("error", res.locals.i18n.common.flash.errorReady);
     return res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
 };
 
 // GET /escapeRooms/:escapeRoomId/edit
-exports.edit = async (req, res) => {
-    const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
+exports.edit = async (req, res, next) => {
+    try {
+        const escapeRoom = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadShow);
 
-    escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
-    const hostName = getHostname(req);
-    const completed = stepsCompleted(escapeRoom);
+        escapeRoom.subject = await models.subject.findAll({"where": {"escapeRoomId": req.escapeRoom.id}});
+        const hostName = getHostname(req);
+        const completed = stepsCompleted(escapeRoom);
 
-    res.render("escapeRooms/edit", {escapeRoom, completed, hostName, "email": req.session.user.username});
+        res.render("escapeRooms/edit", {escapeRoom, completed, hostName, "email": req.session.user.username});
+    } catch (error) {
+        next(error);
+    }
 };
 
 // GET /escapeRooms/new
@@ -246,7 +260,7 @@ exports.create = async (req, res) => {
                 await transaction.commit();
             } catch (error) {
                 console.error(error);
-                await transaction.rollback();
+                await rollbackIfPending(transaction);
                 req.flash("error", i18n.common.flash.errorImage);
                 fsSync.unlinkSync(req.file.path);
                 res.render("escapeRooms/new", {escapeRoom, "progress": "settings"});
@@ -254,7 +268,7 @@ exports.create = async (req, res) => {
             }
         } catch (error) {
             console.error(error);
-            await transaction.rollback();
+            await rollbackIfPending(transaction);
             req.flash("error", i18n.common.flash.errorFile);
             res.render("escapeRooms/new", {escapeRoom, "progress": "settings"});
             return;
@@ -262,7 +276,7 @@ exports.create = async (req, res) => {
         res.redirect(`/escapeRooms/${escapeRoom.id}/${progress || nextStep("settings")}`);
     } catch (error) {
         console.error(error);
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
         if (error instanceof Sequelize.ValidationError) {
             console.error(error);
             error.errors.forEach((err) => {
@@ -392,7 +406,7 @@ exports.update = async (req, res) => {
         await transaction.commit();
         res.redirect(`/escapeRooms/${req.escapeRoom.id}/${progressBar || nextStep("settings")}`);
     } catch (error) {
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
         console.error(error);
         console.error(req.body.field);
         if (error instanceof Sequelize.ValidationError) {
@@ -551,7 +565,7 @@ exports.sharingUpdate = async (req, res) => {
         await transaction.commit();
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("sharing") : progressBar || nextStep("sharing")}`);
     } catch (error) {
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
         console.error(error);
         if (req.file) {
             fsSync.unlinkSync(req.file.path);
@@ -608,27 +622,42 @@ exports.teamInterface = async (req, res, next) => {
 };
 
 // GET /escapeRooms/:escapeRoomId/class
-exports.classInterface = async (req, res) => {
+exports.classInterface = async (req, res, next) => {
     const {escapeRoom} = req;
-    const assets = await getERAssets(escapeRoom.id);
 
-    res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "class", "endPoint": "class", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
+    try {
+        const assets = await getERAssets(escapeRoom.id);
+
+        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "class", "endPoint": "class", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
+    } catch (error) {
+        next(error);
+    }
 };
 
 // GET /escapeRooms/:escapeRoomId/indications
-exports.indicationsInterface = async (req, res) => {
+exports.indicationsInterface = async (req, res, next) => {
     const {escapeRoom} = req;
-    const assets = await getERAssets(escapeRoom.id);
 
-    res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "indications", "endPoint": "indications", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
+    try {
+        const assets = await getERAssets(escapeRoom.id);
+
+        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "indications", "endPoint": "indications", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
+    } catch (error) {
+        next(error);
+    }
 };
 
 // GET /escapeRooms/:escapeRoomId/after
-exports.afterInterface = async (req, res) => {
+exports.afterInterface = async (req, res, next) => {
     const {escapeRoom} = req;
-    const assets = await getERAssets(escapeRoom.id);
 
-    res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "after", "endPoint": "after", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
+    try {
+        const assets = await getERAssets(escapeRoom.id);
+
+        res.render("escapeRooms/steps/instructions", {escapeRoom, "progress": "after", "endPoint": "after", assets, "availableReusablePuzzles": [], "reusablePuzzlesInstances": []});
+    } catch (error) {
+        next(error);
+    }
 };
 
 
@@ -667,7 +696,7 @@ exports.destroy = async (req, res, next) => {
             shouldDeleteAttachment = attachmentCount === 1; // Only this escape room uses it
         }
 
-        await req.escapeRoom.destroy({}, {transaction});
+        await req.escapeRoom.destroy({transaction});
         await transaction.commit();
 
         // File cleanup after successful database transaction
@@ -742,7 +771,7 @@ exports.destroy = async (req, res, next) => {
         req.flash("success", i18n.common.flash.successDeletingER);
         res.redirect("/escapeRooms");
     } catch (error) {
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
 
         // Provide more specific error messages based on error type
         if (error.name === 'SequelizeForeignKeyConstraintError') {
@@ -772,8 +801,10 @@ exports.clone = async (req, res, next) => {
 
         res.redirect(`/escapeRooms/${saved.id}/edit`);
     } catch (err) {
-        await transaction.rollback();
         next(err);
+    } finally {
+        // cloneER commits internally, so only roll back when it did not get that far.
+        await rollbackIfPending(transaction);
     }
 };
 
@@ -833,12 +864,16 @@ exports.admin = async (req, res, next) => {
 };
 
 // GET /escapeRooms/:escapeRoomId/collaborators
-exports.showCollaborators = async (req, res) => {
+exports.showCollaborators = async (req, res, next) => {
     const {escapeRoom} = req;
 
-    const collaborators = await escapeRoom.getUserCoAuthor();
+    try {
+        const collaborators = await escapeRoom.getUserCoAuthor();
 
-    res.render("escapeRooms/collaborators", {escapeRoom, collaborators});
+        res.render("escapeRooms/collaborators", {escapeRoom, collaborators});
+    } catch (error) {
+        next(error);
+    }
 };
 
 
@@ -856,12 +891,13 @@ exports.addCollaborators = async (req, res, next) => {
                 "include": {
                     "model": models.escapeRoom,
                     "as": "escapeRoomCoAuthored"
-                }
-            }, {transaction});
+                },
+                transaction
+            });
 
             if (collab) {
                 if (collab.escapeRoomCoAuthored.some((x) => x.id === escapeRoom.id)) {
-                    await transaction.rollback();
+                    await rollbackIfPending(transaction);
                     req.flash("error", i18n.common.flash.errorUserIsAlreadyACollaborator);
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
                 } else if (!collab.isStudent) {
@@ -870,22 +906,22 @@ exports.addCollaborators = async (req, res, next) => {
                     req.flash("success", i18n.common.flash.successAddingCollaborator);
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
                 } else {
-                    await transaction.rollback();
+                    await rollbackIfPending(transaction);
                     req.flash("error", i18n.common.flash.errorUserIsNotTeacher);
                     res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
                 }
             } else {
-                await transaction.rollback();
+                await rollbackIfPending(transaction);
                 req.flash("error", i18n.common.flash.errorUserNotExists);
                 res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
             }
         } else {
-            await transaction.rollback();
+            await rollbackIfPending(transaction);
             req.flash("error", i18n.common.flash.errorUserNotExists);
             res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
         }
     } catch (error) {
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
         req.flash("error", `${error.message}`);
         next(error);
     }
@@ -922,7 +958,7 @@ exports.confirmCollaborators = async (req, res, next) => {
                 }
             );
             const user = await models.user.findByPk(session.user.id, {transaction});
-            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}}, {transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}, transaction});
             const teamCreated = await models.team.create({ "name": `${user.alias}`, "turnoId": testShift.id}, {transaction});
 
             await teamCreated.addTeamMembers(user.id, {transaction});
@@ -932,7 +968,7 @@ exports.confirmCollaborators = async (req, res, next) => {
             res.redirect(`/escapeRooms/${escapeRoom.id}/edit`);
         }
     } catch (error) {
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
         console.error(error);
         req.flash("error", `${error.message}`);
         next(error);
@@ -948,8 +984,8 @@ exports.deleteCollaborators = async (req, res, next) => {
         try {
             const collab = await models.user.findByPk(collaborator, {transaction});
 
-            await escapeRoom.removeUserCoAuthor(collaborator);
-            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}}, {transaction});
+            await escapeRoom.removeUserCoAuthor(collaborator, {transaction});
+            const [testShift] = await escapeRoom.getTurnos({"where": {"status": "test"}, transaction});
 
             const teamCreated = await models.team.findOne({
                 "where": { "name": collab.alias, "turnoId": testShift.id },
@@ -974,7 +1010,7 @@ exports.deleteCollaborators = async (req, res, next) => {
                 res.redirect(`/escapeRooms/${escapeRoom.id}/collaborators`);
             }
         } catch (error) {
-            await transaction.rollback();
+            await rollbackIfPending(transaction);
             req.flash("error", `${error.message}`);
             next(error);
         }
@@ -1015,7 +1051,7 @@ exports.test = async (req, res, next) => {
             participants = await models.user.findAll(query.user.escapeRoomsForUser(req.escapeRoom.id, req.session.user.id, true));
             participant = participants && participants.length ? participants[0] : null;
         } catch (err) {
-            await transaction.rollback();
+            await rollbackIfPending(transaction);
             return next(err);
         }
     }
@@ -1245,5 +1281,9 @@ exports.import = async (req, res, next) => {
         req.flash("error", err);
         console.error(err);
         next(err);
+    } finally {
+        // cloneER commits on success. The early return for a missing escape-room.json and
+        // any failure above leave the transaction open, leaking a pool connection.
+        await rollbackIfPending(transaction);
     }
 };

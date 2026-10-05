@@ -5,7 +5,19 @@ const { Sequelize } = require("sequelize");
 
 const url = process.env.DATABASE_URL;
 
-const sequelize = new Sequelize(url);// Import the definition of the Escape Room Table from escapeRoom.js
+// Explicit connection pool. Sequelize's default is max 5, which is far too small for a
+// real-time multi-team app (each in-flight request can hold a transaction connection while
+// sub-queries need more) and exhausts almost immediately under load, surfacing as
+// SequelizeConnectionAcquireTimeoutError. Single pm2 fork process → one pool; with Postgres
+// max_connections=100, max 20 is safe and leaves headroom for migrations/psql/session store.
+const sequelize = new Sequelize(url, {
+    "pool": {
+        "max": Number(process.env.DB_POOL_MAX) || 20,
+        "min": Number(process.env.DB_POOL_MIN) || 2,
+        "acquire": 30000,
+        "idle": 10000
+    }
+});// Import the definition of the Escape Room Table from escapeRoom.js
 
 
 require(path.join(__dirname, "escapeRoom"))(sequelize, Sequelize.DataTypes);

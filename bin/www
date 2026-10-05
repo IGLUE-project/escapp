@@ -12,6 +12,15 @@ var http = require('http');
 var https = require('https');
 
 /**
+ * Safety net. Express 4 does not catch rejections from async route handlers, so one failed
+ * query inside one of them would otherwise end the process and drop every connected game.
+ * Log it and keep serving: that request is already lost, the other sessions need not be.
+ */
+process.on('unhandledRejection', function (reason) {
+  console.error('Unhandled promise rejection:', reason instanceof Error ? reason.stack : reason);
+});
+
+/**
  * Get port from environment and store in Express.
  */
 

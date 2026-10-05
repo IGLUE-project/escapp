@@ -34,14 +34,24 @@ exports.checkIsNotParticipant = async (req, res, next) => {
 
 exports.checkSomeTurnAvailable = async (req, res, next) => {
     const { escapeRoom } = req;
-    const turnos = await models.turno.findAll({
-        "where": {
-            "escapeRoomId": req.escapeRoom.id,
-            "status": {[Op.notIn]: ["finished", "test"]}
-        },
-        "include": [{"model": models.user, "as": "students", "through": "participants"}],
-        "order": [["date", "ASC NULLS LAST"]]
-    });
+    // eslint-disable-next-line init-declarations
+    let turnos;
+
+    try {
+        turnos = await models.turno.findAll({
+            "where": {
+                "escapeRoomId": req.escapeRoom.id,
+                "status": {[Op.notIn]: ["finished", "test"]}
+            },
+            "include": [{"model": models.user, "as": "students", "through": "participants"}],
+            "order": [["date", "ASC NULLS LAST"]]
+        });
+    } catch (error) {
+        // Only the query is guarded: next() is called further down, and catching that would
+        // report downstream errors twice.
+        next(error);
+        return;
+    }
 
     const {i18n} = res.locals;
 

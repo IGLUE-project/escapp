@@ -1,7 +1,7 @@
 const sequelize = require("../models");
 const {models} = sequelize;
 // Const {sendJoinParticipant} = require("../helpers/sockets");
-const {getRanking} = require("../helpers/utils");
+const {getRanking, rollbackIfPending} = require("../helpers/utils");
 
 // PUT /escapeRooms/:escapeRoomId/users/:userId/turnos/:turnoId/teams/:teamId
 exports.add = async (req, res, next) => {
@@ -15,7 +15,10 @@ exports.add = async (req, res, next) => {
     try {
         const time = turn.startTime || startTime;
 
-        if (time && time + escapeRoom.duration < new Date()) { // Already finished
+        // `duration` is in minutes. Adding it to a Date concatenates them into a string,
+        // so the old comparison was a string/Date one that never came out true — a turn
+        // that ended years ago still accepted new members.
+        if (time && new Date(time.getTime() + escapeRoom.duration * 60000) < new Date()) { // Already finished
             req.flash("error", i18n.turno.tooLate);
             res.redirect(`/escapeRooms/${escapeRoom.id}/join?token=${token}`);
             return;
@@ -27,7 +30,7 @@ exports.add = async (req, res, next) => {
         await models.participants.create({attendance, "userId": user.id, "turnId": turn.id}, {transaction});
         await team.addTeamMembers(req.session.user.id, {transaction});
 
-        const newMembers = await team.getTeamMembers({}, {transaction});
+        const newMembers = await team.getTeamMembers({transaction});
 
         await transaction.commit();
         try {
@@ -48,7 +51,10 @@ exports.add = async (req, res, next) => {
             next(error);
         }
     } catch (error) {
-        await transaction.rollback();
         next(error);
+    } finally {
+        // The "already finished" branch above returns without committing, so the
+        // transaction's connection would never go back to the pool.
+        await rollbackIfPending(transaction);
     }
 };

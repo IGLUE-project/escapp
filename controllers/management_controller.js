@@ -4,17 +4,21 @@ const {isAuthor, isCoAuthor} = require("../helpers/escapeRooms");
 const {isAdmin, isStudent} = require("../helpers/users");
 const {SUPPORTED_LANGUAGES} = require("../helpers/I18n");
 
-exports.showReports = async (req, res) => {
-    const reports = await models.report.findAll({
-        "include": [
-            {"model": models.user, "attributes": ["name", "surname"]},
-            {"model": models.escapeRoom, "attributes": ["id", "title"]}
-        ],
-        "order": [["readed", "ASC"], ["createdAt", "DESC"]]
+exports.showReports = async (req, res, next) => {
+    try {
+        const reports = await models.report.findAll({
+            "include": [
+                {"model": models.user, "attributes": ["name", "surname"]},
+                {"model": models.escapeRoom, "attributes": ["id", "title"]}
+            ],
+            "order": [["readed", "ASC"], ["createdAt", "DESC"]]
 
-    });
+        });
 
-    res.render("management/reports", {reports});
+        res.render("management/reports", {reports});
+    } catch (error) {
+        next(error);
+    }
 };
 
 exports.showReportForm = (req, res) => {
@@ -120,28 +124,38 @@ exports.generateReport = async (req, res) => {
     }
 };
 
-exports.editReport = async (req, res) => {
+exports.editReport = async (req, res, next) => {
     const {readed} = req.body;
     const {reportId} = req.params;
-    const report = await models.report.findByPk(reportId);
 
-    if (!report) {
-        return res.status(404).send("Report not found");
+    try {
+        const report = await models.report.findByPk(reportId);
+
+        if (!report) {
+            return res.status(404).send("Report not found");
+        }
+        report.readed = readed;
+        await report.save();
+        return res.status(200).send();
+    } catch (error) {
+        return next(error);
     }
-    report.readed = readed;
-    await report.save();
-    res.status(200).send();
 };
 
-exports.deleteReport = async (req, res) => {
+exports.deleteReport = async (req, res, next) => {
     const {reportId} = req.params;
-    const report = await models.report.findByPk(reportId);
 
-    if (report) {
-        await report.destroy();
-        res.status(200).send();
-    } else {
-        res.status(404).send();
+    try {
+        const report = await models.report.findByPk(reportId);
+
+        if (report) {
+            await report.destroy();
+            res.status(200).send();
+        } else {
+            res.status(404).send();
+        }
+    } catch (error) {
+        next(error);
     }
 };
 

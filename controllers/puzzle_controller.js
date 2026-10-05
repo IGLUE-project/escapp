@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const {sanitizePuzzles, sanitizeHints} = require("../helpers/sanitize");
-const {getERPuzzlesAndHints, getERPuzzles, validationError} = require("../helpers/utils");
+const {getERPuzzlesAndHints, getERPuzzles, validationError, rollbackIfPending} = require("../helpers/utils");
 const {nextStep, prevStep} = require("../helpers/progress");
 
 
@@ -147,7 +147,7 @@ exports.retosUpdate = async (req, res) => {
 
         res.redirect(`/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("puzzles") : progressBar || nextStep("puzzles")}`);
     } catch (error) {
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
         if (error instanceof Sequelize.ValidationError) {
             error.errors.forEach((err) => {
                 req.flash("error", validationError(err, i18n));

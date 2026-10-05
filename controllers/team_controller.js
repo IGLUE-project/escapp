@@ -3,7 +3,7 @@ const {Op} = Sequelize;
 const sequelize = require("../models");
 const {models} = sequelize;
 const {sendLeaveTeam, isTeamConnected, isTeamConnectedWaiting} = require("../helpers/sockets");
-const {checkTeamSizeOne, getRanking} = require("../helpers/utils");
+const {checkTeamSizeOne, getRanking, rollbackIfPending} = require("../helpers/utils");
 
 // Autoload the team with id equals to :teamId
 exports.load = (req, res, next, teamId) => {
@@ -45,11 +45,11 @@ exports.create = async (req, res, next) => {
     const turnoId = params.turnoId || (req.turn ? req.turn.id : undefined);
 
     try {
-        const existsTeam = await models.team.findOne({"where": {"name": body.name, turnoId}}, {transaction});
+        const existsTeam = await models.team.findOne({"where": {"name": body.name, turnoId}, transaction});
 
         if (existsTeam && req.escapeRoom.teamSize !== 1) {
             req.flash("error", i18n.common.flash.errorCreatingTeamAlreadyExists);
-            await transaction.rollback();
+            await rollbackIfPending(transaction);
             res.redirect("back");
         } else {
             const teamCreated = await models.team.create({ "name": body.name, turnoId}, {transaction});
@@ -61,7 +61,7 @@ exports.create = async (req, res, next) => {
             res.redirect(`/escapeRooms/${params.escapeRoomId}/ready`);
         }
     } catch (err) {
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
         if (err instanceof Sequelize.ValidationError) {
             req.flash("error", `${i18n.common.flash.errorCreatingTeam}`);
             res.redirect("back");
