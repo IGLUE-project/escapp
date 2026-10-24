@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
 const mailer = require("../helpers/mailer");
-const {renderEJS, validationError, getRole, generatePassword, getHostname} = require("../helpers/utils");
+const {renderEJS, validationError, getRole, generatePassword, getHostname, rollbackIfPending} = require("../helpers/utils");
 const {userNeedsConfirmation} = require("../helpers/users");
 const {getAvailableLanguagesArray} = require("../helpers/globalInstanceConfig");
 
@@ -116,7 +116,10 @@ exports.create = async (req, res, next) => {
             const hostName = getHostname(req);
             const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${savedUser.confirmationCode}&email=${encodeURIComponent(user.username)}`, hostName}, {});
 
-            mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str);
+            // Not awaited (see resendConfirmationEmail): the surrounding try cannot catch a
+            // rejection from a promise nobody waits on, so handle it here.
+            mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str).
+                catch((e) => console.error("Could not send the confirmation e-mail:", e.message));
 
             req.flash("success", i18n.common.flash.emailMustBeConfirmed);
             res.render("index", {user, redir});
@@ -172,7 +175,15 @@ exports.update = async (req, res, next) => {
     user.eduLevel = body.eduLevel;
     let scs = i18n.common.flash.successEditingUser;
 
-    const availableLanguages = await getAvailableLanguagesArray();
+    // eslint-disable-next-line init-declarations
+    let availableLanguages;
+
+    try {
+        availableLanguages = await getAvailableLanguagesArray();
+    } catch (error) {
+        next(error);
+        return;
+    }
 
     if (availableLanguages.some((l) => l === body.lang)) {
         user.lang = body.lang;
@@ -231,7 +242,7 @@ exports.destroy = async (req, res, next) => {
 
     if (req.session.user.isAdmin && req.query.total) {
         try {
-            await req.user.destroy({}, {transaction});// Deleting logged user.
+            await req.user.destroy({transaction});// Deleting logged user.
             await transaction.commit();
             if (req.session.user && req.session.user.id === req.user.id) {
                 // Close the user session
@@ -241,7 +252,7 @@ exports.destroy = async (req, res, next) => {
             req.flash("success", i18n.common.flash.successDeletingUser);
             res.redirect("/goback");
         } catch (error) {
-            await transaction.rollback();
+            await rollbackIfPending(transaction);
             next(error);
         }
     } else {
@@ -272,8 +283,9 @@ exports.destroy = async (req, res, next) => {
                 "having": Sequelize.literal("COUNT(\"teamMembers\".\"id\") = 1"),
                 "where": Sequelize.literal(`${req.user.id} IN (
                   SELECT "userId" FROM "members" WHERE "members"."teamId" = "team"."id"
-                )`)
-            }, {transaction});
+                )`),
+                transaction
+            });
 
             await Promise.all(teams.map((team) => team.update({ "name": `Anonymous ${team.id}`}, { transaction })));
             await transaction.commit();
@@ -285,7 +297,7 @@ exports.destroy = async (req, res, next) => {
             req.flash("success", i18n.common.flash.successDeletingUser);
             res.redirect("/goback");
         } catch (error) {
-            await transaction.rollback();
+            await rollbackIfPending(transaction);
             next(error);
         }
     }
@@ -380,15 +392,22 @@ exports.newResetPasswordHash = async (req, res) => {
 };
 
 
-exports.resendConfirmationEmail = async (req, res) => {
+exports.resendConfirmationEmail = async (req, res, next) => {
     const {i18n} = res.locals;
     const {user} = req;
 
-    const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${user.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName": getHostname(req)}, {});
+    try {
+        const str = await renderEJS("views/emails/confirmEmail.ejs", {"i18n": res.locals.i18n, "link": `/users/confirm/${user.id}?code=${user.confirmationCode}&email=${encodeURIComponent(user.username)}`, "hostName": getHostname(req)}, {});
 
-    mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str);
-    req.flash("success", i18n.common.flash.confirmationEmailResent);
-    res.redirect("back");
+        // Deliberately not awaited, so a slow SMTP server does not hold up the response —
+        // but the rejection must be handled, or it ends the process.
+        mailer.sendEmail(user.username, "Escapp: Confirm your E-mail", str, str).
+            catch((e) => console.error("Could not send the confirmation e-mail:", e.message));
+        req.flash("success", i18n.common.flash.confirmationEmailResent);
+        res.redirect("back");
+    } catch (error) {
+        next(error);
+    }
 };
 // GET /users/:userId/confirm
 exports.confirmEmail = async (req, res, next) => {

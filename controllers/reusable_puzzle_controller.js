@@ -5,7 +5,7 @@ const StreamZip = require("node-stream-zip");
 const sequelize = require("../models");
 const ejs = require("ejs");
 const {getLocaleForEscapeRoomContent} = require("../helpers/I18n");
-const {getHostname} = require("../helpers/utils");
+const {getHostname, rollbackIfPending} = require("../helpers/utils");
 const {getPuzzlesSolutionLength} = require("../helpers/reusablePuzzles");
 
 // Reusable puzzles
@@ -134,10 +134,14 @@ exports.deleteReusablePuzzleInstance = async (req, res, next) => {
     }
 };
 
-exports.renderPuzzleConfiguration = async (_, res) => {
-    const rPuzzles = await models.reusablePuzzle.findAll();
+exports.renderPuzzleConfiguration = async (_, res, next) => {
+    try {
+        const rPuzzles = await models.reusablePuzzle.findAll();
 
-    res.render("reusablePuzzles/reusablePuzzleCreation", {rPuzzles});
+        res.render("reusablePuzzles/reusablePuzzleCreation", {rPuzzles});
+    } catch (error) {
+        next(error);
+    }
 };
 
 exports.renderEditPuzzleConfiguration = async (req, res, next) => {
@@ -225,7 +229,7 @@ exports.createReusablePuzzle = async (req, res, next) => {
         await t.commit();
         res.redirect("back");
     } catch (e) {
-        await t.rollback();
+        await rollbackIfPending(t);
         if (req.files.file && req.files.file[0] && req.files.file[0].path) {
             fs.rm(
                 path.join(__dirname, "/../", req.files.file[0].path), { "recursive": true, "force": true },
@@ -329,7 +333,7 @@ exports.editReusablePuzzle = async (req, res, next) => {
         await t.commit();
         res.redirect("back");
     } catch (e) {
-        await t.rollback();
+        await rollbackIfPending(t);
         console.error(e);
         if (files.file && files.file[0] && files.file[0].path) {
             fs.rm(path.join(__dirname, "/../", files.file[0].path), { "recursive": true, "force": true }, (error) => {
@@ -436,7 +440,7 @@ exports.upsertReusablePuzzleInstance = async (req, res, next) => {
         res.json({config, "name": reusablePuzzleInstance.name, "puzzle": newPuzzle, "reusablePuzzleId": reusablePuzzleInstance.reusablePuzzleId, "id": newInstanceId || reusablePuzzleInstanceId, "type": "reusablePuzzleInstance"});
     } catch (e) {
         console.error(e);
-        t.rollback();
+        await rollbackIfPending(t);
         next(e);
     }
 };

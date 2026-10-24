@@ -18,13 +18,22 @@ exports.checkParticipant = async (req, res, next) => {
         return res.status(401).json({"code": NOK, "authentication": false, "msg": i18n.api.unauthorized});
     }
 
-    const users = await models.user.findAll({where});
+    // eslint-disable-next-line init-declarations
+    let users;
 
-    if (!users || users.length === 0) {
-        res.status(404).json({"code": NOK, "authentication": false, "msg": i18n.api.userNotFound});
+    try {
+        users = await models.user.findAll({where});
+        if (!users || users.length === 0) {
+            res.status(404).json({"code": NOK, "authentication": false, "msg": i18n.api.userNotFound});
+            return;
+        }
+        req.teams = await users[0].getTeamsAgregados(queries.user.erTeam(req.escapeRoom.id));
+    } catch (error) {
+        // Express 4 lets a rejection from an async handler escape as an unhandled
+        // rejection, which ends the process. Report it as an API error instead.
+        next(error);
         return;
     }
-    req.teams = await users[0].getTeamsAgregados(queries.user.erTeam(req.escapeRoom.id));
     [req.user] = users;
 
     next();
@@ -67,11 +76,20 @@ exports.checkParticipantSafe = async (req, res, next) => {
 
 exports.checkParticipantSession = async (req, res, next) => {
     const {i18n} = res.locals;
-    const user = await models.user.findByPk(req.session.user.id);
+    // eslint-disable-next-line init-declarations
+    let user;
 
+    try {
+        user = await models.user.findByPk(req.session.user.id);
+        if (user) {
+            req.teams = await user.getTeamsAgregados(queries.user.erTeam(req.escapeRoom.id));
+        }
+    } catch (error) {
+        next(error);
+        return;
+    }
 
     if (user) {
-        req.teams = await user.getTeamsAgregados(queries.user.erTeam(req.escapeRoom.id));
         req.user = user;
         next();
     } else {

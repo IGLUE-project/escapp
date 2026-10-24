@@ -154,6 +154,15 @@ app.use((req, res, next) => {
 // Error handler. It needs to have all 4 arguments, or else express will not recognize it as an erorr handler
 // eslint-disable-next-line  no-unused-vars
 app.use((err, req, res, next) => {
+    // The response is already on the wire (an error thrown after a render/redirect, e.g. a
+    // DB failure in a follow-up query). Rendering the error page here would only throw
+    // ERR_HTTP_HEADERS_SENT and hide the original error, so hand it to Express, which
+    // logs it and closes the connection.
+    if (res.headersSent) {
+        console.error("Error after response was sent:", err);
+        next(err);
+        return;
+    }
     // eslint-disable-next-line  eqeqeq
     const devStatusCode = res.statusCode == 200 ? 500 : res.statusCode;
     const status = err.status || (app.get("env") === "production" ? 404 : devStatusCode);

@@ -11,6 +11,30 @@ const {removeDiacritics} = require("./diacritics.js");
 const fs = require("fs");
 const path = require("path");
 
+/**
+ * Roll back a transaction only if it is still open.
+ *
+ * Sequelize throws when a transaction is committed or rolled back twice, and most of our
+ * `catch` blocks sit in the same `try` as the commit. So any failure *after* the commit
+ * (building a response, cleaning up files, a pool timeout in a follow-up query) used to
+ * turn into "Transaction cannot be rolled back because it has been finished with state:
+ * commit", thrown from the error handler itself: the request's real error was lost and,
+ * with a response already sent, Express answered with ERR_HTTP_HEADERS_SENT.
+ */
+exports.rollbackIfPending = async (transaction) => {
+    if (transaction && !transaction.finished) {
+        try {
+            await transaction.rollback();
+        } catch (e) {
+            // A rollback that fails (dead connection, server-side timeout) is not
+            // actionable — the pool discards the connection either way. Swallow it so it
+            // cannot replace the caller's real error, or become an unhandled rejection in
+            // socket handlers, where Node's default is to kill the process.
+            console.error("Could not roll back transaction:", e.message);
+        }
+    }
+};
+
 exports.flattenObject = (obj, labels, min = false) => {
     const rs = {};
 
@@ -330,7 +354,10 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
     let erState;
     let correctAnswer = false;
     let alreadySolved = false;
-    const transaction = await sequelize.transaction();
+    // Opened lazily: only the PARTICIPANT branch writes. Opening one for every attempt
+    // (author tests, read-only checks, finished turns) pinned a pool connection for the
+    // whole call — answer validation and getERState included — and exhausted the pool.
+    let transaction = null;
 
     try {
         switch (puzzleValidator) {
@@ -363,17 +390,25 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
         const participationCode = await exports.checkTurnoAccess(teams, user, escapeRoom, preview);
 
         participation = participationCode;
-        alreadySolved = preview || Boolean(await models.retosSuperados.findOne({"where": {"puzzleId": puzzle.id, "teamId": teams[0].id, "success": true}}, {transaction}));
+        if (participation === PARTICIPANT && !preview) {
+            transaction = await sequelize.transaction();
+        }
+        // checkTurnoAccess returns AUTHOR (and NOT_A_PARTICIPANT) precisely when there is no
+        // team, so the lookup below has nothing to look up: skipping it is what lets those
+        // branches answer 202/423 instead of failing on `teams[0]` and returning a 500.
+        const [team] = teams || [];
+
+        alreadySolved = preview || Boolean(team && await models.retosSuperados.findOne({"where": {"puzzleId": puzzle.id, "teamId": team.id, "success": true}, transaction}));
         if (participation === PARTICIPANT) {
             try {
                 if (correctAnswer) {
                     code = OK;
                     if (!alreadySolved && !readOnly) {
-                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "userId": user.id, "success": true, answer}, {transaction});
+                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": team.id, "userId": user.id, "success": true, answer}, {transaction});
                     }
                 } else {
                     if (!alreadySolved) {
-                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": teams[0].id, "userId": user.id, "success": false, answer}, {transaction});
+                        await models.retosSuperados.create({"puzzleId": puzzle.id, "teamId": team.id, "userId": user.id, "success": false, answer}, {transaction});
                     }
                     status = 423;
                 }
@@ -391,7 +426,9 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
         } else {
             status = correctAnswer ? 202 : 423;
         }
-        await transaction.commit();
+        if (transaction) {
+            await transaction.commit();
+        }
         if (participation !== AUTHOR && (teams && teams.length)) {
             const attendance = participation === "PARTICIPANT" || participation === "TOO_LATE";
 
@@ -399,10 +436,15 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, re
         }
     } catch (e) {
         console.error(e);
-        await transaction.rollback();
         status = 500;
         code = ERROR;
         msg = e;
+    } finally {
+        // getERState runs after the commit, so a failure there (a pool timeout, say) used
+        // to hit `transaction.rollback()` on an already-committed transaction. That threw
+        // out of checkPuzzle instead of returning a 500, and the throw reached Express
+        // after the response had been sent — the ERR_HTTP_HEADERS_SENT noise in the logs.
+        await exports.rollbackIfPending(transaction);
     }
     return {status, "body": {code, correctAnswer, alreadySolved, "authentication": true, "token": user.token, participation, msg, erState}};
 };

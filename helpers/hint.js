@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../models");
 const {models} = sequelize;
-const {getCurrentPuzzle} = require("./utils");
+const {getCurrentPuzzle, rollbackIfPending} = require("./utils");
 
 exports.calculateNextHint = async (escapeRoom, team, status, score, category, messages, userId, ai) => {
     const success = status === "completed" || status === "passed";
@@ -35,8 +35,9 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                         ]
                     }
                 ],
-                "order": [["createdAt", "ASC"]]
-            }, {transaction});
+                "order": [["createdAt", "ASC"]],
+                transaction
+            });
 
             if (escapeRoom.hintLimit !== undefined && escapeRoom.hintLimit !== null && hints.length >= escapeRoom.hintLimit) {
                 return { "msg": messages.tooMany, "ok": false };
@@ -101,7 +102,7 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                 // than one for the same puzzle. Matching on a null hintId would otherwise
                 // collapse every custom hint (and every failed attempt) into one row.
                 const exists = hintId !== null
-                    ? await models.requestedHint.findOne({"where": {hintId, teamId}}, {transaction})
+                    ? await models.requestedHint.findOne({"where": {hintId, teamId}, transaction})
                     : null;
 
                 if (!exists) {
@@ -121,7 +122,13 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
         await transaction.commit();
         return { "ok": false, "msg": messages.failed};
     } catch (e) {
-        await transaction.rollback();
         return {"ok": false, "msg": e.message};
+    } finally {
+        // Several branches above return early (hint limit reached, hint interval not
+        // elapsed, no puzzle being worked on) without committing. Without this the
+        // transaction's connection is never released and the pool drains during a
+        // live game, which surfaces as SequelizeConnectionAcquireTimeoutError
+        // everywhere else.
+        await rollbackIfPending(transaction);
     }
 };

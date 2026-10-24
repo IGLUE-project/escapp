@@ -46,22 +46,26 @@ async function showScene (req, res, view, layout) {
 exports.show = (req, res) => showScene(req, res, "scenes/show", false);
 exports.show_framed = (req, res) => showScene(req, res, "scenes/show_framed", true);
 
-exports.newScene = async (req, res, _) => {
+exports.newScene = async (req, res, next) => {
     const {escapeRoomId} = req.params;
 
     if (!escapeRoomId) {
         return res.status(400).send("Escape room ID must be specified ");
     }
 
-    const puzzles = await models.puzzle.findAll({"where": {escapeRoomId}});
-    const nPuzzles = puzzles.length;
-    const {user} = req.session;
-    const lang = res.locals.i18n_lang;
+    try {
+        const puzzles = await models.puzzle.findAll({"where": {escapeRoomId}});
+        const nPuzzles = puzzles.length;
+        const {user} = req.session;
+        const lang = res.locals.i18n_lang;
 
-    res.render("scenes/edit", {"sceneId": undefined, "sceneJSON": undefined, escapeRoomId, nPuzzles, user, lang});
+        return res.render("scenes/edit", {"sceneId": undefined, "sceneJSON": undefined, escapeRoomId, nPuzzles, user, lang});
+    } catch (error) {
+        return next(error);
+    }
 };
 
-exports.editScene = async (req, res, _) => {
+exports.editScene = async (req, res, next) => {
     const {escapeRoomId} = req.params;
 
     if (!escapeRoomId) {
@@ -86,12 +90,17 @@ exports.editScene = async (req, res, _) => {
     }
 
     const sceneJSON = scene.content;
-    const puzzles = await models.puzzle.findAll({"where": {escapeRoomId}});
-    const nPuzzles = puzzles.length;
-    const {user} = req.session;
-    const lang = res.locals.i18n_lang;
 
-    res.render("scenes/edit", {sceneId, sceneJSON, escapeRoomId, nPuzzles, user, lang});
+    try {
+        const puzzles = await models.puzzle.findAll({"where": {escapeRoomId}});
+        const nPuzzles = puzzles.length;
+        const {user} = req.session;
+        const lang = res.locals.i18n_lang;
+
+        res.render("scenes/edit", {sceneId, sceneJSON, escapeRoomId, nPuzzles, user, lang});
+    } catch (error) {
+        next(error);
+    }
 };
 
 exports.deleteScene = async (req, res, _) => {

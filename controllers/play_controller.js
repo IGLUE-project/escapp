@@ -119,16 +119,20 @@ exports.startPlaying = async (req, res, next) => {
     // Res.redirect(`/escapeRooms/${req.escapeRoom.id}/play`);
 };
 
-
 // GET /escapeRooms/:escapeRoomId/messages
-exports.writeMessage = async (req, res) => {
+exports.writeMessage = async (req, res, next) => {
     const {escapeRoom} = req;
-    const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "category": {[Sequelize.Op.ne]: "TEST"}}, "order": [["date", "ASC NULLS LAST"]]});
-    const participants = await models.user.findAll(queries.user.participantsWithTurnoAndTeam(escapeRoom.id, undefined, "name"));
-    const teams = await models.team.findAll(queries.team.teamComplete(escapeRoom.id, undefined, "name", true));
-    const {turnId} = req.query;
+    try {
+        const turnos = await models.turno.findAll({"where": {"escapeRoomId": escapeRoom.id, "category": {[Sequelize.Op.ne]: "TEST"}}, "order": [["date", "ASC NULLS LAST"]]});
+        const participants = await models.user.findAll(queries.user.participantsWithTurnoAndTeam(escapeRoom.id, undefined, "name"));
+        const teams = await models.team.findAll(queries.team.teamComplete(escapeRoom.id, undefined, "name", true));
+        const {turnId} = req.query;
 
-    res.render("escapeRooms/messages", {escapeRoom, turnos, participants, teams, turnId});
+        res.render("escapeRooms/messages", {escapeRoom, turnos, participants, teams, turnId});
+    } catch (error) {
+        // Without this an async handler's rejection is unhandled, which ends the process.
+        next(error);
+    }
 };
 
 // POST /escapeRooms/:escapeRoomId/messages

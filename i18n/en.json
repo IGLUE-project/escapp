@@ -995,7 +995,7 @@
         "title": "Guides",
         "description": "Select a guide to help you create and manage your escape rooms.",
         "inspiration": {
-            "title": "Best Practices guide",
+            "title": "Best Practices Guide",
             "description": "A guide with guidelines and recommendations for designing, building, and running educational escape rooms"
         },
         "manual": {
@@ -1004,7 +1004,7 @@
         },
         "bestPracticesEscapp": {
             "title": "Best Practices with Escapp",
-            "description": "Tips and best practices for building and running your escape rooms with Escapp"
+            "description": "Guide to applying best practices when creating and running educational escape rooms with Escapp"
         }
     },
     "participant": {

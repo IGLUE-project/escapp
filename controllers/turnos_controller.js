@@ -4,7 +4,7 @@ const {Op} = Sequelize;
 const {models} = sequelize;
 const {nextStep, prevStep} = require("../helpers/progress");
 const {startTurno, stopTurno} = require("../helpers/sockets");
-const {validationError, isValidDate} = require("../helpers/utils");
+const {validationError, isValidDate, rollbackIfPending} = require("../helpers/utils");
 
 
 // Autoload the turn with id equals to :turnId
@@ -264,7 +264,7 @@ exports.reset = async (req, res, next) => {
         req.flash("success", i18n.common.flash.successResetingTurno);
         res.redirect(back);
     } catch (error) {
-        await transaction.rollback();
+        await rollbackIfPending(transaction);
 
         next(error);
     }
