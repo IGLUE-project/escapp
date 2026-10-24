@@ -94,7 +94,8 @@
         "puzzleStats": {
             "title": "Puzzle statistics",
             "cumulative": "Cumulative times",
-            "nonCumulative": "Non-cumulative times"
+            "nonCumulative": "Non-cumulative times",
+            "numberOfFailedAttempts": "Number of failed attempts"
         },
         "summary": {
             "title": "Summary"
@@ -288,6 +289,7 @@
         "Total": "Total",
         "teamsOf": "Teams of",
         "teams": "Teams",
+        "teamsParticipationMode": "Teams",
         "of": "of",
         "players": "players",
         "upTo": "up to",

@@ -95,7 +95,8 @@
     "puzzleStats": {
       "title": "Statistika zagonetki",
       "cumulative": "Kumulativna vremena",
-      "nonCumulative": "Nekumulativna vremena"
+      "nonCumulative": "Nekumulativna vremena",
+      "numberOfFailedAttempts": "Broj neuspešnih pokušaja"
     },
     "summary": {
       "title": "Rezime"
@@ -287,8 +288,9 @@
     "profile": "Profil",
     "total": "ukupno",
     "Total": "Ukupno",
-    "upTo": "Do",
+    "upTo": "do",
     "teams": "Timovi",
+    "teamsParticipationMode": "Timovi",
     "of": "od",
     "players": "igrača",
     "no": "Ne",
@@ -948,9 +950,9 @@
       "sr": "srpski"
     },
     "logos_eu": {
-      "img_url": "logo_eu_en.png",
+      "img_url": "logo_eu_sr.png",
       "alt": "Sufinansirano od strane Evropske unije",
-      "link": "https://iglue.dit.upm.es"
+      "link": "https://iglue.dit.upm.es/sr"
     },
     "resources": {
       "title": "Resursi za kreiranje zagonetki",

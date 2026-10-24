@@ -90,7 +90,8 @@
         "puzzleStats": {
             "title": "Estadísticas de retos",
             "cumulative": "Tiempos acumulados",
-            "nonCumulative": "Tiempos no acumulados"
+            "nonCumulative": "Tiempos no acumulados",
+            "numberOfFailedAttempts": "Nº de intentos fallidos"
         },
         "puzzleTimes": {
             "title": "Tiempo empleado en cada reto"
@@ -170,8 +171,9 @@
         "delete": "borrar",
         "download": "descargar",
         "edit": "editar",
-        "upTo": "hasta",
+        "upTo": "de hasta",
         "teams": "Equipos",
+        "teamsParticipationMode": "Equipos",
         "of": "de",
         "teamsOf": "Equipos de",
         "players": "jugadores",

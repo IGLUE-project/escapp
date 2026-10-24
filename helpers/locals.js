@@ -113,8 +113,14 @@ module.exports = function (app) {
     });
 
     app.locals.formatTeamSize = function (minTeamSize, teamSize, i18n) {
-        const hasMin = Number.isInteger(minTeamSize) && minTeamSize > 0;
-        const hasMax = Number.isInteger(teamSize) && teamSize > 0;
+        let hasMin = Number.isInteger(minTeamSize) && minTeamSize > 0;
+        let hasMax = Number.isInteger(teamSize) && teamSize > 0;
+
+        if (!hasMin && !hasMax) {
+            //Default mode: Teams of 1+ players
+            minTeamSize = 1;
+            hasMin = true;
+        }
 
         if (hasMin && !hasMax) {
             return `${i18n.common.teams} ${i18n.common.of} ${minTeamSize}+ ${i18n.common.players}`;
@@ -127,8 +133,11 @@ module.exports = function (app) {
         }
 
         if (hasMin && hasMax) {
+            minTeamSize = Math.min(teamSize, minTeamSize);
             if (minTeamSize === teamSize) {
-                return `${i18n.common.teams} ${i18n.common.of} ${teamSize} ${i18n.common.players}`;
+                return teamSize === 1
+                    ? i18n.network.filters.participation.individual
+                    : `${i18n.common.teams} ${i18n.common.of} ${teamSize} ${i18n.common.players}`;
             }
 
             if (minTeamSize <= 1) {
@@ -138,7 +147,7 @@ module.exports = function (app) {
             return `${i18n.common.teams} ${i18n.common.of} ${minTeamSize}-${teamSize} ${i18n.common.players}`;
         }
 
-        return "";
+        return `${i18n.common.teamsParticipationMode}`;
     };
 
     app.locals.getShiftTitleWithDate = (shift, i18n) => {
