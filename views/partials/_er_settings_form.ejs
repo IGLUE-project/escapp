@@ -253,12 +253,18 @@ $(function(){
     });
 
     $('#main-er-create-edit-form').submit((e)=>{
-      
-      
-      $("<input />").attr("type", "hidden")
-        .attr("name", "description")
-        .attr("value", CKEDITOR.instances["custom-content"].getData())
-        .appendTo("#main-er-create-edit-form");
+      // Reuse the field: appending a new one on every submit would send "description"
+      // twice if the form is submitted more than once (a second click while an upload
+      // is still in flight), and the server would receive an array instead of a string
+      const form = $('#main-er-create-edit-form');
+      let descriptionInput = form.find('input[type="hidden"][name="description"]');
+
+      if (descriptionInput.length === 0) {
+        descriptionInput = $("<input />").attr("type", "hidden")
+          .attr("name", "description")
+          .appendTo(form);
+      }
+      descriptionInput.val(CKEDITOR.instances["custom-content"].getData());
       return true;
   });
 })

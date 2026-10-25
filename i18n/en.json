@@ -993,6 +993,84 @@
         "intro": "The collection of puzzles below allows you to connect digital puzzle applications with the puzzle outline that you defined for your Escapp escape room. You can customize their settings and share them with your students as a part of your escape room.",
         "resourceCatalog": "Resource catalog"
     },
+    "about": {
+        "title": "About Escapp",
+        "subtitle": "An open-source platform for creating, conducting and sharing educational escape rooms",
+        "featuresTitle": "Main features",
+        "features": {
+            "authoring": {
+                "title": "Escape room authoring",
+                "description": "Design your escape room step by step: basic settings, instructions, puzzles, hints, evaluation and sharing, with fully customizable appearance and interactive scenes."
+            },
+            "puzzles": {
+                "title": "Reusable puzzles",
+                "description": "Pick ready-made interactive puzzles from the catalog and configure them for your activity, or add your own ones without writing a single line of code."
+            },
+            "shifts": {
+                "title": "Shifts and teams",
+                "description": "Run the same escape room with as many groups as you need: scheduled, always-open, public and test shifts, with individual or team participation."
+            },
+            "hints": {
+                "title": "Hint system",
+                "description": "Define hints per puzzle and decide how participants can get them, with configurable costs and rewards and a dedicated hint interface."
+            },
+            "analytics": {
+                "title": "Learning analytics",
+                "description": "Monitor progress in real time and review rankings, progress charts, timelines, histograms and puzzle statistics once the activity is over."
+            },
+            "evaluation": {
+                "title": "Assessment and grading",
+                "description": "Set up a grading rubric: how much the puzzles and the hints weigh, how much counts for taking part, and export participants' results."
+            },
+            "network": {
+                "title": "EscappNet",
+                "description": "Search escape rooms published across every connected Escapp instance, play them, or import them into your own profile to adapt them."
+            },
+            "api": {
+                "title": "API and integrations",
+                "description": "Connect your own resources, apps and puzzles to Escapp through its API, and import or export complete escape rooms."
+            },
+            "openSource": {
+                "title": "Free and self-hostable",
+                "description": "Escapp is published under the GNU GPL v3 licence, is available in several languages, and any institution can deploy its own instance."
+            }
+        },
+        "repository": {
+            "title": "Source code",
+            "description": "Escapp's source code is publicly available on GitHub.",
+            "version": "Version",
+            "commit": "Revision",
+            "commitUnavailable": "not available",
+            "releases": "Releases",
+            "visit": "View repository"
+        },
+        "mooc": {
+            "title": "Free online course",
+            "description": "Learn how to design, create and run educational escape rooms with Escapp.",
+            "name": "Creating digital escape rooms with Escapp",
+            "link": "https://sites.uef.fi/learning-analytics/iglue-mooc/",
+            "visit": "Go to the course"
+        },
+        "documentation": {
+            "title": "Documentation",
+            "description": "Guides and manuals for teachers, students and developers.",
+            "manual": "User manual",
+            "bestPractices": "Best practices guide",
+            "bestPracticesEscapp": "Best practices with Escapp",
+            "developers": "Developer documentation"
+        },
+        "publications": {
+            "title": "Research about Escapp",
+            "description": "Escapp has been used to run educational escape rooms both in class and remotely. These experiences have resulted in the following research articles:",
+            "source": "Sources: IGLUE project results and the Escapp repository."
+        },
+        "funding": {
+            "title": "Funding",
+            "description": "This software is co-funded by the European Union through the IGLUE (Implementation of Game-based Learning Using Escape Rooms) project under the Erasmus+ Programme.",
+            "reference": "Project reference",
+            "visit": "Visit the project website"
+        }
+    },
     "guides": {
         "title": "Guides",
         "description": "Select a guide to help you create and manage your escape rooms.",

@@ -1,0 +1,246 @@
+@use "common/colors"
+
+#mainSection
+  .main
+    &.about
+      font-size: 18px
+      padding-bottom: 120px
+      *:not(i):not(h1):not(h2):not(h3):not(.material-icons)
+        font-family: Lato, sans-serif
+      .about-hero
+        text-align: center
+        margin-bottom: 50px
+        .about-logo
+          width: 180px
+          max-width: 60%
+        h1
+          margin: 20px 0 10px 0
+          font-size: 32px
+        .about-subtitle
+          text-align: center
+          color: colors.$textgrey
+          max-width: 700px
+          margin: 0 auto
+      .about-section-title
+        text-align: center
+        color: colors.$brightyellow
+        margin-bottom: 30px
+      .about-features
+        max-width: 1200px
+        margin: 0 auto
+        position: relative
+        // Owl lays items out as inline-block; flex makes every card in a page match the tallest one
+        .owl-stage
+          display: flex
+        .owl-item
+          display: flex
+        .owl-nav
+          margin: 0
+          .owl-next, .owl-prev
+            position: absolute
+            top: 50%
+            transform: translateY(-50%)
+            margin: 0
+            width: 48px
+            height: 48px
+            border-radius: 50%
+            background-color: rgba(22, 25, 56, 0.85)
+            border: 1px solid #3a3a5a
+            color: colors.$brightyellow
+            display: flex
+            align-items: center
+            justify-content: center
+            transition: background-color 0.2s, border-color 0.2s, transform 0.2s
+            .material-icons
+              font-size: 30px
+              line-height: 1
+            &:hover
+              background-color: colors.$brightyellow
+              border-color: colors.$brightyellow
+              color: colors.$darkerpurple
+            &.disabled
+              opacity: 0.35
+          .owl-prev
+            left: -24px
+          .owl-next
+            right: -24px
+        .owl-dots
+          margin-top: 25px
+          .owl-dot
+            span
+              background: #3a3a5a !important
+            &.active span, &:hover span
+              background: colors.$brightyellow !important
+        .about-feature
+          display: flex
+          flex-direction: column
+          align-items: center
+          padding: 25px
+          width: 100%
+          background: colors.$darkerpurple
+          border: 1px solid #3a3a5a
+          border-radius: 12px
+          transition: transform 0.2s, box-shadow 0.2s
+          &:hover
+            transform: translateY(-5px)
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3)
+            border-color: #5a5a7a
+          padding: 0 0 25px 0
+          overflow: hidden
+          .about-feature-shot
+            position: relative
+            width: 100%
+            margin-bottom: 15px
+            img
+              display: block
+              width: 100%
+              aspect-ratio: 16 / 9
+              object-fit: cover
+              object-position: top center
+              border-bottom: 1px solid #3a3a5a
+            .about-feature-icon
+              position: absolute
+              right: 15px
+              bottom: -22px
+              width: 44px
+              height: 44px
+              border-radius: 50%
+              background: linear-gradient(135deg, #4a4a7a 0%, #3a3a5a 100%)
+              border: 2px solid colors.$darkerpurple
+              display: flex
+              align-items: center
+              justify-content: center
+              font-size: 24px
+              color: colors.$brightyellow
+          h3, p
+            padding: 0 25px
+          h3
+            margin: 0 0 10px 0
+            font-size: 21px
+            color: colors.$brightgreen
+            text-align: center
+          p
+            margin: 0
+            text-align: center
+            color: #cccccc
+            font-size: 16px
+      .about-panels
+        display: flex
+        flex-wrap: wrap
+        gap: 30px
+        justify-content: center
+        margin-top: 60px
+        .about-panel
+          width: 420px
+          padding: 25px
+          background: colors.$darkerpurple
+          border: 1px solid #3a3a5a
+          border-radius: 12px
+          h3
+            margin: 0 0 15px 0
+            font-size: 21px
+            color: colors.$brightyellow
+            .material-icons
+              margin-right: 10px
+              color: colors.$brightgreen
+          p
+            color: #cccccc
+            font-size: 16px
+          .about-highlight
+            color: white
+            font-weight: bold
+          .about-meta
+            list-style: none
+            padding: 0
+            margin: 20px 0
+            li
+              display: flex
+              justify-content: space-between
+              align-items: center
+              padding: 8px 0
+              border-bottom: 1px solid #3a3a5a
+              &:last-child
+                border-bottom: none
+          .about-meta-label
+            color: colors.$textgrey
+            font-size: 16px
+          .about-meta-value
+            color: colors.$brightgreen
+            font-weight: bold
+            &:hover
+              text-decoration: underline
+          .about-commit
+            font-family: monospace !important
+          .about-links
+            list-style: none
+            padding: 0
+            li
+              padding: 6px 0
+              a
+                color: colors.$brightgreen
+                .material-icons
+                  font-size: 16px
+                  margin-left: 5px
+                &:hover
+                  text-decoration: underline
+          .about-link
+            display: inline-flex
+            align-items: center
+            margin-top: 10px
+            color: colors.$brightgreen
+            font-weight: bold
+            .material-icons
+              font-size: 18px
+              margin-left: 6px
+            &:hover
+              text-decoration: underline
+        .about-funding
+          .about-funding-logo
+            display: block
+            margin-top: 20px
+            img
+              width: 220px
+              max-width: 100%
+
+      .about-publications
+        max-width: 1000px
+        margin: 60px auto 0 auto
+        .about-publications-intro
+          text-align: center
+          color: colors.$textgrey
+          font-size: 16px
+          margin-bottom: 30px
+        .about-paper-list
+          padding-left: 25px
+          .about-paper
+            color: colors.$textgrey
+            margin-bottom: 18px
+            padding-left: 8px
+            &::marker
+              color: colors.$brightyellow
+            .about-paper-title
+              display: block
+              color: white
+              font-weight: bold
+              font-size: 17px
+              .material-icons
+                font-size: 15px
+                margin-left: 5px
+                color: colors.$brightgreen
+              &:hover
+                color: colors.$brightgreen
+                text-decoration: underline
+            .about-paper-authors, .about-paper-venue
+              display: block
+              font-size: 15px
+            .about-paper-venue
+              color: colors.$brightgreen
+
+
+@media (max-width: 800px)
+  #mainSection
+    .main
+      &.about
+        .about-panels
+          .about-panel
+            width: 100%

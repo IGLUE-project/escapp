@@ -242,6 +242,302 @@ button.flash-button, input[type=submit].flash-button, .aButton.flash-button {
   color: #9292B0;
 }
 
+#mainSection .main.about {
+  font-size: 18px;
+  padding-bottom: 120px;
+}
+#mainSection .main.about *:not(i):not(h1):not(h2):not(h3):not(.material-icons) {
+  font-family: Lato, sans-serif;
+}
+#mainSection .main.about .about-hero {
+  text-align: center;
+  margin-bottom: 50px;
+}
+#mainSection .main.about .about-hero .about-logo {
+  width: 180px;
+  max-width: 60%;
+}
+#mainSection .main.about .about-hero h1 {
+  margin: 20px 0 10px 0;
+  font-size: 32px;
+}
+#mainSection .main.about .about-hero .about-subtitle {
+  text-align: center;
+  color: #a1a3af;
+  max-width: 700px;
+  margin: 0 auto;
+}
+#mainSection .main.about .about-section-title {
+  text-align: center;
+  color: #FAC855;
+  margin-bottom: 30px;
+}
+#mainSection .main.about .about-features {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+#mainSection .main.about .about-features .owl-stage {
+  display: flex;
+}
+#mainSection .main.about .about-features .owl-item {
+  display: flex;
+}
+#mainSection .main.about .about-features .owl-nav {
+  margin: 0;
+}
+#mainSection .main.about .about-features .owl-nav .owl-next, #mainSection .main.about .about-features .owl-nav .owl-prev {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(22, 25, 56, 0.85);
+  border: 1px solid #3a3a5a;
+  color: #FAC855;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+#mainSection .main.about .about-features .owl-nav .owl-next .material-icons, #mainSection .main.about .about-features .owl-nav .owl-prev .material-icons {
+  font-size: 30px;
+  line-height: 1;
+}
+#mainSection .main.about .about-features .owl-nav .owl-next:hover, #mainSection .main.about .about-features .owl-nav .owl-prev:hover {
+  background-color: #FAC855;
+  border-color: #FAC855;
+  color: #161938;
+}
+#mainSection .main.about .about-features .owl-nav .owl-next.disabled, #mainSection .main.about .about-features .owl-nav .owl-prev.disabled {
+  opacity: 0.35;
+}
+#mainSection .main.about .about-features .owl-nav .owl-prev {
+  left: -24px;
+}
+#mainSection .main.about .about-features .owl-nav .owl-next {
+  right: -24px;
+}
+#mainSection .main.about .about-features .owl-dots {
+  margin-top: 25px;
+}
+#mainSection .main.about .about-features .owl-dots .owl-dot span {
+  background: #3a3a5a !important;
+}
+#mainSection .main.about .about-features .owl-dots .owl-dot.active span, #mainSection .main.about .about-features .owl-dots .owl-dot:hover span {
+  background: #FAC855 !important;
+}
+#mainSection .main.about .about-features .about-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  width: 100%;
+  background: #161938;
+  border: 1px solid #3a3a5a;
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 0 0 25px 0;
+  overflow: hidden;
+}
+#mainSection .main.about .about-features .about-feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-color: #5a5a7a;
+}
+#mainSection .main.about .about-features .about-feature .about-feature-shot {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+#mainSection .main.about .about-features .about-feature .about-feature-shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  object-position: top center;
+  border-bottom: 1px solid #3a3a5a;
+}
+#mainSection .main.about .about-features .about-feature .about-feature-shot .about-feature-icon {
+  position: absolute;
+  right: 15px;
+  bottom: -22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4a4a7a 0%, #3a3a5a 100%);
+  border: 2px solid #161938;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #FAC855;
+}
+#mainSection .main.about .about-features .about-feature h3, #mainSection .main.about .about-features .about-feature p {
+  padding: 0 25px;
+}
+#mainSection .main.about .about-features .about-feature h3 {
+  margin: 0 0 10px 0;
+  font-size: 21px;
+  color: #48C18E;
+  text-align: center;
+}
+#mainSection .main.about .about-features .about-feature p {
+  margin: 0;
+  text-align: center;
+  color: #cccccc;
+  font-size: 16px;
+}
+#mainSection .main.about .about-panels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 60px;
+}
+#mainSection .main.about .about-panels .about-panel {
+  width: 420px;
+  padding: 25px;
+  background: #161938;
+  border: 1px solid #3a3a5a;
+  border-radius: 12px;
+}
+#mainSection .main.about .about-panels .about-panel h3 {
+  margin: 0 0 15px 0;
+  font-size: 21px;
+  color: #FAC855;
+}
+#mainSection .main.about .about-panels .about-panel h3 .material-icons {
+  margin-right: 10px;
+  color: #48C18E;
+}
+#mainSection .main.about .about-panels .about-panel p {
+  color: #cccccc;
+  font-size: 16px;
+}
+#mainSection .main.about .about-panels .about-panel .about-highlight {
+  color: white;
+  font-weight: bold;
+}
+#mainSection .main.about .about-panels .about-panel .about-meta {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+#mainSection .main.about .about-panels .about-panel .about-meta li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #3a3a5a;
+}
+#mainSection .main.about .about-panels .about-panel .about-meta li:last-child {
+  border-bottom: none;
+}
+#mainSection .main.about .about-panels .about-panel .about-meta-label {
+  color: #a1a3af;
+  font-size: 16px;
+}
+#mainSection .main.about .about-panels .about-panel .about-meta-value {
+  color: #48C18E;
+  font-weight: bold;
+}
+#mainSection .main.about .about-panels .about-panel .about-meta-value:hover {
+  text-decoration: underline;
+}
+#mainSection .main.about .about-panels .about-panel .about-commit {
+  font-family: monospace !important;
+}
+#mainSection .main.about .about-panels .about-panel .about-links {
+  list-style: none;
+  padding: 0;
+}
+#mainSection .main.about .about-panels .about-panel .about-links li {
+  padding: 6px 0;
+}
+#mainSection .main.about .about-panels .about-panel .about-links li a {
+  color: #48C18E;
+}
+#mainSection .main.about .about-panels .about-panel .about-links li a .material-icons {
+  font-size: 16px;
+  margin-left: 5px;
+}
+#mainSection .main.about .about-panels .about-panel .about-links li a:hover {
+  text-decoration: underline;
+}
+#mainSection .main.about .about-panels .about-panel .about-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
+  color: #48C18E;
+  font-weight: bold;
+}
+#mainSection .main.about .about-panels .about-panel .about-link .material-icons {
+  font-size: 18px;
+  margin-left: 6px;
+}
+#mainSection .main.about .about-panels .about-panel .about-link:hover {
+  text-decoration: underline;
+}
+#mainSection .main.about .about-panels .about-funding .about-funding-logo {
+  display: block;
+  margin-top: 20px;
+}
+#mainSection .main.about .about-panels .about-funding .about-funding-logo img {
+  width: 220px;
+  max-width: 100%;
+}
+#mainSection .main.about .about-publications {
+  max-width: 1000px;
+  margin: 60px auto 0 auto;
+}
+#mainSection .main.about .about-publications .about-publications-intro {
+  text-align: center;
+  color: #a1a3af;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+#mainSection .main.about .about-publications .about-paper-list {
+  padding-left: 25px;
+}
+#mainSection .main.about .about-publications .about-paper-list .about-paper {
+  color: #a1a3af;
+  margin-bottom: 18px;
+  padding-left: 8px;
+}
+#mainSection .main.about .about-publications .about-paper-list .about-paper::marker {
+  color: #FAC855;
+}
+#mainSection .main.about .about-publications .about-paper-list .about-paper .about-paper-title {
+  display: block;
+  color: white;
+  font-weight: bold;
+  font-size: 17px;
+}
+#mainSection .main.about .about-publications .about-paper-list .about-paper .about-paper-title .material-icons {
+  font-size: 15px;
+  margin-left: 5px;
+  color: #48C18E;
+}
+#mainSection .main.about .about-publications .about-paper-list .about-paper .about-paper-title:hover {
+  color: #48C18E;
+  text-decoration: underline;
+}
+#mainSection .main.about .about-publications .about-paper-list .about-paper .about-paper-authors, #mainSection .main.about .about-publications .about-paper-list .about-paper .about-paper-venue {
+  display: block;
+  font-size: 15px;
+}
+#mainSection .main.about .about-publications .about-paper-list .about-paper .about-paper-venue {
+  color: #48C18E;
+}
+
+@media (max-width: 800px) {
+  #mainSection .main.about .about-panels .about-panel {
+    width: 100%;
+  }
+}
 .main.summary .flex-container.analytics-menu {
   display: flex;
   flex-direction: row;

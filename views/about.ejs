@@ -1,0 +1,137 @@
+<link rel="stylesheet" href="/stylesheets/vendor/owl.carousel.min.css">
+<link rel="stylesheet" href="/stylesheets/vendor/owl.theme.default.css">
+<%- include ("partials/_header.ejs") %>
+<%
+    const features = [
+        {"key": "authoring", "icon": "games"},
+        {"key": "puzzles", "icon": "extension"},
+        {"key": "shifts", "icon": "groups"},
+        {"key": "hints", "icon": "lightbulb"},
+        {"key": "analytics", "icon": "insights"},
+        {"key": "evaluation", "icon": "school"},
+        {"key": "network", "icon": "language"},
+        {"key": "api", "icon": "link"},
+        {"key": "openSource", "icon": "dns"}
+    ];
+%>
+<div role="main" class="main about">
+    <div class="about-hero">
+        <img class="about-logo" alt="Escapp" src="/images/escapp.png"/>
+        <h1><%= i18n.about.title %></h1>
+        <p class="about-subtitle"><%= i18n.about.subtitle %></p>
+    </div>
+
+    <h2 class="about-section-title"><%= i18n.about.featuresTitle %></h2>
+    <div class="about-features owl-carousel owl-theme">
+        <% features.forEach((feature) => { %>
+            <div class="about-feature">
+                <div class="about-feature-shot">
+                    <img alt="<%= i18n.about.features[feature.key].title %>" src="/images/about/<%= feature.key %>_<%= i18n.lang %>.jpg" loading="lazy"/>
+                    <span class="about-feature-icon material-icons"><%= feature.icon %></span>
+                </div>
+                <h3><%= i18n.about.features[feature.key].title %></h3>
+                <p><%= i18n.about.features[feature.key].description %></p>
+            </div>
+        <% }); %>
+    </div>
+
+    <div class="about-panels">
+        <div class="about-panel">
+            <h3><span class="material-icons">call_split</span><%= i18n.about.repository.title %></h3>
+            <p><%= i18n.about.repository.description %></p>
+            <ul class="about-meta">
+                <li>
+                    <span class="about-meta-label"><%= i18n.about.repository.version %></span>
+                    <a class="about-meta-value" href="<%= appInfo.releasesUrl %>" target="_blank" rel="noopener noreferrer">v<%= appInfo.version %></a>
+                </li>
+                <li>
+                    <span class="about-meta-label"><%= i18n.about.repository.commit %></span>
+                    <% if (appInfo.commitUrl) { %>
+                        <a class="about-meta-value about-commit" href="<%= appInfo.commitUrl %>" target="_blank" rel="noopener noreferrer"><%= appInfo.shortCommit %></a>
+                    <% } else { %>
+                        <span class="about-meta-value about-commit"><%= appInfo.shortCommit || i18n.about.repository.commitUnavailable %></span>
+                    <% } %>
+                </li>
+            </ul>
+            <a class="about-link" href="<%= appInfo.repositoryUrl %>" target="_blank" rel="noopener noreferrer">
+                <%= i18n.about.repository.visit %><span class="material-icons">open_in_new</span>
+            </a>
+        </div>
+
+        <div class="about-panel">
+            <h3><span class="material-icons">cast_for_education</span><%= i18n.about.mooc.title %></h3>
+            <p><%= i18n.about.mooc.description %></p>
+            <p class="about-highlight"><%= i18n.about.mooc.name %></p>
+            <a class="about-link" href="<%= i18n.about.mooc.link %>" target="_blank" rel="noopener noreferrer">
+                <%= i18n.about.mooc.visit %><span class="material-icons">open_in_new</span>
+            </a>
+        </div>
+
+        <div class="about-panel">
+            <h3><span class="material-icons">menu_book</span><%= i18n.about.documentation.title %></h3>
+            <p><%= i18n.about.documentation.description %></p>
+            <ul class="about-links">
+                <li><a href="/manual"><%= i18n.about.documentation.manual %></a></li>
+                <li><a href="/inspiration"><%= i18n.about.documentation.bestPractices %></a></li>
+                <li><a href="/best-practices-escapp"><%= i18n.about.documentation.bestPracticesEscapp %></a></li>
+                <li><a href="<%= appInfo.wikiUrl %>" target="_blank" rel="noopener noreferrer"><%= i18n.about.documentation.developers %><span class="material-icons">open_in_new</span></a></li>
+            </ul>
+        </div>
+
+        <div class="about-panel about-funding">
+            <h3><span class="material-icons">euro_symbol</span><%= i18n.about.funding.title %></h3>
+            <p><%= i18n.about.funding.description %></p>
+            <p class="about-meta-label"><%= i18n.about.funding.reference %>: <span class="about-highlight"><%= appInfo.projectReference %></span></p>
+            <a class="about-link" href="<%= i18n.logos_eu.link %>" target="_blank" rel="noopener noreferrer">
+                <%= i18n.about.funding.visit %><span class="material-icons">open_in_new</span>
+            </a>
+            <a class="about-funding-logo" href="<%= i18n.logos_eu.link %>" target="_blank" rel="noopener noreferrer" title="<%= i18n.about.funding.visit %>">
+                <img alt="<%= i18n.logos_eu.alt %>" src="/images/<%= i18n.logos_eu.img_url %>"/>
+            </a>
+        </div>
+    </div>
+
+    <div class="about-publications">
+        <h2 class="about-section-title"><%= i18n.about.publications.title %></h2>
+        <p class="about-publications-intro"><%= i18n.about.publications.description %></p>
+        <ol class="about-paper-list">
+            <% publications.forEach((paper) => { %>
+                <li class="about-paper">
+                    <a class="about-paper-title" href="<%= paper.url %>" target="_blank" rel="noopener noreferrer">
+                        <%= paper.title %><span class="material-icons">open_in_new</span>
+                    </a>
+                    <% if (paper.authors) { %>
+                        <span class="about-paper-authors"><%= paper.authors %></span>
+                    <% } %>
+                    <% if (paper.venue) { %>
+                        <span class="about-paper-venue"><%= paper.venue %><% if (paper.year) { %> (<%= paper.year %>)<% } %></span>
+                    <% } %>
+                </li>
+            <% }); %>
+        </ol>
+    </div>
+
+    <%- include ("partials/_footer.ejs") %>
+</div>
+
+<script src="/js/vendor/owl.carousel.min.js"></script>
+<script>
+    $(function () {
+        $(".about-features").owlCarousel({
+            "margin": 30,
+            "navText": [
+                "<span class=\"material-icons\">chevron_left</span>",
+                "<span class=\"material-icons\">chevron_right</span>"
+            ],
+            "loop": true,
+            "nav": true,
+            "dots": true,
+            "checkVisible": false,
+            "responsive": {
+                "0": {"items": 1},
+                "800": {"items": 2},
+                "1200": {"items": 3}
+            }
+        });
+    });
+</script>
