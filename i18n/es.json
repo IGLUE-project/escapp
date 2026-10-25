@@ -1562,6 +1562,7 @@
             "MessagePlaceholder": "Mensaje a mostrar tras resolver el reto",
             "Web": "Web",
             "Video": "Vídeo",
+            "Audio": "Audio",
             "FailureMessage" : "Mensaje de fallo",
             "BackgroundURL": "Fondo",
             "BackgroundURLPlaceholder": "Puedes introducir la URL de cualquier imagen que tengas en tu catálogo de recursos",
@@ -1784,6 +1785,19 @@
             "inputTypeVHS":"VHS",
             "inputStateOut": "Fuera",
             "inputStateIn": "Dentro"
+        },
+        "Radio": {
+            "name": "Radio",
+            "description": "Este recurso permite crear una radio en la que los participantes pueden sintonizar diferentes frecuencias y ajustar el volumen. La radio puede vincularse a un reto de la escape room y a su solución.",
+            "LoopStationAudio":"Reproducir el audio de las emisoras en bucle",   
+            "InitialFrequency":"Frecuencia inicial",
+            "InitialVolume":"Volumen inicial (0-100)",
+            "Stations":"Emisoras",
+            "Station":"Emisora",
+            "Frequency":"Frecuencia",
+            "Tolerance":"Tolerancia",
+            "ToleranceWithNoise":"Tolerancia con ruido",
+            "KeepRadioState":"Mantener estado de la radio"
         },
         "WireConnection": {
             "name": "Conexión de cables",

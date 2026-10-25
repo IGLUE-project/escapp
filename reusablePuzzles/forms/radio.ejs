@@ -1,0 +1,208 @@
+<br>
+<%- include ("./_validator.ejs", {allowedValidators: ["exact"], allowedNullPuzzle: true}, ) %>
+<br>
+<h4 class="titleLabelEdit"> <%=i18n.escapeRoom.steps.indications.front.catalog.config.customization%> </h4>
+
+<div>
+    <label for="skinSelectRadio"><%=i18n.reusablePuzzleApps.Common.skin%>:</label>
+    <select id="skinSelectRadio" name="skin">
+        <option value="STANDARD"><%=i18n.reusablePuzzleApps.Common.skins.Standard%></option>
+        <option value="RETRO"><%=i18n.reusablePuzzleApps.Common.skins.Retro%></option>
+    </select>
+</div>
+
+<div>
+    <label for="actionRadioSelect"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionRadioSelect" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="PLAY_SOUND"><%=i18n.reusablePuzzleApps.Common.playSound%></option>
+    </select>
+</div>
+
+<div id="loopStationAudioRadio">
+    <label for="loopStationAudio"><%=i18n.reusablePuzzleApps.Radio.LoopStationAudio%>:</label>
+    <select name="enableLoopForChannels" id="loopStationAudioRadioSelect">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div id="initialFrequencyRadio">
+    <label for="initialFrequencyRadioInput"><%=i18n.reusablePuzzleApps.Radio.InitialFrequency%>:</label>
+    <input id="initialFrequencyRadioInput" name="initialChannel" type="number" min="87" max="108" step="0.1" style="flex:1;" />
+</div>
+
+<div id="initialVolumeRadio">
+    <label for="initialVolumeRadioInput"><%=i18n.reusablePuzzleApps.Radio.InitialVolume%>:</label>
+    <input id="initialVolumeRadioInput" name="initialVolume" class="radioFrequencyInput" type="number" min="0" max="100" step="1" style="flex:1;" />
+</div>
+
+<div id="stationsDivRadio" style="flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px;">
+    <label><%=i18n.reusablePuzzleApps.Radio.Stations%></label>
+    <div class="stationWrapperRadioTemplate" style="display:none; flex-direction: column; border: 1px solid white; gap: 15px; padding: 20px 10px 5px 10px; border-radius: 20px; margin: 10px 0px 10px 0px;">
+        <div style="position: relative; padding: 0px 0px 6px 0px;">
+            <button class="deleteStationRadio" type="button" style="display:none; border: none; background: none; position: absolute; right: 0px; top: -21px; align-self: center; font-size: 22px;" onclick="deleteStationRadio(event)">
+                <span style="color: rgb(185, 62, 68);" class="material-icons">delete_outline</span>
+            </button>
+        </div>
+        <div>
+            <label><%=i18n.reusablePuzzleApps.Radio.Frequency%>:</label>
+            <input class="inputStationFrequency radioFrequencyInput" type="number" min="87" max="108" step="0.1" style="flex:1;" />
+        </div>
+        <div>
+            <label><%=i18n.reusablePuzzleApps.Common.Audio%>:</label>
+            <input class="inputStationAudio" type="text" style="flex:1;" />
+        </div>
+    </div>
+    <button class="rounded small addNewStationRadio" type="button" onclick="addStationRadio(event);" style="background-color: white; margin-top: 5px; margin-bottom: 10px"><span class="material-icons" style="color: #161938">add</span></button>
+</div>
+
+<div id="toleranceRadio">
+    <label for="toleranceRadioInput"><%=i18n.reusablePuzzleApps.Radio.Tolerance%>:</label>
+    <input id="toleranceRadioInput" name="channelRange" type="number" min="0" max="100" step="0.1" style="flex:1;" />
+</div>
+
+<div id="toleranceNoiseRadio">
+    <label for="toleranceNoiseRadioInput"><%=i18n.reusablePuzzleApps.Radio.ToleranceWithNoise%>:</label>
+    <input id="toleranceNoiseRadioInput" name="channelNoiseRange" type="number" min="0" max="100" step="0.1" style="flex:1;" />
+</div>
+
+<div id="KeepRadioState">
+    <label for="KeepRadioStateSelect"><%=i18n.reusablePuzzleApps.Radio.KeepRadioState%>:</label>
+    <select name="keepState" id="KeepRadioStateSelect">
+        <option value="TRUE"><%=i18n.reusablePuzzleApps.Common.Yes%></option>
+        <option value="FALSE"><%=i18n.reusablePuzzleApps.Common.No%></option>
+    </select>
+</div>
+
+<div>
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
+</div>
+<br>
+
+<input type="hidden" class="reusablePuzzleJSONSetting" id="stationsRadio" name="channels"/>
+
+<script>
+    var skinSelectRadio = document.getElementById("skinSelectRadio");
+    var actionRadioSelect = document.getElementById('actionRadioSelect');
+    var stationsRadioInput = document.getElementById("stationsRadio");
+
+    // skinSelectRadio.addEventListener('change', function() {
+    //     switch(this.value){
+    //     case "RETRO":
+    //         break;
+    //     default:
+    //     case "STANDARD":
+    //         break;
+    //     }
+    // });
+
+    // actionRadioSelect.addEventListener('change', function() {
+    // });
+
+    //Stations
+    var maxStationsRadioRP = 999;
+    function addStationRadioToDiv($stationsWrapper){
+        if ($stationsWrapper.length === 0) return;
+        const $stationTemplate = $stationsWrapper.find('.stationWrapperRadioTemplate');
+        if ($stationTemplate.length === 0) return;
+        const $allStations = $stationsWrapper.find('.stationWrapperRadio');
+        var stationNumber = $allStations.length + 1;
+        if (stationNumber > maxStationsRadioRP) return;
+        const $newStation = $stationTemplate.clone();
+        $newStation.removeClass("stationWrapperRadioTemplate").addClass("stationWrapperRadio");
+
+        $newStation.attr("stationNumber",stationNumber);
+        $newStation.find('button.deleteStationRadio').first().show();
+        $newStation.find('input.inputStationFrequency').val('');
+        $newStation.find('input.inputStationAudio').val('');
+        $stationsWrapper.find('button.addNewStationRadio').last().before($newStation);
+        if(stationNumber === maxStationsRadioRP){
+            var $addNewStationButton = $stationsWrapper.find('button.addNewStationRadio');
+            $addNewStationButton.attr("disabled","disabled");
+            $addNewStationButton.css("background-color", "#999");
+        }
+        $newStation.show();
+    };
+    function addStationRadio(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const $stationsWrapper = $(e.target).closest('#stationsDivRadio');
+        return addStationRadioToDiv($stationsWrapper);
+    };
+    function deleteStationRadio(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const $stationWrapper = $(e.target).closest('.stationWrapperRadio');
+        if ($stationWrapper.length !== 1) return;
+        const $stationsWrapper = $($stationWrapper).parent('#stationsDivRadio');
+        if ($stationsWrapper.length !== 1) return;
+        $stationWrapper.remove();
+        var $addStationButton = $stationsWrapper.find('button.addNewStationRadio');
+        $addStationButton.removeAttr("disabled");
+        $addStationButton.css("background-color", "white");
+        updateStationsRadio();
+        updateIframe();
+    };
+    function updateStationsRadio(){
+        var stations = [];
+        document.querySelectorAll('div.stationWrapperRadio').forEach(div => {
+            let station = {};
+            let addStation = false;
+            const inputStationFrequency = div.querySelector('input.inputStationFrequency');
+            const inputStationAudio = div.querySelector('input.inputStationAudio');
+
+            if(inputStationFrequency.value.trim()!==""){
+                station.id = inputStationFrequency.value;
+                addStation = true;
+            }
+            if(inputStationAudio.value.trim()!==""){
+                station.src = inputStationAudio.value;
+                addStation = true;
+            }
+            if(addStation){
+               stations.push(station); 
+            }
+        });
+        stationsRadioInput.value = JSON.stringify(stations);
+    };
+
+    if(window.currentOpenPuzzleConfig?.channels){
+        var stations = window.currentOpenPuzzleConfig?.channels;
+        if (Array.isArray(stations)){
+            stationsRadioInput.value = JSON.stringify(stations);
+            var $stationsWrapper = $("#stationsDivRadio");
+            for(var i=0; i<stations.length; i++){
+                var stationNumber = (i+1);
+                addStationRadioToDiv($stationsWrapper);
+                var $stationDiv = $stationsWrapper.find("div.stationWrapperRadio[stationNumber='" + stationNumber + "']");
+                $stationDiv.find("input.inputStationFrequency").val(stations[i].id);
+                $stationDiv.find("input.inputStationAudio").val(stations[i].src);
+            };
+        }
+    }
+
+    $("#stationsDivRadio").on('change','input', updateStationsRadio);
+
+
+    document.getElementById("skinSelectRadio").value =  window.currentOpenPuzzleConfig?.skin || 'STANDARD';
+    actionRadioSelect.value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    document.getElementById("loopStationAudioRadioSelect").value =  window.currentOpenPuzzleConfig?.enableLoopForChannels || 'TRUE';
+    document.getElementById("initialFrequencyRadioInput").value =  window.currentOpenPuzzleConfig?.initialChannel || '97.5';
+    document.getElementById("initialVolumeRadioInput").value =  window.currentOpenPuzzleConfig?.initialVolume || '50';
+    document.getElementById("toleranceRadioInput").value =  window.currentOpenPuzzleConfig?.channelRange || '0.0';
+    document.getElementById("toleranceNoiseRadioInput").value =  window.currentOpenPuzzleConfig?.channelNoiseRange || '0.3';
+    document.getElementById("KeepRadioStateSelect").value =  window.currentOpenPuzzleConfig?.keepState || 'FALSE';
+
+    //Trigger change events
+    // actionRadioSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    // skinSelectRadio.dispatchEvent(new Event('change', { bubbles: true }));
+</script>

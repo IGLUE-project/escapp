@@ -1556,6 +1556,7 @@
         "showWeb": "Prikaži veb",
         "Web": "Veb",
         "Video": "Video",
+        "Audio": "Audio",
         "playSound": "Reprodukuj zvuk",
         "Message": "Poruka",
         "MessagePlaceholder": "Poruka koja će se prikazati nakon rešavanja",
@@ -1761,7 +1762,7 @@
           "BottomContentMargin": "Donja margina sadržaja",
           "LeftContentMargin": "Leva margina sadržaja",
           "RightContentMargin": "Desna margina sadržaja",
-          "InitialVolume": "Početna jačina zvuka",
+          "InitialVolume": "Početna jačina zvuka (0-100)",
           "ASType": "Tip pomoćnog izvora",
           "ASInitialState": "Početno stanje pomoćnog izvora",
           "ASPlayerInitialState": "Početno stanje VHS plejera",
@@ -1778,6 +1779,19 @@
           "inputTypeVHS": "VHS",
           "inputStateOut": "Izbačeno",
           "inputStateIn": "Ubačeno"
+      },
+      "Radio": {
+        "name": "Radio",
+        "description": "Ovaj resurs omogućava kreiranje radija na kojem učesnici mogu da podešavaju različite frekvencije i jačinu zvuka. Radio se može povezati sa zagonetkom u escape room igri i njenim rešenjem.",
+        "LoopStationAudio": "Ponavljaj zvuk radio-stanica",
+        "InitialFrequency": "Početna frekvencija",
+        "InitialVolume": "Početna jačina zvuka (0-100)",
+        "Stations": "Radio-stanice",
+        "Station": "Radio-stanica",
+        "Frequency": "Frekvencija",
+        "Tolerance": "Tolerancija",
+        "ToleranceWithNoise": "Tolerancija sa šumom",
+        "KeepRadioState": "Sačuvaj stanje radija"
       },
       "WireConnection": {
         "name": "Žična veza",

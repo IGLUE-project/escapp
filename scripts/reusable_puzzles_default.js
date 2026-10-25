@@ -221,7 +221,7 @@ const reusablePuzzlesList = [
     {
         "name": "Radio",
         "zip": "defaultReusablePuzzles/Radio/Radio_Puzzle.zip",
-        "form": "television.ejs",
+        "form": "radio.ejs",
         "thumbnail": "defaultReusablePuzzles/Radio/Radio_Thumbnail.jpg",
         "instructions": {
             "en": "defaultReusablePuzzles/Radio/Radio_Instructions_EN.pdf",
