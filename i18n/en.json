@@ -1786,6 +1786,18 @@
             "inputStateOut": "Out",
             "inputStateIn": "In"
         },
+        "Radio": {
+            "name": "Radio",
+            "description": "This resource allows you to create a radio on which participants can tune to different frequencies and adjust the volume. The radio can be linked to an escape room puzzle and its solution.",
+            "LoopStationAudio":"Loop station audio",   
+            "InitialFrequency":"Initial frequency",
+            "Stations":"Stations",
+            "Station":"Station",
+            "StationFrequency":"Frequency",
+            "StationTolerance":"Tolerance",
+            "StationToleranceWithNoise":"Tolerance with noise",
+            "KeepRadioState":"Keep Radio state",
+        },
         "WireConnection": {
             "name": "Wire connection",
             "description": "This resource allows you to create a puzzle whose solution requires participants to connect source and destination nodes with wires in a specific way. The wires can have different colors and, optionally, each node (source or destination) can be associated with a number, a letter, or a symbol.",

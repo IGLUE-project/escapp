@@ -1,4 +1,5 @@
 const {addReusablePuzzle} = require("./reusable_puzzle.js");
+const sequelize = require("../models");
 
 const reusablePuzzlesList = [
     {
@@ -217,7 +218,19 @@ const reusablePuzzlesList = [
         },
         "order": 18
     },
-        {
+    {
+        "name": "Radio",
+        "zip": "defaultReusablePuzzles/Radio/Radio_Puzzle.zip",
+        "form": "television.ejs",
+        "thumbnail": "defaultReusablePuzzles/Radio/Radio_Thumbnail.jpg",
+        "instructions": {
+            "en": "defaultReusablePuzzles/Radio/Radio_Instructions_EN.pdf",
+            "es": "defaultReusablePuzzles/Radio/Radio_Instructions_ES.pdf",
+            "sr": "defaultReusablePuzzles/Radio/Radio_Instructions_SR.pdf"
+        },
+        "order": 19
+    },
+    {
         "name": "Conversation",
         "zip": "defaultReusablePuzzles/Conversation/Conversation_Puzzle.zip",
         "form": "conversation.ejs",
@@ -227,7 +240,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/Conversation/Conversation_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/Conversation/Conversation_Instructions_SR.pdf"
         },
-        "order": 19
+        "order": 20
     },
     {
         "name": "DragAndDropClassification",
@@ -239,7 +252,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/DragAndDropClassification/DragAndDropClassification_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/DragAndDropClassification/DragAndDropClassification_Instructions_SR.pdf"
         },
-        "order": 20
+        "order": 21
     },
     {
         "name": "DigitalClassifier",
@@ -251,7 +264,7 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/DigitalClassifier/DigitalClassifier_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/DigitalClassifier/DigitalClassifier_Instructions_SR.pdf"
         },
-        "order": 21
+        "order": 22
     },
     {
         "name": "PopupQuestion",
@@ -263,26 +276,32 @@ const reusablePuzzlesList = [
             "es": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_ES.pdf",
             "sr": "defaultReusablePuzzles/PopupQuestion/PopupQuestion_Instructions_SR.pdf"
         },
-        "order": 22
+        "order": 23
     },
-
-    // {
-    //     "name": "CodeEditor",
-    //     "zip": "defaultReusablePuzzles/CodeEditor/CodeEditor_Puzzle.zip",
-    //     "form": "codeEditor.ejs",
-    //     "thumbnail": "defaultReusablePuzzles/CodeEditor/CodeEditor_Thumbnail.png",
-    //     "instructions": {
-    //         "en": "defaultReusablePuzzles/CodeEditor/CodeEditor_Instructions_EN.pdf",
-    //         "es": "defaultReusablePuzzles/CodeEditor/CodeEditor_Instructions_ES.pdf"
-    //     }
-    // }
 ];
 
-async function addReusablePuzzles () {
-    for (const puz of reusablePuzzlesList) {
-        await addReusablePuzzle(puz.name, puz.form, puz.zip, puz.thumbnail, puz.instructions, puz.order);
+
+
+async function addReusablePuzzles() {
+    try {
+        for (const puz of reusablePuzzlesList) {
+            await addReusablePuzzle(
+                puz.name,
+                puz.form,
+                puz.zip,
+                puz.thumbnail,
+                puz.instructions,
+                puz.order
+            );
+        }
+        console.log("✅ Task successfully completed");
+    } catch (error) {
+        console.error("❌ Error:", error);
+        process.exitCode = 1;
+    } finally {
+        await sequelize.close();
+        // console.log("🔌 Sequelize connection closed");
     }
-    console.log("✅ Task succesfully completed");
 }
 
-addReusablePuzzles().catch(console.error);
+addReusablePuzzles();
