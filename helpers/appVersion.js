@@ -21,9 +21,32 @@ const resolveGitDir = () => {
     return pointer ? path.resolve(ROOT, pointer[1].trim()) : null;
 };
 
+// Resolve a ref (e.g. "refs/heads/master") to a revision, whether it is stored as a
+// loose file or packed away by `git gc`. Follows one level of symbolic ref.
+const readRef = (gitDir, ref, depth = 0) => {
+    let raw = null;
+
+    try {
+        raw = fs.readFileSync(path.join(gitDir, ref), "utf8").trim();
+    } catch (e) {
+        const packed = fs.readFileSync(path.join(gitDir, "packed-refs"), "utf8");
+        const line = packed.split("\n").find((l) => l.endsWith(` ${ref}`));
+
+        raw = line ? line.split(" ")[0] : null;
+    }
+    if (raw && raw.startsWith("ref:") && depth < 2) {
+        return readRef(gitDir, raw.slice(4).trim(), depth + 1);
+    }
+    return raw;
+};
+
 // Read the revision out of git's own files. Unlike running `git`, this does not
 // depend on the binary being on PATH, nor on the repository passing git's
 // ownership check, which fails when the server runs as another user (sudo, pm2).
+//
+// We report the remote-tracking ref rather than the local HEAD: a commit that has
+// not been pushed yet exists only on this machine, so linking to it on GitHub gives
+// a 404. If there is no remote ref, fall back to HEAD.
 const readRevisionFromGitDir = () => {
     const gitDir = resolveGitDir();
 
@@ -36,16 +59,20 @@ const readRevisionFromGitDir = () => {
         return head; // Detached HEAD holds the revision itself
     }
     const ref = head.slice(4).trim();
+    const branch = ref.replace("refs/heads/", "");
 
-    try {
-        return fs.readFileSync(path.join(gitDir, ref), "utf8").trim();
-    } catch (e) {
-        // The ref has been packed away by `git gc`
-        const packed = fs.readFileSync(path.join(gitDir, "packed-refs"), "utf8");
-        const line = packed.split("\n").find((l) => l.endsWith(` ${ref}`));
+    for (const candidate of [`refs/remotes/origin/${branch}`, "refs/remotes/origin/HEAD"]) {
+        try {
+            const pushed = readRef(gitDir, candidate);
 
-        return line ? line.split(" ")[0] : null;
+            if (pushed) {
+                return pushed;
+            }
+        } catch (e) {
+            // Try the next candidate
+        }
     }
+    return readRef(gitDir, ref);
 };
 
 const resolveCommit = () => {
