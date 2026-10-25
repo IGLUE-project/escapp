@@ -46,10 +46,10 @@
                 </li>
                 <li>
                     <span class="about-meta-label"><%= i18n.about.repository.commit %></span>
-                    <% if (appInfo.shortCommit) { %>
+                    <% if (appInfo.commitUrl) { %>
                         <a class="about-meta-value about-commit" href="<%= appInfo.commitUrl %>" target="_blank" rel="noopener noreferrer"><%= appInfo.shortCommit %></a>
                     <% } else { %>
-                        <span class="about-meta-value about-commit"><%= i18n.about.repository.commitUnavailable %></span>
+                        <span class="about-meta-value about-commit"><%= appInfo.shortCommit || i18n.about.repository.commitUnavailable %></span>
                     <% } %>
                 </li>
             </ul>
