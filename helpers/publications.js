@@ -1,5 +1,5 @@
 // Research articles reporting experiences conducted with Escapp, newest first.
-// Sources: the IGLUE project results page (https://iglue.dit.upm.es/project-results/),
+// Main sources: the IGLUE project results page (https://iglue.dit.upm.es/project-results/),
 // the UEF Learning Analytics escape rooms page (https://sites.uef.fi/learning-analytics/escape-rooms/)
 // and the "impact of Escapp" section of https://github.com/ging/escapp.
 // Literature reviews and meta-analyses are deliberately left out: this list is about
@@ -39,6 +39,13 @@ module.exports = [
         "venue": "Lecture Notes in Educational Technology (ICSLE 2025)",
         "year": 2025,
         "url": "https://www.researchgate.net/publication/396974410_Designing_an_Educational_Escape_Room_in_Biomedical_Sciences_using_Text-to-Image_Generative_AI"
+    },
+    {
+        "title": "Are Educational Escape Rooms More Effective Than Traditional Lectures for Teaching Software Engineering? A Randomized Controlled Trial",
+        "authors": "Gordillo, A., López-Fernández, D.",
+        "venue": "IEEE Transactions on Education, 67(5), 660-668",
+        "year": 2024,
+        "url": "https://doi.org/10.1109/TE.2024.3403913"
     },
     {
         "title": "Empowering Database Learning Through Remote Educational Escape Rooms",

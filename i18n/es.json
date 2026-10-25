@@ -995,20 +995,20 @@
     },
     "about": {
         "title": "Acerca de Escapp",
-        "subtitle": "Una plataforma de código abierto para crear, ejecutar y compartir escape rooms educativas",
-        "featuresTitle": "Características principales",
+        "subtitle": "Una plataforma web de código abierto para crear, realizar y compartir escape rooms educativas",
+        "featuresTitle": "Funcionalidades principales",
         "features": {
             "authoring": {
                 "title": "Creación de escape rooms",
-                "description": "Diseña tu escape room paso a paso: configuración básica, instrucciones, retos, pistas, evaluación y publicación, con una apariencia totalmente personalizable y escenas interactivas."
+                "description": "Crea tu escape room paso a paso: configuración básica, instrucciones, retos, pistas, evaluación y publicación, con una apariencia totalmente personalizable y escenas interactivas."
             },
             "puzzles": {
-                "title": "Retos reutilizables",
-                "description": "Elige retos interactivos ya preparados del catálogo y configúralos para tu actividad, o añade los tuyos propios sin escribir una sola línea de código."
+                "title": "Recursos interactivos",
+                "description": "Elige recursos interactivos del catálogo y configúralos para crear retos con ellos, o añade tus propios recursos sin escribir una sola línea de código."
             },
             "shifts": {
                 "title": "Turnos y equipos",
-                "description": "Ejecuta la misma escape room con tantos grupos como necesites: turnos programados, siempre abiertos, públicos y de prueba, con participación individual o por equipos."
+                "description": "Ejecuta la misma escape room con tantos grupos como necesites: turnos programados, asíncronos, públicos y de prueba, con participación individual o por equipos."
             },
             "hints": {
                 "title": "Sistema de pistas",
@@ -1024,7 +1024,7 @@
             },
             "network": {
                 "title": "EscappNet",
-                "description": "Busca escape rooms publicadas en todas las instancias de Escapp conectadas, juégalas o impórtalas a tu perfil para adaptarlas."
+                "description": "Una red abierta y descentralizada de escape rooms educativas en la que puedes buscar y jugar a las publicadas en todas las instancias de Escapp conectadas."
             },
             "api": {
                 "title": "API e integraciones",
@@ -1039,14 +1039,14 @@
             "title": "Código fuente",
             "description": "El código fuente de Escapp está disponible públicamente en GitHub.",
             "version": "Versión",
-            "commit": "Revisión",
+            "commit": "Commit",
             "commitUnavailable": "no disponible",
             "releases": "Versiones publicadas",
             "visit": "Ver repositorio"
         },
         "mooc": {
             "title": "Curso online gratuito",
-            "description": "Aprende a diseñar, crear y realizar escape rooms educativas con Escapp.",
+            "description": "Aprende a crear y realizar escape rooms educativas con Escapp.",
             "name": "Diseño, creación y realización de escape rooms educativas",
             "link": "https://eventos.upm.es/157281/detail/diseno-creacion-y-realizacion-de-escape-rooms-educativas.html",
             "visit": "Ir al curso"
@@ -1061,12 +1061,11 @@
         },
         "publications": {
             "title": "Investigación sobre Escapp",
-            "description": "Escapp se ha utilizado para realizar escape rooms educativas tanto en clase como de forma remota. Estas experiencias han dado lugar a los siguientes artículos de investigación:",
-            "source": "Fuentes: resultados del proyecto IGLUE y el repositorio de Escapp."
+            "description": "Artículos de investigación relacionados con Escapp"
         },
         "funding": {
             "title": "Financiación",
-            "description": "Este software está cofinanciado por la Unión Europea a través del proyecto IGLUE (Implementation of Game-based Learning Using Escape Rooms) del Programa Erasmus+.",
+            "description": "Este software ha sido cofinanciado por la Unión Europea en el marco del programa Erasmus+ a través del proyecto IGLUE (Implementation of Game-based Learning Using Escape Rooms).",
             "reference": "Referencia del proyecto",
             "visit": "Visitar la web del proyecto"
         }

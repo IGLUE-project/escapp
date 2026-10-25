@@ -995,16 +995,16 @@
     },
     "about": {
         "title": "O Escapp-u",
-        "subtitle": "Platforma otvorenog koda za kreiranje, sprovođenje i deljenje edukativnih escape soba",
+        "subtitle": "Veb platforma otvorenog koda za kreiranje, sprovođenje i deljenje edukativnih escape soba.",
         "featuresTitle": "Glavne funkcionalnosti",
         "features": {
             "authoring": {
                 "title": "Kreiranje escape soba",
-                "description": "Dizajnirajte svoju escape sobu korak po korak: osnovna podešavanja, uputstva, zagonetke, pomoći, evaluacija i deljenje, uz potpuno prilagodljiv izgled i interaktivne scene."
+                "description": "Kreirajte svoju escape room igru korak po korak: osnovna podešavanja, uputstva, zagonetke, pomoći, evaluacija i deljenje, uz potpuno prilagodljiv izgled i interaktivne scene."
             },
             "puzzles": {
-                "title": "Zagonetke za višekratnu upotrebu",
-                "description": "Izaberite gotove interaktivne zagonetke iz kataloga i podesite ih za svoju aktivnost ili dodajte sopstvene, bez pisanja ijedne linije koda."
+                "title": "Interaktivni resursi",
+                "description": "Izaberite interaktivne resurse iz kataloga i podesite ih kako biste kreirali zagonetke ili dodajte sopstvene bez pisanja ijedne linije koda."
             },
             "shifts": {
                 "title": "Smene i timovi",
@@ -1024,7 +1024,7 @@
             },
             "network": {
                 "title": "EscappNet",
-                "description": "Pretražujte escape sobe objavljene na svim povezanim Escapp instancama, igrajte ih ili ih uvezite u svoj profil da biste ih prilagodili."
+                "description": "Otvorena i decentralizovana mreža edukativnih escape room igara u kojoj možete da pretražujete i igrate igre objavljene na svim povezanim Escapp instancama."
             },
             "api": {
                 "title": "API i integracije",
@@ -1039,7 +1039,7 @@
             "title": "Izvorni kod",
             "description": "Izvorni kod Escapp-a je javno dostupan na GitHub-u.",
             "version": "Verzija",
-            "commit": "Revizija",
+            "commit": "Commit",
             "commitUnavailable": "nije dostupno",
             "releases": "Objavljena izdanja",
             "visit": "Pogledaj repozitorijum"
@@ -1061,12 +1061,11 @@
         },
         "publications": {
             "title": "Istraživanja o Escapp-u",
-            "description": "Escapp se koristi za sprovođenje edukativnih escape soba, i u nastavi i na daljinu. Ta iskustva su rezultirala sledećim naučnim radovima:",
-            "source": "Izvori: rezultati projekta IGLUE i Escapp repozitorijum."
+            "description": "Naučni članci povezani sa Escapp platformom"
         },
         "funding": {
             "title": "Finansiranje",
-            "description": "Ovaj softver je sufinansiran od strane Evropske unije kroz projekat IGLUE (Implementation of Game-based Learning Using Escape Rooms) u okviru programa Erazmus+.",
+            "description": "Ovaj softver je sufinansirala Evropska unija u okviru programa Erasmus+ kroz projekat IGLUE (Implementation of Game-based Learning Using Escape Rooms).",
             "reference": "Referenca projekta",
             "visit": "Posetite veb-sajt projekta"
         }

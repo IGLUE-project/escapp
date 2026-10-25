@@ -995,20 +995,20 @@
     },
     "about": {
         "title": "About Escapp",
-        "subtitle": "An open-source platform for creating, conducting and sharing educational escape rooms",
+        "subtitle": "An open-source web platform for creating, conducting and sharing educational escape rooms",
         "featuresTitle": "Main features",
         "features": {
             "authoring": {
                 "title": "Escape room authoring",
-                "description": "Design your escape room step by step: basic settings, instructions, puzzles, hints, evaluation and sharing, with fully customizable appearance and interactive scenes."
+                "description": "Create your escape room step by step: basic settings, instructions, puzzles, hints, evaluation and sharing, with fully customizable appearance and interactive scenes."
             },
             "puzzles": {
-                "title": "Reusable puzzles",
-                "description": "Pick ready-made interactive puzzles from the catalog and configure them for your activity, or add your own ones without writing a single line of code."
+                "title": "Interactive resources",
+                "description": "Choose interactive resources from the catalog and configure them to create puzzles, or add your own resources without writing a single line of code."
             },
             "shifts": {
                 "title": "Shifts and teams",
-                "description": "Run the same escape room with as many groups as you need: scheduled, always-open, public and test shifts, with individual or team participation."
+                "description": "Run the same escape room with as many groups as you need: scheduled, asynchronous, public and test shifts, with individual or team participation."
             },
             "hints": {
                 "title": "Hint system",
@@ -1024,7 +1024,7 @@
             },
             "network": {
                 "title": "EscappNet",
-                "description": "Search escape rooms published across every connected Escapp instance, play them, or import them into your own profile to adapt them."
+                "description": "An open and decentralized network of educational escape rooms where you can search for and play escape rooms published across all connected Escapp instances."
             },
             "api": {
                 "title": "API and integrations",
@@ -1039,7 +1039,7 @@
             "title": "Source code",
             "description": "Escapp's source code is publicly available on GitHub.",
             "version": "Version",
-            "commit": "Revision",
+            "commit": "Commit",
             "commitUnavailable": "not available",
             "releases": "Releases",
             "visit": "View repository"
@@ -1061,12 +1061,11 @@
         },
         "publications": {
             "title": "Research about Escapp",
-            "description": "Escapp has been used to run educational escape rooms both in class and remotely. These experiences have resulted in the following research articles:",
-            "source": "Sources: IGLUE project results and the Escapp repository."
+            "description": "Research articles related to Escapp"
         },
         "funding": {
             "title": "Funding",
-            "description": "This software is co-funded by the European Union through the IGLUE (Implementation of Game-based Learning Using Escape Rooms) project under the Erasmus+ Programme.",
+            "description": "This software has been co-funded by the European Union under the Erasmus+ Programme through the IGLUE (Implementation of Game-based Learning Using Escape Rooms) project.",
             "reference": "Project reference",
             "visit": "Visit the project website"
         }
