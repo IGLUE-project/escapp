@@ -29,12 +29,12 @@
 
 <div id="initialFrequencyRadio">
     <label for="initialFrequencyRadioInput"><%=i18n.reusablePuzzleApps.Radio.InitialFrequency%>:</label>
-    <input id="initialFrequencyRadioInput" name="initialChannel" type="number" min="87" max="108" step="0.1" style="flex:1;" />
+    <input id="initialFrequencyRadioInput" name="initialChannel" class="radioFrequencyInput" type="number" min="87" max="108" step="0.1" style="flex:1;" />
 </div>
 
 <div id="initialVolumeRadio">
     <label for="initialVolumeRadioInput"><%=i18n.reusablePuzzleApps.Radio.InitialVolume%>:</label>
-    <input id="initialVolumeRadioInput" name="initialVolume" class="radioFrequencyInput" type="number" min="0" max="100" step="1" style="flex:1;" />
+    <input id="initialVolumeRadioInput" name="initialVolume" type="number" min="0" max="100" step="1" style="flex:1;" />
 </div>
 
 <div id="stationsDivRadio" style="flex-direction: column; border: 1px solid white; padding: 0px 10px 5px 10px; border-radius: 20px;">
@@ -95,18 +95,12 @@
     var actionRadioSelect = document.getElementById('actionRadioSelect');
     var stationsRadioInput = document.getElementById("stationsRadio");
 
-    // skinSelectRadio.addEventListener('change', function() {
-    //     switch(this.value){
-    //     case "RETRO":
-    //         break;
-    //     default:
-    //     case "STANDARD":
-    //         break;
-    //     }
-    // });
-
-    // actionRadioSelect.addEventListener('change', function() {
-    // });
+    skinSelectRadio.addEventListener('change', function() {
+        const minFrequency = this.value === "RETRO" ? 88 : 87;
+        document.querySelectorAll('input.radioFrequencyInput').forEach(input => {
+            input.min = minFrequency;
+        });
+    });
 
     //Stations
     var maxStationsRadioRP = 999;
@@ -119,6 +113,7 @@
         if (stationNumber > maxStationsRadioRP) return;
         const $newStation = $stationTemplate.clone();
         $newStation.removeClass("stationWrapperRadioTemplate").addClass("stationWrapperRadio");
+        $newStation.find('input.radioFrequencyInput').attr('min', skinSelectRadio.value === 'RETRO' ? 88 : 87);
 
         $newStation.attr("stationNumber",stationNumber);
         $newStation.find('button.deleteStationRadio').first().show();
@@ -203,6 +198,5 @@
     document.getElementById("KeepRadioStateSelect").value =  window.currentOpenPuzzleConfig?.keepState || 'FALSE';
 
     //Trigger change events
-    // actionRadioSelect.dispatchEvent(new Event('change', { bubbles: true }));
-    // skinSelectRadio.dispatchEvent(new Event('change', { bubbles: true }));
+    skinSelectRadio.dispatchEvent(new Event('change', { bubbles: true }));
 </script>
