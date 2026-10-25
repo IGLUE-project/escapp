@@ -8,7 +8,6 @@ const {checkTeamSizeOne, getRanking, rollbackIfPending} = require("../helpers/ut
 // Autoload the team with id equals to :teamId
 exports.load = (req, res, next, teamId) => {
     models.team.findByPk(teamId, {
-        "where": req.params.turnId ? {"turnId": req.params.turnId} : undefined,
         "include": {
             "model": models.user,
             "as": "teamMembers"
@@ -17,12 +16,17 @@ exports.load = (req, res, next, teamId) => {
     }).
         then((team) => {
             if (!team) {
-                res.send(404);
-                throw new Error(404);
-            } else {
-                req.team = team;
-                next();
+                // Hand the 404 to the error handler instead of answering here and then
+                // throwing: that answered the request and still reached next(), so every
+                // missing team was logged twice, once as "error after response was sent"
+                const error = new Error("NOT_FOUND");
+
+                error.status = 404;
+                next(error);
+                return;
             }
+            req.team = team;
+            next();
         }).
         catch((error) => next(error));
 };

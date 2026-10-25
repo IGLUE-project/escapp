@@ -17,6 +17,10 @@ const path = require("path");
 const archiver = require("archiver");
 const { Server } = require("socket.io");
 
+// A field sent twice (duplicated input, crafted request) arrives as an array, which
+// would fail validation with "cannot be an array or an object". Keep the last value.
+const asText = (value) => (Array.isArray(value) ? value[value.length - 1] : value);
+
 // Autoload the escape room with id equals to :escapeRoomId
 exports.load = async (req, res, next, escapeRoomId) => {
     try {
@@ -192,7 +196,8 @@ exports.new = (_req, res) => {
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, lang, teamSize, minTeamSize, supportLink, forceLang, field, format, level, invitation, progress, allowUserToResetTeamProgress} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, lang, teamSize, minTeamSize, supportLink, forceLang, field, format, level, invitation, progress, allowUserToResetTeamProgress} = req.body,
+        description = asText(req.body.description),
         authorId = req.session.user && req.session.user.id || 0;
 
     const escapeRoom = models.escapeRoom.build({title, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, "allowUserToResetTeamProgress": allowUserToResetTeamProgress === "true", description, supportLink, "scope": "private", "teamSize": teamSize || 0, "minTeamSize": minTeamSize || 0, authorId, forceLang, lang, "field": field || "00", "format": format || "none", "level": level || "unspecified"}); // Saves only the fields question and answer into the DDBB
@@ -312,7 +317,7 @@ exports.update = async (req, res) => {
     escapeRoom.title = body.title;
     escapeRoom.duration = body.duration;
     escapeRoom.forbiddenLateSubmissions = body.forbiddenLateSubmissions === "on";
-    escapeRoom.description = body.description;
+    escapeRoom.description = asText(body.description);
     escapeRoom.supportLink = body.supportLink;
     escapeRoom.level = body.level || "unspecified";
     escapeRoom.field = body.field || "00";

@@ -1,5 +1,6 @@
 const {execSync} = require("child_process");
 const fs = require("fs");
+const zlib = require("zlib");
 const path = require("path");
 const {version} = require("../package.json");
 
@@ -80,14 +81,34 @@ const readPushedRevisions = (gitDir) => {
     return revisions;
 };
 
+// First parent of a commit, read from its loose object. Returns null once the
+// object is no longer loose (packed away by `git gc`), which ends the walk below.
+const readFirstParent = (gitDir, revision) => {
+    const object = path.join(gitDir, "objects", revision.slice(0, 2), revision.slice(2));
+    let header = null;
+
+    try {
+        header = zlib.inflateSync(fs.readFileSync(object)).toString("utf8", 0, 1024);
+    } catch (e) {
+        return null;
+    }
+    const parent = (/^parent ([0-9a-f]{40})$/m).exec(header);
+
+    return parent ? parent[1] : null;
+};
+
 // Read the revision out of git's own files. Unlike running `git`, this does not
 // depend on the binary being on PATH, nor on the repository passing git's
 // ownership check, which fails when the server runs as another user (sudo, pm2).
 //
-// The revision reported is always the checked-out one, since that is the code
-// actually running. We additionally report whether it is known to exist on some
-// remote: only then can it be linked, because a commit that was never pushed, or
-// one the remote has since dropped, gives a 404 on GitHub.
+// We report the most recent commit that is known to be on a remote, any remote:
+// local commits on top of it are skipped, because a commit that was never pushed
+// does not exist on GitHub. Starting from HEAD we walk first parents until one of
+// them turns up among the remote-tracking refs. If nothing does, within a bounded
+// walk and while the objects are still loose, we report HEAD unlinked rather than
+// some unrelated ref: a wrong revision is worse than one without a link.
+const MAX_WALK = 50;
+
 const readRevisionFromGitDir = () => {
     const gitDir = resolveGitDir();
 
@@ -95,12 +116,21 @@ const readRevisionFromGitDir = () => {
         return null;
     }
     const head = fs.readFileSync(path.join(gitDir, "HEAD"), "utf8").trim();
-    const revision = head.startsWith("ref:") ? readRef(gitDir, head.slice(4).trim()) : head;
+    const checkedOut = head.startsWith("ref:") ? readRef(gitDir, head.slice(4).trim()) : head;
 
-    if (!revision) {
+    if (!checkedOut) {
         return null;
     }
-    return {revision, "pushed": readPushedRevisions(gitDir).has(revision)};
+    const pushedRevisions = readPushedRevisions(gitDir);
+    let revision = checkedOut;
+
+    for (let step = 0; step < MAX_WALK && revision; step++) {
+        if (pushedRevisions.has(revision)) {
+            return {revision, "pushed": true};
+        }
+        revision = readFirstParent(gitDir, revision);
+    }
+    return {"revision": checkedOut, "pushed": false};
 };
 
 const resolveCommit = () => {

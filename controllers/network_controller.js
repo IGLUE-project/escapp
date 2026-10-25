@@ -120,10 +120,10 @@ exports.renderSearch = async (req, res) => {
 // Promesa que si no se resuelve en X tiempo, rechaza
 // Esta se usa para el fetch, si el fetch falla, rechaza, si se resuelve, limpia el timeout y resuelve con el json
 // Si el json no es json correcto, rechaza, si no devuelve el json
-const timeoutPromise = (timeout, ogPromise) => new Promise((resolve, reject) => {
+const timeoutPromise = (timeout, ogPromise, label = "") => new Promise((resolve, reject) => {
     const timer = setTimeout(() => { // Timer
-        reject(new Error("Request timed out"));
-        console.warn("Request timed out");
+        reject(new Error(`Request timed out${label ? `: ${label}` : ""}`));
+        console.warn(`Request timed out after ${timeout}ms${label ? `: ${label}` : ""}`);
     }, timeout);
 
     ogPromise.then( // Fetch original
@@ -191,7 +191,7 @@ exports.searchInNetwork = async (req, res, _) => {
     for (const index in urls) {
         const url = urls[index];
         try {
-            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${lang || ""}&level=${level || ""}&format=${format || ""}&duration=${duration || ""}&area=${area || ""}&participation=${participation || ""}&page=${page || 1}&limit=${limit || 10}`)));
+            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${lang || ""}&level=${level || ""}&format=${format || ""}&duration=${duration || ""}&area=${area || ""}&participation=${participation || ""}&page=${page || 1}&limit=${limit || 10}`), url));
         } catch (error) {
             console.error(`Error fetching from ${url}: ${error.message}`);
         }
