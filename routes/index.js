@@ -220,6 +220,7 @@ router.get("/guides", escapeRoomController.showGuides);
 router.get("/inspiration", escapeRoomController.showGuide);
 router.get("/manual", escapeRoomController.showManual);
 router.get("/best-practices-escapp", escapeRoomController.showBestPracticesEscapp);
+router.get("/about", escapeRoomController.showAbout);
 
 // Routes for reusablePuzzles and reusablePuzzleInstances
 router.get("/escapeRooms/:escapeRoomId(\\d+)/reusablePuzzleInstance/new", sessionController.loginRequired, sessionController.authEditEscapeRoom, reusablePuzzleController.renderPuzzleConfiguration);

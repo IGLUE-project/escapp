@@ -993,6 +993,84 @@
       "intro": "Kolekcija zagonetki ispod vam omogućava da povežete digitalne aplikacije za zagonetke sa nacrtom zagonetke koji ste definisali za svoju Escapp escape sobu. Možete prilagoditi njihova podešavanja i deliti ih sa svojim učenicima kao deo vaše escape sobe.",
       "resourceCatalog": "Katalog resursa"
     },
+    "about": {
+        "title": "O Escapp-u",
+        "subtitle": "Platforma otvorenog koda za kreiranje, sprovođenje i deljenje edukativnih escape soba",
+        "featuresTitle": "Glavne funkcionalnosti",
+        "features": {
+            "authoring": {
+                "title": "Kreiranje escape soba",
+                "description": "Dizajnirajte svoju escape sobu korak po korak: osnovna podešavanja, uputstva, zagonetke, pomoći, evaluacija i deljenje, uz potpuno prilagodljiv izgled i interaktivne scene."
+            },
+            "puzzles": {
+                "title": "Zagonetke za višekratnu upotrebu",
+                "description": "Izaberite gotove interaktivne zagonetke iz kataloga i podesite ih za svoju aktivnost ili dodajte sopstvene, bez pisanja ijedne linije koda."
+            },
+            "shifts": {
+                "title": "Smene i timovi",
+                "description": "Sprovedite istu escape sobu sa onoliko grupa koliko vam je potrebno: zakazane, stalno otvorene, javne i probne smene, sa individualnim ili timskim učešćem."
+            },
+            "hints": {
+                "title": "Sistem pomoći",
+                "description": "Definišite pomoći za svaku zagonetku i odredite kako učesnici mogu da ih dobiju, sa podesivim cenama i nagradama i posebnim interfejsom za pomoći."
+            },
+            "analytics": {
+                "title": "Analitika učenja",
+                "description": "Pratite napredak u realnom vremenu i pregledajte rang-liste, grafikone napretka, vremenske ose, histograme i statistiku zagonetki nakon završetka aktivnosti."
+            },
+            "evaluation": {
+                "title": "Evaluacija i ocenjivanje",
+                "description": "Podesite rubriku za ocenjivanje: koliko vrede zagonetke i pomoći, koliko se boduje samo učešće, i izvezite rezultate učesnika."
+            },
+            "network": {
+                "title": "EscappNet",
+                "description": "Pretražujte escape sobe objavljene na svim povezanim Escapp instancama, igrajte ih ili ih uvezite u svoj profil da biste ih prilagodili."
+            },
+            "api": {
+                "title": "API i integracije",
+                "description": "Povežite sopstvene resurse, aplikacije i zagonetke sa Escapp-om preko njegovog API-ja i uvozite ili izvozite kompletne escape sobe."
+            },
+            "openSource": {
+                "title": "Slobodan softver i sopstveni server",
+                "description": "Escapp je objavljen pod GNU GPL v3 licencom, dostupan je na više jezika i svaka institucija može postaviti sopstvenu instancu."
+            }
+        },
+        "repository": {
+            "title": "Izvorni kod",
+            "description": "Izvorni kod Escapp-a je javno dostupan na GitHub-u.",
+            "version": "Verzija",
+            "commit": "Revizija",
+            "commitUnavailable": "nije dostupno",
+            "releases": "Objavljena izdanja",
+            "visit": "Pogledaj repozitorijum"
+        },
+        "mooc": {
+            "title": "Besplatan onlajn kurs",
+            "description": "Naučite kako da dizajnirate, kreirate i sprovodite edukativne escape sobe pomoću Escapp-a.",
+            "name": "Kreiranje digitalnih edukativnih escape soba pomoću platforme Escapp",
+            "link": "https://www.metropolitan.ac.rs/novosti/novi-besplatni-online-kurs-kreiranje-digitalnih-edukativnih-escape-soba-pomocu-platforme-escapp/",
+            "visit": "Idi na kurs"
+        },
+        "documentation": {
+            "title": "Dokumentacija",
+            "description": "Vodiči i priručnici za nastavnike, studente i programere.",
+            "manual": "Uputstvo za upotrebu",
+            "bestPractices": "Vodič za najbolje prakse",
+            "bestPracticesEscapp": "Najbolje prakse sa Escapp-om",
+            "developers": "Dokumentacija za programere"
+        },
+        "publications": {
+            "title": "Istraživanja o Escapp-u",
+            "description": "Escapp se koristi za sprovođenje edukativnih escape soba, i u nastavi i na daljinu. Ta iskustva su rezultirala sledećim naučnim radovima:",
+            "source": "Izvori: rezultati projekta IGLUE i Escapp repozitorijum."
+        },
+        "funding": {
+            "title": "Finansiranje",
+            "description": "Ovaj softver je sufinansiran od strane Evropske unije kroz projekat IGLUE (Implementation of Game-based Learning Using Escape Rooms) u okviru programa Erazmus+.",
+            "reference": "Referenca projekta",
+            "visit": "Posetite veb-sajt projekta"
+        }
+    },
     "guides": {
         "title": "Vodiči",
         "description": "Izaberite vodič koji će vam pomoći da kreirate i upravljate vašim escape sobama.",

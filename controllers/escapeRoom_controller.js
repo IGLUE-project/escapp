@@ -9,6 +9,8 @@ const {nextStep, prevStep} = require("../helpers/progress");
 const {isAuthor, isCoAuthor, isParticipant, cloneER, getFilePathsForER, safeImportPath, copyERFilesForClone, resolveItemPath} = require("../helpers/escapeRooms");
 const {saveInterface, getReusablePuzzles, getERPuzzles, paginate, validationError, getERAssets, getERScenes, getReusablePuzzlesInstances, stepsCompleted, getHostname, rollbackIfPending} = require("../helpers/utils");
 const {getLocaleForEscapeRoom, getTextsForLocale, isValidLocale} = require("../helpers/I18n");
+const appVersion = require("../helpers/appVersion");
+const publications = require("../helpers/publications");
 const fsSync = require("fs");
 const fs = require("fs/promises");
 const path = require("path");
@@ -1074,6 +1076,8 @@ exports.showManual = (_, res) => res.render("inspiration/manual");
 exports.showBestPracticesEscapp = (_, res) => res.render("inspiration/bestPracticesEscapp");
 
 exports.showGuides = (_, res) => res.render("inspiration/guides");
+
+exports.showAbout = (_, res) => res.render("about", {"appInfo": appVersion, publications});
 
 exports.verify = async (req, res, next) => {
     try {
