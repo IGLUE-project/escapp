@@ -66,7 +66,6 @@
     }) %>
 </div>
 <div>
-    <a target="_blank" href="https://iglue-project.github.io/sql_puzzle"><span class="material-icons" style="float: right;">info</span></a>
     <%- include ("./_asset.ejs", {
         assetId: "dbUrlInput",
         assetName: "dbUrl",
@@ -158,13 +157,13 @@
     document.getElementById("question").value = window.currentOpenPuzzleConfig?.question || '';
     document.getElementById("title").value = window.currentOpenPuzzleConfig?.title || '';
     document.getElementById("initialQuery").value = window.currentOpenPuzzleConfig?.initialQuery || '';
-    document.getElementById("queryCardTitle").value = window.currentOpenPuzzleConfig?.queryCardTitle || "Query";
+    document.getElementById("queryCardTitle").value = window.currentOpenPuzzleConfig?.queryCardTitle || "";
     document.getElementById("queryPlaceholder").value = window.currentOpenPuzzleConfig?.queryPlaceholder || "SELECT * FROM ..."
-    document.getElementById("resultsCardTitle").value = window.currentOpenPuzzleConfig?.resultsCardTitle || "Results"
+    document.getElementById("resultsCardTitle").value = window.currentOpenPuzzleConfig?.resultsCardTitle || ""
     document.getElementById("resultsPlaceholder").value = window.currentOpenPuzzleConfig?.resultsPlaceholder || "<%=i18n.reusablePuzzleApps.SQLChallenge.resultsPlaceholderDefault%>";
-    document.getElementById("testsCardTitle").value = window.currentOpenPuzzleConfig?.testsCardTitle || "Tests"
+    document.getElementById("testsCardTitle").value = window.currentOpenPuzzleConfig?.testsCardTitle || ""
     document.getElementById("testsPlaceholder").value = window.currentOpenPuzzleConfig?.testsPlaceholder || "<%=i18n.reusablePuzzleApps.SQLChallenge.testsPlaceholderDefault%>";
-    document.getElementById("infoCardTitle").value = window.currentOpenPuzzleConfig?.infoCardTitle || "Info";
+    document.getElementById("infoCardTitle").value = window.currentOpenPuzzleConfig?.infoCardTitle || "";
    
     if(window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
         document.getElementById("actionDiv").style.display = 'block';
