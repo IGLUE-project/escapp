@@ -24,6 +24,18 @@
     <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
     <input id="messageInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>"  style="flex:1;"  />
 </div>
+
+<div>
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundImgInput",
+        assetName: "backgroundImg",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
+</div>
 <br>
 
 <script>

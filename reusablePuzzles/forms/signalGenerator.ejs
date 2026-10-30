@@ -31,8 +31,15 @@
 </div>
 
 <div>
-    <label for="background"><%=i18n.reusablePuzzleApps.Common.BackgroundURL%>:</label>
-    <input type="text" id="backgroundInput" name="background" placeholder="<%=i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder%>" style="flex:1;" />
+    <%- include ("./_asset.ejs", {
+        assetId: "backgroundInput",
+        assetName: "background",
+        assetLabel: i18n.reusablePuzzleApps.Common.BackgroundURL,
+        assetPlaceholder: i18n.reusablePuzzleApps.Common.BackgroundURLPlaceholder,
+        assetFilter: "image",
+        assetRequired: false,
+        allowEmpty: true
+    }) %>
 </div>
 <br>
 
@@ -52,7 +59,6 @@
         }
     });
 
-    document.getElementById("backgroundInput").value =  window.currentOpenPuzzleConfig?.background || '';
     document.getElementById("messageInput").value =  window.currentOpenPuzzleConfig?.message || '';
     document.getElementById("soundInput").value =  window.currentOpenPuzzleConfig?.soundAfterSolve || '';
     document.getElementById("actionValue").value =  window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
