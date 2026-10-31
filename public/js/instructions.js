@@ -1,15 +1,8 @@
 $(function(){
+    alert("HERE!");
     const Delta = Quill.import("delta");
     const BlockEmbed = Quill.import('blots/block/embed');
     var Video = Quill.import('formats/video');
-
-    /* video preload='metadata' controls='controls' poster='http://vishub.org/videos/3566.png?style=170x127%23'>
-        <source src='http://vishub.org/videos/3566.flv' type='video/x-flv'>
-        <source src='http://vishub.org/videos/3566.mp4' type='video/mp4'>
-        Your browser does not support HTML5 video.
-        </video> */
-    //https://www.youtube.com/embed/iHOZp6cMyMk?autoplay=1
-
 
     const createVideo = (node) => {
         let url = node.src;
