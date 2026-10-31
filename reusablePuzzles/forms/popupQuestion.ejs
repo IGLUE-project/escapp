@@ -46,6 +46,19 @@
     }) %>
 </div>
 
+<div>
+    <label for="actionValue"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
+    <select id="actionValue" name="actionAfterSolve">
+        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
+        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
+    </select>
+</div>
+
+<div id="actionDiv">
+    <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
+    <input id="messageInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>" style="flex:1;" />
+</div>
+
 <div style="margin: 10px 0; display: flex; flex-direction: column;">
     <label><%=i18n.reusablePuzzleApps.PopupQuestion.contentPosition%>:</label>
     <input type="hidden" id="contentPositionTopHidden" name="contentPosition[top]" value="0%" />
@@ -149,36 +162,24 @@
 
 <div>
     <label for="submitButtonTextInput"><%=i18n.reusablePuzzleApps.PopupQuestion.submitButtonText%>:</label>
-    <input type="text" id="submitButtonTextInput" name="submitButtonText" value="<%=i18n.reusablePuzzleApps.PopupQuestion.submitButtonDefault%>" style="flex:1;" />
+    <input type="text" id="submitButtonTextInput" name="submitButtonText" value="" style="flex:1;" />
 </div>
 
 <div>
     <label for="continueButtonTextInput"><%=i18n.reusablePuzzleApps.PopupQuestion.continueButtonText%>:</label>
-    <input type="text" id="continueButtonTextInput" name="continueButtonText" value="<%=i18n.reusablePuzzleApps.PopupQuestion.continueButtonDefault%>" style="flex:1;" />
+    <input type="text" id="continueButtonTextInput" name="continueButtonText" value="" style="flex:1;" />
 </div>
 
 <div>
     <label for="errorMessageInput"><%=i18n.reusablePuzzleApps.PopupQuestion.errorMessage%>:</label>
-    <input type="text" id="errorMessageInput" name="errorMessage" value="<%=i18n.reusablePuzzleApps.PopupQuestion.errorMessageDefault%>" style="flex:1;" />
+    <input type="text" id="errorMessageInput" name="errorMessage" value="" style="flex:1;" />
 </div>
 
 <div>
     <label for="buttonColorInput"><%=i18n.reusablePuzzleApps.PopupQuestion.buttonColor%>:</label>
-    <input type="text" id="buttonColorInput" name="buttonColor" placeholder="<%=i18n.reusablePuzzleApps.PopupQuestion.buttonColorPlaceholder%>" style="flex:1;" />
+    <input type="text" id="buttonColorInput" name="buttonColor" style="flex:1;" />
 </div>
 
-<div>
-    <label for="actionValue"><%=i18n.reusablePuzzleApps.Common.actionAfterSolve%>:</label>
-    <select id="actionValue" name="actionAfterSolve">
-        <option value="NONE"><%=i18n.reusablePuzzleApps.Common.NoneF%></option>
-        <option value="SHOW_MESSAGE"><%=i18n.reusablePuzzleApps.Common.showMessage%></option>
-    </select>
-</div>
-
-<div id="actionDiv">
-    <label for="messageInput"><%=i18n.reusablePuzzleApps.Common.Message%>:</label>
-    <input id="messageInput" type="text" name="message" placeholder="<%=i18n.reusablePuzzleApps.Common.MessagePlaceholder%>" style="flex:1;" />
-</div>
 <br>
 
 <script>
@@ -323,7 +324,7 @@
     if (window.currentOpenPuzzleConfig?.errorMessage) document.getElementById("errorMessageInput").value = window.currentOpenPuzzleConfig.errorMessage;
     if (window.currentOpenPuzzleConfig?.buttonColor) document.getElementById("buttonColorInput").value = window.currentOpenPuzzleConfig.buttonColor;
 
-    document.getElementById("actionValue").value = window.currentOpenPuzzleConfig?.actionAfterSolve || 'NONE';
+    document.getElementById("actionValue").value = window.currentOpenPuzzleConfig?.actionAfterSolve || 'SHOW_MESSAGE';
     document.getElementById("messageInput").value = window.currentOpenPuzzleConfig?.message || '';
 
     // Load content position
@@ -384,7 +385,7 @@
     updatePopupQuestions();
 
     // Toggle action div visibility
-    if (window.currentOpenPuzzleConfig?.actionAfterSolve === 'SHOW_MESSAGE') {
+    if (window.currentOpenPuzzleConfig?.actionAfterSolve !== 'NONE') {
         document.getElementById("actionDiv").style.display = 'flex';
     } else {
         document.getElementById("actionDiv").style.display = 'none';

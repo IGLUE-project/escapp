@@ -1,6 +1,12 @@
 {
   "name": "Escapp",
-  "version": "2.2.1",
+  "version": "2.2.0",
+  "description": "A web platform for creating, conducting, and managing educational escape rooms",
+  "license": "GNU General Public License v3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iglue-project/escapp"
+  },
   "scripts": {
     "start": "node ./bin/www",
     "start_production": "sudo NODE_ENV=production node ./bin/www",
