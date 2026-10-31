@@ -145,11 +145,11 @@
     "wrongCredentials": "Kombinacija imejla i lozinke je netačna",
     "wrongCredentialsToken": "Kombinacija imejla i tokena je netačna",
     "notAParticipant": "Niste učesnik ove escape sobe",
-    "alreadyParticipating": "Već ste počeli da učestvujete u ovoj sobi za bekstvo",
+    "alreadyParticipating": "Već ste počeli da učestvujete u ovoj escape sobi",
     "participant": "Vi ste učesnik ove escape sobe",
     "notActive": "Vi ste učesnik ove escape sobe, ali vaša smena nije aktivna",
     "notStarted": "Vi ste učesnik ove escape sobe, ali niste kliknuli na dugme za početak",
-    "tooLate": "Vi ste učesnik ove escape escape sobe, ali vaše vreme je isteklo"
+    "tooLate": "Vi ste učesnik ove escape sobe, ali vaše vreme je isteklo"
   },
   "apps": {
     "newApp": "Nova aplikacija",
@@ -264,7 +264,7 @@
       "successEditingUser": "Korisnik uspešno izmenjen",
       "successImage": "Slika uspešno upload-ovana",
       "successSendingReport": "Prijava uspešno poslata",
-      "successConfirmingCollaborator": "Saradnja je potvrđena. Sada možete da uređujete escape room.",
+      "successConfirmingCollaborator": "Saradnja je potvrđena. Sada možete da uređujete escape sobu.",
       "successCancellingCollaborator": "Uspešno ste uklonjeni kao saradnik",
       "youMustAcceptTerms": "Morate prihvatiti Uslove korišćenja i Politiku privatnosti da biste se registrovali.",
       "youHaveNotBeenAddedAsACollaborator": "Niste dodati kao saradnik",
@@ -350,7 +350,7 @@
       "puzzlesSolved": "Niz koji sadrži zagonetke koje je tim već rešio",
       "hintsAllowed": {
         "true": "Tim može da zahteva još saveta",
-        "false": "Tim NE može zatražite još saveta"
+        "false": "Tim ne može zatražite još saveta"
       }
 
     },
@@ -370,7 +370,7 @@
       "failMessage": "Šteta! Molimo vas da nastavite da pokušavate",
       "dontClose": "Nema više nikakvih saveta. Sada možete zatražiti pomoć od svog nastavnika. Ne zatvarajte ovu poruku dok saveti ne stignu",
       "noMoreLeft": "Nema više nikakvih saveta. Sada možete zatražiti pomoć od svog nastavnika.",
-      "noMoreLeftTeam": "Neko iz vašeg tima je zatražio savet, ali nema više saveta za vašu trenutnu situaciju.Tim može da zatraži pomoć od nastavnika",
+      "noMoreLeftTeam": "Neko iz vašeg tima je zatražio savet, ali nema više saveta za vašu trenutnu situaciju. Tim može da zatraži pomoć od nastavnika",
       "chooseCat": "U vezi sa čime vam je potrebna pomoć?",
       "cantRequestMore": "Ne možete tražiti više saveta",
       "cantRequestMoreThis": "Trenutno ne možete tražiti više saveta",
@@ -435,7 +435,7 @@
       "copyOf": "Kopija od",
       "createER": "Napravi novu escape sobu",
       "noERTeacher": "Nemate nijednu escape sobu. Da biste je kreirali, kliknite na dugme +.",
-      "noERStudent": "Trenutno ne učestvujete ni u jednoj sobi za bekstvo.",
+      "noERStudent": "Trenutno ne učestvujete ni u jednoj escape sobi.",
       "noERsPublic": "Trenutno nema dostupnih escape soba.",
       "notFound": "Nema rezultata za vašu pretragu. Pokušajte drugu pretragu!",
       "myERs": "Moje escape sobe",
@@ -470,7 +470,7 @@
         "passwordPlaceHolder": "Navedite lozinku da biste ograničili pristup escape sobi",
         "invitationPlaceHolder": "Navedite lozinku da biste ograničili pristup escape sobi",
         "noFileUploaded": "Datoteke još uvek nisu upload-ovane",
-        "noImageUploaded": "Slike Još uvek nisu upload-ovane",
+        "noImageUploaded": "Slike još uvek nisu upload-ovane",
         "subjectNote": "Koja tema je obrađena u aktivnosti? Uvedite više tema odvojenih sa zarezima.",
         "subjectPlaceHolder": "Unesite ovde",
         "teamSizePlaceHolder": "Koliko članova može imati svaki tim? Ostavite prazno ako ne želite da ograničite broj.",
@@ -491,8 +491,8 @@
         "gradingIntro": "Ovde možete podesiti rubriku za ocenjivanje učesnika i izabrati kako će se njihovo učešće beležiti.",
         "or": "ili",
         "posttestField": "Post-kviz",
-        "posttestPlaceHolder": "Ovde upišite link za post- kviz",
-        "pretestField": "Pred- kviz",
+        "posttestPlaceHolder": "Ovde upišite link za post-kviz",
+        "pretestField": "Pred-kviz",
         "pretestPlaceHolder": "Ovde upišite link za pred-kviz",
         "surveyField": "Anketa",
         "surveyPlaceHolder": "Ovde upišite link za anketu",
@@ -501,19 +501,19 @@
         "puzzle": "Zagonetka",
         "weight": "Težina",
         "youCanUse": "Možete koristiti",
-        "automaticAttendance": "Zapis o učešću. Kada učesnik pristupi escape sobi za bekstvo tokom svog poteza",
+        "automaticAttendance": "Zapis o učešću. Kada učesnik pristupi escape sobi tokom svog poteza",
         "automaticAttendanceNone": "Učešće se ne beleži automatski",
         "automaticAttendanceParticipant": "Učešće se automatski beleži za učesnika",
         "automaticAttendanceTeam": "Učešće se automatski beleži za učesnika i njegove članove tima",
-        "allowUserToResetTeamProgress": "Omogućiti učesnicima da ponovo pokrenu i ponovo igraju escape room",
-        "allowUserToResetTeamProgressHint": "Kada učesnici ponovo pokrenu escape room, sve informacije povezane sa njihovim prethodnim pokušajem (npr. pomoć, odgovori, dobijeni nagoveštaji i vremenske oznake) trajno se brišu."
+        "allowUserToResetTeamProgress": "Omogućiti učesnicima da ponovo pokrenu i ponovo igraju escape sobu",
+        "allowUserToResetTeamProgressHint": "Kada učesnici ponovo pokrenu escape sobu, sve informacije povezane sa njihovim prethodnim pokušajem (npr. pomoć, odgovori, dobijeni saveti i vremenske oznake) trajno se brišu."
       },
       "hints": {
         "correctNumber": "Broj tačnih odgovora",
         "correctNumberPlaceHolder": "Koliko tačnih odgovora je potrebno učesnicima da bi dobili savet?",
-        "moodleXMLExplanation": "Ako želite da učesnici odgovaraju na niz pitanja da bi dobili savet, upload-ujteMoodleXML datoteku koja sadrži niz pitanja",
-        "explanation": "U ovom koraku možete izabrati strategiju saveta za vašu escape sobu. Dostupne su tri strategije: saveti (hint) nisu dozvoljeni, dozvoljeni su besplatni saveti iučesnici moraju da reše kviz da bi dobili savet. Ako omogućite savete, možete postaviti ograničenje saveta koje učesnici mogu dobiti. Ako izaberete poslednju strategiju, potrebno je da upload-ujeteMoodleXML datoteku koja sadrži niz pitanja i naznačite koliko pitanja će biti prikazano u svakom pokušaju, koliko treba da tačno odgovore da bi položili i da li tačan odgovor treba da im se prikaže nakon svakog pokušaja.",
-        "moodleExplanation": "Ako želite da učesnici odgovore na kviz da bi dobili savet, otpremite MoodleXML sa nizom pitanja",
+        "moodleXMLExplanation": "Ako želite da učesnici odgovaraju na niz pitanja da bi dobili savet, upload-ujte MoodleXML datoteku koja sadrži niz pitanja",
+        "explanation": "U ovom koraku možete izabrati strategiju saveta za vašu escape sobu. Dostupne su tri strategije: saveti (hint) nisu dozvoljeni, dozvoljeni su besplatni saveti i učesnici moraju da reše kviz da bi dobili savet. Ako omogućite savete, možete postaviti ograničenje saveta koje učesnici mogu dobiti. Ako izaberete poslednju strategiju, potrebno je da upload-ujete MoodleXML datoteku koja sadrži niz pitanja i naznačite koliko pitanja će biti prikazano u svakom pokušaju, koliko treba da tačno odgovore da bi položili i da li tačan odgovor treba da im se prikaže nakon svakog pokušaja.",
+        "moodleExplanation": "Ako želite da učesnici odgovore na kviz da bi dobili savet, upload-ujte MoodleXML sa nizom pitanja",
         "feedback": "Povratne informacije",
         "feedbackExplanation": "Da li želite da učesnicima prikažete tačne odgovore kada se kviz završi?",
         "hintFile": "Datoteka sa pitanjima",
@@ -531,8 +531,8 @@
         "automatedHintStrategy": "Automatizovani saveti",
         "automatedHintsExplanation": "Možete automatski pružiti pomoć učesnicima kada prekorače procenjeno vreme za rešavanje zadatka.",
         "noAutomatedHints": "Ne pružaj automatizovane savete",
-        "automatedSuggestions": "Predložiti učesnicima da zatraže nagoveštaj kada prekorače procenjeno vreme za rešavanje zadatka",
-        "automatedHints": "Automatski poslati nagoveštaj učesnicima kada prekorače procenjeno vreme za rešavanje zadatka",
+        "automatedSuggestions": "Predložiti učesnicima da zatraže savet kada prekorače procenjeno vreme za rešavanje zadatka",
+        "automatedHints": "Automatski poslati savet učesnicima kada prekorače procenjeno vreme za rešavanje zadatka",
         "MoodleXML": "MoodleXML",
         "noFile": "Još niste upload-ovali nijednu datoteku",
         "questionNumber": "Broj pitanja",
@@ -547,12 +547,12 @@
         "title": "Interfejs tima"
       },
       "class": {
-        "explanation": "U ovom odeljku možete kreirati interfejs za prikaz istog sadržaja svim učesnicima (npr. projektovanjem u učionici). Možete dodati elemente kao što su odbrojavanje vremena, uvodni video ili rang-lista. Ako će se escape room odvijati asinhrono, učesnici nikada neće videti ovaj interfejs, pa možete preskočiti ovaj korak.",
+        "explanation": "U ovom odeljku možete kreirati interfejs za prikaz istog sadržaja svim učesnicima (npr. projektovanjem u učionici). Možete dodati elemente kao što su odbrojavanje vremena, uvodni video ili rang-lista. Ako će se escape sobu odvijati asinhrono, učesnici nikada neće videti ovaj interfejs, pa možete preskočiti ovaj korak.",
         "placeholder": "Dodajte sadržaj koji želite da prikažete svim učesnicima.",
         "title": "Interfejs odeljenja"
       },
       "indications": {
-        "explanation": "U ovom odeljku možete navesti uputstva koja će učesnici videti od trenutka kada se prijave za escape room pa sve do njenog početka.",
+        "explanation": "U ovom odeljku možete navesti uputstva koja će učesnici videti od trenutka kada se prijave za escape sobu pa sve do njenog početka.",
         "placeholder": "Dodajte prethodna uputstva.",
         "title": "Uputstva pre aktivnosti",
         "hybridInstructions": "Fizički resursi",
@@ -663,7 +663,7 @@
         "turnos": "Smene"
       },
       "puzzles": {
-        "explanation": "U ovom odeljku možete konfigurisati zagonetke escape room-a. Ove zagonetke moraju pratiti linearnu strukturu, što znači da se svaka zagonetka može završiti tek nakon što su prethodne rešene. Za svaku zagonetku potrebno je da navedete naziv i rešenje. Pored toga, u ovom odeljku možete definisati dostupne pomoći za svaku zagonetku, koje će učesnicima biti pružene u skladu sa podešavanjima definisanim u sledećem odeljku.",
+        "explanation": "U ovom odeljku možete konfigurisati zagonetke escape sobe. Ove zagonetke moraju pratiti linearnu strukturu, što znači da se svaka zagonetka može završiti tek nakon što su prethodne rešene. Za svaku zagonetku potrebno je da navedete naziv i rešenje. Pored toga, u ovom odeljku možete definisati dostupne pomoći za svaku zagonetku, koje će učesnicima biti pružene u skladu sa podešavanjima definisanim u sledećem odeljku.",
         "addNewHint": "dodaj savet",
         "addNewCategory": "dodaj kategoriju",
         "addNewPuzzles": "dodaj zagonetku",
@@ -706,8 +706,8 @@
       },
       "after": {
         "title": "Uputstva post-aktivnosti",
-        "explanation": "Ovde možete navesti informacije koje želite da prikažete učesnicima nakon što završe escape room.",
-        "placeholder": "Dodajte prilagođene instrukcije nakon igranja escape sobea."
+        "explanation": "Ovde možete navesti informacije koje želite da prikažete učesnicima nakon što završe escape sobu.",
+        "placeholder": "Dodajte prilagođene instrukcije nakon igranja escape sobe."
 
       },
       "sharing": {
@@ -727,9 +727,9 @@
         "participationMode": "Način učešća",
         "licenseExplanation": "Pod kojom licencom želite da objavite svoju escape sobu?",
         "licenseExplanationAlreadyPublished": "Više ne možete menjati licencu jer je vaša escape soba već objavljena ranije.",
-        "invitationExplanation": "Da li želite da učesnici unesu lozinku da bi se pridružili sobi za bekstvo? Ako jeste, unesite je u tekstualno polje ispod.",
+        "invitationExplanation": "Da li želite da učesnici unesu lozinku da bi se pridružili escape sobi? Ako jeste, unesite je u tekstualno polje ispod.",
         "instructionsExplanation": "Podelite sva uputstva koja želite sa nastavnicima koji koriste vašu escape sobu. Upload-ujte PDF fajl. Možete uključiti informacije o tome kako se igra, kako se evaluira itd.",
-        "scopeExplanation": "Možete birati između dve opcije vidljivosti za vašu escape sobu: javna i neobjavljena. Escape sobe koje su označene kao javne se mogu pojaviti na početnoj stranici platforme i svaki korisnik može da im se pridruži i igra u bilo kom trenutku. Escape sobe označene kao neobjavljene se ne pojavljuju na početnoj stranici i studenti im se mogu pridružiti samo putem direktnog linka. U ovim escape sobama možete postaviti i lozinku za pristup. Svim escape sobama, bez obzira na njihovo podešavanje vidljivosti, mogu pristupiti administratori platforme i koristiti ih u skladu sa svojim licencama.",
+        "scopeExplanation": "Možete birati između dve opcije vidljivosti za vašu escape sobu: javna i nenavedena. Escape sobe koje su označene kao javne se mogu pojaviti na početnoj stranici platforme i svaki korisnik može da im se pridruži i igra u bilo kom trenutku. Escape sobe označene kao nenavedene se ne pojavljuju na početnoj stranici i studenti im se mogu pridružiti samo putem direktnog linka. U ovim escape sobama možete postaviti i lozinku za pristup. Svim escape sobama, bez obzira na njihovo podešavanje vidljivosti, mogu pristupiti administratori platforme i koristiti ih u skladu sa svojim licencama.",
         "statusExplanation": "Da li ste završili sa kreiranjem escape sobe? Ako jeste, izaberite opciju završeno. U suprotnom, izaberite opciju draft i možete nastaviti sa uređivanjem kasnije. Imajte na umu da dok je ne objavite, učesnici neće moći da joj se priključe. Nakon objavljivanja, nećete moći da promenite licencu.",
         "areYouSureUnpublish": "Da li ste sigurni da želite da opozovete objavljivanje escape sobe i vratite je u status drafta? Ako to učinite, novi učesnici više neće moći da joj pristupe.",
         "areYouSurePublish": "Da li ste sigurni da želite da objavite escape sobu? Vaša licenca se ne može promeniti nakon objavljivanja",
@@ -800,7 +800,7 @@
       "teamAppearance": "Tema interfejsa tima",
       "classAppearance": "Tema interfejsa odeljenja",
       "survey": "Anketa",
-      "pretest": "Prettest",
+      "pretest": "Pretest",
       "posttest": "Posttest",
       "numQuestions": "Broj pitanja",
       "numRight": "Broj pitanja za polaganje",
@@ -827,7 +827,7 @@
       "dismiss": "odbaci",
       "unverify": " opozvati verifikaciju",
       "not_verified": "nije verifikovano",
-      "explanation": "Vaša escape room igra je verifikovana od strane administratora ove Escapp instance.",
+      "explanation": "Vaša escape soba je verifikovana od strane administratora ove Escapp instance.",
       "areYouSureVerify": "Da li želite da verifikujete ovu escape sobu? Escape soba će postati dostupna na mreži.",
       "areYouSureReVerify": "Ova escape soba se promenila od poslednje verifikacije. Da li želite da je ponovo verifikujete ili da je opozovete?",
       "areYouSureUnVerify": "Ova escape soba je trenutno verifikovana. Da li želite da je opozovete? Escape soba će postati nedostupna na mreži dok je ponovo ne verifikujete."
@@ -1000,7 +1000,7 @@
         "features": {
             "authoring": {
                 "title": "Kreiranje escape soba",
-                "description": "Kreirajte svoju escape room igru korak po korak: osnovna podešavanja, uputstva, zagonetke, pomoći, evaluacija i deljenje, uz potpuno prilagodljiv izgled i interaktivne scene."
+                "description": "Kreirajte svoju escape sobu korak po korak: osnovna podešavanja, uputstva, zagonetke, pomoći, evaluacija i deljenje, uz potpuno prilagodljiv izgled i interaktivne scene."
             },
             "puzzles": {
                 "title": "Interaktivni resursi",
@@ -1024,7 +1024,7 @@
             },
             "network": {
                 "title": "EscappNet",
-                "description": "Otvorena i decentralizovana mreža edukativnih escape room igara u kojoj možete da pretražujete i igrate igre objavljene na svim povezanim Escapp instancama."
+                "description": "Otvorena i decentralizovana mreža edukativnih escape soba u kojoj možete da pretražujete i igrate igre objavljene na svim povezanim Escapp instancama."
             },
             "api": {
                 "title": "API i integracije",
@@ -1083,7 +1083,7 @@
         },
         "bestPracticesEscapp": {
                 "title": "Najbolje prakse sa Escapp-om",
-                "description": "Vodič za primenu dobrih praksi pri kreiranju i sprovođenju obrazovnih escape room aktivnosti pomoću Escapp-a"
+                "description": "Vodič za primenu dobrih praksi pri kreiranju i sprovođenju edukativnih escape soba pomoću Escapp-a"
         }
     },
     "participant": {
@@ -1216,10 +1216,10 @@
         "copyTitle": "Kopirajte link",
         "qrTitle": "Generišite QR kod za deljenje",
         "noShiftsShare": "Ne možete deliti escape sobu dok ne kreirate bar jednu smenu",
-        "noShiftsShareDraft": "Objavite escape room da biste mogli da je podelite.",
+        "noShiftsShareDraft": "Objavite escape sobu da biste mogli da je podelite.",
         "noShiftsStart": "Ne možete pokrenuti escape sobu dok ne kreirate bar jednu smenu",
         "join": {
-          "intro": "Podelite sledeći link sa svojim učenicima kako bi mogli pristupiti sobi za bekstvo:",
+          "intro": "Podelite sledeći link sa svojim učenicima kako bi mogli pristupiti escape sobi:",
           "also": "Takođe mogu pristupiti ",
           "register": " i, nakon registracije i prijave, mogu izabrati escape sobu pod nazivom ",
           "password": " i uneti sledeću lozinku ",
@@ -1252,11 +1252,11 @@
         "turnos": "Smene",
         "video": "Video",
         "share": "Deli",
-        "lang": "Jezik escape sobea",
-        "forceLang": "Prisili određeni jezik u escape sobe za učesnike ove escape sobe",
+        "lang": "Jezik escape sobe",
+        "forceLang": "Prisili određeni jezik u escape sobi za učesnike ove escape sobe",
         "forceLang2": "Jezik"
       },
-      "cantManageUntilComplete": "Objavite escape room da biste mogli da njome upravljate."
+      "cantManageUntilComplete": "Objavite escape sobu da biste mogli da njome upravljate."
     },
     "team": {
       "add": "Dodaj tim",
@@ -1309,7 +1309,7 @@
       "alwaysOpen": "Asinhrono",
       "asynchronousTitle": "Asinhrona smena",
       "asynchronousShiftsTitle": "Asinhrone smene",
-      "notActive": "Ova escape soba je nije trenutno aktivno",
+      "notActive": "Ova escape soba nije trenutno aktivna",
       "participants": "Učesnici",
       "arrows": {
         "closeText": "Zatvori",
@@ -1678,7 +1678,7 @@
         "button_nok":"Odbij",
         "context": "Kontekst",
         "send":"Proveri",
-        "send_disabled":"Postoji stavkai za označavanje",
+        "send_disabled":"Postoji stavka za označavanje",
         "retry": "Čini se da nisam klasifikovao sve stavke ispravno",
         "congrats": "Čestitamo! Sve stavke su klasifikovane ispravno",
         "header": "Resursi klasifikacije",
@@ -1827,39 +1827,39 @@
         "avatar": "Avatar",
         "sequence": "Sekvenca"
       },
-      "Television": {
-          "name": "Televizija",
-          "description": "Ovaj resurs vam omogućava da kreirate televizor gde učesnici mogu menjati kanale i reprodukovati sadržaj iz pomoćnog izvora (npr. Blu-ray disk ili VHS kaseta). Televizor može biti povezan sa escape room zagonetkom i njenim rešenjem.",
-          "SmartTV": "Pametni TV",
-          "RETRO_REMOTE_SKIN": "Retro sa daljinskim upravljačem",
-          "MaximumChannelNumberLength": "Maksimalna dužina broja kanala",
-          "LoopChannelVideos": "Ponavljaj video zapise kanala",
-          "SimulateSignalNoise": "Simuliraj šum signala",
-          "TopContentMargin": "Gornja margina sadržaja",
-          "BottomContentMargin": "Donja margina sadržaja",
-          "LeftContentMargin": "Leva margina sadržaja",
-          "RightContentMargin": "Desna margina sadržaja",
-          "InitialVolume": "Početna jačina zvuka (0-100)",
-          "ASType": "Tip pomoćnog izvora",
-          "ASInitialState": "Početno stanje pomoćnog izvora",
-          "ASPlayerInitialState": "Početno stanje VHS plejera",
-          "ASContent": "Sadržaj pomoćnog izvora",
-          "AllowFForwardRewind": "Omogući brzo premotavanje unapred i unazad",
-          "Channels": "Kanali",
-          "Channel": "Kanal",
-          "ChannelNumber": "Broj kanala",
-          "DefaultChannelContent": "Podrazumevani sadržaj kanala",
-          "KeepTVState": "Zadrži stanje televizora",
-          "MinimumSuccessMessageDuration": "Minimalno trajanje poruke o uspehu (u sekundama)",
-          "inputTypeStorage": "Interna memorija",
-          "inputTypeDisc": "Disk",
-          "inputTypeVHS": "VHS",
-          "inputStateOut": "Izbačeno",
-          "inputStateIn": "Ubačeno"
-      },
+        "Television": {
+            "name": "Televizija",
+            "description": "Ovaj resurs vam omogućava da kreirate televizor gde učesnici mogu menjati kanale i reprodukovati sadržaj iz pomoćnog izvora (npr. Blu-ray disk ili VHS kaseta). Televizor može biti povezan sa zagonetkom escape sobe i njenim rešenjem.",
+            "SmartTV": "Pametni TV",
+            "RETRO_REMOTE_SKIN": "Retro sa daljinskim upravljačem",
+            "MaximumChannelNumberLength": "Maksimalna dužina broja kanala",
+            "LoopChannelVideos": "Ponavljaj video zapise kanala",
+            "SimulateSignalNoise": "Simuliraj šum signala",
+            "TopContentMargin": "Gornja margina sadržaja",
+            "BottomContentMargin": "Donja margina sadržaja",
+            "LeftContentMargin": "Leva margina sadržaja",
+            "RightContentMargin": "Desna margina sadržaja",
+            "InitialVolume": "Početna jačina zvuka (0-100)",
+            "ASType": "Tip pomoćnog izvora",
+            "ASInitialState": "Početno stanje pomoćnog izvora",
+            "ASPlayerInitialState": "Početno stanje VHS plejera",
+            "ASContent": "Sadržaj pomoćnog izvora",
+            "AllowFForwardRewind": "Omogući brzo premotavanje unapred i unazad",
+            "Channels": "Kanali",
+            "Channel": "Kanal",
+            "ChannelNumber": "Broj kanala",
+            "DefaultChannelContent": "Podrazumevani sadržaj kanala",
+            "KeepTVState": "Zadrži stanje televizora",
+            "MinimumSuccessMessageDuration": "Minimalno trajanje poruke o uspehu (u sekundama)",
+            "inputTypeStorage": "Interna memorija",
+            "inputTypeDisc": "Disk",
+            "inputTypeVHS": "VHS",
+            "inputStateOut": "Izbačeno",
+            "inputStateIn": "Ubačeno"
+        },
       "Radio": {
         "name": "Radio",
-        "description": "Ovaj resurs omogućava kreiranje radija na kojem učesnici mogu da podešavaju različite frekvencije i jačinu zvuka. Radio se može povezati sa zagonetkom u escape room igri i njenim rešenjem.",
+        "description": "Ovaj resurs omogućava kreiranje radija na kojem učesnici mogu da podešavaju različite frekvencije i jačinu zvuka. Radio se može povezati sa zagonetkom u escape sobi i njenim rešenjem.",
         "LoopStationAudio": "Ponavljaj zvuk radio-stanica",
         "InitialFrequency": "Početna frekvencija",
         "InitialVolume": "Početna jačina zvuka (0-100)",
@@ -1871,12 +1871,12 @@
         "KeepRadioState": "Sačuvaj stanje radija"
       },
       "WireConnection": {
-        "name": "Žična veza",
-        "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da povežu izvorne i odredišne čvorove žicama na određeni način. Žice mogu imati različite boje i, opciono, svaki čvor (izvorni ili odredišni) može biti povezan sa brojem, slovom ili simbolom.",
+        "name": "Povezivanje žica",
+        "description": "Ovaj resurs vam omogućava da kreirate zagonetku čije rešenje zahteva od učesnika da povežu izvorne i ciljne čvorove žicama na određeni način. Žice mogu imati različite boje i, opciono, svaki čvor (izvorni ili ciljni) može biti povezan sa brojem, slovom ili simbolom.",
         "numberOfWires": "Broj žica",
         "wiresType": "Vrsta žica",
         "sourceNodesType": "Vrsta izvornih čvorova",
-        "destinationNodesType": "Vrsta odredišnih čvorova",
+        "destinationNodesType": "Vrsta ciljnih čvorova",
         "wiresColor": "Boja žica"
       },
       "SignalGenerator": {
@@ -2286,7 +2286,7 @@
     },
     "network": {
         "title": "EscappNet",
-        "subtitle": "Otvorena i decentralizovana mreža edukativnih escape room-ova zasnovana na platformi Escapp",
+        "subtitle": "Otvorena i decentralizovana mreža edukativnih escape soba zasnovana na platformi Escapp",
         "Network": "Mreža",
         "conductSearch": "Izvršite pretragu",
         "clickToPlay": "Kliknite na dugme ispod da biste igrali na njihovoj stranici:",
