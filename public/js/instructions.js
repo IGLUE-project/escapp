@@ -1,58 +1,24 @@
 $(function(){
-    alert("HERE!");
     const Delta = Quill.import("delta");
     const BlockEmbed = Quill.import('blots/block/embed');
     var Video = Quill.import('formats/video');
 
     const createVideo = (node) => {
-        let url = node.src;
+        const url = typeof node === "string" ? node : node?.src;
         if (typeof node === "string") {
-            url = node;
+            node = $('<video></video>')[0];
         }
-        const youtube = url.match(/(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))(.*)/);
-        if (youtube && youtube[5]) {
-            // var attributes = $(node).prop("attributes");
-            // node = $("<iframe>")
-
-            // // loop through <select> attributes and apply them on <div>
-            // $.each(attributes, function() {
-            //     node.attr(this.name, this.value);
-            // });
-            if (typeof node === "string") {
-                node = $(`<iframe width="560" height="315" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`)[0];
-            }
-            url = "https://www.youtube.com/embed/" + youtube[5];
-            if(!url.match("enablejsapi")) {
-                if (url.match("\\?")){
-                    url += "&enablejsapi=1"
-                } else {
-                    url += "?enablejsapi=1"
-                }
-            }
-            if (url) {
-                node.setAttribute('src', url);
-            } else {
-                node.removeAttribute('src')
-            }
+        if (url?.includes("autoplay=1")) {
+            node.setAttribute('autoplay', true);
+        }
+        if (url) {
+            node.setAttribute('src', url);
         } else {
-            if (typeof node === "string") {
-                node = $('<video></video>')[0];
-            }
-            if (url.match("autoplay=1")) {
-                node.setAttribute('autoplay', true);
-            }
-            if (url) {
-                node.setAttribute('src', url);
-            } else {
-                node.removeAttribute('src')
-            }
-            node.setAttribute('class', 'ql-video')
-            node.setAttribute('frameborder', node.frameborder || '0');
-            node.setAttribute('allowfullscreen', true);
-            node.setAttribute('allow', 'autoplay; fullscreen');
-            node.setAttribute('controls', '');
-            // setTimeout(()=>{try{node.pause()}catch(e){console.error}},1000)
+            node.removeAttribute('src')
         }
+        node.setAttribute('class', 'ql-video')
+        node.setAttribute('controls', '');
+        // setTimeout(()=>{try{node.pause()}catch(e){console.error}},1000)
         return node;
     }
     Video.create = (node) => {
@@ -327,37 +293,32 @@ $(function(){
                 case "sourceUrl":
                     let url = $('#urlInput').val().replace("http://","https://");
                     if (url) {
-                        const youtube = url.match(/(youtu\.be\/|youtube\.com\/(watch\?(.*&)?v=|(embed|v)\/))(.*)/);
-                        if (youtube && youtube[5]) {
-                            quill.insertEmbed(range.index, 'iframe', "https://www.youtube.com/embed/" + youtube[5], Quill.sources.USER);
-                        } else {
-                            var xhttp = new XMLHttpRequest();
-                            xhttp.open('HEAD', url);
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.open('HEAD', url);
 
-                            var onerror = function () {
-                                let parts = url.toString().toLowerCase().split('.');
-                                if (parts && parts.length > 0) {
-                                    const ext = parts[parts.length - 1];
-                                    if (imageExt.indexOf(ext) > -1) {
-                                        insertContentInstructions(range.index, url, "image/"+ext, "image");
-                                    } else if (videoExt.indexOf(ext) > -1) {
-                                        insertContentInstructions(range.index, url, "video/"+ext, "video");
-                                    } else if (audioExt.indexOf(ext) > -1) {
-                                        insertContentInstructions(range.index, url, "audio/"+ext, "audio");
-                                    } else {
-                                        insertContentInstructions(range.index, url);
-                                    }
+                        var onerror = function () {
+                            let parts = url.toString().toLowerCase().split('.');
+                            if (parts && parts.length > 0) {
+                                const ext = parts[parts.length - 1];
+                                if (imageExt.indexOf(ext) > -1) {
+                                    insertContentInstructions(range.index, url, "image/"+ext, "image");
+                                } else if (videoExt.indexOf(ext) > -1) {
+                                    insertContentInstructions(range.index, url, "video/"+ext, "video");
+                                } else if (audioExt.indexOf(ext) > -1) {
+                                    insertContentInstructions(range.index, url, "audio/"+ext, "audio");
+                                } else {
+                                    insertContentInstructions(range.index, url);
                                 }
-                            };
-                            xhttp.onreadystatechange = function () {
-                                if (this.readyState == this.DONE && this.status < 400) {
-                                    const mime = this.getResponseHeader("Content-Type");
-                                    insertContentInstructions(range.index, url, mime, url);
-                                }
-                            };
-                            xhttp.onerror = onerror;
-                            xhttp.send();
-                        }
+                            }
+                        };
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState == this.DONE && this.status < 400) {
+                                const mime = this.getResponseHeader("Content-Type");
+                                insertContentInstructions(range.index, url, mime, url);
+                            }
+                        };
+                        xhttp.onerror = onerror;
+                        xhttp.send();
                     }
                     break;
                 case "sourceGamificationElement":
@@ -427,40 +388,8 @@ $(function(){
         $( "[autoplay]" ).each((i,e)=> {
             try {e.pause() } catch(e){}
         });
-        $('iframe').each((i,e)=> {
-            try {e.pauseVideo() } catch(e){}
-        });
     }
     $('.ql-html-popupContainer button').click(stopAutoplay)
 
     stopAutoplay();
 });
-
-function onYouTubeIframeAPIReady() {
-    try {
-        $('iframe').each((_i,e) => {
-            var player = null;
-            player = new YT.Player(e, {
-                events: {'onReady': () => player.stopVideo()}
-            });
-        });
-    } catch(e){console.error(e)}
-}
-
-try {
-    $("document").on("click", '.ql-html-popupContainer button', () => {
-        $('iframe').each((_i,e) => {
-            try {
-                var player = null;
-                try { player.stopVideo()} catch (e) {console.error(e)}
-                player = new YT.Player(e, {
-                    events: { 'onReady': () => player.stopVideo(), }
-                });
-            } catch (e) {console.error(e)}
-
-        });
-    });
-} catch(e){console.error(e, 22222)}
-
-
-
