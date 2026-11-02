@@ -293,7 +293,7 @@ $(()=>{
                             CKEDITOR.instances[instance].destroy();
                             CKEDITOR.replace(instance)
                         }
-                        $('body link')[2].href = `/stylesheets/vendor/bootswatch/${selectedTheme || "cerulean"}.editor.bootstrap.min.css`;
+                        $('#link-bootswatch-theme').attr( 'href', `/stylesheets/vendor/bootswatch/${selectedTheme || 'cerulean'}.editor.bootstrap.min.css` );
                         $('#appearance').val(selectedTheme);
                     }
                     selectedTheme = null;

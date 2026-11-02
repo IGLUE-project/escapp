@@ -1,7 +1,7 @@
 <head>
   <link rel="stylesheet" href="/stylesheets/vendor/dropzone.css">
 <% if ((endPoint !== "indications") && (endPoint !== "after")) {%>
-<link rel="stylesheet" href="/stylesheets/vendor/bootswatch/<%=escapeRoom[endPoint + "Appearance"] || "litera"%>.editor.bootstrap.min.css">
+<link id="link-bootswatch-theme" rel="stylesheet" href="/stylesheets/vendor/bootswatch/<%=escapeRoom[endPoint + "Appearance"] || "litera"%>.editor.bootstrap.min.css">
 <%}%>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="/js/vendor/jquery.ui.sortable.min.js"></script>
