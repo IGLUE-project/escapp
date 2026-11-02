@@ -3,6 +3,11 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
+/*
+ * Modified from CKEditor 4.14.
+ * Modified by: IGLUE Project.
+ * Modification date: 2025.
+ */
 
 var my_styles =  [
 	// Block-level styles

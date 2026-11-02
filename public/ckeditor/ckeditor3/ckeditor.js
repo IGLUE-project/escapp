@@ -3,6 +3,12 @@ Copyright (c) 2003-2013, CKSource - Frederico Knabben.
 GNU General Public License Version 2 or later (the "GPL");
 */
 
+/*
+ * Modified from CKEditor 3.6.6.
+ * Modified by: GING.
+ * Modification date: 2025.
+ */
+
 (function() {
     if (window.CKEDITOR && window.CKEDITOR.dom)
         return;
@@ -15997,6 +16003,3 @@ GNU General Public License Version 2 or later (the "GPL");
         return m ? a.document.getById('cke_contents_' + this.name) : this.container;
     };
 })();
-
-/*ALDO AND KIKE: WARNING: XXX: we have added the extra check in line 153 "&&v.document.getWindow().$" because sometimes $ does not exist and is undefined and crashes */
-/*ALDO AND KIKE: WARNING: XXX: we have added the if in line 1667, to avoid scrolling when intro following: http://dev.ckeditor.com/ticket/9136#comment:10 */

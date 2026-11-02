@@ -24,6 +24,12 @@
  *    Changing this file will not change your CKEditor configuration.
  */
 
+/*
+ * Modified from CKEditor 4.14.
+ * Modified by: sonsoleslp.
+ * Modification date: 2020.
+ */
+
 var CKBUILDER_CONFIG = {
 	skin: 'minimalist',
 	preset: 'full',

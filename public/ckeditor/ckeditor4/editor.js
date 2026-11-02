@@ -1,3 +1,9 @@
+/*
+ * Modified from CKEditor 4.14.
+ * Modified by: GING & IGLUE Project.
+ * Modification years: 2020-2026.
+ */
+
 var selectedTheme = null;
 var config = {
     "autoOpen": false,

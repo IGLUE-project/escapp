@@ -3,6 +3,12 @@ Copyright (c) 2003-2013, CKSource - Frederico Knabben.
 GNU General Public License Version 2 or later (the "GPL");
 */
 
+/*
+ * Modified from CKEditor 3.6.6.
+ * Modified by: GING.
+ * Modification date: 2025.
+ */
+
 .cke_skin_sceneMaker .cke_tpl_list{
 	border: #dcdcdc 2px solid;
 	background-color:#fff;
