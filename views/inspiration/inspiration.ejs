@@ -1,2 +1,9 @@
-<%- include ("../partials/_header.ejs") %>
-	<iframe src="/pdf/index.html?lang=<%=i18n.lang%>" allowfullscreen style="width:100%; height:calc(100vh - 50px); position: absolute; top: 50px;  border: none; background: transparent;"/>
+<%
+  const lang = (typeof i18n !== 'undefined' && i18n?.lang)
+    ? i18n.lang.toLowerCase()
+    : 'en';
+
+  const pdfURL = `/pdf/BestPracticesEER_${lang}.pdf`;
+%>
+
+<%- include("_showPDF.ejs", { pdfURL }) %>

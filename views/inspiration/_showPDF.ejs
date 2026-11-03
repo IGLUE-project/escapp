@@ -1,0 +1,63 @@
+<%- include ("../partials/_header.ejs") %>
+
+<span id="pdfDownloadText" hidden style="display: none;">
+  <%= i18n.guides.pdfDownload %>
+</span>
+
+<script>
+(() => {
+  const pdfURL = <%- JSON.stringify(pdfURL).replace(/</g, '\\u003c') %>;
+
+  if (navigator.pdfViewerEnabled === true) {
+    const iframe = document.createElement('iframe');
+
+    iframe.src = pdfURL;
+    iframe.title = 'PDF Viewer';
+    iframe.allowFullscreen = true;
+
+    Object.assign(iframe.style, {
+      width: '100%',
+      height: 'calc(100vh - 50px)',
+      position: 'absolute',
+      top: '50px',
+      border: 'none',
+      background: 'transparent'
+    });
+
+    document.body.appendChild(iframe);
+  } else {
+	  const container = document.createElement('div');
+
+	  Object.assign(container.style, {
+	    position: 'fixed',
+	    top: '50px',
+	    left: '0',
+	    width: '100%',
+	    height: 'calc(100vh - 50px)',
+	    display: 'flex',
+	    alignItems: 'center',
+	    justifyContent: 'center',
+	    textAlign: 'center',
+	    padding: '20px',
+	    boxSizing: 'border-box'
+	  });
+
+	  const link = document.createElement('a');
+	  link.href = pdfURL;
+	  link.download = pdfURL.split('/').pop();
+	  link.textContent = document.getElementById('pdfDownloadText').textContent.trim();
+
+	  container.appendChild(link);
+	  document.body.appendChild(container);
+
+		// Try automatic download
+		const autoDownload = document.createElement('a');
+		autoDownload.href = pdfURL;
+		autoDownload.download = link.download;
+
+		document.body.appendChild(autoDownload);
+		autoDownload.click();
+		autoDownload.remove();
+  }
+})();
+</script>

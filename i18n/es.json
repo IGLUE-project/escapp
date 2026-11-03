@@ -1073,6 +1073,7 @@
     "guides": {
         "title": "Guías",
         "description": "Selecciona una guía para ayudarte a crear y gestionar tus escape rooms.",
+        "pdfDownload": "Si la descarga no ha comenzado automáticamente, haz clic aquí para descargar el archivo.",
         "inspiration": {
             "title": "Guía de buenas prácticas",
             "description": "Guía con directrices y recomendaciones para diseñar, construir y ejecutar escape rooms educativas"

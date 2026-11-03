@@ -1073,6 +1073,7 @@
     "guides": {
         "title": "Vodiči",
         "description": "Izaberite vodič koji će vam pomoći da kreirate i upravljate vašim escape sobama.",
+        "pdfDownload": "Ako preuzimanje nije počelo automatski, kliknite ovde da preuzmete datoteku.",
         "inspiration": {
                 "title": "Vodič za najbolje prakse",
                 "description": "Vodič sa smernicama i preporukama za dizajniranje, izradu i realizaciju edukativnih escape sobe"
