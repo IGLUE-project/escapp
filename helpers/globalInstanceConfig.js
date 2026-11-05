@@ -208,22 +208,25 @@ exports.getErrorReportUrls = async function () {
 };
 
 /**
- * Get exportAllowed setting (DB override or .env fallback)
- * Valid values: ONLY_OWNER, ONLY_TEACHERS, ONLY_USERS, ALL
- */
-/**
- * Get the frozen "Escapp 2.0" date (earliest terms acceptance, captured at migration
- * time). Returns null if it has never been set.
+ * Get the Escapp 2.0 deployment date from the configuration. If not specified, infer it from the earliest lastAcceptedTermsDate.
  */
 exports.getEscapp2Date = async function () {
     const config = await getConfig();
-
     if (config && config.escapp2Date) {
         return config.escapp2Date;
     }
-    return null;
+    return exports.inferEscapp2Date();
 };
 
+exports.inferEscapp2Date = async function () {
+    const date = await models.user.min("lastAcceptedTermsDate");
+    return date ?? new Date();
+};
+
+/**
+ * Get exportAllowed setting (DB override or .env fallback)
+ * Valid values: ONLY_OWNER, ONLY_TEACHERS, ONLY_USERS, ALL
+ */
 exports.getExportAllowed = async function () {
     const config = await getConfig();
 

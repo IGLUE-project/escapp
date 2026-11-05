@@ -6,11 +6,12 @@
         "dateField": "Date field",
         "registration": "Registration date",
         "termsAccepted": "Terms accepted date",
+        "playerDate": "First game date",
+        "teacherDate": "First escape room date",
         "from": "From",
         "to": "To",
         "sinceFirstTerms": "Since first accepted terms",
-        "sinceEscapp2": "Since Escapp 2.0",
-        "attendedOnly": "Only students who attended an escape room",
+        "sinceEscapp2": "From Escapp 2.0 to the end of IGLUE",
         "apply": "Apply",
         "downloadCsv": "Download CSV",
         "downloadUsers": "Download users (CSV)",
@@ -19,7 +20,15 @@
         "alias": "Alias",
         "created": "Escape rooms created",
         "played": "Escape rooms played",
-        "total": "Total"
+        "total": "Total",
+        "studentsTotal": "Total students",
+        "playersTotal": "Total players",
+        "teachers": "Registered teachers",
+        "studentsRegistered": "Registered students",
+        "playersRegistered": "Registered players",
+        "anonymizedID": "Anonymized User ID",
+        "registered": "Registered",
+        "users": "Users"
     },
     "locale": "en_US",
     "description": "Platform for managing educational escape rooms",
@@ -1445,7 +1454,8 @@
             "vet": "Vocational education and training",
             "higher": "Higher education",
             "other": "Other",
-            "none": "None"
+            "none": "None",
+            "unspecified": "Unspecified"
         },
         "inputs": {
             "editUser": "Edit profile",

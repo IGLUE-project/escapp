@@ -2709,7 +2709,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   padding: 7px 9px;
   color-scheme: dark;
 }
-.iglue-stats .dash-toolbar .iglue-stats-since {
+.iglue-stats .dash-toolbar .iglue-stats-period {
   flex-direction: row;
   align-items: center;
   gap: 8px;
@@ -2819,7 +2819,7 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
 .iglue-stats .dash-levels {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.1em;
+  gap: 1.5em;
 }
 .iglue-stats .lvl-card {
   background: #232850;

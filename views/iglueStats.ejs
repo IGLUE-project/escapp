@@ -11,20 +11,17 @@
     <form method="GET" action="/iglue-stats" class="iglue-stats-filters dash-toolbar">
         <label>
             <%= i18n.iglueStats.from %>
-            <input type="date" name="from" id="iglue-stats-from" value="<%= filters.from %>" <%= filters.sinceTerms ? "disabled" : "" %>/>
+            <input type="date" name="from" id="iglue-stats-from" value="<%= filters.from %>" <%= filters.forcePeriod ? "disabled" : "" %>/>
         </label>
         <label>
             <%= i18n.iglueStats.to %>
-            <input type="date" name="to" value="<%= filters.to %>"/>
+            <input type="date" name="to" id="iglue-stats-to" value="<%= filters.to || '2026-10-31' %>" <%= filters.forcePeriod ? "disabled" : "" %>/>
         </label>
-        <label class="iglue-stats-since">
-            <input type="checkbox" name="sinceTerms" id="iglue-stats-since" value="1" data-escapp2="<%= escapp2Date %>" <%= filters.sinceTerms ? "checked" : "" %>/>
-            <span><%= i18n.iglueStats.sinceEscapp2 %><% if (escapp2Date) { %> (<%= escapp2Date %>)<% } %></span>
+        <label class="iglue-stats-period">
+            <input type="checkbox" name="forcePeriod" id="iglue-stats-period" value="1" data-escapp2="<%= escapp2Date %>" <%= filters.forcePeriod ? "checked" : "" %>/>
+            <span><%= i18n.iglueStats.sinceEscapp2 %><% if (escapp2Date) { %> (<%= new Date(escapp2Date).toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).replace(/\//g, "-") %> - 31-10-2026)<% } %></span>
         </label>
-        <label class="iglue-stats-since">
-            <input type="checkbox" name="attendedOnly" value="1" <%= filters.attendedOnly ? "checked" : "" %>/>
-            <span><%= i18n.iglueStats.attendedOnly %></span>
-        </label>
+        <br/>
         <button type="submit" class="rounded dash-apply"><%= i18n.iglueStats.apply %></button>
         <span class="dash-downloads">
             <button type="submit" name="csv" value="1" class="rounded dash-download">
@@ -43,14 +40,35 @@
             <span class="kpi-icon material-icons">school</span>
             <div class="kpi-body">
                 <div class="kpi-num"><%= totals.students.toLocaleString() %></div>
-                <div class="kpi-label"><%= i18n.user.student %></div>
+                <div class="kpi-label"><%= i18n.iglueStats.studentsTotal %></div>
+            </div>
+        </div>
+        <div class="dash-kpi kpi-students-registered">
+            <span class="kpi-icon material-icons">school</span>
+            <div class="kpi-body">
+                <div class="kpi-num"><%= totals.registeredStudents.toLocaleString() %></div>
+                <div class="kpi-label"><%= i18n.iglueStats.studentsRegistered %></div>
+            </div>
+        </div>
+        <div class="dash-kpi kpi-players">
+            <span class="kpi-icon material-icons">sports_esports</span>
+            <div class="kpi-body">
+                <div class="kpi-num"><%= totals.players.toLocaleString() %></div>
+                <div class="kpi-label"><%= i18n.iglueStats.playersTotal %></div>
+            </div>
+        </div>
+         <div class="dash-kpi kpi-players-registered">
+            <span class="kpi-icon material-icons">sports_esports</span>
+            <div class="kpi-body">
+                <div class="kpi-num"><%= totals.registeredPlayers.toLocaleString() %></div>
+                <div class="kpi-label"><%= i18n.iglueStats.playersRegistered %></div>
             </div>
         </div>
         <div class="dash-kpi kpi-teachers">
             <span class="kpi-icon material-icons">co_present</span>
             <div class="kpi-body">
                 <div class="kpi-num"><%= totals.teachers.toLocaleString() %></div>
-                <div class="kpi-label"><%= i18n.user.teacher %></div>
+                <div class="kpi-label"><%= i18n.iglueStats.teachers %></div>
             </div>
         </div>
         <div class="dash-kpi kpi-total">
@@ -69,20 +87,20 @@
 
         <div class="dash-levels">
             <% levels.forEach((level) => {
-                const s = table[level].students;
+                const p = table[level].registeredPlayers;
                 const t = table[level].teachers;
-                const tot = s + t;
+                const tot = p + t;
             %>
             <div class="lvl-card">
                 <div class="lvl-name"><%= i18n.user.eduLevel[level] %></div>
                 <div class="lvl-nums">
-                    <div class="lvl-num students">
-                        <b><%= s.toLocaleString() %></b>
-                        <span><%= i18n.user.student %></span>
+                    <div class="lvl-num players">
+                        <b><%= p.toLocaleString() %></b>
+                        <span><%= i18n.iglueStats.playersRegistered %></span>
                     </div>
                     <div class="lvl-num teachers">
                         <b><%= t.toLocaleString() %></b>
-                        <span><%= i18n.user.teacher %></span>
+                        <span><%= i18n.iglueStats.teachers %></span>
                     </div>
                 </div>
                 <div class="lvl-total"><%= i18n.iglueStats.total %>: <%= tot.toLocaleString() %></div>
@@ -94,18 +112,22 @@
 
 <script>
     (function () {
-        var since = document.getElementById("iglue-stats-since");
+        var forcePeriod = document.getElementById("iglue-stats-period");
         var from = document.getElementById("iglue-stats-from");
+        var to = document.getElementById("iglue-stats-to");
 
-        if (!since || !from) {
+        if (!forcePeriod || !from || !to) {
             return;
         }
-        // When "since Escapp 2.0" is checked, `from` is overridden server-side by the
-        // frozen Escapp 2.0 date, so disable the input (and reflect that date in it).
-        since.addEventListener("change", function () {
-            from.disabled = since.checked;
-            if (since.checked && since.dataset.escapp2) {
-                from.value = since.dataset.escapp2;
+
+        forcePeriod.addEventListener("change", function () {
+            from.disabled = forcePeriod.checked;
+            to.disabled = forcePeriod.checked;
+            if (forcePeriod.checked) {
+                if(forcePeriod.dataset.escapp2){
+                    from.value = forcePeriod.dataset.escapp2;
+                }
+                to.value = '2026-10-31';
             }
         });
     }());

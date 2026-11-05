@@ -4,377 +4,461 @@ const {getEscapp2Date} = require("../helpers/globalInstanceConfig");
 const {createCsvFile} = require("../helpers/csv");
 
 const {Op} = Sequelize;
+const LEVELS = ["primary", "secondary", "vet", "higher", "other", "unspecified"];
 
-// Educational levels, matching the eduLevel enum on the user model
-const LEVELS = ["primary", "secondary", "vet", "higher", "other", "none"];
+const toDateInput = (date) => date ? new Date(date).toISOString().slice(0, 10) : "";
 
-const toDateInput = (d) => (d ? new Date(d).toISOString().slice(0, 10) : "");
-
-const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-
-// Accept only a well-formed, real calendar date (YYYY-MM-DD). Anything else — a
-// malformed string, an out-of-range date, an array from duplicated query params,
-// or any object — is discarded. This keeps untrusted input from ever reaching a
-// Date/DB boundary on this public endpoint.
 const safeDate = (value) => {
-    if (typeof value !== "string" || !DATE_RE.test(value)) {
-        return "";
-    }
-    const parsed = new Date(`${value}T00:00:00.000Z`);
-
-    return Number.isNaN(parsed.getTime()) ? "" : value;
+    if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return "";
+    const date = new Date(`${value}T00:00:00.000Z`);
+    return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value ? value : "";
 };
 
-// Build a CSV filename that embeds the searched window and the day it was generated,
-// e.g. "iglue-stats_from-2025-01-01_to-2025-06-30_generated-2026-09-28". `from`/`to` are
-// the dates actually searched (including the frozen "Escapp 2.0" date when the "since
-// Escapp 2.0" option is used). Genuinely open bounds stay "start"/"now": by default the
-// window has NO lower bound (all users since the beginning), so a real date would mislead.
 const csvFilename = (prefix, from, to) => {
-    const generated = new Date().toISOString().slice(0, 10);
-
-    return `${prefix}_from-${from || "start"}_to-${to || "now"}_generated-${generated}`;
+    const app = (process.env.APP_NAME || "").toLowerCase().trim()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9-]+/g, "-").replace(/^-|-$/g, "");
+    const fmt = (date) => date ? date.split("-").reverse().join("-") : "";
+    return `${prefix}${app ? "_" + app : ""}_from-${fmt(from) || "start"}-to-${fmt(to) || "now"}_generated-${fmt(toDateInput(new Date()))}`;
 };
 
-// Resolve the reporting window from the request — the same logic the stats table uses
-// (safeDate-validated from/to; `from` overridden by the frozen Escapp 2.0 date when the
-// "since Escapp 2.0" option is on). Kept here so the admin user export stays in sync.
 const resolveFilters = async (req) => {
-    const sinceTerms = req.query.sinceTerms === "1";
-    const attendedOnly = req.query.attendedOnly === "1";
-    const to = safeDate(req.query.to);
-
-    let escapp2Date = await getEscapp2Date();
-
-    if (!escapp2Date) {
-        escapp2Date = await models.user.min("lastAcceptedTermsDate");
-    }
-    const escapp2Input = toDateInput(escapp2Date);
+    const forcePeriod = Object.keys(req.query).length === 0 ? true : req.query.forcePeriod === "1";
+    const escapp2Input = toDateInput(await getEscapp2Date());
 
     let from = safeDate(req.query.from);
-    let fromDate = from ? new Date(`${from}T00:00:00.000Z`) : null;
+    let to = safeDate(req.query.to);
 
-    if (sinceTerms && escapp2Date) {
-        fromDate = new Date(escapp2Date);
+    if (forcePeriod) {
         from = escapp2Input;
+        to = "2026-10-31";
     }
-    const toDate = to ? new Date(`${to}T00:00:00.000Z`) : null;
 
-    return {sinceTerms, attendedOnly, from, to, fromDate, toDate, escapp2Input};
+    return {
+        forcePeriod, from, to, escapp2Input,
+        fromDate: from ? new Date(`${from}T00:00:00.000Z`) : null,
+        toDate: to ? new Date(`${to}T23:59:59.999Z`) : null
+    };
 };
 
-// A single user-level WHERE matching exactly the users counted in the stats table:
-// teachers in the terms window, plus students in the terms window OR who attended in
-// the window (or only attendance when that option is active). Returns {where, replacements}.
-const buildCountedUsersWhere = (fromDate, toDate, attendedOnly) => {
-    const replacements = {};
-    const hasWindow = Boolean(fromDate || toDate);
+// Build a date range for Sequelize queries.
+const dateWindow = (fromDate, toDate) => ({
+    ...(fromDate ? {[Op.gte]: fromDate} : {}),
+    ...(toDate ? {[Op.lte]: toDate} : {})
+});
 
-    const termsWindow = () => {
-        const window = {};
+// Exclude users whose educational level is "none".
+const validEduLevel = () => ({
+    [Op.or]: [
+        {eduLevel: {[Op.ne]: "none"}},
+        {eduLevel: {[Op.is]: null}}
+    ]
+});
 
-        if (fromDate) {
-            window[Op.gte] = fromDate;
-        }
-        if (toDate) {
-            window[Op.lt] = toDate;
-        }
-        return window;
-    };
+// Include registered non-admin teachers and admins who authored or coauthored a room.
+const eligibleTeacher = () => ({
+    isStudent: false,
+    anonymized: false,
+    [Op.or]: [
+        {isAdmin: false},
+        Sequelize.literal(`EXISTS (
+            SELECT 1 FROM "escapeRooms" er
+            WHERE er."authorId" = "user"."id"
+               OR EXISTS (SELECT 1 FROM "coAuthors" ca
+                          WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id")
+        )`)
+    ]
+});
 
-    const partConds = [`p."userId" = "user"."id"`, `p."attendance" = true`];
+// Check whether the user has played in the selected period.
+const playedExists = (fromDate, toDate, replacements, prefix) => {
+    const conditions = [
+        `p."userId" = "user"."id"`,
+        `p."attendance" = true`,
+        `tm."startTime" IS NOT NULL`
+    ];
 
     if (fromDate) {
-        partConds.push(`p."createdAt" >= :pFrom`);
-        replacements.pFrom = fromDate.toISOString();
+        conditions.push(`tm."startTime" >= :${prefix}From`);
+        replacements[`${prefix}From`] = fromDate.toISOString();
     }
+
     if (toDate) {
-        partConds.push(`p."createdAt" < :pTo`);
-        replacements.pTo = toDate.toISOString();
-    }
-    const attendedExists = Sequelize.literal(`EXISTS (SELECT 1 FROM "participants" p WHERE ${partConds.join(" AND ")})`);
-
-    const teacherCond = {"isStudent": false};
-
-    if (hasWindow) {
-        teacherCond.lastAcceptedTermsDate = termsWindow();
+        conditions.push(`tm."startTime" <= :${prefix}To`);
+        replacements[`${prefix}To`] = toDate.toISOString();
     }
 
-    let studentCond;
+    return Sequelize.literal(`
+        EXISTS (
+            SELECT 1
+            FROM "participants" p
+            INNER JOIN "teams" tm ON tm."turnoId" = p."turnId"
+            INNER JOIN "members" m ON m."teamId" = tm."id" AND m."userId" = p."userId"
+            WHERE ${conditions.join(" AND ")}
+        )
+    `);
+};
 
-    if (attendedOnly) {
-        studentCond = {"isStudent": true, [Op.and]: [attendedExists]};
-    } else if (hasWindow) {
-        studentCond = {"isStudent": true, [Op.or]: [{"lastAcceptedTermsDate": termsWindow()}, attendedExists]};
-    } else {
-        studentCond = {"isStudent": true};
+// Check whether a teacher created or updated an escape room in the period.
+const createdRoomExists = (fromDate, toDate, replacements, prefix) => {
+    const conditions = [`(
+        er."authorId" = "user"."id"
+        OR EXISTS (SELECT 1 FROM "coAuthors" ca
+                   WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id")
+    )`];
+
+    if (fromDate || toDate) {
+        const range = (column) => {
+            const parts = [];
+            if (fromDate) parts.push(`${column} >= :${prefix}From`);
+            if (toDate) parts.push(`${column} <= :${prefix}To`);
+            return `(${parts.join(" AND ")})`;
+        };
+
+        conditions.push(`(${range('er."createdAt"')} OR ${range('er."updatedAt"')})`);
+        if (fromDate) replacements[`${prefix}From`] = fromDate.toISOString();
+        if (toDate) replacements[`${prefix}To`] = toDate.toISOString();
     }
 
-    return {"where": {[Op.or]: [teacherCond, studentCond]}, replacements};
+    return Sequelize.literal(`EXISTS (SELECT 1 FROM "escapeRooms" er WHERE ${conditions.join(" AND ")})`);
+};
+
+// Build filters shared by the statistics and the detailed users CSV.
+const buildCountedUsersWhere = (fromDate, toDate) => {
+    const replacements = {};
+    const teacherCond = {...eligibleTeacher(), [Op.and]: [validEduLevel()]};
+    const studentCond = {isStudent: true, isAdmin: false, [Op.and]: [validEduLevel()]};
+
+    if (fromDate || toDate) {
+        const window = dateWindow(fromDate, toDate);
+
+        teacherCond[Op.and].push({
+            [Op.or]: [
+                {createdAt: window},
+                {lastAcceptedTermsDate: window},
+                createdRoomExists(fromDate, toDate, replacements, "teacherRoom")
+            ]
+        });
+
+        studentCond[Op.and].push({
+            [Op.or]: [
+                {createdAt: window},
+                {lastAcceptedTermsDate: window},
+                playedExists(fromDate, toDate, replacements, "studentPlay")
+            ]
+        });
+    }
+
+    return {
+        where: {[Op.or]: [teacherCond, studentCond]},
+        replacements
+    };
 };
 
 // GET /iglue-stats
-// Counts users by educational level (rows) and role (student/teacher columns) for a
-// reporting window [from, to). `to` is an EXCLUSIVE upper bound. The window is applied
-// on a single axis — lastAcceptedTermsDate (active users) — for BOTH bounds. `from`
-// defaults to the frozen Escapp 2.0 date when the "since Escapp 2.0" option is used.
-//
-//   Teachers  = isStudent=false AND lastAcceptedTermsDate in [from, to)
-//   Students  = isStudent=true  AND (lastAcceptedTermsDate in [from, to)
-//               OR attended an escape room with participants.createdAt in [from, to))
-//   Students (attendance option) = distinct students with a participants row where
-//               attendance=true and participants.createdAt in [from, to)
 exports.iglueStats = async (req, res, next) => {
     try {
-        const sinceTerms = req.query.sinceTerms === "1";
-        const attendedOnly = req.query.attendedOnly === "1";
-        const to = safeDate(req.query.to);
+        const {forcePeriod, from, to, fromDate, toDate, escapp2Input} = await resolveFilters(req);
+        const hasWindow = Boolean(fromDate || toDate);
 
-        // Frozen "Escapp 2.0" date (earliest terms acceptance, captured at migration time).
-        // Falls back to the live minimum if it has not been set yet.
-        let escapp2Date = await getEscapp2Date();
+        const countDistinctId = [Sequelize.literal(`COUNT(DISTINCT "user"."id")`), "count"];
 
-        if (!escapp2Date) {
-            escapp2Date = await models.user.min("lastAcceptedTermsDate");
-        }
-        const escapp2Input = toDateInput(escapp2Date);
+        // Registered users are counted separately, without changing total counts.
+        const countRegisteredId = [Sequelize.literal(`COUNT(DISTINCT "user"."id") FILTER (WHERE "user"."anonymized" = false)`), "registeredCount"];
 
-        let from = safeDate(req.query.from);
-        // Lower bound: the exact Escapp 2.0 timestamp when "since Escapp 2.0" is used,
-        // otherwise the start of the chosen from-day (UTC, matching safeDate validation).
-        let fromDate = from ? new Date(`${from}T00:00:00.000Z`) : null;
+        // Teachers: registration, terms acceptance or escape room creation.
+        const teacherReplacements = {};
+        const teacherWhere = { ...eligibleTeacher(), [Op.and]: [validEduLevel()] };
 
-        if (sinceTerms && escapp2Date) {
-            fromDate = new Date(escapp2Date);
-            from = escapp2Input;
-        }
+        if (hasWindow) {
+            const window = dateWindow(fromDate, toDate);
 
-        // Upper bound is exclusive: strictly before `to` (start of the to-day, UTC)
-        const toDate = to ? new Date(`${to}T00:00:00.000Z`) : null;
-
-        const countDistinctId = [Sequelize.fn("COUNT", Sequelize.fn("DISTINCT", Sequelize.col("user.id"))), "count"];
-
-        // User-based filter: accepted terms within [from, to) (active users), single axis
-        const userWhere = (isStudent) => {
-            const where = {isStudent};
-
-            if (fromDate || toDate) {
-                where.lastAcceptedTermsDate = {};
-                if (fromDate) {
-                    where.lastAcceptedTermsDate[Op.gte] = fromDate;
-                }
-                if (toDate) {
-                    where.lastAcceptedTermsDate[Op.lt] = toDate;
-                }
-            }
-            return where;
-        };
-
-        // Teachers
-        const teacherRows = await models.user.findAll({
-            "attributes": ["eduLevel", countDistinctId],
-            "where": userWhere(false),
-            "group": ["eduLevel"],
-            "raw": true
-        });
-
-        // Students
-        const studentQuery = {
-            "attributes": ["eduLevel", countDistinctId],
-            "group": ["eduLevel"],
-            "raw": true,
-            "subQuery": false
-        };
-
-        if (attendedOnly) {
-            // Distinct students who attended an escape room (participants.attendance = true)
-            // whose participation date (participants.createdAt) falls within [from, to)
-            const throughWhere = {"attendance": true};
-
-            if (fromDate || toDate) {
-                throughWhere.createdAt = {};
-                if (fromDate) {
-                    throughWhere.createdAt[Op.gte] = fromDate;
-                }
-                if (toDate) {
-                    throughWhere.createdAt[Op.lt] = toDate;
-                }
-            }
-            studentQuery.where = {"isStudent": true};
-            studentQuery.include = [{
-                "model": models.turno,
-                "as": "turnosAgregados",
-                "attributes": [],
-                "required": true,
-                "through": {"attributes": [], "where": throughWhere}
-            }];
-        } else {
-            // Active students: accepted terms in the window OR attended an escape room
-            // (participants.attendance = true) whose participation date falls in [from, to).
-            // The two sets are unioned and deduplicated by COUNT(DISTINCT user.id) via a
-            // correlated EXISTS, so a student in both sets is counted once.
-            studentQuery.where = {"isStudent": true};
-
-            if (fromDate || toDate) {
-                const termsWindow = {};
-                const partConds = [`p."userId" = "user"."id"`, `p."attendance" = true`];
-
-                if (fromDate) {
-                    termsWindow[Op.gte] = fromDate;
-                    partConds.push(`p."createdAt" >= :pFrom`);
-                }
-                if (toDate) {
-                    termsWindow[Op.lt] = toDate;
-                    partConds.push(`p."createdAt" < :pTo`);
-                }
-                studentQuery.where[Op.or] = [
-                    {"lastAcceptedTermsDate": termsWindow},
-                    Sequelize.literal(`EXISTS (SELECT 1 FROM "participants" p WHERE ${partConds.join(" AND ")})`)
-                ];
-                studentQuery.replacements = {};
-                if (fromDate) {
-                    studentQuery.replacements.pFrom = fromDate.toISOString();
-                }
-                if (toDate) {
-                    studentQuery.replacements.pTo = toDate.toISOString();
-                }
-            }
-        }
-
-        const studentRows = await models.user.findAll(studentQuery);
-
-        const table = {};
-
-        LEVELS.forEach((level) => {
-            table[level] = {"students": 0, "teachers": 0};
-        });
-
-        const accumulate = (rows, bucket) => {
-            rows.forEach((row) => {
-                const level = LEVELS.includes(row.eduLevel) ? row.eduLevel : "other";
-
-                table[level][bucket] += Number(row.count);
+            teacherWhere[Op.and].push({
+                [Op.or]: [
+                    {createdAt: window},
+                    {lastAcceptedTermsDate: window},
+                    createdRoomExists(fromDate, toDate, teacherReplacements, "teacherRoom")
+                ]
             });
+        }
+
+        const teacherRows = await models.user.findAll({
+            attributes: ["eduLevel", countDistinctId],
+            where: teacherWhere,
+            group: ["eduLevel"],
+            replacements: teacherReplacements,
+            raw: true
+        });
+
+        // Students: registration, terms acceptance or participation in an escape room.
+        const studentReplacements = {};
+        const studentWhere = { isStudent: true, isAdmin: false, [Op.and]: [validEduLevel()] };
+
+        if (hasWindow) {
+            const window = dateWindow(fromDate, toDate);
+
+            studentWhere[Op.and].push({
+                [Op.or]: [
+                    {createdAt: window},
+                    {lastAcceptedTermsDate: window},
+                    playedExists(fromDate, toDate, studentReplacements, "studentPlay")
+                ]
+            });
+        }
+
+        const studentRows = await models.user.findAll({
+            attributes: ["eduLevel", countDistinctId, countRegisteredId],
+            where: studentWhere,
+            group: ["eduLevel"],
+            replacements: studentReplacements,
+            raw: true,
+            subQuery: false
+        });
+
+        // Players: students who played in the selected period.
+        const playerReplacements = {};
+        const playerRows = await models.user.findAll({
+            attributes: ["eduLevel", countDistinctId, countRegisteredId],
+            where: {
+                isStudent: true,
+                isAdmin: false,
+                [Op.and]: [
+                    validEduLevel(),
+                    playedExists(fromDate, toDate, playerReplacements, "player")
+                ]
+            },
+            group: ["eduLevel"],
+            replacements: playerReplacements,
+            raw: true,
+            subQuery: false
+        });
+
+        // Build statistics by educational level.
+        const emptyStats = () => ({
+            teachers: 0,
+            students: 0,
+            registeredStudents: 0,
+            players: 0,
+            registeredPlayers: 0
+        });
+
+        const table = Object.fromEntries(LEVELS.map((level) => [level, emptyStats()]));
+
+        const accumulate = (rows, totalKey, registeredKey = null) => {
+            for (const row of rows) {
+                const level = LEVELS.includes(row.eduLevel) ? row.eduLevel : "unspecified";
+                table[level][totalKey] += Number(row.count) || 0;
+
+                if (registeredKey) {
+                    table[level][registeredKey] += Number(row.registeredCount) || 0;
+                }
+            }
         };
 
         accumulate(teacherRows, "teachers");
-        accumulate(studentRows, "students");
+        accumulate(studentRows, "students", "registeredStudents");
+        accumulate(playerRows, "players", "registeredPlayers");
 
-        const totals = {"students": 0, "teachers": 0};
+        const totals = emptyStats();
+        for (const level of LEVELS) {
+            for (const key of Object.keys(totals)) totals[key] += table[level][key];
+        }
 
-        LEVELS.forEach((level) => {
-            totals.students += table[level].students;
-            totals.teachers += table[level].teachers;
-        });
-
-        // Download the currently-filtered table as CSV
+        // Export general statistics as CSV.
         if (req.query.csv === "1") {
             const i18n = res.locals.i18n || {};
-            const labels = (i18n.user && i18n.user.eduLevel) || {};
-            const head = {
-                "level": (i18n.user && i18n.user.eduLevelField) || "Educational level",
-                "students": (i18n.user && i18n.user.student) || "Students",
-                "teachers": (i18n.user && i18n.user.teacher) || "Teachers",
-                "total": (i18n.iglueStats && i18n.iglueStats.total) || "Total"
-            };
-            const rows = LEVELS.map((level) => ({
-                [head.level]: labels[level] || level,
-                [head.students]: table[level].students,
-                [head.teachers]: table[level].teachers,
-                [head.total]: table[level].students + table[level].teachers
-            }));
+            const labels = i18n.user?.eduLevel || {};
+            const tr = i18n.iglueStats || {};
 
-            rows.push({
-                [head.level]: head.total,
-                [head.students]: totals.students,
-                [head.teachers]: totals.teachers,
-                [head.total]: totals.students + totals.teachers
+            const head = {
+                level: i18n.user?.eduLevelField || "Educational level",
+                students: tr.studentsTotal || tr.students || "Total students",
+                registeredStudents: tr.studentsRegistered || tr.registeredStudents || "Registered students",
+                players: tr.playersTotal || tr.players || "Total players",
+                registeredPlayers: tr.playersRegistered || tr.registeredPlayers || "Registered players",
+                teachers: tr.teachers || "Registered teachers",
+                total: tr.total || "Total"
+            };
+
+            const csvRow = (label, values) => ({
+                [head.level]: label,
+                [head.students]: values.students,
+                [head.registeredStudents]: values.registeredStudents,
+                [head.players]: values.players,
+                [head.registeredPlayers]: values.registeredPlayers,
+                [head.teachers]: values.teachers,
+                [head.total]: values.students + values.teachers
             });
+
+            const rows = LEVELS.map((level) => csvRow(labels[level] || level, table[level]));
+            rows.push(csvRow(head.total, totals));
 
             return createCsvFile(res, rows, csvFilename("iglue-stats", from, to));
         }
 
-        res.render("iglueStats", {
+        return res.render("iglueStats", {
             table,
-            "levels": LEVELS,
+            levels: LEVELS,
             totals,
-            "filters": {from, to, sinceTerms, attendedOnly},
-            "escapp2Date": escapp2Input
+            filters: {from, to, forcePeriod},
+            escapp2Date: escapp2Input
         });
+
     } catch (e) {
-        next(e);
+        return next(e);
     }
 };
 
-// GET /iglue-stats/users  (ADMIN ONLY — the route is guarded)
-// Downloads a CSV of every user counted in the current stats view, with per-user
-// escape-rooms-created and escape-rooms-played counts. Contains personal data (email,
-// alias), so it must never be exposed publicly.
+// GET /iglue-stats/users
+// Export counted users, ordered by role and registration status.
 exports.iglueStatsUsers = async (req, res, next) => {
     try {
-        const {from, to, fromDate, toDate, attendedOnly} = await resolveFilters(req);
-        const {where, replacements} = buildCountedUsersWhere(fromDate, toDate, attendedOnly);
+        const {from, to, fromDate, toDate} = await resolveFilters(req);
+        const {where, replacements} = buildCountedUsersWhere(fromDate, toDate);
 
-        // Per-user counts are scoped to the SAME [from, to) window as the stats:
-        //   created = escape rooms authored whose createdAt is in the window
-        //   played  = distinct escape rooms participated in whose participation date is in the window
-        // (:pFrom/:pTo are already bound by buildCountedUsersWhere whenever there is a window)
-        const createdConds = [`er."authorId" = "user"."id"`];
-        const playedConds = [`pp."userId" = "user"."id"`];
+        // Count distinct escape rooms played by each user.
+        const playedConds = [
+            `p."userId" = "user"."id"`,
+            `p."attendance" = true`,
+            `tm."startTime" IS NOT NULL`
+        ];
 
         if (fromDate) {
-            createdConds.push(`er."createdAt" >= :pFrom`);
-            playedConds.push(`pp."createdAt" >= :pFrom`);
-        }
-        if (toDate) {
-            createdConds.push(`er."createdAt" < :pTo`);
-            playedConds.push(`pp."createdAt" < :pTo`);
+            playedConds.push(`tm."startTime" >= :playedFrom`);
+            replacements.playedFrom = fromDate.toISOString();
         }
 
+        if (toDate) {
+            playedConds.push(`tm."startTime" <= :playedTo`);
+            replacements.playedTo = toDate.toISOString();
+        }
+
+        const playedCount = Sequelize.literal(`
+            (
+                SELECT COUNT(DISTINCT t."escapeRoomId")
+                FROM "participants" p
+                INNER JOIN "turnos" t ON t."id" = p."turnId"
+                INNER JOIN "teams" tm ON tm."turnoId" = t."id"
+                INNER JOIN "members" m ON m."teamId" = tm."id" AND m."userId" = p."userId"
+                WHERE ${playedConds.join(" AND ")}
+            )
+        `);
+
+        // Count escape rooms authored or coauthored, created or updated in the period.
+        const createdConds = [`(
+            er."authorId" = "user"."id"
+            OR EXISTS (SELECT 1 FROM "coAuthors" ca
+                       WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id")
+        )`];
+
+        if (fromDate || toDate) {
+            const range = (col) => [
+                fromDate ? `${col} >= :createdFrom` : null,
+                toDate ? `${col} <= :createdTo` : null
+            ].filter(Boolean).join(" AND ");
+
+            createdConds.push(`((${range('er."createdAt"')}) OR (${range('er."updatedAt"')}))`);
+            if (fromDate) replacements.createdFrom = fromDate.toISOString();
+            if (toDate) replacements.createdTo = toDate.toISOString();
+        }
+
+        const createdCount = Sequelize.literal(`(
+            SELECT COUNT(*) FROM "escapeRooms" er WHERE ${createdConds.join(" AND ")}
+        )`);
+
+        // First game played within the selected period.
+        const firstPlayed = Sequelize.literal(`(
+            SELECT MIN(tm."startTime")
+            FROM "participants" p
+            JOIN "teams" tm ON tm."turnoId" = p."turnId"
+            JOIN "members" m ON m."teamId" = tm."id" AND m."userId" = p."userId"
+            WHERE ${playedConds.join(" AND ")}
+        )`);
+
+        // First creation or update of an authored or coauthored escape room in the period.
+        const firstCreated = Sequelize.literal(`(
+            SELECT MIN(
+                CASE
+                    WHEN er."createdAt" IS NOT NULL ${fromDate ? 'AND er."createdAt" >= :createdFrom' : ''}
+                         ${toDate ? 'AND er."createdAt" <= :createdTo' : ''} THEN er."createdAt"
+                    ELSE er."updatedAt"
+                END
+            )
+            FROM "escapeRooms" er WHERE ${createdConds.join(" AND ")}
+        )`);
+
         const users = await models.user.findAll({
-            "attributes": [
-                "username",
-                "alias",
-                "eduLevel",
-                "isStudent",
-                "createdAt",
-                "lastAcceptedTermsDate",
-                [Sequelize.literal(`(SELECT COUNT(*) FROM "escapeRooms" er WHERE ${createdConds.join(" AND ")})`), "createdCount"],
-                [Sequelize.literal(`(SELECT COUNT(DISTINCT t."escapeRoomId") FROM "participants" pp JOIN "turnos" t ON t."id" = pp."turnId" WHERE ${playedConds.join(" AND ")})`), "playedCount"]
+            attributes: [
+                "eduLevel", "isStudent", "anonymized",
+                [playedCount, "playedCount"], [createdCount, "createdCount"],
+                [firstPlayed, "firstPlayed"], [firstCreated, "firstCreated"]
             ],
             where,
             replacements,
-            "order": [["isStudent", "ASC"], ["eduLevel", "ASC"], ["username", "ASC"]],
-            "raw": true
+            order: [
+                // Teachers first, then students.
+                ["isStudent", "ASC"],
+
+                // Among students, prioritize users who have played.
+                [
+                    Sequelize.literal(`
+                        CASE
+                            WHEN "user"."isStudent" = true AND ${playedCount.val} > 0 THEN 0
+                            WHEN "user"."isStudent" = true THEN 1
+                            ELSE 0
+                        END
+                    `),
+                    "ASC"
+                ],
+
+                // Registered users first within each group.
+                [
+                    Sequelize.literal(`
+                        CASE WHEN "user"."anonymized" = false THEN 0 ELSE 1 END
+                    `),
+                    "ASC"
+                ],
+
+                // Randomize users within each group.
+                Sequelize.literal("RANDOM()")
+            ],
+            raw: true
         });
 
+        // Translate CSV headers and educational levels.
         const i18n = res.locals.i18n || {};
-        const eduLabels = (i18n.user && i18n.user.eduLevel) || {};
-        const roleLabel = (isStudent) => (isStudent ? ((i18n.user && i18n.user.student) || "Student") : ((i18n.user && i18n.user.teacher) || "Teacher"));
-        const head = {
-            "email": (i18n.iglueStats && i18n.iglueStats.email) || "Email",
-            "role": (i18n.iglueStats && i18n.iglueStats.role) || "Role",
-            "alias": (i18n.iglueStats && i18n.iglueStats.alias) || "Alias",
-            "level": (i18n.user && i18n.user.eduLevelField) || "Educational level",
-            "registered": (i18n.iglueStats && i18n.iglueStats.registration) || "Registration date",
-            "termsAccepted": (i18n.iglueStats && i18n.iglueStats.termsAccepted) || "Terms accepted date",
-            "created": (i18n.iglueStats && i18n.iglueStats.created) || "Escape rooms created",
-            "played": (i18n.iglueStats && i18n.iglueStats.played) || "Escape rooms played"
-        };
+        const tr = i18n.iglueStats || {};
+        const userTr = i18n.user || {};
+        const eduLabels = userTr.eduLevel || {};
 
-        const rows = users.map((u) => ({
-            [head.email]: u.username,
-            [head.role]: roleLabel(u.isStudent),
-            [head.alias]: u.alias,
+        const head = {
+            anonymousID: tr.anonymizedID || "Anonymized User ID",
+            role: tr.role || "Role",
+            level: userTr.eduLevelField || "Educational level",
+            registered: tr.registered || "Registered",
+            played: tr.played || "Escape rooms played",
+            created: tr.created || "Escape rooms created",
+            firstPlayed: tr.playerDate || "First game date",
+            firstCreated: tr.teacherDate || "First escape room date"
+        };
+        
+        // Format dates as dd/MM/yyyy.
+        const formatDate = (date) => date ? new Date(date).toISOString().slice(0, 10).split("-").reverse().join("/") : "-";
+
+        const rows = users.map((u, index) => ({
+            [head.anonymousID]: index + 1,
+            [head.role]: u.isStudent ? (userTr.student || "Student") : (userTr.teacher || "Teacher"),
             [head.level]: eduLabels[u.eduLevel] || u.eduLevel,
-            [head.registered]: toDateInput(u.createdAt),
-            [head.termsAccepted]: toDateInput(u.lastAcceptedTermsDate),
-            [head.created]: Number(u.createdCount) || 0,
-            [head.played]: Number(u.playedCount) || 0
+            [head.registered]: u.anonymized === false,
+            [head.played]: u.isStudent ? (Number(u.playedCount) || 0) : "-",
+            [head.created]: u.isStudent ? "-" : (Number(u.createdCount) || 0),
+            [head.firstPlayed]: u.isStudent && Number(u.playedCount) > 0 ? formatDate(u.firstPlayed) : "-",
+            [head.firstCreated]: !u.isStudent && Number(u.createdCount) > 0 ? formatDate(u.firstCreated) : "-"
         }));
 
         return createCsvFile(res, rows, csvFilename("iglue-stats-users", from, to));
+
     } catch (e) {
-        next(e);
+        return next(e);
     }
 };

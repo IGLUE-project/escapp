@@ -6,11 +6,12 @@
     "dateField": "Polje datuma",
     "registration": "Datum registracije",
     "termsAccepted": "Datum prihvatanja uslova",
+    "playerDate": "Datum prve igre",
+    "teacherDate": "Datum prve escape room igre",
     "from": "Od",
     "to": "Do",
     "sinceFirstTerms": "Od prvog prihvaćenog uslova",
-    "sinceEscapp2": "Od Escapp 2.0",
-    "attendedOnly": "Samo učenici koji su učestvovali u escape sobi",
+    "sinceEscapp2": "Od Escapp 2.0 do kraja IGLUE",
     "apply": "Primeni",
     "downloadCsv": "Preuzmi CSV",
     "downloadUsers": "Preuzmi korisnike (CSV)",
@@ -19,7 +20,15 @@
     "alias": "Alias",
     "created": "Kreirane escape sobe",
     "played": "Odigrane escape sobe",
-    "total": "Ukupno"
+    "total": "Ukupno",
+    "studentsTotal": "Ukupan broj učenika i studenata",
+    "playersTotal": "Ukupan broj igrača",
+    "teachers": "Nastavnici",
+    "studentsRegistered": "Registrovani učenici i studenti",
+    "playersRegistered": "Registrovani igrači",
+    "anonymizedID": "Anonimizovani ID korisnika",
+    "registered": "Registrovan",
+    "users": "Korisnici"
   },
   "locale": "sr",
   "description": "Platforma za upravljanje edukativnim escape sobama",
@@ -1444,7 +1453,8 @@
         "vet": "Stručno obrazovanje i obuka",
         "higher": "Visoko obrazovanje",
         "other": "Ostalo",
-        "none": "Nijedno"
+        "none": "Nijedno",
+        "unspecified": "Nije navedeno"
       },
       "inputs": {
         "editUser": "Uredi profil",
