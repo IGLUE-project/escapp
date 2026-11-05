@@ -399,6 +399,16 @@ exports.iglueStatsUsers = async (req, res, next) => {
                 // Teachers first, then students.
                 ["isStudent", "ASC"],
 
+                // Teachers with created escape rooms first.
+                [
+                    Sequelize.literal(`CASE
+                        WHEN "user"."isStudent" = false AND ${createdCount.val} > 0 THEN 0
+                        WHEN "user"."isStudent" = false THEN 1
+                        ELSE 0
+                    END`),
+                    "ASC"
+                ],
+
                 // Among students, prioritize users who have played.
                 [
                     Sequelize.literal(`
@@ -448,7 +458,7 @@ exports.iglueStatsUsers = async (req, res, next) => {
         const rows = users.map((u, index) => ({
             [head.anonymousID]: index + 1,
             [head.role]: u.isStudent ? (userTr.student || "Student") : (userTr.teacher || "Teacher"),
-            [head.level]: eduLabels[u.eduLevel] || u.eduLevel,
+            [head.level]: eduLabels[u.eduLevel ?? "unspecified"] || eduLabels.unspecified || "Unspecified",
             [head.registered]: u.anonymized === false,
             [head.played]: u.isStudent ? (Number(u.playedCount) || 0) : "-",
             [head.created]: u.isStudent ? "-" : (Number(u.createdCount) || 0),
