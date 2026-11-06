@@ -2790,12 +2790,16 @@ body .daterangepicker .calendar-time .hourselect option, body .daterangepicker .
   letter-spacing: 0.05em;
   margin-top: 5px;
 }
-.iglue-stats .dash-kpi.kpi-students .kpi-icon {
+.iglue-stats .dash-kpi.kpi-players-registered .kpi-icon {
   background: rgba(54, 162, 235, 0.15);
+  color: #F47E84;
+}
+.iglue-stats .dash-kpi.kpi-students-registered .kpi-icon {
+  background: rgba(72, 193, 142, 0.15);
   color: #36A2EB;
 }
 .iglue-stats .dash-kpi.kpi-teachers .kpi-icon {
-  background: rgba(72, 193, 142, 0.15);
+  background: rgba(250, 200, 85, 0.15);
   color: #48C18E;
 }
 .iglue-stats .dash-kpi.kpi-total .kpi-icon {
