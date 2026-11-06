@@ -39,49 +39,49 @@
         <div class="dash-kpi kpi-students">
             <span class="kpi-icon material-icons">school</span>
             <div class="kpi-body">
-                <div class="kpi-num"><%= totals.students.toLocaleString() %></div>
+                <div class="kpi-num"><%= totals.students %></div>
                 <div class="kpi-label"><%= i18n.iglueStats.studentsTotal %></div>
             </div>
         </div>
         <div class="dash-kpi kpi-students-registered">
             <span class="kpi-icon material-icons">school</span>
             <div class="kpi-body">
-                <div class="kpi-num"><%= totals.registeredStudents.toLocaleString() %></div>
+                <div class="kpi-num"><%= totals.registeredStudents %></div>
                 <div class="kpi-label"><%= i18n.iglueStats.studentsRegistered %></div>
             </div>
         </div>
         <div class="dash-kpi kpi-players">
             <span class="kpi-icon material-icons">sports_esports</span>
             <div class="kpi-body">
-                <div class="kpi-num"><%= totals.players.toLocaleString() %></div>
+                <div class="kpi-num"><%= totals.players %></div>
                 <div class="kpi-label"><%= i18n.iglueStats.playersTotal %></div>
             </div>
         </div>
          <div class="dash-kpi kpi-players-registered">
             <span class="kpi-icon material-icons">sports_esports</span>
             <div class="kpi-body">
-                <div class="kpi-num"><%= totals.registeredPlayers.toLocaleString() %></div>
+                <div class="kpi-num"><%= totals.registeredPlayers %></div>
                 <div class="kpi-label"><%= i18n.iglueStats.playersRegistered %></div>
             </div>
         </div>
         <div class="dash-kpi kpi-teachers">
             <span class="kpi-icon material-icons">co_present</span>
             <div class="kpi-body">
-                <div class="kpi-num"><%= totals.teachers.toLocaleString() %></div>
+                <div class="kpi-num"><%= totals.teachers %></div>
                 <div class="kpi-label"><%= i18n.iglueStats.teachers %></div>
             </div>
         </div>
         <div class="dash-kpi kpi-teachers-authors">
             <span class="kpi-icon material-icons">co_present</span>
             <div class="kpi-body">
-                <div class="kpi-num"><%= totals.teacherAuthors.toLocaleString() %></div>
+                <div class="kpi-num"><%= totals.teacherAuthors %></div>
                 <div class="kpi-label"><%= i18n.iglueStats.teacherAuthors %></div>
             </div>
         </div>
         <div class="dash-kpi kpi-total">
             <span class="kpi-icon material-icons">groups</span>
             <div class="kpi-body">
-                <div class="kpi-num"><%= grandTotal.toLocaleString() %></div>
+                <div class="kpi-num"><%= grandTotal %></div>
                 <div class="kpi-label"><%= i18n.iglueStats.total %></div>
             </div>
         </div>
@@ -102,15 +102,15 @@
                 <div class="lvl-name"><%= i18n.user.eduLevel[level] %></div>
                 <div class="lvl-nums">
                     <div class="lvl-num players">
-                        <b><%= p.toLocaleString() %></b>
+                        <b><%= p %></b>
                         <span><%= i18n.iglueStats.playersRegistered %></span>
                     </div>
                     <div class="lvl-num teachers">
-                        <b><%= t.toLocaleString() %></b>
+                        <b><%= t %></b>
                         <span><%= i18n.iglueStats.teachers %></span>
                     </div>
                 </div>
-                <div class="lvl-total"><%= i18n.iglueStats.total %>: <%= tot.toLocaleString() %></div>
+                <div class="lvl-total"><%= i18n.iglueStats.total %>: <%= tot %></div>
             </div>
             <% }) %>
         </div>
