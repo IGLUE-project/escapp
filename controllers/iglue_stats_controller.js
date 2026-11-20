@@ -65,7 +65,7 @@ const eligibleTeacher = () => ({
             SELECT 1 FROM "escapeRooms" er
             WHERE er."authorId" = "user"."id"
                OR EXISTS (SELECT 1 FROM "coAuthors" ca
-                          WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id")
+                          WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id" AND ca."confirmed" = true)
         )`)
     ]
 });
@@ -99,23 +99,24 @@ const playedExists = (fromDate, toDate, replacements, prefix) => {
     `);
 };
 
-// Check whether a teacher created or updated an escape room in the period.
+// Check whether a teacher created an escape room in the period.
 const createdRoomExists = (fromDate, toDate, replacements, prefix) => {
+    const range = (col) => [
+        fromDate ? `${col} >= :${prefix}From` : null,
+        toDate ? `${col} <= :${prefix}To` : null
+    ].filter(Boolean).join(" AND ");
+
+    const coauthorDates = range('ca."createdAt"');
     const conditions = [`(
-        er."authorId" = "user"."id"
-        OR EXISTS (SELECT 1 FROM "coAuthors" ca
-                   WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id")
+        er."authorId" = "user"."id" OR EXISTS (
+            SELECT 1 FROM "coAuthors" ca
+            WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id"
+              AND ca."confirmed" = true ${coauthorDates ? `AND ${coauthorDates}` : ""}
+        )
     )`];
 
     if (fromDate || toDate) {
-        const range = (column) => {
-            const parts = [];
-            if (fromDate) parts.push(`${column} >= :${prefix}From`);
-            if (toDate) parts.push(`${column} <= :${prefix}To`);
-            return `(${parts.join(" AND ")})`;
-        };
-
-        conditions.push(`(${range('er."createdAt"')} OR ${range('er."updatedAt"')})`);
+        conditions.push(`(${range('er."createdAt"')})`);
         if (fromDate) replacements[`${prefix}From`] = fromDate.toISOString();
         if (toDate) replacements[`${prefix}To`] = toDate.toISOString();
     }
@@ -190,6 +191,21 @@ exports.iglueStats = async (req, res, next) => {
             raw: true
         });
 
+        const authorReplacements = {};
+        const authorRows = await models.user.findAll({
+            attributes: ["eduLevel", countDistinctId],
+            where: {
+                ...eligibleTeacher(),
+                [Op.and]: [
+                    validEduLevel(),
+                    createdRoomExists(fromDate, toDate, authorReplacements, "authorRoom")
+                ]
+            },
+            group: ["eduLevel"],
+            replacements: authorReplacements,
+            raw: true
+        });
+
         // Students: registration, terms acceptance or participation in an escape room.
         const studentReplacements = {};
         const studentWhere = { isStudent: true, isAdmin: false, [Op.and]: [validEduLevel()] };
@@ -236,6 +252,7 @@ exports.iglueStats = async (req, res, next) => {
         // Build statistics by educational level.
         const emptyStats = () => ({
             teachers: 0,
+            teacherAuthors: 0,
             students: 0,
             registeredStudents: 0,
             players: 0,
@@ -256,6 +273,7 @@ exports.iglueStats = async (req, res, next) => {
         };
 
         accumulate(teacherRows, "teachers");
+        accumulate(authorRows, "teacherAuthors");
         accumulate(studentRows, "students", "registeredStudents");
         accumulate(playerRows, "players", "registeredPlayers");
 
@@ -277,6 +295,7 @@ exports.iglueStats = async (req, res, next) => {
                 players: tr.playersTotal || tr.players || "Total players",
                 registeredPlayers: tr.playersRegistered || tr.registeredPlayers || "Registered players",
                 teachers: tr.teachers || "Registered teachers",
+                teacherAuthors: tr.teacherAuthors || "Teacher authors",
                 total: tr.total || "Total"
             };
 
@@ -287,6 +306,7 @@ exports.iglueStats = async (req, res, next) => {
                 [head.players]: values.players,
                 [head.registeredPlayers]: values.registeredPlayers,
                 [head.teachers]: values.teachers,
+                [head.teacherAuthors]: values.teacherAuthors,
                 [head.total]: values.students + values.teachers
             });
 
@@ -344,20 +364,23 @@ exports.iglueStatsUsers = async (req, res, next) => {
             )
         `);
 
-        // Count escape rooms authored or coauthored, created or updated in the period.
+        // Count escape rooms authored or coauthored, created in the period.
+        const range = (col) => [
+            fromDate ? `${col} >= :createdFrom` : null,
+            toDate ? `${col} <= :createdTo` : null
+        ].filter(Boolean).join(" AND ");
+
+        const coauthorDates = range('ca."createdAt"');
         const createdConds = [`(
-            er."authorId" = "user"."id"
-            OR EXISTS (SELECT 1 FROM "coAuthors" ca
-                       WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id")
+            er."authorId" = "user"."id" OR EXISTS (
+                SELECT 1 FROM "coAuthors" ca
+                WHERE ca."escapeRoomId" = er."id" AND ca."userId" = "user"."id"
+                  AND ca."confirmed" = true ${coauthorDates ? `AND ${coauthorDates}` : ""}
+            )
         )`];
 
         if (fromDate || toDate) {
-            const range = (col) => [
-                fromDate ? `${col} >= :createdFrom` : null,
-                toDate ? `${col} <= :createdTo` : null
-            ].filter(Boolean).join(" AND ");
-
-            createdConds.push(`((${range('er."createdAt"')}) OR (${range('er."updatedAt"')}))`);
+            createdConds.push(`(${range('er."createdAt"')})`);
             if (fromDate) replacements.createdFrom = fromDate.toISOString();
             if (toDate) replacements.createdTo = toDate.toISOString();
         }
@@ -375,16 +398,11 @@ exports.iglueStatsUsers = async (req, res, next) => {
             WHERE ${playedConds.join(" AND ")}
         )`);
 
-        // First creation or update of an authored or coauthored escape room in the period.
+        // First creation of an authored or coauthored escape room in the period.
         const firstCreated = Sequelize.literal(`(
-            SELECT MIN(
-                CASE
-                    WHEN er."createdAt" IS NOT NULL ${fromDate ? 'AND er."createdAt" >= :createdFrom' : ''}
-                         ${toDate ? 'AND er."createdAt" <= :createdTo' : ''} THEN er."createdAt"
-                    ELSE er."updatedAt"
-                END
-            )
-            FROM "escapeRooms" er WHERE ${createdConds.join(" AND ")}
+            SELECT MIN(er."createdAt")
+            FROM "escapeRooms" er
+            WHERE ${createdConds.join(" AND ")}
         )`);
 
         const users = await models.user.findAll({
