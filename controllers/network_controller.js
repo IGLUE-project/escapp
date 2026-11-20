@@ -67,7 +67,7 @@ const getSearchScore = (query, escapeRoom) => {
     return totalScore;
 };
 
-const getResultsFromInstance = async (userQuery, before, after, lang, page = 1, limit = 10, participation, area, duration, format, level, license) => {
+const getResultsFromInstance = async (userQuery, before, after, lang, page = 1, limit = 50, participation, area, duration, format, level, license) => {
     try {
         const dbQuery = queries.escapeRoom.network(before, after, lang, participation, area, duration, format, level, license);
         let results = await models.escapeRoom.findAll(dbQuery);
@@ -191,7 +191,7 @@ exports.searchInNetwork = async (req, res, _) => {
     for (const index in urls) {
         const url = urls[index];
         try {
-            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${lang || ""}&level=${level || ""}&format=${format || ""}&duration=${duration || ""}&area=${area || ""}&participation=${participation || ""}&page=${page || 1}&limit=${limit || 10}`), url));
+            promises.push(timeoutPromise(5000, tryFetch(`${url}/network/searchInInstance?query=${encodeURIComponent(query)}&before=${before || ""}&after=${after || ""}&lang=${lang || ""}&level=${level || ""}&format=${format || ""}&duration=${duration || ""}&area=${area || ""}&participation=${participation || ""}&page=${page || 1}&limit=${limit || 50}`), url));
         } catch (error) {
             console.error(`Error fetching from ${url}: ${error.message}`);
         }
